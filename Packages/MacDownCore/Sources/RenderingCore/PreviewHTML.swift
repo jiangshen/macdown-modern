@@ -3,7 +3,7 @@ import Foundation
 public enum PreviewHTML {
   public static func document(
     body: String = "", remoteImages: Bool = false,
-    title: String = "", includeStyles: Bool = true
+    title: String = "", includeStyles: Bool = true, style: DocumentStyle = .init()
   ) -> String {
     let imageSources = remoteImages ? "mdasset: data: https:" : "mdasset: data:"
     return """
@@ -11,7 +11,7 @@ public enum PreviewHTML {
       <title>\(escapeText(title))</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-      \(includeStyles ? stylesheet : "")</head><body><main id="preview-content">\(body)</main></body></html>
+      \(includeStyles ? "<style id=\"document-style\">" + style.css + "</style>" : "")</head><body><main id="preview-content">\(body)</main></body></html>
       """
   }
 
@@ -23,31 +23,15 @@ public enum PreviewHTML {
       .replacingOccurrences(of: "'", with: "&#39;")
   }
 
-  private static let stylesheet = """
-    <style>
-      :root { color-scheme: light dark; --border: #d9e1e8; --muted: #596875; --code: #f1f5f8; }
-      body { margin: 0; font: 16px/1.65 -apple-system, BlinkMacSystemFont, sans-serif; overflow-wrap: anywhere; }
-      main { max-width: 76ch; padding: 32px 36px 80px; margin: auto; }
-      h1,h2,h3,h4,h5,h6 { line-height: 1.25; scroll-margin-top: 24px; }
-      h1 { font-size: 2em; } h2 { margin-top: 1.6em; }
-      a { color: #247aa9; } blockquote { margin-left: 0; padding-left: 1em; border-left: 3px solid var(--border); color: var(--muted); }
-      pre,code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
-      code { background: var(--code); border-radius: 4px; padding: .12em .28em; }
-      pre { overflow-x: auto; background: var(--code); border-radius: 10px; padding: 16px; }
-      pre code { padding: 0; background: transparent; white-space: pre; }
-      img { max-width: 100%; height: auto; } table { border-collapse: collapse; display: block; overflow-x: auto; }
-      th,td { border: 1px solid var(--border); padding: .45em .8em; } th { background: var(--code); }
-      hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
-      input[type=checkbox] { margin-right: .5em; } .footnotes { font-size: .9em; }
-      @media (prefers-color-scheme: dark) { :root { --border: #3b4650; --muted: #aebbc5; --code: #232c34; } a { color: #7fc8ef; } }
-      @media print {
-      :root { color-scheme: light; --border: #d9e1e8; --muted: #596875; --code: #f1f5f8; }
-      body { color: #000; background: #fff; } main { max-width: none; padding: 0; }
-      pre,pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
-      h1,h2,h3,h4,h5,h6 { break-after: avoid; } tr { break-inside: avoid; }
-      table { display: table; width: 100%; } thead { display: table-header-group; }
-      }
-      </style>
+  /// Presentation updates never replace the document or its content nodes.
+  public static let updateStyle = """
+    const style = document.head.querySelector('#document-style');
+    if (!style) return false;
+    const anchor = [...document.querySelectorAll('#preview-content [data-sourcepos]')].find(e => e.getBoundingClientRect().bottom > 0);
+    const anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;
+    style.textContent = css;
+    if (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);
+    return true;
     """
 
   /// Only this trusted function runs in WKWebView's isolated client world. Document

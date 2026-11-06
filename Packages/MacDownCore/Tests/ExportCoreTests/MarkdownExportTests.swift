@@ -11,12 +11,12 @@ struct MarkdownExportTests {
     let styled = try await MarkdownExport.build(
       source: "# Hello\n\n**world**", title: "<Title> & \"Name\"", directory: nil)
     #expect(styled.document.contains("<title>&lt;Title&gt; &amp; &quot;Name&quot;</title>"))
-    #expect(styled.document.contains("<style>"))
+    #expect(styled.document.contains("<style id=\"document-style\">"))
     #expect(styled.fragment.contains("<strong>world</strong>"))
     #expect(!styled.fragment.contains("<!doctype"))
     let plain = try await MarkdownExport.build(
       source: "# Hello", title: "Plain", directory: nil, includeStyles: false)
-    #expect(!plain.document.contains("<style>"))
+    #expect(!plain.document.contains("<style id=\"document-style\">"))
     #expect(plain.document.contains("script-src 'none'"))
   }
 

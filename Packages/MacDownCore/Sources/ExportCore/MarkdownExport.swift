@@ -12,7 +12,7 @@ public struct MarkdownExport: Sendable {
   public static func build(
     source: String, options: MarkdownRenderingOptions = .init(),
     title: String, directory: URL?, includeStyles: Bool = true,
-    remoteImages: Bool = false, embedLocalImages: Bool = true
+    remoteImages: Bool = false, embedLocalImages: Bool = true, style: DocumentStyle = .init()
   ) async throws -> Self {
     let assets = Mutex<[String: String]>([:])
     let result = try await MarkdownProcessor().render(source, options: options) {
@@ -39,7 +39,7 @@ public struct MarkdownExport: Sendable {
       fragment: fragment,
       document: PreviewHTML.document(
         body: fragment, remoteImages: remoteImages,
-        title: title, includeStyles: includeStyles))
+        title: title, includeStyles: includeStyles, style: style))
   }
 
   private static func embedAssets(in html: String, replacements: [String: String]) -> String {

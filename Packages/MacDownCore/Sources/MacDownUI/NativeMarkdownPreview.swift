@@ -7,15 +7,17 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   public let html: String
   public let directory: URL?
   public let remoteImages: Bool
+  public let style: DocumentStyle
   public var onError: @MainActor (String?) -> Void
 
   public init(
-    html: String, directory: URL?, remoteImages: Bool = false,
+    html: String, directory: URL?, remoteImages: Bool = false, style: DocumentStyle = .init(),
     onError: @escaping @MainActor (String?) -> Void = { _ in }
   ) {
     self.html = html
     self.directory = directory
     self.remoteImages = remoteImages
+    self.style = style
     self.onError = onError
   }
 
@@ -37,13 +39,15 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     view.setAccessibilityLabel(String(localized: "Markdown preview"))
     view.navigationDelegate = coordinator
     coordinator.onError = onError
-    coordinator.update(view, html: html, directory: directory, remoteImages: remoteImages)
+    coordinator.update(
+      view, html: html, directory: directory, remoteImages: remoteImages, style: style)
     return view
   }
 
   public func updateNSView(_ view: WKWebView, context: Context) {
     context.coordinator.onError = onError
-    context.coordinator.update(view, html: html, directory: directory, remoteImages: remoteImages)
+    context.coordinator.update(
+      view, html: html, directory: directory, remoteImages: remoteImages, style: style)
   }
 
   public static func dismantleNSView(_ view: WKWebView, coordinator: Coordinator) {
@@ -62,12 +66,18 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     private var ready = false
     private var applying = false
     private var pendingHTML = ""
+    private var pendingStyle = DocumentStyle()
+    private var appliedStyle: DocumentStyle?
     private var appliedHTML: String?
     private var loadedRemoteImages: Bool?
     private var loadedDirectory: URL?
 
-    func update(_ view: WKWebView, html: String, directory: URL?, remoteImages: Bool) {
+    func update(
+      _ view: WKWebView, html: String, directory: URL?, remoteImages: Bool,
+      style: DocumentStyle = .init()
+    ) {
       pendingHTML = html
+      pendingStyle = style
       resources.directory = directory
       if loadedRemoteImages != remoteImages || loadedDirectory != directory {
         ready = false
@@ -75,11 +85,12 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         applying = false
         resources.cancelAll()
         appliedHTML = nil
+        appliedStyle = style
         loadedRemoteImages = remoteImages
         loadedDirectory = directory
         expectsInitialNavigation = true
         navigation = view.loadHTMLString(
-          PreviewHTML.document(remoteImages: remoteImages),
+          PreviewHTML.document(remoteImages: remoteImages, style: style),
           baseURL: URL(string: "mdasset://document/"))
       } else {
         applyLatest(to: view)
@@ -94,7 +105,12 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     }
 
     private func applyLatest(to view: WKWebView) {
-      guard ready, !applying, pendingHTML != appliedHTML else { return }
+      guard ready, !applying else { return }
+      if pendingStyle != appliedStyle {
+        applyStyle(to: view)
+        return
+      }
+      guard pendingHTML != appliedHTML else { return }
       let sent = pendingHTML
       let generation = generation
       applying = true
@@ -116,7 +132,29 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
           self.onError(
             String(localized: "The preview could not update. Reopen the document to try again."))
         }
-        if self.pendingHTML != sent { self.applyLatest(to: view) }
+        self.applyLatest(to: view)
+      }
+    }
+
+    private func applyStyle(to view: WKWebView) {
+      let sent = pendingStyle
+      let generation = generation
+      applying = true
+      view.callAsyncJavaScript(
+        PreviewHTML.updateStyle, arguments: ["css": sent.css], in: nil, in: .defaultClient
+      ) { [weak self, weak view] result in
+        guard let self, let view, self.generation == generation else { return }
+        self.applying = false
+        self.appliedStyle = sent
+        switch result {
+        case .success(let value):
+          self.onError(
+            (value as? Bool) == true
+              ? nil : String(localized: "The document style could not update."))
+        case .failure:
+          self.onError(String(localized: "The document style could not update."))
+        }
+        self.applyLatest(to: view)
       }
     }
 

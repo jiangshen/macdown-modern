@@ -2,6 +2,7 @@ import AppKit
 import ExportCore
 import MarkdownCore
 import Observation
+import RenderingCore
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -31,7 +32,7 @@ public final class DocumentExportController {
       title: document.fileURL?.deletingPathExtension().lastPathComponent
         ?? String(localized: "Untitled"),
       directory: document.fileURL?.deletingLastPathComponent(),
-      remoteImages: preferences.remoteImages)
+      remoteImages: preferences.remoteImages, style: preferences.documentStyle)
   }
 
   private func start(_ action: Action) {
@@ -77,7 +78,8 @@ public final class DocumentExportController {
     let output = try await MarkdownExport.build(
       source: snapshot.source, options: snapshot.options,
       title: snapshot.title, directory: snapshot.directory, includeStyles: styled,
-      remoteImages: snapshot.remoteImages, embedLocalImages: action != .clipboard)
+      remoteImages: snapshot.remoteImages, embedLocalImages: action != .clipboard,
+      style: snapshot.style)
     switch action {
     case .clipboard:
       NSPasteboard.general.clearContents()
@@ -126,6 +128,7 @@ struct DocumentExportSnapshot: Sendable {
   let title: String
   let directory: URL?
   let remoteImages: Bool
+  let style: DocumentStyle
 }
 
 extension FocusedValues {

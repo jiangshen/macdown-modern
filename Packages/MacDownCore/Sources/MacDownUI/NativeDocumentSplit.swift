@@ -1,4 +1,5 @@
 import AppKit
+import RenderingCore
 import SwiftUI
 
 /// Pane visibility must not destroy NSTextView: its native undo actions and input
@@ -30,7 +31,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   private var previewSurface: PreviewSurface {
     PreviewSurface(
       html: html, directory: document.fileURL?.deletingLastPathComponent(),
-      remoteImages: preferences.remoteImages, error: $previewError)
+      remoteImages: preferences.remoteImages, style: preferences.documentStyle, error: $previewError
+    )
   }
 
   final class Controller: NSSplitViewController {
@@ -109,9 +111,12 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     let html: String
     let directory: URL?
     let remoteImages: Bool
+    var style: DocumentStyle = .init()
     @Binding var error: String?
     var body: some View {
-      NativeMarkdownPreview(html: html, directory: directory, remoteImages: remoteImages) {
+      NativeMarkdownPreview(
+        html: html, directory: directory, remoteImages: remoteImages, style: style
+      ) {
         error = $0
       }
     }

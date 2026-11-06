@@ -3,6 +3,7 @@ import Foundation
 import MarkdownCore
 import Observation
 import PreferencesCore
+import RenderingCore
 
 @MainActor
 @Observable
@@ -30,6 +31,13 @@ public final class AppPreferences {
   public var unorderedMarkerType: Int {
     didSet { defaults.set(unorderedMarkerType, forKey: "editorUnorderedListMarkerType") }
   }
+  public var documentFont: DocumentStyle.Font {
+    didSet { defaults.set(documentFont.rawValue, forKey: "documentFont") }
+  }
+  public var documentTextSize: Double {
+    didSet { defaults.set(documentStyle.textSize, forKey: "documentTextSize") }
+  }
+  public var documentFullWidth: Bool { didSet { save(documentFullWidth, "documentFullWidth") } }
   public var editorFontSize: Double { didSet { saveFont() } }
   public var editorFontName: String { didSet { saveFont() } }
 
@@ -61,9 +69,20 @@ public final class AppPreferences {
     incrementLists = boolean("editorAutoIncrementNumberedLists", fallback: true)
     pairDelimiters = boolean("editorCompleteMatchingCharacters", fallback: false)
     unorderedMarkerType = defaults.integer(forKey: "editorUnorderedListMarkerType")
+    documentFont =
+      DocumentStyle.Font(rawValue: defaults.string(forKey: "documentFont") ?? "") ?? .standard
+    documentTextSize =
+      DocumentStyle(
+        textSize: (defaults.object(forKey: "documentTextSize") as? Double) ?? 16
+      ).textSize
+    documentFullWidth = boolean("documentFullWidth", fallback: false)
     let font = defaults.dictionary(forKey: "editorBaseFontInfo")
     editorFontSize = min(72, max(8, (font?["size"] as? Double) ?? 14))
     editorFontName = (font?["name"] as? String) ?? "Menlo-Regular"
+  }
+
+  public var documentStyle: DocumentStyle {
+    DocumentStyle(font: documentFont, textSize: documentTextSize, fullWidth: documentFullWidth)
   }
 
   public var editorBehavior: EditorBehavior {

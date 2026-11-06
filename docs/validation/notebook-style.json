@@ -1,0 +1,47 @@
+{
+  "milestone": "M3/M4 — shared Notebook document presentation; full migration incomplete",
+  "reference": "https://www.notion.com/help/customize-and-style-your-content",
+  "date": "2026-11-06",
+  "implementation": [
+    "Original neutral light/dark Notebook CSS shared by preview and styled exports",
+    "Default, Serif and Mono document fonts, 12–28 point text, full-width option",
+    "In-place stylesheet changes preserve content nodes and the source-position reading anchor",
+    "Print-specific light palette and paginated table/code rules",
+    "Source bytes and existing editor font preferences remain unchanged"
+  ],
+  "tests": {
+    "count": 74,
+    "suites": 14,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "nativeBuild": "build-for-testing passed; arm64-only app",
+  "verified": [
+    "Real WebKit light and dark appearances",
+    "Computed normal text, links, inline code, quote and table contrast >= 4.5:1",
+    "Heading hierarchy, 708-point content width plus margins, 320-point viewport containment",
+    "Page/node identity and reading anchor retained during typography/width updates",
+    "Preference persistence preserves independent legacy editor font",
+    "Immutable export snapshot captures document style",
+    "Actual export WebKit surface resolves the captured serif font and 20px size",
+    "Native full-document PDF pagination and Unicode regression tests"
+  ],
+  "directNativeUI": [
+    "Relaunched exact updated app build",
+    "Opened Notebook.md and inspected full preview",
+    "Inspected Documents settings and controls"
+  ],
+  "visualFixture": "docs/design/notebook/Notebook.md",
+  "screenshot": "docs/design/notebook/Preview.png",
+  "manualCheckLimit": "Native UI became unavailable during font-menu checks; font choices not yet directly exercised. Initial preview and settings screenshots were observed. No default file association or installed release changed.",
+  "remaining": [
+    "Source-editor syntax/theme presentation",
+    "Custom styles/templates migration",
+    "Alert/callout syntax and theme",
+    "Real increased-contrast system inspection",
+    "Full light/dark visual comparison and per-font PDF fixture inspection",
+    "Rest of modernization plan"
+  ],
+  "legacySourceRemoved": false
+}

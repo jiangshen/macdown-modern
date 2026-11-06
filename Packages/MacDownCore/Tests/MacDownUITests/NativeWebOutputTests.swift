@@ -71,13 +71,15 @@ struct NativeWebOutputTests {
   }
 
   @Test("Export snapshots use current text and settings even when preview rendering is manual")
-  func freshSnapshot() throws {
+  func freshSnapshot() async throws {
     let domain = "ExportSnapshotTests.\(UUID().uuidString)"
     let defaults = try #require(UserDefaults(suiteName: domain))
     defer { defaults.removePersistentDomain(forName: domain) }
     let preferences = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
     preferences.manualRendering = true
     preferences.tables = false
+    preferences.documentFont = .serif
+    preferences.documentTextSize = 20
     let document = MarkdownDocument(contents: TextFileContents(text: "Old text"))
     let output = DocumentExportController()
     output.document = document
@@ -86,7 +88,30 @@ struct NativeWebOutputTests {
     let snapshot = try #require(output.snapshot())
     #expect(snapshot.source == "Newest text 中文")
     #expect(!snapshot.options.tables)
+    #expect(snapshot.style.font == .serif)
+    #expect(snapshot.style.textSize == 20)
+    preferences.documentTextSize = 12
+    #expect(snapshot.style.textSize == 20)
     document.acceptNativeEdit("Later text")
     #expect(snapshot.source == "Newest text 中文")
+    let export = try await MarkdownExport.build(
+      source: snapshot.source, options: snapshot.options, title: snapshot.title,
+      directory: snapshot.directory, style: snapshot.style)
+    let surface = NativeWebOutput()
+    defer { surface.close() }
+    try await surface.prepare(html: export.document)
+    let typography: String = try await withCheckedThrowingContinuation { continuation in
+      surface.view.callAsyncJavaScript(
+        "const style = getComputedStyle(document.body); return style.fontSize + ':' + style.fontFamily;",
+        arguments: [:], in: nil, in: .defaultClient
+      ) { result in
+        switch result {
+        case .success(let value): continuation.resume(returning: value as? String ?? "")
+        case .failure(let error): continuation.resume(throwing: error)
+        }
+      }
+    }
+    #expect(typography.hasPrefix("20px:"))
+    #expect(typography.contains("ui-serif"))
   }
 }

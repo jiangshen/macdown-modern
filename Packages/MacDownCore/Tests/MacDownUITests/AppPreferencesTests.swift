@@ -35,6 +35,9 @@ struct AppPreferencesTests {
     preferences.tables = true
     preferences.manualRendering = true
     preferences.editorFontSize = 22
+    preferences.documentFont = .serif
+    preferences.documentTextSize = 20
+    preferences.documentFullWidth = true
     let reopened = AppPreferences(
       defaults: defaults, domainName: domain,
       legacyValues: ["extensionTables": false])
@@ -44,6 +47,10 @@ struct AppPreferencesTests {
     #expect(reopened.renderingOptions.tables)
     #expect(reopened.manualRendering)
     #expect(reopened.editorFontSize == 22)
+    #expect(reopened.documentStyle.font == .serif)
+    #expect(reopened.documentStyle.textSize == 20)
+    #expect(reopened.documentStyle.fullWidth)
+    #expect(reopened.editorFontName == "Menlo-Regular")
     #expect(!reopened.remoteImages)
   }
 }

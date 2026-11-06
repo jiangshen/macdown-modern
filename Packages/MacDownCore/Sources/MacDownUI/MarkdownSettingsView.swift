@@ -1,3 +1,4 @@
+import RenderingCore
 import SwiftUI
 
 public struct MarkdownSettingsView: View {
@@ -29,6 +30,27 @@ public struct MarkdownSettingsView: View {
           Section("Preview") {
             Toggle("Render manually", isOn: $preferences.manualRendering)
           }
+        }.formStyle(.grouped)
+      }
+      Tab("Documents", systemImage: "doc.richtext") {
+        Form {
+          Section("Notebook style") {
+            Text("Quiet typography and generous spacing for your preview and styled exports.")
+              .font(.caption).foregroundStyle(.secondary)
+            Picker("Font", selection: $preferences.documentFont) {
+              Text("Default").tag(DocumentStyle.Font.standard)
+              Text("Serif").tag(DocumentStyle.Font.serif)
+              Text("Mono").tag(DocumentStyle.Font.monospaced)
+            }.accessibilityIdentifier("documentFont")
+            Stepper(
+              "Text size: \(Int(preferences.documentStyle.textSize)) pt",
+              value: $preferences.documentTextSize, in: 12...28
+            ).accessibilityIdentifier("documentTextSize")
+            Toggle("Full width", isOn: $preferences.documentFullWidth)
+              .accessibilityIdentifier("documentFullWidth")
+          }
+          Text("The source editor keeps the font you choose in Editor settings.")
+            .font(.caption).foregroundStyle(.secondary)
         }.formStyle(.grouped)
       }
       Tab("Markdown", systemImage: "text.document") {

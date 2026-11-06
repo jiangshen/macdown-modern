@@ -567,3 +567,33 @@ fence-aware continuation, richer table/code assistance, image drag/drop, syntax 
 real IME sessions, broader keyboard/accessibility review and measured large-file latency.
 Retain the old autocomplete/editor implementations until their complete consumer and
 parity gates pass. The Notion-like document style requirement above remains active.
+
+
+## Notebook presentation progress — 2026-11-06
+
+The first Notion-inspired document theme is implemented in `RenderingCore.DocumentStyle`,
+shared by the live preview and styled HTML/PDF/printing. A neutral warm-gray hierarchy,
+generous spacing, restrained links/inline code, nested lists/tasks, quote rules and light
+table grid replace the temporary blue-gray preview stylesheet. Documents settings offer
+Default/Serif/Mono, 12–28 point text and full width. Choices persist independently of the
+legacy source-editor font and custom-style paths. No source syntax or bytes are rewritten.
+
+Styles update the existing WK document in the isolated client world: no navigation,
+parser rerun or content-node replacement is needed. Source-position anchors preserve
+the reading position. Export captures the same immutable style with source/settings;
+subsequent preference changes cannot alter an already-requested export. Print uses a
+light palette and retains full-document pagination.
+
+Validation: 74 tests in 14 suites, seven native arm64 executables; native app
+build-for-testing passed. Real WebKit checks exercise light/dark, computed text contrast
+>=4.5:1, heading hierarchy, bounded reading width, 320-point viewport containment,
+style-update node/anchor preservation and actual export font/size resolution. Native
+PDF pagination/Unicode regression tests pass. Strict Swift formatting and diff checks pass.
+See `validation/notebook-style.json` and `design/notebook/` for the fixture and screenshot.
+The full preview and Documents settings were inspected directly in the updated app;
+native UI became unavailable before the remaining font-menu interactions.
+
+This is partial delivery of the Notion-style requirement. Source-editor syntax theming,
+custom CSS/style migration, alert/callout rendering, actual increased-contrast UI and
+complete light/dark/per-font export visual comparisons remain pending. The full
+modernization goal remains active; no legacy source is removed at this partial gate.
