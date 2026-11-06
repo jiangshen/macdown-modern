@@ -1,0 +1,182 @@
+import AppKit
+import ExportCore
+import MarkdownCore
+import Observation
+import SwiftUI
+import UniformTypeIdentifiers
+
+@MainActor
+@Observable
+public final class DocumentExportController {
+  public private(set) var isBusy = false
+  public var errorMessage: String?
+  weak var document: MarkdownDocument?
+  weak var preferences: AppPreferences?
+  weak var window: NSWindow?
+  @ObservationIgnored private var task: Task<Void, Never>?
+
+  public init() {}
+
+  public var isAvailable: Bool { document != nil && preferences != nil && window != nil && !isBusy }
+
+  public func exportHTML() { start(.html) }
+  public func exportPDF() { start(.pdf) }
+  public func printDocument() { start(.print) }
+  public func copyHTML() { start(.clipboard) }
+
+  func snapshot() -> DocumentExportSnapshot? {
+    guard let document, let preferences else { return nil }
+    return DocumentExportSnapshot(
+      source: document.text, options: preferences.renderingOptions,
+      title: document.fileURL?.deletingPathExtension().lastPathComponent
+        ?? String(localized: "Untitled"),
+      directory: document.fileURL?.deletingLastPathComponent(),
+      remoteImages: preferences.remoteImages)
+  }
+
+  private func start(_ action: Action) {
+    guard isAvailable, let snapshot = snapshot(), let window else { return }
+    isBusy = true
+    errorMessage = nil
+    task = Task {
+      defer {
+        isBusy = false
+        task = nil
+      }
+      do {
+        try await perform(action, snapshot: snapshot, window: window)
+      } catch is CancellationError {} catch {
+        errorMessage = String(
+          localized:
+            "The document could not be exported. Check any local images and the destination folder, then try again."
+        )
+      }
+    }
+  }
+
+  private func perform(_ action: Action, snapshot: DocumentExportSnapshot, window: NSWindow)
+    async throws
+  {
+    var destination: URL?
+    var styled = true
+    if action == .html || action == .pdf {
+      let panel = NSSavePanel()
+      panel.allowedContentTypes = action == .html ? [.html] : [.pdf]
+      panel.nameFieldStringValue = snapshot.title + (action == .html ? ".html" : ".pdf")
+      panel.canCreateDirectories = true
+      let styleOption = NSButton(
+        checkboxWithTitle: String(localized: "Include document styles"), target: nil, action: nil)
+      styleOption.state = .on
+      if action == .html { panel.accessoryView = styleOption }
+      let response = await panel.beginSheetModal(for: window)
+      guard response == .OK, let url = panel.url else { return }
+      destination = url
+      styled = styleOption.state == .on
+    }
+    try Task.checkCancellation()
+    let output = try await MarkdownExport.build(
+      source: snapshot.source, options: snapshot.options,
+      title: snapshot.title, directory: snapshot.directory, includeStyles: styled,
+      remoteImages: snapshot.remoteImages, embedLocalImages: action != .clipboard)
+    switch action {
+    case .clipboard:
+      NSPasteboard.general.clearContents()
+      NSPasteboard.general.setString(output.fragment, forType: .string)
+      NSPasteboard.general.setString(output.fragment, forType: .html)
+    case .html:
+      if let destination { try await output.writeHTML(to: destination) }
+    case .pdf, .print:
+      let surface = NativeWebOutput()
+      defer { surface.close() }
+      try await surface.prepare(html: output.document, remoteImages: snapshot.remoteImages)
+      let info = NativeWebOutput.printInfo(allPages: action == .pdf)
+      if action == .pdf, let destination {
+        // Print into a disposable staging file, then atomically replace the selected
+        // destination only after WebKit successfully finishes every page.
+        let staging = FileManager.default.temporaryDirectory.appendingPathComponent(
+          UUID().uuidString + ".pdf")
+        defer { try? FileManager.default.removeItem(at: staging) }
+        info.jobDisposition = .save
+        info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = staging
+        let completed = await surface.printDocument(info: info, for: window, showPanel: false)
+        guard completed else { throw DocumentOutputError.printFailed }
+        try Task.checkCancellation()
+        try await Self.writePDF(from: staging, to: destination)
+      } else {
+        _ = await surface.printDocument(info: info, for: window, showPanel: true)
+      }
+    }
+  }
+
+  @concurrent
+  private static func writePDF(from staging: URL, to destination: URL) async throws {
+    try Task.checkCancellation()
+    let access = destination.startAccessingSecurityScopedResource()
+    defer { if access { destination.stopAccessingSecurityScopedResource() } }
+    let bytes = try Data(contentsOf: staging)
+    try bytes.write(to: destination, options: .atomic)
+  }
+
+  private enum Action { case html, pdf, print, clipboard }
+}
+
+struct DocumentExportSnapshot: Sendable {
+  let source: String
+  let options: MarkdownRenderingOptions
+  let title: String
+  let directory: URL?
+  let remoteImages: Bool
+}
+
+extension FocusedValues {
+  @Entry public var documentExport: DocumentExportController?
+}
+
+public struct DocumentExportCommands: Commands {
+  @FocusedValue(\.documentExport) private var output
+  public init() {}
+
+  public var body: some Commands {
+    CommandGroup(after: .importExport) {
+      Button("Export HTML…") { output?.exportHTML() }
+        .keyboardShortcut("e", modifiers: [.command, .shift])
+        .disabled(output?.isAvailable != true)
+      Button("Export PDF…") { output?.exportPDF() }.disabled(output?.isAvailable != true)
+      Button("Copy HTML") { output?.copyHTML() }.disabled(output?.isAvailable != true)
+    }
+    CommandGroup(replacing: .printItem) {
+      Button("Print…") { output?.printDocument() }.keyboardShortcut("p").disabled(
+        output?.isAvailable != true)
+    }
+  }
+}
+
+struct DocumentWindowBridge: NSViewRepresentable {
+  let output: DocumentExportController
+  func makeNSView(context: Context) -> WindowView { WindowView(output: output) }
+  func updateNSView(_ view: WindowView, context: Context) {
+    view.output = output
+    view.synchronizeWindow()
+  }
+  static func dismantleNSView(_ view: WindowView, coordinator: ()) { view.output?.window = nil }
+
+  final class WindowView: NSView {
+    weak var output: DocumentExportController?
+    init(output: DocumentExportController) {
+      self.output = output
+      super.init(frame: .zero)
+    }
+    required init?(coder: NSCoder) { nil }
+    func synchronizeWindow() {
+      guard output?.window !== window else { return }
+      Task { @MainActor [weak self] in
+        guard let self, self.output?.window !== self.window else { return }
+        self.output?.window = self.window
+      }
+    }
+    override func viewDidMoveToWindow() {
+      super.viewDidMoveToWindow()
+      synchronizeWindow()
+    }
+  }
+}

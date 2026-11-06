@@ -1,0 +1,73 @@
+{
+  "milestone": "M3 \u2014 export/print vertical slice; full parity remains incomplete",
+  "tests": {
+    "count": 53,
+    "suites": 12,
+    "status": "passed",
+    "arm64TestExecutables": 7,
+    "log": "/private/tmp/macdown-export-validation/swift-test.log"
+  },
+  "nativeBuild": "build-for-testing passed",
+  "coreVerification": [
+    "styled and plain HTML envelope",
+    "escaped document title",
+    "embedded PNG and SVG resources",
+    "missing local-image errors",
+    "Copy HTML retains references without filesystem requirements",
+    "normal raw HTML and dangerous-link filtering retained",
+    "current document snapshot independent of manual preview",
+    "eight-page Letter PDF with beginning and ending content",
+    "Japanese/Chinese text extraction after compatibility normalization",
+    "embedded SVG decoding and corrupted-image rejection",
+    "PDF all-pages setting independent of prior print range"
+  ],
+  "directNativeUIVerification": {
+    "exportHTMLSaveSheet": true,
+    "includeStylesCheckbox": true,
+    "styledHTMLSaved": true,
+    "plainHTMLSaved": true,
+    "exportPDFSaveSheet": true,
+    "PDFSaved": true,
+    "copyHTMLPastedAsMarkupInNewDocument": true,
+    "printDialogOpened": true,
+    "printDialogCancellationReturnedToEditor": true,
+    "layoutAccessibilityLabels": [
+      "Editor",
+      "Split",
+      "Preview"
+    ]
+  },
+  "runtimeOutputs": {
+    "preview-checkpoint.html": {
+      "bytes": 3374,
+      "sha256": "688247f36cf99938790106ac54b074f4ab64d11df7152095c01ddee46270d135"
+    },
+    "preview-plain.html": {
+      "bytes": 1609,
+      "sha256": "d0c613d274de20b5d5804962e92ab10e6c9da8901fbe76f52fb4d63008d1b921"
+    },
+    "preview-checkpoint.pdf": {
+      "bytes": 28505,
+      "sha256": "51f448cb48ab71084ea36da0acd5328eb3ea719cc93cbf607b2f75d26aa1ac26"
+    }
+  },
+  "pdfVisualVerification": {
+    "longFixturePages": 8,
+    "firstAndLastPagesInspected": true,
+    "runtimePDFPages": 1,
+    "runtimePDFRenderedWithApplePDFKit": true,
+    "unicodeAndEmojiVisible": true,
+    "bundledPopplerMissingCJKLanguagePack": "runtime PDF also checked with native PDFKit because bundled Poppler omitted CJK glyphs; native rendering and PDFKit text extraction verified them"
+  },
+  "physicalPrinting": "not attempted; native dialog checked and canceled",
+  "uiAutomation": "prior XCUITest runner initialization issue remains; direct native UI checks are separate",
+  "outstanding": [
+    "custom styles/templates and syntax highlighting export switch",
+    "math/diagram/front-matter fidelity",
+    "assets inside opt-in raw HTML",
+    "saved page setup",
+    "wider layout/print fixtures",
+    "all remaining modernization roadmap gates"
+  ],
+  "legacySourceRemoved": false
+}

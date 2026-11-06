@@ -5,6 +5,7 @@ public struct DocumentWorkspace: View {
   public let document: MarkdownDocument
   public let preferences: AppPreferences
   @State private var processor = MarkdownProcessor()
+  @State private var output = DocumentExportController()
   @State private var rendered: RenderedMarkdown?
   @State private var renderedRevision: UInt64?
   @State private var mode = WorkspaceMode.split
@@ -86,7 +87,7 @@ public struct DocumentWorkspace: View {
       ToolbarItem {
         Picker("View", selection: $mode) {
           ForEach(WorkspaceMode.allCases) { item in
-            Label(item.title, systemImage: item.symbol).tag(item)
+            Label(item.title, systemImage: item.symbol).tag(item).accessibilityLabel(item.title)
           }
         }.pickerStyle(.segmented).help("Workspace layout")
       }
@@ -99,8 +100,37 @@ public struct DocumentWorkspace: View {
           .help("Update the Markdown preview")
       }
       ToolbarItem {
-        if loading { ProgressView().controlSize(.small).accessibilityLabel("Updating preview") }
+        Menu {
+          Button("Export HTML…") { output.exportHTML() }
+          Button("Export PDF…") { output.exportPDF() }
+          Button("Copy HTML") { output.copyHTML() }
+          Divider()
+          Button("Print…") { output.printDocument() }
+        } label: {
+          Label("Export", systemImage: "square.and.arrow.up")
+        }
+        .disabled(!output.isAvailable)
       }
+      ToolbarItem {
+        if loading || output.isBusy {
+          ProgressView().controlSize(.small).accessibilityLabel("Updating preview")
+        }
+      }
+    }
+    .background(DocumentWindowBridge(output: output).frame(width: 0, height: 0))
+    .focusedSceneValue(\.documentExport, output)
+    .onAppear {
+      output.document = document
+      output.preferences = preferences
+    }
+    .alert(
+      "Couldn’t Export",
+      isPresented: Binding(
+        get: { output.errorMessage != nil }, set: { if !$0 { output.errorMessage = nil } })
+    ) {
+      Button("OK", role: .cancel) { output.errorMessage = nil }
+    } message: {
+      Text(output.errorMessage ?? "")
     }
     .task(id: request) { await render(request) }
   }

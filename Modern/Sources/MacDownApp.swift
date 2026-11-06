@@ -14,6 +14,7 @@ struct MacDownModernApp: App {
     }
     .commands {
       TextEditingCommands()
+      DocumentExportCommands()
     }
     Settings { MarkdownSettingsView(preferences: preferences) }
   }

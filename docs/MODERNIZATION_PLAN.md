@@ -394,8 +394,9 @@ Local validation: **44 tests across ten suites passed**, with six test executabl
 verified arm64. Real WebKit integration tests verify DOM updates, retained node identity,
 scroll position, blocked inline event handlers, relative local PNG loading and CSP-blocked
 remote images/frames. The native app builds for testing. These are integration tests,
-not a passing XCUITest automation run. New workspace visual inspection is waiting for the
-Mac to be unlocked; previous XCUITest initialization failure remains unresolved. See
+not a passing XCUITest automation run. Direct native inspection verified the new workspace, Settings panes, manual preview
+deferral and explicit refresh, then native Save. The previous XCUITest initialization
+failure remains unresolved. See
 `validation/live-preview.json` for evidence and outstanding work.
 
 Still required: legacy dialect fixtures, front matter/math/diagrams, syntax highlighting,
@@ -403,3 +404,52 @@ custom styles/templates, linked scrolling, export/print, full preference parity,
 sessions, visual/accessibility checks, performance and the remaining roadmap. Legacy
 renderer/preferences implementations remain because their complete consumers and parity
 gates have not yet migrated. No legacy source is deleted by this partial integration.
+
+## HTML, PDF and native printing integration
+
+- Added `ExportCore` and window-scoped export commands: Export HTML, Export PDF, Copy
+  HTML and Print. Save panels attach to the owning document, and File-menu commands
+  follow the focused scene. Workspace layout controls now have readable accessibility
+  labels rather than SF Symbol descriptions.
+- Export takes an immutable snapshot of current text and rendering choices at invocation.
+  It never reads potentially stale manual-preview output. Native print uses a separate
+  hardened WebKit surface, leaving the live preview's scroll position and document alone.
+- Styled/plain HTML preserves Unicode, escapes titles and keeps the restrictive CSP.
+  Markdown local image resources are embedded as data URLs so they survive moving the
+  exported HTML. Copy HTML retains references and does not require local image files.
+- Local images retain the preview reader's directory/type/size boundary and descriptor-
+  relative symlink protection. Generated image markers allow safe SVG/HEIC data embedding
+  without enabling cmark's unsafe HTML/URL mode. A single pass substitutes known image
+  attributes; the original Markdown is parsed once, and raw HTML is not regex-transformed.
+- Native AppKit printing paginates the full WebKit document. PDF export prints into a
+  temporary staging file, then atomically replaces the user-selected destination only
+  after successful completion. Image decoding and font readiness precede printing.
+  Printing callbacks may originate on AppKit's worker thread; only their Boolean result
+  transfers to the main actor.
+- A first test incorrectly called synchronous `NSPrintOperation.run()`, which blocked
+  WebKit's asynchronous page calculation and produced an unbounded incomplete spool.
+  That test process was stopped and its temporary output removed. Both production and
+  the corrected integration test use document-modal asynchronous printing, as required
+  by the WebKit implementation. This was not accepted as a successful export.
+- Current local validation: **53 tests across 12 suites passed**, with seven arm64 test
+  executables. A long PDF fixture contains eight Letter pages, beginning/ending text,
+  Japanese and Chinese. PDFKit extraction maps some CJK glyphs to compatibility radicals;
+  assertions normalize those forms, and first/last pages were also rendered and visually
+  inspected, including emoji. Vector-image decoding and corrupted-image errors are tested.
+- Source references for the print-threading decision:
+  [AppKit printing threads](https://developer.apple.com/documentation/appkit/nsprintoperation/canspawnseparatethread),
+  [WebKit printing implementation](https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/mac/WKPrintingView.mm).
+
+Remaining export parity: syntax-highlighting resources and its export switch, custom
+styles/templates, math/diagram/front-matter fidelity, resource handling inside opt-in raw
+HTML, saved page setup and wider print/layout fixtures. The legacy export/renderer code
+still has unmigrated consumers and must remain until those parity gates pass.
+
+Direct native export checks then passed: HTML save sheets with Include document styles
+on/off, actual styled/plain output content on disk, native PDF save, Copy HTML pasted as
+markup into a new empty document, Print dialog preview and clean cancellation. The source
+fixture remained unedited. The runtime PDF's Unicode text was extracted with PDFKit and
+its full page rendered with Apple's renderer, confirming Japanese/Chinese/emoji. The
+bundled Poppler lacked a required CJK language pack for that runtime file; its incomplete
+render was not used as evidence of missing glyphs. PDF export explicitly requests all
+pages, independently of previous printer range choices. See `validation/export.json`.

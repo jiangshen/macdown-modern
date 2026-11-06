@@ -11,7 +11,10 @@ public actor MarkdownProcessor {
 
   public init() {}
 
-  public func render(_ source: String, options: MarkdownRenderingOptions = .init()) throws
+  public func render(
+    _ source: String, options: MarkdownRenderingOptions = .init(),
+    transformDestination: (@Sendable (MarkdownNodeKind, String) throws -> String)? = nil
+  ) throws
     -> RenderedMarkdown
   {
     try Task.checkCancellation()
@@ -48,11 +51,6 @@ public actor MarkdownProcessor {
     }
     defer { cmark_node_free(root) }
     try Task.checkCancellation()
-    guard let html = cmark_render_html(root, flags, cmark_parser_get_syntax_extensions(parser))
-    else {
-      throw MarkdownRenderingError.allocationFailure
-    }
-    defer { free(html) }
     guard let iterator = cmark_iter_new(root) else {
       throw MarkdownRenderingError.allocationFailure
     }
@@ -71,6 +69,7 @@ public actor MarkdownProcessor {
       previousCR = scalar == "\r"
       offset += scalar.utf16.count
     }
+    var transformedDestinations: [String: String] = [:]
     var identifiers: [UInt: Int] = [:]
     while true {
       let event = cmark_iter_next(iterator)
@@ -82,6 +81,20 @@ public actor MarkdownProcessor {
       let parentID = cmark_node_parent(node).flatMap { identifiers[UInt(bitPattern: $0)] }
       let nativeName = String(cString: cmark_node_get_type_string(node))
       let kind = MarkdownNodeKind(nativeName: nativeName)
+      if let transformDestination, kind == .image || kind == .link,
+        let destination = cmark_node_get_url(node)
+      {
+        let original = String(cString: destination)
+        let key = nativeName + ":" + original
+        let replacement: String
+        if let cached = transformedDestinations[key] {
+          replacement = cached
+        } else {
+          replacement = try transformDestination(kind, original)
+          transformedDestinations[key] = replacement
+        }
+        cmark_node_set_url(node, replacement)
+      }
       let line = Int(cmark_node_get_start_line(node))
       let range: MarkdownSourceRange? =
         line > 0
@@ -107,6 +120,11 @@ public actor MarkdownProcessor {
       }
     }
     try Task.checkCancellation()
+    guard let html = cmark_render_html(root, flags, cmark_parser_get_syntax_extensions(parser))
+    else {
+      throw MarkdownRenderingError.allocationFailure
+    }
+    defer { free(html) }
     return RenderedMarkdown(html: String(cString: html), nodes: nodes, headings: headings)
   }
 }

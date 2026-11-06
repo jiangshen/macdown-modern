@@ -1,13 +1,30 @@
 import Foundation
 
 public enum PreviewHTML {
-  public static func document(body: String = "", remoteImages: Bool = false) -> String {
+  public static func document(
+    body: String = "", remoteImages: Bool = false,
+    title: String = "", includeStyles: Bool = true
+  ) -> String {
     let imageSources = remoteImages ? "mdasset: data: https:" : "mdasset: data:"
     return """
       <!doctype html><html><head><meta charset="utf-8">
+      <title>\(escapeText(title))</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-      <style>
+      \(includeStyles ? stylesheet : "")</head><body><main id="preview-content">\(body)</main></body></html>
+      """
+  }
+
+  private static func escapeText(_ value: String) -> String {
+    value.replacingOccurrences(of: "&", with: "&amp;")
+      .replacingOccurrences(of: "<", with: "&lt;")
+      .replacingOccurrences(of: ">", with: "&gt;")
+      .replacingOccurrences(of: "\"", with: "&quot;")
+      .replacingOccurrences(of: "'", with: "&#39;")
+  }
+
+  private static let stylesheet = """
+    <style>
       :root { color-scheme: light dark; --border: #d9e1e8; --muted: #596875; --code: #f1f5f8; }
       body { margin: 0; font: 16px/1.65 -apple-system, BlinkMacSystemFont, sans-serif; overflow-wrap: anywhere; }
       main { max-width: 76ch; padding: 32px 36px 80px; margin: auto; }
@@ -23,10 +40,15 @@ public enum PreviewHTML {
       hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
       input[type=checkbox] { margin-right: .5em; } .footnotes { font-size: .9em; }
       @media (prefers-color-scheme: dark) { :root { --border: #3b4650; --muted: #aebbc5; --code: #232c34; } a { color: #7fc8ef; } }
-      @media print { main { max-width: none; padding: 0; } pre { white-space: pre-wrap; } }
-      </style></head><body><main id="preview-content">\(body)</main></body></html>
-      """
-  }
+      @media print {
+      :root { color-scheme: light; --border: #d9e1e8; --muted: #596875; --code: #f1f5f8; }
+      body { color: #000; background: #fff; } main { max-width: none; padding: 0; }
+      pre,pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+      h1,h2,h3,h4,h5,h6 { break-after: avoid; } tr { break-inside: avoid; }
+      table { display: table; width: 100%; } thead { display: table-header-group; }
+      }
+      </style>
+    """
 
   /// Only this trusted function runs in WKWebView's isolated client world. Document
   /// scripts remain disabled. The HTML argument is data, never executable interpolation.

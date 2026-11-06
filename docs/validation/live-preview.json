@@ -30,7 +30,7 @@
     "remote images and frames blocked by CSP"
   ],
   "build": "native app build-for-testing passed; app and bundled native binaries verified arm64",
-  "visualInspection": "pending \u2014 Mac locked during CUA launch attempt",
+  "visualInspection": "passed through native UI: live GFM/Unicode render, outline, Settings panes, manual preview deferral and explicit refresh, native Save",
   "uiAutomation": "prior XCUITest initialization failure remains; no passing UI automation claim",
   "outstanding": [
     "incremental parsing and measured performance",
@@ -42,5 +42,14 @@
     "real IME and accessibility/visual checks",
     "all remaining modernization milestones"
   ],
-  "legacyDeletion": "none \u2014 full subsystem parity gates remain open"
+  "legacyDeletion": "none \u2014 full subsystem parity gates remain open",
+  "directNativeUIVerification": [
+    "typed Markdown appears in preview and outline",
+    "task lists and tables accessible in rendered WebKit content",
+    "manual mode holds preview until Command-R",
+    "Settings Editor/Markdown/Privacy panes render natively",
+    "privacy defaults remain disabled",
+    "automatic rendering restored after test",
+    "fixture saved with native document panel"
+  ]
 }

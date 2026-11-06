@@ -43,6 +43,11 @@ public struct LocalPreviewResource: Sendable {
 
   @concurrent
   public static func load(_ request: URL, relativeTo directory: URL) async throws -> Self {
+    try read(request, relativeTo: directory)
+  }
+
+  /// Synchronous counterpart for dedicated background parser/export actors.
+  public static func read(_ request: URL, relativeTo directory: URL) throws -> Self {
     try Task.checkCancellation()
     let file = try resolve(request, relativeTo: directory)
     // Open each component relative to an owned directory descriptor. O_NOFOLLOW
