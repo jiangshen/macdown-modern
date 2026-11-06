@@ -1,0 +1,27 @@
+{
+  "milestone": "M2 \u2014 native document/editor adapter (partial)",
+  "status": "adapter build and tests passed; application host integration pending",
+  "swiftTestingTests": 28,
+  "suites": 5,
+  "architectures": [
+    "arm64"
+  ],
+  "verified": [
+    "macOS 27 Document protocol conformance",
+    "snapshot byte preservation",
+    "programmatic undo/redo",
+    "external snapshot conflict rejection",
+    "actual TextKit 2 view",
+    "native typing and undo/redo model synchronization",
+    "selection preservation",
+    "marked-text protection during document reflection"
+  ],
+  "notYetVerified": [
+    "application launch",
+    "DocumentGroup autosave and Versions",
+    "file presenter conflict UI",
+    "native tabs and multiple windows",
+    "real IME sessions"
+  ],
+  "command": "bash Tools/validate-modernization.sh /private/tmp/macdown-m2-validation"
+}

@@ -1,6 +1,6 @@
 # MacDown modernization plan
 
-Status: **Milestone 1 complete; Milestone 2 is next. The application rewrite is not complete.**
+Status: **Milestone 1 complete; Milestone 2 in progress. The application rewrite is not complete.**
 
 ## Scope and source of truth
 
@@ -267,3 +267,23 @@ selected third-party revisions with Package.resolved when their integration begi
 
 Update this ledger after each verified milestone. A roadmap, package build or screenshot
 must never be presented as completion of the full application modernization.
+
+## Milestone 2 progress — native document/editor adapter
+
+- Added `MacDownUI` as a separately testable native adapter target.
+- `MarkdownDocument` conforms to the actual macOS 27 `Document` protocols with
+  FileWrapper reader/writer adapters and immutable byte-preserving snapshots.
+- Main-actor observable source state; explicit programmatic undo/redo registration.
+- External snapshots that conflict with unsaved local text are rejected instead of
+  silently overwriting it. This unit behavior does not yet verify a hosted conflict UI.
+- Native `NSTextView` uses TextKit 2, built-in find, spellchecking, plain-text editing
+  and the host undo manager. Selection is preserved during document reflection and
+  active marked text is not reset.
+- Real view tests exposed that undo restored native text without updating the model;
+  the adapter now observes undo/redo completion and synchronizes the source.
+- Local validation: 28 Swift Testing tests across five suites passed; all three test
+  executables are arm64. See `validation/native-document-adapter.json`.
+- Still required for M2: actual application bundle/window integration, coordinated
+  file open/save through DocumentGroup, autosave/Versions/conflict presentation, native
+  tab/multiwindow UI tests and real Chinese/Japanese input-method sessions.
+- No legacy application source or user preferences were removed or modified.
