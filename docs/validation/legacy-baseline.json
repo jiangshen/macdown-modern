@@ -1,0 +1,183 @@
+{
+  "artifacts" : {
+    "log" : "build.log",
+    "report" : "report.json",
+    "resultBundle" : "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-81CD0B5D-269E-4595-BE99-F9B5D7466DA9/result.xcresult",
+    "run" : "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-81CD0B5D-269E-4595-BE99-F9B5D7466DA9"
+  },
+  "collection" : {
+    "buildCoverage" : "unknown",
+    "issues" : [
+
+    ],
+    "sources" : [
+      "log"
+    ],
+    "status" : "complete"
+  },
+  "command" : {
+    "durationMs" : 2903,
+    "exitCode" : 65,
+    "interruptionSignal" : null,
+    "kind" : "xcodebuild",
+    "signal" : null,
+    "status" : "failed"
+  },
+  "counts" : {
+    "errors" : 5,
+    "failedTests" : 0,
+    "notes" : 2,
+    "remarks" : 0,
+    "warnings" : 3
+  },
+  "diagnostics" : [
+    {
+      "file" : null,
+      "items" : [
+        {
+          "id" : "d10",
+          "kind" : "tool",
+          "message" : "The following build commands failed:\n\tBuilding workspace MacDown with scheme MacDown and configuration Debug\n(1 failure)",
+          "severity" : "error",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d5",
+          "kind" : "tool",
+          "message" : "Run script build phase 'Update Build Number' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking \"Based on dependency analysis\" in the script phase. (in target 'MacDown' from project 'MacDown')",
+          "severity" : "warning",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d6",
+          "kind" : "tool",
+          "message" : "Run script build phase 'Fetch Prism Resources' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking \"Based on dependency analysis\" in the script phase. (in target 'MacDown' from project 'MacDown')",
+          "severity" : "warning",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d7",
+          "kind" : "tool",
+          "message" : "Run script build phase 'Transpile Styles' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking \"Based on dependency analysis\" in the script phase. (in target 'MacDown' from project 'MacDown')",
+          "severity" : "warning",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d1",
+          "kind" : "tool",
+          "message" : "Building targets in dependency order",
+          "severity" : "note",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d2",
+          "kind" : "tool",
+          "message" : "Target dependency graph (4 targets)",
+          "severity" : "note",
+          "sources" : [
+            "log"
+          ]
+        }
+      ],
+      "warningCount" : 3
+    },
+    {
+      "file" : "/Users/caden/Dev/macdown-modern/MacDown.xcodeproj",
+      "items" : [
+        {
+          "id" : "d3",
+          "kind" : "tool",
+          "message" : "Unable to open base configuration reference file '/Users/caden/Dev/macdown-modern/Pods/Target Support Files/Pods-MacDown/Pods-MacDown.debug.xcconfig'. (in target 'MacDown' from project 'MacDown')",
+          "severity" : "error",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d4",
+          "kind" : "tool",
+          "message" : "The macOS deployment target 'MACOSX_DEPLOYMENT_TARGET' is set to 10.8, but the range of supported deployment target versions is 12.0 to 27.2.x. (in target 'MacDown' from project 'MacDown')",
+          "severity" : "error",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d8",
+          "kind" : "tool",
+          "message" : "Unable to open base configuration reference file '/Users/caden/Dev/macdown-modern/Pods/Target Support Files/Pods-macdown-cmd/Pods-macdown-cmd.debug.xcconfig'. (in target 'macdown-cmd' from project 'MacDown')",
+          "severity" : "error",
+          "sources" : [
+            "log"
+          ]
+        },
+        {
+          "id" : "d9",
+          "kind" : "tool",
+          "message" : "The macOS deployment target 'MACOSX_DEPLOYMENT_TARGET' is set to 10.8, but the range of supported deployment target versions is 12.0 to 27.2.x. (in target 'macdown-cmd' from project 'MacDown')",
+          "severity" : "error",
+          "sources" : [
+            "log"
+          ]
+        }
+      ]
+    }
+  ],
+  "invocation" : {
+    "cwd" : "/private/tmp/macdown-apple-tools",
+    "defaults" : [
+      "-resultBundlePath",
+      "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-81CD0B5D-269E-4595-BE99-F9B5D7466DA9/result.xcresult"
+    ],
+    "effectiveCwd" : "/private/tmp/macdown-apple-tools",
+    "executable" : "/usr/bin/xcodebuild",
+    "executedArgs" : [
+      "-workspace",
+      "/Users/caden/Dev/macdown-modern/MacDown.xcworkspace",
+      "-scheme",
+      "MacDown",
+      "-configuration",
+      "Debug",
+      "-destination",
+      "platform=macOS,arch=arm64",
+      "-derivedDataPath",
+      "/private/tmp/macdown-modern-baseline",
+      "CODE_SIGNING_ALLOWED=NO",
+      "build",
+      "-resultBundlePath",
+      "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-81CD0B5D-269E-4595-BE99-F9B5D7466DA9/result.xcresult"
+    ],
+    "originalArgs" : [
+      "xcodebuild",
+      "-workspace",
+      "/Users/caden/Dev/macdown-modern/MacDown.xcworkspace",
+      "-scheme",
+      "MacDown",
+      "-configuration",
+      "Debug",
+      "-destination",
+      "platform=macOS,arch=arm64",
+      "-derivedDataPath",
+      "/private/tmp/macdown-modern-baseline",
+      "CODE_SIGNING_ALLOWED=NO",
+      "build"
+    ]
+  },
+  "omissions" : {
+    "details" : 0,
+    "diagnostics" : 0,
+    "issues" : 0,
+    "warningFiles" : 0
+  },
+  "schemaVersion" : 1
+}

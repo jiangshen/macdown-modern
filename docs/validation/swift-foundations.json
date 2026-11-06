@@ -1,0 +1,22 @@
+{
+  "milestone": "M1 \u2014 audit and Swift foundations",
+  "status": "passed",
+  "baselineCommit": "fa8af0e",
+  "date": "2026-11-06",
+  "toolchain": "Xcode 27.2 / Apple Swift 6.4.2",
+  "languageMode": "Swift 6",
+  "minimumMacOS": "27.0",
+  "command": "bash Tools/validate-modernization.sh /private/tmp/macdown-core-validation",
+  "swiftTestingTests": 19,
+  "swiftTestingSuites": 3,
+  "failedTests": 0,
+  "architectures": {
+    "DocumentCoreTests": "arm64",
+    "EditorCoreTests": "arm64"
+  },
+  "externalPackageDependencies": [],
+  "applicationIntegrated": false,
+  "legacyApplicationBuild": "failed before compilation: missing Pods configuration and unsupported 10.8 target",
+  "remoteCI": "configured, not run",
+  "runtimeUI": "not yet validated"
+}

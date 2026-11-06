@@ -1,0 +1,27 @@
+name: Swift modernization foundations
+
+on:
+  push:
+    paths:
+      - 'Packages/MacDownCore/**'
+      - 'Tools/validate-modernization.sh'
+      - '.github/workflows/modernization.yml'
+  pull_request:
+    paths:
+      - 'Packages/MacDownCore/**'
+      - 'Tools/validate-modernization.sh'
+      - '.github/workflows/modernization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  swift-foundations:
+    # Native arm64 macOS 27 / Xcode 27 hosted image. See actions/runner-images.
+    runs-on: xcode-27
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Build, test and verify Apple Silicon output
+        run: bash Tools/validate-modernization.sh "$RUNNER_TEMP/macdown-modernization"
