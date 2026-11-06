@@ -4,11 +4,15 @@ on:
   push:
     paths:
       - 'Packages/MacDownCore/**'
+      - 'Modern/**'
+      - 'Tools/build-modern-app.sh'
       - 'Tools/validate-modernization.sh'
       - '.github/workflows/modernization.yml'
   pull_request:
     paths:
       - 'Packages/MacDownCore/**'
+      - 'Modern/**'
+      - 'Tools/build-modern-app.sh'
       - 'Tools/validate-modernization.sh'
       - '.github/workflows/modernization.yml'
   workflow_dispatch:
@@ -25,3 +29,13 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build, test and verify Apple Silicon output
         run: bash Tools/validate-modernization.sh "$RUNNER_TEMP/macdown-modernization"
+
+  native-app:
+    runs-on: xcode-27
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install project generator
+        run: brew install tuist
+      - name: Build native app and run document UI tests
+        run: bash Tools/build-modern-app.sh --test

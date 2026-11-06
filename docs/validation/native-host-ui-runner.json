@@ -1,0 +1,111 @@
+{
+  "artifacts" : {
+    "log" : "build.log",
+    "report" : "report.json",
+    "resultBundle" : "/private/tmp/macdown-modern-lifecycle-1.xcresult",
+    "run" : "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-17758BAD-C81F-4EE6-9B9F-A5DF3024ED5D"
+  },
+  "collection" : {
+    "buildCoverage" : "unknown",
+    "issues" : [
+
+    ],
+    "sources" : [
+      "log",
+      "test-results"
+    ],
+    "status" : "complete"
+  },
+  "command" : {
+    "durationMs" : 67647,
+    "exitCode" : 65,
+    "interruptionSignal" : null,
+    "kind" : "xcodebuild",
+    "signal" : null,
+    "status" : "failed"
+  },
+  "counts" : {
+    "errors" : 1,
+    "failedTests" : 1,
+    "notes" : 0,
+    "remarks" : 0,
+    "warnings" : 0
+  },
+  "diagnostics" : [
+    {
+      "file" : null,
+      "items" : [
+        {
+          "id" : "d1",
+          "kind" : "test",
+          "message" : "The test runner failed to initialize for UI testing. (Underlying Error: Timed out while enabling automation mode.)",
+          "severity" : "error",
+          "sources" : [
+            "test-results"
+          ],
+          "target" : "MacDownModernUITests",
+          "test" : {
+            "aliases" : [
+              {
+                "id" : "MacDownModernUITests-Runner (17860) encountered an error",
+                "source" : "test-results"
+              }
+            ],
+            "id" : "MacDownModernUITests-Runner (17860) encountered an error",
+            "isFailure" : true
+          }
+        }
+      ]
+    }
+  ],
+  "invocation" : {
+    "cwd" : "/private/tmp/macdown-apple-tools",
+    "defaults" : [
+
+    ],
+    "effectiveCwd" : "/private/tmp/macdown-apple-tools",
+    "executable" : "/usr/bin/xcodebuild",
+    "executedArgs" : [
+      "-workspace",
+      "/Users/caden/Dev/macdown-modern/Modern/MacDownModern.xcworkspace",
+      "-scheme",
+      "MacDownModern",
+      "-configuration",
+      "Debug",
+      "-destination",
+      "platform=macOS,arch=arm64",
+      "-derivedDataPath",
+      "/private/tmp/macdown-modern-app",
+      "-resultBundlePath",
+      "/private/tmp/macdown-modern-lifecycle-1.xcresult",
+      "-parallel-testing-enabled",
+      "NO",
+      "test-without-building"
+    ],
+    "originalArgs" : [
+      "xcodebuild",
+      "-workspace",
+      "/Users/caden/Dev/macdown-modern/Modern/MacDownModern.xcworkspace",
+      "-scheme",
+      "MacDownModern",
+      "-configuration",
+      "Debug",
+      "-destination",
+      "platform=macOS,arch=arm64",
+      "-derivedDataPath",
+      "/private/tmp/macdown-modern-app",
+      "-resultBundlePath",
+      "/private/tmp/macdown-modern-lifecycle-1.xcresult",
+      "-parallel-testing-enabled",
+      "NO",
+      "test-without-building"
+    ]
+  },
+  "omissions" : {
+    "details" : 0,
+    "diagnostics" : 0,
+    "issues" : 0,
+    "warningFiles" : 0
+  },
+  "schemaVersion" : 1
+}

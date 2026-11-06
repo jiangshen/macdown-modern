@@ -1,0 +1,37 @@
+{
+  "milestone": "M2 \u2014 native application host",
+  "application": "MacDownModern",
+  "minimumMacOS": "27.0",
+  "swiftLanguageMode": "6",
+  "build": "build-for-testing passed",
+  "architectures": {
+    "executable": "arm64",
+    "debugDylib": "arm64",
+    "previewDylib": "arm64"
+  },
+  "uiAutomation": {
+    "status": "runner initialization failed before test cases executed",
+    "reason": "Timed out while enabling automation mode",
+    "resultBundle": "/private/tmp/macdown-modern-lifecycle-1.xcresult"
+  },
+  "directNativeUIVerification": {
+    "newDocument": true,
+    "unicodeTextInput": true,
+    "undoRedo": true,
+    "savePanel": true,
+    "utf8SavedBytesExactMatch": true,
+    "autosaveCheckpointObservedOnDiskWithoutSaveCommand": true,
+    "multipleDocumentWindowsListed": true,
+    "mergeAllWindowsProducedNativeTabBar": true,
+    "externalChangeSaveConflictPrompt": true,
+    "revertRetainedExternalFileContents": true,
+    "utf16BOMAndCRLFPreservedAfterOpenAndSave": true
+  },
+  "unverified": [
+    "automated UI test execution",
+    "real IME composition sessions",
+    "relaunch session restoration",
+    "preference migration",
+    "all legacy feature parity"
+  ]
+}

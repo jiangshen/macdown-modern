@@ -287,3 +287,50 @@ must never be presented as completion of the full application modernization.
   file open/save through DocumentGroup, autosave/Versions/conflict presentation, native
   tab/multiwindow UI tests and real Chinese/Japanese input-method sessions.
 - No legacy application source or user preferences were removed or modified.
+
+## Added requirements: adaptive icon and zero legacy first-party code
+
+- Ship an original layered Liquid Glass app icon. `Modern/Resources/AppIcon.icon` is
+  editable in Apple Icon Composer; its SVG layers are original vector artwork.
+- Verify Default, Dark, Clear Light/Dark, and Tinted Light/Dark using Apple's renderer.
+  The six real renderings are in `docs/design/icon`, with `Appearances.png` as the sheet.
+  Tinted previews use one example tint; the operating system chooses the user's tint.
+- Compile the native `.icon` asset through Xcode, retaining its `Assets.car` renditions
+  and generated `.icns` fallback. Do not substitute a single flat PNG as the app icon.
+- Final cleanup target: **zero legacy first-party implementation code and zero duplicate
+  application targets**. After each migrated subsystem passes parity checks, delete its
+  old implementation, test duplicates and obsolete build references in a reviewable commit.
+- The transition may temporarily contain the legacy and modern projects. Completion
+  requires retiring `MacDown/Code`, Objective-C test/CLI implementations, CocoaPods/Gem
+  integration, legacy Xcode targets, Travis and replaced release tooling. Keep history in
+  Git, not dead source folders or a parallel legacy app in the finished tree.
+- Retain and relocate still-used themes, user-facing resources, third-party components
+  with justified maintenance boundaries, and all applicable license notices. Their age
+  alone is not a reason to delete a feature or strip copyright attribution.
+- M1/M2 source is foundation work; it does not justify removing the still-needed legacy
+  parser, renderer, export, settings, automation or plugin implementation prematurely.
+
+## Native host integration evidence
+
+The generated `Modern/MacDownModern.xcworkspace` builds a real `.app` with the local
+Swift package. `Tools/build-modern-app.sh` reproduces generation/build and verifies
+arm64 output and compiled adaptive icon resources. The app, debug dylib and preview
+dylib were inspected as arm64. The full app is still an incremental migration build.
+
+Direct native UI checks verified new documents, Unicode text input, native undo/redo,
+the Save panel and byte-exact UTF-8 output. After editing without another Save command,
+the autosave checkpoint appeared on disk. Multiple documents appeared in the Window
+menu; Merge All Windows produced the native two-tab bar. An outside file edit caused
+the native Save Anyway / Save As / Revert conflict dialog. Revert loaded the external
+contents without overwriting them. A BOM-tagged UTF-16 file containing CRLF, Japanese,
+Chinese and emoji survived native Open and Save with identical bytes.
+
+The XCUITest runner built, but local automated execution timed out enabling automation
+before any test cases ran. This is recorded as a verification gap, not a passing UI
+suite. The UI tests and hosted-runner CI job remain configured. Real IME sessions,
+restoration and preferences migration are still required before closing all M2 gates.
+See `validation/native-host.json` and `validation/native-host-ui-runner.json`.
+
+The icon source compiled successfully through Xcode into AppIcon.icns and Assets.car;
+asset inspection found 40 icon-related records. All six macOS 27 appearance previews
+were rendered with Apple's tool and visually reviewed. See `validation/adaptive-icon.json`.

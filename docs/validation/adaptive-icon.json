@@ -1,0 +1,27 @@
+{
+  "format": "Apple Icon Composer layered .icon",
+  "source": "Modern/Resources/AppIcon.icon",
+  "artwork": "Original SVG geometry; no raster-only replacement and no SF Symbols",
+  "designGeneration": 27,
+  "previewRenderer": "Xcode bundled Icon Composer ictool",
+  "renditions": {
+    "Default": "rendered and visually inspected",
+    "Dark": "rendered and visually inspected",
+    "ClearLight": "rendered and visually inspected",
+    "ClearDark": "rendered and visually inspected",
+    "TintedLight": "rendered and visually inspected",
+    "TintedDark": "rendered and visually inspected"
+  },
+  "tintPreview": {
+    "color": 0.6,
+    "strength": 0.7,
+    "note": "Representative preview; real tint follows system selection"
+  },
+  "compiledAssets": [
+    "Assets.car",
+    "AppIcon.icns"
+  ],
+  "bundleIconName": "AppIcon",
+  "compiledIconRecords": 40,
+  "previewSheet": "docs/design/icon/Appearances.png"
+}

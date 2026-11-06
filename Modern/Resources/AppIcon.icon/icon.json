@@ -1,0 +1,165 @@
+{
+  "fill-specializations": [
+    {
+      "value": {
+        "linear-gradient": [
+          "srgb:0.095,0.58,1.0,1.0",
+          "srgb:0.035,0.20,0.78,1.0"
+        ]
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": "system-dark"
+    },
+    {
+      "appearance": "tinted",
+      "value": "automatic"
+    }
+  ],
+  "groups": [
+    {
+      "name": "Markdown monogram",
+      "layers": [
+        {
+          "name": "Markdown",
+          "image-name": "Markdown.svg",
+          "glass": true,
+          "hidden": false,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.045,0.30,0.80,1.0"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.57,0.83,1.0,1.0"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "extended-gray:0.10,1.0"
+              }
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "specular": true,
+      "translucency": {
+        "enabled": true,
+        "value": 0.06
+      },
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.1
+      }
+    },
+    {
+      "name": "Glass document",
+      "layers": [
+        {
+          "name": "Page fold",
+          "image-name": "Fold.svg",
+          "glass": true,
+          "hidden": false,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.64,0.82,1.0,1.0"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.32,0.49,0.68,1.0"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": "automatic"
+            }
+          ]
+        },
+        {
+          "name": "Document",
+          "image-name": "Document.svg",
+          "glass": true,
+          "hidden": false,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.965,0.985,1.0,1.0"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.16,0.22,0.32,1.0"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": "automatic"
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "specular": true,
+      "translucency": {
+        "enabled": true,
+        "value": 0.12
+      },
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.22
+      }
+    },
+    {
+      "name": "Backing sheet",
+      "layers": [
+        {
+          "name": "Backing sheet",
+          "image-name": "BackSheet.svg",
+          "glass": true,
+          "hidden": false,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.40,0.80,1.0,1.0"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.06,0.25,0.48,1.0"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": "automatic"
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "specular": true,
+      "translucency": {
+        "enabled": true,
+        "value": 0.48
+      },
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.18
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared",
+    "circles": []
+  }
+}
