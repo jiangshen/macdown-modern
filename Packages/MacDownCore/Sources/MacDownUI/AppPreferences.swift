@@ -1,3 +1,4 @@
+import EditorCore
 import Foundation
 import MarkdownCore
 import Observation
@@ -18,6 +19,17 @@ public final class AppPreferences {
   public var rawHTML: Bool { didSet { save(rawHTML, "previewRenderRawHTML") } }
   public var remoteImages: Bool { didSet { save(remoteImages, "previewLoadRemoteImages") } }
   public var manualRendering: Bool { didSet { save(manualRendering, "markdownManualRender") } }
+  public var convertTabs: Bool { didSet { save(convertTabs, "editorConvertTabs") } }
+  public var continueBlocks: Bool { didSet { save(continueBlocks, "editorInsertPrefixInBlock") } }
+  public var incrementLists: Bool {
+    didSet { save(incrementLists, "editorAutoIncrementNumberedLists") }
+  }
+  public var pairDelimiters: Bool {
+    didSet { save(pairDelimiters, "editorCompleteMatchingCharacters") }
+  }
+  public var unorderedMarkerType: Int {
+    didSet { defaults.set(unorderedMarkerType, forKey: "editorUnorderedListMarkerType") }
+  }
   public var editorFontSize: Double { didSet { saveFont() } }
   public var editorFontName: String { didSet { saveFont() } }
 
@@ -44,9 +56,24 @@ public final class AppPreferences {
     rawHTML = boolean("previewRenderRawHTML", fallback: false)
     remoteImages = boolean("previewLoadRemoteImages", fallback: false)
     manualRendering = boolean("markdownManualRender", fallback: false)
+    convertTabs = boolean("editorConvertTabs", fallback: false)
+    continueBlocks = boolean("editorInsertPrefixInBlock", fallback: true)
+    incrementLists = boolean("editorAutoIncrementNumberedLists", fallback: true)
+    pairDelimiters = boolean("editorCompleteMatchingCharacters", fallback: false)
+    unorderedMarkerType = defaults.integer(forKey: "editorUnorderedListMarkerType")
     let font = defaults.dictionary(forKey: "editorBaseFontInfo")
     editorFontSize = min(72, max(8, (font?["size"] as? Double) ?? 14))
     editorFontName = (font?["name"] as? String) ?? "Menlo-Regular"
+  }
+
+  public var editorBehavior: EditorBehavior {
+    var behavior = EditorBehavior()
+    behavior.convertTabs = convertTabs
+    behavior.continueBlocks = continueBlocks
+    behavior.incrementLists = incrementLists
+    behavior.pairDelimiters = pairDelimiters
+    behavior.unorderedMarker = unorderedMarkerType == 1 ? "+" : unorderedMarkerType == 2 ? "-" : "*"
+    return behavior
   }
 
   public var renderingOptions: MarkdownRenderingOptions {

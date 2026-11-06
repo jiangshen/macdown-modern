@@ -157,6 +157,9 @@ public enum MarkdownEditing {
         let suffix = string.substring(from: selection.location)
         let completion = quoteIndent + next
         if suffix.hasPrefix(completion) { return insertion(ending, selection: selection) }
+        if !quoteIndent.isEmpty, suffix.hasPrefix(next) {
+          return insertion(ending + quoteIndent, selection: selection)
+        }
         return insertion(ending + completion, selection: selection)
       }
       if behavior.continueBlocks, prefix.quoteEnd > prefix.indentEnd {

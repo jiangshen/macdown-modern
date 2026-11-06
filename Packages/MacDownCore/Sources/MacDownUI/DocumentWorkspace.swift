@@ -6,6 +6,7 @@ public struct DocumentWorkspace: View {
   public let preferences: AppPreferences
   @State private var processor = MarkdownProcessor()
   @State private var output = DocumentExportController()
+  @State private var editing = EditorCommandController()
   @State private var rendered: RenderedMarkdown?
   @State private var renderedRevision: UInt64?
   @State private var mode = WorkspaceMode.split
@@ -53,22 +54,9 @@ public struct DocumentWorkspace: View {
       .navigationSplitViewColumnWidth(min: 160, ideal: 210, max: 340)
     } detail: {
       VStack(spacing: 0) {
-        HSplitView {
-          if mode != .preview {
-            NativeMarkdownEditor(
-              document: document, fontName: preferences.editorFontName,
-              fontSize: preferences.editorFontSize
-            )
-            .frame(minWidth: 240)
-          }
-          if mode != .editor {
-            NativeMarkdownPreview(
-              html: rendered?.html ?? "", directory: document.fileURL?.deletingLastPathComponent(),
-              remoteImages: preferences.remoteImages
-            ) { previewError = $0 }
-            .frame(minWidth: 240)
-          }
-        }
+        NativeDocumentSplit(
+          document: document, preferences: preferences, editing: editing,
+          html: rendered?.html ?? "", mode: mode, previewError: $previewError)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")
@@ -119,6 +107,10 @@ public struct DocumentWorkspace: View {
     }
     .background(DocumentWindowBridge(output: output).frame(width: 0, height: 0))
     .focusedSceneValue(\.documentExport, output)
+    .focusedSceneValue(\.markdownEditor, editing)
+    .onChange(of: preferences.strikethrough, initial: true) { _, value in
+      editing.setStrikethroughEnabled(value)
+    }
     .onAppear {
       output.document = document
       output.preferences = preferences
@@ -180,7 +172,7 @@ private struct RenderRequest: Hashable {
   let manual: Bool
 }
 
-private enum WorkspaceMode: String, CaseIterable, Identifiable {
+enum WorkspaceMode: String, CaseIterable, Identifiable {
   case editor, split, preview
   var id: Self { self }
   var title: LocalizedStringKey {

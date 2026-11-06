@@ -80,9 +80,9 @@ verification. No essential feature is authorized for silent removal.
 | --- | --- | --- |
 | Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Pending app integration |
 | Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Pending |
-| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Pending |
-| Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Pending |
-| Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Pending |
+| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize verified; swap, linked scrolling and zoom pending |
+| Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
+| Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter tables and TOC | Pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | Pending |
@@ -465,7 +465,7 @@ validated release step. Do not replace an unrelated application or change plain-
 file defaults. The user also requests upgraded Markdown document/file-type icons and
 macOS registration; keep those registrations distinct from default-app changes.
 
-A new product name is being explored with the user. Keep the original glacial-blue icon
+Product name confirmed: **MacDown**. Keep the original glacial-blue icon
 style and M↓ Markdown mark. The user chose to keep **MacDown** for now. Use MacDown for visible branding and the app
 bundle; retain stable internal identifiers and preference migration history. Preserve
 all copyright and license notices.
@@ -501,3 +501,69 @@ release is installed and made default, as authorized by the user.
 
 Apple's document-icon composition reference:
 [UTTypeIcons](https://developer.apple.com/documentation/bundleresources/information-property-list/utexportedtypedeclarations/uttypeicons).
+
+## Added goal requirement — Notion-like Markdown styles
+
+The user requests that the Markdown/document styles closely resemble Notion. Treat this
+as an explicit acceptance requirement for theme and rendering work. Match the visual
+character of its readable typography, heading hierarchy, paragraph/section spacing,
+list and task-list treatment, subtle table borders, inline/fenced code, quotes, callouts,
+links and restrained light/dark document surfaces. Use current, publicly observable
+Notion document styling as a reference and inspect representative rendered fixtures.
+Keep this as an intentional, reusable style/theme in the native Markdown editor, preview
+and styled exports, with consistent document typography and spacing across those outputs.
+Preserve existing custom themes/styles and extension capabilities through their migration;
+do not use a visual reference as justification to remove writing features or alter file data.
+Acceptance requires runtime visual comparison in light/dark modes, readable tables/code/
+Unicode, accessibility contrast checks, and HTML/PDF export fidelity. This requirement is
+part of the active full modernization goal, which explicitly follows this plan.
+
+## Native Markdown commands and stable workspace panes
+
+The tested editing engine is now connected to the real TextKit 2 editor and a window-
+scoped Format menu. Bold/italic, inline code, strikethrough, comments, heading/paragraph,
+ordered/unordered lists, quotes, task toggling, indent/outdent, links/images and new
+paragraph commands use local replacements. Historical shortcuts are retained for these
+commands. Link/image commands can seed the selected destination from a valid clipboard
+URL. Command availability follows the source editor's native focus and composition state.
+
+Typing settings preserve historical preference keys and defaults: tabs/spaces, list and
+quote continuation, incremented list numbering, optional matching delimiters and the
+unordered-list marker. They appear in native Settings and persist across model instances.
+Return continues lists and resets task checks, exits empty list items, preserves local
+line endings and avoids duplicating a pre-existing marker. Paired insertion, selected
+text wrapping, closer skipping and paired deletion are optional. Pasteboard reads bypass
+pairing even for a single character; multi-character insertion also keeps native behavior.
+
+The first marked-text update is protected before calling AppKit, including ASCII input
+at the start of composition. Formatting is refused while composition is active, and
+native marked text is not reset. Tests exercise actual NSTextView marked-text methods;
+these do not replace the still-required real Chinese/Japanese input-method sessions.
+
+Each command is one native undo group. Native text undo initially restored the wrong
+selection; mirrored selection actions now bracket AppKit's text inverse so repeated
+undo/redo restores both text and the intended selection. No-op formatting and skipping
+an existing closer create no dirty undo step. Main-actor guards and weak undo-manager
+captures avoid custom text-history stores or unsafe concurrency escapes.
+
+The workspace uses an NSSplitViewController with stable SwiftUI-hosted editor and preview
+surfaces. Hiding a pane keeps its text view, input context, undo observer and WebKit state
+alive. The document undo manager passes explicitly across the hosting boundary. The
+previous split fraction is restored after returning from a single-pane mode. A native
+integration test confirms view identity, subsequent font updates, split size and document
+undo after multiple mode switches.
+
+Validation: **73 tests across 14 suites passed**, seven arm64 test executables, plus a
+successful native app build. Direct native UI checks verified Bold/Italic shortcuts with
+Unicode selections, formatting undo across preview/split changes, Format-menu contents,
+list numbering/exit, heading conversion and outline updates, independent document windows,
+optional pairing/closer skipping/deletion, native Settings, preference restoration and
+saved UTF-8 fixture bytes. See `validation/native-editing.json`. XCUITest runner startup
+is still a separate unresolved environment issue; no automated UI-runner pass is claimed.
+
+Still required for complete editing parity: renderer support and source commands for the
+remaining legacy dialect extensions (including underline/highlight), smart Home behavior,
+fence-aware continuation, richer table/code assistance, image drag/drop, syntax highlighting,
+real IME sessions, broader keyboard/accessibility review and measured large-file latency.
+Retain the old autocomplete/editor implementations until their complete consumer and
+parity gates pass. The Notion-like document style requirement above remains active.

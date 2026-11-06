@@ -14,20 +14,33 @@ struct AppPreferencesTests {
     let preferences = AppPreferences(
       defaults: defaults, domainName: domain,
       legacyValues: [
+        "editorConvertTabs": true, "editorInsertPrefixInBlock": false,
+        "editorAutoIncrementNumberedLists": false, "editorCompleteMatchingCharacters": true,
+        "editorUnorderedListMarkerType": 2,
         "extensionTables": false, "extensionStrikethough": true,
         "editorBaseFontInfo": ["name": "Menlo-Regular", "size": 18],
       ])
+    #expect(preferences.editorBehavior.convertTabs)
+    #expect(!preferences.editorBehavior.continueBlocks)
+    #expect(!preferences.editorBehavior.incrementLists)
+    #expect(preferences.editorBehavior.pairDelimiters)
+    #expect(preferences.editorBehavior.unorderedMarker == "-")
     #expect(!preferences.tables)
     #expect(preferences.strikethrough)
     #expect(preferences.editorFontSize == 18)
     #expect(!preferences.remoteImages)
     #expect(!preferences.rawHTML)
+    preferences.continueBlocks = true
+    preferences.unorderedMarkerType = 1
     preferences.tables = true
     preferences.manualRendering = true
     preferences.editorFontSize = 22
     let reopened = AppPreferences(
       defaults: defaults, domainName: domain,
       legacyValues: ["extensionTables": false])
+    #expect(reopened.editorBehavior.continueBlocks)
+    #expect(reopened.editorBehavior.unorderedMarker == "+")
+    #expect(reopened.editorBehavior.pairDelimiters)
     #expect(reopened.renderingOptions.tables)
     #expect(reopened.manualRendering)
     #expect(reopened.editorFontSize == 22)

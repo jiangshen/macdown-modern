@@ -15,6 +15,17 @@ public struct MarkdownSettingsView: View {
               "Font size: \(Int(preferences.editorFontSize)) pt",
               value: $preferences.editorFontSize, in: 8...72)
           }
+          Section("Typing") {
+            Toggle("Use spaces for tabs", isOn: $preferences.convertTabs)
+            Toggle("Continue lists and quotes", isOn: $preferences.continueBlocks)
+            Toggle("Increment numbered lists", isOn: $preferences.incrementLists)
+            Toggle("Complete paired delimiters", isOn: $preferences.pairDelimiters)
+            Picker("Unordered list marker", selection: $preferences.unorderedMarkerType) {
+              Text("*").tag(0)
+              Text("+").tag(1)
+              Text("−").tag(2)
+            }
+          }
           Section("Preview") {
             Toggle("Render manually", isOn: $preferences.manualRendering)
           }

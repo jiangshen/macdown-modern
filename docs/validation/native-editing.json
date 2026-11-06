@@ -1,0 +1,54 @@
+{
+  "milestone": "M3 — native Markdown editing integration; full migration remains incomplete",
+  "tests": {
+    "count": 73,
+    "suites": 14,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "build": "native MacDown.app build-for-testing passed",
+  "verified": [
+    "local TextKit 2 formatting transactions",
+    "one native undo step with repeated text and selection restoration",
+    "no-op formatting and closer skipping do not dirty source",
+    "native list/task/quote continuation and indentation",
+    "single-character paste bypasses pairing",
+    "first marked-text ASCII input is not paired",
+    "active composition rejects formatting",
+    "focus-based command availability",
+    "typing preference migration and persistence",
+    "stable editor identity and undo after preview/editor/split changes",
+    "split fraction retained after mode changes"
+  ],
+  "directNativeUI": [
+    "Bold and Italic keyboard shortcuts preserve Unicode selection",
+    "undo after preview/split change and redo",
+    "Format menu contains the migrated command groups",
+    "numbered-list continuation and exit from an empty item",
+    "Heading 1 shortcut updates source, preview and outline",
+    "commands affect the focused document without changing another window",
+    "paired insertion, closer skipping and paired deletion",
+    "native typing Settings controls",
+    "paired completion restored to its prior disabled preference",
+    "native document saves produced exact expected UTF-8 bytes"
+  ],
+  "fixtures": [
+    "/private/tmp/macdown-runtime-fixtures/editing-format.md",
+    "/private/tmp/macdown-runtime-fixtures/editing-lists.md"
+  ],
+  "realIME": "not yet verified; AppKit marked-text integration tests passed",
+  "automatedUIRunner": "previous XCUITest enabling-automation timeout remains unresolved",
+  "remaining": [
+    "remaining legacy dialect extension commands/rendering",
+    "smart Home",
+    "fence-aware continuation",
+    "table and code assistance",
+    "image drag/drop",
+    "syntax highlighting",
+    "real IME and broader accessibility checks",
+    "large-file typing measurements"
+  ],
+  "addedRequirement": "Notion-like Markdown styles recorded in active modernization plan",
+  "legacySourceRemoved": false
+}

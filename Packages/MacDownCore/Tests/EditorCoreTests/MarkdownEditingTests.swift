@@ -149,4 +149,14 @@ struct MarkdownEditingTests {
         for: .bold, in: "😀", selection: NSRange(location: 1, length: 0))
     }
   }
+  @Test("Splitting before an existing list marker adds only the missing indentation")
+  func existingMarker() throws {
+    let source = "  - first- next"
+    let transaction = try #require(
+      try MarkdownEditing.input(
+        .newline, in: source,
+        selection: NSRange(location: 9, length: 0)))
+    #expect(try transaction.edit.applying(to: source).text == "  - first\n  - next")
+  }
+
 }
