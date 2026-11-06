@@ -56,6 +56,8 @@ public struct MarkdownNode: Identifiable, Equatable, Sendable {
   public let literal: String?
   public let destination: String?
   public let headingLevel: Int?
+  /// Optional presentation for a top-level quote; original source AST remains intact.
+  public let callout: MarkdownCallout?
 }
 
 public struct MarkdownHeading: Identifiable, Equatable, Sendable {
@@ -75,6 +77,7 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var smartPunctuation = false
   public var hardLineBreaks = false
   public var rawHTML = false
+  public var alerts = true
 
   public init() {}
 }
@@ -88,4 +91,5 @@ public struct RenderedMarkdown: Sendable {
 public enum MarkdownRenderingError: Error, Sendable {
   case allocationFailure
   case unavailableExtension(String)
+  case invalidTreeTransformation
 }

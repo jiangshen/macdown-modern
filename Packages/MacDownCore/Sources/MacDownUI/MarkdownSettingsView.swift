@@ -55,6 +55,8 @@ public struct MarkdownSettingsView: View {
       }
       Tab("Markdown", systemImage: "text.document") {
         Form {
+          Toggle("Notes, tips and warnings", isOn: $preferences.alerts)
+            .accessibilityIdentifier("markdownAlerts")
           Toggle("Tables", isOn: $preferences.tables)
           Toggle("Task lists", isOn: $preferences.taskLists)
           Toggle("Strikethrough", isOn: $preferences.strikethrough)

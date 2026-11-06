@@ -69,6 +69,8 @@ public actor MarkdownProcessor {
       previousCR = scalar == "\r"
       offset += scalar.utf16.count
     }
+    let sourceText = source as NSString
+    var callouts: [(UnsafeMutablePointer<cmark_node>, MarkdownCallout)] = []
     var transformedDestinations: [String: String] = [:]
     var identifiers: [UInt: Int] = [:]
     while true {
@@ -103,12 +105,21 @@ public actor MarkdownProcessor {
           end: .init(
             line: Int(cmark_node_get_end_line(node)), column: Int(cmark_node_get_end_column(node)))
         ) : nil
+      var callout: MarkdownCallout?
+      if options.alerts, kind == .blockquote, line > 0, line <= lineStarts.count {
+        let start = lineStarts[line - 1]
+        let end = line < lineStarts.count ? lineStarts[line] : sourceText.length
+        let rawLine = sourceText.substring(with: NSRange(location: start, length: end - start))
+        callout = MarkdownCallout.recognize(node, rawLine: rawLine)
+        if let callout { callouts.append((node, callout)) }
+      }
       nodes.append(
         MarkdownNode(
           id: id, parentID: parentID, kind: kind, range: range,
           literal: cmark_node_get_literal(node).map { String(cString: $0) },
           destination: cmark_node_get_url(node).map { String(cString: $0) },
-          headingLevel: kind == .heading ? Int(cmark_node_get_heading_level(node)) : nil))
+          headingLevel: kind == .heading ? Int(cmark_node_get_heading_level(node)) : nil,
+          callout: callout))
       if kind == .heading, let title = cmark_render_plaintext(node, 0, 0) {
         headings.append(
           MarkdownHeading(
@@ -120,6 +131,10 @@ public actor MarkdownProcessor {
       }
     }
     try Task.checkCancellation()
+    for (quote, kind) in callouts {
+      try Task.checkCancellation()
+      try kind.decorate(quote)
+    }
     guard let html = cmark_render_html(root, flags, cmark_parser_get_syntax_extensions(parser))
     else {
       throw MarkdownRenderingError.allocationFailure

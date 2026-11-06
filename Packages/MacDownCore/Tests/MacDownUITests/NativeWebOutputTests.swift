@@ -16,7 +16,7 @@ struct NativeWebOutputTests {
     let markdown =
       "# First page\n\n"
       + (0..<150).map { "Paragraph \($0): portable Markdown export.\n\n" }.joined()
-      + "## Final checkpoint\n\n日本語 中文 👩‍💻\n"
+      + "## Final checkpoint\n\n日本語 中文 👩‍💻\n\n> [!WARNING]\n> Notebook callout checkpoint.\n"
     let export = try await MarkdownExport.build(
       source: markdown, title: "Pagination fixture", directory: nil)
     let surface = NativeWebOutput()
@@ -41,6 +41,8 @@ struct NativeWebOutputTests {
     #expect(contents.contains("First page"))
     #expect(contents.contains("Paragraph 149"))
     #expect(contents.contains("Final checkpoint"))
+    #expect(contents.contains("Warning"))
+    #expect(contents.contains("Notebook callout checkpoint."))
     // PDFKit may extract CJK glyphs as their compatible Kangxi radical forms.
     let normalized = contents.precomposedStringWithCompatibilityMapping
     #expect(normalized.contains("日本語"))

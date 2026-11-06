@@ -1,0 +1,57 @@
+{
+  "milestone": "M3/M4 — optional Markdown callouts and Notebook presentation; full migration incomplete",
+  "date": "2026-11-06",
+  "syntaxReference": "https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts",
+  "supported": [
+    "Top-level canonical uppercase NOTE/TIP/IMPORTANT/WARNING/CAUTION marker on its own quoted line",
+    "Markdown body paragraphs, emphasis, links, images, headings and lists",
+    "Disabling the extension preserves ordinary quote output",
+    "Light/dark Notebook surfaces, visible type labels and decorative aria-hidden symbols",
+    "Shared styled/plain HTML and native PDF/print pipeline"
+  ],
+  "sourcePreservation": "Original flat AST, marker literals, parent IDs, source ranges and outline captured before render-only native-tree decoration",
+  "securityBoundary": "Only fixed enum strings and native integer source positions enter custom-block wrappers. Untrusted child HTML and URLs retain native safe rendering; raw HTML remains opt-in.",
+  "tests": {
+    "count": 80,
+    "suites": 15,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "addressSanitizer": {
+    "tests": 5,
+    "result": "passed; no address errors reported",
+    "log": "/private/tmp/macdown-callout-asan.log",
+    "scope": "MarkdownCalloutTests, including five kinds, literal/nested markers, LF/CRLF/CR forms, disabled options, safe children and native ownership cleanup"
+  },
+  "nativeBuild": "MacDown.app build-for-testing passed; arm64 only",
+  "nativeWebKit": [
+    "Rendered type labels and title text",
+    "Contrast >= 4.5:1 against actual ancestor surface in light/dark modes",
+    "Narrow viewport containment",
+    "PDF extracts Warning and callout body text after multiple pages"
+  ],
+  "directNativeUI": [
+    "Opened current build and Callouts.md",
+    "Observed all five type labels in accessibility output",
+    "Inspected Default and Serif presentation",
+    "Disabled the option and observed ordinary quote output after relaunch",
+    "Re-enabled callouts and observed updated labels after returning via Window menu",
+    "Restored Default document font"
+  ],
+  "screenshot": "docs/design/notebook/Callouts.png",
+  "fixture": "docs/design/notebook/Callouts.md",
+  "uiInspectionIssue": {
+    "status": "open",
+    "observation": "Intermittent timeout/no-window errors, including after closing Settings. Idle main event loop in diagnostic sample; no crash report. Fresh test launch restored access; selecting the document through Window menu worked. Do not infer full settings close/reopen reliability from these checks.",
+    "diagnostic": "/private/tmp/macdown-font-check.sample.txt"
+  },
+  "remaining": [
+    "Custom CSS/theme migration",
+    "Source-editor syntax styling",
+    "Full light/dark/per-font export visual comparison",
+    "Settings/window inspection reliability investigation",
+    "Remaining modernization roadmap"
+  ],
+  "legacySourceRemoved": false
+}

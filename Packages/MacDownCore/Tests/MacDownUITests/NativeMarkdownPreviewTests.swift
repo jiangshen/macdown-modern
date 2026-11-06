@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import MarkdownCore
 import RenderingCore
 import Testing
 import WebKit
@@ -175,15 +176,26 @@ struct NativeMarkdownPreviewTests {
       coordinator.resources.cancelAll()
       window.orderOut(nil)
     }
+    let callouts = try await MarkdownProcessor().render(
+      "> [!NOTE]\n> A note for **clear thinking**.\n\n> [!WARNING]\n> Take care with `important details`."
+    )
     coordinator.update(
       view,
       html:
-        "<h1>Notebook</h1><p>日本語 中文 👩‍💻 <a href='https://example.com'>A readable link</a> and <code>inline code</code>.</p><h2>Details</h2><ul><li>First item</li><li><input type='checkbox' disabled checked>Completed</li></ul><blockquote><p>A quieter page for clear thinking.</p></blockquote><pre><code>let message = \"Hello, world\"</code></pre><table><tr><th>Feature</th><th>Status</th></tr><tr><td>Tables</td><td>Ready</td></tr></table>",
+        callouts.html
+        + "<h1>Notebook</h1><p>日本語 中文 👩‍💻 <a href='https://example.com'>A readable link</a> and <code>inline code</code>.</p><h2>Details</h2><ul><li>First item</li><li><input type='checkbox' disabled checked>Completed</li></ul><blockquote><p>A quieter page for clear thinking.</p></blockquote><pre><code>let message = \"Hello, world\"</code></pre><table><tr><th>Feature</th><th>Status</th></tr><tr><td>Tables</td><td>Ready</td></tr></table>",
       directory: nil, remoteImages: false)
     try await waitFor {
       (try? await evaluate("return document.querySelector('h1')?.textContent ?? '';", in: view))
         == "Notebook"
     }
+    #expect(
+      try await evaluate(
+        "return String(document.querySelectorAll('aside.md-callout').length);", in: view) == "2")
+    #expect(
+      try await evaluate(
+        "return document.querySelector('.md-callout-title')?.textContent.trim() ?? '';", in: view)
+        == "ℹ︎Note")
     for dark in [false, true] {
       window.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
       try await waitFor {
@@ -198,10 +210,15 @@ struct NativeMarkdownPreviewTests {
           const rgb = value => value.match(/[\\d.]+/g).slice(0,3).map(Number);
           const luminance = value => rgb(value).map(v => { v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }).reduce((sum, v, i) => sum + v * [.2126,.7152,.0722][i], 0);
           const bg = luminance(getComputedStyle(document.body).backgroundColor);
-          return String(['p','a','code','blockquote','th','td'].every(selector => {
+          return String(['p','a','code','blockquote','th','td','.md-callout-title','.md-callout > p:not(.md-callout-title)'].every(selector => {
             const node = document.querySelector(selector), style = getComputedStyle(node);
             const fg = luminance(style.color);
-            const surface = style.backgroundColor === 'rgba(0, 0, 0, 0)' ? bg : luminance(style.backgroundColor);
+            let ancestor = node, surface = bg;
+            while (ancestor) {
+              const color = getComputedStyle(ancestor).backgroundColor;
+              if (color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent') { surface = luminance(color); break; }
+              ancestor = ancestor.parentElement;
+            }
             return (Math.max(fg,surface)+.05)/(Math.min(fg,surface)+.05) >= 4.5;
           }));
           """, in: view) == "true")

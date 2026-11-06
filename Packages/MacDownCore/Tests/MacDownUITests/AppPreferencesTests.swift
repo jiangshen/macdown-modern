@@ -32,6 +32,7 @@ struct AppPreferencesTests {
     #expect(!preferences.rawHTML)
     preferences.continueBlocks = true
     preferences.unorderedMarkerType = 1
+    preferences.alerts = false
     preferences.tables = true
     preferences.manualRendering = true
     preferences.editorFontSize = 22
@@ -44,6 +45,7 @@ struct AppPreferencesTests {
     #expect(reopened.editorBehavior.continueBlocks)
     #expect(reopened.editorBehavior.unorderedMarker == "+")
     #expect(reopened.editorBehavior.pairDelimiters)
+    #expect(!reopened.renderingOptions.alerts)
     #expect(reopened.renderingOptions.tables)
     #expect(reopened.manualRendering)
     #expect(reopened.editorFontSize == 22)

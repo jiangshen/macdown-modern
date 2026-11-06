@@ -79,4 +79,23 @@ struct MarkdownExportTests {
     #expect(!result.html.contains(" onerror=\""))
     #expect(result.html.contains("%22"))
   }
+  @Test("Callouts export as semantic HTML with or without document styles")
+  func calloutExport() async throws {
+    let source = "> [!IMPORTANT]\n> Keep **Unicode 中文** and `code`."
+    let styled = try await MarkdownExport.build(source: source, title: "Callout", directory: nil)
+    #expect(styled.document.contains(".md-callout"))
+    #expect(styled.fragment.contains("<aside class=\"md-callout md-callout-important\""))
+    #expect(styled.fragment.contains("<strong>Unicode 中文</strong>"))
+    let plain = try await MarkdownExport.build(
+      source: source, title: "Callout", directory: nil, includeStyles: false)
+    #expect(!plain.document.contains("<style"))
+    #expect(plain.fragment == styled.fragment)
+    var options = MarkdownRenderingOptions()
+    options.alerts = false
+    let disabled = try await MarkdownExport.build(
+      source: source, options: options, title: "Callout", directory: nil)
+    #expect(!disabled.fragment.contains("<aside"))
+    #expect(disabled.fragment.contains("[!IMPORTANT]"))
+  }
+
 }

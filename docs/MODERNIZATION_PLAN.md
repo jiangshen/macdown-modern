@@ -597,3 +597,38 @@ This is partial delivery of the Notion-style requirement. Source-editor syntax t
 custom CSS/style migration, alert/callout rendering, actual increased-contrast UI and
 complete light/dark/per-font export visual comparisons remain pending. The full
 modernization goal remains active; no legacy source is removed at this partial gate.
+
+
+## Optional callout rendering — 2026-11-06
+
+Top-level GitHub-style `NOTE`, `TIP`, `IMPORTANT`, `WARNING` and `CAUTION` markers
+now render as quiet Notebook callout surfaces in preview and styled exports. Each
+canonical uppercase marker occupies its own quoted line. The persisted Markdown
+setting “Notes, tips and warnings” disables the extension for strict ordinary quote
+output. Unknown, escaped/entity-escaped, inline-code, fenced/indented-code, reference
+link and nested markers retain normal Markdown meaning. Callout bodies retain native
+paragraphs, lists, headings, inline formatting, links and image behavior.
+
+Recognition uses both the native block/inline tree and original marker line. The
+original immutable AST, source positions and outline are captured before render-only
+decoration. Trusted custom-block wrappers contain only enum constants and native
+integer source positions; no document text is interpolated into wrapper HTML. Child
+content still passes through cmark’s safe HTML and URL renderer. Visible type labels
+carry meaning independently of color; decorative symbols are hidden from VoiceOver,
+and these static document blocks do not trigger live alert announcements.
+
+Validation: 80 tests in 15 suites, seven arm64 test executables, native app
+build-for-testing, and five address-sanitized parser tests passed. Native WebKit tests
+measure light/dark contrast against the actual callout background (>=4.5:1), verify
+labels and narrow layouts. Native paginated PDF extraction finds the Warning label
+and body after multiple pages. Styled/plain HTML and disabled-option export checks pass.
+Direct native inspection verified all five labels, ordinary quote fallback, Default/
+Serif display and restored Default font/re-enabled callouts. See
+`validation/markdown-callouts.json`, `design/notebook/Callouts.md` and its screenshot.
+
+An intermittent native UI inspection timeout remains open, including after closing
+Settings. The diagnostic sample showed a normal idle main event loop and no crash
+report; fresh launches restored access, and switching through Window menu allowed
+inspection. Investigate this before claiming the settings/window workflow fully
+verified. Full callout light/dark visual comparison, custom theme migration and
+source-editor styling still remain; the overall modernization goal stays active.

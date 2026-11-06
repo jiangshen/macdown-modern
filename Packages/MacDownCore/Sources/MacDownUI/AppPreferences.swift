@@ -10,6 +10,7 @@ import RenderingCore
 public final class AppPreferences {
   @ObservationIgnored private let defaults: UserDefaults
 
+  public var alerts: Bool { didSet { save(alerts, "extensionAlerts") } }
   public var tables: Bool { didSet { save(tables, "extensionTables") } }
   public var strikethrough: Bool { didSet { save(strikethrough, "extensionStrikethough") } }
   public var taskLists: Bool { didSet { save(taskLists, "htmlTaskList") } }
@@ -54,6 +55,7 @@ public final class AppPreferences {
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }
+    alerts = boolean("extensionAlerts", fallback: true)
     tables = boolean("extensionTables", fallback: true)
     strikethrough = boolean("extensionStrikethough", fallback: true)
     taskLists = boolean("htmlTaskList", fallback: true)
@@ -97,6 +99,7 @@ public final class AppPreferences {
 
   public var renderingOptions: MarkdownRenderingOptions {
     var options = MarkdownRenderingOptions()
+    options.alerts = alerts
     options.tables = tables
     options.strikethrough = strikethrough
     options.taskLists = taskLists

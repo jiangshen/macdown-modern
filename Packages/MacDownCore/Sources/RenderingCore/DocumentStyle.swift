@@ -73,6 +73,18 @@ public struct DocumentStyle: Hashable, Sendable {
       padding: .1em 0 .1em 1em;
     }
     blockquote > :first-child { margin-top: 0; } blockquote > :last-child { margin-bottom: 0; }
+    .md-callout {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 5px;
+      margin: 1em 0; padding: 16px 20px;
+    }
+    .md-callout-title { display: flex; align-items: baseline; gap: .55em; font-weight: 650; margin: 0 0 .4em; }
+    .md-callout-icon { color: var(--callout-accent); flex: 0 0 1.15em; text-align: center; }
+    .md-callout > :last-child { margin-bottom: 0; }
+    .md-callout-note { --callout-accent: #287eaa; }
+    .md-callout-tip { --callout-accent: #386d48; }
+    .md-callout-important { --callout-accent: #6953a5; }
+    .md-callout-warning { --callout-accent: #8f681b; }
+    .md-callout-caution { --callout-accent: #a4423b; }
     pre,code,kbd,samp { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
     code { font-size: .875em; color: var(--inline-code); background: var(--surface); padding: .16em .35em; border-radius: 3px; }
     pre { font-size: .875em; line-height: 1.55; background: var(--surface); border-radius: 5px; padding: 24px; overflow-x: auto; margin: 1em 0; }
@@ -88,6 +100,11 @@ public struct DocumentStyle: Hashable, Sendable {
     @media (prefers-color-scheme: dark) {
       :root { --paper: #191919; --ink: #e6e4df; --muted: #aeaaa4; --border: #44433f; --surface: #252525; --inline-code: #f09b91; }
     }
+    @media (prefers-color-scheme: dark) {
+      .md-callout-note { --callout-accent: #8ec8e5; } .md-callout-tip { --callout-accent: #9bc8a8; }
+      .md-callout-important { --callout-accent: #bdb0e7; } .md-callout-warning { --callout-accent: #e2c583; }
+      .md-callout-caution { --callout-accent: #f09b91; }
+    }
     @media (prefers-contrast: more) {
       :root { --ink: #171614; --muted: #44413b; --border: #77736c; --inline-code: #8b2520; }
       @media (prefers-color-scheme: dark) { :root { --ink: #ffffff; --muted: #dfdcd6; --border: #aaa69e; --inline-code: #ffbdb5; } }
@@ -97,6 +114,7 @@ public struct DocumentStyle: Hashable, Sendable {
       main { max-width: none; padding: 0; }
       pre,pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
       h1,h2,h3,h4,h5,h6 { break-after: avoid; } tr,img { break-inside: avoid; }
+      .md-callout-icon { color: var(--ink); } .md-callout-title { break-after: avoid; }
       table { display: table; width: 100%; } thead { display: table-header-group; }
     }
     """
