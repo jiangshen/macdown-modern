@@ -334,3 +334,6 @@ See `validation/native-host.json` and `validation/native-host-ui-runner.json`.
 The icon source compiled successfully through Xcode into AppIcon.icns and Assets.car;
 asset inspection found 40 icon-related records. All six macOS 27 appearance previews
 were rendered with Apple's tool and visually reviewed. See `validation/adaptive-icon.json`.
+
+Icon palette refinement: use the user-requested gentle glacial ice blue for Default,
+with coordinated cool-blue Dark artwork. Clear and Tinted retain native system rendering.

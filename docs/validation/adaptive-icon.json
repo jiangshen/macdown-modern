@@ -23,5 +23,6 @@
   ],
   "bundleIconName": "AppIcon",
   "compiledIconRecords": 40,
-  "previewSheet": "docs/design/icon/Appearances.png"
+  "previewSheet": "docs/design/icon/Appearances.png",
+  "palette": "Gentle glacial ice blue with cool blue monogram"
 }
