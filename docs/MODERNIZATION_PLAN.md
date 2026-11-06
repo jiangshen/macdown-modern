@@ -337,3 +337,6 @@ were rendered with Apple's tool and visually reviewed. See `validation/adaptive-
 
 Icon palette refinement: use the user-requested gentle glacial ice blue for Default,
 with coordinated cool-blue Dark artwork. Clear and Tinted retain native system rendering.
+
+Icon palette follow-up: deepen the glacial-blue background midtones and saturation
+to avoid the previous overly pale result, retaining the cool hue and native appearance modes.
