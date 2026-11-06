@@ -1,0 +1,40 @@
+{
+  "application": "/Users/caden/Dev/macdown-modern/Build/ModernApp/DerivedData/Build/Products/Debug/MacDown.app",
+  "bundleIdentifier": "local.macdown.modern",
+  "defaultsAfter": {
+    "markdown": "com.uranusjr.macdown",
+    "plainText": "com.apple.TextEdit"
+  },
+  "defaultsBefore": {
+    "markdown": "com.uranusjr.macdown",
+    "plainText": "com.apple.TextEdit"
+  },
+  "defaultSetterCalled": false,
+  "defaultsUnchanged": true,
+  "extensionTypes": {
+    "markdown": "net.daringfireball.markdown",
+    "md": "net.daringfireball.markdown"
+  },
+  "markdownHandlerVerified": true,
+  "registered": true,
+  "nativeBuild": "build-for-testing passed",
+  "productName": "MacDown",
+  "assetCatalogNames": [
+    "MarkdownDocumentBackground",
+    "MarkdownDocumentBadge"
+  ],
+  "icnsFallback": "10 representations, 16–1024 pixel coverage",
+  "modernComposition": "UTTypeIcons uses native folded-corner document shape with glacial background, M↓ badge and MD label",
+  "typeDeclarations": "Markdown and ordinary plain text use separate CFBundleDocumentTypes entries",
+  "preview": "docs/design/document-icon/MarkdownDocument.png is the ICNS fallback artwork; final Finder composition is provided by macOS",
+  "finderDefaultIconVerification": "deferred until tested release becomes the default; existing handler intentionally retained",
+  "laterAuthorization": "install a tested release in Applications and set the new MacDown as default Markdown viewer after core parity/reliability confidence gate",
+  "tests": {
+    "count": 63,
+    "suites": 13,
+    "arm64TestExecutables": 7,
+    "status": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "editingEngine": "core transactions tested; native editor and Format-menu integration still pending"
+}

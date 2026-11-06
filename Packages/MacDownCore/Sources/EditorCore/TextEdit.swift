@@ -41,7 +41,7 @@ public struct TextEdit: Sendable {
                               inverse: result.inverse)
     }
 
-    private static func validate(_ range: NSRange, in text: String) throws {
+    static func validate(_ range: NSRange, in text: String) throws {
         let string = text as NSString
         let length = string.length
         guard range.location >= 0, range.length >= 0, range.location <= length,

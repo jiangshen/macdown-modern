@@ -18,10 +18,12 @@ let project = Project(
       name: "MacDownModern",
       destinations: .macOS,
       product: .app,
+      productName: "MacDown",
       bundleId: "local.macdown.modern",
       deploymentTargets: .macOS("27.0"),
       infoPlist: .extendingDefault(with: [
-        "CFBundleDisplayName": "MacDown Modern",
+        "CFBundleDisplayName": "MacDown",
+        "CFBundleName": "MacDown",
         "NSPrincipalClass": "NSApplication",
         "LSApplicationCategoryType": "public.app-category.productivity",
         "NSHumanReadableCopyright":
@@ -30,26 +32,39 @@ let project = Project(
           .dictionary([
             "CFBundleTypeName": "Markdown",
             "CFBundleTypeRole": "Editor",
+            "CFBundleTypeIconFile": "MarkdownDocument",
             "LSHandlerRank": "Alternate",
             "LSItemContentTypes": .array([
-              .string("net.daringfireball.markdown"), .string("public.plain-text"),
+              .string("net.daringfireball.markdown"),
             ]),
-          ])
+          ]),
+          .dictionary([
+            "CFBundleTypeName": "Plain text",
+            "CFBundleTypeRole": "Editor",
+            "LSHandlerRank": "Alternate",
+            "LSItemContentTypes": .array([.string("public.plain-text")]),
+          ]),
         ]),
         "UTImportedTypeDeclarations": .array([
           .dictionary([
             "UTTypeIdentifier": "net.daringfireball.markdown",
             "UTTypeConformsTo": .array([.string("public.plain-text")]),
             "UTTypeDescription": "Markdown document",
+            "UTTypeIconFile": "MarkdownDocument",
+            "UTTypeIcons": .dictionary([
+              "UTTypeIconBackgroundName": "MarkdownDocumentBackground",
+              "UTTypeIconBadgeName": "MarkdownDocumentBadge",
+              "UTTypeIconText": "MD",
+            ]),
             "UTTypeTagSpecification": .dictionary([
               "public.filename-extension": .array([.string("md"), .string("markdown")]),
-              "public.mime-type": "text/markdown",
+              "public.mime-type": .array([.string("text/markdown"), .string("text/x-markdown")]),
             ]),
           ])
         ]),
       ]),
       sources: ["Sources/**"],
-      resources: ["Resources/AppIcon.icon", "Resources/Licenses/**"],
+      resources: ["Resources/AppIcon.icon", "Resources/DocumentIcons.xcassets", "Resources/MarkdownDocument.icns", "Resources/Licenses/**"],
       dependencies: [.package(product: "MacDownUI")],
       settings: .settings(base: [
         "ENABLE_HARDENED_RUNTIME": "YES", "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",

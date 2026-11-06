@@ -453,3 +453,51 @@ its full page rendered with Apple's renderer, confirming Japanese/Chinese/emoji.
 bundled Poppler lacked a required CJK language pack for that runtime file; its incomplete
 render was not used as evidence of missing glyphs. PDF export explicitly requests all
 pages, independently of previous printer range choices. See `validation/export.json`.
+
+## Release installation and document identity authorization
+
+The user authorizes verified commits to be pushed to the modernization branch. After
+core parity and reliability checks provide adequate confidence, build tested releases,
+install them in the user's Applications folder, and set the installed app as the default
+Markdown viewer/editor. Do not set the default while the replacement remains an incomplete
+migration build. Earlier registration-only preference was superseded for that later,
+validated release step. Do not replace an unrelated application or change plain-text
+file defaults. The user also requests upgraded Markdown document/file-type icons and
+macOS registration; keep those registrations distinct from default-app changes.
+
+A new product name is being explored with the user. Keep the original glacial-blue icon
+style and M↓ Markdown mark. The user chose to keep **MacDown** for now. Use MacDown for visible branding and the app
+bundle; retain stable internal identifiers and preference migration history. Preserve
+all copyright and license notices.
+
+## Markdown command engine and document icons
+
+`EditorCore/MarkdownEditing.swift` now produces local UTF-16-safe transactions for
+inline formatting, heading/paragraph conversion, list/quote conversion, indentation,
+links/images, task toggling, list/quote/indent continuation, tab stops and optional paired
+delimiters. Fixtures characterize selection-preserving toggles and the legacy emphasis
+versus bold distinction. Mixed CR/LF/CRLF and multi-digit list prefixes use corrected
+selection mapping. This engine is tested but **not yet wired into the native editor or
+Format menu**; native undo/input/IME integration remains the next required editing step.
+Latest core validation: **63 tests across 13 suites**, seven arm64 executables, all passed.
+
+MacDown is the retained product name. The modern bundle is now `MacDown.app`, with
+`CFBundleName` and `CFBundleDisplayName` set to MacDown. Stable bundle identifiers and
+preference migration remain intact. A separate glacial-blue document identity retains
+the M↓ mark without an app-shaped background around the page. Native `UTTypeIcons`
+references compiled background/badge icon sets, allowing macOS to supply its own folded
+page, scaling and MD label. A generated high-resolution ICNS is the fallback; the artwork
+and build tools are first-party Swift and reproducible with `Tools/generate-document-icons.sh`.
+
+Markdown and plain text are separate document declarations, so the custom icon applies
+to Markdown and does not decorate ordinary `.txt` files. Preserve both original `.md`
+and `.markdown` tags and both Markdown MIME spellings. The standard Markdown UTI is
+imported rather than claimed as a new proprietary type. Registration uses public
+`LSRegisterURL`; `NSWorkspace` verifies the built app is an available Markdown handler.
+Default applications are read before and after registration. No default setter is called.
+The current original MacDown (`com.uranusjr.macdown`) and TextEdit defaults remain unchanged.
+Finder may continue displaying its current default handler's icon until the later tested
+release is installed and made default, as authorized by the user.
+
+Apple's document-icon composition reference:
+[UTTypeIcons](https://developer.apple.com/documentation/bundleresources/information-property-list/utexportedtypedeclarations/uttypeicons).

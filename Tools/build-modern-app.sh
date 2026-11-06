@@ -27,13 +27,17 @@ else
     tail -60 "$artifact_root/xcodebuild.log" >&2
     exit "$result"
 fi
-app="$artifact_root/DerivedData/Build/Products/Debug/MacDownModern.app"
-if [ "$(xcrun lipo -archs "$app/Contents/MacOS/MacDownModern")" != arm64 ]; then
+app="$artifact_root/DerivedData/Build/Products/Debug/MacDown.app"
+if [ "$(xcrun lipo -archs "$app/Contents/MacOS/MacDown")" != arm64 ]; then
     echo "The app executable must be arm64 only." >&2
     exit 1
 fi
 if [ ! -s "$app/Contents/Resources/Assets.car" ] || [ ! -s "$app/Contents/Resources/AppIcon.icns" ]; then
     echo "Compiled adaptive icon assets are missing." >&2
+    exit 1
+fi
+if [ ! -s "$app/Contents/Resources/MarkdownDocument.icns" ]; then
+    echo "Compiled Markdown document icon is missing." >&2
     exit 1
 fi
 echo "App: $app"
