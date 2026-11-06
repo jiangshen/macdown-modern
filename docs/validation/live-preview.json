@@ -1,0 +1,46 @@
+{
+  "milestone": "M3 \u2014 parser/live preview vertical slice (partial)",
+  "tests": {
+    "count": 44,
+    "suites": 10,
+    "result": "passed",
+    "nativeArm64TestExecutables": 6,
+    "log": "/private/tmp/macdown-preview-validation/swift-test.log"
+  },
+  "parser": {
+    "package": "https://github.com/swiftlang/swift-cmark.git",
+    "version": "0.9.0",
+    "nativeImplementation": "maintained third-party C, confined behind Swift actor",
+    "parseMode": "whole document, once per request; incremental reparsing not implemented"
+  },
+  "verified": [
+    "CommonMark/GFM output and extension toggles",
+    "safe code and URL escaping",
+    "native footnotes",
+    "flat AST parent/source-position extraction",
+    "cancelled requests do not publish",
+    "CR/LF/CRLF and Unicode heading offsets",
+    "document edits vs load vs selection revisions",
+    "versioned preference migration preserving false and font values",
+    "preferences persist across model instances",
+    "local file traversal/type/symlink protections",
+    "real WKWebView DOM patch retaining unchanged nodes and scroll",
+    "page event handlers remain disabled",
+    "relative local PNG loaded in WKWebView",
+    "remote images and frames blocked by CSP"
+  ],
+  "build": "native app build-for-testing passed; app and bundled native binaries verified arm64",
+  "visualInspection": "pending \u2014 Mac locked during CUA launch attempt",
+  "uiAutomation": "prior XCUITest initialization failure remains; no passing UI automation claim",
+  "outstanding": [
+    "incremental parsing and measured performance",
+    "full legacy Markdown dialect compatibility",
+    "math, diagrams, front matter and syntax highlighting",
+    "custom styles/templates and all preference behaviors",
+    "linked editor-preview scrolling",
+    "HTML/PDF export and print",
+    "real IME and accessibility/visual checks",
+    "all remaining modernization milestones"
+  ],
+  "legacyDeletion": "none \u2014 full subsystem parity gates remain open"
+}

@@ -3,15 +3,18 @@ import SwiftUI
 
 @main
 struct MacDownModernApp: App {
+  @State private var preferences = AppPreferences()
+
   var body: some Scene {
     DocumentGroup { (document: MarkdownDocument) in
-      NativeMarkdownEditor(document: document)
-        .frame(minWidth: 560, idealWidth: 880, minHeight: 360, idealHeight: 640)
-    } makeDocument: { _, _ in
-      MarkdownDocument()
+      DocumentWorkspace(document: document, preferences: preferences)
+        .frame(minWidth: 720, idealWidth: 1120, minHeight: 360, idealHeight: 640)
+    } makeDocument: { configuration, _ in
+      MarkdownDocument(configuration: configuration)
     }
     .commands {
       TextEditingCommands()
     }
+    Settings { MarkdownSettingsView(preferences: preferences) }
   }
 }

@@ -1,0 +1,170 @@
+import MarkdownCore
+import SwiftUI
+
+public struct DocumentWorkspace: View {
+  public let document: MarkdownDocument
+  public let preferences: AppPreferences
+  @State private var processor = MarkdownProcessor()
+  @State private var rendered: RenderedMarkdown?
+  @State private var renderedRevision: UInt64?
+  @State private var mode = WorkspaceMode.split
+  @State private var manualRefresh = 0
+  @State private var lastRequestedRefresh = 0
+  @State private var loading = false
+  @State private var error: String?
+  @State private var previewError: String?
+  @State private var largeFilePaused = false
+
+  public init(document: MarkdownDocument, preferences: AppPreferences) {
+    self.document = document
+    self.preferences = preferences
+  }
+
+  private var request: RenderRequest {
+    RenderRequest(
+      revision: preferences.manualRendering ? document.loadRevision : document.revision,
+      options: preferences.renderingOptions, manualRefresh: manualRefresh,
+      manual: preferences.manualRendering)
+  }
+
+  public var body: some View {
+    NavigationSplitView {
+      List {
+        Section("Outline") {
+          if let rendered, !rendered.headings.isEmpty {
+            ForEach(rendered.headings) { heading in
+              Button {
+                if mode == .preview { mode = .split }
+                document.navigate(toUTF16Offset: heading.utf16Offset)
+              } label: {
+                Text(heading.title.isEmpty ? String(localized: "Untitled heading") : heading.title)
+                  .lineLimit(2)
+                  .padding(.leading, CGFloat(heading.level - 1) * 10)
+              }.buttonStyle(.plain)
+                .disabled(renderedRevision != document.revision)
+            }
+          } else {
+            Text("Headings appear here").foregroundStyle(.secondary)
+          }
+        }
+      }
+      .listStyle(.sidebar)
+      .navigationSplitViewColumnWidth(min: 160, ideal: 210, max: 340)
+    } detail: {
+      VStack(spacing: 0) {
+        HSplitView {
+          if mode != .preview {
+            NativeMarkdownEditor(
+              document: document, fontName: preferences.editorFontName,
+              fontSize: preferences.editorFontSize
+            )
+            .frame(minWidth: 240)
+          }
+          if mode != .editor {
+            NativeMarkdownPreview(
+              html: rendered?.html ?? "", directory: document.fileURL?.deletingLastPathComponent(),
+              remoteImages: preferences.remoteImages
+            ) { previewError = $0 }
+            .frame(minWidth: 240)
+          }
+        }
+        if let message = error ?? previewError {
+          Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
+            "previewError")
+        } else if largeFilePaused {
+          HStack {
+            Text("Live preview is paused for this large document.")
+            Button("Render Preview") { manualRefresh += 1 }
+          }.font(.callout).padding(8)
+        } else if preferences.manualRendering {
+          Text("Manual preview · Use Render to update").font(.caption).foregroundStyle(.secondary)
+            .padding(6)
+        }
+      }
+    }
+    .toolbar {
+      ToolbarItem {
+        Picker("View", selection: $mode) {
+          ForEach(WorkspaceMode.allCases) { item in
+            Label(item.title, systemImage: item.symbol).tag(item)
+          }
+        }.pickerStyle(.segmented).help("Workspace layout")
+      }
+      ToolbarItem {
+        Button {
+          manualRefresh += 1
+        } label: {
+          Label("Render", systemImage: "arrow.clockwise")
+        }.keyboardShortcut("r", modifiers: .command)
+          .help("Update the Markdown preview")
+      }
+      ToolbarItem {
+        if loading { ProgressView().controlSize(.small).accessibilityLabel("Updating preview") }
+      }
+    }
+    .task(id: request) { await render(request) }
+  }
+
+  private func render(_ request: RenderRequest) async {
+    loading = false
+    let explicitlyRequested = request.manualRefresh != lastRequestedRefresh
+    lastRequestedRefresh = request.manualRefresh
+    do {
+      if !explicitlyRequested {
+        try await Task.sleep(for: .milliseconds(180))
+      }
+      try Task.checkCancellation()
+      let source = document.text
+      if source.utf8.count > 1_048_576 && !explicitlyRequested {
+        largeFilePaused = true
+        return
+      }
+      largeFilePaused = false
+      loading = true
+      let revision = document.revision
+      let result = try await processor.render(source, options: request.options)
+      try Task.checkCancellation()
+      guard revision == document.revision else {
+        loading = false
+        return
+      }
+      rendered = result
+      renderedRevision = revision
+      error = nil
+      loading = false
+    } catch is CancellationError {
+      // The replacement request owns loading state; stale work never publishes.
+    } catch {
+      guard !Task.isCancelled else { return }
+      loading = false
+      self.error = String(
+        localized: "The Markdown preview could not be rendered. Try Render again.")
+    }
+  }
+}
+
+private struct RenderRequest: Hashable {
+  let revision: UInt64
+  let options: MarkdownRenderingOptions
+  let manualRefresh: Int
+  let manual: Bool
+}
+
+private enum WorkspaceMode: String, CaseIterable, Identifiable {
+  case editor, split, preview
+  var id: Self { self }
+  var title: LocalizedStringKey {
+    switch self {
+    case .editor: "Editor"
+    case .split: "Split"
+    case .preview: "Preview"
+    }
+  }
+  var symbol: String {
+    switch self {
+    case .editor: "square.leadingthird.inset.filled"
+    case .split: "rectangle.split.2x1"
+    case .preview: "doc.richtext"
+    }
+  }
+}

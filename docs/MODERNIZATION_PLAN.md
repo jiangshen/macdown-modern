@@ -1,6 +1,6 @@
 # MacDown modernization plan
 
-Status: **Milestone 1 complete; Milestone 2 in progress. The application rewrite is not complete.**
+Status: **Milestone 1 complete; Milestone 2 validation continues; Milestone 3 parser/preview implementation in progress. The application rewrite is not complete.**
 
 ## Scope and source of truth
 
@@ -246,7 +246,7 @@ selected third-party revisions with Package.resolved when their integration begi
   including parameterized encoding/range cases and a 10 MB Unicode round-trip.
 - Repeatable `Tools/validate-modernization.sh`: **passed** using Swift 6.4.2, with
   both DocumentCoreTests and EditorCoreTests Mach-O bundles verified arm64-only.
-- New package has no external dependencies, uses macOS 27 baseline and Swift 6 mode;
+- Initial foundation package had no external dependencies and used macOS 27 baseline and Swift 6 mode;
   no unsafe Sendable escape hatches or actor-isolation suppression were introduced.
 - GitHub Actions workflow added for the documented `xcode-27` native arm64 image;
   **remote execution has not been triggered or verified**.
@@ -340,3 +340,66 @@ with coordinated cool-blue Dark artwork. Clear and Tinted retain native system r
 
 Icon palette follow-up: deepen the glacial-blue background midtones and saturation
 to avoid the previous overly pale result, retaining the cool hue and native appearance modes.
+
+## Parser, live preview and preferences integration
+
+The modern app now connects the native source editor to a stable WKWebView preview,
+with editor/split/preview layouts, a heading outline and a native Settings scene. The
+outline uses one-based parser lines mapped to UTF-16 offsets, including CR/LF/CRLF and
+non-BMP characters. Stale outline navigation is disabled until a new result is published.
+Native document revision counters trigger work without hashing the entire source as a
+SwiftUI task identifier. Selection requests do not change document contents or dirty state.
+
+### Parser decision and third-party exception
+
+Evaluated `swiftlang/swift-markdown` 0.9.0 and its underlying `swiftlang/swift-cmark`
+0.9.0. The public Swift Markdown HTML formatter did not meet this integration's escaping
+and footnote requirements. Use the maintained cmark GFM engine directly behind a Swift
+actor rather than implementing a Markdown specification or parsing twice. This is a
+**third-party C exception**, not first-party Swift migration. The package version and
+revision are pinned; its complete COPYING notice is included in app resources.
+
+One native parse supplies HTML and an owned Sendable flat AST. CommonMark/GFM tables,
+task lists, strikethrough, autolinks and footnotes are covered by fixtures, with extension
+preferences honored. Code and unsafe URL escaping are covered. This is currently a
+whole-document parser with chunked feed and cancellation checks, **not incremental
+reparsing**. Legacy-specific dialect extensions remain separate outstanding parity gates.
+
+### Preview and resource policy
+
+A 180 ms debounced background task publishes only current document revisions. Explicit
+Render requests bypass debounce once; ordinary edits retain debounce afterwards. Files
+larger than 1 MiB pause automatic preview with a visible Render action, preserving editor
+availability. Performance targets still require measurement; this threshold is a guardrail.
+
+The WebKit shell is loaded once per document directory/resource-policy change, then
+trusted isolated-world code patches the DOM using HTML arguments. Unchanged nodes and
+the visible scroll anchor are retained. Generation checks discard obsolete callbacks.
+Document JavaScript is disabled; CSP denies scripts, frames, connections, forms and
+objects. Remote images require an explicit preference. Relative local images, CSS and
+fonts use a dedicated scheme restricted to the document directory and allowed types.
+Descriptor-relative O_NOFOLLOW reads prevent symlink swaps from escaping this boundary;
+regular files and a 32 MiB size cap are enforced. Arbitrary page navigation is denied;
+explicit external link clicks use the system handler.
+
+### Preferences and verification
+
+Versioned migration copies persisted historical keys without changing the old preference
+domain or overwriting new-app choices. Explicit false values and font dictionaries survive;
+transient CLI launch queues are excluded. Tests use isolated preference suites. The current
+Settings UI exposes typography, manual rendering, GFM options and preview privacy. Other
+legacy settings are retained as data but their behaviors are **not all migrated yet**.
+
+Local validation: **44 tests across ten suites passed**, with six test executables
+verified arm64. Real WebKit integration tests verify DOM updates, retained node identity,
+scroll position, blocked inline event handlers, relative local PNG loading and CSP-blocked
+remote images/frames. The native app builds for testing. These are integration tests,
+not a passing XCUITest automation run. New workspace visual inspection is waiting for the
+Mac to be unlocked; previous XCUITest initialization failure remains unresolved. See
+`validation/live-preview.json` for evidence and outstanding work.
+
+Still required: legacy dialect fixtures, front matter/math/diagrams, syntax highlighting,
+custom styles/templates, linked scrolling, export/print, full preference parity, real IME
+sessions, visual/accessibility checks, performance and the remaining roadmap. Legacy
+renderer/preferences implementations remain because their complete consumers and parity
+gates have not yet migrated. No legacy source is deleted by this partial integration.

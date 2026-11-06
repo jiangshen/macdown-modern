@@ -19,9 +19,22 @@ public final class MarkdownDocument: SwiftUI.Document {
   nonisolated public static let readableContentTypes = [markdownType, UTType.plainText]
 
   public private(set) var text: String
+  public private(set) var revision: UInt64 = 0
+  public private(set) var loadRevision: UInt64 = 0
+  public private(set) var selectionRequest: EditorSelectionRequest?
+  private let configuration: URLDocumentConfiguration?
+  public var fileURL: URL? { configuration?.fileURL }
+
+  public func navigate(toUTF16Offset offset: Int) {
+    selectionRequest = EditorSelectionRequest(offset: offset)
+  }
   @ObservationIgnored private var baseline: TextFileContents
 
-  public init(contents: TextFileContents = TextFileContents()) {
+  public init(
+    contents: TextFileContents = TextFileContents(),
+    configuration: URLDocumentConfiguration? = nil
+  ) {
+    self.configuration = configuration
     baseline = contents
     text = contents.text
   }
@@ -63,6 +76,8 @@ public final class MarkdownDocument: SwiftUI.Document {
     }
     baseline = snapshot
     text = snapshot.text
+    revision &+= 1
+    loadRevision &+= 1
   }
 
   /// Programmatic changes must register with the host's undo manager for dirty-state
@@ -74,11 +89,18 @@ public final class MarkdownDocument: SwiftUI.Document {
       document.replaceText(with: previous, undoManager: undoManager)
     }
     text = replacement
+    revision &+= 1
   }
 
   /// Called only by the native editor after an edit registered with the same undo manager.
   public func acceptNativeEdit(_ replacement: String) {
     guard !replacement.utf8.elementsEqual(text.utf8) else { return }
     text = replacement
+    revision &+= 1
   }
+}
+
+public struct EditorSelectionRequest: Equatable {
+  public let id = UUID()
+  public let offset: Int
 }

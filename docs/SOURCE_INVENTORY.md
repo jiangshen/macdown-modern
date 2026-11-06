@@ -97,3 +97,11 @@ Do not count vendored code as first-party Swift migration work.
 ## Other first-party source
 
 Resource initialization JavaScript, Handlebars templates, AppleScript dictionary, Interface Builder XML, localizations, shell/Python tooling and CSS are also part of parity. Swift-only application logic does not justify removing preview resources, localization assets or independently maintained third-party code.
+
+## Modern parser ownership boundary
+
+`Packages/MacDownCore/Sources/MarkdownCore` contains first-party Swift orchestration and
+owned AST values. Its pinned SPM dependency `swiftlang/swift-cmark` 0.9.0 provides the
+maintained third-party C CommonMark/GFM engine. Native pointers stay actor-confined;
+no vendored parser C is counted toward first-party Swift migration. The dependency's
+COPYING notice ships as `Modern/Resources/Licenses/swift-cmark.txt`.

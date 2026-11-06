@@ -5,9 +5,16 @@ import SwiftUI
 /// force a TextKit 1 fallback, and never resets marked text during SwiftUI updates.
 public struct NativeMarkdownEditor: NSViewRepresentable {
   public let document: MarkdownDocument
+  public var fontName: String
+  public var fontSize: Double
   @Environment(\.undoManager) private var undoManager
 
-  public init(document: MarkdownDocument) { self.document = document }
+  public init(document: MarkdownDocument, fontName: String = "Menlo-Regular", fontSize: Double = 14)
+  {
+    self.document = document
+    self.fontName = fontName
+    self.fontSize = fontSize
+  }
 
   public func makeCoordinator() -> Coordinator { Coordinator(document: document) }
 
@@ -58,6 +65,26 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     context.coordinator.document = document
     context.coordinator.undoManager = undoManager
     Self.synchronize(scrollView, document: document, coordinator: context.coordinator)
+    guard let editor = scrollView.documentView as? NSTextView else { return }
+    let size = min(72, max(8, fontSize))
+    let font =
+      NSFont(name: fontName, size: size) ?? .monospacedSystemFont(ofSize: size, weight: .regular)
+    if editor.font != font { editor.font = font }
+    if let request = document.selectionRequest,
+      request.id != context.coordinator.selectionID, !editor.hasMarkedText()
+    {
+      var offset = min(max(0, request.offset), (editor.string as NSString).length)
+      if offset < (editor.string as NSString).length,
+        (0xDC00...0xDFFF).contains((editor.string as NSString).character(at: offset))
+      {
+        offset = max(0, offset - 1)
+      }
+      let range = NSRange(location: offset, length: 0)
+      editor.setSelectedRange(range)
+      editor.scrollRangeToVisible(range)
+      editor.window?.makeFirstResponder(editor)
+      context.coordinator.selectionID = request.id
+    }
   }
 
   static func synchronize(
@@ -113,6 +140,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       }
     }
     var isSynchronizing = false
+    var selectionID: UUID?
 
     init(document: MarkdownDocument) { self.document = document }
 

@@ -8,6 +8,23 @@ import UniformTypeIdentifiers
 @Suite("macOS 27 document adapter")
 @MainActor
 struct MarkdownDocumentTests {
+  @Test(
+    "Only source edits and loads advance render revisions; outline navigation does not dirty text")
+  func revisions() async throws {
+    let document = MarkdownDocument()
+    document.acceptNativeEdit("")
+    #expect(document.revision == 0)
+    document.acceptNativeEdit("# Heading")
+    #expect(document.revision == 1)
+    #expect(document.loadRevision == 0)
+    document.navigate(toUTF16Offset: 2)
+    #expect(document.selectionRequest?.offset == 2)
+    #expect(document.revision == 1)
+    try await document.apply(snapshot: TextFileContents(text: "External"), previous: nil)
+    #expect(document.revision == 2)
+    #expect(document.loadRevision == 1)
+  }
+
   @Test("Saving an unchanged loaded document retains BOM and line endings")
   func snapshotPreservesBytes() async throws {
     let bytes = Data([0xEF, 0xBB, 0xBF]) + Data("# 中文\r\nbody\r\n".utf8)
