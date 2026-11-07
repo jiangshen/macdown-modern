@@ -2105,3 +2105,13 @@ Theme appears. The test’s global Import-button query also matched macOS’s To
 mirror. The captured hierarchy identifies the intended action inside the Settings
 alert sheet; the query now scopes to that single sheet. Import/review/undo assertions
 remain intact. Final hosted acceptance is still pending rather than inferred.
+
+
+Run `42387759704` verifies native file import, review and application of the imported
+choice, then exposes a test fixture error at undo: normal list continuation had added
+an enumerator before the test typed its own. The theme fixture now disables continuation
+through its launch arguments and asserts its exact original text. The failed method
+also left its custom theme saved, affecting a later Automatic-only color assertion.
+Every UI-test launch now explicitly selects Automatic, removing that cross-method
+preference dependency. Production continuation and theme behavior are unchanged.
+Final full-suite hosted acceptance remains pending.

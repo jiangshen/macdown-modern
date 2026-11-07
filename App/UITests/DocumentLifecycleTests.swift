@@ -9,6 +9,7 @@ final class DocumentLifecycleTests: XCTestCase {
     app.launchArguments = [
       "-ApplePersistenceIgnoreState", "YES", "-NSQuitAlwaysKeepsWindows", "NO",
       "-AppleWindowTabbingMode", "manual", "-preferDocumentTabs", "NO",
+      "-editorThemeSelection", "automatic",
     ]
     app.launchArguments += arguments
     app.launch()
@@ -303,12 +304,13 @@ final class DocumentLifecycleTests: XCTestCase {
       "editor\nforeground: 112233\nbackground: e0efff\nfont-size: 24px\ncustom-field: retained\n"
         .utf8)
     try bytes.write(to: file)
-    let app = launch(arguments: ["-editorThemeSelection", "automatic"])
+    let app = launch(arguments: ["-editorInsertPrefixInBlock", "NO"])
     defer { app.terminate() }
     let editor = newDocument(in: app)
     editor.click()
     let source = "1. First\n2. Second\n\n- Bullet"
     editor.typeText(source)
+    XCTAssertEqual(editor.value as? String, source)
     app.typeKey("a", modifierFlags: .command)
     editor.typeText("Theme undo checkpoint")
     app.typeKey(",", modifierFlags: .command)

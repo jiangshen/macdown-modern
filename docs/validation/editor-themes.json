@@ -418,6 +418,18 @@
         "failed": 1
       },
       "finalHosted": "pending"
+    },
+    "hostedReviewFollowUp": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42387759704",
+      "commit": "56ac969f70ff8883d0c90ddbf872eb25630868e2",
+      "result": "package passed; native import/review completed and selected imported theme; undo reached the original typed content",
+      "fixtureFailure": "List continuation inserted a second-line prefix before the test typed its own enumerator. Theme test now disables continuation through a launch argument and asserts the exact fixture before replacement. Production list behavior remains enabled.",
+      "isolationFailure": "An early assertion left the imported theme saved; a later Automatic-only source-color check inherited it. All UI launches now explicitly select Automatic, independently of earlier methods.",
+      "nativeUITests": {
+        "passed": 7,
+        "failed": 2
+      },
+      "finalHosted": "pending"
     }
   }
 }
