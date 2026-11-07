@@ -89,8 +89,8 @@
     "live": "Before seam reproduced; final rebuilt app removes bullet rectangle; First/Second/dfdfd share text edge, number spacing improved; user source unchanged and tabs preserved",
     "localValidation": {
       "nativeBuildForTesting": "passed",
-      "packageTests": 192,
-      "packageSuites": 39,
+      "packageTests": 222,
+      "packageSuites": 43,
       "arm64TestExecutables": 8,
       "changedSwiftStrictFormatting": "passed",
       "firstPartyDiffCheck": "passed"
