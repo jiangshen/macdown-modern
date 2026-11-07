@@ -8,7 +8,7 @@ import WebKit
 
 @testable import SnowfolioUI
 
-@Suite("Live WebKit preview", .serialized)
+@Suite("Live WebKit preview", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeMarkdownPreviewTests {
   enum TestError: Error { case timeout, invalidResult }

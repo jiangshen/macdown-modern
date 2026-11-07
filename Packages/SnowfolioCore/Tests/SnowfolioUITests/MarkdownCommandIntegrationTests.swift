@@ -5,7 +5,7 @@ import Testing
 
 @testable import SnowfolioUI
 
-@Suite("Native Markdown commands", .serialized)
+@Suite("Native Markdown commands", .serialized, NativeUIExclusive())
 @MainActor
 struct MarkdownCommandIntegrationTests {
   private func editor(_ source: String) throws -> (

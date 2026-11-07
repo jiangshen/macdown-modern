@@ -7,7 +7,7 @@ import Testing
 
 @testable import SnowfolioUI
 
-@Suite("Native paginated output", .serialized)
+@Suite("Native paginated output", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeWebOutputTests {
   @Test("Native PDF output paginates the full document, including text past the screen bounds")

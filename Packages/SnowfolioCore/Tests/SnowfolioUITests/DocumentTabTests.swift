@@ -4,7 +4,7 @@ import Testing
 
 @testable import SnowfolioUI
 
-@Suite("Native document tabs", .serialized)
+@Suite("Native document tabs", .serialized, NativeUIExclusive())
 @MainActor
 struct DocumentTabTests {
   @Test("Native tab switching and closing preserve separate editors and undo histories")

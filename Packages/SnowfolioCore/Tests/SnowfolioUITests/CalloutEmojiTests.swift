@@ -7,7 +7,7 @@ import Testing
 
 @testable import SnowfolioUI
 
-@Suite("Native callout emoji editing", .serialized)
+@Suite("Native callout emoji editing", .serialized, NativeUIExclusive())
 @MainActor
 struct CalloutEmojiTests {
   @Test("The bundled searchable emoji catalog includes complete multi-scalar choices")

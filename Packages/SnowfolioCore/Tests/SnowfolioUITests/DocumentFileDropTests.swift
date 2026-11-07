@@ -5,7 +5,7 @@ import WebKit
 
 @testable import SnowfolioUI
 
-@Suite("Markdown file drops", .serialized)
+@Suite("Markdown file drops", .serialized, NativeUIExclusive())
 @MainActor
 struct DocumentFileDropTests {
   private func pasteboard(_ urls: [URL]) -> NSPasteboard {

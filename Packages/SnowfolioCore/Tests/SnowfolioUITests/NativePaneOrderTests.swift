@@ -7,7 +7,7 @@ import WebKit
 
 @testable import SnowfolioUI
 
-@Suite("Native pane ordering", .serialized)
+@Suite("Native pane ordering", .serialized, NativeUIExclusive())
 @MainActor
 struct NativePaneOrderTests {
   enum TestError: Error { case timeout }

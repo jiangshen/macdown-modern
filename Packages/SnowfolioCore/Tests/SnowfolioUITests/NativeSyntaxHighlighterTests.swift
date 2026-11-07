@@ -5,7 +5,7 @@ import Testing
 
 @testable import SnowfolioUI
 
-@Suite("Native temporary syntax presentation", .serialized)
+@Suite("Native temporary syntax presentation", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeSyntaxHighlighterTests {
   private func renderedColor(at offset: Int, in editor: NSTextView) throws -> NSColor? {

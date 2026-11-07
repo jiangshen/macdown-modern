@@ -5,7 +5,7 @@ import Testing
 
 @testable import SnowfolioUI
 
-@Suite("TextKit 2 native editor", .serialized)
+@Suite("TextKit 2 native editor", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeMarkdownEditorTests {
   @Test("The actual editing surface uses TextKit 2 and native find")

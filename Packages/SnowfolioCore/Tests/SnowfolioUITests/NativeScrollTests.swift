@@ -8,7 +8,7 @@ import WebKit
 
 @testable import SnowfolioUI
 
-@Suite("Native source and preview scrolling", .serialized)
+@Suite("Native source and preview scrolling", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeScrollTests {
   enum TestError: Error { case timeout(String) }

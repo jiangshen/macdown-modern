@@ -8,7 +8,7 @@ import WebKit
 
 @testable import SnowfolioUI
 
-@Suite("Native reading magnification", .serialized)
+@Suite("Native reading magnification", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeZoomTests {
   enum TestError: Error { case timeout(String) }
