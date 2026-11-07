@@ -266,6 +266,10 @@ struct NativeEditorThemeTests {
     let font = NSFont.monospacedSystemFont(ofSize: 14, weight: .regular)
     for source in [
       "- first\n**中文 😀** tail", "- first\r\n\t**中文 😀** tail",
+      "before�\0 **中文 😀** tail", "- first\r\n\t\0 **中文 😀** tail",
+      "> before\0 _start\n**中文 😀** end_ tail",
+      "[tar\0get]: /value \"Ti\0tle\"\nbody\0 **中文 😀** tail [tar\0get]",
+      "before\0 `a\\|b` tail\n| a\\|b\0 **中文 😀** | Other |\n|---|---|\n| more | `\\|` |",
       "> first\r**中文 😀** tail", ">\t**中文 😀** tail",
       "> before _start\n**中文 😀** end_ tail",
       "| Header | Other |\n|---|---|\n| a\\|b **中文 😀** tail | `\\|` |",

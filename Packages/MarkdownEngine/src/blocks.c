@@ -805,6 +805,14 @@ static void S_parser_feed(cmark_parser *parser, const unsigned char *buffer,
         cmark_strbuf_put(&parser->linebuf, buffer, chunk_len);
         // add replacement character
         cmark_strbuf_put(&parser->linebuf, repl, 3);
+        if (!parser->input_source_notified && (parser->options & CMARK_OPT_SOURCEPOS)) {
+          parser->input_source_notified = true;
+          for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {
+            cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;
+            if (extension->input_source_func)
+              extension->input_source_func(extension, eol, 1, repl, 3);
+          }
+        }
       } else {
         cmark_strbuf_put(&parser->linebuf, buffer, chunk_len);
       }

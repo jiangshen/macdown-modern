@@ -313,6 +313,16 @@ typedef struct {
 typedef void (*cmark_text_source_func) (cmark_syntax_extension *extension,
                                         const cmark_text_source_event *event);
 
+/** Local source-only bridge (not upstream): notification of an actual native
+ * input normalization. With CMARK_OPT_SOURCEPOS, the first NUL replacement in
+ * a parse reports the original byte and replacement UTF-8 bytes. Pointers are
+ * borrowed only for this callback. Observers must not change parser content,
+ * state, ownership or grammar; they may prepare source-coordinate projections.
+ */
+typedef void (*cmark_input_source_func) (cmark_syntax_extension *extension,
+                                         const unsigned char *original, int32_t original_size,
+                                         const unsigned char *normalized, int32_t normalized_size);
+
 typedef cmark_node *(*cmark_postprocess_func) (cmark_syntax_extension *extension,
                                                cmark_parser *parser,
                                                cmark_node *root);
@@ -491,6 +501,10 @@ bool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_text_source_func(cmark_syntax_extension *extension,
                                                  cmark_text_source_func func);
+
+CMARK_GFM_EXPORT
+void cmark_syntax_extension_set_input_source_func(cmark_syntax_extension *extension,
+                                                  cmark_input_source_func func);
 
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_postprocess_func(cmark_syntax_extension *extension,

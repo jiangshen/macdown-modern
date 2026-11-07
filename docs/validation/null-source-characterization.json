@@ -342,5 +342,10 @@
     "Project final native node and definition columns to physical source after all native postprocessing and before AST/HTML/syntax exposure; fold node projection into the existing AST traversal if practical",
     "Change split-prefix endpoint lookup to the same normalized line domain; preserve authored U+FFFD and distinguish it from a replaced input NUL",
     "Validate newline/container/table/dialect/reference/footnote/code/feed-boundary and native-font cases, plus ordinary-input overhead and ownership"
-  ]
+  ],
+  "resolution": {
+    "status": "corrected locally; hosted acceptance pending",
+    "ledger": "input-source-projection.json",
+    "scope": "Historical failures above remain evidence for the recorded pre-change revisions."
+  }
 }

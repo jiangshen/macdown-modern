@@ -113,6 +113,11 @@
       "before": "static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {",
       "after": "bool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node *node) {\n  if (!parser || !node || S_type(node) != CMARK_NODE_PARAGRAPH)\n    return false;\n  return resolve_reference_link_definitions(parser, node);\n}\n\nstatic cmark_node *finalize(cmark_parser *parser, cmark_node *b) {",
       "reason": "Reuse native reference resolution for paragraphs introduced by an extension split"
+    },
+    {
+      "before": "        cmark_strbuf_put(&parser->linebuf, repl, 3);",
+      "after": "        cmark_strbuf_put(&parser->linebuf, repl, 3);\n        if (!parser->input_source_notified && (parser->options & CMARK_OPT_SOURCEPOS)) {\n          parser->input_source_notified = true;\n          for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {\n            cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;\n            if (extension->input_source_func)\n              extension->input_source_func(extension, eol, 1, repl, 3);\n          }\n        }",
+      "reason": "Observe the actual first native NUL replacement before normalized lines are parsed; keep recognition and bytes unchanged"
     }
   ],
   "src/include/syntax_extension.h": [
@@ -145,6 +150,11 @@
       "before": "  cmark_block_split_func          block_split_func;",
       "after": "  cmark_block_split_func          block_split_func;\n  cmark_text_source_func          text_source_func;",
       "reason": "Store optional decoded-literal source observation"
+    },
+    {
+      "before": "  cmark_text_source_func          text_source_func;",
+      "after": "  cmark_text_source_func          text_source_func;\n  cmark_input_source_func         input_source_func;",
+      "reason": "Store optional native input source observation"
     }
   ],
   "src/syntax_extension.c": [
@@ -177,6 +187,11 @@
       "before": "void cmark_syntax_extension_set_postprocess_func",
       "after": "void cmark_syntax_extension_set_text_source_func(cmark_syntax_extension *extension,\n                                                 cmark_text_source_func func) {\n  extension->text_source_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
       "reason": "Set the optional source-only native text observer"
+    },
+    {
+      "before": "void cmark_syntax_extension_set_postprocess_func",
+      "after": "void cmark_syntax_extension_set_input_source_func(cmark_syntax_extension *extension,\n                                                  cmark_input_source_func func) {\n  extension->input_source_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Set the native input-normalization source observer"
     }
   ],
   "src/include/cmark-gfm-extension_api.h": [
@@ -234,6 +249,16 @@
       "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
       "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_text_source_func(cmark_syntax_extension *extension,\n                                                 cmark_text_source_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
       "reason": "Configure the optional native text-partition source observer"
+    },
+    {
+      "before": "typedef cmark_node *(*cmark_postprocess_func)",
+      "after": "/** Local source-only bridge (not upstream): notification of an actual native\n * input normalization. With CMARK_OPT_SOURCEPOS, the first NUL replacement in\n * a parse reports the original byte and replacement UTF-8 bytes. Pointers are\n * borrowed only for this callback. Observers must not change parser content,\n * state, ownership or grammar; they may prepare source-coordinate projections.\n */\ntypedef void (*cmark_input_source_func) (cmark_syntax_extension *extension,\n                                         const unsigned char *original, int32_t original_size,\n                                         const unsigned char *normalized, int32_t normalized_size);\n\ntypedef cmark_node *(*cmark_postprocess_func)",
+      "reason": "Expose actual input normalization as optional source metadata without scanning ordinary input twice"
+    },
+    {
+      "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_input_source_func(cmark_syntax_extension *extension,\n                                                  cmark_input_source_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Configure source-only input-normalization observation"
     }
   ],
   "src/html.c": [
@@ -476,6 +501,13 @@
       "before": "  // Free the detached buffer.\n  cmark_chunk_free(parser->mem, &detached_chunk);",
       "after": "  if (source_started) {\n    source.phase = CMARK_TEXT_SOURCE_END;\n    observe_text_source(parser, &source);\n  }\n\n  // Free the detached buffer.\n  cmark_chunk_free(parser->mem, &detached_chunk);",
       "reason": "End source observation before freeing the borrowed native buffer"
+    }
+  ],
+  "src/include/parser.h": [
+    {
+      "before": "  bool last_buffer_ended_with_cr;",
+      "after": "  bool last_buffer_ended_with_cr;\n  bool input_source_notified;",
+      "reason": "Scope source normalization notification once per parse; ordinary parser reset clears it with the existing memset"
     }
   ]
 }

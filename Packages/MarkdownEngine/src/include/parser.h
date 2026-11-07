@@ -49,6 +49,7 @@ struct cmark_parser {
   /* Options set by the user, see the Options section in cmark.h */
   int options;
   bool last_buffer_ended_with_cr;
+  bool input_source_notified;
   size_t total_size;
   cmark_llist *syntax_extensions;
   cmark_llist *inline_syntax_extensions;

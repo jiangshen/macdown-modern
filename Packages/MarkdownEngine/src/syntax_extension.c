@@ -153,6 +153,11 @@ void cmark_syntax_extension_set_text_source_func(cmark_syntax_extension *extensi
   extension->text_source_func = func;
 }
 
+void cmark_syntax_extension_set_input_source_func(cmark_syntax_extension *extension,
+                                                  cmark_input_source_func func) {
+  extension->input_source_func = func;
+}
+
 void cmark_syntax_extension_set_postprocess_func(cmark_syntax_extension *extension,
                                                  cmark_postprocess_func func) {
   extension->postprocess_func = func;

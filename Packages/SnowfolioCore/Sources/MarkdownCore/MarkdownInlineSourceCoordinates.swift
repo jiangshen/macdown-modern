@@ -2,7 +2,8 @@ import Foundation
 import cmark_gfm
 import cmark_gfm_extensions
 
-/// Maps native normalized inline buffers back to their physical source lines.
+/// Maps native inline buffers to full source-line columns. Native input
+/// normalization is projected to original bytes after all native postprocessing.
 /// Native parsing owns the grammar. We require byte identity before using a map;
 /// container prefixes, tabs and recursive inline contexts never need reparsing.
 final class MarkdownInlineSourceCoordinates {
@@ -246,7 +247,7 @@ final class MarkdownInlineSourceCoordinates {
     else { return }
     // Native recognition proves a complete-line partition. Its bounded prefix
     // ends at that physical line's end; only the suffix needs a fragment map.
-    prefix.pointee.end_column = Int32(source.lines[Int(prefix.pointee.end_line) - 1].count)
+    prefix.pointee.end_column = Int32(source.nativeLine(Int(prefix.pointee.end_line)).count)
     let mapping = context(node, skipping: consumed)
     func reconcile(_ child: UnsafeMutablePointer<cmark_node>, end: Bool = true) {
       let line = Int(child.pointee.start_line)
@@ -344,7 +345,7 @@ final class MarkdownInlineSourceCoordinates {
     let line = Int(parent.pointee.start_line)
     let base = Int(parent.pointee.start_column - 1 + parent.pointee.internal_offset)
     guard line > 0, line <= source.lines.count, base >= 0, !normalized.isEmpty else { return nil }
-    let physical = source.bytes[source.lines[line - 1]]
+    let physical = source.nativeLine(line)
     let first = Int(cmark_gfm_extensions_get_table_cell_source_offset(parent, 0, false))
     let firstEnd = Int(cmark_gfm_extensions_get_table_cell_source_offset(parent, 0, true))
     let last = Int(
@@ -378,7 +379,7 @@ final class MarkdownInlineSourceCoordinates {
 
   private func rootRow(_ normalized: UnsafeBufferPointer<UInt8>, line: Int, seed: Int?) -> Row? {
     guard line > 0, line <= source.lines.count, !normalized.isEmpty else { return nil }
-    let physical = source.bytes[source.lines[line - 1]]
+    let physical = source.nativeLine(line)
     var leading = 0
     while leading < normalized.count, normalized[leading] == 32 || normalized[leading] == 9 {
       leading += 1

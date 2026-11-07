@@ -114,11 +114,13 @@ public actor MarkdownProcessor {
     var callouts: [(UnsafeMutablePointer<cmark_node>, CalloutMarker)] = []
     var transformedDestinations: [String: String] = [:]
     var identifiers: [UInt: Int] = [:]
+    let inputProjection = sourceMetadata.inputProjection
     while true {
       let event = cmark_iter_next(iterator)
       if event == CMARK_EVENT_DONE { break }
       guard event == CMARK_EVENT_ENTER, let node = cmark_iter_get_node(iterator) else { continue }
       if nodes.count.isMultiple(of: 256) { try Task.checkCancellation() }
+      inputProjection?.project(node)
       let id = nodes.count
       identifiers[UInt(bitPattern: node)] = id
       let parentID = cmark_node_parent(node).flatMap { identifiers[UInt(bitPattern: $0)] }

@@ -2,18 +2,16 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current code checkpoint: `33e9046`, automatic URL/www/email source reconciliation.
-Local evidence verifies 277 package tests / 54 suites, 38 Address Sanitizer tests / five
-suites, eight arm64 test executables, an arm64 app build and 652 CommonMark examples.
-Downloaded hosted artifacts confirm the core totals and nine passing native UI tests.
-Exact results, render measurements and runtime warning counts are recorded in
-[the checkpoint ledger](validation/automatic-link-source.json).
+Current implementation checkpoint: native input normalization source projection.
+Local evidence verifies 284 package tests / 55 suites, 29 Address Sanitizer tests /
+four suites, eight arm64 test executables, an arm64 app build and 652 CommonMark
+examples. Hosted acceptance is pending the code push. Exact evidence and render
+measurements are in [the checkpoint ledger](validation/input-source-projection.json).
 
-Next source-coordinate work is the reproduced
-[native NUL replacement projection](validation/null-source-characterization.json).
-It is not fixed or counted as passing. Direct desktop, real IME/VoiceOver,
-custom CSS/templates, remaining parity, complete native performance, release readiness
-and safe coupled legacy retirement remain required by the full plan. The chronological
+The previously reproduced native NUL replacement source-range gate is corrected
+locally; its historical failures remain in the characterization ledger. Direct desktop,
+real IME/VoiceOver, custom CSS/templates, remaining parity, complete native performance,
+release readiness and safe coupled legacy retirement remain required. The chronological
 evidence below preserves prior checkpoints; it does not close these gates.
 
 ## Scope and source of truth
@@ -2426,3 +2424,36 @@ cases, eight arm64 executables, 652/652 CommonMark examples and nine native docu
 UI tests with zero failures. Runtime diagnostics remain recorded in the ledger and
 do not close performance/integration gates. The user's desktop remains unavailable;
 this records automated acceptance of the existing fix and added regression coverage.
+
+
+## Native input normalization projection — 2026-11-07
+
+The native parser expands each input NUL byte into the three-byte UTF-8 replacement
+character before block parsing. Previous source identity checks then failed and left
+subsequent source highlights shifted. A source-only optional callback now observes the
+first actual replacement, with borrowed pointers scoped to the callback. Swift owns
+normalized copies and sparse offset maps only for affected source lines. All intermediate
+container/tab/table/recursive/reference/note/text mappings use the native input domain;
+final definitions and AST/HTML/syntax node columns project to physical input only after
+native postprocessing. This preserves authored replacement characters and document bytes.
+Node projection shares the existing AST traversal. Dense buffer construction checks
+cancellation. The local C bridge changes no parser grammar, literal content or ownership;
+all patches reverse exactly to their pinned source hashes.
+
+Six new test methods cover line endings, Unicode, NUL interiors, references/notes,
+definition-only and paragraph/table splits, escaped cells, recursive dialects, math,
+leading/trailing/consecutive replacements and native feed boundaries. Existing native
+font-placement tests add NUL and authored-replacement fixtures and preserve neighboring
+fonts, source, selection, revision and undo. Final local checks pass 284 package tests /
+55 suites, 29 ASAN tests / four suites, eight arm64 executables, native app build and all
+652 CommonMark examples, with clean captured diagnostics and strict changed-Swift format.
+
+Exact before/after release measurements use baseline `dae72fc`, identical harness and
+54 fresh process samples. Ordinary workload timings are close. The deliberately dense
+1 MB NUL case rises from 62.809 to 73.769 ms; 10 MB rises from 681.533 to 797.861 ms while
+previously shifted source ranges become correct. The 10 MB case still exceeds one GiB
+peak RSS and remains an M6 optimization target. These are render measurements, not app
+typing/energy/leak acceptance. Desktop access remains locked. Full evidence, costs and
+limitations are recorded in `validation/input-source-projection.json`; broader CSS/template,
+productivity, document/accessibility, native performance, release and retirement gates
+remain active. Hosted follow-up is recorded after the code push.

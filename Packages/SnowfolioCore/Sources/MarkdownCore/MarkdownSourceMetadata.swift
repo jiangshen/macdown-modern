@@ -17,6 +17,7 @@ final class MarkdownSourceMetadata {
   private(set) lazy var bytes = Array(source.utf8)
   private(set) lazy var lines = Self.lineRanges(bytes)
   private lazy var inlineCoordinates = MarkdownInlineSourceCoordinates(source: self)
+  private(set) var inputProjection: MarkdownInputSourceProjection?
   private let collectDefinitions: Bool
   private(set) var definitions: [Definition] = []
 
@@ -50,6 +51,19 @@ final class MarkdownSourceMetadata {
       Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
         .inlineCoordinates.textSources.observe(event.pointee)
     }
+    cmark_syntax_extension_set_input_source_func(native) {
+      extensionPointer, original, originalSize, normalized, normalizedSize in
+      guard let extensionPointer, let original, let normalized,
+        originalSize == 1, original[0] == 0, normalizedSize == 3,
+        normalized[0] == 239, normalized[1] == 191, normalized[2] == 189,
+        let pointer = cmark_syntax_extension_get_private(extensionPointer)
+      else { return }
+      let owner = Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
+      if owner.inputProjection == nil {
+        owner.inputProjection = MarkdownInputSourceProjection(
+          bytes: owner.bytes, lines: owner.lines)
+      }
+    }
     if collectDefinitions {
       cmark_syntax_extension_set_block_source_func(native) { extensionPointer, node in
         guard let extensionPointer, let node,
@@ -70,19 +84,35 @@ final class MarkdownSourceMetadata {
 
   deinit { cmark_syntax_extension_free(cmark_get_default_mem_allocator(), native) }
 
-  func finishParsing() { inlineCoordinates.textSources.finish() }
+  func nativeLine(_ line: Int) -> ArraySlice<UInt8> {
+    if let projected = inputProjection?.nativeLine(line) { return projected }
+    guard line > 0, line <= lines.count else { return bytes[0..<0] }
+    return bytes[lines[line - 1]]
+  }
+
+  func finishParsing() {
+    inlineCoordinates.textSources.finish()
+    if let inputProjection {
+      definitions = definitions.map {
+        .init(
+          kind: $0.kind, range: inputProjection.range($0.range), quoted: $0.quoted,
+          inNote: $0.inNote)
+      }
+    }
+  }
 
   private func observe(_ node: UnsafeMutablePointer<cmark_node>) {
     guard cmark_node_get_type(node) == CMARK_NODE_FOOTNOTE_DEFINITION else { return }
     let firstLine = Int(node.pointee.start_line)
     let lastLine = Int(node.pointee.end_line)
     let firstColumn = Int(node.pointee.start_column - node.pointee.internal_offset)
+    let first = nativeLine(firstLine)
     guard firstLine > 0, lastLine >= firstLine, lastLine <= lines.count,
-      firstColumn > 0, firstColumn + 1 <= lines[firstLine - 1].count
+      firstColumn > 0, firstColumn + 1 <= first.count
     else { return }
-    let marker = lines[firstLine - 1].lowerBound + firstColumn - 1
+    let marker = first.startIndex + firstColumn - 1
     // Prefix length comes from the native scanner, not a second note grammar.
-    guard bytes[marker] == 91, bytes[marker + 1] == 94 else { return }
+    guard first[marker] == 91, first[marker + 1] == 94 else { return }
     var quoted = false
     var parent = cmark_node_parent(node)
     while let current = parent {
@@ -133,13 +163,13 @@ final class MarkdownSourceMetadata {
           kind: .reference,
           range: .init(
             start: .init(line: firstLine, column: Int(node.pointee.start_column)),
-            end: .init(line: lastLine, column: lines[lastLine - 1].count)), quoted: quoted,
+            end: .init(line: lastLine, column: nativeLine(lastLine).count)), quoted: quoted,
           inNote: inNote))
     }
     guard removedLines > 0 else { return }
     let bodyLine = firstLine + removedLines
     guard bodyLine > 0, bodyLine <= lines.count else { return }
-    let physical = bytes[lines[bodyLine - 1]]
+    let physical = nativeLine(bodyLine)
     let column: Int
     if count == content.count {
       // Resolving references while testing a setext line can consume the entire

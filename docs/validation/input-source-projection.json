@@ -1,0 +1,791 @@
+{
+  "milestone": "Native input normalization source projection",
+  "date": "2026-11-07",
+  "fullGoal": "active; incomplete",
+  "status": "corrected and locally validated; hosted acceptance pending",
+  "baselineCommit": "dae72fc",
+  "implementation": [
+    "Observe the first actual native NUL-to-UTF8 replacement under SOURCEPOS through an optional source-only callback; no extra ordinary-input scan and no grammar/content/ownership changes.",
+    "Own normalized bytes and sparse replacement offsets for affected source lines only; retain original physical bytes/line ranges and distinguish authored U+FFFD.",
+    "Keep container, partial-tab, table-escape, recursive inline, reference/note and decoded-text mapping in one native input-normalized coordinate domain.",
+    "After native postprocessing, project definitions and final node columns back to physical input; node projection is folded into the existing AST traversal.",
+    "Borrowed input pointers are inspected only in callbacks and never retained; dense projection construction checks cancellation. Native reset clears the per-parse notification flag.",
+    "First-party application logic remains Swift; all local native source replacements reverse exactly to the recorded upstream files."
+  ],
+  "validation": {
+    "packageTests": 284,
+    "packageSuites": 55,
+    "addressSanitizerTests": 29,
+    "addressSanitizerSuites": 4,
+    "addressSanitizerDiagnostics": 0,
+    "nativeArm64AppBuild": "passed",
+    "arm64TestExecutables": 8,
+    "commonMark": {
+      "spec": "CommonMark 0.31.2",
+      "source": "https://spec.commonmark.org/0.31.2/spec.json",
+      "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+      "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+      "total": 652,
+      "passed": 652,
+      "failed": 0,
+      "failures": []
+    },
+    "strictChangedSwiftFormatting": "passed",
+    "nativeProvenance": "passed exact reverse patch and source/license hashes",
+    "editorThemes": "15 original themes and distribution notice verified",
+    "sourceAndSelection": "Native font-placement fixtures pass with unchanged document bytes, revision, selection and undo"
+  },
+  "coverage": [
+    "One/two/eight NULs and authored replacement characters across LF/CRLF/CR, paragraph/heading/quote/lazy-list/partial-tab/table contexts; exact Unicode strong ranges and UTF16 syntax spans.",
+    "Interior bold/code NULs and NULs preceding automatic URL and entity-encoded email.",
+    "NUL reference labels/titles/bodies, definition-only prefixes, split paragraphs and escaped-pipe tables inside root/quote/list/nested containers.",
+    "NUL footnote labels/titles/bodies with split tables; preserved note ancestry and independent following ordinary strong text.",
+    "Recursive underline/highlight/quotation/superscript and inline math, including escaped table prefixes and NULs inside dialect bodies.",
+    "Native feed boundaries around byte 65536 and 131072; CRLF crossing a feed boundary; leading, trailing and consecutive NULs.",
+    "Syntax-enabled/plain HTML and node models agree; actual native fonts target the correct span without changing neighboring text, source, selection or undo."
+  ],
+  "evidence": {
+    "full": {
+      "artifacts": {
+        "log": "build.log",
+        "report": "report.json",
+        "run": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-DD817E1B-5514-4339-8EAD-04925F07EA92"
+      },
+      "collection": {
+        "buildCoverage": "unknown",
+        "issues": [],
+        "sources": [
+          "log",
+          "events"
+        ],
+        "status": "complete"
+      },
+      "command": {
+        "durationMs": 24100,
+        "exitCode": 0,
+        "interruptionSignal": null,
+        "kind": "swift-test",
+        "signal": null,
+        "status": "succeeded"
+      },
+      "counts": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "diagnostics": [],
+      "omissions": {
+        "details": 0,
+        "diagnostics": 0,
+        "issues": 0,
+        "warningFiles": 0
+      },
+      "schemaVersion": 1
+    },
+    "asan": {
+      "artifacts": {
+        "log": "build.log",
+        "report": "report.json",
+        "run": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-4D4B7968-1479-4AF7-92D7-F356BFA19361"
+      },
+      "collection": {
+        "buildCoverage": "unknown",
+        "issues": [],
+        "sources": [
+          "log",
+          "events"
+        ],
+        "status": "complete"
+      },
+      "command": {
+        "durationMs": 7421,
+        "exitCode": 0,
+        "interruptionSignal": null,
+        "kind": "swift-test",
+        "signal": null,
+        "status": "succeeded"
+      },
+      "counts": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "diagnostics": [],
+      "omissions": {
+        "details": 0,
+        "diagnostics": 0,
+        "issues": 0,
+        "warningFiles": 0
+      },
+      "schemaVersion": 1
+    },
+    "app": {
+      "artifacts": {
+        "log": "build.log",
+        "report": "report.json",
+        "run": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-501B6DBF-72E4-4349-A600-9F220E3F1D45"
+      },
+      "collection": {
+        "buildCoverage": "unknown",
+        "issues": [],
+        "sources": [
+          "log"
+        ],
+        "status": "complete"
+      },
+      "command": {
+        "durationMs": 3696,
+        "exitCode": 0,
+        "interruptionSignal": null,
+        "kind": "xcodebuild",
+        "signal": null,
+        "status": "succeeded"
+      },
+      "counts": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 4,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "diagnostics": [
+        {
+          "file": null,
+          "items": [
+            {
+              "id": "d1",
+              "kind": "tool",
+              "message": "Building targets in dependency order",
+              "severity": "note",
+              "sources": [
+                "log"
+              ]
+            },
+            {
+              "id": "d2",
+              "kind": "tool",
+              "message": "Target dependency graph (26 targets)",
+              "severity": "note",
+              "sources": [
+                "log"
+              ]
+            },
+            {
+              "id": "d3",
+              "kind": "tool",
+              "message": "Disabling hardened runtime with ad-hoc codesigning. (in target 'Snowfolio' from project 'Snowfolio')",
+              "severity": "note",
+              "sources": [
+                "log"
+              ]
+            },
+            {
+              "id": "d4",
+              "kind": "tool",
+              "message": "Using stub executor library with Swift entry point. (in target 'Snowfolio' from project 'Snowfolio')",
+              "severity": "note",
+              "sources": [
+                "log"
+              ]
+            }
+          ]
+        }
+      ],
+      "omissions": {
+        "details": 0,
+        "diagnostics": 0,
+        "issues": 0,
+        "warningFiles": 0
+      },
+      "schemaVersion": 1
+    },
+    "architectures": "/private/tmp/snowfolio-input-architectures.json",
+    "sourceSHA256": {
+      "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownInputSourceProjection.swift": "237ceffc1bf7926ef69a167135e0492066d26a4e616972734674a30f6b63e343",
+      "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownSourceMetadata.swift": "c9c9bc3ff00679bbbf7b154662dc8f13205601c7c4504d1c10839daebea2bd4d",
+      "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownInlineSourceCoordinates.swift": "0bda83aaf426bfa17d1b2b94831457e8643491745e765bcd1334778193ec746f",
+      "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownProcessor.swift": "e5658d2d964fb75f028271e5a1a4076156b920b16b2f013033669989ff14474b",
+      "Packages/MarkdownEngine/src/blocks.c": "2966da0105e3cac1c38068d5c805b3f011bf899fcece17e36ddb53eb89861320",
+      "Packages/MarkdownEngine/src/include/parser.h": "eec62b52fce54c355ba594d256c09225230659dff3437df2f6de7982bd055d73",
+      "Packages/MarkdownEngine/src/include/cmark-gfm-extension_api.h": "3551da864a6dbe84b792cd29c982f025012cfba689fd92d4dbb8cb8c8030e31f",
+      "Packages/MarkdownEngine/src/include/syntax_extension.h": "15a0ecc7b4fd07997283e216e66cae19c732de8e903961913633cf61e1855a13",
+      "Packages/MarkdownEngine/src/syntax_extension.c": "ec87c7ef1f79f459dd8f5b47098e9c447c9e5636968c30af5193079fe61ef8e4",
+      "Packages/MarkdownEngine/Patches.json": "0222e3c95d865b12b6626fd7975866762e6a1609c56ef8a51dc60bbd831cccd6",
+      "Packages/MarkdownEngine/Provenance.json": "fecdc4fa76c4b7847959baae29c94b4423787f9ba0bd59e312c846de4b80198e",
+      "Packages/SnowfolioCore/Tests/MarkdownCoreTests/MarkdownInputSourceTests.swift": "1b06e69ebb765408b73d26260098b480ba9a68d2f333b234b6499c0894ab0599",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorThemeTests.swift": "f48a3934bbbfd26cccb99577a3836f545e963f5490cb7aa31d0cbf6f6b54c5a6",
+      "Tools/PerformanceAudit/Sources/PerformanceAudit/PerformanceAudit.swift": "d2dd6dd973c06cf8918e6bb29f633d1da6c25017ef1c6840404425e3f3e7e92d"
+    }
+  },
+  "performance": {
+    "baselineCommit": "dae72fc",
+    "method": "Identical release arm64 harness; exact archived baseline vs final worktree; three fresh processes per case/version; one first and five warm full renders per process; alternating order; sequential, no overlapping builds or Instruments.",
+    "raw": "/private/tmp/snowfolio-input-performance.json",
+    "rawSHA256": "b6692cfde9290db624bf5a5ad0e77e146bb41a5b8066ed22bfbc8581ba84befe",
+    "harnessSHA256": "d2dd6dd973c06cf8918e6bb29f633d1da6c25017ef1c6840404425e3f3e7e92d",
+    "processSamples": 54,
+    "cases": [
+      {
+        "workload": "prose",
+        "bytes": 1000000,
+        "before": {
+          "medianWarmMilliseconds": 17.162375,
+          "processWarmMedianMilliseconds": [
+            16.877916,
+            17.333917,
+            17.162375
+          ],
+          "firstRenderMilliseconds": [
+            29.198208,
+            18.700042,
+            18.920375
+          ],
+          "processPeakResidentBytes": [
+            38060032,
+            38076416,
+            39763968
+          ],
+          "nodes": [
+            22227,
+            22227,
+            22227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 16.965208,
+          "processWarmMedianMilliseconds": [
+            17.102958,
+            16.873083,
+            16.965208
+          ],
+          "firstRenderMilliseconds": [
+            26.731584,
+            18.249667,
+            18.77475
+          ],
+          "processPeakResidentBytes": [
+            39878656,
+            38092800,
+            39862272
+          ],
+          "nodes": [
+            22227,
+            22227,
+            22227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "workload": "prose",
+        "bytes": 10000000,
+        "before": {
+          "medianWarmMilliseconds": 188.771291,
+          "processWarmMedianMilliseconds": [
+            191.125666,
+            188.771291,
+            185.368667
+          ],
+          "firstRenderMilliseconds": [
+            211.573416,
+            209.034209,
+            205.405584
+          ],
+          "processPeakResidentBytes": [
+            337395712,
+            337281024,
+            337395712
+          ],
+          "nodes": [
+            222227,
+            222227,
+            222227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 184.977,
+          "processWarmMedianMilliseconds": [
+            189.367959,
+            184.977,
+            183.191416
+          ],
+          "firstRenderMilliseconds": [
+            205.160875,
+            200.8475,
+            205.144167
+          ],
+          "processPeakResidentBytes": [
+            337444864,
+            337444864,
+            337379328
+          ],
+          "nodes": [
+            222227,
+            222227,
+            222227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "before": {
+          "medianWarmMilliseconds": 97.735042,
+          "processWarmMedianMilliseconds": [
+            97.735042,
+            98.882916,
+            97.044
+          ],
+          "firstRenderMilliseconds": [
+            396.2425,
+            398.175916,
+            396.394833
+          ],
+          "processPeakResidentBytes": [
+            160710656,
+            160645120,
+            160694272
+          ],
+          "nodes": [
+            124571,
+            124571,
+            124571
+          ],
+          "syntaxRuns": [
+            31940,
+            31940,
+            31940
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 97.965708,
+          "processWarmMedianMilliseconds": [
+            97.383,
+            98.427292,
+            97.965708
+          ],
+          "firstRenderMilliseconds": [
+            398.287625,
+            393.442333,
+            403.094709
+          ],
+          "processPeakResidentBytes": [
+            160088064,
+            160071680,
+            160202752
+          ],
+          "nodes": [
+            124571,
+            124571,
+            124571
+          ],
+          "syntaxRuns": [
+            31940,
+            31940,
+            31940
+          ]
+        }
+      },
+      {
+        "workload": "long-line",
+        "bytes": 1000000,
+        "before": {
+          "medianWarmMilliseconds": 37.0335,
+          "processWarmMedianMilliseconds": [
+            37.142916,
+            37.0335,
+            36.595167
+          ],
+          "firstRenderMilliseconds": [
+            40.0495,
+            39.325209,
+            39.023291
+          ],
+          "processPeakResidentBytes": [
+            73842688,
+            72466432,
+            73924608
+          ],
+          "nodes": [
+            73530,
+            73530,
+            73530
+          ],
+          "syntaxRuns": [
+            29410,
+            29410,
+            29410
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 36.589709,
+          "processWarmMedianMilliseconds": [
+            36.540833,
+            36.735917,
+            36.589709
+          ],
+          "firstRenderMilliseconds": [
+            39.658792,
+            40.047958,
+            39.196917
+          ],
+          "processPeakResidentBytes": [
+            72499200,
+            73891840,
+            73908224
+          ],
+          "nodes": [
+            73530,
+            73530,
+            73530
+          ],
+          "syntaxRuns": [
+            29410,
+            29410,
+            29410
+          ]
+        }
+      },
+      {
+        "workload": "table-prefix",
+        "bytes": 1000000,
+        "before": {
+          "medianWarmMilliseconds": 10.272959,
+          "processWarmMedianMilliseconds": [
+            10.272959,
+            10.089209,
+            10.305042
+          ],
+          "firstRenderMilliseconds": [
+            10.639292,
+            10.421208,
+            10.520708
+          ],
+          "processPeakResidentBytes": [
+            19333120,
+            19333120,
+            19316736
+          ],
+          "nodes": [
+            21,
+            21,
+            21
+          ],
+          "syntaxRuns": [
+            3,
+            3,
+            3
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 10.125167,
+          "processWarmMedianMilliseconds": [
+            10.105334,
+            10.179459,
+            10.125167
+          ],
+          "firstRenderMilliseconds": [
+            10.485667,
+            10.383709,
+            10.589209
+          ],
+          "processPeakResidentBytes": [
+            19283968,
+            19333120,
+            19300352
+          ],
+          "nodes": [
+            21,
+            21,
+            21
+          ],
+          "syntaxRuns": [
+            3,
+            3,
+            3
+          ]
+        }
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 1000000,
+        "before": {
+          "medianWarmMilliseconds": 80.158875,
+          "processWarmMedianMilliseconds": [
+            81.377542,
+            78.067,
+            80.158875
+          ],
+          "firstRenderMilliseconds": [
+            85.174916,
+            86.596834,
+            86.474584
+          ],
+          "processPeakResidentBytes": [
+            116703232,
+            116703232,
+            118407168
+          ],
+          "nodes": [
+            102565,
+            102565,
+            102565
+          ],
+          "syntaxRuns": [
+            64100,
+            64100,
+            64100
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 78.598583,
+          "processWarmMedianMilliseconds": [
+            78.598583,
+            77.924667,
+            80.916583
+          ],
+          "firstRenderMilliseconds": [
+            84.371083,
+            84.124417,
+            85.247917
+          ],
+          "processPeakResidentBytes": [
+            116211712,
+            116195328,
+            117063680
+          ],
+          "nodes": [
+            102565,
+            102565,
+            102565
+          ],
+          "syntaxRuns": [
+            64100,
+            64100,
+            64100
+          ]
+        }
+      },
+      {
+        "workload": "nul",
+        "bytes": 100000,
+        "before": {
+          "medianWarmMilliseconds": 6.110292,
+          "processWarmMedianMilliseconds": [
+            6.110292,
+            6.126041,
+            6.04275
+          ],
+          "firstRenderMilliseconds": [
+            6.9415,
+            6.540458,
+            6.568541
+          ],
+          "processPeakResidentBytes": [
+            19513344,
+            19513344,
+            19431424
+          ],
+          "nodes": [
+            13725,
+            13725,
+            13725
+          ],
+          "syntaxRuns": [
+            3920,
+            3920,
+            3920
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 7.110417,
+          "processWarmMedianMilliseconds": [
+            6.94075,
+            7.122042,
+            7.110417
+          ],
+          "firstRenderMilliseconds": [
+            7.6705,
+            7.71875,
+            7.392208
+          ],
+          "processPeakResidentBytes": [
+            20054016,
+            20103168,
+            20103168
+          ],
+          "nodes": [
+            13725,
+            13725,
+            13725
+          ],
+          "syntaxRuns": [
+            3920,
+            3920,
+            3920
+          ]
+        }
+      },
+      {
+        "workload": "nul",
+        "bytes": 1000000,
+        "before": {
+          "medianWarmMilliseconds": 62.809042,
+          "processWarmMedianMilliseconds": [
+            62.809042,
+            65.493625,
+            62.543709
+          ],
+          "firstRenderMilliseconds": [
+            70.480166,
+            69.676417,
+            69.638333
+          ],
+          "processPeakResidentBytes": [
+            113344512,
+            113328128,
+            113360896
+          ],
+          "nodes": [
+            137254,
+            137254,
+            137254
+          ],
+          "syntaxRuns": [
+            39214,
+            39214,
+            39214
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 73.768917,
+          "processWarmMedianMilliseconds": [
+            74.10925,
+            73.652583,
+            73.768917
+          ],
+          "firstRenderMilliseconds": [
+            81.180916,
+            82.488375,
+            79.3275
+          ],
+          "processPeakResidentBytes": [
+            116195328,
+            116228096,
+            116277248
+          ],
+          "nodes": [
+            137254,
+            137254,
+            137254
+          ],
+          "syntaxRuns": [
+            39214,
+            39214,
+            39214
+          ]
+        }
+      },
+      {
+        "workload": "nul",
+        "bytes": 10000000,
+        "before": {
+          "medianWarmMilliseconds": 681.532584,
+          "processWarmMedianMilliseconds": [
+            680.1305,
+            681.532584,
+            695.363333
+          ],
+          "firstRenderMilliseconds": [
+            796.162333,
+            744.754209,
+            748.911667
+          ],
+          "processPeakResidentBytes": [
+            1186267136,
+            1186234368,
+            1186250752
+          ],
+          "nodes": [
+            1372551,
+            1372551,
+            1372551
+          ],
+          "syntaxRuns": [
+            392156,
+            392156,
+            392156
+          ]
+        },
+        "after": {
+          "medianWarmMilliseconds": 797.861458,
+          "processWarmMedianMilliseconds": [
+            784.813875,
+            797.861458,
+            809.143291
+          ],
+          "firstRenderMilliseconds": [
+            890.757583,
+            859.39075,
+            900.166875
+          ],
+          "processPeakResidentBytes": [
+            1155317760,
+            1155399680,
+            1155399680
+          ],
+          "nodes": [
+            1372551,
+            1372551,
+            1372551
+          ],
+          "syntaxRuns": [
+            392156,
+            392156,
+            392156
+          ]
+        }
+      }
+    ],
+    "captureNote": "All 54 process records were written successfully. The console-only summary after capture had a Python naming error; raw counts were independently validated and summary reprinted. Saved runner is corrected; no timing samples were repeated.",
+    "limits": [
+      "Render-only timings exclude native typing/layout, WebKit publication, file IO, math/diagrams and exports.",
+      "NUL stress source ranges are incorrect before and correct after; similar syntax-run counts do not imply correct prior placement.",
+      "Three process medians are not a p95, energy result or leak measurement.",
+      "The 10 MB NUL case remains above one GiB peak RSS and outside the automatic preview size guard; broader M6 optimization remains open."
+    ]
+  },
+  "desktop": "Mac remains locked; no new desktop visual, real IME or VoiceOver acceptance claimed. Existing pending unlock request not repeated.",
+  "hosted": {
+    "status": "pending push"
+  },
+  "remaining": [
+    "Custom CSS/templates and remaining feature parity",
+    "Real desktop, IME, VoiceOver, scroll/resize/document acceptance",
+    "M5 integrations and M6 native performance/release acceptance",
+    "Safe coupled legacy retirement after parity; licenses retained"
+  ]
+}

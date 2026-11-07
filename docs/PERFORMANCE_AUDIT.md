@@ -232,3 +232,35 @@ render-only measurements exclude native input/layout, WebKit publication, file I
 math and diagrams. Ten MB renders exceed the automatic-preview guard. Full M6 remains
 open. Methodology, per-process timings/RSS, harness checksum and all 54 raw process
 samples are recorded in `validation/automatic-link-source.json`.
+
+
+## Native input normalization source cost — 2026-11-07
+
+Exact baseline `dae72fc` and the final worktree use the same release arm64 harness.
+Three fresh processes per version/case each render once, then perform five full warm
+rerenders; version order alternates. Measurement processes run sequentially without
+builds or Instruments. Values are medians of three process warm medians, in ms.
+
+| Workload | Bytes | Before ms | After ms |
+| --- | ---: | ---: | ---: |
+| prose | 1,000,000 | 17.162 | 16.965 |
+| prose | 10,000,000 | 188.771 | 184.977 |
+| mixed | 1,000,000 | 97.735 | 97.966 |
+| long-line | 1,000,000 | 37.033 | 36.590 |
+| table-prefix | 1,000,000 | 10.273 | 10.125 |
+| autolinks | 1,000,000 | 80.159 | 78.599 |
+| nul | 100,000 | 6.110 | 7.110 |
+| nul | 1,000,000 | 62.809 | 73.769 |
+| nul | 10,000,000 | 681.533 | 797.861 |
+
+Ordinary samples remain close. The `nul` workload repeats authored U+FFFD, two input
+NULs, Unicode strong text and inline code in short paragraphs. Its source ranges are
+incorrect before the change and correct afterward, despite matching syntax-run counts.
+Correct placement costs about 11 ms at 1 MB and 116 ms at 10 MB in this matrix. The 10 MB
+case remains above one GiB peak process RSS in both versions; a high-water mark does not
+establish a leak, and small RSS differences do not establish a memory improvement.
+
+These measurements exclude native app typing/layout, WebKit publication, file IO,
+math/diagrams and exports; they do not establish p95, energy or full M6 acceptance.
+Raw samples, binary/harness hashes and limitations are recorded in
+`validation/input-source-projection.json`. The standalone harness also accepts `nul`.
