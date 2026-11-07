@@ -1,0 +1,72 @@
+{
+  "milestone": "Optional quoted-text dialect; full modernization remains active",
+  "date": "2026-11-07",
+  "preference": {
+    "key": "extensionQuote",
+    "setting": "Quoted text",
+    "default": false,
+    "catalogCount": 40,
+    "independentOfSmartPunctuation": true
+  },
+  "implementation": {
+    "owner": "Swift MarkdownDelimiterExtensions",
+    "AST": "quotation",
+    "HTML": "q",
+    "childGrammar": "native cmark with shared references",
+    "sourceRewriting": false,
+    "scanner": "Per-parser quote boundary through existing cmark_inlines_add_special_character; no smart-quote delimiter override",
+    "newNativePatches": false,
+    "notice": "Existing complete Hoedown ISC notice retained and bundled"
+  },
+  "originalCharacterization": {
+    "engine": "Hoedown 3.0.7",
+    "cases": 80,
+    "explicitNativeDifferences": 9,
+    "skips": 0,
+    "exactReproduction": "passed",
+    "differences": [
+      "Native default tab preservation",
+      "Equivalent XHTML void images",
+      "CommonMark paragraph trailing spaces",
+      "Existing heading anchors",
+      "Native active-script filter"
+    ]
+  },
+  "bounds": {
+    "recursion": 32,
+    "bodyBytes": 65536,
+    "scanWork": "max(65536, sourceBytes * 16); quote-run inspection charged to budget",
+    "fallback": "Native literal/smart punctuation after optional matching exhausts budget; visible source and notice",
+    "adversarial": "100,000 consecutive quotes retain all markers; oversized quotation body remains visible"
+  },
+  "localValidation": {
+    "packageTests": 214,
+    "packageSuites": 43,
+    "arm64TestExecutables": 8,
+    "coreCommonMarkExamples": 652,
+    "addressSanitizerTests": 21,
+    "addressSanitizerSuites": 4,
+    "nativeBuildForTesting": "passed",
+    "changedSwiftStrictFormatting": "passed",
+    "parserSourceAndNotices": "verified; no new C changes"
+  },
+  "nativeCoverage": [
+    "Light/dark WKWebView q markup",
+    "Styled/plain HTML q markup",
+    "Fresh manual-preview output snapshots retain captured option",
+    "Native PDF/print contains complete quotation text",
+    "Shared optional formats, smart punctuation and references",
+    "No nested link ancestors or script/unsafe destination bypass",
+    "Unicode/CRLF coordinates and source colors",
+    "Preference default, migration and explicit false persistence"
+  ],
+  "live": {
+    "quotation": "Observed setting enabled and corresponding source/preview styles",
+    "restore": "Original quote and underline choices both restored off; disposable draft discarded; original document tabs frontmost"
+  },
+  "hostedCurrentRun": "pending branch push",
+  "remaining": [
+    "Independent intraword-emphasis preference",
+    "Remaining full modernization and release acceptance gates"
+  ]
+}

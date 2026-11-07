@@ -227,6 +227,9 @@ enum SettingsCatalog {
           id: "markdownSuperscript", title: "Superscripts",
           detail: "Raise text with ^text or ^(text).", control: .toggle(\.superscript)),
         .init(
+          id: "markdownQuote", title: "Quoted text",
+          detail: "Render \"quoted text\" as a quotation.", control: .toggle(\.quotedText)),
+        .init(
           id: "markdownSmartPunctuation", title: "Smart punctuation",
           keywords: "quotes dashes ellipses typography", control: .toggle(\.smartPunctuation)),
         .init(

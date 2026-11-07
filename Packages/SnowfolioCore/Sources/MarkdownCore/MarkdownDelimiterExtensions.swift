@@ -1,23 +1,27 @@
 import Foundation
 import cmark_gfm
 
-/// Optional legacy underscore grammar. Child Markdown is parsed by cmark; the
-/// compatibility matcher only owns underscore delimiters and their span bounds.
+/// Optional legacy delimiter grammar. Child Markdown is parsed by cmark; the
+/// compatibility matcher only owns underscore/quote delimiters and span bounds.
 /// Span-search semantics derive from Hoedown 3.0.7 (ISC; bundled Hoedown-inline.txt).
 final class MarkdownDelimiterExtensions {
   let native: UnsafeMutablePointer<cmark_syntax_extension>
+  private let underline: Bool
+  private let quotedText: Bool
   private var remainingWork: Int
   private var recursion = 0
   private(set) var limited = false
 
-  private enum Kind: Equatable { case underline, strong, triple }
+  private enum Kind: Equatable { case underline, strong, triple, quotation }
   private struct Span {
     let body: Range<Int>
     let end: Int
     let kind: Kind
   }
 
-  init(sourceLength: Int) throws {
+  init(sourceLength: Int, underline: Bool, quotedText: Bool) throws {
+    self.underline = underline
+    self.quotedText = quotedText
     remainingWork = max(65_536, sourceLength * 16)
     guard let native = cmark_syntax_extension_new("snowfolio_delimiters") else {
       throw MarkdownRenderingError.allocationFailure
@@ -28,21 +32,26 @@ final class MarkdownDelimiterExtensions {
     // does not register a delimiter-stack override for native image/plain scopes.
     cmark_syntax_extension_set_match_inline_before_func(native) {
       ext, parser, _, character, inline in
-      guard character == 95, let ext, let parser, let inline,
+      guard character == 95 || character == 34, let ext, let parser, let inline,
         let state = cmark_syntax_extension_get_private(ext)
       else { return nil }
       return Unmanaged<MarkdownDelimiterExtensions>.fromOpaque(state).takeUnretainedValue()
-        .match(parser, inline: inline)
+        .match(parser, inline: inline, marker: character)
     }
   }
 
   func kind(for node: UnsafeMutablePointer<cmark_node>) -> MarkdownNodeKind? {
-    cmark_node_get_syntax_extension(node) == native ? .underline : nil
+    guard cmark_node_get_syntax_extension(node) == native else { return nil }
+    if let entry = cmark_node_get_on_enter(node), String(cString: entry) == "<q>" {
+      return .quotation
+    }
+    return .underline
   }
 
   private func match(
-    _ parser: UnsafeMutablePointer<cmark_parser>, inline: OpaquePointer
+    _ parser: UnsafeMutablePointer<cmark_parser>, inline: OpaquePointer, marker: UInt8
   ) -> UnsafeMutablePointer<cmark_node>? {
+    guard marker == 95 ? underline : quotedText && !limited else { return nil }
     // Image descriptions retain literal source markers, as in the original app.
     let isImage = cmark_inline_parser_in_bracket(inline, 1) != 0
     guard let chunk = cmark_inline_parser_get_chunk(inline), let data = chunk.pointee.data
@@ -52,14 +61,25 @@ final class MarkdownDelimiterExtensions {
     let column = cmark_inline_parser_get_column(inline)
     let line = cmark_inline_parser_get_line(inline)
     var run = 1
-    while offset + run < bytes.count, bytes[offset + run] == 95 { run += 1 }
+    while offset + run < bytes.count, bytes[offset + run] == marker {
+      if marker == 34, !spend() { return nil }
+      run += 1
+    }
     var span: Span?
-    if !isImage, run <= 3, offset + run < bytes.count, !space(bytes[offset + run]), recursion < 32 {
+    if marker == 34 {
+      if !isImage, recursion < 32 {
+        span = findQuotation(bytes, opening: offset, run: run)
+      }
+    } else if !isImage, run <= 3, offset + run < bytes.count,
+      !space(bytes[offset + run]), recursion < 32
+    {
       span = findSpan(bytes, body: offset + run, kind: run)
     }
     if recursion >= 32 { limited = true }
     guard let span, span.body.count <= 65_536 else {
       if (span?.body.count ?? 0) > 65_536 { limited = true }
+      // Unmatched quotes remain native tokens, including optional smart punctuation.
+      if marker == 34 { return nil }
       guard let text = cmark_node_new(CMARK_NODE_TEXT) else { return nil }
       let literalCount = isImage || limited ? run : max(1, run - 3)
       cmark_node_set_literal(text, String(repeating: "_", count: literalCount))
@@ -70,12 +90,13 @@ final class MarkdownDelimiterExtensions {
       cmark_inline_parser_set_offset(inline, Int32(offset + literalCount))
       return text
     }
-    let type = span.kind == .underline ? CMARK_NODE_CUSTOM_INLINE : CMARK_NODE_STRONG
+    let isCustom = span.kind == .underline || span.kind == .quotation
+    let type = isCustom ? CMARK_NODE_CUSTOM_INLINE : CMARK_NODE_STRONG
     guard let node = cmark_node_new(type) else { return nil }
-    if span.kind == .underline {
+    if isCustom {
       cmark_node_set_syntax_extension(node, native)
-      cmark_node_set_on_enter(node, "<u>")
-      cmark_node_set_on_exit(node, "</u>")
+      cmark_node_set_on_enter(node, span.kind == .quotation ? "<q>" : "<u>")
+      cmark_node_set_on_exit(node, span.kind == .quotation ? "</q>" : "</u>")
     }
     var bodyNode = node
     if span.kind == .triple {
@@ -109,6 +130,30 @@ final class MarkdownDelimiterExtensions {
     }
     cmark_inline_parser_set_offset(inline, Int32(span.end))
     return node
+  }
+
+  private func findQuotation(
+    _ bytes: UnsafeBufferPointer<UInt8>, opening: Int, run: Int
+  ) -> Span? {
+    var cursor = opening + run
+    while cursor < bytes.count, let found = nextMarker(bytes, from: cursor, marker: 34) {
+      guard found > cursor else { return nil }
+      var end = found
+      while end < bytes.count, bytes[end] == 34, end - found < run {
+        guard spend() else { return nil }
+        end += 1
+      }
+      if end - found == run {
+        var lower = opening + run
+        var upper = found
+        while lower < upper, bytes[lower] == 32 || bytes[lower] == 9 { lower += 1 }
+        while upper > lower, bytes[upper - 1] == 32 || bytes[upper - 1] == 9 { upper -= 1 }
+        guard lower < upper else { return nil }
+        return Span(body: lower..<upper, end: end, kind: .quotation)
+      }
+      cursor = end
+    }
+    return nil
   }
 
   private func space(_ byte: UInt8) -> Bool { [9, 10, 11, 12, 13, 32].contains(byte) }
@@ -156,7 +201,9 @@ final class MarkdownDelimiterExtensions {
 
   /// Skip escaped delimiters, code spans and link/reference constructs while
   /// choosing a matching underscore. Actual child syntax and escaping stay native.
-  private func nextMarker(_ bytes: UnsafeBufferPointer<UInt8>, from start: Int) -> Int? {
+  private func nextMarker(
+    _ bytes: UnsafeBufferPointer<UInt8>, from start: Int, marker: UInt8 = 95
+  ) -> Int? {
     var cursor = start
     while cursor < bytes.count {
       guard spend() else { return nil }
@@ -165,7 +212,7 @@ final class MarkdownDelimiterExtensions {
         cursor += min(2, bytes.count - cursor)
         continue
       }
-      if byte == 95 { return cursor }
+      if byte == marker { return cursor }
       if byte == 96 {
         var count = 0
         while cursor < bytes.count, bytes[cursor] == 96 {
@@ -177,7 +224,7 @@ final class MarkdownDelimiterExtensions {
         var fallback: Int?
         while cursor < bytes.count, matching < count {
           guard spend() else { return nil }
-          if fallback == nil, bytes[cursor] == 95 { fallback = cursor }
+          if fallback == nil, bytes[cursor] == marker { fallback = cursor }
           matching = bytes[cursor] == 96 ? matching + 1 : 0
           cursor += 1
         }
@@ -187,7 +234,7 @@ final class MarkdownDelimiterExtensions {
         cursor += 1
         while cursor < bytes.count, bytes[cursor] != 93 {
           guard spend() else { return nil }
-          if fallback == nil, bytes[cursor] == 95 { fallback = cursor }
+          if fallback == nil, bytes[cursor] == marker { fallback = cursor }
           cursor += 1
         }
         cursor += 1
@@ -208,7 +255,7 @@ final class MarkdownDelimiterExtensions {
         cursor += 1
         while cursor < bytes.count, bytes[cursor] != closing {
           guard spend() else { return nil }
-          if fallback == nil, bytes[cursor] == 95 { fallback = cursor }
+          if fallback == nil, bytes[cursor] == marker { fallback = cursor }
           cursor += 1
         }
         if cursor == bytes.count { return fallback }

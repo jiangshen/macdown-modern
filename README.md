@@ -7,7 +7,7 @@ Mac controls.
 
 The Swift app includes a TextKit 2 editor, native document tabs, linked scrolling,
 configurable pane order, per-document reading zoom, live preview, syntax colors, callouts with an emoji picker,
-YAML properties, a table of contents, optional underlines/highlights/superscripts, offline equations and diagrams, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
+YAML properties, a table of contents, optional underlines/highlights/superscripts/quotations, offline equations and diagrams, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
 performance measurement and release readiness are still in progress. See the
 [modernization roadmap](docs/MODERNIZATION_PLAN.md) and
 [source inventory](docs/SOURCE_INVENTORY.md).
@@ -93,6 +93,11 @@ is off by default and preserves the original saved choice. Turning it off return
 to standard CommonMark underscore emphasis. Preview and styled/plain HTML, PDF and
 print share the same option. The compatibility matcher is Swift with bounded work;
 its span-search semantics retain the original Hoedown ISC notice.
+
+Enable **Quoted text** to render `"text"` as a semantic quotation (`<q>`), preserving
+existing MacDown choices. The option defaults off and stays independent of smart
+punctuation. Repeated quote delimiters, nested Markdown and references are supported;
+empty/unclosed markers remain visible. Preview and HTML/PDF/print use the same choice.
 
 Enable **Highlights** and **Superscripts** in Markdown
 settings. Both are optional and preserve existing MacDown choices. Highlights use a

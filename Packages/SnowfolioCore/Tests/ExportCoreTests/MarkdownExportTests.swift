@@ -26,20 +26,25 @@ struct MarkdownExportTests {
     }
   }
 
-  @Test("Styled and plain HTML honor the current underline preference", arguments: [false, true])
+  @Test(
+    "Styled and plain HTML honor current underline and quotation preferences",
+    arguments: [false, true])
   func underlinePreference(styled: Bool) async throws {
-    let source = "_Underline checkpoint_ and *italic*; a_b_c."
+    let source = "_Underline checkpoint_ and *italic*; a_b_c. \"Quotation checkpoint\"."
     var options = MarkdownRenderingOptions()
     let standard = try await MarkdownExport.build(
       source: source, options: options, title: "Underline", directory: nil, includeStyles: styled)
     #expect(standard.fragment.contains("<em>Underline checkpoint</em>"))
     #expect(standard.fragment.contains("a_b_c"))
+    #expect(standard.fragment.contains("&quot;Quotation checkpoint&quot;"))
     options.underline = true
+    options.quotedText = true
     let enabled = try await MarkdownExport.build(
       source: source, options: options, title: "Underline", directory: nil, includeStyles: styled)
     #expect(enabled.fragment.contains("<u>Underline checkpoint</u>"))
     #expect(enabled.fragment.contains("<em>italic</em>"))
     #expect(enabled.fragment.contains("a<u>b</u>c"))
+    #expect(enabled.fragment.contains("<q>Quotation checkpoint</q>"))
     #expect(enabled.document.contains("script-src 'none'"))
     #expect(!enabled.document.contains("<script"))
     #expect(enabled.document.contains("id=\"document-style\"") == styled)

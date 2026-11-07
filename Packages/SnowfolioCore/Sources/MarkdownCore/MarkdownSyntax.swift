@@ -73,7 +73,7 @@ public struct MarkdownSyntax: Sendable {
       case .underline: style.underlined = true
       case .codeBlock, .inlineCode, .frontMatter, .math, .diagram: style.role = .code
       case .link, .image: style.role = .link
-      case .blockquote: style.role = .quote
+      case .blockquote, .quotation: style.role = .quote
       case .html: style.role = (node.literal?.hasPrefix("<!--") == true) ? .comment : .code
       case .thematicBreak: style.role = .marker
       default: break

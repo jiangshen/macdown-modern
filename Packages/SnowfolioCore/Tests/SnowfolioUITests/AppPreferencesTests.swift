@@ -24,6 +24,22 @@ struct AppPreferencesTests {
     #expect(!reopened.underline && !reopened.renderingOptions.underline)
   }
 
+  @Test("Quoted text defaults off and preserves migrated true and explicit disabled values")
+  func quotedTextPreference() throws {
+    let domain = "QuotePreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    #expect(!AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:]).quotedText)
+    defaults.removePersistentDomain(forName: domain)
+    let migrated = AppPreferences(
+      defaults: defaults, domainName: domain, legacyValues: ["extensionQuote": true])
+    #expect(migrated.quotedText && migrated.renderingOptions.quotedText)
+    migrated.quotedText = false
+    let reopened = AppPreferences(
+      defaults: defaults, domainName: domain, legacyValues: ["extensionQuote": true])
+    #expect(!reopened.quotedText && !reopened.renderingOptions.quotedText)
+  }
+
   @Test("Fenced-code preference defaults on and preserves migrated false across launches")
   func fencedCodePreference() throws {
     let domain = "FencePreferencesTests.\(UUID().uuidString)"

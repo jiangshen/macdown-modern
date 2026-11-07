@@ -79,7 +79,6 @@
     "evidence": "Downloaded native xcodebuild log/result bundle and package/corpus artifacts; exact totals verified"
   },
   "limitations": [
-    "Live source colors briefly stale/cleared around preference/undo round trip until a subsequent edit; targeted color tests pass but visible repaint sequence remains unclosed",
     "Arbitrary nested source selections are not a semantic formatting refactoring tool",
     "Quote and independent intraword-emphasis preferences remain",
     "Broader modernization, native performance, accessibility, release/install and old-source retirement gates remain active"
@@ -88,5 +87,9 @@
     "priorityInversionWarnings": 12,
     "status": "Passed; existing QoS attribution/performance gate remains open",
     "appIntentsWarnings": "No AppIntents dependency; metadata extraction skipped"
+  },
+  "sourceRepaintFollowup": {
+    "status": "Corrected and directly verified; final hosted screenshot regression pending",
+    "record": "source-syntax-refresh.json"
   }
 }

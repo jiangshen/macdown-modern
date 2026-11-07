@@ -12,12 +12,13 @@ import WebKit
 @MainActor
 struct NativeInlineFormattingTests {
   private static let source =
-    "# Inline notebook\n\n==Review **important** text== and x^(2 + 1). _Underline checkpoint_.\n\nEnd checkpoint."
+    "# Inline notebook\n\n==Review **important** text== and x^(2 + 1). _Underline checkpoint_. \"Quotation checkpoint\".\n\nEnd checkpoint."
   private var options: MarkdownRenderingOptions {
     var options = MarkdownRenderingOptions()
     options.highlight = true
     options.superscript = true
     options.underline = true
+    options.quotedText = true
     return options
   }
 
@@ -146,6 +147,10 @@ struct NativeInlineFormattingTests {
         const e=document.querySelector('u');
         return String(e?.textContent==='Underline checkpoint' && getComputedStyle(e).textDecorationLine.includes('underline'));
         """, in: web) == "true")
+    #expect(
+      try await evaluate(
+        "return String(document.querySelector('q')?.textContent==='Quotation checkpoint');",
+        in: web) == "true")
     #expect(!web.configuration.defaultWebpagePreferences.allowsContentJavaScript)
     let image = try await web.takeSnapshot(configuration: nil)
     let tiff = try #require(image.tiffRepresentation)
@@ -162,13 +167,14 @@ struct NativeInlineFormattingTests {
     #expect(export.fragment.contains("<mark>Review <strong>important</strong> text</mark>"))
     #expect(export.fragment.contains("<sup>2 + 1</sup>"))
     #expect(export.fragment.contains("<u>Underline checkpoint</u>"))
+    #expect(export.fragment.contains("<q>Quotation checkpoint</q>"))
     #expect(!export.document.contains("<script"))
     let plain = try await MarkdownExport.build(
       source: Self.source, options: options,
       title: "Inline notebook", directory: nil, includeStyles: false)
     #expect(
       plain.document.contains("<mark>") && plain.document.contains("<sup>")
-        && plain.document.contains("<u>"))
+        && plain.document.contains("<u>") && plain.document.contains("<q>"))
     let surface = NativeWebOutput()
     defer { surface.close() }
     try await surface.prepare(html: export.document)
@@ -186,7 +192,8 @@ struct NativeInlineFormattingTests {
     let text = try #require(pdf.string)
     #expect(pdf.pageCount == 1)
     for label in [
-      "Inline notebook", "Review", "important", "2 + 1", "Underline checkpoint", "End checkpoint.",
+      "Inline notebook", "Review", "important", "2 + 1", "Underline checkpoint",
+      "Quotation checkpoint", "End checkpoint.",
     ] {
       #expect(text.contains(label), "Missing PDF label: \(label)")
     }

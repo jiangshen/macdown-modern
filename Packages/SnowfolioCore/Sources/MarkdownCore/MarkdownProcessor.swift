@@ -43,8 +43,10 @@ public actor MarkdownProcessor {
       ? try MarkdownInlineExtensions(highlight: options.highlight, superscript: options.superscript)
       : nil
     let delimiterSyntax =
-      options.underline
-      ? try MarkdownDelimiterExtensions(sourceLength: parserSource.utf8.count) : nil
+      options.underline || options.quotedText
+      ? try MarkdownDelimiterExtensions(
+        sourceLength: parserSource.utf8.count, underline: options.underline,
+        quotedText: options.quotedText) : nil
     defer { withExtendedLifetime((mathSyntax, inlineSyntax, delimiterSyntax)) {} }
     guard let parser = cmark_parser_new(flags) else {
       throw MarkdownRenderingError.allocationFailure
@@ -63,6 +65,9 @@ public actor MarkdownProcessor {
       }
       cmark_parser_attach_syntax_extension(parser, ext)
     }
+    // Quotes are normally special only with smart punctuation. Mark them as
+    // scanner boundaries without claiming native smart-quote delimiter ownership.
+    if options.quotedText { cmark_inlines_add_special_character(parser, 34, false) }
     try parserSource.utf8CString.withUnsafeBufferPointer { bytes in
       guard let base = bytes.baseAddress else { return }
       let length = bytes.count - 1

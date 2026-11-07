@@ -293,3 +293,23 @@ unmigrated quote/intraword/custom-theme/template behavior. They are not duplicat
 files solely because underline parity is now implemented. Do not delete them until
 remaining replacements and desktop acceptance pass. The zero-legacy-code gate remains
 open, along with a live source-color repaint observation recorded in the roadmap.
+
+
+## Quoted text and source presentation ownership
+
+The optional `extensionQuote` replacement extends the existing Swift delimiter matcher
+with `.quotation` nodes. It reuses native child parsing and the existing pre-token bridge;
+`cmark_inlines_add_special_character` marks quote scanner boundaries without registering
+a competing smart-quote delimiter handler. There are no further C patches. Original
+Hoedown ISC attribution remains bundled. The quote capture tool and 80-case golden fixture
+are development evidence, not shipping parser executables.
+
+`NativeSyntaxHighlighter` owns an attributes-only viewport notification that refreshes
+native paragraph surfaces after temporary styles change. It writes no text-storage
+attribute values or source bytes and cannot run that notification during marked-text
+composition. Full-workspace and actual displayed-source UI checks cover the presentation
+boundary separately from parser metadata and fresh offscreen drawings.
+
+The remaining independent intraword preference and custom themes/templates still share
+original-target renderer/editor/formatting callers. Underline/quote replacements alone
+do not make those coupled files unused; the zero-legacy-code retirement gate stays open.

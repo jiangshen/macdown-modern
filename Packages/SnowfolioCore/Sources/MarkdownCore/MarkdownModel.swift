@@ -15,7 +15,7 @@ public struct MarkdownSourceRange: Equatable, Sendable {
 
 public enum MarkdownNodeKind: Equatable, Sendable {
   case document, frontMatter, heading, paragraph, text, codeBlock, inlineCode, link, image
-  case highlight, superscript, underline
+  case highlight, superscript, underline, quotation
   case emphasis, strong, strikethrough, list, listItem, blockquote, html
   case table, tableRow, tableCell, thematicBreak, softBreak, lineBreak
   case math(display: Bool)
@@ -84,6 +84,7 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var highlight = false
   public var superscript = false
   public var underline = false
+  public var quotedText = false
   public var smartPunctuation = false
   public var hardLineBreaks = false
   public var rawHTML = false

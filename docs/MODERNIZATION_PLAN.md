@@ -122,7 +122,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
-| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript and fenced-code preferences implemented; quote and independent intraword-emphasis preferences remain |
+| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text and fenced-code preferences implemented; independent intraword-emphasis preference remains |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Pending |
@@ -1616,3 +1616,58 @@ for `27bc74d` passed both jobs. Downloaded evidence confirms all seven native UI
 examples. The native log still emits priority-inversion diagnostics; the existing
 performance attribution gate and live source-color repaint observation remain open.
 This is a verified development increment, not release readiness or full-goal completion.
+
+
+## Live source repaint and optional quoted text — 2026-11-07
+
+Changing an inline dialect in Settings could update the AST and preview while the
+source view kept its previous painted colors. The defect was reproduced directly:
+underlines enabled in preview, but their source remained orange emphasis until another
+native edit. Fresh offscreen drawings and rendering-attribute checks alone did not
+expose that retained live surface. The highlighter now sends an attributes-only
+`NSTextStorage.edited` notification for the existing viewport after publishing current
+rendering attributes. It changes no stored attributes, text, source revision or undo
+state. The notification is bounded to a valid visible UTF-16 range, guarded against
+reentrancy and omitted while marked text is being composed. No private API, font-trait
+mutation or synchronous forced display is added; the notification names only the
+existing viewport.
+
+A complete-workspace regression covers inactive preference changes, orange/teal/orange
+source presentation, Unicode formatting and undo/redo. A separate XCUITest now examines
+pixels from the actual source UI screenshot before another edit; it does not substitute
+`cacheDisplay` for the live surface. Direct desktop verification confirmed the corrected
+source colors in both directions, native undo/redo, unchanged source and the original
+underline choice restored off. The disposable document was closed and the original
+existing two-tab workspace returned to the front. See `validation/source-syntax-refresh.json`.
+
+**Quoted text** restores `extensionQuote`, defaults off and adds the fortieth Settings
+entry. It renders original double-quoted spans as semantic `<q>` nodes; it is independent
+of smart punctuation and composes with underlines, highlights, superscripts, references
+and footnotes. Code, image descriptions, HTML tokens and destinations keep their native
+scopes. Empty/unclosed markers remain visible; outer spaces/tabs are trimmed inside a
+recognized quotation. `MarkdownDelimiterExtensions` owns this grammar in Swift and
+retains the existing original Hoedown ISC notice. The existing upstream internal scanner
+API marks double quotes as boundaries for this parser only, without taking ownership of
+native smart-quote delimiter processing. No additional native C patch is introduced.
+
+All 80 original Hoedown quote-choice fixtures pass with nine explicit native differences:
+literal default-mode tabs, equivalent void image syntax, normal CommonMark paragraph
+trimming, existing heading anchors and active-script filtering. The fixture is reproduced
+exactly by `Tools/characterize-quote.py`. The same recursion/body/work caps apply to
+both optional delimiter grammars. Quote-run inspection itself consumes the work budget,
+and exhausted optional quote matching yields to native literal/smart-quote handling.
+The adversarial 100,000-quote fixture retains every marker without repeated unbounded
+rescanning. These checks do not establish native typing p95 or whole-app performance.
+
+Local validation passes: 214 package tests in 43 suites, eight arm64 test executables,
+652/652 core CommonMark examples, 21 AddressSanitizer parser tests in four suites,
+native build-for-testing and strict changed-Swift formatting. Native light/dark preview,
+styled/plain HTML, fresh manual-render snapshots and paginated PDF/print checks include
+quotations; both appearance snapshots were inspected. Direct Settings checks exercised
+the quote switch and source/preview change, then restored the original off value.
+Hosted acceptance is tracked in `validation/quoted-text.json`.
+
+Independent intraword-emphasis choice, custom themes/templates, remaining editor and
+workspace productivity/system features, real IME and VoiceOver gates, measured native
+performance, shipping/install/default-handler readiness and safe coupled-source
+retirement remain outstanding. The full modernization goal remains active.

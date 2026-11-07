@@ -1,0 +1,35 @@
+{
+  "milestone": "Live source syntax repaint correction",
+  "date": "2026-11-07",
+  "problem": "Changing dialect preferences updated native style metadata and preview while source surfaces retained previous colors until another edit",
+  "correction": "Notify only the current valid viewport of editedAttributes after temporary styles update; no text or stored attribute values change",
+  "guards": [
+    "Main actor",
+    "Reentrancy guard",
+    "Current document revision",
+    "Valid storage UTF-16 range",
+    "No marked/receiving composition"
+  ],
+  "verification": {
+    "fullWorkspace": "Inactive preferences, semantic source-color pixels and native Unicode undo/redo pass",
+    "actualDisplayedSource": "New XCUITest screenshot regression compiled; hosted execution pending",
+    "live": "Observed orange to teal and back without another source edit; native undo/redo retained correct colors",
+    "local": {
+      "packageTests": 214,
+      "packageSuites": 43,
+      "arm64TestExecutables": 8,
+      "coreCommonMarkExamples": 652,
+      "addressSanitizerTests": 21,
+      "addressSanitizerSuites": 4,
+      "nativeBuildForTesting": "passed",
+      "changedSwiftStrictFormatting": "passed",
+      "parserSourceAndNotices": "verified; no new C changes"
+    }
+  },
+  "cleanup": "Temporary content-free diagnostics removed; original preferences restored; disposable draft discarded",
+  "hostedCurrentRun": "pending branch push",
+  "limits": [
+    "Fresh cacheDisplay output alone did not prove this live defect fixed",
+    "Native typing p95, energy and broad real IME acceptance remain separate"
+  ]
+}

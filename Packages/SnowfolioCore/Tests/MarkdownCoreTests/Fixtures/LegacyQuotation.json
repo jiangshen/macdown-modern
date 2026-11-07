@@ -1,0 +1,425 @@
+{
+  "engine": "Built with Hoedown 3.0.7.",
+  "source": "https://github.com/hoedown/hoedown/tree/3.0.7",
+  "fixtureSourceSHA256": "41b168a744ff73c0266f71e67e328068c768a28dcc4a2cb521a89030d0b06684",
+  "cases": [
+    {
+      "source": "\"quote\"",
+      "enabled": false,
+      "html": "<p>&quot;quote&quot;</p>\n"
+    },
+    {
+      "source": "\"quote\"",
+      "enabled": true,
+      "html": "<p><q>quote</q></p>\n"
+    },
+    {
+      "source": "\" before **bold** after \"",
+      "enabled": false,
+      "html": "<p>&quot; before <strong>bold</strong> after &quot;</p>\n"
+    },
+    {
+      "source": "\" before **bold** after \"",
+      "enabled": true,
+      "html": "<p><q>before <strong>bold</strong> after</q></p>\n"
+    },
+    {
+      "source": "\"unclosed",
+      "enabled": false,
+      "html": "<p>&quot;unclosed</p>\n"
+    },
+    {
+      "source": "\"unclosed",
+      "enabled": true,
+      "html": "<p>&quot;unclosed</p>\n"
+    },
+    {
+      "source": "\"\"",
+      "enabled": false,
+      "html": "<p>&quot;&quot;</p>\n"
+    },
+    {
+      "source": "\"\"",
+      "enabled": true,
+      "html": "<p>&quot;&quot;</p>\n"
+    },
+    {
+      "source": "\"   \"",
+      "enabled": false,
+      "html": "<p>&quot;   &quot;</p>\n"
+    },
+    {
+      "source": "\"   \"",
+      "enabled": true,
+      "html": "<p>&quot;   &quot;</p>\n"
+    },
+    {
+      "source": "\"\"two\"\"",
+      "enabled": false,
+      "html": "<p>&quot;&quot;two&quot;&quot;</p>\n"
+    },
+    {
+      "source": "\"\"two\"\"",
+      "enabled": true,
+      "html": "<p><q>two</q></p>\n"
+    },
+    {
+      "source": "\"\"\"three\"\"\"",
+      "enabled": false,
+      "html": "<p>&quot;&quot;&quot;three&quot;&quot;&quot;</p>\n"
+    },
+    {
+      "source": "\"\"\"three\"\"\"",
+      "enabled": true,
+      "html": "<p><q>three</q></p>\n"
+    },
+    {
+      "source": "\"\"first\"second\"\"",
+      "enabled": false,
+      "html": "<p>&quot;&quot;first&quot;second&quot;&quot;</p>\n"
+    },
+    {
+      "source": "\"\"first\"second\"\"",
+      "enabled": true,
+      "html": "<p><q>first&quot;second</q></p>\n"
+    },
+    {
+      "source": "before\"word\"after",
+      "enabled": false,
+      "html": "<p>before&quot;word&quot;after</p>\n"
+    },
+    {
+      "source": "before\"word\"after",
+      "enabled": true,
+      "html": "<p>before<q>word</q>after</p>\n"
+    },
+    {
+      "source": "\"one\ntwo\"",
+      "enabled": false,
+      "html": "<p>&quot;one\ntwo&quot;</p>\n"
+    },
+    {
+      "source": "\"one\ntwo\"",
+      "enabled": true,
+      "html": "<p><q>one\ntwo</q></p>\n"
+    },
+    {
+      "source": "\"one\r\ntwo\"",
+      "enabled": false,
+      "html": "<p>&quot;one\ntwo&quot;</p>\n"
+    },
+    {
+      "source": "\"one\r\ntwo\"",
+      "enabled": true,
+      "html": "<p><q>one\ntwo</q></p>\n"
+    },
+    {
+      "source": "\"中文 👩‍💻\"",
+      "enabled": false,
+      "html": "<p>&quot;中文 👩‍💻&quot;</p>\n"
+    },
+    {
+      "source": "\"中文 👩‍💻\"",
+      "enabled": true,
+      "html": "<p><q>中文 👩‍💻</q></p>\n"
+    },
+    {
+      "source": "\"\ttabs\t\"",
+      "enabled": false,
+      "html": "<p>&quot;   tabs    &quot;</p>\n",
+      "nativeHTML": "<p>&quot;\ttabs\t&quot;</p>\n",
+      "nativeBehaviorNote": "Disabled quoted text preserves literal source tabs; Hoedown expands tabs before inline parsing."
+    },
+    {
+      "source": "\"\ttabs\t\"",
+      "enabled": true,
+      "html": "<p><q>tabs</q></p>\n"
+    },
+    {
+      "source": "\\\"escaped\"",
+      "enabled": false,
+      "html": "<p>&quot;escaped&quot;</p>\n"
+    },
+    {
+      "source": "\\\"escaped\"",
+      "enabled": true,
+      "html": "<p>&quot;escaped&quot;</p>\n"
+    },
+    {
+      "source": "\"escaped\\\" inside\"",
+      "enabled": false,
+      "html": "<p>&quot;escaped&quot; inside&quot;</p>\n"
+    },
+    {
+      "source": "\"escaped\\\" inside\"",
+      "enabled": true,
+      "html": "<p><q>escaped&quot; inside</q></p>\n"
+    },
+    {
+      "source": "\\\\\"quote\"",
+      "enabled": false,
+      "html": "<p>\\&quot;quote&quot;</p>\n"
+    },
+    {
+      "source": "\\\\\"quote\"",
+      "enabled": true,
+      "html": "<p>\\<q>quote</q></p>\n"
+    },
+    {
+      "source": "`\"code\"` and \"quote\"",
+      "enabled": false,
+      "html": "<p><code>&quot;code&quot;</code> and &quot;quote&quot;</p>\n"
+    },
+    {
+      "source": "`\"code\"` and \"quote\"",
+      "enabled": true,
+      "html": "<p><code>&quot;code&quot;</code> and <q>quote</q></p>\n"
+    },
+    {
+      "source": "\"before `code\" text` after\"",
+      "enabled": false,
+      "html": "<p>&quot;before <code>code&quot; text</code> after&quot;</p>\n"
+    },
+    {
+      "source": "\"before `code\" text` after\"",
+      "enabled": true,
+      "html": "<p><q>before <code>code&quot; text</code> after</q></p>\n"
+    },
+    {
+      "source": "\"before ``code\" text`` after\"",
+      "enabled": false,
+      "html": "<p>&quot;before <code>code&quot; text</code> after&quot;</p>\n"
+    },
+    {
+      "source": "\"before ``code\" text`` after\"",
+      "enabled": true,
+      "html": "<p><q>before <code>code&quot; text</code> after</q></p>\n"
+    },
+    {
+      "source": "\"unclosed `code\" after",
+      "enabled": false,
+      "html": "<p>&quot;unclosed `code&quot; after</p>\n"
+    },
+    {
+      "source": "\"unclosed `code\" after",
+      "enabled": true,
+      "html": "<p><q>unclosed `code</q> after</p>\n"
+    },
+    {
+      "source": "[\"label\"](https://example.com)",
+      "enabled": false,
+      "html": "<p><a href=\"https://example.com\">&quot;label&quot;</a></p>\n"
+    },
+    {
+      "source": "[\"label\"](https://example.com)",
+      "enabled": true,
+      "html": "<p><a href=\"https://example.com\"><q>label</q></a></p>\n"
+    },
+    {
+      "source": "![\"alt\"](image.png)",
+      "enabled": false,
+      "html": "<p><img src=\"image.png\" alt=\"&quot;alt&quot;\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"&quot;alt&quot;\" /></p>\n",
+      "nativeBehaviorNote": "Native HTML uses the equivalent XHTML void image tag; quote markers remain literal image-description text."
+    },
+    {
+      "source": "![\"alt\"](image.png)",
+      "enabled": true,
+      "html": "<p><img src=\"image.png\" alt=\"&quot;alt&quot;\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"&quot;alt&quot;\" /></p>\n",
+      "nativeBehaviorNote": "Native HTML uses the equivalent XHTML void image tag; quote markers remain literal image-description text."
+    },
+    {
+      "source": "\"[inner](https://example.com)\"",
+      "enabled": false,
+      "html": "<p>&quot;<a href=\"https://example.com\">inner</a>&quot;</p>\n"
+    },
+    {
+      "source": "\"[inner](https://example.com)\"",
+      "enabled": true,
+      "html": "<p><q><a href=\"https://example.com\">inner</a></q></p>\n"
+    },
+    {
+      "source": "\"a [reference][ref]\"\n\n[ref]: https://example.com",
+      "enabled": false,
+      "html": "<p>&quot;a <a href=\"https://example.com\">reference</a>&quot;</p>\n"
+    },
+    {
+      "source": "\"a [reference][ref]\"\n\n[ref]: https://example.com",
+      "enabled": true,
+      "html": "<p><q>a <a href=\"https://example.com\">reference</a></q></p>\n"
+    },
+    {
+      "source": "\"before [label\"](https://example.com) after\"",
+      "enabled": false,
+      "html": "<p>&quot;before <a href=\"https://example.com\">label&quot;</a> after&quot;</p>\n"
+    },
+    {
+      "source": "\"before [label\"](https://example.com) after\"",
+      "enabled": true,
+      "html": "<p><q>before <a href=\"https://example.com\">label&quot;</a> after</q></p>\n"
+    },
+    {
+      "source": "[url](https://example.com/\"path\" \"title\")",
+      "enabled": false,
+      "html": "<p><a href=\"https://example.com/%22path%22\" title=\"title\">url</a></p>\n"
+    },
+    {
+      "source": "[url](https://example.com/\"path\" \"title\")",
+      "enabled": true,
+      "html": "<p><a href=\"https://example.com/%22path%22\" title=\"title\">url</a></p>\n"
+    },
+    {
+      "source": "<span title=\"attribute\">\"body\"</span>",
+      "enabled": false,
+      "html": "<p><span title=\"attribute\">&quot;body&quot;</span></p>\n"
+    },
+    {
+      "source": "<span title=\"attribute\">\"body\"</span>",
+      "enabled": true,
+      "html": "<p><span title=\"attribute\"><q>body</q></span></p>\n"
+    },
+    {
+      "source": "\"before <span title=\"attribute\">body</span> after\"",
+      "enabled": false,
+      "html": "<p>&quot;before <span title=\"attribute\">body</span> after&quot;</p>\n"
+    },
+    {
+      "source": "\"before <span title=\"attribute\">body</span> after\"",
+      "enabled": true,
+      "html": "<p><q>before &lt;span title=</q>attribute<q>&gt;body</span> after</q></p>\n"
+    },
+    {
+      "source": "\"_under_\"",
+      "enabled": false,
+      "html": "<p>&quot;<em>under</em>&quot;</p>\n"
+    },
+    {
+      "source": "\"_under_\"",
+      "enabled": true,
+      "html": "<p><q><em>under</em></q></p>\n"
+    },
+    {
+      "source": "\"==highlight==\"",
+      "enabled": false,
+      "html": "<p>&quot;==highlight==&quot;</p>\n"
+    },
+    {
+      "source": "\"==highlight==\"",
+      "enabled": true,
+      "html": "<p><q>==highlight==</q></p>\n"
+    },
+    {
+      "source": "\"x^(2 + 1)\"",
+      "enabled": false,
+      "html": "<p>&quot;x^(2 + 1)&quot;</p>\n"
+    },
+    {
+      "source": "\"x^(2 + 1)\"",
+      "enabled": true,
+      "html": "<p><q>x^(2 + 1)</q></p>\n"
+    },
+    {
+      "source": "\"outer \"inner\" rest\"",
+      "enabled": false,
+      "html": "<p>&quot;outer &quot;inner&quot; rest&quot;</p>\n"
+    },
+    {
+      "source": "\"outer \"inner\" rest\"",
+      "enabled": true,
+      "html": "<p><q>outer</q>inner<q>rest</q></p>\n"
+    },
+    {
+      "source": "\"before \n\nafter\"",
+      "enabled": false,
+      "html": "<p>&quot;before </p>\n\n<p>after&quot;</p>\n",
+      "nativeHTML": "<p>&quot;before</p>\n<p>after&quot;</p>\n",
+      "nativeBehaviorNote": "Native CommonMark block parsing trims trailing paragraph spaces; quote delimiters never cross a blank paragraph."
+    },
+    {
+      "source": "\"before \n\nafter\"",
+      "enabled": true,
+      "html": "<p>&quot;before </p>\n\n<p>after&quot;</p>\n",
+      "nativeHTML": "<p>&quot;before</p>\n<p>after&quot;</p>\n",
+      "nativeBehaviorNote": "Native CommonMark block parsing trims trailing paragraph spaces; quote delimiters never cross a blank paragraph."
+    },
+    {
+      "source": "> \"quoted\"",
+      "enabled": false,
+      "html": "<blockquote>\n<p>&quot;quoted&quot;</p>\n</blockquote>\n"
+    },
+    {
+      "source": "> \"quoted\"",
+      "enabled": true,
+      "html": "<blockquote>\n<p><q>quoted</q></p>\n</blockquote>\n"
+    },
+    {
+      "source": "- \"listed\"",
+      "enabled": false,
+      "html": "<ul>\n<li>&quot;listed&quot;</li>\n</ul>\n"
+    },
+    {
+      "source": "- \"listed\"",
+      "enabled": true,
+      "html": "<ul>\n<li><q>listed</q></li>\n</ul>\n"
+    },
+    {
+      "source": "# \"Title\"",
+      "enabled": false,
+      "html": "<h1>&quot;Title&quot;</h1>\n",
+      "nativeHTML": "<h1 id=\"title\"><span id=\"toc_0\" class=\"md-legacy-anchor\" aria-hidden=\"true\"></span>\n&quot;Title&quot;\n</h1>\n",
+      "nativeBehaviorNote": "Snowfolio retains its existing heading IDs and compatibility anchors around the same quotation content."
+    },
+    {
+      "source": "# \"Title\"",
+      "enabled": true,
+      "html": "<h1><q>Title</q></h1>\n",
+      "nativeHTML": "<h1 id=\"title\"><span id=\"toc_0\" class=\"md-legacy-anchor\" aria-hidden=\"true\"></span>\n<q>Title</q>\n</h1>\n",
+      "nativeBehaviorNote": "Snowfolio retains its existing heading IDs and compatibility anchors around the same quotation content."
+    },
+    {
+      "source": "```text\n\"fenced\"\n```",
+      "enabled": false,
+      "html": "<pre><code class=\"language-text\">&quot;fenced&quot;\n</code></pre>\n"
+    },
+    {
+      "source": "```text\n\"fenced\"\n```",
+      "enabled": true,
+      "html": "<pre><code class=\"language-text\">&quot;fenced&quot;\n</code></pre>\n"
+    },
+    {
+      "source": "    \"indented\"\n",
+      "enabled": false,
+      "html": "<pre><code>&quot;indented&quot;\n</code></pre>\n"
+    },
+    {
+      "source": "    \"indented\"\n",
+      "enabled": true,
+      "html": "<pre><code>&quot;indented&quot;\n</code></pre>\n"
+    },
+    {
+      "source": "\"<script>alert(1)</script>\"",
+      "enabled": false,
+      "html": "<p>&quot;<script>alert(1)</script>&quot;</p>\n",
+      "nativeHTML": "<p>&quot;&lt;script>alert(1)&lt;/script>&quot;</p>\n",
+      "nativeBehaviorNote": "The maintained tag filter escapes active script tags even when raw HTML is enabled; quoted text cannot bypass that policy."
+    },
+    {
+      "source": "\"<script>alert(1)</script>\"",
+      "enabled": true,
+      "html": "<p><q><script>alert(1)</script></q></p>\n",
+      "nativeHTML": "<p><q>&lt;script>alert(1)&lt;/script></q></p>\n",
+      "nativeBehaviorNote": "The maintained tag filter escapes active script tags even when raw HTML is enabled; quoted text cannot bypass that policy."
+    },
+    {
+      "source": "\"[bad](javascript:alert(1))\"",
+      "enabled": false,
+      "html": "<p>&quot;<a href=\"javascript:alert(1)\">bad</a>&quot;</p>\n"
+    },
+    {
+      "source": "\"[bad](javascript:alert(1))\"",
+      "enabled": true,
+      "html": "<p><q><a href=\"javascript:alert(1)\">bad</a></q></p>\n"
+    }
+  ]
+}

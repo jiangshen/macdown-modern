@@ -1,3 +1,4 @@
+import AppKit
 import XCTest
 
 final class DocumentLifecycleTests: XCTestCase {
@@ -122,7 +123,7 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
-  func testUnderlinePreferenceAndNativeCommand() {
+  func testUnderlinePreferenceAndNativeCommand() async throws {
     let app = launch(arguments: ["-extensionUnderline", "NO"])
     defer { app.terminate() }
     let editor = newDocument(in: app)
@@ -143,6 +144,29 @@ final class DocumentLifecycleTests: XCTestCase {
     }
     toggleUnderline()
     XCTAssertTrue(preview.staticTexts["abc"].firstMatch.waitForExistence(timeout: 8))
+    // Read the displayed UI surface, not a fresh AppKit cacheDisplay drawing.
+    // The source contains no other teal elements, so the underlined b must repaint.
+    var sourceRepainted = false
+    for _ in 0..<60 {
+      let snapshot = editor.screenshot()
+      if let bitmap = NSBitmapImageRep(data: snapshot.pngRepresentation) {
+        var teal = 0
+        for y in 0..<min(bitmap.pixelsHigh, 180) {
+          for x in 0..<min(bitmap.pixelsWide, 300) {
+            guard let color = bitmap.colorAt(x: x, y: y)?.usingColorSpace(.sRGB) else { continue }
+            if color.saturationComponent > 0.2 && (0.48...0.56).contains(color.hueComponent) {
+              teal += 1
+            }
+          }
+        }
+        if teal > 5 {
+          sourceRepainted = true
+          break
+        }
+      }
+      try await Task.sleep(for: .milliseconds(100))
+    }
+    XCTAssertTrue(sourceRepainted, "The displayed source must repaint without another edit")
     XCTAssertEqual(editor.value as? String, "a_b_c")
     editor.click()
     app.typeKey("a", modifierFlags: .command)

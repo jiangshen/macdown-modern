@@ -11,6 +11,7 @@ final class NativeSyntaxHighlighter {
   private var revision: UInt64?
   private var enabled = true
   private var font: NSFont?
+  private var refreshingPresentation = false
 
   func attach(to editor: MarkdownTextView, document: MarkdownDocument) {
     self.editor = editor
@@ -42,7 +43,9 @@ final class NativeSyntaxHighlighter {
   }
 
   func invalidate() {
-    guard let manager = editor?.textLayoutManager, let content = manager.textContentManager else {
+    guard !refreshingPresentation,
+      let manager = editor?.textLayoutManager, let content = manager.textContentManager
+    else {
       return
     }
     manager.invalidateRenderingAttributes(for: content.documentRange)
@@ -61,6 +64,21 @@ final class NativeSyntaxHighlighter {
       return true
     }
     editor?.needsDisplay = true
+    if let viewport, let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText,
+      let document, revision == document.revision, let storage = editor.textStorage
+    {
+      let start = content.offset(from: content.documentRange.location, to: viewport.location)
+      let end = content.offset(from: content.documentRange.location, to: viewport.endLocation)
+      if start >= 0, end >= start, end <= storage.length {
+        // Notify the owning text view that paragraph presentation changed. This
+        // attributes-only notification changes no stored attributes or source bytes.
+        refreshingPresentation = true
+        defer { refreshingPresentation = false }
+        storage.edited(
+          .editedAttributes, range: NSRange(location: start, length: end - start),
+          changeInLength: 0)
+      }
+    }
   }
 
   func compositionChanged() {
