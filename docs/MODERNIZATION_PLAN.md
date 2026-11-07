@@ -1525,3 +1525,10 @@ document state remain intact. Direct desktop checks verified both tabs, all thre
 workspace modes, the restored split fraction, source selection and exact text.
 Native app build-for-testing and 16 focused editing/pane/scroll tests passed; hosted
 verification of the combined final change follows.
+
+Combined final acceptance passed on `e15ebfc0f8b346028cdd20cd9c8b3f8b77dffd9d`:
+[42358487380](https://github.com/jiangshen/snowfolio/actions/runs/42358487380)
+passed both jobs, all six native document/Settings UI tests, 199 package tests in
+41 suites, eight arm64 test executables and all 652 core CommonMark examples.
+The updated writing surface is running on this Mac, with the original document
+text/selection and split mode restored. Full modernization remains active.

@@ -24,7 +24,16 @@
       "Original source and First selection preserved",
       "Gap, rounded surface and shortened divider inspected in the app"
     ],
-    "hostedCombinedRun": "pending"
+    "hostedCombinedRun": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42358487380",
+      "commit": "e15ebfc0f8b346028cdd20cd9c8b3f8b77dffd9d",
+      "result": "passed",
+      "nativeUITests": 6,
+      "packageTests": 199,
+      "packageSuites": 41,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652
+    }
   },
   "goal": "active; full modernization incomplete"
 }

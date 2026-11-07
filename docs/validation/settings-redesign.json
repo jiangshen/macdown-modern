@@ -76,7 +76,17 @@
       "result": "passed"
     },
     "changedSwiftStrictFormatting": "passed",
-    "hostedPackageAndCommonMark": "passed: 199 package tests / 41 suites / eight arm64 executables; all 652 published CommonMark examples"
+    "hostedPackageAndCommonMark": "passed: 199 package tests / 41 suites / eight arm64 executables; all 652 published CommonMark examples",
+    "combinedWritingSurfaceRun": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42358487380",
+      "commit": "e15ebfc0f8b346028cdd20cd9c8b3f8b77dffd9d",
+      "result": "passed",
+      "nativeUITests": 6,
+      "packageTests": 199,
+      "packageSuites": 41,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652
+    }
   },
   "goal": "active; full modernization incomplete",
   "windowRegression": {
