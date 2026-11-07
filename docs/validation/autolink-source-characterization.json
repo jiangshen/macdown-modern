@@ -1,7 +1,7 @@
 {
   "milestone": "Next source-coordinate gate: native GFM automatic link ranges",
   "date": "2026-11-07",
-  "status": "historical failures; non-NUL automatic-link corrections verified locally in automatic-link-source.json; hosted gate pending",
+  "status": "historical failures; non-NUL automatic-link corrections verified locally and hosted in automatic-link-source.json; NUL projection remains open",
   "fullGoal": "active; incomplete",
   "code": "dda9e7b76cb9390a9e8ae1509e522f340543d175",
   "scope": "Isolated autolink coordinate diagnostic of exact committed parser/core; no production source mutation",
@@ -242,5 +242,10 @@
     "Coordinate this work with the independently reproduced NUL replacement projection gate; do not infer complete source acceptance from the passing package suite"
   ],
   "followup": "automatic-link-source.json",
-  "diagnosticTokenNote": "The original probe collected .link token ranges. Automatic links use .automaticURL/.automaticEmail; the new regression suite asserts those proper tokens. The independently measured AST source-range failures remain valid."
+  "diagnosticTokenNote": "The original probe collected .link token ranges. Automatic links use .automaticURL/.automaticEmail; the new regression suite asserts those proper tokens. The independently measured AST source-range failures remain valid.",
+  "resolvedBy": {
+    "commit": "33e9046d6ab21c29220ee40abcdd0ba43cadcacc",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42405440825",
+    "scope": "non-NUL URL/www/email source ranges; source normalization gate remains explicitly incomplete"
+  }
 }

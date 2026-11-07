@@ -177,5 +177,170 @@
     "Project native replacement coordinates back to physical source only after all native parsing/postprocessing, before exposing AST/HTML/syntax",
     "Preserve actual document bytes and distinguish literal replacement characters from a replaced NUL",
     "Cover block/inline boundaries, recursive dialects, references, footnotes, table escaping, parser feed boundaries and native TextKit font placement; measure ordinary-path overhead"
+  ],
+  "latestVerification": {
+    "code": "33e9046d6ab21c29220ee40abcdd0ba43cadcacc",
+    "status": "six source-range failures remain reproduced; no fix claimed",
+    "cases": [
+      {
+        "actual": {
+          "end": 20,
+          "line": 1,
+          "start": 11
+        },
+        "actualStrongUTF16": [
+          {
+            "length": 6,
+            "location": 10
+          }
+        ],
+        "expected": {
+          "end": 18,
+          "line": 1,
+          "start": 9
+        },
+        "expectedUTF16": {
+          "length": 6,
+          "location": 8
+        },
+        "html": "<p data-sourcepos=\"1:1-1:26\">before\ufffd <strong>\u4e2d\u6587</strong> after</p>\n",
+        "name": "paragraph",
+        "source": "before\u0000 **\u4e2d\u6587** after",
+        "sourceRangeMatches": false
+      },
+      {
+        "actual": {
+          "end": 16,
+          "line": 2,
+          "start": 7
+        },
+        "actualStrongUTF16": [],
+        "expected": {
+          "end": 12,
+          "line": 2,
+          "start": 3
+        },
+        "expectedUTF16": {
+          "length": 6,
+          "location": 11
+        },
+        "html": "<ul data-sourcepos=\"1:1-2:20\">\n<li data-sourcepos=\"1:1-2:20\">before\n\ufffd <strong>\u4e2d\u6587</strong> after</li>\n</ul>\n",
+        "name": "lazy-list",
+        "source": "- before\n\u0000 **\u4e2d\u6587** after",
+        "sourceRangeMatches": false
+      },
+      {
+        "actual": {
+          "end": 22,
+          "line": 1,
+          "start": 13
+        },
+        "actualStrongUTF16": [
+          {
+            "length": 6,
+            "location": 12
+          }
+        ],
+        "expected": {
+          "end": 20,
+          "line": 1,
+          "start": 11
+        },
+        "expectedUTF16": {
+          "length": 6,
+          "location": 10
+        },
+        "html": "<blockquote data-sourcepos=\"1:1-1:28\">\n<p data-sourcepos=\"1:3-1:28\">before\ufffd <strong>\u4e2d\u6587</strong> after</p>\n</blockquote>\n",
+        "name": "quote",
+        "source": "> before\u0000 **\u4e2d\u6587** after",
+        "sourceRangeMatches": false
+      },
+      {
+        "actual": {
+          "end": 22,
+          "line": 1,
+          "start": 13
+        },
+        "actualStrongUTF16": [
+          {
+            "length": 6,
+            "location": 12
+          }
+        ],
+        "expected": {
+          "end": 20,
+          "line": 1,
+          "start": 11
+        },
+        "expectedUTF16": {
+          "length": 6,
+          "location": 10
+        },
+        "html": "<h1 id=\"before-\u4e2d\u6587-after\" data-sourcepos=\"1:1-1:28\"><span id=\"toc_0\" class=\"md-legacy-anchor\" aria-hidden=\"true\"></span>\nbefore\ufffd <strong>\u4e2d\u6587</strong> after\n</h1>\n",
+        "name": "heading",
+        "source": "# before\u0000 **\u4e2d\u6587** after",
+        "sourceRangeMatches": false
+      },
+      {
+        "actual": {
+          "end": 22,
+          "line": 3,
+          "start": 13
+        },
+        "actualStrongUTF16": [
+          {
+            "length": 6,
+            "location": 41
+          }
+        ],
+        "expected": {
+          "end": 20,
+          "line": 3,
+          "start": 11
+        },
+        "expectedUTF16": {
+          "length": 6,
+          "location": 39
+        },
+        "html": "<table data-sourcepos=\"1:1-3:38\">\n<thead>\n<tr data-sourcepos=\"1:1-1:18\">\n<th data-sourcepos=\"1:2-1:9\">Header</th>\n<th data-sourcepos=\"1:11-1:17\">Other</th>\n</tr>\n</thead>\n<tbody>\n<tr data-sourcepos=\"3:1-3:38\">\n<td data-sourcepos=\"3:2-3:29\">before\ufffd <strong>\u4e2d\u6587</strong> after</td>\n<td data-sourcepos=\"3:31-3:37\">Value</td>\n</tr>\n</tbody>\n</table>\n",
+        "name": "table",
+        "source": "| Header | Other |\n|---|---|\n| before\u0000 **\u4e2d\u6587** after | Value |",
+        "sourceRangeMatches": false
+      },
+      {
+        "actual": {
+          "end": 35,
+          "line": 1,
+          "start": 26
+        },
+        "actualStrongUTF16": [],
+        "expected": {
+          "end": 31,
+          "line": 1,
+          "start": 22
+        },
+        "expectedUTF16": {
+          "length": 6,
+          "location": 19
+        },
+        "html": "<p data-sourcepos=\"1:1-1:41\">literal \ufffd before\ufffd\ufffd <strong>\u4e2d\u6587</strong> after</p>\n",
+        "name": "replacement-distinction",
+        "source": "literal \ufffd before\u0000\u0000 **\u4e2d\u6587** after",
+        "sourceRangeMatches": false
+      }
+    ],
+    "raw": "/private/tmp/snowfolio-current-null-probe.json",
+    "rawSHA256": "094c695a532e2f006e5f97dbe74579c19b489bf3c3537be4dabfb3d51e9e2b0a",
+    "harness": "/private/tmp/snowfolio-current-null-probe.swift",
+    "harnessSHA256": "877d11c292127f732116f4f24ccc203bb6d54b43055d558117836e12fe613917",
+    "build": "/private/tmp/snowfolio-current-null-probe-build.json"
+  },
+  "nextImplementation": [
+    "Observe actual native NUL-to-UTF8-replacement normalization once per parser, without an extra ordinary-input scan",
+    "Prepare owned projections only for affected source-line bodies; keep original source bytes and public physical line ranges intact",
+    "Use input-normalized source lines throughout container/tab/table/text mapping and reference/note collection so intermediate coordinates share one domain",
+    "Project final native node and definition columns to physical source after all native postprocessing and before AST/HTML/syntax exposure; fold node projection into the existing AST traversal if practical",
+    "Change split-prefix endpoint lookup to the same normalized line domain; preserve authored U+FFFD and distinguish it from a replaced input NUL",
+    "Validate newline/container/table/dialect/reference/footnote/code/feed-boundary and native-font cases, plus ordinary-input overhead and ownership"
   ]
 }

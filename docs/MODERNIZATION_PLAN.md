@@ -2,10 +2,11 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current implementation checkpoint: automatic URL/www/email source reconciliation.
+Current code checkpoint: `33e9046`, automatic URL/www/email source reconciliation.
 Local evidence verifies 277 package tests / 54 suites, 38 Address Sanitizer tests / five
 suites, eight arm64 test executables, an arm64 app build and 652 CommonMark examples.
-Exact results, render measurements and hosted follow-up are recorded in
+Downloaded hosted artifacts confirm the core totals and nine passing native UI tests.
+Exact results, render measurements and runtime warning counts are recorded in
 [the checkpoint ledger](validation/automatic-link-source.json).
 
 Next source-coordinate work is the reproduced
@@ -2378,3 +2379,22 @@ NUL projection remains open, as do direct desktop/real IME/VoiceOver, full nativ
 performance, CSS/templates, remaining parity and safe legacy retirement. The Mac is
 still locked; its existing process and user documents/Open panel are preserved. The
 full modernization goal remains active and incomplete.
+
+
+### Hosted automatic-link acceptance
+
+Run [42405440825](https://github.com/jiangshen/snowfolio/actions/runs/42405440825),
+code `33e9046d6ab21c29220ee40abcdd0ba43cadcacc`, passes both jobs. Downloaded
+artifacts verify **277 package tests / 54 suites**, eight arm64 test executables,
+652/652 CommonMark examples and **nine native UI tests with zero failures**. Fifteen
+runtime priority-inversion warnings and two App Intents metadata notices are retained
+without inferring a first-party performance cause or change. Exact logs/result hashes
+are recorded in `validation/automatic-link-source.json`.
+
+An isolated executable from this exact code revision also confirms all six NUL
+characterization fixtures still have incorrect strong ranges. The latest raw output
+and exact harness hash are in `validation/null-source-characterization.json`. The
+remaining work is input-normalized source-line projection, not another Markdown
+grammar. Direct desktop/IME/VoiceOver, full native performance, CSS/templates, remaining
+parity, integration/releases and safe legacy retirement remain open. The full goal
+stays active and incomplete.

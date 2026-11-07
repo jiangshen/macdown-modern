@@ -626,6 +626,37 @@
     "Custom CSS/templates, remaining parity, integration/releases and safe coupled legacy retirement"
   ],
   "hosted": {
-    "status": "pending code push and exact artifact verification"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42405440825",
+    "commit": "33e9046d6ab21c29220ee40abcdd0ba43cadcacc",
+    "result": "passed both jobs; exact core and native log/result artifacts downloaded and verified",
+    "packageTests": 277,
+    "packageSuites": 54,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "nativeUITests": 9,
+    "nativeUIFailures": 0,
+    "passedNativeMethods": [
+      "-[SnowfolioUITests.DocumentLifecycleTests testEditorThemePickerSearchImportAndUndo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testFencedCodePreferenceUpdatesCurrentPreview]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testIntrawordPreferenceRoundTrip]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testLivePreviewUpdatesAfterEditingAndUndo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testMultipleDocumentWindows]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testNewDocumentTypingUndoRedo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testOpenExistingMarkdownAndSave]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testSettingsSearchHistoryAndWindowReopen]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testUnderlinePreferenceAndNativeCommand]"
+    ],
+    "priorityInversionWarnings": 15,
+    "appIntentsMetadataWarnings": 2,
+    "performanceAttribution": "Runtime warning attribution remains open; no first-party cause or improvement is inferred from the count.",
+    "coreArtifactDirectory": "/private/tmp/snowfolio-autolink-hosted-core",
+    "nativeArtifactDirectory": "/private/tmp/snowfolio-autolink-hosted-native",
+    "nativeResultBundle": "/private/tmp/snowfolio-autolink-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_19-17-40-+0000.xcresult",
+    "artifactSHA256": {
+      "/private/tmp/snowfolio-autolink-hosted-core/snowfolio-validation/swift-test.log": "e6d1540be852f0f620d2337473737e53ccae8871b1c65ce6e64af3d90f404145",
+      "/private/tmp/snowfolio-autolink-hosted-core/snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "/private/tmp/snowfolio-autolink-hosted-core/snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "/private/tmp/snowfolio-autolink-hosted-native/xcodebuild.log": "315b36e95bfce6a733e66e94b84bf23a71f78d5535e93993abfedcbdf19cfc8e"
+    }
   }
 }
