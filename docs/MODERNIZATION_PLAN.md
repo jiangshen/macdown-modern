@@ -120,7 +120,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
-| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
+| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography and all eight Prism code themes implemented; direct theme acceptance, CSS/templates and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
@@ -2115,3 +2115,23 @@ also left its custom theme saved, affecting a later Automatic-only color asserti
 Every UI-test launch now explicitly selects Automatic, removing that cross-method
 preference dependency. Production continuation and theme behavior are unchanged.
 Final full-suite hosted acceptance remains pending.
+
+
+### Hosted theme-library acceptance
+
+Run [42388642872](https://github.com/jiangshen/snowfolio/actions/runs/42388642872),
+code `e56b2bf9951a5c95a6065e7c92ce92959b67d3f4`, passes both jobs. Downloaded
+artifacts verify **259 package tests / 52 suites**, eight arm64 test executables,
+652/652 CommonMark examples and **nine native UI tests with zero failures**. The new
+walkthrough verifies Settings search, distinct Import/Reload controls, bundled choice,
+file selection, review, imported choice, Settings reopen, exact source and native
+undo/redo, then Automatic restoration. Its screenshot was inspected: controls and text
+fit the grouped form without overlap. Fifteen priority-inversion warnings remain a
+separate open attribution gate.
+
+Direct user-desktop acceptance is still pending. The existing Snowfolio process was
+launched at 03:47:34 PST, before the latest theme/Settings executable rebuild at
+07:32:24 PST; it was preserved along with user documents and the Open panel while the
+Mac remained locked. This checkpoint does not claim a fresh source-editor selection
+reproduction or visual confirmation of that user process. The mixed-list preview
+regressions remain passing. The full modernization goal stays active and incomplete.

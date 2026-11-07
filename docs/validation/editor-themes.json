@@ -376,13 +376,14 @@
       "Preference migration, explicit Automatic, reopen persistence, unavailable selection and recovery",
       "Canceled view waiter and concurrent choice publication",
       "All 15 bundled choices and an imported theme update the same hosted SwiftUI/native editor, preserving source bytes, revision, selection and native undo/redo",
-      "Hosted UI test added for Settings search, picker, file import/review, reopen and document undo"
+      "Hosted UI Settings search, unique native picker/Import/Reload controls, .style file panel, review sheet (excluding Touch Bar mirror), selection/reopen, source preservation and undo/redo passed"
     ],
     "evidence": {
       "fullPackage": "/private/tmp/snowfolio-theme-catalog-full.json",
       "nativeBuild": "/private/tmp/snowfolio-theme-catalog-native.json",
       "targetedIntegration": "/private/tmp/snowfolio-theme-integration.json",
-      "nativeControlFix": "/private/tmp/snowfolio-theme-controls-native.json"
+      "nativeControlFix": "/private/tmp/snowfolio-theme-controls-native.json",
+      "finalNativeBuild": "/private/tmp/snowfolio-theme-fixture-native.json"
     },
     "directDesktop": "Pending: Mac locked during this checkpoint; original tabs and Open panel were not touched",
     "hosted": {
@@ -430,6 +431,26 @@
         "failed": 2
       },
       "finalHosted": "pending"
+    },
+    "finalHosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42388642872",
+      "commit": "e56b2bf9951a5c95a6065e7c92ce92959b67d3f4",
+      "result": "passed both jobs",
+      "packageTests": 259,
+      "packageSuites": 52,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": 9,
+      "nativeUIFailures": 0,
+      "priorityInversionWarnings": 15,
+      "evidence": "Downloaded original package/corpus and native result artifacts; exact counts verified; passing Settings screenshot inspected",
+      "screenshot": "/private/tmp/snowfolio-theme-final-shots/5C560439-2B85-41F6-BE4A-3A7E478D9734.png",
+      "visualReview": "Theme picker, explanatory text, Import/Reload and grouped form fit without overlap in the hosted screenshot; this does not establish direct desktop/IME/VoiceOver acceptance."
+    },
+    "runningAppAtCheck": {
+      "launched": "2026-11-07 03:47:34 PST",
+      "latestExecutableBuiltAtCheck": "2026-11-07 07:32:24 PST",
+      "result": "Existing process predates the theme/Settings rebuild; user documents and Open panel preserved. Direct inspection/relaunch waits for unlocked desktop."
     }
   }
 }
