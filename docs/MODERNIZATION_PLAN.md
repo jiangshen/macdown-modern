@@ -2417,3 +2417,12 @@ layout/selection regression, not a pixel-level screenshot assertion. Desktop acc
 remains locked; no fresh visual acceptance or running-app refresh is claimed. See
 `validation/list-selection.json`. Native input normalization work remains uncommitted
 and separately gated; the full modernization objective stays active and incomplete.
+
+
+Hosted short-list acceptance passed on `9c98b3c` in run
+[42407477812](https://github.com/jiangshen/snowfolio/actions/runs/42407477812).
+Downloaded artifacts verify 278 package tests / 54 suites, the six list parameter
+cases, eight arm64 executables, 652/652 CommonMark examples and nine native document
+UI tests with zero failures. Runtime diagnostics remain recorded in the ledger and
+do not close performance/integration gates. The user's desktop remains unavailable;
+this records automated acceptance of the existing fix and added regression coverage.

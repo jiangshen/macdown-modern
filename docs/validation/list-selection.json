@@ -136,6 +136,22 @@
     "evidence": "/private/tmp/snowfolio-reported-list-acceptance.json",
     "desktopAcceptance": "Mac remains locked; no fresh desktop or pixel-level visual acceptance claimed. Existing prior direct acceptance is recorded separately.",
     "productionCodeChanged": false,
-    "hosted": "Pending test-only branch push"
+    "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42407477812",
+      "commit": "9c98b3c1bd2aa61cfa0d36420c34777400a2fa2e",
+      "result": "passed both jobs",
+      "packageTests": 278,
+      "packageSuites": 54,
+      "nativeListParameterCases": 6,
+      "nativeDocumentUITests": 9,
+      "nativeUIFailures": 0,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "commonMarkFailures": 0,
+      "priorityDiagnostics": 16,
+      "appIntentsMetadataNotices": 2,
+      "evidence": "Downloaded exact package, corpus, architecture and native UI artifacts; test summaries and new parameter cases verified.",
+      "scope": "No fresh user-desktop visual acceptance; remaining full-goal runtime and integration gates stay open."
+    }
   }
 }
