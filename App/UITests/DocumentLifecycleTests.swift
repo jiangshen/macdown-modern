@@ -129,6 +129,7 @@ final class DocumentLifecycleTests: XCTestCase {
     app.typeKey(",", modifierFlags: .command)
     let settings = app.windows["snowfolioSettings"]
     XCTAssertTrue(settings.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertTrue(settings.switches["restoreDocumentsOnLaunch"].exists)
     let sidebar = settings.outlines.firstMatch
     sidebar.staticTexts["Appearance"].firstMatch.click()
     XCTAssertTrue(settings.popUpButtons["documentFont"].waitForExistence(timeout: 5))
@@ -154,6 +155,9 @@ final class DocumentLifecycleTests: XCTestCase {
     search.click()
     app.typeKey("a", modifierFlags: .command)
     app.typeKey(.delete, modifierFlags: [])
+    sidebar.staticTexts["Privacy & Security"].firstMatch.click()
+    XCTAssertTrue(settings.switches["previewRawHTML"].waitForExistence(timeout: 5))
+    XCTAssertTrue(settings.switches["previewRemoteImages"].exists)
     sidebar.staticTexts["Editor"].firstMatch.click()
     XCTAssertTrue(settings.textFields["editorFontName"].waitForExistence(timeout: 5))
     app.typeKey("w", modifierFlags: .command)

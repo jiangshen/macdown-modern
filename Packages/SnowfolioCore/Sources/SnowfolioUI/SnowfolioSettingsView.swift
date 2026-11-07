@@ -46,7 +46,6 @@ struct SnowfolioSettingsView: View {
     }
     .navigationSplitViewStyle(.balanced)
     .frame(minWidth: 740, idealWidth: 740, minHeight: 573, idealHeight: 573)
-
   }
 
   private var sidebar: some View {
@@ -59,7 +58,7 @@ struct SnowfolioSettingsView: View {
           ForEach(SettingsCatalog.search(navigation.query)) { result in
             Label {
               VStack(alignment: .leading, spacing: 2) {
-                Text(result.entry.title)
+                Text(result.entry.title).fixedSize(horizontal: false, vertical: true)
                 Text(result.pane.title).foregroundStyle(.secondary)
               }
             } icon: {
@@ -81,6 +80,7 @@ struct SnowfolioSettingsView: View {
             }
             .padding(.vertical, 8)
             .accessibilityElement(children: .combine)
+            .selectionDisabled()
           }
           Section {
             ForEach(SettingsPane.allCases) { pane in

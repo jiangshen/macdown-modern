@@ -14,6 +14,9 @@ struct SettingsTests {
     #expect(!navigation.canGoBack && !navigation.canGoForward)
     navigation.visit(appearance)
     navigation.visit(equations)
+    let revealRequest = navigation.revealRequest
+    navigation.visit(equations)
+    #expect(navigation.revealRequest == revealRequest + 1)
     navigation.goBack()
     #expect(navigation.location == appearance && navigation.canGoForward)
     navigation.goForward()
