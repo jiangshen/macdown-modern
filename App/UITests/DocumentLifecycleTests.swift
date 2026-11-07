@@ -47,6 +47,33 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testLivePreviewUpdatesAfterEditingAndUndo() {
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    let original = "# Live preview\n\nFirst preview checkpoint"
+    editor.typeText(original)
+    let preview = app.webViews.firstMatch
+    XCTAssertTrue(preview.waitForExistence(timeout: 8), app.debugDescription)
+    let first = preview.staticTexts["First preview checkpoint"].firstMatch
+    XCTAssertTrue(first.waitForExistence(timeout: 8), app.debugDescription)
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Second preview checkpoint")
+    let second = preview.staticTexts["Second preview checkpoint"].firstMatch
+    XCTAssertTrue(second.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertFalse(first.exists)
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, original)
+    XCTAssertTrue(first.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertFalse(second.exists)
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "live-preview-after-native-undo"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
   func testOpenExistingMarkdownAndSave() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
