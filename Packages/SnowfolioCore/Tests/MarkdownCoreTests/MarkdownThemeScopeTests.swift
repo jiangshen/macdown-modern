@@ -121,6 +121,29 @@ struct MarkdownThemeScopeTests {
       !(try style("---", source: source, syntax: syntax).tokens.contains(.referenceDefinition)))
   }
 
+  @Test(
+    "Definition-only prefixes followed by heading-like lines retain the next content origin",
+    arguments: ["\n", "\r\n", "\r"])
+  func emptyPrefixPosition(_ newline: String) async throws {
+    for (prefix, continuation) in [
+      ("", ""), ("  ", "  "), ("> ", "> "), ("- ", "  "), ("> - ", ">   "),
+    ] {
+      let source = [
+        prefix + "[a]: /target", continuation + "---", continuation + "**body** &copy;",
+      ].joined(separator: newline)
+      let parsed = try await MarkdownProcessor().render(source, includeSyntax: true)
+      #expect(
+        parsed.nodes.first { $0.kind == .paragraph }?.range?.start
+          == .init(line: 2, column: continuation.utf8.count + 1))
+      #expect(parsed.nodes.first { $0.kind == .strong }?.range?.start.line == 3)
+      let syntax = try #require(parsed.syntax)
+      #expect(try style("body", source: source, syntax: syntax).tokens.contains(.strong))
+      #expect(try style("&copy;", source: source, syntax: syntax).tokens.contains(.entity))
+      let plain = try await MarkdownProcessor().render(source)
+      #expect(plain.nodes == parsed.nodes && plain.html == parsed.html)
+    }
+  }
+
   @Test("Invalid definitions and opaque native blocks cannot create reference scopes")
   func invalidDefinitions() async throws {
     for source in [

@@ -158,12 +158,12 @@
     "architecture": [
       "The native decoder recognizes entities only within AST text ranges; each decode window is bounded at 32 bytes",
       "Two documented opt-in generic native metadata callbacks expose already-recognized prefix consumption and finalized blocks, without adding Markdown grammar",
-      "Swift reconciles paragraph/heading origin before native inline parsing, only after matching remaining native content to its physical source suffix",
+      "Swift reconciles paragraph/heading origin before native inline parsing, only after matching remaining native content to its physical source suffix or verifying the complete current native line when no buffered content remains",
       "Native source-prefix metadata survives reference removal and footnote relocation/discard; no native node pointers escape parsing",
       "Source bytes/line index allocate lazily and are reused by syntax generation; no source parsing on the main actor or source rewriting"
     ],
     "localValidation": {
-      "packageTests": 239,
+      "packageTests": 240,
       "packageSuites": 47,
       "focusedAddressSanitizer": "passed; source-scope and existing syntax tests; complete capture; no diagnostics",
       "nativeBuildForTesting": "passed; arm64 native app verified",
@@ -171,7 +171,7 @@
       "nativeSourceProvenance": "verified; every local replacement reverses to unchanged recorded upstream bytes",
       "arm64TestExecutables": 8,
       "commonMarkExamples": 652,
-      "addressSanitizerTests": 12,
+      "addressSanitizerTests": 13,
       "addressSanitizerSuites": 2
     },
     "coverage": [
@@ -181,7 +181,8 @@
       "Opaque code/HTML/destinations, invalid definitions and front matter",
       "Entity ancestry/escapes plus 20000 ampersands and numeric digits",
       "Used/unused/unresolved notes, original quote ancestry and nested strong/entity scopes",
-      "Real TextKit paragraph fonts for entity, reference, resolved note marker/body and unused marker; unchanged backing attributes/source"
+      "Real TextKit paragraph fonts for entity, reference, resolved note marker/body and unused marker; unchanged backing attributes/source",
+      "Definition-only prefix removed while testing a setext line: next content origin stays correct across 3 line endings and 5 indentation/container contexts; plain and syntax-enabled outputs agree"
     ],
     "shippingUIConsumer": false,
     "remaining": [
@@ -192,7 +193,9 @@
       "Custom CSS/templates and coupled legacy retirement"
     ],
     "hosted": {
-      "result": "pending"
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42376156626",
+      "commit": "349470c7a6c8d0c9b52d6811565a19f8c126fa89",
+      "result": "pending; initial 239-test scope checkpoint"
     },
     "evidence": {
       "fullPackage": "/private/tmp/snowfolio-scope-full-tests.json",
@@ -201,6 +204,16 @@
       "architecture": "/private/tmp/snowfolio-scope-architecture.json",
       "commonMark": "/private/tmp/snowfolio-scope-commonmark/commonmark.json",
       "fixtureReproduction": "/private/tmp/snowfolio-theme-scopes-reproduced.json"
+    },
+    "emptyPrefixFollowup": {
+      "regression": "A definition-only buffered paragraph stays open when its next line resembles setext; the previous guard skipped rebasing an empty remainder",
+      "fix": "Verify native current line number/complete bytes against physical source, then use native first_nonspace for the new paragraph origin; no new native patch or parser grammar",
+      "before": "Reproduced: paragraph was line 1 instead of 2, strong text was line 2 instead of 3, expected body syntax absent",
+      "after": "240 package tests / 47 suites; 13 Address Sanitizer syntax tests / 2 suites; native arm64 build-for-testing; complete capture and no diagnostics",
+      "evidence": "/private/tmp/snowfolio-empty-prefix-regression.json",
+      "hosted": {
+        "result": "pending"
+      }
     }
   }
 }

@@ -1919,3 +1919,18 @@ acceptance gate. Global paper/caret/selection/current-line styling, catalog/impo
 choices, real visual/keyboard/VoiceOver/IME/scrolling and measured large-document checks,
 custom CSS/templates and coupled legacy retirement remain open. There is still no
 user-facing theme picker. The full modernization goal remains active and incomplete.
+
+
+### Empty reference-prefix follow-up
+
+A focused regression exposed one additional native origin case: a paragraph containing
+only definitions remains open when the next line resembles a setext underline. There
+is no remaining buffered line to suffix-match. Swift now requires native current-line
+number and complete byte identity before rebasing that empty paragraph to the native
+first-nonspace column. The pre-fix test demonstrated incorrect paragraph/strong lines
+and absent expected body syntax. The fix passes all three line endings and five
+indentation/quote/list contexts, with plain/syntax-enabled outputs agreeing. No further
+C patch or Markdown grammar was added. Final local validation is 240 tests / 47 suites,
+13 Address Sanitizer source-syntax tests / two suites, and a successful native arm64
+build-for-testing, with complete captures and no diagnostics. Other source-coordinate
+and full theme/product acceptance gates above remain open.

@@ -35,12 +35,13 @@ final class MarkdownSourceMetadata {
         Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue().observe(node)
       }
     }
-    cmark_syntax_extension_set_source_prefix_func(native) { extensionPointer, _, node, consumed in
-      guard let extensionPointer, let node,
+    cmark_syntax_extension_set_source_prefix_func(native) {
+      extensionPointer, parser, node, consumed in
+      guard let extensionPointer, let parser, let node,
         let pointer = cmark_syntax_extension_get_private(extensionPointer)
       else { return }
       Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
-        .consume(node, count: Int(consumed))
+        .consume(node, count: Int(consumed), parser: parser)
     }
   }
 
@@ -72,7 +73,10 @@ final class MarkdownSourceMetadata {
         quoted: quoted, inNote: true))
   }
 
-  private func consume(_ node: UnsafeMutablePointer<cmark_node>, count: Int) {
+  private func consume(
+    _ node: UnsafeMutablePointer<cmark_node>, count: Int,
+    parser: UnsafeMutablePointer<cmark_parser>
+  ) {
     let buffer = node.pointee.content
     guard let data = buffer.ptr, count > 0, count <= Int(buffer.size) else { return }
     let content = UnsafeBufferPointer(start: data, count: Int(buffer.size))
@@ -107,21 +111,36 @@ final class MarkdownSourceMetadata {
             end: .init(line: lastLine, column: lines[lastLine - 1].count)), quoted: quoted,
           inNote: inNote))
     }
-    guard count < content.count, removedLines > 0 else { return }
+    guard removedLines > 0 else { return }
     let bodyLine = firstLine + removedLines
     guard bodyLine > 0, bodyLine <= lines.count else { return }
-    // Native add_line has already removed container prefixes and indentation.
-    // Its first remaining content line must be the physical source line's suffix.
-    // Verify that identity before using its length to recover the source column.
-    var end = count
-    while end < content.count, content[end] != 10, content[end] != 13 { end += 1 }
-    let body = content[count..<end]
     let physical = bytes[lines[bodyLine - 1]]
-    guard !body.isEmpty, body.count <= physical.count,
-      physical.suffix(body.count).elementsEqual(body)
-    else { return }
+    let column: Int
+    if count == content.count {
+      // Resolving references while testing a setext line can consume the entire
+      // buffered paragraph, which remains open for that current line. Rebase
+      // only when native line identity and the complete physical bytes agree.
+      let current = parser.pointee.curline
+      guard Int(parser.pointee.line_number) == bodyLine, let data = current.ptr else { return }
+      let nativeLine = UnsafeBufferPointer(start: data, count: Int(current.size))
+      var end = nativeLine.count
+      while end > 0, nativeLine[end - 1] == 10 || nativeLine[end - 1] == 13 { end -= 1 }
+      guard physical.elementsEqual(nativeLine[..<end]) else { return }
+      column = Int(parser.pointee.first_nonspace) + 1
+      guard column > 0, column <= physical.count else { return }
+    } else {
+      // Native add_line has already removed container prefixes and indentation.
+      // Its first remaining content line must be the physical source line's suffix.
+      var end = count
+      while end < content.count, content[end] != 10, content[end] != 13 { end += 1 }
+      let body = content[count..<end]
+      guard !body.isEmpty, body.count <= physical.count,
+        physical.suffix(body.count).elementsEqual(body)
+      else { return }
+      column = physical.count - body.count + 1
+    }
     node.pointee.start_line = Int32(bodyLine)
-    node.pointee.start_column = Int32(physical.count - body.count + 1)
+    node.pointee.start_column = Int32(column)
   }
 
   static func lineRanges<C: RandomAccessCollection>(_ bytes: C) -> [Range<Int>]
