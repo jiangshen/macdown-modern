@@ -25,13 +25,16 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
 
   func makeNSViewController(context: Context) -> Controller {
     configureScrolling()
-    return Controller(editor: editorSurface, preview: previewSurface, mode: mode)
+    return Controller(
+      editor: editorSurface, preview: previewSurface, mode: mode,
+      editorOnRight: preferences.editorOnRight)
   }
 
   func updateNSViewController(_ controller: Controller, context: Context) {
     configureScrolling()
     controller.editorHost.rootView = editorSurface
     controller.previewHost.rootView = previewSurface
+    controller.setEditorOnRight(preferences.editorOnRight)
     controller.setMode(mode, editing: editing)
   }
 
@@ -61,17 +64,27 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     let editorHost: NSHostingController<EditorSurface>
     let previewHost: NSHostingController<PreviewSurface>
     private(set) var mode: WorkspaceMode
+    private(set) var editorOnRight: Bool
+    private let editorItem: NSSplitViewItem
+    private let previewItem: NSSplitViewItem
     private var lastSplitFraction: CGFloat = 0.5
 
-    init(editor: EditorSurface, preview: PreviewSurface, mode: WorkspaceMode) {
-      editorHost = NSHostingController(rootView: editor)
-      previewHost = NSHostingController(rootView: preview)
+    init(
+      editor: EditorSurface, preview: PreviewSurface, mode: WorkspaceMode,
+      editorOnRight: Bool = false
+    ) {
+      let sourceHost = NSHostingController(rootView: editor)
+      let renderedHost = NSHostingController(rootView: preview)
+      editorHost = sourceHost
+      previewHost = renderedHost
+      editorItem = NSSplitViewItem(viewController: sourceHost)
+      previewItem = NSSplitViewItem(viewController: renderedHost)
+      self.editorOnRight = editorOnRight
       self.mode = .split
       super.init(nibName: nil, bundle: nil)
       splitView.isVertical = true
       splitView.dividerStyle = .thin
-      for controller in [editorHost as NSViewController, previewHost as NSViewController] {
-        let item = NSSplitViewItem(viewController: controller)
+      for item in editorOnRight ? [previewItem, editorItem] : [editorItem, previewItem] {
         item.minimumThickness = 240
         item.collapseBehavior = .preferResizingSiblingsWithFixedSplitView
         addSplitViewItem(item)
@@ -81,34 +94,60 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
 
     required init?(coder: NSCoder) { nil }
 
+    private func rememberSplitFraction() {
+      guard mode == .split else { return }
+      let available = splitView.bounds.width - splitView.dividerThickness
+      let width = editorHost.view.frame.width
+      if available > 0, width > 0 { lastSplitFraction = min(0.95, max(0.05, width / available)) }
+    }
+
+    private func restoreSplitFraction() {
+      guard mode == .split else { return }
+      view.layoutSubtreeIfNeeded()
+      let leadingFraction = editorOnRight ? 1 - lastSplitFraction : lastSplitFraction
+      splitView.setPosition(
+        (splitView.bounds.width - splitView.dividerThickness) * leadingFraction,
+        ofDividerAt: 0)
+    }
+
+    func setEditorOnRight(_ next: Bool) {
+      guard editorOnRight != next else { return }
+      rememberSplitFraction()
+      let window = view.window
+      let responder = window?.firstResponder
+      editorOnRight = next
+      // Reorder the existing items/controllers, keeping their document views alive.
+      splitViewItems = next ? [previewItem, editorItem] : [editorItem, previewItem]
+      restoreSplitFraction()
+      if let responder = responder as? NSView, !responder.isHiddenOrHasHiddenAncestor,
+        responder.isDescendant(of: view), window?.firstResponder !== responder
+      {
+        window?.makeFirstResponder(responder)
+      }
+    }
+
     func setMode(_ next: WorkspaceMode, editing: EditorCommandController) {
       guard mode != next else { return }
-      if mode == .split, next != .split {
-        let available = splitView.bounds.width - splitView.dividerThickness
-        let width = editorHost.view.frame.width
-        if available > 0, width > 0 { lastSplitFraction = min(0.95, max(0.05, width / available)) }
-      }
-      if next == .preview, let window = view.window,
-        let responder = window.firstResponder as? NSView,
-        responder.isDescendant(of: editorHost.view)
-      {
-        window.makeFirstResponder(nil)
+      if mode == .split, next != .split { rememberSplitFraction() }
+      var focusEditor = mode == .preview && next != .preview
+      if let window = view.window, let responder = window.firstResponder as? NSView {
+        let hidingFocusedPane =
+          next == .preview && responder.isDescendant(of: editorHost.view)
+          || next == .editor && responder.isDescendant(of: previewHost.view)
+        if hidingFocusedPane {
+          window.makeFirstResponder(nil)
+          focusEditor = next != .preview
+        }
       }
       // Expand the destination before collapsing the other pane, so there is always
       // one content item present. No animation is required for this writing mode.
-      if next != .preview { splitViewItems[0].isCollapsed = false }
-      if next != .editor { splitViewItems[1].isCollapsed = false }
-      if next == .preview { splitViewItems[0].isCollapsed = true }
-      if next == .editor { splitViewItems[1].isCollapsed = true }
-      let previous = mode
+      if next != .preview { editorItem.isCollapsed = false }
+      if next != .editor { previewItem.isCollapsed = false }
+      if next == .preview { editorItem.isCollapsed = true }
+      if next == .editor { previewItem.isCollapsed = true }
       mode = next
-      if next == .split {
-        view.layoutSubtreeIfNeeded()
-        splitView.setPosition(
-          (splitView.bounds.width - splitView.dividerThickness) * lastSplitFraction,
-          ofDividerAt: 0)
-      }
-      if previous == .preview, next != .preview, let editor = editing.coordinator?.editor {
+      if next == .split { restoreSplitFraction() }
+      if focusEditor, let editor = editing.coordinator?.editor {
         view.window?.makeFirstResponder(editor)
       }
     }

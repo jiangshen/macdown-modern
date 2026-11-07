@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-06",
+  "product": "Snowfolio",
+  "feature": "Native editor/preview pane ordering",
+  "preference": {
+    "key": "editorOnRight",
+    "default": false,
+    "scope": "Application-wide; retains legacy behavior",
+    "migration": "Legacy true and persisted explicit false verified"
+  },
+  "controls": {
+    "viewMenu": "Editor on Right",
+    "editorSettings": "Place editor on the right",
+    "toolbar": "Editor-only symbol follows the selected side"
+  },
+  "implementation": "Reorder existing NSSplitViewItems/NSHostingControllers. Preserve editor width independently of its side; collapse by item identity and route focus to the visible editor.",
+  "validation": {
+    "tests": 138,
+    "suites": 28,
+    "arm64TestExecutables": 7,
+    "nativeBuildForTesting": "passed",
+    "swiftFormatting": "passed",
+    "diffCheck": "passed"
+  },
+  "nativeCoverage": [
+    "Initial left and right orders",
+    "Physical layout in common split-view coordinates",
+    "Unequal editor widths retained across swaps and mode changes",
+    "Exact NSTextView and WKWebView identity retained",
+    "Source and preview reading positions retained during a swap",
+    "Selection and focus retained; a focused preview transfers focus when collapsed",
+    "Undo/redo survives swapping and hidden-pane changes",
+    "Complete DocumentWorkspace responds to persisted preference changes in both directions",
+    "Right-side toolbar symbol exists on the target OS"
+  ],
+  "directDesktop": "Pending: Mac locked. No settings/menu clicks or VoiceOver acceptance claimed.",
+  "remaining": [
+    "Final desktop relaunch and pane-control checks after unlock",
+    "Multiple-window propagation and full keyboard/VoiceOver audit",
+    "Zoom and remaining modernization/release requirements"
+  ],
+  "legacyRemoval": "Old split-view and preference code still needed by the original target; no additional deletion in this increment.",
+  "fullGoal": "active"
+}

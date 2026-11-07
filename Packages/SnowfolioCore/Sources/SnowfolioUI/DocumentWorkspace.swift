@@ -111,7 +111,8 @@ public struct DocumentWorkspace: View {
       ToolbarItem {
         Picker("View", selection: $mode) {
           ForEach(WorkspaceMode.allCases) { item in
-            Label(item.title, systemImage: item.symbol).tag(item).accessibilityLabel(item.title)
+            Label(item.title, systemImage: item.symbol(editorOnRight: preferences.editorOnRight))
+              .tag(item).accessibilityLabel(item.title)
           }
         }.pickerStyle(.segmented).help("Workspace layout")
       }
@@ -267,6 +268,11 @@ enum WorkspaceMode: String, CaseIterable, Identifiable {
     case .preview: "Preview"
     }
   }
+  func symbol(editorOnRight: Bool) -> String {
+    if self == .editor, editorOnRight { return "square.trailingthird.inset.filled" }
+    return symbol
+  }
+
   var symbol: String {
     switch self {
     case .editor: "square.leadingthird.inset.filled"

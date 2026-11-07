@@ -5,9 +5,9 @@ independent writing app. Plain Markdown files stay local and portable. Snowfolio
 the glacial-blue layered app and document icons, readable notebook styling, and native
 Mac controls.
 
-The Swift app includes a TextKit 2 editor, native document tabs, live preview, syntax
-colors, callouts with an emoji picker, YAML properties, a table of contents, and shared
-HTML/PDF/print output. It is a development build: feature parity, accessibility,
+The Swift app includes a TextKit 2 editor, native document tabs, linked scrolling,
+configurable pane order, live preview, syntax colors, callouts with an emoji picker,
+YAML properties, a table of contents, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
 performance measurement and release readiness are still in progress. See the
 [modernization roadmap](docs/MODERNIZATION_PLAN.md) and
 [source inventory](docs/SOURCE_INVENTORY.md).

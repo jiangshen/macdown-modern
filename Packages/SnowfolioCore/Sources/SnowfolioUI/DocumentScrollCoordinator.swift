@@ -469,6 +469,8 @@ public struct DocumentScrollCommands: Commands {
   public init(preferences: AppPreferences) { self.preferences = preferences }
   public var body: some Commands {
     CommandGroup(after: .sidebar) {
+      Toggle("Editor on Right", isOn: $preferences.editorOnRight)
+        .accessibilityIdentifier("editorOnRightCommand")
       Toggle("Link Editor and Preview Scrolling", isOn: $preferences.synchronizedScrolling)
         .accessibilityIdentifier("synchronizedScrollingCommand")
     }

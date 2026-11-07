@@ -13,6 +13,7 @@ struct AppPreferencesTests {
     defer { defaults.removePersistentDomain(forName: domain) }
     let preferences = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
     #expect(preferences.synchronizedScrolling)
+    #expect(!preferences.editorOnRight)
     preferences.synchronizedScrolling = false
     #expect(
       !AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
@@ -29,12 +30,14 @@ struct AppPreferencesTests {
       legacyValues: [
         "editorConvertTabs": true, "editorInsertPrefixInBlock": false,
         "editorAutoIncrementNumberedLists": false, "editorCompleteMatchingCharacters": true,
-        "editorUnorderedListMarkerType": 2, "editorSyncScrolling": false,
+        "editorUnorderedListMarkerType": 2, "editorSyncScrolling": false, "editorOnRight": true,
         "extensionTables": false, "extensionStrikethough": true,
         "htmlDetectFrontMatter": false, "htmlRendersTOC": false,
         "htmlSyntaxHighlighting": false, "htmlHighlightingThemeName": "tomorrow",
         "editorBaseFontInfo": ["name": "Menlo-Regular", "size": 18],
       ])
+    #expect(preferences.editorOnRight)
+    preferences.editorOnRight = false
     #expect(!preferences.synchronizedScrolling)
     preferences.synchronizedScrolling = true
     #expect(defaults.bool(forKey: "editorSyncScrolling"))
@@ -74,6 +77,7 @@ struct AppPreferencesTests {
     let reopened = AppPreferences(
       defaults: defaults, domainName: domain,
       legacyValues: ["extensionTables": false])
+    #expect(!reopened.editorOnRight)
     #expect(reopened.synchronizedScrolling)
     #expect(!reopened.restoreDocumentsOnLaunch)
     #expect(!reopened.preferDocumentTabs)

@@ -117,7 +117,7 @@ verification. No essential feature is authorized for silent removal.
 | --- | --- | --- |
 | Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Pending app integration |
 | Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Pending |
-| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize and linked scrolling implemented; swap and zoom pending |
+| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling and pane order implemented; zoom pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
@@ -384,6 +384,35 @@ the Mac is locked.
 The full modernization goal stays active. No additional legacy implementation is deleted
 while the original target still consumes unmigrated renderer/accessory behavior. Release
 installation and default association remain gated on broader reliability and parity.
+
+#### Editor/preview pane order — implemented increment (2026-11-06)
+
+The legacy `editorOnRight` preference now controls native pane order. New installs keep
+the editor on the left; migrated and explicit choices persist, including explicit false.
+The View menu has an **Editor on Right** toggle, mirrored by **Place editor on the right**
+in Editor settings. The editor-only toolbar symbol follows the selected side. This is
+an application-wide layout preference, matching the original behavior.
+
+NSSplitViewController reorders its existing split items and hosting controllers; it does
+not recreate NSTextView or WKWebView. Source width is remembered independently of its
+side, so unequal splits mirror correctly. Collapse logic refers to the editor/preview
+items themselves, keeping Editor and Preview modes correct in either order. Reordering
+preserves native focus. Switching to Editor mode also routes focus away from a preview
+that is about to become hidden.
+
+Validation: all 138 tests in 28 suites, seven native arm64 executables, native
+build-for-testing, strict formatting and diff checks pass. Tests start in both orders,
+set unequal pane widths, retain source/preview reading offsets, verify exact native view
+identity, selection/focus, mode transitions while swapping hidden panes, and undo/redo
+after reordering. A complete hosted DocumentWorkspace responds to preference changes in
+both directions without replacing its document views or changing source/revision. The
+right-side SF Symbol resolves through NSImage on the target OS. Settings/menu clicks,
+multiple-window propagation, real VoiceOver and the final desktop relaunch check remain
+open while the Mac is locked. See `docs/validation/pane-order.json`.
+
+No legacy files are deleted here: the old target still consumes its split-view and
+preference implementation. Zoom, additional parity, performance and production-release
+requirements remain part of the active modernization goal.
 
 ### M5 — Productivity and system features
 
