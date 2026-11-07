@@ -153,5 +153,14 @@
       "evidence": "Downloaded exact package, corpus, architecture and native UI artifacts; test summaries and new parameter cases verified.",
       "scope": "No fresh user-desktop visual acceptance; remaining full-goal runtime and integration gates stay open."
     }
+  },
+  "readingStyleRecheck": {
+    "date": "2026-11-07",
+    "code": "e8081fdb576b78b98824408d6f52315216a19dee",
+    "hostedRun": "https://github.com/jiangshen/snowfolio/actions/runs/42419324634",
+    "result": "All six list parameter cases pass: exact First/Second/dfdfd at 28px in light/dark and wrapped tight/loose lists before/after style updates. Existing mixed-list production fix retained.",
+    "broaderChecks": "297 package tests / 60 suites, 652 CommonMark examples and 10 native document UI tests pass; exact evidence in reading-styles.json.",
+    "desktop": "Mac locked; no fresh direct source-editor or preview pixel acceptance claimed.",
+    "goal": "active; incomplete"
   }
 }

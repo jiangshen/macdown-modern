@@ -2,7 +2,7 @@
   "checkpoint": "Bundled reading-style foundation",
   "date": "2026-11-07",
   "baseCommit": "dd69d88",
-  "status": "locally verified; hosted acceptance pending; custom CSS/templates incomplete",
+  "status": "bundled reading-style foundation locally and hosted verified; custom CSS/templates and desktop acceptance incomplete",
   "fullGoal": "active; incomplete",
   "characterization": "css-template-characterization.json",
   "implementation": [
@@ -47,7 +47,7 @@
       "Exact reported First/Second/dfdfd short-list alignment in light/dark; tight/loose wrapped lists and source selection/undo regressions",
       "Actual hosted DocumentWorkspace propagates all eight style choices without replacing editor/preview views or changing selection/source"
     ],
-    "nativeDocumentUITest": "New Settings picker/rendered-paper/source undo test compiled; local desktop execution unavailable while locked; hosted test required"
+    "nativeDocumentUITest": "Compiled locally; final hosted native app run passes all 10 methods including reading-style picker/preview/source undo test."
   },
   "desktopAcceptance": "Mac locked; no fresh direct visual acceptance claimed. Screenshot 03:42:42 predates mixed-list production fix at 03:49:35; prior and short-fixture evidence in list-selection.json.",
   "performance": {
@@ -131,5 +131,37 @@
     "failure": "Snowfolio menu item matches both application menu bar and reading-style popup; test stops before restoring Notebook/undo assertions.",
     "correction": "Scope menu-item queries to the menu containing Clearness Dark; retain all expected choices and assertions.",
     "evidence": "Downloaded package/corpus/architecture artifacts; exact failed native log identifies duplicate menu-item query at line 373."
+  },
+  "hostedFinalRun": {
+    "url": "https://github.com/jiangshen/snowfolio/actions/runs/42419324634",
+    "commit": "e8081fdb576b78b98824408d6f52315216a19dee",
+    "result": "both jobs passed",
+    "packageTests": 297,
+    "packageSuites": 60,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "commonMarkFailures": 0,
+    "nativeDocumentUITests": 10,
+    "nativeUIFailures": 0,
+    "newReadingStyleUITest": "passed in 64.188 seconds; choices/persistence, authored-font-control state, actual preview accessibility text, exact paper color and source undo/redo",
+    "screenshotPaperRGB": [
+      40,
+      42,
+      54
+    ],
+    "settingsScreenshot": "Inspected downloaded Appearance image: Snowfolio style restored, native controls enabled and grouped reading/code settings intact.",
+    "previewCaptureLimitation": "Downloaded WKWebView screenshot shows the expected paper but no painted text glyphs, while the UI accessibility text exists. Captured glyph painting and fresh user-desktop visual acceptance remain unverified; no cause attributed to app or runner without further evidence.",
+    "priorityDiagnostics": 18,
+    "appIntentsMetadataNotices": 2,
+    "performanceAttribution": "Existing priority-warning attribution and full app performance gate remain open.",
+    "evidence": "Downloaded exact core/corpus/architecture reports and native xcodebuild log/xcresult; verified method-level totals and inspected new screenshot attachments.",
+    "sha256": {
+      "packageLog": "248a53cd22aa06b322349b513a4cc659c61ac5db849770c33ffd7417e13271cf",
+      "corpusReport": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "architectureReport": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "nativeLog": "7ff76ae17f8cc73f7220b876ee96e10138f0412e201d5871b76eddd4319b6d46",
+      "settingsScreenshot": "0868b01b4907cfb048148bba03a29734d40e800dd37ca064017eed3a6f24f851",
+      "previewScreenshot": "bf601e652770e871e5de7b5f967426f2fe0ecc82d75c1a4695c3b598f88f9379"
+    }
   }
 }

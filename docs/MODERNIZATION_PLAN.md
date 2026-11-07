@@ -2,13 +2,20 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current checkpoint: bundled reading-style foundation, based on `dd69d88`.
-Local evidence verifies **297 package tests / 60 suites**, eight Address Sanitizer
-tests / three suites, eight arm64 test executables and an arm64 app build with
-verified bundled styles/licenses. The exact short-list selection/alignment regression
-also passes in light/dark. The first hosted run passed package/corpus checks and exposed a screenshot
-color-sampling test error; corrected native Settings acceptance is pending rerun. Evidence and bounded performance measurements are in
+Current code checkpoint: `e8081fd`, bundled reading-style foundation and native
+workspace/Settings validation. Local evidence verifies **297 package tests / 60 suites**,
+eight Address Sanitizer tests / three suites, eight arm64 test executables and an
+arm64 app build with verified bundled styles/licenses. Final hosted artifacts verify
+the same package totals, all 652 CommonMark examples and **10 passing native document
+UI tests**, including reading-style selection, preview accessibility text/paper and
+source undo/redo. Exact short-list selection/alignment regressions also pass in
+light/dark. Initial screenshot-color and ambiguous-menu test failures and their
+corrections are retained in
 [the reading-style ledger](validation/reading-styles.json).
+
+Fresh user-desktop visual acceptance and captured WebKit glyph painting remain open;
+the hosted capture confirms background color, while text existence is accessibility
+evidence. This checkpoint does not close full document, visual or performance gates.
 
 Notebook, None and six original bundled CSS presentations are implemented for preview
 and fresh HTML/PDF/print output. Custom/edited CSS, relative assets and template parity
