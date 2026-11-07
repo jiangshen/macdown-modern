@@ -1,0 +1,238 @@
+{
+  "engine": "Vendored PEG Markdown Highlight, regenerated unchanged in a temporary directory",
+  "offsetUnit": "Unicode code points, end exclusive",
+  "notice": "LICENSE/peg-markdown-highlight.txt",
+  "sourceSHA256": {
+    "Makefile": "2a479ac84556883b177e3c0e924bb5a7000f36249db7e17e7708ec63a03f9f70",
+    "pmh_grammar.leg": "f2ab72ddd6002bd2a2acd5a5f9ca0e8304fbe915b3912edc7ff89cb529ab169a",
+    "pmh_parser_head.c": "a91476dcaad26de8b1c83bef38925ba30ac80404866f63ec5f107e5b6a77212a",
+    "pmh_parser_foot.c": "1204e603df3d421acfa8488f0aacb0db8a026c3a415bdf265b626d98101d62cd",
+    "pmh_parser.h": "36724d84cf356938f6c95c75369bd39e97c895f247505d03748072e6135429a3",
+    "pmh_definitions.h": "840465ab7bb7ee76fbc7c17fd106f960ab0e19af1c496d206afa53e92fcdea62",
+    "tools/combine_parser_files.sh": "5791d32ce636d207cb78a39728fb8665a9cd0d9aa2c4fcf53fa77b30094e58d1",
+    "greg/Makefile": "e28055bd26da5e0800886a6cc4795e916c1a1f17ea49ce4d82322d7769c6fc14",
+    "greg/greg.c": "b6442f18e131ca34a11f739d39cdfeab570650222cef814f5a2f98ca2b551efb",
+    "greg/greg.h": "bcdd2c5dc463d8656b563c4e084172a9eb866866a9e33421f2867a4441716dff",
+    "greg/tree.c": "c128b3cedea0f0ca36908ad7912588a7e0201a9d5d0a920a3276901de4e7e78d",
+    "greg/compile.c": "f9290fc9578233bc52d756ba0518d8d01f2027027b44adf7f09d0bae7b646fb0"
+  },
+  "cases": [
+    {
+      "name": "named-numeric",
+      "source": "中文 😀 **&amp; &#169; &#x1F600; &NotEqualTilde;**",
+      "notes": true,
+      "legacy": {
+        "HTML_ENTITY": [
+          [
+            7,
+            12
+          ],
+          [
+            13,
+            19
+          ],
+          [
+            20,
+            29
+          ],
+          [
+            30,
+            45
+          ]
+        ],
+        "REFERENCE": [],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "unknown-overlong",
+      "source": "&bogus; &#00000065; &#x0000041;",
+      "notes": true,
+      "native": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [],
+        "NOTE": []
+      },
+      "difference": "Native CommonMark recognizes only standards-valid named entities and enforces numeric digit limits.",
+      "legacy": {
+        "HTML_ENTITY": [
+          [
+            0,
+            7
+          ],
+          [
+            8,
+            19
+          ],
+          [
+            20,
+            31
+          ]
+        ],
+        "REFERENCE": [],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "escape",
+      "source": "\\&amp; \\\\&copy; &amp;",
+      "notes": true,
+      "native": {
+        "HTML_ENTITY": [
+          [
+            9,
+            15
+          ],
+          [
+            16,
+            21
+          ]
+        ],
+        "REFERENCE": [],
+        "NOTE": []
+      },
+      "difference": "Native CommonMark treats a backslash-escaped ampersand as literal; the original highlighter still marked its entity.",
+      "legacy": {
+        "HTML_ENTITY": [
+          [
+            1,
+            6
+          ],
+          [
+            9,
+            15
+          ],
+          [
+            16,
+            21
+          ]
+        ],
+        "REFERENCE": [],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "opaque",
+      "source": "`&amp;` [label](https://e.test/?x=&amp;) <span title=\"&amp;\">&copy;</span>\n\n    &amp;\n",
+      "notes": true,
+      "legacy": {
+        "HTML_ENTITY": [
+          [
+            61,
+            67
+          ]
+        ],
+        "REFERENCE": [],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "reference",
+      "source": "[a]: https://example.com\nText [a].",
+      "notes": true,
+      "legacy": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [
+          [
+            0,
+            24
+          ]
+        ],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "multiple",
+      "source": "  [a]: /a\n[b]:\n  /b\n  \"Title\"\nText [a] [b].",
+      "notes": true,
+      "native": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [
+          [
+            2,
+            29
+          ]
+        ],
+        "NOTE": []
+      },
+      "difference": "A single native-confirmed removed prefix styles adjacent definitions together, excludes initial block indentation, and includes their internal newline.",
+      "legacy": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [
+          [
+            0,
+            9
+          ],
+          [
+            10,
+            29
+          ]
+        ],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "container",
+      "source": "> [a]: /a\n>\n> [a]\n\n- [b]: /b\n\n  [b]",
+      "notes": true,
+      "legacy": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [
+          [
+            2,
+            9
+          ],
+          [
+            21,
+            28
+          ]
+        ],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "notes",
+      "source": "Text[^n].\n\n[^n]: **Note**\n\n    Continued text.\n\n[^unused]: Unused.",
+      "notes": true,
+      "native": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [],
+        "NOTE": [
+          [
+            4,
+            8
+          ],
+          [
+            11,
+            47
+          ],
+          [
+            48,
+            66
+          ]
+        ]
+      },
+      "difference": "The original NOTE scope emitted no elements, even with its notes extension. Native footnote references and definitions (including unused definitions) now receive NOTE presentation; a finalized multiline definition also includes its trailing line ending.",
+      "legacy": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [],
+        "NOTE": []
+      }
+    },
+    {
+      "name": "notes-disabled",
+      "source": "[^n]: /note\n\nText [^n]",
+      "notes": false,
+      "legacy": {
+        "HTML_ENTITY": [],
+        "REFERENCE": [
+          [
+            0,
+            11
+          ]
+        ],
+        "NOTE": []
+      }
+    }
+  ]
+}

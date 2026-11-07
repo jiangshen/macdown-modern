@@ -66,7 +66,7 @@
     "evidence": "Downloaded package/corpus and native log/result artifacts; original reader checkpoint totals verified"
   },
   "remaining": [
-    "Wire every selector into native AST/source syntax",
+    "Broad native source-coordinate acceptance, including lazy continuations, partial-tab indentation and extension callback contexts",
     "Render per-element fonts/traits/decoration/current-line safely in TextKit 2",
     "Theme catalog/import and persistence/Settings",
     "Custom CSS and template compatibility",
@@ -115,7 +115,7 @@
       "Viewport hooks surround theme geometry changes; broad native scroll acceptance remains open"
     ],
     "remaining": [
-      "HTML_ENTITY, REFERENCE and NOTE source-scope characterization/mapping",
+      "Broad native source-coordinate acceptance beyond the verified source-prefix cases",
       "Editor paper/caret/selection/current-line presentation and restoration",
       "Catalog/import/settings persistence",
       "Actual app visual/keyboard/VoiceOver/real IME acceptance",
@@ -124,7 +124,83 @@
     ],
     "shippingUIConsumer": false,
     "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42373303629",
+      "commit": "7374e23cfc4b499300d55a9cd657807e64dabdf9",
+      "result": "passed",
+      "packageTests": 232,
+      "packageSuites": 46,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": 8,
+      "priorityInversionWarnings": 13,
+      "evidence": "Downloaded original package/corpus and native logs/results; verified exact checkpoint totals. Runtime warning attribution remains open."
+    }
+  },
+  "nativeSourceScopes": {
+    "selectors": [
+      "HTML_ENTITY",
+      "REFERENCE",
+      "NOTE"
+    ],
+    "characterization": {
+      "fixture": "Packages/SnowfolioCore/Tests/MarkdownCoreTests/Fixtures/LegacyThemeScopes.json",
+      "tool": "Tools/characterize-theme-scopes.py",
+      "cases": 9,
+      "reproduction": "byte-identical",
+      "originalEngine": "Unchanged vendored PEG Markdown Highlight regenerated/compiled only in a temporary directory; all build inputs checksummed; full MIT notice retained"
+    },
+    "explicitDifferences": [
+      "CommonMark validates entity names and numeric digit limits; the old highlighter also marked bogus/overlong entities",
+      "A backslash-escaped ampersand remains literal; the old highlighter still marked the entity",
+      "Adjacent native-confirmed reference definitions share a presentation span, including their internal newline and excluding initial native block indentation",
+      "Original NOTE emitted no elements; native used/unused definitions and resolved references gain NOTE styling, including a native-finalized trailing line ending where present"
+    ],
+    "architecture": [
+      "The native decoder recognizes entities only within AST text ranges; each decode window is bounded at 32 bytes",
+      "Two documented opt-in generic native metadata callbacks expose already-recognized prefix consumption and finalized blocks, without adding Markdown grammar",
+      "Swift reconciles paragraph/heading origin before native inline parsing, only after matching remaining native content to its physical source suffix",
+      "Native source-prefix metadata survives reference removal and footnote relocation/discard; no native node pointers escape parsing",
+      "Source bytes/line index allocate lazily and are reused by syntax generation; no source parsing on the main actor or source rewriting"
+    ],
+    "localValidation": {
+      "packageTests": 239,
+      "packageSuites": 47,
+      "focusedAddressSanitizer": "passed; source-scope and existing syntax tests; complete capture; no diagnostics",
+      "nativeBuildForTesting": "passed; arm64 native app verified",
+      "strictChangedSwiftFormatting": "passed",
+      "nativeSourceProvenance": "verified; every local replacement reverses to unchanged recorded upstream bytes",
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "addressSanitizerTests": 12,
+      "addressSanitizerSuites": 2
+    },
+    "coverage": [
+      "LF/CRLF/CR, Unicode/UTF-16, quoted/list/nested definitions followed immediately by prose",
+      "Multiline/repeated definitions followed by setext headings; first reference destination/title still wins",
+      "Opt-in syntax preserves HTML and owned AST; heading/navigation offsets and HTML sourcepos rebased where represented",
+      "Opaque code/HTML/destinations, invalid definitions and front matter",
+      "Entity ancestry/escapes plus 20000 ampersands and numeric digits",
+      "Used/unused/unresolved notes, original quote ancestry and nested strong/entity scopes",
+      "Real TextKit paragraph fonts for entity, reference, resolved note marker/body and unused marker; unchanged backing attributes/source"
+    ],
+    "shippingUIConsumer": false,
+    "remaining": [
+      "Broad native coordinate acceptance including lazy continuations, partial tabs and callback subcontexts",
+      "Editor paper/caret/selection/current-line handling",
+      "Catalog/import/settings persistence",
+      "Real visual/keyboard/VoiceOver/IME/scrolling and measured large-document acceptance",
+      "Custom CSS/templates and coupled legacy retirement"
+    ],
+    "hosted": {
       "result": "pending"
+    },
+    "evidence": {
+      "fullPackage": "/private/tmp/snowfolio-scope-full-tests.json",
+      "addressSanitizer": "/private/tmp/snowfolio-scope-asan.json",
+      "nativeBuild": "/private/tmp/snowfolio-scope-native-build.json",
+      "architecture": "/private/tmp/snowfolio-scope-architecture.json",
+      "commonMark": "/private/tmp/snowfolio-scope-commonmark/commonmark.json",
+      "fixtureReproduction": "/private/tmp/snowfolio-theme-scopes-reproduced.json"
     }
   }
 }

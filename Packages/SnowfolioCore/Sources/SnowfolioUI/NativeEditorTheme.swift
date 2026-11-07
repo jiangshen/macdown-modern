@@ -93,6 +93,9 @@ final class NativeEditorTheme {
   private static func selector(_ token: MarkdownSyntaxToken) -> String {
     switch token {
     case .heading(let level): return "H\(level)"
+    case .entity: return "HTML_ENTITY"
+    case .referenceDefinition: return "REFERENCE"
+    case .note: return "NOTE"
     case .emphasis: return "EMPH"
     case .strong: return "STRONG"
     case .inlineCode: return "CODE"

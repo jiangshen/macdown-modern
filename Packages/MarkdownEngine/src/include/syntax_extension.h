@@ -29,6 +29,8 @@ struct cmark_syntax_extension {
   cmark_html_render_func          html_render_func;
   cmark_html_filter_func          html_filter_func;
   cmark_postprocess_func          postprocess_func;
+  cmark_source_prefix_func        source_prefix_func;
+  cmark_block_source_func         block_source_func;
   cmark_opaque_alloc_func         opaque_alloc_func;
   cmark_opaque_free_func          opaque_free_func;
   cmark_commonmark_escape_func    commonmark_escape_func;

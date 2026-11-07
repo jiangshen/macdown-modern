@@ -1864,3 +1864,58 @@ editor paper/caret/selection/current-line handling; catalog/import and saved cho
 visual, keyboard, real IME/VoiceOver and scrolling acceptance; measured large-document
 performance; custom CSS/templates. Theme and old highlighter retirement stays open.
 The full modernization goal remains active.
+
+
+### Hosted native paragraph foundation
+
+Run [42373303629](https://github.com/jiangshen/snowfolio/actions/runs/42373303629),
+commit `7374e23cfc4b499300d55a9cd657807e64dabdf9`, passed both jobs. Downloaded
+artifacts confirm 232 package tests / 46 suites, eight arm64 binaries, 652 CommonMark
+examples and eight native UI tests. Thirteen priority-inversion warnings remain in the
+native log; their attribution and native performance acceptance stay open.
+
+## Remaining theme scopes and native prefix positions — 2026-11-07
+
+`HTML_ENTITY`, `REFERENCE` and `NOTE` now reach typed source tokens and native theme
+paragraph presentation. Entities use the existing native decoder inside AST-confirmed
+text only, with 32-byte decode windows and cancellation checks. Code, HTML and link
+destinations stay opaque. Recognized entities retain their heading/quote/emphasis/link
+ancestry. Invalid names, excessive numeric digits and escaped ampersands follow native
+CommonMark behavior rather than the old highlighter's broader matching.
+
+Two documented opt-in metadata callbacks observe already-recognized native prefix
+consumption and finalized block source positions. Neither adds Markdown grammar or
+changes source bytes. Swift captures definitions before the native tree can discard or
+relocate them. It reconciles a paragraph/heading origin before native inline parsing
+when the remaining native line exactly matches the physical source suffix. This fixes
+misplaced syntax after an immediately preceding reference definition, including setext
+headings, without reparsing or disturbing native reference/footnote resolution. Source
+bytes and line indexes allocate lazily and are reused by syntax generation.
+
+The original `NOTE` selector emits no elements, even with its notes extension enabled.
+Resolved native references and used/unused definition ranges now receive that selector.
+Surviving note descendants retain native emphasis/code/entity scopes and original quote
+ancestry. Default note body text keeps its text/quote role rather than being colored as
+an entire link. Source metadata contains values only; no native pointers escape parsing.
+
+The development capture regenerates and compiles the unchanged original highlighter in
+a temporary directory. Nine fixtures preserve exact original source ranges, with explicit
+reviewed native differences for invalid entities, escaped ampersands, grouped adjacent
+reference spans and newly active note styling. A second capture reproduced byte-identical
+JSON; no original parser enters the app. All build inputs are checksummed and attribution
+is retained. Every local native patch reverses to the recorded unchanged upstream bytes.
+
+Local validation: 239 package tests / 47 suites pass, including real TextKit fonts for the
+three new scopes and unchanged document/backing attributes. Focused Address Sanitizer
+source-scope/syntax tests pass with complete diagnostic capture and no diagnostics.
+Strict changed-Swift formatting and native parser provenance pass. Native arm64 app
+build-for-testing and all eight arm64 test executables are verified; the core CLI passes
+652/652 pinned official CommonMark examples. Hosted results and exact local evidence
+are tracked in `validation/editor-themes.json`.
+
+This is not a claim of complete native source-coordinate correctness: lazy continuation
+columns, partial-tab indentation and extension callback subcontexts retain a broader
+acceptance gate. Global paper/caret/selection/current-line styling, catalog/import/saved
+choices, real visual/keyboard/VoiceOver/IME/scrolling and measured large-document checks,
+custom CSS/templates and coupled legacy retirement remain open. There is still no
+user-facing theme picker. The full modernization goal remains active and incomplete.

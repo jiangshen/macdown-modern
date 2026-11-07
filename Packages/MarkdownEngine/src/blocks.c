@@ -302,7 +302,15 @@ static bool resolve_reference_link_definitions(
     chunk.data += pos;
     chunk.len -= pos;
   }
-  cmark_strbuf_drop(node_content, (node_content->size - chunk.len));
+  bufsize_t consumed = node_content->size - chunk.len;
+  if (consumed) {
+    for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {
+      cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;
+      if (extension->source_prefix_func)
+        extension->source_prefix_func(extension, parser, b, consumed);
+    }
+  }
+  cmark_strbuf_drop(node_content, consumed);
   return !is_blank(&b->content, 0);
 }
 
@@ -335,6 +343,12 @@ static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {
   } else {
     b->end_line = parser->line_number - 1;
     b->end_column = parser->last_line_length;
+  }
+
+  for (cmark_llist *entry = parser->syntax_extensions; entry; entry = entry->next) {
+    cmark_syntax_extension *extension = (cmark_syntax_extension *)entry->data;
+    if (extension->block_source_func)
+      extension->block_source_func(extension, b);
   }
 
   cmark_strbuf *node_content = &b->content;

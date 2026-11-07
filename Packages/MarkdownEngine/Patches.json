@@ -63,6 +63,16 @@
       "before": "  if (extension->match_inline || extension->insert_inline_from_delim) {",
       "after": "  if (extension->match_inline || extension->match_inline_before || extension->insert_inline_from_delim) {",
       "reason": "Register extensions which provide only the optional pre-token callback"
+    },
+    {
+      "before": "  cmark_strbuf_drop(node_content, (node_content->size - chunk.len));\n  return !is_blank(&b->content, 0);",
+      "after": "  bufsize_t consumed = node_content->size - chunk.len;\n  if (consumed) {\n    for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {\n      cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;\n      if (extension->source_prefix_func)\n        extension->source_prefix_func(extension, parser, b, consumed);\n    }\n  }\n  cmark_strbuf_drop(node_content, consumed);\n  return !is_blank(&b->content, 0);",
+      "reason": "Notify observers only after native prefix recognition and before content removal; absent observers leave native behavior unchanged"
+    },
+    {
+      "before": "  cmark_strbuf *node_content = &b->content;\n\n  switch (S_type(b)) {",
+      "after": "  for (cmark_llist *entry = parser->syntax_extensions; entry; entry = entry->next) {\n    cmark_syntax_extension *extension = (cmark_syntax_extension *)entry->data;\n    if (extension->block_source_func)\n      extension->block_source_func(extension, b);\n  }\n\n  cmark_strbuf *node_content = &b->content;\n\n  switch (S_type(b)) {",
+      "reason": "Notify read-only metadata observers before native transformations can discard or relocate finalized blocks; absent observers leave behavior unchanged"
     }
   ],
   "src/include/syntax_extension.h": [
@@ -70,6 +80,16 @@
       "before": "  cmark_match_inline_func         match_inline;\n",
       "after": "  cmark_match_inline_func         match_inline;\n  cmark_match_inline_func         match_inline_before;\n",
       "reason": "Local generic extension bridge: optional inline callback before built-in token handling; no dialect grammar in C"
+    },
+    {
+      "before": "  cmark_postprocess_func          postprocess_func;",
+      "after": "  cmark_postprocess_func          postprocess_func;\n  cmark_source_prefix_func        source_prefix_func;",
+      "reason": "Store an optional metadata observer independently of grammar callbacks"
+    },
+    {
+      "before": "  cmark_source_prefix_func        source_prefix_func;",
+      "after": "  cmark_source_prefix_func        source_prefix_func;\n  cmark_block_source_func         block_source_func;",
+      "reason": "Store an optional read-only block metadata observer independently of grammar callbacks"
     }
   ],
   "src/syntax_extension.c": [
@@ -77,6 +97,16 @@
       "before": "void cmark_syntax_extension_set_match_inline_func(cmark_syntax_extension *extension,",
       "after": "void cmark_syntax_extension_set_match_inline_before_func(cmark_syntax_extension *extension,\n                                                         cmark_match_inline_func func) {\n  extension->match_inline_before = func;\n}\n\nvoid cmark_syntax_extension_set_match_inline_func(cmark_syntax_extension *extension,",
       "reason": "Local generic extension bridge setter; existing extension callbacks and defaults remain unchanged"
+    },
+    {
+      "before": "void cmark_syntax_extension_set_postprocess_func",
+      "after": "void cmark_syntax_extension_set_source_prefix_func(cmark_syntax_extension *extension,\n                                                   cmark_source_prefix_func func) {\n  extension->source_prefix_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Assign the generic source-prefix metadata callback"
+    },
+    {
+      "before": "void cmark_syntax_extension_set_postprocess_func",
+      "after": "void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func) {\n  extension->block_source_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Assign the generic finalized-block metadata callback"
     }
   ],
   "src/include/cmark-gfm-extension_api.h": [
@@ -84,6 +114,26 @@
       "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_match_inline_func(cmark_syntax_extension *extension,",
       "after": "/** Snowfolio extension API (not upstream): try this optional callback before\n * built-in inline token handling. On success it must advance the cursor and\n * return a positioned node. On failure it must return NULL without changing the\n * parser. The parser adjusts consumed multiline spans and the returned node's\n * end position; callback start/end positions initially describe a single line.\n * Escapes, code, HTML and destinations consumed by earlier native tokens remain\n * opaque. An unset callback leaves ordinary CommonMark behavior unchanged.\n */\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_match_inline_before_func(cmark_syntax_extension *extension,\n                                                         cmark_match_inline_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_match_inline_func(cmark_syntax_extension *extension,",
       "reason": "Document the opt-in Swift callback bridge and its ownership/cursor/source-position contract; not an upstream API"
+    },
+    {
+      "before": "typedef cmark_node *(*cmark_postprocess_func)",
+      "after": "/** Snowfolio metadata bridge (not upstream): called before a native block's\n * recognized prefix is dropped. The original content and consumed byte count\n * are available on node. Observers may reconcile source positions or collect\n * metadata; they must not change content, child ownership, or parser grammar.\n */\ntypedef void (*cmark_source_prefix_func) (cmark_syntax_extension *extension,\n                                         cmark_parser *parser,\n                                         cmark_node *node,\n                                         int32_t consumed);\n\ntypedef cmark_node *(*cmark_postprocess_func)",
+      "reason": "Expose opt-in native-consumption metadata to Swift without duplicating reference grammar"
+    },
+    {
+      "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_source_prefix_func(cmark_syntax_extension *extension,\n                                                   cmark_source_prefix_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Declare generic source-prefix observer setter; not an upstream API"
+    },
+    {
+      "before": "typedef cmark_node *(*cmark_postprocess_func)",
+      "after": "/** Snowfolio metadata bridge (not upstream): observe a block after its source\n * end has been finalized, before native transformations can discard or relocate\n * it. The callback must not change content, ownership, positions, or grammar.\n */\ntypedef void (*cmark_block_source_func) (cmark_syntax_extension *extension,\n                                        cmark_node *node);\n\ntypedef cmark_node *(*cmark_postprocess_func)",
+      "reason": "Expose opt-in finalized-block metadata without retaining native nodes or implementing grammar"
+    },
+    {
+      "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Declare generic finalized-block source observer; not an upstream API"
     }
   ],
   "src/html.c": [

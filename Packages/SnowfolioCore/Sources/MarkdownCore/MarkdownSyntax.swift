@@ -3,6 +3,7 @@ import Foundation
 public enum MarkdownSyntaxToken: Hashable, Sendable {
   case heading(Int)
   case emphasis, strong, inlineCode, codeBlock, link, automaticURL, automaticEmail
+  case entity, referenceDefinition, note
   case image, blockquote, comment, inlineHTML, blockHTML, horizontalRule, listBullet, listEnumerator
 }
 
@@ -34,20 +35,11 @@ public struct MarkdownSyntax: Sendable {
   public let id = UUID()
   public let runs: [MarkdownSyntaxRun]
 
-  static func build(source: String, nodes: [MarkdownNode]) throws -> Self {
-    let bytes = Array(source.utf8)
-    var lines: [Range<Int>] = []
-    var start = 0
-    var cursor = 0
-    while cursor < bytes.count {
-      if bytes[cursor] == 10 || bytes[cursor] == 13 {
-        lines.append(start..<cursor)
-        if bytes[cursor] == 13, cursor + 1 < bytes.count, bytes[cursor + 1] == 10 { cursor += 1 }
-        start = cursor + 1
-      }
-      cursor += 1
-    }
-    lines.append(start..<bytes.count)
+  static func build(source: String, nodes: [MarkdownNode], metadata: MarkdownSourceMetadata? = nil)
+    throws -> Self
+  {
+    let bytes = metadata?.bytes ?? Array(source.utf8)
+    let lines = metadata?.lines ?? MarkdownSourceMetadata.lineRanges(bytes)
 
     func byteRange(_ range: MarkdownSourceRange) -> Range<Int>? {
       guard range.start.line > 0, range.start.line <= lines.count,
@@ -71,6 +63,14 @@ public struct MarkdownSyntax: Sendable {
     }
     var intervals: [Interval] = []
     var styles: [MarkdownSyntaxStyle] = []
+    let notePriorities = Dictionary(
+      nodes.filter { $0.kind == .footnoteDefinition }.compactMap { node in
+        node.range.map { ($0.start.line, node.id) }
+      }, uniquingKeysWith: max)
+    let quotedNotes = Set(
+      (metadata?.definitions ?? []).filter { $0.kind == .note && $0.quoted }.map {
+        $0.range.start.line
+      })
     for node in nodes {
       if node.id.isMultiple(of: 256) { try Task.checkCancellation() }
       let parent = node.parentID.flatMap { $0 < styles.count ? styles[$0] : nil } ?? .init()
@@ -89,6 +89,7 @@ public struct MarkdownSyntax: Sendable {
       case .blockquote, .quotation: style.role = .quote
       case .html: style.role = (node.literal?.hasPrefix("<!--") == true) ? .comment : .code
       case .thematicBreak: style.role = .marker
+      case .footnoteReference: style.role = .link
       default: break
       }
       switch node.kind {
@@ -117,6 +118,14 @@ public struct MarkdownSyntax: Sendable {
           style.include(.blockHTML)
         }
       case .thematicBreak: style.include(.horizontalRule)
+      case .footnoteDefinition, .footnoteReference:
+        if node.kind == .footnoteDefinition, let line = node.range?.start.line,
+          quotedNotes.contains(line)
+        {
+          style.role = .quote
+          style.include(.blockquote)
+        }
+        style.include(.note)
       default: break
       }
       styles.append(style)
@@ -136,6 +145,13 @@ public struct MarkdownSyntax: Sendable {
           }
         }
         intervals.append(Interval(range: presentationRange, style: style, priority: node.id))
+      }
+      if node.kind == .text {
+        for entity in try MarkdownEntities.ranges(in: bytes, within: range) {
+          var entityStyle = style
+          entityStyle.include(.entity)
+          intervals.append(Interval(range: entity, style: entityStyle, priority: node.id))
+        }
       }
       // Marker detection is confined to AST-recognized headings/list items, never
       // a document-wide regular expression. The actual Markdown stays fully visible.
@@ -164,6 +180,21 @@ public struct MarkdownSyntax: Sendable {
             Interval(range: range.lowerBound..<end, style: marker, priority: nodes.count + node.id))
         }
       }
+    }
+    for definition in metadata?.definitions ?? [] {
+      guard let range = byteRange(definition.range) else { continue }
+      var style = MarkdownSyntaxStyle()
+      style.role = definition.kind == .reference ? .link : (definition.quoted ? .quote : .text)
+      if definition.quoted { style.include(.blockquote) }
+      if definition.inNote { style.include(.note) }
+      if definition.kind == .reference { style.include(.referenceDefinition) }
+      // Notes fill discarded definitions and marker prefixes. Surviving native
+      // descendants keep their more specific code/emphasis/etc. presentation.
+      let priority =
+        definition.kind == .note
+        ? notePriorities[definition.range.start.line] ?? nodes.count
+        : nodes.count * 2 + intervals.count
+      intervals.append(Interval(range: range, style: style, priority: priority))
     }
     if intervals.isEmpty { return Self(runs: []) }
 

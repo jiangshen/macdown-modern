@@ -252,6 +252,23 @@ typedef int (*cmark_html_filter_func) (cmark_syntax_extension *extension,
                                        const unsigned char *tag,
                                        size_t tag_len);
 
+/** Snowfolio metadata bridge (not upstream): called before a native block's
+ * recognized prefix is dropped. The original content and consumed byte count
+ * are available on node. Observers may reconcile source positions or collect
+ * metadata; they must not change content, child ownership, or parser grammar.
+ */
+typedef void (*cmark_source_prefix_func) (cmark_syntax_extension *extension,
+                                         cmark_parser *parser,
+                                         cmark_node *node,
+                                         int32_t consumed);
+
+/** Snowfolio metadata bridge (not upstream): observe a block after its source
+ * end has been finalized, before native transformations can discard or relocate
+ * it. The callback must not change content, ownership, positions, or grammar.
+ */
+typedef void (*cmark_block_source_func) (cmark_syntax_extension *extension,
+                                        cmark_node *node);
+
 typedef cmark_node *(*cmark_postprocess_func) (cmark_syntax_extension *extension,
                                                cmark_parser *parser,
                                                cmark_node *root);
@@ -404,6 +421,14 @@ void *cmark_syntax_extension_get_private(cmark_syntax_extension *extension);
 
 /** See the documentation for 'cmark_syntax_extension'
  */
+CMARK_GFM_EXPORT
+void cmark_syntax_extension_set_source_prefix_func(cmark_syntax_extension *extension,
+                                                   cmark_source_prefix_func func);
+
+CMARK_GFM_EXPORT
+void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,
+                                                  cmark_block_source_func func);
+
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_postprocess_func(cmark_syntax_extension *extension,
                                                  cmark_postprocess_func func);

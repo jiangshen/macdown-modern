@@ -132,6 +132,44 @@ struct NativeEditorThemeTests {
     #expect(document.text.contains("中文!") && editor.string == document.text)
   }
 
+  @Test("Entities, definitions and note markers reach real native paragraph typography")
+  func remainingScopes() async throws {
+    let source = "[a]: /target\n中文 😀 &copy; [a] Text[^n].\n\n[^n]: **Body**.\n\n[^unused]: Unused."
+    let document = MarkdownDocument(contents: TextFileContents(text: source))
+    let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+    let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
+    let editor = try #require(scroll.documentView as? MarkdownTextView)
+    let window = NSWindow(
+      contentRect: NSRect(x: 0, y: 0, width: 700, height: 500),
+      styleMask: .titled, backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false
+    window.contentView = scroll
+    window.orderFront(nil)
+    defer { window.close() }
+    let font = NSFont.monospacedSystemFont(ofSize: 14, weight: .regular)
+    editor.font = font
+    let backing = try #require(editor.textStorage).copy() as? NSAttributedString
+    let parsed = try await MarkdownProcessor().render(source, includeSyntax: true)
+    let theme = try EditorTheme.parse(
+      "HTML_ENTITY\nfont-size: 22px\n\nREFERENCE\nfont-size: 18px\n\nNOTE\nfont-size: 20px\n\nSTRONG\nfont-style: bold\n"
+    )
+    coordinator.highlighter.update(
+      syntax: parsed.syntax, revision: 0, enabled: true, font: font,
+      document: document, theme: theme)
+    for (text, points) in [
+      ("[a]:", 18.0), ("&copy;", 22.0), ("[^n]", 20.0), ("[^n]:", 20.0), ("Body", 20.0),
+      ("[^unused]:", 20.0),
+    ] {
+      let attributes = try laidOut((source as NSString).range(of: text).location, in: editor).0
+      #expect((attributes[.font] as? NSFont)?.pointSize == CGFloat(points), "\(text)")
+    }
+    let body = try laidOut((source as NSString).range(of: "Body").location, in: editor).0
+    #expect(
+      NSFontManager.shared.traits(of: try #require(body[.font] as? NSFont)).contains(.boldFontMask))
+    #expect(editor.textStorage?.isEqual(to: try #require(backing)) == true)
+    #expect(editor.string == source && document.text == source)
+  }
+
   @Test("Theme updates cannot replace marked text or apply a stale syntax snapshot")
   func compositionAndRevision() async throws {
     let document = MarkdownDocument(contents: TextFileContents(text: "# Heading"))

@@ -18,6 +18,7 @@ public enum MarkdownNodeKind: Equatable, Sendable {
   case highlight, superscript, underline, quotation
   case emphasis, strong, strikethrough, list, listItem, blockquote, html
   case table, tableRow, tableCell, thematicBreak, softBreak, lineBreak
+  case footnoteDefinition, footnoteReference
   case math(display: Bool)
   case diagram(DiagramKind)
   case other(String)

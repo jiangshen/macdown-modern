@@ -48,11 +48,14 @@ public actor MarkdownProcessor {
         sourceLength: parserSource.utf8.count, underline: options.underline,
         quotedText: options.quotedText, emphasisPolicy: options.emphasisPolicy,
         highlight: options.highlight, strikethrough: options.strikethrough) : nil
-    defer { withExtendedLifetime((mathSyntax, inlineSyntax, delimiterSyntax)) {} }
+    let sourceMetadata = try MarkdownSourceMetadata(
+      source: parserSource, collectDefinitions: includeSyntax)
+    defer { withExtendedLifetime((mathSyntax, inlineSyntax, delimiterSyntax, sourceMetadata)) {} }
     guard let parser = cmark_parser_new(flags) else {
       throw MarkdownRenderingError.allocationFailure
     }
     defer { cmark_parser_free(parser) }
+    cmark_parser_attach_syntax_extension(parser, sourceMetadata.native)
     if let mathSyntax { cmark_parser_attach_syntax_extension(parser, mathSyntax.native) }
     if let inlineSyntax { cmark_parser_attach_syntax_extension(parser, inlineSyntax.native) }
     if let delimiterSyntax { cmark_parser_attach_syntax_extension(parser, delimiterSyntax.native) }
@@ -122,6 +125,11 @@ public actor MarkdownProcessor {
       var kind =
         delimiterSyntax?.kind(for: node) ?? inlineSyntax?.kind(for: node)
         ?? MarkdownNodeKind(nativeName: nativeName)
+      switch cmark_node_get_type(node) {
+      case CMARK_NODE_FOOTNOTE_DEFINITION: kind = .footnoteDefinition
+      case CMARK_NODE_FOOTNOTE_REFERENCE: kind = .footnoteReference
+      default: break
+      }
       if let token = mathSyntax?.token(for: node) {
         kind = .math(display: token.display)
         mathNodes.append((node, token.source, token.display, token.block))
@@ -306,7 +314,8 @@ public actor MarkdownProcessor {
     defer { free(html) }
     return RenderedMarkdown(
       html: (front?.metadata?.html ?? "") + String(cString: html), nodes: nodes, headings: headings,
-      syntax: includeSyntax ? try MarkdownSyntax.build(source: source, nodes: nodes) : nil,
+      syntax: includeSyntax
+        ? try MarkdownSyntax.build(source: source, nodes: nodes, metadata: sourceMetadata) : nil,
       highlightedCodeBlocks: highlightedCodeBlocks, mathExpressions: mathNodes.count,
       diagrams: renderedDiagrams, diagramUsesMath: diagramUsesMath,
       frontMatter: front?.metadata,
