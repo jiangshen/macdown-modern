@@ -2088,3 +2088,12 @@ examples and eight UI tests. Fourteen existing priority-inversion warnings remai
 recorded without attributing a first-party cause. The full modernization goal remains
 active; real IME/VoiceOver, broader source-coordinate acceptance, measured performance,
 CSS/templates, release readiness and safe legacy retirement are still open.
+
+
+The first hosted catalog run `42386110911` passes all 259 package tests, 52 suites,
+eight arm64 bundles and 652 CommonMark examples. The new native Settings walkthrough
+exposed row-level accessibility modifiers cascading to both Import and Reload: both
+buttons acquired the same identifier and "Custom themes" label. Compound theme rows
+now keep their controls’ own identifiers/labels. The test explicitly requires one
+Import and one Reload match, without selecting an arbitrary duplicate. Eight existing
+UI methods passed; final import/review acceptance awaits the corrected hosted run.

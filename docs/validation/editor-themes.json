@@ -381,11 +381,23 @@
     "evidence": {
       "fullPackage": "/private/tmp/snowfolio-theme-catalog-full.json",
       "nativeBuild": "/private/tmp/snowfolio-theme-catalog-native.json",
-      "targetedIntegration": "/private/tmp/snowfolio-theme-integration.json"
+      "targetedIntegration": "/private/tmp/snowfolio-theme-integration.json",
+      "nativeControlFix": "/private/tmp/snowfolio-theme-controls-native.json"
     },
     "directDesktop": "Pending: Mac locked during this checkpoint; original tabs and Open panel were not touched",
     "hosted": {
-      "result": "pending push"
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42386110911",
+      "commit": "ab465c171c9c8324e81f0a4590bde76763918bca",
+      "result": "package passed; native UI failure exposed duplicate row-propagated Import/Reload accessibility identifiers",
+      "packageTests": 259,
+      "packageSuites": 52,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": {
+        "passed": 8,
+        "failed": 1
+      },
+      "followUp": "Compound rows retain their leaf control identifiers and labels; native test asserts unique Import/Reload matches. Final hosted confirmation pending."
     },
     "remaining": [
       "Actual desktop import/picker/selection visual acceptance",

@@ -193,11 +193,18 @@ private struct SettingsPreferenceRow: View {
   @Bindable var preferences: AppPreferences
 
   var body: some View {
-    control
-      .accessibilityIdentifier(entry.id)
-      .accessibilityLabel(entry.title)
-      .accessibilityHint(entry.detail)
-      .disabled(entry.id == "markdownInlineMath" && !preferences.math)
+    switch entry.control {
+    case .editorTheme, .importEditorTheme:
+      // Compound rows own distinct identifiers and labels on their controls.
+      // A row-wide modifier would cascade to Import and Reload alike.
+      control
+    default:
+      control
+        .accessibilityIdentifier(entry.id)
+        .accessibilityLabel(entry.title)
+        .accessibilityHint(entry.detail)
+        .disabled(entry.id == "markdownInlineMath" && !preferences.math)
+    }
   }
 
   @ViewBuilder private var control: some View {

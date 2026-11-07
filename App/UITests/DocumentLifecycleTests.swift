@@ -328,6 +328,8 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertTrue(app.menuItems["Solarized (Dark)"].exists)
     app.menuItems["Solarized (Dark)"].click()
     XCTAssertEqual(picker.value as? String, "Solarized (Dark)")
+    XCTAssertEqual(settings.buttons.matching(identifier: "importEditorTheme").count, 1)
+    XCTAssertEqual(settings.buttons.matching(identifier: "reloadEditorThemes").count, 1)
     settings.buttons["importEditorTheme"].click()
     app.typeKey("g", modifierFlags: [.command, .shift])
     let path = app.textFields["PathTextField"].firstMatch
@@ -338,10 +340,9 @@ final class DocumentLifecycleTests: XCTestCase {
     let open = app.buttons["OKButton"].firstMatch
     XCTAssertTrue(open.waitForExistence(timeout: 5))
     open.click()
-    let review = app.alerts.firstMatch
-    XCTAssertTrue(review.waitForExistence(timeout: 5), app.debugDescription)
-    XCTAssertTrue(review.staticTexts["Review Theme"].exists)
-    review.buttons["Import"].click()
+    let reviewTitle = app.staticTexts["Review Theme"].firstMatch
+    XCTAssertTrue(reviewTitle.waitForExistence(timeout: 5), app.debugDescription)
+    app.buttons["Import"].click()
     let imported = NSPredicate { _, _ in picker.value as? String == "Snowfolio UI Theme" }
     expectation(for: imported, evaluatedWith: nil)
     waitForExpectations(timeout: 8)
