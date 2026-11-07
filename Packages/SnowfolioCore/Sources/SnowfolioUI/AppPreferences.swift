@@ -157,7 +157,7 @@ public final class AppPreferences {
     let legacyReadingSelection =
       migratedStyle.flatMap { name -> String? in
         guard !name.isEmpty else { return nil }
-        return "legacy:" + (name.hasSuffix(".css") ? String(name.dropLast(4)) : name)
+        return "legacy:" + (name.lowercased().hasSuffix(".css") ? String(name.dropLast(4)) : name)
       } ?? ReadingStyleEntry.unstyled.id
     let hasLegacyReadingChoice = !legacy.isEmpty || previous["htmlStyleName"] != nil
     let initialReadingStyle =

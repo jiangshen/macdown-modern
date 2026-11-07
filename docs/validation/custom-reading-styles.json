@@ -1,0 +1,83 @@
+{
+  "checkpoint": "Editable/imported CSS and frozen local assets",
+  "date": "2026-11-07",
+  "baseCommit": "2a8fe09",
+  "status": "implemented and locally verified; hosted native import acceptance pending",
+  "fullGoal": "active; incomplete",
+  "guide": "../CUSTOM_STYLES.md",
+  "characterization": "css-template-characterization.json",
+  "implementation": [
+    "Built-in, local, legacy and imported style IDs remain distinct; all six original CSS files still load after user edits.",
+    "Native Settings import menu accepts a CSS file or a scoped folder with a nested main-sheet picker; reload and Finder controls have independent identifiers.",
+    "Folder grants use temporary security-scoped bookmarks. Standalone files open directly without parent-directory enumeration permission. Imported raw CSS/resources publish together by atomic folder rename; originals remain unchanged.",
+    "Repository actor owns file I/O, parser and resolution. Only the latest library request publishes; failed loads retain the last valid appearance and saved selection.",
+    "Pinned CSSTree 3.2.1 parser/walker runs in a confined JavaScriptCore context without DOM/native/network bindings; CSS values are data, never interpolated code.",
+    "Resource-token replacements preserve authored selectors/comments, import layer/supports/media conditions, escaping, custom properties and image-set strings. Namespace/feature-test URLs are not fetches.",
+    "Local CSS imports, images, font fallbacks and encoded SVG fragments freeze into a bounded immutable stylesheet for preview, fresh HTML/PDF/print and manual-preview snapshots.",
+    "Embedded data-URL CSS imports are parsed recursively; relative URLs with opaque data bases and remote CSS/fonts cannot bypass the policy.",
+    "Local asset access stays inside the granted style root through the existing descriptor/no-follow reader. Extra CSS image/font formats use a separate internal policy; document resource types stay unchanged.",
+    "Preview CSP admits embedded CSS imports while scripts, network connections, remote styles/fonts and broad native bridges remain disabled. HTTPS images follow the existing explicit preference.",
+    "CSS parser code, source lock, module provenance, checksums and MIT notice are reproduced/verified; Node/esbuild/lexer data/source-map code do not ship."
+  ],
+  "bounds": {
+    "sourceCSSBytes": 1048576,
+    "resolvedCSSBytes": 67108864,
+    "originalResourceBytes": 33554432,
+    "filesIncludingMain": 128,
+    "importDepthExclusive": 16,
+    "referencesPerSheet": 2048,
+    "parserNodes": 100000,
+    "parserDepth": 128,
+    "folderEntries": 512,
+    "folderDepth": 32
+  },
+  "localValidation": {
+    "packageTests": 307,
+    "suites": 63,
+    "failedTests": 0,
+    "warnings": 0,
+    "errors": 0,
+    "packageReport": "/private/tmp/snowfolio-custom-css-accepted-full.json",
+    "asan": {
+      "tests": 9,
+      "suites": 3,
+      "result": "passed; no diagnostics",
+      "report": "/private/tmp/snowfolio-custom-css-accepted-asan.json"
+    },
+    "nativeArm64TestExecutables": 8,
+    "nativeAppBuildForTesting": "passed including parser bundle checksums and matching app/resource MIT notices",
+    "appLog": "/private/tmp/snowfolio-custom-css-reviewed-app.log",
+    "nativeUITest": "Folder import, nested-sheet choice, copied files, reload after original removal, persistence and source undo/redo compiled; desktop locked, hosted execution required",
+    "tests": [
+      "All original stock sheets plus edited originals; distinct local/legacy choices and uppercase CSS extensions",
+      "Real temporary folder bookmark, nested main CSS with parent-relative dependencies within the grant, exact copied raw files, reload edits and deleted-original independence",
+      "Empty/standalone CSS file with execute-only parent folder, cancelled import publishes nothing, last-good reload retention and frozen manual export",
+      "Escaped Unicode filenames/custom properties, image-set, import feature/media/layer clauses and namespace names; percent-encoded SVG fragments",
+      "Cycle, traversal, symlink, unsupported type/remote CSS/font, malformed CSS, excessive asset count and oversized sheet rejection; parser recovers after failure",
+      "Font/image fallback formats resolve in style policy and remain refused by document resource policy",
+      "Nested data CSS import resolution cannot hide unresolved/remote URLs",
+      "Native WebKit computed CSS, image.decode and real WOFF2 FontFace loaded status without original folder",
+      "Fresh standalone HTML and native PDF/print retain imported print rules; PDF text uppercase and one page; plain export omits custom style"
+    ]
+  },
+  "diagnosis": {
+    "folderAliases": "A real Foundation probe showed /var root paths and /private/var enumerated paths differ despite URL normalization. Relative names now use verified enumerator depth; nested-folder regression passes.",
+    "search": "Settings import-style search now returns both document styles and editor themes; 45 controls remain unique.",
+    "compoundControls": "Custom import row owns its control identifiers so a row modifier cannot redirect Import to Show in Finder."
+  },
+  "desktop": "Rechecked with CUA this turn: Mac locked. No fresh desktop visual/VoiceOver/IME or glyph-paint acceptance claimed.",
+  "remaining": [
+    "Template compatibility adapter and remaining renderer/dialect integration gates",
+    "Complete legacy linked/omitted export asset-option fidelity and separate user-provided license sidecars",
+    "Fresh desktop visuals, captured WebKit glyph painting, real IME/VoiceOver and document reliability acceptance",
+    "Measured full app performance, priority-warning attribution, M5 integrations and M6 release/distribution readiness",
+    "Coupled original renderer/template/resources retirement after remaining consumer parity"
+  ],
+  "retirement": "Replaced the bundled-only modern repository; no coupled original renderer/resources/licenses removed.",
+  "dependency": {
+    "version": "3.2.1",
+    "bundleBytes": 65894,
+    "bundleSHA256": "7d7b734a0bed31b0c7b948aedfb24ce86e57220165d734335daac496c82c7357",
+    "provenance": "Packages/SnowfolioCore/Sources/RenderingCore/Resources/CSS/CSSParser-Provenance.json"
+  }
+}

@@ -10,6 +10,7 @@ export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Develope
 python3 "$repo_root/Tools/verify-markdown-engine.py"
 python3 "$repo_root/Tools/verify-editor-themes.py"
 python3 "$repo_root/Tools/verify-reading-styles.py"
+python3 "$repo_root/Tools/verify-css-parser.py"
 
 if [ "$(uname -m)" != arm64 ]; then
     echo "Validation requires a native Apple Silicon terminal." >&2

@@ -25,7 +25,7 @@ let package = Package(
     .target(name: "DiagramCore", dependencies: ["MathCore"], resources: [.process("Resources")]),
     .target(
       name: "RenderingCore", dependencies: ["CodeHighlightCore", "MathCore"],
-      resources: [.copy("Resources/Styles")]),
+      resources: [.copy("Resources/Styles"), .copy("Resources/CSS")]),
     .target(name: "ExportCore", dependencies: ["MarkdownCore", "RenderingCore"]),
     .target(name: "PreferencesCore"),
     .target(name: "EditorCore", resources: [.copy("Resources/Themes")]),

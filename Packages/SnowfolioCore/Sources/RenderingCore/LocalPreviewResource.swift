@@ -13,7 +13,27 @@ public struct LocalPreviewResource: Sendable {
   public let data: Data
   public let mimeType: String
 
+  private static let documentExtensions: Set<String> = [
+    "png", "jpg", "jpeg", "gif", "webp", "avif", "heic", "svg", "css", "woff", "woff2", "ttf",
+    "otf",
+  ]
+  // Only the folder-based CSS snapshotter uses these additional image/font
+  // fallbacks. The document resource handler retains its existing allowlist.
+  private static let styleExtensions = documentExtensions.union([
+    "ico", "bmp", "tif", "tiff", "jxl", "eot", "ttc", "otc",
+  ])
+
   public static func resolve(_ request: URL, relativeTo directory: URL) throws -> URL {
+    try resolve(request, relativeTo: directory, allowed: documentExtensions)
+  }
+
+  static func resolveStyle(_ request: URL, relativeTo directory: URL) throws -> URL {
+    try resolve(request, relativeTo: directory, allowed: styleExtensions)
+  }
+
+  private static func resolve(_ request: URL, relativeTo directory: URL, allowed: Set<String>)
+    throws -> URL
+  {
     guard request.scheme == "mdasset", request.host == "document", directory.isFileURL else {
       throw LocalPreviewResourceError.forbiddenURL
     }
@@ -31,10 +51,6 @@ public struct LocalPreviewResource: Sendable {
     guard file.pathComponents.starts(with: root.pathComponents), file != root else {
       throw LocalPreviewResourceError.outsideDocumentDirectory
     }
-    let allowed = Set([
-      "png", "jpg", "jpeg", "gif", "webp", "avif", "heic", "svg", "css", "woff", "woff2", "ttf",
-      "otf",
-    ])
     guard allowed.contains(file.pathExtension.lowercased()) else {
       throw LocalPreviewResourceError.unsupportedType
     }
@@ -48,8 +64,18 @@ public struct LocalPreviewResource: Sendable {
 
   /// Synchronous counterpart for dedicated background parser/export actors.
   public static func read(_ request: URL, relativeTo directory: URL) throws -> Self {
+    try read(request, relativeTo: directory, allowed: documentExtensions)
+  }
+
+  static func readStyle(_ request: URL, relativeTo directory: URL) throws -> Self {
+    try read(request, relativeTo: directory, allowed: styleExtensions)
+  }
+
+  private static func read(_ request: URL, relativeTo directory: URL, allowed: Set<String>) throws
+    -> Self
+  {
     try Task.checkCancellation()
-    let file = try resolve(request, relativeTo: directory)
+    let file = try resolve(request, relativeTo: directory, allowed: allowed)
     // Open each component relative to an owned directory descriptor. O_NOFOLLOW
     // closes the gap between validation and reading if a symlink changes meanwhile.
     let root = directory.standardizedFileURL.resolvingSymlinksInPath()

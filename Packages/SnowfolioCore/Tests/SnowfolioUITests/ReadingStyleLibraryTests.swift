@@ -84,4 +84,47 @@ struct ReadingStyleLibraryTests {
     #expect(preferences.documentStyle == last)
     #expect(document.text == "# Title" && document.revision == 0)
   }
+  @Test("Imported styles persist and reload while frozen manual exports keep earlier assets")
+  func customSnapshots() async throws {
+    let (defaults, domain) = try defaults()
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let styles = root.appending(path: "Styles")
+    let file = root.appending(path: "Arctic.css")
+    try Data("body{color:purple}".utf8).write(to: file)
+    let repository = ReadingStyleRepository(directory: styles)
+    let preferences = AppPreferences(
+      defaults: defaults, domainName: domain, legacyValues: [:], readingStyleRepository: repository)
+    preferences.manualRendering = true
+    await preferences.readingStyles.loadIfNeeded()
+    let candidate = try await preferences.readingStyles.inspect(file)
+    try await preferences.readingStyles.importStyle(candidate)
+    let selected = preferences.readingStyles.selection
+    #expect(
+      preferences.readingStyles.entries.contains { $0.id == selected && $0.title == "Arctic" })
+    let export = DocumentExportController()
+    let document = MarkdownDocument(contents: TextFileContents(text: "# Frozen"))
+    export.document = document
+    export.preferences = preferences
+    let snapshot = try #require(export.snapshot())
+    let copied = styles.appendingPathComponent(String(selected.dropFirst(9)))
+      .appendingPathExtension("readingstyle").appending(path: "Arctic.css")
+    try Data("body{color:blue}".utf8).write(to: copied)
+    await preferences.readingStyles.refresh()
+    #expect(preferences.documentStyle.css.contains("blue") && snapshot.style.css.contains("purple"))
+    let reopened = AppPreferences(
+      defaults: defaults, domainName: domain, legacyValues: [:], readingStyleRepository: repository)
+    await reopened.readingStyles.loadIfNeeded()
+    #expect(
+      reopened.readingStyles.selection == selected && reopened.documentStyle.css.contains("blue"))
+    try Data("@import 'missing.css';".utf8).write(to: copied)
+    await reopened.readingStyles.refresh()
+    #expect(reopened.readingStyles.message != nil && reopened.documentStyle.css.contains("blue"))
+    #expect(
+      reopened.readingStyles.selection == selected && document.text == "# Frozen"
+        && document.revision == 0)
+  }
+
 }

@@ -66,9 +66,8 @@ struct ReadingStyleTests {
     let custom = Data("body { color: purple }".utf8)
     try custom.write(to: folder.appendingPathComponent("GitHub2.css"))
     let repository = ReadingStyleRepository(legacyDirectory: folder)
-    await #expect(throws: ReadingStyleRepository.Failure.customLegacyStyle) {
-      try await repository.load("legacy:GitHub2")
-    }
+    let edited = try await repository.load("legacy:GitHub2")
+    #expect(DocumentStyle(presentation: edited).css == "body { color: purple }")
     #expect(try Data(contentsOf: folder.appendingPathComponent("GitHub2.css")) == custom)
     // An explicit stock choice remains available independently of the old file.
     let stock = try await repository.load("bundled:GitHub2")
@@ -80,6 +79,15 @@ struct ReadingStyleTests {
     try Data(DocumentStyle(presentation: spaced).css.utf8).write(
       to: folder.appendingPathComponent("Clearness Dark.css"))
     #expect(try await repository.load("legacy:Clearness Dark") == spaced)
+    for entry in ReadingStyleEntry.bundled {
+      let original = DocumentStyle(presentation: try await repository.load(entry.id)).css
+      let edited = original + "\n/* User customization retained */\n"
+      try Data(edited.utf8).write(
+        to: folder.appendingPathComponent(entry.title).appendingPathExtension("css"))
+      #expect(
+        DocumentStyle(presentation: try await repository.load("legacy:" + entry.title)).css
+          == edited)
+    }
   }
 
   @Test("Canonically equivalent Swift strings remain distinct CSS snapshots")

@@ -12,9 +12,14 @@ struct ReadingStylePicker: View {
             get: { library.selection }, set: { id in Task { await library.select(id) } }
           )
         ) {
-          ForEach(ReadingStyleEntry.all) { Text($0.title).tag($0.id) }
-          if !ReadingStyleEntry.all.contains(where: { $0.id == library.selection }) {
-            Text("Previous style").tag(library.selection)
+          ForEach(library.entries.filter { $0.origin == .builtIn }) { Text($0.title).tag($0.id) }
+          ForEach([ReadingStyleEntry.Origin.local, .legacy, .imported], id: \.self) { origin in
+            let choices = library.entries.filter { $0.origin == origin }
+            if !choices.isEmpty {
+              Section(title(origin)) {
+                ForEach(choices) { Text($0.title).tag($0.id) }
+              }
+            }
           }
         }
         .pickerStyle(.menu)
@@ -25,8 +30,19 @@ struct ReadingStylePicker: View {
       }
       if let message = library.message {
         Text(message).font(.callout).foregroundStyle(.secondary)
+          .fixedSize(horizontal: false, vertical: true).accessibilityIdentifier(
+            "readingStyleStatus")
       }
     }
     .task { await library.loadIfNeeded() }
   }
+  private func title(_ origin: ReadingStyleEntry.Origin) -> LocalizedStringKey {
+    switch origin {
+    case .builtIn: "Built-in Styles"
+    case .local: "Styles Folder"
+    case .legacy: "From MacDown"
+    case .imported: "Imported Styles"
+    }
+  }
+
 }

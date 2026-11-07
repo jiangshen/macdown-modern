@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "css-tree": "3.2.1",
+    "esbuild": "0.25.12"
+  },
+  "name": "snowfolio-css-parser-build",
+  "version": "1.0.0",
+  "private": true
+}

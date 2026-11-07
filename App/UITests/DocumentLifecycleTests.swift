@@ -295,6 +295,90 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testImportReadingStyleFolderAndSourceUndo() throws {
+    let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(
+      at: root.appending(path: "parts"), withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let main = root.appending(path: "Arctic Reading Checkpoint.css")
+    let sourceCSS = Data("@import 'parts/base.css'; body{font-family:Helvetica;}".utf8)
+    let childCSS = Data("body{background:rgb(240,248,255);color:rgb(17,34,51);}".utf8)
+    try sourceCSS.write(to: main)
+    try childCSS.write(to: root.appending(path: "parts/base.css"))
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    let original = "# Original source\n\nPreserved text."
+    editor.typeText(original)
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Imported style checkpoint")
+    let preview = app.webViews.firstMatch
+    XCTAssertTrue(
+      preview.staticTexts["Imported style checkpoint"].firstMatch.waitForExistence(timeout: 8))
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    settings.outlines.firstMatch.staticTexts["Appearance"].firstMatch.click()
+    let importer = settings.descendants(matching: .any).matching(identifier: "importReadingStyle")
+      .firstMatch
+    XCTAssertTrue(importer.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(
+      settings.descendants(matching: .any).matching(identifier: "importReadingStyle").count, 1)
+    XCTAssertEqual(settings.buttons.matching(identifier: "revealReadingStyles").count, 1)
+    importer.click()
+    app.menuItems["Style Folder…"].click()
+    app.typeKey("g", modifierFlags: [.command, .shift])
+    let path = app.textFields["PathTextField"].firstMatch
+    XCTAssertTrue(path.waitForExistence(timeout: 5), app.debugDescription)
+    path.click()
+    app.typeKey("a", modifierFlags: .command)
+    path.typeText(root.path + "\n")
+    let open = app.buttons["OKButton"].firstMatch
+    XCTAssertTrue(open.waitForExistence(timeout: 5))
+    open.click()
+    let mainPicker = settings.popUpButtons["readingStyleMainFile"]
+    XCTAssertTrue(mainPicker.waitForExistence(timeout: 8), app.debugDescription)
+    mainPicker.click()
+    XCTAssertTrue(app.menuItems["parts/base.css"].exists)
+    app.menuItems["Arctic Reading Checkpoint.css"].click()
+    settings.buttons["confirmReadingStyleFolder"].click()
+    let picker = settings.popUpButtons["readingStyle"]
+    let imported = NSPredicate { _, _ in
+      picker.value as? String == "Arctic Reading Checkpoint" && settings.sheets.count == 0
+    }
+    expectation(for: imported, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    XCTAssertFalse(settings.popUpButtons["documentFont"].isEnabled)
+    XCTAssertEqual(try Data(contentsOf: main), sourceCSS)
+    XCTAssertEqual(try Data(contentsOf: root.appending(path: "parts/base.css")), childCSS)
+    try FileManager.default.removeItem(at: root)
+    settings.buttons["reloadReadingStyle"].click()
+    XCTAssertEqual(picker.value as? String, "Arctic Reading Checkpoint")
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertTrue(
+      preview.staticTexts["Imported style checkpoint"].firstMatch.waitForExistence(timeout: 8))
+    XCTAssertEqual(editor.value as? String, "Imported style checkpoint")
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, original)
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "Imported style checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertEqual(picker.value as? String, "Arctic Reading Checkpoint")
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "imported-style-folder-and-source-history"
+    image.lifetime = .keepAlways
+    add(image)
+    picker.click()
+    app.menus.containing(.menuItem, identifier: "Clearness Dark").firstMatch.menuItems["Snowfolio"]
+      .click()
+    app.typeKey("w", modifierFlags: .command)
+  }
+
+  @MainActor
   func testReadingStylePickerPreviewAndSourceUndo() {
     let app = launch(arguments: ["-markdownManualRender", "NO"])
     defer { app.terminate() }

@@ -72,7 +72,7 @@ struct SettingsEntry: Identifiable {
   enum Control {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy
-    case editorTheme, importEditorTheme, readingStyle
+    case editorTheme, importEditorTheme, readingStyle, importReadingStyle
   }
   let id: String
   let title: String
@@ -118,6 +118,11 @@ enum SettingsCatalog {
           id: "readingStyle", title: "Document style",
           detail: "Appearance for the preview and styled exports.",
           keywords: "css stylesheet reading legacy", control: .readingStyle),
+        .init(
+          id: "importReadingStyle", title: "Custom styles",
+          detail: "Import CSS and supporting files, or open the styles folder.",
+          keywords: "css import folder stylesheet fonts images reload", control: .importReadingStyle
+        ),
         .init(
           id: "documentFont", title: "Font",
           detail: "Typography for the Snowfolio document style and its styled exports.",

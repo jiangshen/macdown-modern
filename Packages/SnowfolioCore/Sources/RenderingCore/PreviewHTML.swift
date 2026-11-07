@@ -16,7 +16,7 @@ public enum PreviewHTML {
       <!doctype html><html><head><meta charset="utf-8">
       <title>\(escapeText(title))</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset: data:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
       \(includeStyles ? "<style id=\"document-style\">" + escapeStyle(style.css) + "</style>" : "")\(includeHighlighting ? "<style id=\"code-style\">" + style.codeCSS + "</style>" : "")\(includeMath ? "<style id=\"math-style\">" + MathStyle.css + "</style>" : "")</head>\(content)</html>
       """
   }

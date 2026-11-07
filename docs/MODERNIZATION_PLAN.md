@@ -2,25 +2,25 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current code checkpoint: `e8081fd`, bundled reading-style foundation and native
-workspace/Settings validation. Local evidence verifies **297 package tests / 60 suites**,
-eight Address Sanitizer tests / three suites, eight arm64 test executables and an
-arm64 app build with verified bundled styles/licenses. Final hosted artifacts verify
-the same package totals, all 652 CommonMark examples and **10 passing native document
-UI tests**, including reading-style selection, preview accessibility text/paper and
-source undo/redo. Exact short-list selection/alignment regressions also pass in
-light/dark. Initial screenshot-color and ambiguous-menu test failures and their
-corrections are retained in
-[the reading-style ledger](validation/reading-styles.json).
+Current checkpoint: custom document-style discovery/import and frozen local assets,
+based on `2a8fe09`. Local evidence verifies **307 package tests / 63 suites**, nine
+Address Sanitizer tests / three suites, eight arm64 test executables and an arm64 app
+build with parser/style/license verification. The new native folder-import UI test is
+compiled; hosted method-level acceptance is pending. Exact evidence and limits are in
+[the custom-style ledger](validation/custom-reading-styles.json), with usage in
+[CUSTOM_STYLES.md](CUSTOM_STYLES.md).
 
-Fresh user-desktop visual acceptance and captured WebKit glyph painting remain open;
-the hosted capture confirms background color, while text existence is accessibility
-evidence. This checkpoint does not close full document, visual or performance gates.
+The existing notebook design remains the default. None, six original styles, edited
+MacDown CSS, local CSS and imported copies are selectable. CSS/image/font imports
+freeze into preview and fresh HTML/PDF/print snapshots; reload preserves the last valid
+appearance on failure. Template compatibility, legacy linked/omitted asset options,
+separate user-provided license sidecars, remaining renderer parity and safe coupled
+legacy retirement stay open. [The characterization ledger](validation/css-template-characterization.json)
+preserves the original behavior and required gates.
 
-Notebook, None and six original bundled CSS presentations are implemented for preview
-and fresh HTML/PDF/print output. Custom/edited CSS, relative assets and template parity
-remain incomplete; [the characterization ledger](validation/css-template-characterization.json)
-records their required behavior. Existing Notebook design is preserved.
+Fresh user-desktop visual acceptance, captured WebKit glyph painting, real IME/VoiceOver,
+document reliability and full app performance remain required. Prior bundled-style
+hosted evidence is retained in [reading-styles.json](validation/reading-styles.json).
 
 Input-normalization source projection previously passed local/hosted acceptance;
 [its ledger](validation/input-source-projection.json) preserves exact evidence.
@@ -146,7 +146,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
-| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography and all eight Prism code themes implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; direct theme acceptance, custom CSS/assets/templates and remaining layout preferences pending |
+| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography and all eight Prism code themes implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; custom CSS/folder import, immutable local assets and reload implemented; direct theme acceptance, templates, complete asset-option fidelity and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |

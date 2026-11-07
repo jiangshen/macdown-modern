@@ -357,3 +357,28 @@ There is still no user-facing theme catalog/import path. Entity/reference/note s
 editor global accessories, complete acceptance and custom CSS/templates remain coupled
 to original-target consumers. Do not retire the original theme/highlighter subsystem
 yet. The reader and native typography layer alone do not prove complete feature parity.
+
+
+## Custom stylesheet ownership boundary
+
+`RenderingCore` owns Swift discovery/import, access grants, bounded file reads,
+resource resolution and immutable stylesheet snapshots. A confined JavaScriptCore
+instance calls pinned [CSSTree 3.2.1](https://github.com/csstree/csstree) parser/walker
+modules; authored CSS is passed as data and receives no DOM/native/network bindings.
+Only identified resource-token ranges change, with CSS source and copied resources
+retained separately. This is a CSS parser, not another Markdown parser.
+
+The parser bundle contains only upstream parser/walker/identifier modules.
+Its MIT notice ships in both resource and app license bundles. The reproduction
+script verifies the locked npm build and rejects unexpected bundled dependencies;
+MDN lexer data, source-map code, esbuild and Node do not ship in the app. Source and
+packaged checksums/notices are checked without network or Node access.
+
+The document-directory reader retains its existing allowlist. Additional CSS font/image
+fallbacks use a separate internal policy only while resolving an explicitly chosen
+style folder. Frozen preview/export CSS contains embedded local assets; relative CSS
+imports cannot use a new unrestricted document resource root.
+
+The original renderer, Handlebars and their original-target build/resources remain
+coupled to template and remaining asset-option behavior. This checkpoint does not
+retire those dependencies or claim full CSS/template/visual/release acceptance.
