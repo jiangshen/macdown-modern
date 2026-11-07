@@ -2,7 +2,7 @@
   "milestone": "Next source-coordinate gate: native NUL replacement characterization",
   "date": "2026-11-07",
   "fullGoal": "active; incomplete",
-  "status": "reproduced; not fixed",
+  "status": "historical failure characterization; corrected in a11c4bc",
   "code": "dda9e7b76cb9390a9e8ae1509e522f340543d175",
   "scope": "Isolated diagnostic of exact committed parser/core; no production source mutation",
   "nativeEvidence": [
@@ -344,7 +344,8 @@
     "Validate newline/container/table/dialect/reference/footnote/code/feed-boundary and native-font cases, plus ordinary-input overhead and ownership"
   ],
   "resolution": {
-    "status": "corrected locally; hosted acceptance pending",
+    "status": "local and hosted validation passed",
+    "code": "a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9",
     "ledger": "input-source-projection.json",
     "scope": "Historical failures above remain evidence for the recorded pre-change revisions."
   }

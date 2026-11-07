@@ -2,14 +2,16 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current implementation checkpoint: native input normalization source projection.
+Current code checkpoint: `a11c4bc`, native input normalization source projection.
 Local evidence verifies 284 package tests / 55 suites, 29 Address Sanitizer tests /
 four suites, eight arm64 test executables, an arm64 app build and 652 CommonMark
-examples. Hosted acceptance is pending the code push. Exact evidence and render
+examples. Hosted artifacts verify the same package/corpus totals and nine passing
+native document UI tests. Exact evidence and render
 measurements are in [the checkpoint ledger](validation/input-source-projection.json).
 
 The previously reproduced native NUL replacement source-range gate is corrected
-locally; its historical failures remain in the characterization ledger. Direct desktop,
+locally and on the hosted runner; historical failures remain in the characterization
+ledger. Direct desktop,
 real IME/VoiceOver, custom CSS/templates, remaining parity, complete native performance,
 release readiness and safe coupled legacy retirement remain required. The chronological
 evidence below preserves prior checkpoints; it does not close these gates.
@@ -2457,3 +2459,26 @@ typing/energy/leak acceptance. Desktop access remains locked. Full evidence, cos
 limitations are recorded in `validation/input-source-projection.json`; broader CSS/template,
 productivity, document/accessibility, native performance, release and retirement gates
 remain active. Hosted follow-up is recorded after the code push.
+
+
+### Hosted input projection acceptance and next parity work
+
+Run [42409052004](https://github.com/jiangshen/snowfolio/actions/runs/42409052004),
+code `a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9`, passed both jobs. Downloaded exact
+artifacts verify 284 package tests / 55 suites, the six new normalization test methods
+and expanded native font-placement case, eight arm64 executables, 652/652 CommonMark
+and nine native document UI tests with zero failures. Fifteen priority diagnostics and
+two App Intents metadata notices remain recorded without claiming first-party causes.
+The direct desktop remains locked; no new real IME/VoiceOver/visual or M6 acceptance is
+inferred. This closes the reproduced NUL source-range gate, not the full modernization.
+
+The next independently available parity area is custom CSS/templates. Source inspection
+confirms six original CSS assets; legacy folder discovery, no-style selection, reveal
+and reload; separate styled/highlighted export switches; and the original template's
+five context values and each/raw expressions. The current native adapter retains the
+old preference keys but does not consume them. Original CSS also expects content directly
+under body, so stacking it over notebook CSS behind a main wrapper would change selector
+behavior. `validation/css-template-characterization.json` records exact source/assets,
+current gaps and required runtime/export/resource evidence. Restore these capabilities
+while retaining the liked Snowfolio notebook style as the default. Coupled legacy
+renderer/template/resource retirement remains gated on verified consumer parity.

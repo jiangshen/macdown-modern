@@ -2,7 +2,7 @@
   "milestone": "Native input normalization source projection",
   "date": "2026-11-07",
   "fullGoal": "active; incomplete",
-  "status": "corrected and locally validated; hosted acceptance pending",
+  "status": "corrected; local and hosted validation passed",
   "baselineCommit": "dae72fc",
   "implementation": [
     "Observe the first actual native NUL-to-UTF8 replacement under SOURCEPOS through an optional source-only callback; no extra ordinary-input scan and no grammar/content/ownership changes.",
@@ -780,12 +780,31 @@
   },
   "desktop": "Mac remains locked; no new desktop visual, real IME or VoiceOver acceptance claimed. Existing pending unlock request not repeated.",
   "hosted": {
-    "status": "pending push"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42409052004",
+    "commit": "a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9",
+    "result": "passed both jobs",
+    "packageTests": 284,
+    "packageSuites": 55,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "nativeDocumentUITests": 9,
+    "nativeUIFailures": 0,
+    "priorityInversionDiagnostics": 15,
+    "appIntentsMetadataNotices": 2,
+    "evidence": "Downloaded exact core/corpus/architecture and native artifacts; method counts, input normalization suite, native font-placement case and TEST SUCCEEDED verified.",
+    "artifactSHA256": {
+      "/private/tmp/snowfolio-input-hosted-core/snowfolio-core-a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9/snowfolio-validation/swift-test.log": "cd3ac603d00a3eac3298cea87e3f81b41676555bd5d02fc8ce2faf9f6d89283b",
+      "/private/tmp/snowfolio-input-hosted-core/snowfolio-core-a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9/snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "/private/tmp/snowfolio-input-hosted-core/snowfolio-core-a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9/snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "/private/tmp/snowfolio-input-hosted-native/snowfolio-native-a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9/xcodebuild.log": "90580b7c77757705dce781771ed698e7c05fc919b7e4dd29a1901ef7408eecb9"
+    },
+    "limits": "Diagnostics remain attribution/integration gates; no fresh user-desktop, IME, VoiceOver or native performance acceptance claimed."
   },
   "remaining": [
     "Custom CSS/templates and remaining feature parity",
     "Real desktop, IME, VoiceOver, scroll/resize/document acceptance",
     "M5 integrations and M6 native performance/release acceptance",
     "Safe coupled legacy retirement after parity; licenses retained"
-  ]
+  ],
+  "code": "a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9"
 }

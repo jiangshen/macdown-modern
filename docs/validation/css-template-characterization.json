@@ -1,0 +1,149 @@
+{
+  "milestone": "CSS and template parity characterization",
+  "date": "2026-11-07",
+  "code": "a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9",
+  "status": "confirmed implementation gap; no CSS/template support claimed",
+  "fullGoal": "active; incomplete",
+  "legacyStyles": [
+    {
+      "name": "Clearness Dark",
+      "path": "MacDown/Resources/Styles/Clearness Dark.css",
+      "bytes": 2454,
+      "sha256": "2a85f66c4ada7ac072f6dd8dea6c0475fe43486ffe0ee02d1b4aea2cbf1dbf4b"
+    },
+    {
+      "name": "Clearness",
+      "path": "MacDown/Resources/Styles/Clearness.css",
+      "bytes": 2479,
+      "sha256": "88fe43c01e68cd61d1c5cec30deefbd062ba03d118bc54af0f783bfdc7786220"
+    },
+    {
+      "name": "GitHub",
+      "path": "MacDown/Resources/Styles/GitHub.css",
+      "bytes": 2530,
+      "sha256": "673ad0add6f2ad0283f152bd0c4806fce92ac095a8c69331d71a6fb4835140a1"
+    },
+    {
+      "name": "GitHub2",
+      "path": "MacDown/Resources/Styles/GitHub2.css",
+      "bytes": 8766,
+      "sha256": "62ed816fefa18599c6b8dd0b3d81143459e799e335f77b81ddc1650178ddcefd"
+    },
+    {
+      "name": "Solarized (Dark)",
+      "path": "MacDown/Resources/Styles/Solarized (Dark).css",
+      "bytes": 2458,
+      "sha256": "bf4621dfa934e085ebf96d083d72dd026a77999a4a94306f8e55e9fa81ef8003"
+    },
+    {
+      "name": "Solarized (Light)",
+      "path": "MacDown/Resources/Styles/Solarized (Light).css",
+      "bytes": 2458,
+      "sha256": "59b7f94e154dcd17905b4916ebddb1497d5531ac203ca68fee4f003f0f7438c8"
+    }
+  ],
+  "legacyBehavior": [
+    {
+      "path": "MacDown/Code/Utility/MPUtilities.m",
+      "sha256": "4d85c5a3919531925e8433a5ce4cbeacf80918c260c751f0b7783f1c41010a3d",
+      "finding": "Styles are CSS files in Application Support/<CFBundleName>/Styles; style names may include the css extension; nil selects no base stylesheet."
+    },
+    {
+      "path": "MacDown/Code/Application/MPMainController.m",
+      "sha256": "7ecc8781fa775a7d5304cf5716911922018363e77ebbb103c3bd17ca79f4a157",
+      "finding": "Startup copies bundled Styles and Themes only when missing, preserving user edits and existing files."
+    },
+    {
+      "path": "MacDown/Code/Preferences/MPHtmlPreferencesViewController.m",
+      "sha256": "12771790be3a39de575f58495ce33689e854238fb1f68184246baa72e1cace0b",
+      "finding": "HTML preferences select none or a discovered CSS filename, reveal the styles folder, and reload styles plus the preview."
+    },
+    {
+      "path": "MacDown/Code/Preferences/MPPreferences.m",
+      "sha256": "1724574caba513eec335b1d0b4601a7c5cc8cb044ba3caf7c2e05fb563b30333",
+      "finding": "Original htmlStyleName default is GitHub2; htmlTemplateName defaults to Default."
+    },
+    {
+      "path": "MacDown/Code/Document/MPRenderer.m",
+      "sha256": "d5b8c38fc7fac5163c7c0aed2bed6e31ac537313e56ec373f20846a970b9d901",
+      "finding": "Preview uses the selected base CSS plus independently enabled code/diagram CSS. Styled export embeds base CSS; highlighting is controlled independently. Template is loaded from bundle/Templates and cached once, and receives title/titleTag/styleTags/body/scriptTags."
+    },
+    {
+      "path": "MacDown/Code/Document/MPAsset.m",
+      "sha256": "21b52d9d687e702330e85a684a6d0bfbfcc95052495c18da0f83af44077d80c0",
+      "finding": "Asset options choose omitted, embedded or fully linked output. Embedded local asset content is read as text."
+    }
+  ],
+  "template": {
+    "path": "MacDown/Resources/Templates/Default.handlebars",
+    "sha256": "fa33e43e8758b1488552793ce57c93f3d3dbb34bd31e4a879a73751fec04b235",
+    "variables": [
+      "title",
+      "titleTag",
+      "styleTags",
+      "body",
+      "scriptTags"
+    ],
+    "bundledSyntax": [
+      "triple raw value interpolation",
+      "each blocks over styleTags/scriptTags",
+      "this inside each blocks"
+    ],
+    "bodyPlacement": "Rendered body is a direct child of body, without a main wrapper.",
+    "discoveryLimit": "Observed original code loads templates from the application bundle; no user-template directory/import UI was found in the inspected renderer and HTML preferences."
+  },
+  "currentBehavior": [
+    {
+      "path": "Packages/SnowfolioCore/Sources/RenderingCore/DocumentStyle.swift",
+      "sha256": "bd17313cb0280ffc94d1732e80cab091c39735e0410136dfb42c77fc52b95571",
+      "finding": "Portable style input currently contains native typography/width/code-theme values; no selected CSS catalog or custom CSS snapshot."
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/RenderingCore/PreviewHTML.swift",
+      "sha256": "a46985bc164d760a164377b8cbf719d7974ec20d59b4b695995a95bf55aa62cc",
+      "finding": "Document shell is typed Swift and places content in main#preview-content; style updates replace CSS text without replacing content nodes. CSP disables document scripts/connect/frame/object/base/form execution and restricts resources."
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/AppPreferences.swift",
+      "sha256": "345863052174f46fda2691cb2fd74514dd5934a33e681fb4db4f46d41daa5f89",
+      "finding": "DocumentStyle captures native appearance fields. Original htmlStyleName/htmlTemplateName values are not consumed by this adapter."
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/PreferencesCore/LegacyPreferencesMigration.swift",
+      "sha256": "f1a4addeeb93a5c2e6b41441e11b9a64dcd7e8dbaebb27e749c60ae110838945",
+      "finding": "Persisted old keys are copied without overwriting current keys, but copying alone does not implement their behavior."
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/ExportCore/MarkdownExport.swift",
+      "sha256": "7ad6690feccb5d76e9cb588699d09cbf24a25f04998c8abeffa789c027ac5a13",
+      "finding": "Fresh source/options/style snapshots feed typed PreviewHTML. Style export and code-highlighting options are separate; no CSS/template selection enters the export snapshot."
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/RenderingCore/LocalPreviewResource.swift",
+      "sha256": "3b40859ef3c3cf68b5f171722bb1d558a57a918fda5b566ed521d3160fb8631b",
+      "finding": "Local resource reader already permits CSS/font/image types inside the document directory, with descriptor-based symlink checks and bounded reads. It does not provide a separate imported-style asset root."
+    }
+  ],
+  "implementationRequirements": [
+    "Retain the current liked Snowfolio notebook appearance by default. Make legacy/custom styles explicit selectable choices and distinguish existing Snowfolio appearance from imported legacy choices.",
+    "Restore all six original CSS assets with preserved bytes/notices and custom CSS discovery/import/reload, stable IDs and deterministic precedence for edited legacy files.",
+    "Provide an explicit no-document-styles choice independent of code/math/diagram styles and styled/plain export controls.",
+    "Preserve author CSS selectors, including body-child selectors. Appending legacy CSS over notebook CSS plus an extra main wrapper is not equivalent to the old document structure.",
+    "Use one immutable resolved presentation snapshot for preview, fresh HTML export, PDF and printing, including changes while automatic preview is manual.",
+    "Keep native style changes from replacing content unnecessarily; validate source/selection/scroll and math/diagram/code behavior.",
+    "Keep custom CSS as CSS data in initial shells and later isolated-world updates; a closing style tag must not introduce document markup or executable code.",
+    "Explicitly model relative CSS/image/font/import resources, export portability, allowed roots and lifetime. Do not broaden the existing document resource boundary silently.",
+    "Replace Handlebars assembly with Swift context/escaping and a documented compatibility adapter; characterize original bundled expressions first and make unsupported custom expressions visible rather than silently altering output.",
+    "Preserve default template title/stylesheet/body/script ordering while retaining the modern script-free preview/export pipeline. Compatibility must not reintroduce obsolete runtime JS.",
+    "Keep original renderer/preferences/template dependencies until both CSS and template consumers reach verified parity; retain all notices after implementation retirement."
+  ],
+  "nextEvidence": [
+    "Native computed-style and selection/scroll cases for every bundled style and None",
+    "CSS folder/import/reload and saved-choice migration tests",
+    "HTML/PDF/print/manual-preview snapshot consistency",
+    "Template byte/context fixtures, escaping and explicit unsupported-expression behavior",
+    "Relative asset/encoding/size/symlink/remote-policy fixtures",
+    "Desktop Settings/import/export and accessibility acceptance"
+  ],
+  "notes": "This records source-based behavior and gaps, not a new product implementation or runtime acceptance. No user files or preferences were changed."
+}
