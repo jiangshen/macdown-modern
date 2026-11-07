@@ -11,6 +11,42 @@ tests. All new application-owned code uses Swift 6 language mode and the install
 Native AppKit selectors and Objective-C interoperability are permitted in Swift; this does
 not mean keeping first-party Objective-C implementations.
 
+## Independent product direction — added 2026-11-06
+
+The user explicitly wants to fundamentally move away from the original MacDown and
+build an independent native writing product. This is an added requirement of the active
+goal, not just a cosmetic rename. The existing repository defines feature and file
+compatibility requirements and attribution obligations; it does not dictate the final
+architecture, information layout, workflows, visual identity or product positioning.
+
+- Develop an original identity, product name and coherent writing experience. MacDown
+  remains only the working name until the user chooses a replacement.
+- Keep the liked current document/callout styling as a starting point. Evolve the
+  glacial-blue layered icon and native Apple/Liquid Glass chrome into a consistent
+  identity; a new name does not authorize discarding the current liked design.
+- Design around local plain-text Markdown, clear reading/writing, responsive native
+  interaction and useful document/workspace tools. Existing MacDown UI and code
+  organization are not constraints on the new implementation.
+- Preserve essential capabilities, data, user choices and compatibility already
+  requested. Do not infer permission to silently remove writing features from the
+  independent-product direction. Modern replacements and new workflows may differ
+  structurally once their behavior is verified.
+- Continue removing original first-party implementation, duplicate targets and obsolete
+  dependencies progressively, ending with zero legacy implementation. Preserve legally
+  required attribution and still-needed licensed resources; historical source belongs
+  in Git rather than a parallel shipping app.
+- Review future milestone work against this independent-product direction as well as
+  technical parity. Completion requires an original coherent product, not only a Swift
+  translation of the old app.
+
+Current creative shortlist for the user: **Iceleaf** (preferred: glacial identity plus a
+page/leaf), **Snowfolio** (a document-oriented snowy identity), and **Glacelle** (a more
+abstract, elegant name with an icy association). These are proposals, not a selected
+brand or an availability determination. No bundle identifiers, default associations,
+repository identity or release feeds are renamed until a name is selected. Future
+rename work must migrate preferences/document registration and update artwork, Help,
+CLI/integrations and release metadata coherently.
+
 ## Baseline audit (2026-11-06)
 
 - Xcode 27.2, build 27B52; Swift 6.4.2; native arm64 host.
