@@ -82,6 +82,17 @@ def main():
         'Make Apple attributed-string inline grammar optional')
     apply('src/inlines.c', closing, '    break;\n#endif\n  }\n\n  if (subj->pos == initpos)',
         'Close attribute grammar configuration gate')
+    apply('src/include/cmark-gfm.h', '#define CMARK_OPT_TABLE_ROWSPAN_DITTO (1 << 21)',
+        '#define CMARK_OPT_TABLE_ROWSPAN_DITTO (1 << 21)\n\n'
+        '/** Snowfolio configuration extension: leave fence syntax to ordinary block/inline parsing.\n'
+        ' * Default CommonMark behavior is unchanged when this bit is absent.\n */\n'
+        '#define CMARK_OPT_NO_FENCED_CODE (1 << 22)',
+        'Local runtime configuration gate for the existing fenced-code preference; not an upstream API')
+    apply('src/blocks.c',
+        '    } else if (!indented && (matched = scan_open_code_fence(',
+        '    } else if (!indented && !(parser->options & CMARK_OPT_NO_FENCED_CODE) &&\n'
+        '               (matched = scan_open_code_fence(',
+        'Allow opting out of the existing fence recognizer; all remaining block/inline grammar stays native')
     backport_data = args.commonmark_archive.read_bytes() if args.commonmark_archive else urllib.request.urlopen(BACKPORT_URL, timeout=45).read()
     if hashlib.sha256(backport_data).hexdigest() != BACKPORT_SHA256:
         raise SystemExit('CommonMark backport archive integrity mismatch')
@@ -122,12 +133,12 @@ def main():
     provenance = {
         'source': 'https://github.com/swiftlang/swift-cmark', 'version': VERSION,
         'revision': COMMIT, 'archiveURL': URL, 'archiveSHA256': SHA256,
-        'configuration': 'CMARK_DISABLE_ATTRIBUTES disables the Apple attributed-string inline grammar that can swallow ordinary Markdown text.',
+        'configuration': 'CMARK_DISABLE_ATTRIBUTES opts out of Apple attributed-string grammar; local CMARK_OPT_NO_FENCED_CODE (bit 22) opts out of fence recognition per render, preserving the original preference. Default native fence behavior is unchanged.',
         'backports': {'source': 'https://github.com/commonmark/cmark',
             'version': BACKPORT_VERSION, 'revision': BACKPORT_COMMIT,
             'archiveURL': BACKPORT_URL, 'archiveSHA256': BACKPORT_SHA256,
             'files': {name: hashlib.sha256(value).hexdigest() for name, value in backports.items()}},
-        'patches': 'Patches.json contains exact reversible native-source replacements and their upstream origin',
+        'patches': 'Patches.json contains exact reversible source replacements; reasons distinguish local configuration gates from upstream backports',
         'originalFiles': original,
         'files': {name: hashlib.sha256((DEST / name).read_bytes()).hexdigest()
             for name in sorted([*original, 'Package.swift', 'Patches.json', 'CommonMark-COPYING'])},

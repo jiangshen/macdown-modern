@@ -1,0 +1,74 @@
+{
+  "product": "Snowfolio",
+  "date": "2026-11-06",
+  "increment": "Restore original fenced-code choice",
+  "preference": {
+    "key": "extensionFencedCode",
+    "default": true,
+    "explicitFalsePreserved": true,
+    "UIIdentifier": "markdownFencedCode"
+  },
+  "nativeConfiguration": {
+    "option": "CMARK_OPT_NO_FENCED_CODE",
+    "bit": 22,
+    "upstreamAPI": false,
+    "purpose": "Opt out of the existing fence recognizer; native remaining block/inline grammar owns the result",
+    "sourceFiles": [
+      "src/include/cmark-gfm.h",
+      "src/blocks.c"
+    ],
+    "runtimeSourceRewriting": false,
+    "noticesUnchanged": true
+  },
+  "characterization": {
+    "engine": "Hoedown 3.0.7",
+    "archiveSHA256": "01b6021b1ec329b70687c0d240b12edcaf09c4aa28423ddf344d2bd9056ba920",
+    "cases": 20,
+    "fixtureSHA256": "498689e6154a85fb52bf1f9a69df4bdb7555efee2e5203de1a3e17eb3465d12e",
+    "explicitDifferences": [
+      "CommonMark inline-code newline/space normalization",
+      "Enabled fence can interrupt paragraph",
+      "Enabled fence can start immediately inside list item"
+    ]
+  },
+  "validation": {
+    "suites": 39,
+    "arm64TestExecutables": 8,
+    "nativeAppBuildForTesting": "passed",
+    "commonMark": {
+      "passed": 652,
+      "failed": 0
+    },
+    "nativePDFPrint": "Both enabled/disabled cases pass through native print-to-PDF; markers/content and indented code verified using PDFKit",
+    "fencedMathDiagramsAndInlineMath": "passed",
+    "styledPlainHTMLExport": "passed",
+    "sourceCoordinatesAndSyntax": "passed",
+    "preferenceMigrationPersistence": "passed",
+    "hostedSettingsRoundTrip": "implemented; awaiting hosted execution",
+    "tests": 194,
+    "parserReproduction": "Every regenerated source, manifest, patch and provenance byte matches checkout",
+    "changedSwiftStrictFormatting": "passed",
+    "fixtureIntegrityAndPythonSyntax": "passed",
+    "noticeAndSourceHashes": "passed"
+  },
+  "nativeDesktop": {
+    "observed": [
+      "Setting appears as native switch",
+      "Initial enabled fixture is a code block",
+      "Switch changes on to off"
+    ],
+    "connection": "Timed out after Settings window close; full round trip not visually observed",
+    "mainThreadSample": "Idle in event loop in one-second sample; timeout cause not attributed",
+    "savedPreferenceRestored": true,
+    "runningSessionMayRequireRelaunch": true
+  },
+  "remaining": [
+    "Hosted actual Settings/preview round trip",
+    "Any pending direct desktop final check",
+    "Underline/quote/intraword preferences",
+    "Broader modernization/reliability/accessibility/performance/release and legacy retirement"
+  ],
+  "goal": "active; incomplete",
+  "productionInstalled": false,
+  "defaultHandlerChanged": false
+}

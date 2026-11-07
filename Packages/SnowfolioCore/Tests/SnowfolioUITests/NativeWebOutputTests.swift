@@ -2,6 +2,7 @@ import AppKit
 import DocumentCore
 import ExportCore
 import Foundation
+import MarkdownCore
 import PDFKit
 import Testing
 
@@ -10,6 +11,39 @@ import Testing
 @Suite("Native paginated output", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeWebOutputTests {
+  @Test("Native PDF and print use the current fence parsing choice", arguments: [false, true])
+  func fencePreferencePDF(enabled: Bool) async throws {
+    _ = NSApplication.shared
+    var options = MarkdownRenderingOptions()
+    options.fencedCode = enabled
+    options.codeHighlighting = false
+    let export = try await MarkdownExport.build(
+      source: "~~~text\n**PDF fence checkpoint**\n~~~\n\n    indented checkpoint",
+      options: options, title: "Fence preference", directory: nil)
+    let surface = NativeWebOutput()
+    defer { surface.close() }
+    try await surface.prepare(html: export.document)
+    let path = FileManager.default.temporaryDirectory.appendingPathComponent(
+      UUID().uuidString + ".pdf")
+    defer { try? FileManager.default.removeItem(at: path) }
+    let info = NativeWebOutput.printInfo(allPages: true)
+    info.paperSize = NSSize(width: 612, height: 792)
+    info.jobDisposition = .save
+    info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = path
+    let window = NSWindow(
+      contentRect: NSRect(x: 0, y: 0, width: 720, height: 900),
+      styleMask: .titled, backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false
+    defer { window.close() }
+    #expect(await surface.printDocument(info: info, for: window, showPanel: false))
+    let pdf = try #require(PDFDocument(url: path))
+    let text = try #require(pdf.string)
+    #expect(text.contains("~~~text") == !enabled)
+    #expect(text.contains("**PDF fence checkpoint**") == enabled)
+    #expect(text.contains("PDF fence checkpoint") && text.contains("indented checkpoint"))
+    #expect(pdf.pageCount == 1)
+  }
+
   @Test("Native PDF output paginates the full document, including text past the screen bounds")
   func paginatedPDF() async throws {
     _ = NSApplication.shared
@@ -82,6 +116,7 @@ struct NativeWebOutputTests {
     let preferences = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
     preferences.manualRendering = true
     preferences.tables = false
+    preferences.fencedCode = false
     preferences.documentFont = .serif
     preferences.documentTextSize = 20
     let document = MarkdownDocument(contents: TextFileContents(text: "Old text"))
@@ -92,6 +127,7 @@ struct NativeWebOutputTests {
     let snapshot = try #require(output.snapshot())
     #expect(snapshot.source == "Newest text 中文")
     #expect(!snapshot.options.tables)
+    #expect(!snapshot.options.fencedCode)
     #expect(snapshot.style.font == .serif)
     #expect(snapshot.style.textSize == 20)
     preferences.documentTextSize = 12

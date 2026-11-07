@@ -6,6 +6,26 @@ import Testing
 
 @Suite("Portable Markdown export")
 struct MarkdownExportTests {
+  @Test("Fresh exports honor a changed fence preference without losing code or text")
+  func fencedCodePreference() async throws {
+    let source = "~~~text\n**body**\n~~~\n\n    indented code"
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    let enabled = try await MarkdownExport.build(
+      source: source, options: options, title: "Fences", directory: nil)
+    #expect(!enabled.fragment.contains("<strong>body</strong>"))
+    options.fencedCode = false
+    for styled in [false, true] {
+      let disabled = try await MarkdownExport.build(
+        source: source, options: options, title: "Fences", directory: nil, includeStyles: styled)
+      #expect(disabled.fragment.contains("<strong>body</strong>"))
+      #expect(disabled.fragment.components(separatedBy: "<pre").count == 2)
+      #expect(disabled.fragment.contains("indented code"))
+      #expect(!disabled.fragment.contains("language-text"))
+      #expect(disabled.document.contains("script-src 'none'"))
+    }
+  }
+
   @Test("Math exports carry accessible equations and all fonts without executable scripts")
   func mathExport() async throws {
     var options = MarkdownRenderingOptions()

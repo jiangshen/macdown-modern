@@ -105,6 +105,12 @@ public struct MarkdownSettingsView: View {
             "Use math code blocks or $$…$$ for display equations. Single $…$ is optional. Unsupported equations stay visible."
           )
           .font(.caption).foregroundStyle(.secondary)
+          Toggle("Fenced code blocks", isOn: $preferences.fencedCode)
+            .accessibilityIdentifier("markdownFencedCode")
+          Text(
+            "Turning this off uses ordinary Markdown parsing for backticks and tildes. Indented code blocks still work."
+          )
+          .font(.caption).foregroundStyle(.secondary)
           Toggle("Tables", isOn: $preferences.tables)
           Toggle("Task lists", isOn: $preferences.taskLists)
           Toggle("Strikethrough", isOn: $preferences.strikethrough)

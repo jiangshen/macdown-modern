@@ -2,13 +2,14 @@ import XCTest
 
 final class DocumentLifecycleTests: XCTestCase {
   @MainActor
-  private func launch() -> XCUIApplication {
+  private func launch(arguments: [String] = []) -> XCUIApplication {
     continueAfterFailure = false
     let app = XCUIApplication()
     app.launchArguments = [
       "-ApplePersistenceIgnoreState", "YES", "-NSQuitAlwaysKeepsWindows", "NO",
       "-AppleWindowTabbingMode", "manual", "-preferDocumentTabs", "NO",
     ]
+    app.launchArguments += arguments
     app.launch()
     return app
   }
@@ -69,6 +70,48 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertFalse(second.exists)
     let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
     image.name = "live-preview-after-native-undo"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
+  func testFencedCodePreferenceUpdatesCurrentPreview() {
+    let app = launch(arguments: ["-extensionFencedCode", "YES"])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    let source = "~~~text\n**Fence checkpoint**\n~~~"
+    editor.click()
+    editor.typeText(source)
+    XCTAssertEqual(editor.value as? String, source)
+    let preview = app.webViews.firstMatch
+    let code = preview.staticTexts.matching(
+      NSPredicate(format: "label CONTAINS %@", "**Fence checkpoint**")
+    ).firstMatch
+    let prose = preview.staticTexts.matching(
+      NSPredicate(format: "label CONTAINS %@ AND NOT (label CONTAINS %@)", "Fence checkpoint", "**")
+    ).firstMatch
+    XCTAssertTrue(code.waitForExistence(timeout: 8), app.debugDescription)
+    func setFences() {
+      app.typeKey(",", modifierFlags: .command)
+      let settings = app.windows["com_apple_SwiftUI_Settings_window"]
+      XCTAssertTrue(settings.waitForExistence(timeout: 5))
+      settings.toolbars.buttons["Markdown"].click()
+      let control = settings.switches["markdownFencedCode"]
+      XCTAssertTrue(control.waitForExistence(timeout: 5), app.debugDescription)
+      control.click()
+      app.typeKey("w", modifierFlags: .command)
+      XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    }
+    setFences()
+    XCTAssertTrue(prose.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertFalse(code.exists)
+    XCTAssertEqual(editor.value as? String, source)
+    setFences()
+    XCTAssertTrue(code.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertFalse(prose.exists)
+    XCTAssertEqual(editor.value as? String, source)
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "fenced-code-restored-through-settings"
     image.lifetime = .keepAlways
     add(image)
   }

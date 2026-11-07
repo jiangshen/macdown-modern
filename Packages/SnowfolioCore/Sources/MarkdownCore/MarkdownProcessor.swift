@@ -31,6 +31,7 @@ public actor MarkdownProcessor {
     _ = Self.registeredExtensions
     var flags = CMARK_OPT_SOURCEPOS | CMARK_OPT_VALIDATE_UTF8
     if options.footnotes { flags |= CMARK_OPT_FOOTNOTES }
+    if !options.fencedCode { flags |= CMARK_OPT_NO_FENCED_CODE }
     if options.smartPunctuation { flags |= CMARK_OPT_SMART }
     if options.hardLineBreaks { flags |= CMARK_OPT_HARDBREAKS }
     if options.rawHTML { flags |= CMARK_OPT_UNSAFE }

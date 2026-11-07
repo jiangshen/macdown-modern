@@ -66,6 +66,14 @@ a preview notice. Diagram options default off and migrate existing MacDown prefe
 Remote resources, callbacks and arbitrary JavaScript are unsupported. See the
 [diagram example](docs/design/notebook/DiagramDemo.md) and roadmap for remaining gates.
 
+## Code fences
+
+**Fenced code blocks** in Markdown settings preserves the original saved choice and
+is enabled by default. Turning it off uses ordinary CommonMark parsing for backticks
+and tildes; indented code still works. Fenced equations and diagrams follow the same
+choice. Inline equations remain independently available. Preview, source syntax,
+HTML exports and native PDF/print use the selected parsing option.
+
 ## Inline formatting
 
 Enable **Highlights (==text==)** and **Superscripts (^text or ^(text))** in Markdown

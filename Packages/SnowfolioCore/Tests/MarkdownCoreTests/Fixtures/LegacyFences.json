@@ -1,0 +1,112 @@
+{
+  "engine": "Built with Hoedown 3.0.7.",
+  "source": "https://github.com/hoedown/hoedown/tree/3.0.7",
+  "fixtureSourceSHA256": "7e65cc6fc8a16ceca336070217b5e7819079a0133ce0ea648659aee3e862eb9f",
+  "comparisonNote": "CommonMark normalizes inline-code line endings/spaces; legacy raw code text is retained here.",
+  "cases": [
+    {
+      "source": "```text\n**inside**\n```",
+      "enabled": false,
+      "html": "<p><code>text\n**inside**\n</code></p>\n"
+    },
+    {
+      "source": "```text\n**inside**\n```",
+      "enabled": true,
+      "html": "<pre><code class=\"language-text\">**inside**\n</code></pre>\n"
+    },
+    {
+      "source": "~~~text\n**inside**\n~~~",
+      "enabled": false,
+      "html": "<p>~~~text\n<strong>inside</strong>\n~~~</p>\n"
+    },
+    {
+      "source": "~~~text\n**inside**\n~~~",
+      "enabled": true,
+      "html": "<pre><code class=\"language-text\">**inside**\n</code></pre>\n"
+    },
+    {
+      "source": "before\n```text\nbody\n```\nafter",
+      "enabled": false,
+      "html": "<p>before\n<code>text\nbody\n</code>\nafter</p>\n"
+    },
+    {
+      "source": "before\n```text\nbody\n```\nafter",
+      "enabled": true,
+      "html": "<p>before\n<code>text\nbody\n</code>\nafter</p>\n",
+      "nativeHTML": "<p>before</p>\n<pre><code class=\"language-text\">body\n</code></pre>\n<p>after</p>\n",
+      "nativeBehaviorNote": "CommonMark fences may interrupt paragraphs without a blank line."
+    },
+    {
+      "source": "> ```text\n> **quoted**\n> ```",
+      "enabled": false,
+      "html": "<blockquote>\n<p><code>text\n**quoted**\n</code></p>\n</blockquote>\n"
+    },
+    {
+      "source": "> ```text\n> **quoted**\n> ```",
+      "enabled": true,
+      "html": "<blockquote>\n<pre><code class=\"language-text\">**quoted**\n</code></pre>\n</blockquote>\n"
+    },
+    {
+      "source": "1. ```text\n    **listed**\n    ```",
+      "enabled": false,
+      "html": "<ol>\n<li><code>text\n**listed**\n</code></li>\n</ol>\n"
+    },
+    {
+      "source": "1. ```text\n    **listed**\n    ```",
+      "enabled": true,
+      "html": "<ol>\n<li><code>text\n**listed**\n</code></li>\n</ol>\n",
+      "nativeHTML": "<ol>\n<li>\n<pre><code class=\"language-text\"> **listed**\n</code></pre>\n</li>\n</ol>\n",
+      "nativeBehaviorNote": "CommonMark recognizes a fence immediately after a list marker and preserves excess indentation."
+    },
+    {
+      "source": "    indented **code**\n",
+      "enabled": false,
+      "html": "<pre><code>indented **code**\n</code></pre>\n"
+    },
+    {
+      "source": "    indented **code**\n",
+      "enabled": true,
+      "html": "<pre><code>indented **code**\n</code></pre>\n"
+    },
+    {
+      "source": "Before ```inline``` after",
+      "enabled": false,
+      "html": "<p>Before <code>inline</code> after</p>\n"
+    },
+    {
+      "source": "Before ```inline``` after",
+      "enabled": true,
+      "html": "<p>Before <code>inline</code> after</p>\n"
+    },
+    {
+      "source": "````text\n```nested```\n````",
+      "enabled": false,
+      "html": "<p><code>text\n```nested```\n</code></p>\n"
+    },
+    {
+      "source": "````text\n```nested```\n````",
+      "enabled": true,
+      "html": "<pre><code class=\"language-text\">```nested```\n</code></pre>\n"
+    },
+    {
+      "source": "~~~text\n<em>literal</em> & value\n~~~",
+      "enabled": false,
+      "html": "<p>~~~text\n<em>literal</em> &amp; value\n~~~</p>\n"
+    },
+    {
+      "source": "~~~text\n<em>literal</em> & value\n~~~",
+      "enabled": true,
+      "html": "<pre><code class=\"language-text\">&lt;em&gt;literal&lt;/em&gt; &amp; value\n</code></pre>\n"
+    },
+    {
+      "source": "```text\r\n中文 👩‍💻\r\n```\r\n",
+      "enabled": false,
+      "html": "<p><code>text\n中文 👩‍💻\n</code></p>\n"
+    },
+    {
+      "source": "```text\r\n中文 👩‍💻\r\n```\r\n",
+      "enabled": true,
+      "html": "<pre><code class=\"language-text\">中文 👩‍💻\n</code></pre>\n"
+    }
+  ]
+}

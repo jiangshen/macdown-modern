@@ -240,3 +240,20 @@ actual MarkdownProcessor pipeline. It is not linked or bundled into Snowfolio an
 does not replace the future user-facing CLI. Generated builds remain outside tracked
 source. `validation/project-cleanup.json` records all recoverable Trash destinations;
 `PERFORMANCE_AUDIT.md` distinguishes core measurements from remaining app-level gates.
+
+
+## Fenced-code configuration ownership
+
+`MarkdownCore` owns the Swift `fencedCode` option; native Settings/migration/export paths
+consume it. The pinned engine adds the local `CMARK_OPT_NO_FENCED_CODE` bit (22) in its
+public header and a conditional around the existing fence recognizer in `src/blocks.c`.
+This is a configuration exception to the Swift-only application boundary, not an upstream
+API or a new first-party parser. Default native behavior remains unchanged. The other
+four patched native files retain the attributed-string opt-out and CommonMark backports.
+All unpatched source remains byte-identical, and the verifier reverses all six file patches
+to check original hashes. Application grammar is not duplicated in a document preprocessor.
+
+`Tools/characterize-fences.py` and `LegacyFences.json` retain exact original-engine output
+and explicit known CommonMark differences for development. The tool/original characterizer
+are not bundled or app requirements. Legacy renderer/editor/custom-style consumers still
+prevent complete old-target retirement.

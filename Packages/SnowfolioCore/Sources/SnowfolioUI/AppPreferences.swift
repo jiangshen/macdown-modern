@@ -41,6 +41,7 @@ public final class AppPreferences {
   public var taskLists: Bool { didSet { save(taskLists, "htmlTaskList") } }
   public var autolinks: Bool { didSet { save(autolinks, "extensionAutolink") } }
   public var footnotes: Bool { didSet { save(footnotes, "extensionFootnotes") } }
+  public var fencedCode: Bool { didSet { save(fencedCode, "extensionFencedCode") } }
   public var highlight: Bool { didSet { save(highlight, "extensionHighlight") } }
   public var superscript: Bool { didSet { save(superscript, "extensionSuperscript") } }
   public var smartPunctuation: Bool { didSet { save(smartPunctuation, "extensionSmartyPants") } }
@@ -104,6 +105,7 @@ public final class AppPreferences {
     taskLists = boolean("htmlTaskList", fallback: true)
     autolinks = boolean("extensionAutolink", fallback: true)
     footnotes = boolean("extensionFootnotes", fallback: true)
+    fencedCode = boolean("extensionFencedCode", fallback: true)
     highlight = boolean("extensionHighlight", fallback: false)
     superscript = boolean("extensionSuperscript", fallback: false)
     smartPunctuation = boolean("extensionSmartyPants", fallback: false)
@@ -159,6 +161,7 @@ public final class AppPreferences {
     options.taskLists = taskLists
     options.autolinks = autolinks
     options.footnotes = footnotes
+    options.fencedCode = fencedCode
     options.highlight = highlight
     options.superscript = superscript
     options.smartPunctuation = smartPunctuation

@@ -11,6 +11,20 @@
       "reason": "Close attribute grammar configuration gate"
     }
   ],
+  "src/include/cmark-gfm.h": [
+    {
+      "before": "#define CMARK_OPT_TABLE_ROWSPAN_DITTO (1 << 21)",
+      "after": "#define CMARK_OPT_TABLE_ROWSPAN_DITTO (1 << 21)\n\n/** Snowfolio configuration extension: leave fence syntax to ordinary block/inline parsing.\n * Default CommonMark behavior is unchanged when this bit is absent.\n */\n#define CMARK_OPT_NO_FENCED_CODE (1 << 22)",
+      "reason": "Local runtime configuration gate for the existing fenced-code preference; not an upstream API"
+    }
+  ],
+  "src/blocks.c": [
+    {
+      "before": "    } else if (!indented && (matched = scan_open_code_fence(",
+      "after": "    } else if (!indented && !(parser->options & CMARK_OPT_NO_FENCED_CODE) &&\n               (matched = scan_open_code_fence(",
+      "reason": "Allow opting out of the existing fence recognizer; all remaining block/inline grammar stays native"
+    }
+  ],
   "src/html.c": [
     {
       "before": "  case CMARK_NODE_STRONG:\n    if (node->parent == NULL || node->parent->type != CMARK_NODE_STRONG) {\n      if (entering) {\n        cmark_strbuf_puts(html, \"<strong>\");\n      } else {\n        cmark_strbuf_puts(html, \"</strong>\");\n      }\n    }\n    break;\n\n",

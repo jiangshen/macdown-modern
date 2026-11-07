@@ -6,6 +6,25 @@ import Testing
 @Suite("Application preferences")
 @MainActor
 struct AppPreferencesTests {
+  @Test("Fenced-code preference defaults on and preserves migrated false across launches")
+  func fencedCodePreference() throws {
+    let domain = "FencePreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let fresh = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+    #expect(fresh.fencedCode && fresh.renderingOptions.fencedCode)
+    defaults.removePersistentDomain(forName: domain)
+    let migrated = AppPreferences(
+      defaults: defaults, domainName: domain, legacyValues: ["extensionFencedCode": false])
+    #expect(!migrated.fencedCode && !migrated.renderingOptions.fencedCode)
+    migrated.fencedCode = true
+    let reopened = AppPreferences(
+      defaults: defaults, domainName: domain, legacyValues: ["extensionFencedCode": false])
+    #expect(reopened.fencedCode && reopened.renderingOptions.fencedCode)
+    reopened.fencedCode = false
+    #expect(!AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:]).fencedCode)
+  }
+
   @Test("Inline dialect choices migrate independently and retain explicit disabled values")
   func inlinePreferences() throws {
     let domain = "InlinePreferencesTests.\(UUID().uuidString)"

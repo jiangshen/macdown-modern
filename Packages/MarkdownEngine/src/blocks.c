@@ -1201,7 +1201,8 @@ static void open_new_blocks(cmark_parser *parser, cmark_node **container,
       (*container)->as.heading.setext = false;
       (*container)->internal_offset = matched;
 
-    } else if (!indented && (matched = scan_open_code_fence(
+    } else if (!indented && !(parser->options & CMARK_OPT_NO_FENCED_CODE) &&
+               (matched = scan_open_code_fence(
                                  input, parser->first_nonspace))) {
       *container = add_child(parser, *container, CMARK_NODE_CODE_BLOCK,
                              parser->first_nonspace + 1);

@@ -80,6 +80,7 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var taskLists = true
   public var autolinks = true
   public var footnotes = true
+  public var fencedCode = true
   public var highlight = false
   public var superscript = false
   public var smartPunctuation = false

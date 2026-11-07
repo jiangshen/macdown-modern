@@ -122,7 +122,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
-| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation and highlight/superscript implemented; underline, quote and fence/intraword preferences remain |
+| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation and highlight/superscript and fenced-code preference implemented; underline, quote and intraword preferences remain |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Pending |
@@ -1426,3 +1426,48 @@ confirms **187 tests / 38 suites / eight arm64 executables** and **652/652** pub
 CommonMark examples. The independent native build/document UI job also passed. Direct
 post-relaunch list selection was observed clean on this Mac. Broader modernization,
 real VoiceOver/IME, remaining feature parity and performance/release gates remain open.
+
+
+## Fenced-code preference — 2026-11-06
+
+The original `extensionFencedCode` key now migrates and persists, defaults on, and
+preserves an explicit false. The native Markdown Settings switch changes actual block
+parsing. Disabling it leaves backticks/tildes to ordinary native inline/block grammar;
+indented code still works. Source syntax, preview and fresh exports share the option.
+Fenced math/Mermaid/Graphviz also stop being special blocks, while independently
+enabled inline math remains available. No source-text rewriting is introduced.
+
+The pinned parser has a small local runtime configuration extension: public bit 22
+`CMARK_OPT_NO_FENCED_CODE` guards the existing fence recognizer in `src/blocks.c`.
+It is explicitly a Snowfolio API addition, not an upstream swift-cmark API. This adds
+no replacement grammar or native ownership logic; all parsing continues in the maintained
+engine, and the bit is absent under default CommonMark behavior. The header/conditional
+patch is an explicit third-party configuration exception. All application preference,
+UI, orchestration and tests remain Swift. The vendoring tool regenerates both changes;
+provenance hashes and reversible patch checks still prove all 76 original files.
+Original notices and the three upstream CommonMark backports remain unchanged.
+
+`Tools/characterize-fences.py` records 20 cases from original Hoedown 3.0.7, including
+both fence characters, nesting, indented/inline code, longer fences and Unicode/CRLF.
+The comparison explicitly accounts for CommonMark's inline-code newline/space rule.
+Two existing enabled-fence differences retain both exact outputs: paragraph interruption
+and a fence immediately after a list marker. No cases or markup are ignored. Malformed
+fences follow CommonMark, including unclosed fences when enabled; source remains visible
+when disabled. These are standard grammar differences, not claims of bit-identical
+Hoedown HTML for every input.
+
+Migration, per-render switching, syntax/source coordinates, code scope and special-renderer
+boundaries are covered. Styled/plain HTML and actual native PDF/print output verify fresh
+settings, including manual-preview snapshots. The default engine still passes all 652
+published CommonMark examples. Native UI inspection observed the switch and an on-to-off
+transition with the initial code-block preview. The UI connection then timed out, so the
+post-change desktop preview/round trip is not claimed from that attempt. A one-second
+stack sample found the main thread idle in its event loop; the timeout cause is not
+attributed. The saved preference was restored to its observed original on value. A new
+hosted UI method exercises the actual Settings switch, both preview transitions and
+unchanged source. See `validation/fenced-code.json` for the exact validation state.
+
+Underline, quote and intraword-emphasis choices, custom styles/templates, remaining
+editor/workspace/integration capabilities, real input/accessibility, performance/release
+readiness and progressive legacy retirement remain required. The original renderer still
+has coupled consumers; this increment does not delete it. The full goal remains active.

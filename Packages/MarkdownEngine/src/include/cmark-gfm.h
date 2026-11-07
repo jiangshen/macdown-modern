@@ -828,6 +828,11 @@ char *cmark_render_latex_with_mem(cmark_node *root, int options, int width, cmar
  */
 #define CMARK_OPT_TABLE_ROWSPAN_DITTO (1 << 21)
 
+/** Snowfolio configuration extension: leave fence syntax to ordinary block/inline parsing.
+ * Default CommonMark behavior is unchanged when this bit is absent.
+ */
+#define CMARK_OPT_NO_FENCED_CODE (1 << 22)
+
 /**
  * ## Version information
  */

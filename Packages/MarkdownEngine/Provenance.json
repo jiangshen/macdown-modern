@@ -4,7 +4,7 @@
   "revision": "08ddb528923cc1a6527e02b7a1aee9e516ca749a",
   "archiveURL": "https://codeload.github.com/swiftlang/swift-cmark/tar.gz/refs/tags/0.9.0",
   "archiveSHA256": "21e88b2ac458edda8c3376336e589f6aff2d9ac1091794ab6461299e6248e0e7",
-  "configuration": "CMARK_DISABLE_ATTRIBUTES disables the Apple attributed-string inline grammar that can swallow ordinary Markdown text.",
+  "configuration": "CMARK_DISABLE_ATTRIBUTES opts out of Apple attributed-string grammar; local CMARK_OPT_NO_FENCED_CODE (bit 22) opts out of fence recognition per render, preserving the original preference. Default native fence behavior is unchanged.",
   "backports": {
     "source": "https://github.com/commonmark/cmark",
     "version": "0.31.2",
@@ -18,7 +18,7 @@
       "src/utf8.c": "882f8364abef18c18834d79d8693c3152bb65962d49bf988c50718971775d775"
     }
   },
-  "patches": "Patches.json contains exact reversible native-source replacements and their upstream origin",
+  "patches": "Patches.json contains exact reversible source replacements; reasons distinguish local configuration gates from upstream backports",
   "originalFiles": {
     "COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
     "extensions/CMakeLists.txt": "93bfb15d19e2e8273694c880aa6827c7a0d7362c215c75758b11e9b7b6535623",
@@ -101,7 +101,7 @@
     "COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
     "CommonMark-COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
     "Package.swift": "21d64f677d8c91a5136a059dc13df34a5cce228d7aefa146273123573eb5734a",
-    "Patches.json": "96706b0f2415c82139d85fdd5131811fab32215a5b9bca47e9c49f17a7ee37e2",
+    "Patches.json": "2086543eeb00dfa5cb6664001fcf54dfaa25e9532bc49d6722fba0f115f9ad89",
     "extensions/CMakeLists.txt": "93bfb15d19e2e8273694c880aa6827c7a0d7362c215c75758b11e9b7b6535623",
     "extensions/autolink.c": "7b448954aa5bc180b648e1fe14323e5b690667be5656a6445ea03ba0f9b30f06",
     "extensions/autolink.h": "32b32d557c19d18c30b8fa01a5b8475f910a3fae48ef78fbde4e089c48f1e216",
@@ -121,7 +121,7 @@
     "extensions/tasklist.h": "a789f46d72bfd702a6bcbfdf2377ccd335256c020843c21e21706acea86a0560",
     "src/CMakeLists.txt": "180b96a2317c05ddce915aba3e6fba0f80c8f7aee2115b8ffb6b1c59b88dfb13",
     "src/arena.c": "52f4a8a231dfe8293ed36051245b25d8d55ff75f44363b5b974d9aebce4589af",
-    "src/blocks.c": "89ad7b02668308f04c66f6a49840a8c93534d764489faf62993dcb060481be3d",
+    "src/blocks.c": "c1096f31c3ad5924b27df9411d6933fac249a69c78fc266043e746f6dbc71dbf",
     "src/buffer.c": "ea142c5064e491687028dcaf50adac567ed6460c2efc221274ba6964ed2e8fd7",
     "src/case_fold_switch.inc": "37726f404907e68a2c044c78f7c1559e46fbaf91f691989985264ddc58251579",
     "src/cmark.c": "993dc9c9ce9e8be6624c7b4b65dee014c036bfa62977c630ef4e56588631654b",
@@ -137,7 +137,7 @@
     "src/include/buffer.h": "3686f08a83fe00e0e1038eeb7bd4b1d290f17d2d00acfc898243311213a5156f",
     "src/include/chunk.h": "f9d917447677c5d260c54214cfff40e8808be31b5a6f8874dd7a04ae14a97c03",
     "src/include/cmark-gfm-extension_api.h": "3a69f68d60a1e14ba003c8a4f9dd32025b53e4c5aaf7279da06f386020c0a47f",
-    "src/include/cmark-gfm.h": "c061df42192328cdd57a1dcd93a7495ef78f18b3a087ed8b39b5a39bfccb2711",
+    "src/include/cmark-gfm.h": "e3591dcb34e4d3922ecb29fc3ceb429b0c20858773fa0496d90b872f23995e32",
     "src/include/cmark-gfm_config.h": "cf7855cdf55b4f073e1b42bddcd5fb20f49033ddd63bfaf27228928d583f8318",
     "src/include/cmark-gfm_version.h": "64d3fcaa338ce0767ee1782f5229b49906e10ef81a5c02aa6299581b3c8a550b",
     "src/include/cmark_ctype.h": "8e2147baf68432d63f01c9e7ad17e096254ec4de4cd660bc713ddb393859819b",
