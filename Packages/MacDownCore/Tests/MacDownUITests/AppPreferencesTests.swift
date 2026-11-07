@@ -18,6 +18,7 @@ struct AppPreferencesTests {
         "editorAutoIncrementNumberedLists": false, "editorCompleteMatchingCharacters": true,
         "editorUnorderedListMarkerType": 2,
         "extensionTables": false, "extensionStrikethough": true,
+        "htmlSyntaxHighlighting": false, "htmlHighlightingThemeName": "tomorrow",
         "editorBaseFontInfo": ["name": "Menlo-Regular", "size": 18],
       ])
     #expect(preferences.editorBehavior.convertTabs)
@@ -25,6 +26,10 @@ struct AppPreferencesTests {
     #expect(!preferences.editorBehavior.incrementLists)
     #expect(preferences.editorBehavior.pairDelimiters)
     #expect(preferences.editorBehavior.unorderedMarker == "-")
+    #expect(!preferences.codeHighlighting)
+    #expect(preferences.codeTheme == .tomorrow)
+    preferences.codeHighlighting = true
+    preferences.codeTheme = .okaidia
     #expect(!preferences.tables)
     #expect(preferences.strikethrough)
     #expect(preferences.editorFontSize == 18)
@@ -49,6 +54,8 @@ struct AppPreferencesTests {
     #expect(!reopened.syntaxHighlighting)
     #expect(!reopened.renderingOptions.alerts)
     #expect(reopened.renderingOptions.tables)
+    #expect(reopened.renderingOptions.codeHighlighting)
+    #expect(reopened.documentStyle.codeTheme == .okaidia)
     #expect(reopened.manualRendering)
     #expect(reopened.editorFontSize == 22)
     #expect(reopened.documentStyle.font == .serif)

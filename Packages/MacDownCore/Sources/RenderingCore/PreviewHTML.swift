@@ -3,7 +3,8 @@ import Foundation
 public enum PreviewHTML {
   public static func document(
     body: String = "", remoteImages: Bool = false,
-    title: String = "", includeStyles: Bool = true, style: DocumentStyle = .init()
+    title: String = "", includeStyles: Bool = true, includeHighlighting: Bool = false,
+    style: DocumentStyle = .init()
   ) -> String {
     let imageSources = remoteImages ? "mdasset: data: https:" : "mdasset: data:"
     return """
@@ -11,7 +12,7 @@ public enum PreviewHTML {
       <title>\(escapeText(title))</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-      \(includeStyles ? "<style id=\"document-style\">" + style.css + "</style>" : "")</head><body><main id="preview-content">\(body)</main></body></html>
+      \(includeStyles ? "<style id=\"document-style\">" + style.css + "</style>" : "")\(includeHighlighting ? "<style id=\"code-style\">" + style.codeCSS + "</style>" : "")</head><body><main id="preview-content">\(body)</main></body></html>
       """
   }
 
@@ -30,6 +31,8 @@ public enum PreviewHTML {
     const anchor = [...document.querySelectorAll('#preview-content [data-sourcepos]')].find(e => e.getBoundingClientRect().bottom > 0);
     const anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;
     style.textContent = css;
+    const codeStyle = document.getElementById("code-style");
+    if (codeStyle) codeStyle.textContent = codeCSS;
     if (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);
     return true;
     """

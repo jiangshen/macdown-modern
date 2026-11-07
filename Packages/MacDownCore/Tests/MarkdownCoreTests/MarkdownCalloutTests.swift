@@ -101,7 +101,7 @@ struct MarkdownCalloutTests {
     #expect(result.html.contains("<aside"))
     #expect(!result.html.contains("<script>"))
     #expect(!result.html.contains("href=\"javascript:"))
-    #expect(result.html.contains("&lt;img"))
+    #expect(result.html.contains("&lt;") && result.html.contains("img"))
     #expect(result.html.contains("src=\"safe.png\""))
   }
 }

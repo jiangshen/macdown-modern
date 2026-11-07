@@ -83,7 +83,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize verified; swap, linked scrolling and zoom pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
-| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Pending |
+| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter tables and TOC | Pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | Pending |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
@@ -720,3 +720,75 @@ declarations) were removed in a separate commit; the retirement ledger is in
 `SOURCE_INVENTORY.md`. Helpers and subsystems with remaining callers/parity gaps stay
 until their replacement is verified. No essential writing feature, license or still-used
 resource was removed. The full modernization goal remains active.
+
+## Local preview/export code highlighting — 2026-11-06
+
+Language-aware code highlighting is now part of the shared parser result, before HTML
+reaches WebKit. `CodeHighlightCore` evaluates only a checksum-pinned local Prism 1.30.0
+bundle inside a parser-actor-owned JavaScriptCore context. The application adapter,
+selection, caching, preferences and render integration are Swift; the third-party
+JavaScript grammars are an explicit ownership exception. Markdown is passed as a value
+to `Prism.highlight`, never interpolated into executable code. No DOM, native bridge,
+file API, network API, Node runtime, CDN or page scripts are exposed to document text.
+
+The bundle contains 297 upstream components, covering 292 standalone grammars plus five
+extras that extend other grammars. Upstream aliases and MacDown's historical aliases
+(including `jl`, `c++`, `coffee-script`, `obj-c`, `graphviz` and `gv`) are supported.
+JSON uses the maintained dedicated JSON grammar. Original AST nodes, literals, source
+ranges, outline and source syntax remain unchanged; only the render tree receives
+trusted wrappers containing escaped Prism output. Unknown, unlabelled and over-limit
+blocks remain complete escaped code. Code inside callouts retains its original behavior.
+
+The new MacDown theme adapts to light/dark appearance and printing, with a contrast
+fallback. All eight original built-in Prism themes are available: Prism, Coy, Dark,
+Funky, Okaidia, Solarized Light, Tomorrow and Twilight. Legacy theme names are matched
+case-insensitively; empty/default names and unknown-name fallback preserve the original
+Prism default behavior. Existing explicit `htmlSyntaxHighlighting` and theme preferences
+are migrated without replacing user choices. Theme changes update CSS in place and keep
+existing code nodes and reading anchors. New installs use the adaptive MacDown theme.
+
+HTML export exposes independent “Include document styles” and “Include code highlighting”
+controls. Token markup and the selected local CSS ship in the exported HTML; no script
+or runtime fetch is required. PDF/printing use the same immutable render output and
+native print path. `Tools/vendor-prism.py` regenerates resources from the official npm
+archive after verifying its SHA-512 integrity; provenance records the upstream commit
+and individual file hashes. One documented encoding patch omits Prism’s conversion of
+nonbreaking spaces into ordinary spaces; native code-text tests cover preservation.
+The build verifies the bundled resources, themes, license
+and hashes. Ordinary builds require neither Node nor a network download for Prism.
+
+Native inspection exposed a startup race: two app-owned skeleton loads could overlap
+when the document directory changed, and the first policy callback consumed the gate
+needed by its replacement. A regression reproduced the blank preview before the fix.
+The gate now stays open until the current load completes, and allows only the exact
+`about:blank`/`mdasset://document/` skeleton URLs. Existing resource/CSP/navigation
+boundaries remain enforced. Rapid replacement and standard preview policy tests pass.
+
+Validation: 99 tests in 20 suites passed, with seven native arm64 test executables.
+All 292 standalone grammars accepted code; legacy aliases, AST/source invariance,
+unknown/large-block fallback, theme resources/migration, scriptless HTML export,
+WebKit's exact malicious-looking code text, adaptive token contrast >= 4.5 in both
+appearances, stable code-node identity through all themes, native PDF code text and
+startup replacement are covered. Strict Swift formatting, diff checks and native app
+build-for-testing passed. A fresh final development process displayed highlighted
+Swift/JavaScript/HTML/Graphviz-source code, accepted Tomorrow then restored MacDown in
+the native picker, and exported HTML through the native File menu. The saved file has
+both stylesheets, token markup and no script elements. See
+`validation/code-highlighting.json` and `design/notebook/CodeDemo.md`/`CodeDemo.html`.
+
+Limits still open: regex-based Prism has known tokenization edge cases. A block over
+65,536 UTF-16 units falls back to complete plain code; cancellation is checked between
+JS calls, not a hard deadline within one call. Caching is bounded to 32 entries/1 MiB.
+M6 still needs measured/adversarial performance work, and no responsiveness claim is
+made from these tests. Code labels/accessories, line numbers, custom CSS/templates,
+source `.style` themes, math/diagrams and the wider roadmap remain required. Graphviz
+source coloring is not Graphviz diagram rendering. CUA had window-context timeouts
+after closing Settings and while inspecting the toolbar Export popover; live sampling
+showed ordinary menu tracking, and File-menu export succeeded. Wider native keyboard/
+accessibility checks and the unresolved XCUITest automation gate are not claimed passed.
+
+No additional legacy subsystem is deleted in this increment: the old renderer still
+owns unmigrated math/diagram, custom-template and accessory behavior. Continue progressive
+removal at verified parity gates, retaining licenses/resources and Git history. The
+full modernization goal stays active; no production release/default-handler change
+is made by this development increment.

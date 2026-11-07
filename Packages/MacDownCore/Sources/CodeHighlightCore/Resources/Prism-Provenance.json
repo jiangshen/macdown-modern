@@ -1,0 +1,22 @@
+{
+  "version": "1.30.0",
+  "source": "https://registry.npmjs.org/prismjs/-/prismjs-1.30.0.tgz",
+  "gitCommit": "93cca40b364215210f23a9e35f085a682a2b8175",
+  "archiveIntegrity": "sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==",
+  "patches": [
+    "Omit util.encode NBSP-to-space normalization; preserve exact code text"
+  ],
+  "files": {
+    "Languages.json": "9fbebfc1040e6e23867125b64b4d52314295872496907b60a9b5e9b2a3d9626e",
+    "Prism-LICENSE.txt": "2b947f0901a7ffcf08a89957da9783c0e9c6e72cb6ce8e959f501ab5409e4d2b",
+    "Prism.js": "5bdb351b65f8b765cd55853d33f049447d8158203ea77451988b66774dc51cda",
+    "prism-coy.css": "c88f33b0b55fef319dc538a36f90a068f757dbba4b3d19b6178a26c6faf0fb68",
+    "prism-dark.css": "f06e1a3b80089aa15eb2633978f9859e1226474ef7df6e8f142dc74da9ee5e87",
+    "prism-funky.css": "02081bdf34dcac52c3786149c03d30d598567c66fbe3b9aab69937eb8688c2ac",
+    "prism-okaidia.css": "9f00e2a5d2e7f773b50991a8443a2bd22e022e60d06fe99d83fc9a60c502b8b3",
+    "prism-solarizedlight.css": "dbbf0284261d863f30ec498b488dfefd9d0621a5303f35843c89ed6871f4f3a2",
+    "prism-tomorrow.css": "d1d928842f5912ea6a59bab4852e5c551e1041727e9a9e8dda8272ba4b3a82dd",
+    "prism-twilight.css": "bc5dc2713d5953fa6dd6ac3c30851a3efb1edd61aeed96ab6491c266a3a741cf",
+    "prism.css": "87faadabd6d49d76ce3b03f811c6cbb5833d324de241070764067e273e72d164"
+  }
+}

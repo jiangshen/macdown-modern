@@ -1,0 +1,85 @@
+{
+  "milestone": "M3/M4 local language-aware code highlighting; full modernization remains active",
+  "date": "2026-11-06",
+  "engine": {
+    "name": "Prism",
+    "version": "1.30.0",
+    "components": 297,
+    "standaloneGrammars": 292,
+    "runtime": "Apple JavaScriptCore inside the parser actor; no document-executable scripts",
+    "provenance": "Packages/MacDownCore/Sources/CodeHighlightCore/Resources/Prism-Provenance.json",
+    "license": "MIT; bundled Prism-LICENSE.txt",
+    "patch": "Omit NBSP-to-space normalization in util.encode; escaping is unchanged"
+  },
+  "implemented": [
+    "Portable pre-rendered token markup",
+    "All bundled language grammars and legacy aliases",
+    "Adaptive MacDown theme plus all eight legacy built-in themes",
+    "Persisted legacy-compatible code highlighting/theme settings",
+    "Independent native HTML export style/highlight options",
+    "Shared native PDF/print rendering",
+    "Bounded content cache",
+    "Verified resource/license hashes in native builds",
+    "Startup navigation race regression and fix"
+  ],
+  "tests": {
+    "count": 99,
+    "suites": 20,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "nativeBuild": "build-for-testing passed; main executable arm64; packaged Prism resources verified against SHA-256 provenance",
+  "nativeUI": [
+    "Fresh process opened fixture with visible preview after the startup fix",
+    "Observed colored Swift/JavaScript code in the adaptive dark presentation",
+    "Observed all native theme menu choices",
+    "Selected Tomorrow and restored MacDown",
+    "Native File-menu export panel exposed both independent checkboxes",
+    "Saved HTML with tokens, both stylesheets and no script elements"
+  ],
+  "startupRegression": {
+    "before": "Rapid initial directory changes timed out with no published preview",
+    "after": "Regression and complete WebKit suite passed; final native process displayed the fixture",
+    "navigationBoundary": "Only exact about:blank/mdasset://document/ skeleton URLs allowed while app-owned loads are pending"
+  },
+  "inspectionLimitations": [
+    "CUA window-context timeout after closing Settings; refreshing the app handle recovered",
+    "CUA toolbar Export popover inspection timed out; sampling showed normal menu tracking; native File-menu export verified instead",
+    "XCUITest runner automation issue remains open"
+  ],
+  "verified": [
+    "All 292 grammars accept representative code",
+    "Every historical alias resolves",
+    "Code decoration leaves original AST/source ranges/source syntax unchanged",
+    "Unknown, unlabelled and over-limit code stays complete and escaped",
+    "WebKit code text exactly matches malicious-looking HTML without creating script/image/frame elements",
+    "Adaptive token contrast >=4.5 on resolved code backgrounds in light and dark",
+    "Changing through all themes retains code DOM nodes",
+    "Appended Markdown retains unchanged code node identity",
+    "Native PDF includes highlighted-code text",
+    "Plain versus highlighted export works independently of document styles",
+    "Nonbreaking spaces remain exact code text in native WebKit"
+  ],
+  "fixtures": [
+    "docs/design/notebook/CodeDemo.md",
+    "docs/design/notebook/CodeDemo.html"
+  ],
+  "remaining": [
+    "65,536 UTF-16 per-block coloring bound; oversized blocks stay complete plain code",
+    "Regex engine calls do not have a hard per-call cancellation deadline",
+    "M6 measured/adversarial performance validation",
+    "Code labels/accessories/line numbers",
+    "Custom CSS/templates and source themes",
+    "Math and diagram rendering; Graphviz coloring does not render diagrams",
+    "Wider accessibility, real IME and system integration checks",
+    "Full modernization roadmap and progressive legacy deletion"
+  ],
+  "legacySourceRemoved": false,
+  "sources": [
+    "https://github.com/PrismJS/prism/releases/tag/v1.30.0",
+    "https://prismjs.com/extending.html",
+    "https://prismjs.com/known-failures",
+    "https://developer.apple.com/documentation/javascriptcore/jsvirtualmachine"
+  ]
+}

@@ -1,3 +1,4 @@
+import CodeHighlightCore
 import EditorCore
 import Foundation
 import MarkdownCore
@@ -12,6 +13,10 @@ public final class AppPreferences {
 
   public var syntaxHighlighting: Bool {
     didSet { save(syntaxHighlighting, "editorSyntaxHighlighting") }
+  }
+  public var codeHighlighting: Bool { didSet { save(codeHighlighting, "htmlSyntaxHighlighting") } }
+  public var codeTheme: CodeHighlightTheme {
+    didSet { defaults.set(codeTheme.rawValue, forKey: "htmlHighlightingThemeName") }
   }
   public var alerts: Bool { didSet { save(alerts, "extensionAlerts") } }
   public var tables: Bool { didSet { save(tables, "extensionTables") } }
@@ -58,6 +63,8 @@ public final class AppPreferences {
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }
+    codeHighlighting = boolean("htmlSyntaxHighlighting", fallback: true)
+    codeTheme = .legacyName(defaults.string(forKey: "htmlHighlightingThemeName"))
     syntaxHighlighting = boolean("editorSyntaxHighlighting", fallback: true)
     alerts = boolean("extensionAlerts", fallback: true)
     tables = boolean("extensionTables", fallback: true)
@@ -88,7 +95,9 @@ public final class AppPreferences {
   }
 
   public var documentStyle: DocumentStyle {
-    DocumentStyle(font: documentFont, textSize: documentTextSize, fullWidth: documentFullWidth)
+    DocumentStyle(
+      font: documentFont, textSize: documentTextSize, fullWidth: documentFullWidth,
+      codeTheme: codeTheme)
   }
 
   public var editorBehavior: EditorBehavior {
@@ -103,6 +112,7 @@ public final class AppPreferences {
 
   public var renderingOptions: MarkdownRenderingOptions {
     var options = MarkdownRenderingOptions()
+    options.codeHighlighting = codeHighlighting
     options.alerts = alerts
     options.tables = tables
     options.strikethrough = strikethrough

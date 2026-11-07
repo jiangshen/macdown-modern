@@ -108,7 +108,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         loadedDirectory = directory
         expectsInitialNavigation = true
         navigation = view.loadHTMLString(
-          PreviewHTML.document(remoteImages: remoteImages, style: style),
+          PreviewHTML.document(remoteImages: remoteImages, includeHighlighting: true, style: style),
           baseURL: URL(string: "mdasset://document/"))
       } else {
         applyLatest(to: view)
@@ -117,6 +117,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
 
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
       guard navigation === self.navigation else { return }
+      expectsInitialNavigation = false
       ready = true
       onError(nil)
       applyLatest(to: webView)
@@ -167,7 +168,8 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       let generation = generation
       applying = true
       view.callAsyncJavaScript(
-        PreviewHTML.updateStyle, arguments: ["css": sent.css], in: nil, in: .defaultClient
+        PreviewHTML.updateStyle, arguments: ["css": sent.css, "codeCSS": sent.codeCSS], in: nil,
+        in: .defaultClient
       ) { [weak self, weak view] result in
         guard let self, let view, self.generation == generation else { return }
         self.applying = false
@@ -188,6 +190,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       _ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error
     ) {
       guard navigation === self.navigation else { return }
+      expectsInitialNavigation = false
       ready = false
       onError(String(localized: "The preview could not load. Reopen the document to try again."))
     }
@@ -200,6 +203,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     }
 
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+      expectsInitialNavigation = false
       ready = false
       onError(String(localized: "The preview stopped. Reopen the document to try again."))
     }
@@ -250,10 +254,14 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         }
         decisionHandler(.cancel)
       } else {
+        // More than one app-owned load can be awaiting policy while a document's
+        // directory/CSP changes. Keep the gate open until the current navigation
+        // finishes; consuming it in the first callback can cancel the replacement.
+        // Only the two exact skeleton URLs are allowed, never arbitrary assets.
+        let skeletonURL =
+          url.absoluteString == "about:blank" || url.absoluteString == "mdasset://document/"
         let initial =
-          expectsInitialNavigation && navigationAction.navigationType == .other
-          && ["about", "mdasset"].contains(url.scheme ?? "")
-        if initial { expectsInitialNavigation = false }
+          expectsInitialNavigation && navigationAction.navigationType == .other && skeletonURL
         decisionHandler(initial ? .allow : .cancel)
       }
     }

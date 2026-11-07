@@ -1,0 +1,144 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>code-highlighting</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src mdasset: data:; style-src 'unsafe-inline' mdasset:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<style id="document-style">:root {
+  color-scheme: light dark;
+  --paper: #ffffff; --ink: #37352f; --muted: #68655f;
+  --border: #deddd9; --surface: #f7f6f3; --inline-code: #a4423b;
+  --document-font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; --document-size: 16.0px;
+  --document-width: 708px;
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); }
+body {
+  margin: 0; color: var(--ink); background: var(--paper);
+  font-family: var(--document-font); font-size: var(--document-size);
+  line-height: 1.6; overflow-wrap: anywhere; -webkit-text-size-adjust: 100%;
+}
+main {
+  max-width: calc(var(--document-width) + 96px); margin-inline: auto;
+  padding: 48px 48px 100px;
+}
+
+main > :first-child { margin-top: 0; }
+p { margin: .5em 0; }
+h1,h2,h3,h4,h5,h6 {
+  color: var(--ink); font-weight: 650; line-height: 1.3;
+  letter-spacing: -.025em; margin: 1.4em 0 .3em; scroll-margin-top: 28px;
+}
+h1 { font-size: 2em; } h2 { font-size: 1.5em; } h3 { font-size: 1.25em; }
+h4 { font-size: 1.125em; } h5,h6 { font-size: 1em; }
+strong { font-weight: 650; }
+a { color: inherit; text-decoration-color: var(--muted); text-underline-offset: .18em; }
+a:hover { text-decoration-color: currentColor; }
+a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+ul,ol { padding-inline-start: 1.65em; margin: .4em 0; }
+li { padding-inline-start: .15em; margin: .2em 0; }
+li > p { margin: .25em 0; } li > ul,li > ol { margin-block: .2em; }
+li:has(> input[type=checkbox]) { list-style: none; }
+input[type=checkbox] {
+  accent-color: #287eaa; width: 1em; height: 1em; margin: 0 .5em 0 -1.45em;
+  vertical-align: -.1em; opacity: 1;
+}
+blockquote {
+  margin: 1em 0; border-inline-start: 3px solid var(--ink);
+  padding: .1em 0 .1em 1em;
+}
+blockquote > :first-child { margin-top: 0; } blockquote > :last-child { margin-bottom: 0; }
+.md-callout {
+  display: grid; grid-template-columns: 1.5em minmax(0, 1fr); gap: .8em;
+  background: var(--callout-background, var(--surface)); border: 1px solid transparent;
+  border-radius: 10px; margin: 1em 0; padding: 16px 20px;
+}
+.md-callout-title { display: block; font-size: .875em; font-weight: 650; margin: 0 0 .3em; }
+.md-callout-icon { font-size: 1.25em; line-height: 1.4; text-align: center; text-decoration: none; align-self: start; border-radius: 4px; }
+a.md-callout-icon:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
+.md-callout-body > p:first-of-type { margin-top: 0; }
+.md-callout-body > :last-child { margin-bottom: 0; }
+.md-callout-custom-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.md-callout-note { --callout-background: #f4f4f1; }
+.md-callout-tip { --callout-background: #edf3ed; }
+.md-callout-important { --callout-background: #faf4dc; }
+.md-callout-warning { --callout-background: #fbf1e4; }
+.md-callout-caution { --callout-background: #fae9e7; }
+pre,code,kbd,samp { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+code { font-size: .875em; color: var(--inline-code); background: var(--surface); padding: .16em .35em; border-radius: 3px; }
+pre { font-size: .875em; line-height: 1.55; background: var(--surface); border-radius: 5px; padding: 24px; overflow-x: auto; margin: 1em 0; }
+pre code { font-size: inherit; color: inherit; background: transparent; padding: 0; white-space: pre; }
+img,video { max-width: 100%; height: auto; }
+table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1em 0; font-size: .9375em; }
+th,td { border: 1px solid var(--border); padding: .5em .8em; vertical-align: top; min-width: 5em; }
+th { font-weight: 600; background: var(--surface); }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
+.footnotes { font-size: .875em; margin-top: 2.5em; }
+.footnotes a { color: var(--muted); }
+@media (max-width: 600px) { main { padding: 28px 24px 64px; } pre { padding: 16px; } }
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #191919; --ink: #e6e4df; --muted: #aeaaa4; --border: #44433f; --surface: #252525; --inline-code: #f09b91; }
+}
+@media (prefers-color-scheme: dark) {
+  .md-callout-note { --callout-background: #262625; } .md-callout-tip { --callout-background: #253128; }
+  .md-callout-important { --callout-background: #353120; } .md-callout-warning { --callout-background: #362c22; }
+  .md-callout-caution { --callout-background: #382625; }
+}
+@media (prefers-contrast: more) {
+  .md-callout { border-color: var(--border); }
+  :root { --ink: #171614; --muted: #44413b; --border: #77736c; --inline-code: #8b2520; }
+  @media (prefers-color-scheme: dark) { :root { --ink: #ffffff; --muted: #dfdcd6; --border: #aaa69e; --inline-code: #ffbdb5; } }
+}
+@media print {
+  :root { color-scheme: light; --paper: #ffffff; --ink: #171614; --muted: #44413b; --border: #b8b5ae; --surface: #f7f6f3; --inline-code: #8b2520; }
+  main { max-width: none; padding: 0; }
+  pre,pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+  h1,h2,h3,h4,h5,h6 { break-after: avoid; } tr,img { break-inside: avoid; }
+  .md-callout { background: var(--surface); border-color: var(--border); } .md-callout-title { break-after: avoid; }
+  table { display: table; width: 100%; } thead { display: table-header-group; }
+}</style><style id="code-style">pre[data-code-highlighted] { color: #37352f; background: #f7f6f3; }
+pre .token.comment, pre .token.prolog, pre .token.doctype, pre .token.cdata { color: #68655f; }
+pre .token.punctuation { color: inherit; }
+pre .token.keyword, pre .token.atrule { color: #7c3ea1; }
+pre .token.string, pre .token.char, pre .token.attr-value, pre .token.inserted { color: #2a6f3b; }
+pre .token.number, pre .token.boolean, pre .token.constant { color: #945200; }
+pre .token.function, pre .token.class-name, pre .token.builtin { color: #245aa8; }
+pre .token.tag, pre .token.property, pre .token.selector, pre .token.deleted { color: #a4423b; }
+pre .token.operator, pre .token.entity, pre .token.url, pre .token.variable { color: #6950a1; }
+pre .token.regex, pre .token.important { color: #875118; }
+pre .token.bold, pre .token.important { font-weight: 650; }
+pre .token.italic { font-style: italic; }
+@media (prefers-color-scheme: dark) {
+  pre[data-code-highlighted] { color: #e8e6e1; background: #2c2c2a; }
+  pre .token.comment, pre .token.prolog, pre .token.doctype, pre .token.cdata { color: #b5b1aa; }
+  pre .token.keyword, pre .token.atrule { color: #d5aff0; }
+  pre .token.string, pre .token.char, pre .token.attr-value, pre .token.inserted { color: #a4d9a9; }
+  pre .token.number, pre .token.boolean, pre .token.constant { color: #e9c07c; }
+  pre .token.function, pre .token.class-name, pre .token.builtin { color: #9fc8ff; }
+  pre .token.tag, pre .token.property, pre .token.selector, pre .token.deleted { color: #ffb4a9; }
+  pre .token.operator, pre .token.entity, pre .token.url, pre .token.variable { color: #c8b8f3; }
+  pre .token.regex, pre .token.important { color: #e3c395; }
+}
+@media (prefers-contrast: more) { pre .token { color: inherit; } }
+@media print {
+  pre[data-code-highlighted] { color: #171614; background: #f7f6f3; }
+  pre .token.comment, pre .token.prolog, pre .token.doctype, pre .token.cdata { color: #55524b; }
+  pre .token.keyword, pre .token.atrule, pre .token.operator { color: #62317f; }
+  pre .token.string, pre .token.char, pre .token.attr-value, pre .token.inserted { color: #20542d; }
+  pre .token.number, pre .token.boolean, pre .token.constant { color: #704000; }
+  pre .token.function, pre .token.class-name, pre .token.builtin { color: #1c4886; }
+  pre .token.tag, pre .token.property, pre .token.selector, pre .token.deleted { color: #8b2520; }
+}</style></head><body><main id="preview-content"><h1 data-sourcepos="1:1-1:15">Code, clearly</h1>
+<p data-sourcepos="3:1-3:53">Local syntax colors for preview, HTML, PDF and print.</p>
+<pre data-sourcepos="5:1-9:3" class="language-swift" data-code-highlighted="true"><code class="language-swift"><span class="token comment">// A small idea, made concrete</span>
+<span class="token keyword">let</span> message <span class="token operator">=</span> <span class="token string-literal"><span class="token string">"Hello, MacDown"</span></span>
+<span class="token function">print</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
+</code></pre>
+<pre data-sourcepos="11:1-14:3" class="language-javascript" data-code-highlighted="true"><code class="language-javascript"><span class="token keyword">const</span> ice <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">"glacial blue"</span><span class="token punctuation">,</span> <span class="token literal-property property">ready</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span>ice<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<pre data-sourcepos="16:1-18:3" class="language-markup" data-code-highlighted="true"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>note<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>中文 · 日本語 · 👩🏽‍💻<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
+</code></pre>
+<pre data-sourcepos="20:1-22:3" class="language-dot" data-code-highlighted="true"><code class="language-dot"><span class="token keyword">digraph</span> <span class="token graph-name class-name">Steps</span> <span class="token punctuation">{</span> <span class="token node">Write</span> <span class="token operator">-></span> <span class="token node">Preview</span> <span class="token operator">-></span> <span class="token node">Share</span> <span class="token punctuation">}</span>
+</code></pre>
+<pre data-sourcepos="24:1-26:3"><code class="language-unknown-language">Unrecognized languages stay readable as plain code.
+</code></pre>
+</main></body></html>

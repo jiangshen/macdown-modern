@@ -16,15 +16,16 @@ let package = Package(
   dependencies: [.package(url: "https://github.com/swiftlang/swift-cmark.git", exact: "0.9.0")],
   targets: [
     .target(name: "DocumentCore"),
+    .target(name: "CodeHighlightCore", resources: [.process("Resources")]),
     .target(name: "EmojiCore", resources: [.process("Resources")]),
-    .target(name: "RenderingCore"),
+    .target(name: "RenderingCore", dependencies: ["CodeHighlightCore"]),
     .target(name: "ExportCore", dependencies: ["MarkdownCore", "RenderingCore"]),
     .target(name: "PreferencesCore"),
     .target(name: "EditorCore"),
     .target(
       name: "MarkdownCore",
       dependencies: [
-        "EmojiCore",
+        "EmojiCore", "CodeHighlightCore",
         .product(name: "cmark-gfm", package: "swift-cmark"),
         .product(name: "cmark-gfm-extensions", package: "swift-cmark"),
       ]),
@@ -32,12 +33,12 @@ let package = Package(
       name: "MacDownUI",
       dependencies: [
         "DocumentCore", "EditorCore", "MarkdownCore", "RenderingCore", "PreferencesCore",
-        "ExportCore", "EmojiCore",
+        "ExportCore", "EmojiCore", "CodeHighlightCore",
       ]),
     .testTarget(name: "ExportCoreTests", dependencies: ["ExportCore", "MarkdownCore"]),
     .testTarget(name: "RenderingCoreTests", dependencies: ["RenderingCore"]),
     .testTarget(name: "PreferencesCoreTests", dependencies: ["PreferencesCore"]),
-    .testTarget(name: "MarkdownCoreTests", dependencies: ["MarkdownCore"]),
+    .testTarget(name: "MarkdownCoreTests", dependencies: ["MarkdownCore", "CodeHighlightCore"]),
     .testTarget(name: "DocumentCoreTests", dependencies: ["DocumentCore"]),
     .testTarget(name: "EditorCoreTests", dependencies: ["EditorCore"]),
     .testTarget(name: "MacDownUITests", dependencies: ["MacDownUI", "DocumentCore"]),

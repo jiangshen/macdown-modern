@@ -40,4 +40,23 @@ if [ ! -s "$app/Contents/Resources/MarkdownDocument.icns" ]; then
     echo "Compiled Markdown document icon is missing." >&2
     exit 1
 fi
+highlight_resources="$app/Contents/Resources/MacDownCore_CodeHighlightCore.bundle/Contents/Resources"
+for resource in Prism.js Languages.json Prism-LICENSE.txt Prism-Provenance.json prism.css prism-coy.css prism-dark.css prism-funky.css prism-okaidia.css prism-solarizedlight.css prism-tomorrow.css prism-twilight.css; do
+    if [ ! -s "$highlight_resources/$resource" ]; then
+        echo "Bundled code-highlighting resource is missing: $resource" >&2
+        exit 1
+    fi
+done
+python3 - "$highlight_resources" <<'VERIFY_PRISM'
+import hashlib
+import json
+from pathlib import Path
+import sys
+root = Path(sys.argv[1])
+provenance = json.loads((root / 'Prism-Provenance.json').read_text())
+for name, expected in provenance['files'].items():
+    actual = hashlib.sha256((root / name).read_bytes()).hexdigest()
+    if actual != expected:
+        raise SystemExit('Bundled Prism checksum mismatch: ' + name)
+VERIFY_PRISM
 echo "App: $app"

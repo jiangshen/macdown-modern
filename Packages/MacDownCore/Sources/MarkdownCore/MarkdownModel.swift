@@ -79,6 +79,7 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var hardLineBreaks = false
   public var rawHTML = false
   public var alerts = true
+  public var codeHighlighting = true
 
   public init() {}
 }
@@ -88,6 +89,7 @@ public struct RenderedMarkdown: Sendable {
   public let nodes: [MarkdownNode]
   public let headings: [MarkdownHeading]
   public let syntax: MarkdownSyntax?
+  public let highlightedCodeBlocks: Int
 }
 
 public enum MarkdownRenderingError: Error, Sendable {

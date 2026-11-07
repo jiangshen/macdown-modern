@@ -98,4 +98,25 @@ struct MarkdownExportTests {
     #expect(disabled.fragment.contains("[!IMPORTANT]"))
   }
 
+  @Test("Code highlighting exports as portable markup and styles independently of document styling")
+  func codeHighlighting() async throws {
+    let source = "```swift\nlet greeting = \"Hello\"\n```"
+    let styled = try await MarkdownExport.build(source: source, title: "Code", directory: nil)
+    let codeOnly = try await MarkdownExport.build(
+      source: source, title: "Code", directory: nil, includeStyles: false)
+    #expect(styled.fragment == codeOnly.fragment)
+    #expect(codeOnly.fragment.contains("token keyword"))
+    #expect(codeOnly.document.contains("<style id=\"code-style\">"))
+    #expect(!codeOnly.document.contains("<style id=\"document-style\">"))
+    #expect(!codeOnly.document.contains("<script"))
+    #expect(codeOnly.document.contains("script-src 'none'"))
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    let plain = try await MarkdownExport.build(
+      source: source, options: options, title: "Code", directory: nil, includeStyles: false)
+    #expect(!plain.document.contains("<style"))
+    #expect(!plain.fragment.contains("token keyword"))
+    #expect(plain.fragment.contains("let greeting = &quot;Hello&quot;"))
+  }
+
 }

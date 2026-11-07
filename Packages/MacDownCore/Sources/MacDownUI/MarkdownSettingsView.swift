@@ -1,3 +1,4 @@
+import CodeHighlightCore
 import RenderingCore
 import SwiftUI
 
@@ -50,6 +51,15 @@ public struct MarkdownSettingsView: View {
             ).accessibilityIdentifier("documentTextSize")
             Toggle("Full width", isOn: $preferences.documentFullWidth)
               .accessibilityIdentifier("documentFullWidth")
+          }
+          Section("Code blocks") {
+            Toggle("Highlight code", isOn: $preferences.codeHighlighting)
+              .accessibilityIdentifier("previewCodeHighlighting")
+            Picker("Code theme", selection: $preferences.codeTheme) {
+              ForEach(CodeHighlightTheme.allCases, id: \.self) { theme in
+                Text(theme.title).tag(theme)
+              }
+            }.accessibilityIdentifier("previewCodeTheme")
           }
           Text("The source editor keeps the font you choose in Editor settings.")
             .font(.caption).foregroundStyle(.secondary)

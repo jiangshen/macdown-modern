@@ -122,3 +122,13 @@ legacy project cannot currently provide a full runtime baseline because its old
 dependencies are absent (see `validation/legacy-baseline.json`). Existing source syntax
 colors do not yet replace custom theme/font or legacy dialect behavior. Delete those
 subsystems and their build references only after their remaining parity gates pass.
+
+## Updated code-highlighting ownership boundary
+
+`Packages/MacDownCore/Sources/CodeHighlightCore` contains first-party Swift orchestration
+and a pinned Prism 1.30.0 third-party resource bundle. The bundle includes all upstream
+language components, the eight built-in themes, MIT notice, catalog and provenance.
+`Tools/vendor-prism.py` is development tooling; Node is not bundled or needed to run the
+app. This replaces the modern app's need for legacy Prism loaders and page scripts.
+`Dependency/prism` and the old MPRenderer remain only for the not-yet-retired legacy target;
+remove their obsolete build/resource references once remaining renderer parity passes.

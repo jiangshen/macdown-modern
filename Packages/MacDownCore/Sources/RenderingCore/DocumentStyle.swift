@@ -1,3 +1,5 @@
+import CodeHighlightCore
+
 /// Shared, portable document presentation for preview, HTML, PDF and printing.
 /// All CSS inputs are bounded values or closed enums; document text is never CSS.
 public struct DocumentStyle: Hashable, Sendable {
@@ -13,6 +15,9 @@ public struct DocumentStyle: Hashable, Sendable {
     }
   }
 
+  public var codeTheme: CodeHighlightTheme
+  public var codeCSS: String { codeTheme.css }
+
   public var font: Font
   private var storedTextSize: Double
   public var textSize: Double {
@@ -21,7 +26,11 @@ public struct DocumentStyle: Hashable, Sendable {
   }
   public var fullWidth: Bool
 
-  public init(font: Font = .standard, textSize: Double = 16, fullWidth: Bool = false) {
+  public init(
+    font: Font = .standard, textSize: Double = 16, fullWidth: Bool = false,
+    codeTheme: CodeHighlightTheme = .adaptive
+  ) {
+    self.codeTheme = codeTheme
     self.font = font
     self.storedTextSize = textSize.isFinite ? min(28, max(12, textSize)) : 16
     self.fullWidth = fullWidth

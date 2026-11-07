@@ -60,6 +60,7 @@ public final class DocumentExportController {
   {
     var destination: URL?
     var styled = true
+    var options = snapshot.options
     if action == .html || action == .pdf {
       let panel = NSSavePanel()
       panel.allowedContentTypes = action == .html ? [.html] : [.pdf]
@@ -68,15 +69,27 @@ public final class DocumentExportController {
       let styleOption = NSButton(
         checkboxWithTitle: String(localized: "Include document styles"), target: nil, action: nil)
       styleOption.state = .on
-      if action == .html { panel.accessoryView = styleOption }
+      let codeOption = NSButton(
+        checkboxWithTitle: String(localized: "Include code highlighting"), target: nil, action: nil)
+      codeOption.state = options.codeHighlighting ? .on : .off
+      codeOption.setAccessibilityIdentifier("exportCodeHighlighting")
+      styleOption.setAccessibilityIdentifier("exportDocumentStyles")
+      if action == .html {
+        let accessory = NSStackView(views: [styleOption, codeOption])
+        accessory.orientation = .vertical
+        accessory.alignment = .leading
+        accessory.spacing = 8
+        panel.accessoryView = accessory
+      }
       let response = await panel.beginSheetModal(for: window)
       guard response == .OK, let url = panel.url else { return }
       destination = url
       styled = styleOption.state == .on
+      if action == .html { options.codeHighlighting = codeOption.state == .on }
     }
     try Task.checkCancellation()
     let output = try await MarkdownExport.build(
-      source: snapshot.source, options: snapshot.options,
+      source: snapshot.source, options: options,
       title: snapshot.title, directory: snapshot.directory, includeStyles: styled,
       remoteImages: snapshot.remoteImages, embedLocalImages: action != .clipboard,
       style: snapshot.style)

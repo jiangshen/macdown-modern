@@ -1,4 +1,5 @@
 import AppKit
+import CodeHighlightCore
 import Foundation
 import MarkdownCore
 import RenderingCore
@@ -235,6 +236,118 @@ struct NativeMarkdownPreviewTests {
     #expect(
       try await evaluate(
         "return String(document.documentElement.scrollWidth <= innerWidth);", in: view) == "true")
+  }
+
+  @Test(
+    "Highlighted code is inert exact text, retains DOM identity, and has readable adaptive colors")
+  func highlightedCode() async throws {
+    _ = NSApplication.shared
+    let literal =
+      "</code></pre><img src=x onerror=\"document.body.dataset.executed='yes'\"><script>alert('code')</script> 中文 👩🏽‍💻\u{00A0}nonbreaking\n"
+    let source =
+      "```html\n" + literal
+      + "```\n\n```swift\n// A comment\nlet value: String = \"Hello\"\nprint(42 + 3)\n```"
+    let result = try await MarkdownProcessor().render(source)
+    let coordinator = NativeMarkdownPreview.Coordinator()
+    let view = WKWebView(
+      frame: NSRect(x: 0, y: 0, width: 900, height: 700),
+      configuration: NativeMarkdownPreview.configuration(handler: coordinator.resources))
+    view.navigationDelegate = coordinator
+    let window = NSWindow(
+      contentRect: view.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.contentView = view
+    window.orderFront(nil)
+    defer {
+      view.stopLoading()
+      view.navigationDelegate = nil
+      coordinator.resources.cancelAll()
+      window.orderOut(nil)
+    }
+    coordinator.update(view, html: result.html, directory: nil, remoteImages: false)
+    try await waitFor {
+      (try? await evaluate(
+        "return String(document.querySelectorAll('pre .token').length > 0);", in: view)) == "true"
+    }
+    #expect(
+      try await evaluate(
+        "return document.querySelector('code.language-markup').textContent;", in: view) == literal)
+    #expect(
+      try await evaluate(
+        "return String(document.querySelectorAll('script,img,iframe').length);", in: view) == "0")
+    #expect(
+      try await evaluate("return document.body.dataset.executed ?? 'blocked';", in: view)
+        == "blocked")
+    for dark in [false, true] {
+      window.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
+      try await waitFor {
+        (try? await evaluate(
+          "return String(matchMedia('(prefers-color-scheme: dark)').matches);", in: view))
+          == String(dark)
+      }
+      #expect(
+        try await evaluate(
+          """
+          const luminance = value => value.match(/[\\d.]+/g).slice(0,3).map(Number).map(v => {
+            v /= 255; return v <= .04045 ? v/12.92 : ((v+.055)/1.055)**2.4;
+          }).reduce((sum,v,i) => sum+v*[.2126,.7152,.0722][i],0);
+          return String([...document.querySelectorAll('pre .token')].every(token => {
+            const fg = luminance(getComputedStyle(token).color);
+            const bg = luminance(getComputedStyle(token.closest('pre')).backgroundColor);
+            return (Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05) >= 4.5;
+          }));
+          """, in: view) == "true")
+    }
+    _ = try await evaluate(
+      "window.savedCode = document.querySelector('code.language-swift'); return 'saved';", in: view)
+    for theme in CodeHighlightTheme.allCases {
+      coordinator.update(
+        view, html: result.html, directory: nil, remoteImages: false,
+        style: DocumentStyle(codeTheme: theme))
+      try await waitFor {
+        (try? await evaluate("return document.getElementById('code-style').textContent;", in: view))
+          == theme.css
+      }
+      #expect(
+        try await evaluate(
+          "return String(window.savedCode === document.querySelector('code.language-swift'));",
+          in: view) == "true")
+    }
+    coordinator.update(
+      view, html: result.html + "<p id='after-code'>Added below</p>", directory: nil,
+      remoteImages: false)
+    try await waitFor {
+      (try? await evaluate(
+        "return document.getElementById('after-code')?.textContent ?? '';", in: view))
+        == "Added below"
+    }
+    #expect(
+      try await evaluate(
+        "return String(window.savedCode === document.querySelector('code.language-swift'));",
+        in: view) == "true")
+  }
+
+  @Test(
+    "Rapid document-directory changes during initial navigation still publish the latest preview")
+  func supersededInitialNavigation() async throws {
+    _ = NSApplication.shared
+    let coordinator = NativeMarkdownPreview.Coordinator()
+    let view = WKWebView(
+      frame: NSRect(x: 0, y: 0, width: 700, height: 500),
+      configuration: NativeMarkdownPreview.configuration(handler: coordinator.resources))
+    view.navigationDelegate = coordinator
+    defer {
+      view.stopLoading()
+      view.navigationDelegate = nil
+      coordinator.resources.cancelAll()
+    }
+    coordinator.update(view, html: "<p>Initial</p>", directory: nil, remoteImages: false)
+    coordinator.update(
+      view, html: "<p id='latest'>Latest document</p>",
+      directory: FileManager.default.temporaryDirectory, remoteImages: false)
+    try await waitFor {
+      (try? await evaluate("return document.getElementById('latest')?.textContent ?? '';", in: view))
+        == "Latest document"
+    }
   }
 
 }

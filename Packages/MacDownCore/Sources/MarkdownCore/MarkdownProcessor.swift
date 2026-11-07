@@ -1,3 +1,4 @@
+import CodeHighlightCore
 import Foundation
 import cmark_gfm
 import cmark_gfm_extensions
@@ -8,6 +9,8 @@ public actor MarkdownProcessor {
   private static let registeredExtensions: Void = {
     cmark_gfm_core_extensions_ensure_registered()
   }()
+
+  private var codeHighlighter: CodeHighlighter?
 
   public init() {}
 
@@ -71,6 +74,7 @@ public actor MarkdownProcessor {
       offset += scalar.utf16.count
     }
     let sourceText = source as NSString
+    var codeBlocks: [UnsafeMutablePointer<cmark_node>] = []
     var callouts: [(UnsafeMutablePointer<cmark_node>, CalloutMarker)] = []
     var transformedDestinations: [String: String] = [:]
     var identifiers: [UInt: Int] = [:]
@@ -106,6 +110,7 @@ public actor MarkdownProcessor {
           end: .init(
             line: Int(cmark_node_get_end_line(node)), column: Int(cmark_node_get_end_column(node)))
         ) : nil
+      if options.codeHighlighting, kind == .codeBlock { codeBlocks.append(node) }
       var marker: CalloutMarker?
       if options.alerts, kind == .blockquote, line > 0, line <= lineStarts.count {
         let start = lineStarts[line - 1]
@@ -136,6 +141,35 @@ public actor MarkdownProcessor {
       try Task.checkCancellation()
       try marker.kind.decorate(quote, emoji: marker.emoji, interactive: interactiveCallouts)
     }
+    var highlightedCodeBlocks = 0
+    for block in codeBlocks {
+      try Task.checkCancellation()
+      guard let info = cmark_node_get_fence_info(block), info.pointee != 0,
+        let literal = cmark_node_get_literal(block)
+      else { continue }
+      if codeHighlighter == nil { codeHighlighter = try CodeHighlighter() }
+      guard
+        let code = try codeHighlighter?.highlight(
+          String(cString: literal), language: String(cString: info))
+      else { continue }
+      guard let container = cmark_node_new(CMARK_NODE_CUSTOM_BLOCK) else {
+        throw MarkdownRenderingError.allocationFailure
+      }
+      let position =
+        "\(cmark_node_get_start_line(block)):\(cmark_node_get_start_column(block))-\(cmark_node_get_end_line(block)):\(cmark_node_get_end_column(block))"
+      let opening =
+        "<pre data-sourcepos=\"\(position)\" class=\"language-\(code.language)\" data-code-highlighted=\"true\"><code class=\"language-\(code.language)\">"
+        + code.html
+      guard cmark_node_set_on_enter(container, opening) == 1,
+        cmark_node_set_on_exit(container, "</code></pre>") == 1,
+        cmark_node_replace(block, container) == 1
+      else {
+        cmark_node_free(container)
+        throw MarkdownRenderingError.invalidTreeTransformation
+      }
+      cmark_node_free(block)
+      highlightedCodeBlocks += 1
+    }
     guard let html = cmark_render_html(root, flags, cmark_parser_get_syntax_extensions(parser))
     else {
       throw MarkdownRenderingError.allocationFailure
@@ -143,6 +177,7 @@ public actor MarkdownProcessor {
     defer { free(html) }
     return RenderedMarkdown(
       html: String(cString: html), nodes: nodes, headings: headings,
-      syntax: includeSyntax ? try MarkdownSyntax.build(source: source, nodes: nodes) : nil)
+      syntax: includeSyntax ? try MarkdownSyntax.build(source: source, nodes: nodes) : nil,
+      highlightedCodeBlocks: highlightedCodeBlocks)
   }
 }
