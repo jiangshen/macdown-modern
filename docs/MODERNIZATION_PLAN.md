@@ -1805,3 +1805,62 @@ actual native font/decoration/current-line rendering, custom theme catalog/impor
 settings, custom CSS and template compatibility, live acceptance and legacy retirement
 remain required. The new reader is not yet consumed by the app UI and is not claimed
 as shipped theme support. Hosted checks are tracked in `validation/editor-themes.json`.
+
+
+### Hosted theme-reader acceptance
+
+Run [42371181242](https://github.com/jiangshen/snowfolio/actions/runs/42371181242),
+commit `ced95cf942bbdeb22c7ab4d639ac854cafcc4810`, passed both jobs. Downloaded evidence
+confirms 227 tests / 45 suites, eight arm64 executables, 652 CommonMark examples and
+eight native UI tests. Fourteen runtime priority-inversion warnings remain recorded;
+this does not establish their cause or close native performance acceptance.
+
+## Native theme paragraph typography — 2026-11-07
+
+The installed SDK exposes `NSTextContentStorageDelegate.textContentStorage` for custom
+`NSTextParagraph` objects. A Swift 6 spike confirmed a real 30pt layout fragment with
+the backing storage still at 14pt and no previous content-storage delegate. The native
+editor now uses this public API when an explicit theme is supplied. It copies the
+paragraph's attributed substring and applies theme fonts/colors to that copy, without
+writing presentation attributes into `NSTextStorage` or the document/undo model.
+Default appearance remains the existing temporary-color path until the full theme
+feature is ready. The public editor value accepts an optional parsed theme, but there
+is no user-facing catalog or picker yet.
+
+Semantic source tokens retain six heading levels, nested emphasis, block/inline code,
+explicit versus automatic URL/email links, images, quotes/comments, inline/block HTML,
+rules and list marker types. Duplicate ancestor categories are suppressed, bounding
+each token collection for deeply nested input. Native inline-code positions omit their
+backticks; only AST-confirmed matching delimiter runs are added to presentation ranges.
+Unicode, padded/multiline spans and surrounding prose are tested. No Markdown source
+rewriting, regular-expression parser or new C patch is introduced.
+
+`NativeEditorTheme` compiles scalar precedence and trait unions in original rule order,
+resolves real native fonts with unavailable-face fallback, and applies zoom to absolute
+and relative sizes. Global editor font attributes are now honored by the typed mapper;
+the original view adapter applied only editor colors. Resolution is cached for up to
+512 token combinations, and paragraph styling binary-searches only intersecting runs.
+Parsed-theme identity stays stable across copies while value equality remains semantic,
+avoiding a full imported-file comparison on each view update. Font presentation is
+bounded at 8192pt, with the original 4pt minimum scaled by document zoom. Import UX must
+surface relevant validation bounds before the catalog is exposed.
+
+Native tests prove 30pt heading geometry, 16pt nested bold/italic/underlined text, 12pt
+code including its ticks, 14pt restoration when disabling the theme, unchanged backing
+attributes/source/selection/undo during styling, base-font typing and successful native
+undo/redo. Programmatic Japanese marked text survives updates; stale snapshots cannot
+restyle that changed paragraph. This is not real IME or VoiceOver acceptance. An initial
+fixture crash came from inserting native text with event grouping disabled and no open
+undo group; the fixture now opens/closes its group explicitly. No application workaround
+or weakened undo assertion was added.
+
+All 232 package tests / 46 suites pass, with eight arm64 executables and a successful
+native arm64 app build-for-testing. Full raw logs and complete diagnostic capture are
+retained by axbuild; strict changed-Swift formatting and parser provenance checks pass.
+The paragraph tests exercise actual TextKit fragments, not only mapped attribute values.
+
+Still required before exposing themes: HTML_ENTITY/REFERENCE/NOTE scope compatibility;
+editor paper/caret/selection/current-line handling; catalog/import and saved choices;
+visual, keyboard, real IME/VoiceOver and scrolling acceptance; measured large-document
+performance; custom CSS/templates. Theme and old highlighter retirement stays open.
+The full modernization goal remains active.

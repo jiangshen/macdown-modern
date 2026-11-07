@@ -16,6 +16,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   public var hostUndoManager: UndoManager?
   public var syntax: MarkdownSyntax?
   public var syntaxRevision: UInt64?
+  public var theme: EditorTheme?
   public var syntaxHighlighting: Bool
   public var scrolling: DocumentScrollCoordinator?
   public var selectionStorage: Binding<Data?>?
@@ -29,7 +30,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true,
     selectionStorage: Binding<Data?>? = nil,
     openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
-    scrolling: DocumentScrollCoordinator? = nil, zoomScale: Double = 1
+    scrolling: DocumentScrollCoordinator? = nil, zoomScale: Double = 1, theme: EditorTheme? = nil
   ) {
     self.document = document
     self.fontName = fontName
@@ -42,6 +43,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     self.syntax = syntax
     self.syntaxRevision = syntaxRevision
     self.syntaxHighlighting = syntaxHighlighting
+    self.theme = theme
     self.selectionStorage = selectionStorage
     self.scrolling = scrolling
     self.openDroppedFiles = openDroppedFiles
@@ -145,7 +147,8 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       NSFont(name: fontName, size: size) ?? .monospacedSystemFont(ofSize: size, weight: .regular)
     context.coordinator.highlighter.update(
       syntax: syntax, revision: syntaxRevision,
-      enabled: syntaxHighlighting, font: font, document: document)
+      enabled: syntaxHighlighting, font: font, document: document, theme: theme,
+      zoomScale: zoomScale)
     if let request = document.selectionRequest,
       request.id != context.coordinator.selectionID, !editor.hasMarkedText()
     {

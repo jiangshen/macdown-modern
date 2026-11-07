@@ -54,7 +54,16 @@
     "fixtureReproduction": "byte-identical"
   },
   "hosted": {
-    "result": "pending"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42371181242",
+    "commit": "ced95cf942bbdeb22c7ab4d639ac854cafcc4810",
+    "result": "passed",
+    "packageTests": 227,
+    "packageSuites": 45,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "nativeUITests": 8,
+    "priorityInversionWarnings": 14,
+    "evidence": "Downloaded package/corpus and native log/result artifacts; original reader checkpoint totals verified"
   },
   "remaining": [
     "Wire every selector into native AST/source syntax",
@@ -64,5 +73,58 @@
     "Live visual/IME/undo acceptance",
     "Safe coupled legacy retirement"
   ],
-  "fullGoal": "active; incomplete"
+  "fullGoal": "active; incomplete",
+  "nativeParagraphFoundation": {
+    "implementation": "NSTextContentStorageDelegate supplies copied attributed paragraphs; no backing text-storage mutations",
+    "localValidation": {
+      "packageTests": 232,
+      "packageSuites": 46,
+      "nativeArm64TestExecutables": 8,
+      "nativeArm64App": "verified",
+      "nativeBuildForTesting": "passed",
+      "strictSwiftFormatting": "passed",
+      "axbuildCommand": "succeeded",
+      "axbuildCollection": "complete"
+    },
+    "nativeTests": [
+      "Actual layout fragment heading font 30pt and increased height",
+      "Nested bold and italic, real underline attributes and CODE 12pt including delimiters",
+      "Theme removal restores 14pt layout geometry",
+      "Original backing attributes, UTF-8/CRLF bytes, selection and empty undo history unchanged by styling",
+      "Native typing inserts base-font text; undo/redo preserves the source",
+      "Programmatic marked text survives theme updates; stale syntax cannot restyle it",
+      "Zoomed absolute/relative sizes, first scalar precedence, combined traits, real Helvetica face and unavailable-face fallback"
+    ],
+    "sourceScopes": [
+      "All six heading levels",
+      "Strong/emphasis ancestry",
+      "Code body plus matched delimiters; block code",
+      "Explicit links, automatic URL/email and images",
+      "Quotes/comments, inline versus block HTML",
+      "Horizontal rules and numbered/bullet markers"
+    ],
+    "boundedWork": [
+      "Unique semantic tokens per source style",
+      "At most 512 cached native resolutions",
+      "Binary-search only paragraph-intersecting UTF-16 runs",
+      "Immutable parsed-theme identity avoids full theme equality checks on each view update"
+    ],
+    "notes": [
+      "Global editor font attributes are now honored by the typed mapper; the original view adapter applied only editor color fields",
+      "Native presentation font cap: 8192 points; minimum 4 points before document zoom",
+      "Viewport hooks surround theme geometry changes; broad native scroll acceptance remains open"
+    ],
+    "remaining": [
+      "HTML_ENTITY, REFERENCE and NOTE source-scope characterization/mapping",
+      "Editor paper/caret/selection/current-line presentation and restoration",
+      "Catalog/import/settings persistence",
+      "Actual app visual/keyboard/VoiceOver/real IME acceptance",
+      "Native large-document latency/memory measurements",
+      "Custom CSS/templates and coupled legacy retirement"
+    ],
+    "shippingUIConsumer": false,
+    "hosted": {
+      "result": "pending"
+    }
+  }
 }

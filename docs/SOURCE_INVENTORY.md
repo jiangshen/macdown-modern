@@ -341,3 +341,19 @@ notice covers the format compatibility work.
 The reader is not yet wired into native syntax presentation or settings. Existing
 highlighter/theme, custom CSS and template consumers therefore remain needed. Do not
 retire those coupled original files based on parser/model parity alone.
+
+
+## Native theme typography foundation
+
+`NativeEditorTheme` compiles the Swift theme model into native font/color attributes.
+`NativeSyntaxHighlighter` supplies copied `NSTextParagraph` presentation through the
+public content-storage delegate, while its default mode still uses temporary colors.
+`MarkdownSyntaxToken` supplies bounded AST-derived semantic scopes; only matched native
+inline-code delimiter ranges are expanded for presentation. The app's native document
+storage receives no theme attributes. Native tests exercise real layout, typing, undo,
+programmatic composition, source bytes and theme removal.
+
+There is still no user-facing theme catalog/import path. Entity/reference/note scopes,
+editor global accessories, complete acceptance and custom CSS/templates remain coupled
+to original-target consumers. Do not retire the original theme/highlighter subsystem
+yet. The reader and native typography layer alone do not prove complete feature parity.

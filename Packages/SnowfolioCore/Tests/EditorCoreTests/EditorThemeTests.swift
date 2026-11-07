@@ -107,6 +107,7 @@ struct EditorThemeTests {
     let original = try EditorTheme.parse("editor\nforeground: 112233\n\neditor\n")
     #expect(original.rules.count == 1)
     #expect(original.rules.first?.attributes.count == 1)
+    #expect(original.diagnostics.map(\.line) == [4])
   }
 
   @Test("Oversized, NUL and excessive rules fail explicitly while diagnostic storms are bounded")

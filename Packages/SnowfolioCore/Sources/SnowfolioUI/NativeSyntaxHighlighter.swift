@@ -1,10 +1,11 @@
 import AppKit
+import EditorCore
 import MarkdownCore
 
-/// TextKit 2 rendering attributes are disposable presentation. They never enter
-/// NSTextStorage, source snapshots, native typing attributes, or the undo stack.
+/// TextKit 2 rendering attributes and custom paragraphs are disposable presentation.
+/// They never enter NSTextStorage, source snapshots, or the undo stack.
 @MainActor
-final class NativeSyntaxHighlighter {
+final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDelegate {
   weak var editor: MarkdownTextView?
   weak var document: MarkdownDocument?
   private var syntax: MarkdownSyntax?
@@ -12,11 +13,19 @@ final class NativeSyntaxHighlighter {
   private var enabled = true
   private var font: NSFont?
   private var refreshingPresentation = false
+  private var themeID: UUID?
+  private var themePresentation: NativeEditorTheme?
+  private var zoomScale = 1.0
 
   func attach(to editor: MarkdownTextView, document: MarkdownDocument) {
     self.editor = editor
     self.document = document
     editor.syntaxHighlighter = self
+    if let content = editor.textLayoutManager?.textContentManager as? NSTextContentStorage {
+      // The standard NSTextView TextKit 2 content storage has no delegate. Do
+      // not replace a delegate owned by another content provider.
+      if content.delegate == nil { content.delegate = self }
+    }
     editor.textLayoutManager?.renderingAttributesValidator = { [weak self] manager, fragment in
       self?.validate(manager, range: fragment.rangeInElement)
     }
@@ -24,11 +33,28 @@ final class NativeSyntaxHighlighter {
 
   func update(
     syntax: MarkdownSyntax?, revision: UInt64?, enabled: Bool, font: NSFont,
-    document: MarkdownDocument
+    document: MarkdownDocument, theme: EditorTheme? = nil, zoomScale: Double = 1
   ) {
+    let normalizedZoom = DocumentZoomController.normalizedScale(zoomScale)
+    let themeGeometryChanged =
+      self.themeID != theme?.id
+      || (theme != nil
+        && (self.zoomScale != normalizedZoom || self.enabled != enabled
+          || self.syntax?.id != syntax?.id
+          || self.revision != revision))
+    let canRefreshGeometry =
+      editor.map { !$0.hasMarkedText() && !$0.isReceivingMarkedText } ?? false
+    if themeGeometryChanged && canRefreshGeometry { editor?.viewportPresentationWillChange?() }
+    let presentationChanged =
+      self.themeID != theme?.id || self.font != font || self.zoomScale != normalizedZoom
+    if presentationChanged {
+      themePresentation = theme.map { NativeEditorTheme($0, font: font, zoom: normalizedZoom) }
+    }
+    self.themeID = theme?.id
+    self.zoomScale = normalizedZoom
     let changed =
       self.syntax?.id != syntax?.id || self.revision != revision || self.enabled != enabled
-      || self.font != font || self.document !== document
+      || presentationChanged || self.document !== document
     self.document = document
     self.syntax = syntax
     self.revision = revision
@@ -40,6 +66,7 @@ final class NativeSyntaxHighlighter {
       editor.viewportLayoutChanged?()
     }
     if changed { invalidate() }
+    if themeGeometryChanged && canRefreshGeometry { editor?.viewportLayoutChanged?() }
   }
 
   func invalidate() {
@@ -92,16 +119,78 @@ final class NativeSyntaxHighlighter {
     invalidate()
   }
 
+  func textContentStorage(
+    _ textContentStorage: NSTextContentStorage, textParagraphWith range: NSRange
+  ) -> NSTextParagraph? {
+    guard let presentation = themePresentation, let editor,
+      !editor.hasMarkedText(), !editor.isReceivingMarkedText,
+      let storage = textContentStorage.textStorage,
+      range.location >= 0, range.length > 0, range.location <= storage.length,
+      range.length <= storage.length - range.location
+    else { return nil }
+    let paragraph = NSMutableAttributedString(
+      attributedString: storage.attributedSubstring(from: range))
+    paragraph.addAttributes(
+      presentation.baseAttributes, range: NSRange(location: 0, length: range.length))
+    if enabled, let document, revision == document.revision, let syntax {
+      for run in intersectingRuns(range, syntax: syntax) {
+        let intersection = NSIntersectionRange(run.range, range)
+        var attributes = presentation.attributes(for: run.style.tokens)
+        if run.style.underlined { attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue }
+        if run.style.strikethrough {
+          attributes[.strikethroughStyle] = NSUnderlineStyle.single.rawValue
+        }
+        if run.style.highlighted, run.style.role != .code {
+          attributes[.backgroundColor] = NSColor.systemYellow.withAlphaComponent(0.18)
+        }
+        paragraph.addAttributes(
+          attributes,
+          range: NSRange(
+            location: intersection.location - range.location, length: intersection.length))
+      }
+    }
+    return NSTextParagraph(attributedString: paragraph)
+  }
+
+  private func intersectingRuns(_ range: NSRange, syntax: MarkdownSyntax) -> ArraySlice<
+    MarkdownSyntaxRun
+  > {
+    var low = 0
+    var high = syntax.runs.count
+    while low < high {
+      let middle = (low + high) / 2
+      if NSMaxRange(syntax.runs[middle].range) <= range.location {
+        low = middle + 1
+      } else {
+        high = middle
+      }
+    }
+    var end = low
+    while end < syntax.runs.count, syntax.runs[end].range.location < NSMaxRange(range) { end += 1 }
+    return syntax.runs[low..<end]
+  }
+
   func detach() {
+    if let content = editor?.textLayoutManager?.textContentManager as? NSTextContentStorage,
+      content.delegate === self
+    {
+      content.delegate = nil
+    }
     editor?.textLayoutManager?.renderingAttributesValidator = nil
     editor?.syntaxHighlighter = nil
     editor = nil
     document = nil
+    syntax = nil
+    revision = nil
+    themeID = nil
+    themePresentation = nil
+    font = nil
   }
 
   private func validate(_ manager: NSTextLayoutManager, range: NSTextRange) {
     manager.setRenderingAttributes([:], for: range)
-    guard enabled, let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText,
+    guard themePresentation == nil, enabled, let editor, !editor.hasMarkedText(),
+      !editor.isReceivingMarkedText,
       let document, document.revision == revision, let syntax,
       let content = manager.textContentManager
     else { return }

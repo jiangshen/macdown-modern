@@ -50,8 +50,15 @@ public struct EditorTheme: Equatable, Sendable {
     public let message: String
   }
 
+  /// Stable across value copies, so a native view can recognize an unchanged
+  /// parsed theme without comparing an entire imported file on every keystroke.
+  public let id = UUID()
   public let rules: [Rule]
   public let diagnostics: [Diagnostic]
+
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.rules == rhs.rules && lhs.diagnostics == rhs.diagnostics
+  }
 
   public enum ParseError: Error, Equatable {
     case tooLarge, containsNul, tooComplex
@@ -79,13 +86,20 @@ public struct EditorTheme: Equatable, Sendable {
     var declared = false
     var declarationCount = 0
     var blockCount = 0
+    var selectorLine = 0
     var selector: String?
     var attributes: [Attribute] = []
     func diagnose(_ line: Int, _ message: String) {
       if diagnostics.count < 256 { diagnostics.append(.init(line: line, message: message)) }
     }
     func finish() {
-      guard let selector, declared else { return }
+      guard let selector else { return }
+      guard declared else {
+        if selectors.contains(selector) {
+          diagnose(selectorLine, "No style attributes defined for: \(selector)")
+        }
+        return
+      }
       if selector.hasPrefix("editor") { rules.removeAll { $0.selector == selector } }
       // An invalid-only special rule still replaces the preceding rule, as in
       // the original parser. Keep its empty attribute collection explicitly.
@@ -113,6 +127,7 @@ public struct EditorTheme: Equatable, Sendable {
         // Keep an unknown block separate from the following block. Its content
         // must never accidentally become attributes of a valid selector.
         selector = name
+        selectorLine = number
         if !selectors.contains(name) { diagnose(number, "Unknown style rule: \(name)") }
         continue
       }

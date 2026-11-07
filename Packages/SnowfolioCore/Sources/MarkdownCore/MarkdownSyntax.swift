@@ -1,13 +1,26 @@
 import Foundation
 
+public enum MarkdownSyntaxToken: Hashable, Sendable {
+  case heading(Int)
+  case emphasis, strong, inlineCode, codeBlock, link, automaticURL, automaticEmail
+  case image, blockquote, comment, inlineHTML, blockHTML, horizontalRule, listBullet, listEnumerator
+}
+
 public struct MarkdownSyntaxStyle: Equatable, Sendable {
   public enum Role: Sendable { case text, heading, code, link, quote, comment, marker }
   public var role: Role = .text
+  public var tokens: [MarkdownSyntaxToken] = []
   public var highlighted = false
   public var bold = false
   public var italic = false
   public var strikethrough = false
   public var underlined = false
+
+  mutating func include(_ token: MarkdownSyntaxToken) {
+    // A nested span needs each semantic theme category only once. Keeping this
+    // vocabulary bounded avoids copying an ever-growing stack for deep emphasis.
+    if !tokens.contains(token) { tokens.append(token) }
+  }
 }
 
 public struct MarkdownSyntaxRun: Equatable, Sendable {
@@ -78,10 +91,51 @@ public struct MarkdownSyntax: Sendable {
       case .thematicBreak: style.role = .marker
       default: break
       }
+      switch node.kind {
+      case .heading: style.include(.heading(node.headingLevel ?? 1))
+      case .strong: style.include(.strong)
+      case .emphasis: style.include(.emphasis)
+      case .inlineCode: style.include(.inlineCode)
+      case .codeBlock, .frontMatter, .math, .diagram: style.include(.codeBlock)
+      case .image: style.include(.image)
+      case .link:
+        if let sourceRange = node.range, let range = byteRange(sourceRange),
+          bytes[range.lowerBound] != 91
+        {
+          style.include(
+            node.destination?.hasPrefix("mailto:") == true ? .automaticEmail : .automaticURL)
+        } else {
+          style.include(.link)
+        }
+      case .blockquote, .quotation: style.include(.blockquote)
+      case .html:
+        if style.role == .comment {
+          style.include(.comment)
+        } else if node.parentID.map({ nodes[$0].kind }) == .paragraph {
+          style.include(.inlineHTML)
+        } else {
+          style.include(.blockHTML)
+        }
+      case .thematicBreak: style.include(.horizontalRule)
+      default: break
+      }
       styles.append(style)
       guard let sourceRange = node.range, let range = byteRange(sourceRange) else { continue }
       if style != parent {
-        intervals.append(Interval(range: range, style: style, priority: node.id))
+        var presentationRange = range
+        // Native inline-code coordinates identify the body. Theme presentation
+        // also includes its paired delimiters, as in the original CODE rule.
+        // Expand only around an AST-confirmed code span with matching tick runs.
+        if node.kind == .inlineCode {
+          var lower = range.lowerBound
+          var upper = range.upperBound
+          while lower > 0, bytes[lower - 1] == 96 { lower -= 1 }
+          while upper < bytes.count, bytes[upper] == 96 { upper += 1 }
+          if range.lowerBound - lower > 0, range.lowerBound - lower == upper - range.upperBound {
+            presentationRange = lower..<upper
+          }
+        }
+        intervals.append(Interval(range: presentationRange, style: style, priority: node.id))
       }
       // Marker detection is confined to AST-recognized headings/list items, never
       // a document-wide regular expression. The actual Markdown stays fully visible.
@@ -102,6 +156,10 @@ public struct MarkdownSyntax: Sendable {
         if end > range.lowerBound {
           var marker = style
           marker.role = .marker
+          if node.kind == .listItem {
+            marker.include(
+              [42, 43, 45].contains(bytes[range.lowerBound]) ? .listBullet : .listEnumerator)
+          }
           intervals.append(
             Interval(range: range.lowerBound..<end, style: marker, priority: nodes.count + node.id))
         }

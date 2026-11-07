@@ -10,7 +10,9 @@ struct MarkdownSyntaxTests {
   {
     let range = (source as NSString).range(of: text)
     #expect(range.location != NSNotFound)
-    return try #require(syntax.runs.first { NSLocationInRange(range.location, $0.range) }?.style)
+    return try #require(
+      syntax.runs.first { NSLocationInRange(range.location, $0.range) }?.style,
+      "Source segment: \(text)")
   }
 
   @Test(
@@ -42,6 +44,73 @@ struct MarkdownSyntaxTests {
         #expect(!(0xDC00...0xDFFF).contains((source as NSString).character(at: boundary)))
       }
     }
+  }
+
+  @Test("Theme tokens distinguish native scopes, compose emphasis and remain bounded in deep input")
+  func themeTokens() async throws {
+    let source = """
+      ## **bold *italic***
+
+      - Bullet
+      1. Number
+
+      [explicit](https://example.com) <https://example.com> <writer@example.com>
+
+      ![image](image.png) and `code`
+
+      <div>HTML block</div>
+
+      Paragraph <span>inline HTML</span>.
+
+      ---
+      """
+    let parsed = try await MarkdownProcessor().render(source, includeSyntax: true)
+    let syntax = try #require(parsed.syntax)
+    #expect(
+      try style(at: "italic", in: source, syntax: syntax).tokens == [
+        .heading(2), .strong, .emphasis,
+      ])
+    #expect(try style(at: "- Bullet", in: source, syntax: syntax).tokens.contains(.listBullet))
+    #expect(try style(at: "1.", in: source, syntax: syntax).tokens.contains(.listEnumerator))
+    #expect(try style(at: "explicit", in: source, syntax: syntax).tokens.contains(.link))
+    #expect(try style(at: "<https://", in: source, syntax: syntax).tokens.contains(.automaticURL))
+    #expect(try style(at: "writer@", in: source, syntax: syntax).tokens.contains(.automaticEmail))
+    #expect(try style(at: "![image]", in: source, syntax: syntax).tokens.contains(.image))
+    #expect(try style(at: "`code`", in: source, syntax: syntax).tokens.contains(.inlineCode))
+    #expect(try style(at: "<div>", in: source, syntax: syntax).tokens.contains(.blockHTML))
+    #expect(try style(at: "<span>", in: source, syntax: syntax).tokens.contains(.inlineHTML))
+    #expect(try style(at: "---", in: source, syntax: syntax).tokens.contains(.horizontalRule))
+    let deep = try await MarkdownProcessor().render(
+      String(repeating: "*", count: 1000) + "deep" + String(repeating: "*", count: 1000),
+      includeSyntax: true)
+    #expect(
+      try #require(deep.syntax).runs.allSatisfy {
+        Set($0.style.tokens).count == $0.style.tokens.count && $0.style.tokens.count <= 24
+      })
+  }
+
+  @Test(
+    "Inline code theme ranges include only paired native delimiters",
+    arguments: [
+      "`code`", "`` code ` value ``", "`line1\r\nline2`", "````code````",
+    ])
+  func codeDelimiters(code: String) async throws {
+    let source = "😀 before " + code + " after *italic*"
+    let parsed = try await MarkdownProcessor().render(source, includeSyntax: true)
+    let syntax = try #require(parsed.syntax)
+    let range = (source as NSString).range(of: code)
+    for offset in range.location..<NSMaxRange(range) {
+      #expect(
+        syntax.runs.contains {
+          NSLocationInRange(offset, $0.range) && $0.style.tokens.contains(.inlineCode)
+        }, "Code UTF-16 offset: \(offset)")
+    }
+    let after = (source as NSString).range(of: " after").location
+    #expect(
+      !syntax.runs.contains {
+        NSLocationInRange(after, $0.range) && $0.style.tokens.contains(.inlineCode)
+      })
+    #expect(try style(at: "italic", in: source, syntax: syntax).tokens.contains(.emphasis))
   }
 
   @Test("Indented/fenced code cannot style its literal Markdown as emphasis")
