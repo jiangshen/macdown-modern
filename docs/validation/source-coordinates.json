@@ -422,7 +422,13 @@
         }
       }
     ],
-    "interpretation": "Accuracy has a measured background parsing cost. Peak RSS varies across fresh processes; these samples do not prove memory improvement, app latency, p95, energy behavior or M6 completion."
+    "interpretation": "Accuracy has a measured background parsing cost. Peak RSS varies across fresh processes; these samples do not prove memory improvement, app latency, p95, energy behavior or M6 completion.",
+    "environment": {
+      "os": "Version 27.2 (Build 26B123)",
+      "architecture": "arm64",
+      "swift": "Apple Swift 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)",
+      "host": "same Mac for all before/after samples"
+    }
   },
   "profile": {
     "trace": "/private/tmp/snowfolio-source-columns-prose.trace",
@@ -450,6 +456,17 @@
     "Custom CSS/templates, remaining app feature parity and safe legacy retirement"
   ],
   "hosted": {
-    "result": "pending push"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42392411885",
+    "commit": "9568c9cd23a0798591749aa7cbfc7541014cd094",
+    "result": "passed both jobs",
+    "packageTests": 263,
+    "packageSuites": 53,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "nativeUITests": 9,
+    "nativeUIFailures": 0,
+    "priorityInversionWarnings": 16,
+    "evidence": "Downloaded exact package/corpus and native log/result artifacts; checkpoint totals verified",
+    "performanceAttribution": "Runtime priority-inversion warnings remain an open native performance attribution gate."
   }
 }

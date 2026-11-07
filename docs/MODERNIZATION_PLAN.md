@@ -2170,3 +2170,17 @@ arm64 test executables and 652/652 pinned CommonMark examples, with complete dia
 captures and zero compiler warnings/errors. Every native replacement reverses to the
 recorded upstream source bytes. The source-map performance comparison and limitations
 are in `PERFORMANCE_AUDIT.md`; no native app latency or memory-leak claim is inferred.
+
+
+### Hosted physical-coordinate acceptance
+
+Run [42392411885](https://github.com/jiangshen/snowfolio/actions/runs/42392411885),
+code `9568c9cd23a0798591749aa7cbfc7541014cd094`, passes both jobs. Downloaded
+artifacts verify **263 package tests / 53 suites**, eight arm64 test executables,
+652/652 CommonMark examples and **nine native document UI tests with zero failures**.
+The new physical-source/TextKit font regressions pass in the hosted package job.
+Sixteen native runtime priority-inversion warnings remain recorded without inferring
+a first-party cause. Direct desktop source-selection/real IME/VoiceOver and M6 runtime
+acceptance are still open, along with non-identity source transformations, custom
+CSS/templates, remaining feature parity and safe legacy retirement. The full goal is
+active and incomplete.
