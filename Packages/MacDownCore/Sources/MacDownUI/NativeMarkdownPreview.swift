@@ -8,16 +8,22 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   public let directory: URL?
   public let remoteImages: Bool
   public let style: DocumentStyle
+  public let revision: UInt64?
+  public let callouts: CalloutEditorController?
   public var onError: @MainActor (String?) -> Void
 
   public init(
     html: String, directory: URL?, remoteImages: Bool = false, style: DocumentStyle = .init(),
+    revision: UInt64? = nil,
+    callouts: CalloutEditorController? = nil,
     onError: @escaping @MainActor (String?) -> Void = { _ in }
   ) {
     self.html = html
     self.directory = directory
     self.remoteImages = remoteImages
     self.style = style
+    self.revision = revision
+    self.callouts = callouts
     self.onError = onError
   }
 
@@ -39,26 +45,35 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     view.setAccessibilityLabel(String(localized: "Markdown preview"))
     view.navigationDelegate = coordinator
     coordinator.onError = onError
+    coordinator.callouts = callouts
     coordinator.update(
-      view, html: html, directory: directory, remoteImages: remoteImages, style: style)
+      view, html: html, directory: directory, remoteImages: remoteImages, style: style,
+      revision: revision)
     return view
   }
 
   public func updateNSView(_ view: WKWebView, context: Context) {
     context.coordinator.onError = onError
+    context.coordinator.callouts = callouts
     context.coordinator.update(
-      view, html: html, directory: directory, remoteImages: remoteImages, style: style)
+      view, html: html, directory: directory, remoteImages: remoteImages, style: style,
+      revision: revision)
   }
 
   public static func dismantleNSView(_ view: WKWebView, coordinator: Coordinator) {
     view.stopLoading()
     view.navigationDelegate = nil
     coordinator.resources.cancelAll()
+    coordinator.callouts?.close()
   }
 
   @MainActor
   public final class Coordinator: NSObject, WKNavigationDelegate {
     let resources = LocalResourceHandler()
+    weak var callouts: CalloutEditorController?
+    private var pendingRevision: UInt64?
+    private var appliedRevision: UInt64?
+    private var contentValid = false
     var onError: @MainActor (String?) -> Void = { _ in }
     private var navigation: WKNavigation?
     private var expectsInitialNavigation = false
@@ -74,9 +89,10 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
 
     func update(
       _ view: WKWebView, html: String, directory: URL?, remoteImages: Bool,
-      style: DocumentStyle = .init()
+      style: DocumentStyle = .init(), revision: UInt64? = nil
     ) {
       pendingHTML = html
+      pendingRevision = revision
       pendingStyle = style
       resources.directory = directory
       if loadedRemoteImages != remoteImages || loadedDirectory != directory {
@@ -85,6 +101,8 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         applying = false
         resources.cancelAll()
         appliedHTML = nil
+        appliedRevision = nil
+        contentValid = false
         appliedStyle = style
         loadedRemoteImages = remoteImages
         loadedDirectory = directory
@@ -110,8 +128,12 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         applyStyle(to: view)
         return
       }
-      guard pendingHTML != appliedHTML else { return }
+      guard pendingHTML != appliedHTML else {
+        if contentValid { appliedRevision = pendingRevision }
+        return
+      }
       let sent = pendingHTML
+      let revision = pendingRevision
       let generation = generation
       applying = true
       view.callAsyncJavaScript(
@@ -123,12 +145,16 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         self.appliedHTML = sent
         switch result {
         case .success(let value):
+          self.contentValid = (value as? Bool) == true
+          self.appliedRevision = self.contentValid ? revision : nil
           self.onError(
-            (value as? Bool) == true
+            self.contentValid
               ? nil
               : String(localized: "The preview could not update. Reopen the document to try again.")
           )
         case .failure:
+          self.contentValid = false
+          self.appliedRevision = nil
           self.onError(
             String(localized: "The preview could not update. Reopen the document to try again."))
         }
@@ -178,6 +204,30 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       onError(String(localized: "The preview stopped. Reopen the document to try again."))
     }
 
+    private func showCalloutPicker(line: Int, in view: WKWebView) {
+      guard ready, contentValid, let revision = appliedRevision, let callouts else { return }
+      let generation = generation
+      view.callAsyncJavaScript(
+        "const icon = document.querySelector('a.md-callout-icon[href=\"mdcallout://icon/' + line + '\"]'); if (!icon) return ''; const r = icon.getBoundingClientRect(); return JSON.stringify([r.x,r.y,r.width,r.height]);",
+        arguments: ["line": line], in: nil, in: .defaultClient
+      ) { [weak self, weak view, weak callouts] result in
+        guard let self, let view, let callouts, self.generation == generation,
+          case .success(let value) = result, let json = value as? String,
+          let data = json.data(using: .utf8),
+          let values = try? JSONDecoder().decode([Double].self, from: data),
+          values.count == 4, values.allSatisfy(\.isFinite)
+        else { return }
+        let y = view.isFlipped ? values[1] : view.bounds.height - values[1] - values[3]
+        let rect = NSRect(x: values[0], y: y, width: values[2], height: values[3]).intersection(
+          view.bounds)
+        guard !rect.isEmpty else { return }
+        if !callouts.present(line: line, revision: revision, relativeTo: rect, in: view) {
+          self.onError(
+            String(localized: "The preview is updating. Choose the callout emoji again."))
+        }
+      }
+    }
+
     public func webView(
       _ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
       decisionHandler: @escaping @MainActor (WKNavigationActionPolicy) -> Void
@@ -187,7 +237,11 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         return
       }
       if navigationAction.navigationType == .linkActivated {
-        if let fragment = url.fragment, ["mdasset", "about"].contains(url.scheme ?? "") {
+        if url.scheme == "mdcallout", url.host == "icon", url.query == nil, url.fragment == nil,
+          let line = Int(url.path.dropFirst()), line > 0
+        {
+          showCalloutPicker(line: line, in: webView)
+        } else if let fragment = url.fragment, ["mdasset", "about"].contains(url.scheme ?? "") {
           webView.callAsyncJavaScript(
             "document.getElementById(id)?.scrollIntoView();",
             arguments: ["id": fragment], in: nil, in: .defaultClient)

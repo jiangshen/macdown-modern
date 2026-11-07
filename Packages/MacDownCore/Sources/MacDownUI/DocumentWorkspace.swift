@@ -7,6 +7,7 @@ public struct DocumentWorkspace: View {
   @State private var processor = MarkdownProcessor()
   @State private var output = DocumentExportController()
   @State private var editing = EditorCommandController()
+  @State private var callouts = CalloutEditorController()
   @State private var rendered: RenderedMarkdown?
   @State private var renderedRevision: UInt64?
   @State private var mode = WorkspaceMode.split
@@ -56,7 +57,8 @@ public struct DocumentWorkspace: View {
       VStack(spacing: 0) {
         NativeDocumentSplit(
           document: document, preferences: preferences, editing: editing,
-          html: rendered?.html ?? "", mode: mode, previewError: $previewError)
+          html: rendered?.html ?? "", revision: renderedRevision, callouts: callouts, mode: mode,
+          previewError: $previewError)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")
@@ -112,6 +114,9 @@ public struct DocumentWorkspace: View {
       editing.setStrikethroughEnabled(value)
     }
     .onAppear {
+      callouts.document = document
+      callouts.editing = editing
+      callouts.preferences = preferences
       output.document = document
       output.preferences = preferences
     }
@@ -144,12 +149,14 @@ public struct DocumentWorkspace: View {
       largeFilePaused = false
       loading = true
       let revision = document.revision
-      let result = try await processor.render(source, options: request.options)
+      let result = try await processor.render(
+        source, options: request.options, interactiveCallouts: true)
       try Task.checkCancellation()
       guard revision == document.revision else {
         loading = false
         return
       }
+      callouts.setTargets(result.nodes, revision: revision)
       rendered = result
       renderedRevision = revision
       error = nil

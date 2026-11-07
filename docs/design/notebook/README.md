@@ -42,3 +42,38 @@ and re-enabled callouts. Closing Settings intermittently caused UI inspection ti
 a diagnostic sample showed an idle event loop with no crash report. Returning to the
 document through the Window menu allowed inspection. This is an open UI validation
 issue, not evidence that the whole settings/window workflow is finished.
+
+
+## Native emoji picker and distinct MacDown direction
+
+The user requested closer inspection of their open Notion interface, then refined the
+direction: keep the current attractive content design, differentiate MacDown, and follow
+Apple’s current guidelines with Liquid Glass where appropriate. The Notion page/picker
+was inspected read-only as a visual reference. The fixtures and screenshots here contain
+original demonstration text. Native toolbars/popovers carry the glass; document surfaces
+remain opaque and readable. No additional glass layer is added to the document itself.
+
+`RefinedCallouts.png` shows the larger icon gutter, soft type-specific surfaces and more
+compact hierarchy. `EmojiPicker.png` shows the native transient NSPopover, containing
+search, category selection, recent choices, callout suggestions, random choice and reset.
+The picker uses system emoji glyphs and semantic native controls. It respects Reduce
+Motion for presentation and uses native popover appearance rather than a custom blur.
+
+Click a callout’s emoji to open the picker. Choosing an emoji writes a single explicit
+Notebook extension on the marker line, for example `> [!IMPORTANT] 🎯`. A custom emoji
+puts the content directly alongside the icon; the kind label remains accessible. Reset
+removes the custom suffix and restores the canonical type icon/visible kind label.
+Other Markdown viewers may display the marker/emoji as ordinary quote text; the file
+remains portable plain Markdown. Exports contain inert icon spans, never editing links.
+
+Unicode Emoji 18.0 data is bundled under Unicode License V3 (see `EmojiData.md`). Parser
+validation uses the full catalog; the native picker filters choices against this Mac’s
+emoji font to avoid missing-glyph boxes and decomposed sequences. Font filtering runs
+off the main actor and is cached for later openings. Recent choices stay local.
+
+Native checks covered opening from an icon, text search, selecting an emoji, undo/redo
+from preview mode, saving and re-opening the chosen icon, recent choices, and final
+font-filtered display. Unit/integration checks cover multi-scalar sequences, flags,
+skin tones, metadata escaping, stale/mismatched source rejection, exact trailing
+whitespace and CR/LF/CRLF preservation, and native undo/selection. The older Settings
+inspection issue and full accessibility/keyboard/system-appearance audits remain open.

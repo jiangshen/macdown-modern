@@ -9,6 +9,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   let preferences: AppPreferences
   let editing: EditorCommandController
   let html: String
+  var revision: UInt64? = nil
+  var callouts: CalloutEditorController? = nil
   let mode: WorkspaceMode
   @Binding var previewError: String?
   @Environment(\.undoManager) private var undoManager
@@ -31,7 +33,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   private var previewSurface: PreviewSurface {
     PreviewSurface(
       html: html, directory: document.fileURL?.deletingLastPathComponent(),
-      remoteImages: preferences.remoteImages, style: preferences.documentStyle, error: $previewError
+      remoteImages: preferences.remoteImages, style: preferences.documentStyle, revision: revision,
+      callouts: callouts, error: $previewError
     )
   }
 
@@ -112,10 +115,13 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     let directory: URL?
     let remoteImages: Bool
     var style: DocumentStyle = .init()
+    var revision: UInt64? = nil
+    var callouts: CalloutEditorController? = nil
     @Binding var error: String?
     var body: some View {
       NativeMarkdownPreview(
-        html: html, directory: directory, remoteImages: remoteImages, style: style
+        html: html, directory: directory, remoteImages: remoteImages, style: style,
+        revision: revision, callouts: callouts
       ) {
         error = $0
       }

@@ -1,0 +1,63 @@
+{
+  "milestone": "M3/M4 — portable callout emoji picker and refined native presentation; full modernization remains active",
+  "date": "2026-11-06",
+  "designDirection": "Preserve current Notebook appearance; develop a distinct MacDown identity, with Apple-native Liquid Glass in chrome/controls/popovers and calm document surfaces",
+  "reference": "User-authorized read-only visual inspection of their open Notion callout and emoji picker; no page text or private screenshots copied into this repository",
+  "implemented": [
+    "Larger icon gutter and softer type-specific callout surfaces",
+    "Native transient emoji popover anchored to the clicked icon",
+    "Search, Unicode categories, recent choices, callout suggestions, random selection and reset",
+    "Full bundled Unicode Emoji 18.0 catalog with Unicode License V3",
+    "Font-supported composed choices filtered off the main actor and cached",
+    "Portable single-emoji marker suffix",
+    "Minimal native replacement through the document undo manager",
+    "Revision, parsed-target and source/editor consistency checks",
+    "Editing links exist only in live preview; exports remain inert"
+  ],
+  "tests": {
+    "count": 85,
+    "suites": 17,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "nativeBuild": "MacDown.app build-for-testing passed; arm64 only",
+  "verified": [
+    "Emoji catalog contains families, skin tones, flags and keycaps",
+    "Invalid titles, multiple emoji, ASCII and HTML remain ordinary source",
+    "UTF-16 icon replacement preserves Unicode, indentation, trailing whitespace and CR/LF/CRLF",
+    "Native undo/redo restores text and selection with one action",
+    "Stale or unapproved parsed targets cannot apply edits",
+    "Light/dark WebKit contrast and narrow layout regression checks pass",
+    "Unicode resource catalog and license bundled in the native app",
+    "Strict Swift formatting and git diff checks pass"
+  ],
+  "directNativeUI": [
+    "Inspected the authorized Notion reference without edits",
+    "Opened an icon-anchored popover in MacDown",
+    "Searched light bulb and selected the matching emoji",
+    "Undo and redo worked while in preview mode",
+    "Saved Markdown contained the chosen emoji suffix",
+    "Reopened saved file and observed the chosen emoji",
+    "Recent choice appeared in the next picker opening",
+    "Final font-supported catalog omitted the observed unsupported new emoji; final grid screenshot has no missing-glyph box in the visible choices",
+    "Native popover search verified again in the final binary"
+  ],
+  "fixtures": [
+    "docs/design/notebook/EmojiDemo.md",
+    "/private/tmp/macdown-runtime-fixtures/notion-callouts.md"
+  ],
+  "screenshots": [
+    "docs/design/notebook/RefinedCallouts.png",
+    "docs/design/notebook/EmojiPicker.png"
+  ],
+  "remaining": [
+    "Source-editor syntax highlighting and remaining legacy parity",
+    "Full VoiceOver and keyboard traversal audit",
+    "Real Reduce Transparency/Increase Contrast/Reduce Motion system checks",
+    "Full per-font and dark-mode visual export comparison",
+    "Older Settings inspection timeout investigation",
+    "Remaining modernization roadmap"
+  ],
+  "legacySourceRemoved": false
+}

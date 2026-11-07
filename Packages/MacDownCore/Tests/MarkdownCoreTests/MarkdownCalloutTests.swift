@@ -10,7 +10,7 @@ struct MarkdownCalloutTests {
     let result = try await MarkdownProcessor().render(
       "> \(marker)\n> Read **世界 👩‍💻** and [a link](https://example.com).\n")
     #expect(result.html.contains("<aside class=\"md-callout md-callout-\(kind.rawValue)\""))
-    #expect(result.html.contains("\(kind.title)</p>"))
+    #expect(result.html.contains("\(kind.title)</span>"))
     #expect(result.html.contains("<strong>世界 👩‍💻</strong>"))
     #expect(result.html.contains("href=\"https://example.com\""))
     #expect(!result.html.contains(marker))

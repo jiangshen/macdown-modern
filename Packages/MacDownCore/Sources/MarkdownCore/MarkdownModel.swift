@@ -58,6 +58,7 @@ public struct MarkdownNode: Identifiable, Equatable, Sendable {
   public let headingLevel: Int?
   /// Optional presentation for a top-level quote; original source AST remains intact.
   public let callout: MarkdownCallout?
+  public let calloutEmoji: String?
 }
 
 public struct MarkdownHeading: Identifiable, Equatable, Sendable {

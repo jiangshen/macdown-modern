@@ -632,3 +632,55 @@ report; fresh launches restored access, and switching through Window menu allowe
 inspection. Investigate this before claiming the settings/window workflow fully
 verified. Full callout light/dark visual comparison, custom theme migration and
 source-editor styling still remain; the overall modernization goal stays active.
+
+
+## Design direction refinement — 2026-11-06
+
+The user likes the current Notebook/callout design and asks to preserve its overall
+look. Notion remains a reference for readable document structure and emoji interaction,
+while MacDown must develop its own visual identity and follow Apple's current design
+guidelines. Use native Liquid Glass in appropriate toolbars, controls and popovers;
+keep writing/reading surfaces quiet, opaque and legible. Preserve the established
+glacial-blue app identity and native Mac behavior rather than reproducing Notion's
+interface. Respect system light/dark, Increase Contrast, Reduce Transparency and Reduce
+Motion. Avoid a wholesale redesign of the current content styling. This refinement is
+an explicit requirement of the active modernization goal and applies to the emoji
+picker now being completed and later workspace/UI work.
+
+
+## Native callout emoji picker — 2026-11-06
+
+The requested picker and refined callout layout are implemented. After read-only visual
+inspection of the authorized Notion reference, MacDown now uses a larger icon gutter,
+quiet type-specific surfaces and a native transient NSPopover. Search, Unicode category
+selection, recents, callout suggestions, random choice and reset operate locally. The
+popover adopts native system appearance and disables presentation animation for Reduce
+Motion. This follows the design refinement above while preserving the liked content look.
+
+The `EmojiCore` Swift module owns the bundled Unicode Emoji 18.0 catalog, validation and
+license; UI choices are filtered against the installed emoji font, on a background actor,
+then cached. New glyphs unsupported by this Mac are excluded from the picker, while the
+portable source parser accepts the complete catalog. Resource/license inclusion is
+verified in the native app bundle. No build-time network fetch or Notion dependency is
+introduced.
+
+A custom icon is ordinary source text on the marker line (`> [!NOTE] 🎯`). Validation
+accepts one catalog emoji, including composed sequences/flags/skin tones, and rejects
+arbitrary text/HTML. Source replacement preserves indentation, trailing whitespace and
+newlines. The controller validates the current document revision, approved parsed target,
+native editor/source equality and marked-text state before using one native undo action.
+Failed/stale preview updates cannot authorize edits. Only the live preview emits editing
+links; styled/plain HTML/PDF/print receive inert icon markup. Custom icon callouts place
+body content alongside the emoji and keep the kind label available to accessibility.
+
+Validation: 85 tests in 17 suites, seven arm64 test executables, native app build-for-testing,
+strict Swift formatting and diff checks passed. Actual native checks verified icon click,
+search/selection, preview-mode undo/redo, saving/reopening the custom suffix, recents and
+final font-filtered display. See `validation/callout-emoji-picker.json` and
+`design/notebook/EmojiPicker.png`, `RefinedCallouts.png`, `EmojiDemo.md` and `EmojiData.md`.
+
+The user’s refined design direction is now part of the active goal. Source syntax
+highlighting, custom theme migration, broader accessibility/system-appearance checks,
+the older Settings inspection issue and the remaining roadmap stay open. No legacy
+implementation is deleted at this partial feature gate, and no release/default handler
+is installed or changed before the core reliability/parity gates.

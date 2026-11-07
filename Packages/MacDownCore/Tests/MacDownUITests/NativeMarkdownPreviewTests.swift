@@ -195,7 +195,7 @@ struct NativeMarkdownPreviewTests {
     #expect(
       try await evaluate(
         "return document.querySelector('.md-callout-title')?.textContent.trim() ?? '';", in: view)
-        == "ℹ︎Note")
+        == "Note")
     for dark in [false, true] {
       window.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
       try await waitFor {
@@ -210,7 +210,7 @@ struct NativeMarkdownPreviewTests {
           const rgb = value => value.match(/[\\d.]+/g).slice(0,3).map(Number);
           const luminance = value => rgb(value).map(v => { v /= 255; return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }).reduce((sum, v, i) => sum + v * [.2126,.7152,.0722][i], 0);
           const bg = luminance(getComputedStyle(document.body).backgroundColor);
-          return String(['p','a','code','blockquote','th','td','.md-callout-title','.md-callout > p:not(.md-callout-title)'].every(selector => {
+          return String(['p','a','code','blockquote','th','td','.md-callout-title','.md-callout-body > p'].every(selector => {
             const node = document.querySelector(selector), style = getComputedStyle(node);
             const fg = luminance(style.color);
             let ancestor = node, surface = bg;
