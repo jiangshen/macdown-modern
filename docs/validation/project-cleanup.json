@@ -124,5 +124,59 @@
     "originalCurrentBuildPreserved": true,
     "strictAuditSwiftFormatting": "passed",
     "firstPartyDiffCheck": "passed"
-  }
+  },
+  "followUps": [
+    {
+      "currentBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+      "currentEvidence": "/private/tmp/snowfolio-custom-css-hosted-native",
+      "date": "2026-11-07T23:23:44Z",
+      "items": [
+        {
+          "allocatedBytes": 147226624,
+          "files": 2162,
+          "logicalBytes": 139735853,
+          "markerSHA256": "2f85d27ba733c3de98adc24dd42c04b2bd46d0bc15269f781eacd8fd31366791",
+          "original": "/private/tmp/snowfolio-reading-styles-hosted-native",
+          "reason": "Superseded native validation download; current accepted run covers all prior app methods plus folder import. Historical logs/screenshots and hosted evidence remain recorded; raw bundle remains recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-reading-styles-hosted-native"
+        },
+        {
+          "allocatedBytes": 144367616,
+          "files": 2186,
+          "logicalBytes": 136803029,
+          "markerSHA256": "b26169e1164a487af0e4122f7d007f65d18de49dd75c16f75026eb6ab0fb7810",
+          "original": "/private/tmp/snowfolio-reading-styles-corrected-hosted-native",
+          "reason": "Superseded native validation download; current accepted run covers all prior app methods plus folder import. Historical logs/screenshots and hosted evidence remain recorded; raw bundle remains recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-reading-styles-corrected-hosted-native"
+        },
+        {
+          "allocatedBytes": 142897152,
+          "files": 2104,
+          "logicalBytes": 135630554,
+          "markerSHA256": "7ff76ae17f8cc73f7220b876ee96e10138f0412e201d5871b76eddd4319b6d46",
+          "original": "/private/tmp/snowfolio-reading-styles-scoped-hosted-native",
+          "reason": "Superseded native validation download; current accepted run covers all prior app methods plus folder import. Historical logs/screenshots and hosted evidence remain recorded; raw bundle remains recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-reading-styles-scoped-hosted-native"
+        },
+        {
+          "allocatedBytes": 13242368,
+          "files": 334,
+          "logicalBytes": 12326932,
+          "markerSHA256": "d524a99755d1c33f76fee337596d3182c28319fdb0c5c36ebe449d1139dac102",
+          "original": "/private/tmp/snowfolio-css-engine",
+          "reason": "Initial temporary Node build/probe dependencies; committed locked reproduction script and verified runtime bundle replace this scratch directory.",
+          "trash": "/Users/caden/.Trash/snowfolio-css-engine"
+        }
+      ],
+      "method": "FileManager.trashItem",
+      "scope": "Exact agent-generated scratch directories and superseded validation downloads only; current app/source/current tests and user documents preserved.",
+      "trashEmptied": false,
+      "totals": {
+        "files": 6786,
+        "logicalBytes": 424496368,
+        "allocatedBytes": 447733760
+      }
+    }
+  ],
+  "lastUpdated": "2026-11-07T23:23:44Z"
 }

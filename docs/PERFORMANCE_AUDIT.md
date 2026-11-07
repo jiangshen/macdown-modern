@@ -305,3 +305,20 @@ and Address Sanitizer pass. Probe details are recorded in
 The original core benchmark source remains unchanged; this separate executable
 keeps WebKit style experiments out of its dispatch and workload logic. Full M6
 app performance and memory/energy acceptance remain open.
+
+
+## Validation-artifact cleanup — 2026-11-07
+
+After the custom-style checkpoint passed 307 package tests and 11 native app UI tests,
+four exact agent-generated scratch/download directories were moved with the native
+Trash API: three superseded native validation bundles and the initial temporary CSS
+parser build dependency folder. This removed 424,496,368 logical
+bytes (447,733,760 allocated bytes) from active scratch paths.
+Trash was not emptied, so this does not claim recovered disk space.
+
+The current app output, current hosted evidence, source, pinned build inputs, compact
+historical logs/screenshots and user documents remain available. Original-to-Trash
+paths, marker hashes, reasons and verified destinations are appended to
+[project-cleanup.json](validation/project-cleanup.json). This is artifact housekeeping;
+full app performance, energy, memory retention and priority-warning attribution remain
+open.

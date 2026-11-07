@@ -2,11 +2,12 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current checkpoint: custom document-style discovery/import and frozen local assets,
-based on `2a8fe09`. Local evidence verifies **307 package tests / 63 suites**, nine
+Current code checkpoint: `ab94471`, custom document-style discovery/import and frozen
+local assets. Local evidence verifies **307 package tests / 63 suites**, nine
 Address Sanitizer tests / three suites, eight arm64 test executables and an arm64 app
-build with parser/style/license verification. The new native folder-import UI test is
-compiled; hosted method-level acceptance is pending. Exact evidence and limits are in
+build with parser/style/license verification. Hosted artifacts verify the same
+package totals, all 652 CommonMark examples and **11 passing native app UI tests**,
+including folder import/reload/persistence and source undo/redo. Exact evidence and limits are in
 [the custom-style ledger](validation/custom-reading-styles.json), with usage in
 [CUSTOM_STYLES.md](CUSTOM_STYLES.md).
 

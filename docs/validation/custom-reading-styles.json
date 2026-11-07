@@ -2,7 +2,7 @@
   "checkpoint": "Editable/imported CSS and frozen local assets",
   "date": "2026-11-07",
   "baseCommit": "2a8fe09",
-  "status": "implemented and locally verified; hosted native import acceptance pending",
+  "status": "implemented; local and hosted package/native import acceptance passed; full modernization incomplete",
   "fullGoal": "active; incomplete",
   "guide": "../CUSTOM_STYLES.md",
   "characterization": "css-template-characterization.json",
@@ -47,7 +47,7 @@
     "nativeArm64TestExecutables": 8,
     "nativeAppBuildForTesting": "passed including parser bundle checksums and matching app/resource MIT notices",
     "appLog": "/private/tmp/snowfolio-custom-css-reviewed-app.log",
-    "nativeUITest": "Folder import, nested-sheet choice, copied files, reload after original removal, persistence and source undo/redo compiled; desktop locked, hosted execution required",
+    "nativeUITest": "Compiled locally and passed on the hosted runner; method-level evidence and exact scope recorded below.",
     "tests": [
       "All original stock sheets plus edited originals; distinct local/legacy choices and uppercase CSS extensions",
       "Real temporary folder bookmark, nested main CSS with parent-relative dependencies within the grant, exact copied raw files, reload edits and deleted-original independence",
@@ -79,5 +79,30 @@
     "bundleBytes": 65894,
     "bundleSHA256": "7d7b734a0bed31b0c7b948aedfb24ce86e57220165d734335daac496c82c7357",
     "provenance": "Packages/SnowfolioCore/Sources/RenderingCore/Resources/CSS/CSSParser-Provenance.json"
+  },
+  "hosted": {
+    "url": "https://github.com/jiangshen/snowfolio/actions/runs/42424052668",
+    "commit": "ab94471b9b115947f653fc0387c47a77b4ee4c2a",
+    "result": "both jobs passed",
+    "packageTests": 307,
+    "suites": 63,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "commonMarkFailures": 0,
+    "nativeUITests": 11,
+    "nativeUIFailures": 0,
+    "newImportTest": "passed in 59.094 seconds: distinct controls, folder panel, nested main-sheet choices, import, original-byte checks, reload after original folder deletion, persisted choice and native source undo/redo",
+    "screenshot": "Inspected downloaded Appearance image: Arctic Reading Checkpoint selected, Import and Show in Finder visible, notebook-only controls disabled, independent code highlighting intact.",
+    "priorityDiagnostics": 20,
+    "appIntentsMetadataNotices": 2,
+    "performanceAttribution": "Existing full-app performance and priority-warning attribution gates remain open.",
+    "scope": "Method-level runtime and Settings screenshot acceptance; no fresh user-desktop, real IME/VoiceOver or preview glyph-paint acceptance.",
+    "sha256": {
+      "packageLog": "5b390d479d0f248f88e2ac0e9d26666d96bb44dcdf4dffea619c9340c16cd1af",
+      "corpusReport": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "architectureReport": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "nativeLog": "2f21954197f410d559ba438333af09d89d3ef00abc547deb9da3a793f98aa92e",
+      "settingsImage": "7f7a926842295be50f2b2a8a9612ac1f2ccbdfce45b5ac4e08d52e02bea7314a"
+    }
   }
 }
