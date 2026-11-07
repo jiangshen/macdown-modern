@@ -1419,3 +1419,10 @@ containers and task checkboxes. The internal padding was moved to the margin to
 avoid an unselected vertical strip beside loose paragraphs; the original text edge
 is preserved. Standard system selection colors remain. Automated cases cover both
 compact/loose forms in light/dark appearances. The original source bytes are unchanged.
+
+
+Final marker commit `22be23e` passed hosted run `42351600131`: downloaded evidence
+confirms **187 tests / 38 suites / eight arm64 executables** and **652/652** published
+CommonMark examples. The independent native build/document UI job also passed. Direct
+post-relaunch list selection was observed clean on this Mac. Broader modernization,
+real VoiceOver/IME, remaining feature parity and performance/release gates remain open.

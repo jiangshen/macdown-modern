@@ -57,5 +57,17 @@
     "commit": "cdce8049db1041fa6cf77d31b50b4c54b23a754d",
     "conclusion": "success",
     "scope": "Intermediate opaque-color attempt; does not establish final marker correction"
+  },
+  "finalHostedRun": {
+    "URL": "https://github.com/jiangshen/snowfolio/actions/runs/42351600131",
+    "commit": "22be23e44d04fb19a08aa8f79349e05e4309ffad",
+    "conclusion": "success",
+    "packageTests": 187,
+    "suites": 38,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "commonMarkMismatches": 0,
+    "nativeAppJob": "passed build and document UI test step; method-level acceptance scope remains in hosted-document-ui.json",
+    "source": "Downloaded exact core log and CommonMark report; GitHub final job outcomes verified"
   }
 }
