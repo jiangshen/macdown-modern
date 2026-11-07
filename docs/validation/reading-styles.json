@@ -16,15 +16,15 @@
     "Edited old stock styles are retained as unavailable selections, never silently replaced by stock CSS. Custom-file loading remains a separate required gate."
   ],
   "localValidation": {
-    "packageTests": 296,
+    "packageTests": 297,
     "packageSuites": 60,
     "failedTests": 0,
     "warnings": 0,
     "errors": 0,
-    "packageReport": "/private/tmp/snowfolio-reading-styles-final-full.json",
+    "packageReport": "/private/tmp/snowfolio-reading-styles-corrected-full.json",
     "nativeArm64TestExecutables": 8,
     "nativeAppBuildForTesting": "passed including bundled style checksums/licenses",
-    "appLog": "/private/tmp/snowfolio-reading-styles-final-app.log",
+    "appLog": "/private/tmp/snowfolio-reading-styles-corrected-app.log",
     "changedSwiftStrictFormatting": {
       "result": "passed",
       "files": 25
@@ -44,7 +44,8 @@
       "Styled/plain HTML and native PDF/print across all eight choices; independent highlighting",
       "Legacy first-import/previous profile/None migration; launch overrides, persistence, failure retention and frozen export",
       "CSS closing-style content remains CSS; canonically equivalent CSS and HTML identifiers update correctly",
-      "Exact reported First/Second/dfdfd short-list alignment in light/dark; tight/loose wrapped lists and source selection/undo regressions"
+      "Exact reported First/Second/dfdfd short-list alignment in light/dark; tight/loose wrapped lists and source selection/undo regressions",
+      "Actual hosted DocumentWorkspace propagates all eight style choices without replacing editor/preview views or changing selection/source"
     ],
     "nativeDocumentUITest": "New Settings picker/rendered-paper/source undo test compiled; local desktop execution unavailable while locked; hosted test required"
   },
@@ -83,5 +84,38 @@
     "Fresh user desktop, real IME/VoiceOver, document reliability and full app performance acceptance",
     "M5 integrations, M6 release readiness and safe coupled retirement of legacy renderer/resources"
   ],
-  "legacyRetirement": "No coupled original renderer/templates/styles removed at this checkpoint."
+  "legacyRetirement": "No coupled original renderer/templates/styles removed at this checkpoint.",
+  "hostedInitialRun": {
+    "url": "https://github.com/jiangshen/snowfolio/actions/runs/42417230380",
+    "commit": "3e398858402cf4007c444b96d76facee1934236d",
+    "result": "package/corpus passed; native UI 9 passed and 1 failed in new screenshot color expectation",
+    "packageTests": 296,
+    "packageSuites": 60,
+    "commonMarkPassed": 652,
+    "arm64TestExecutables": 8,
+    "failure": "New reading-style test used NSBitmapImageRep.colorAt followed by sRGB conversion; calibrated component interpretation changes the expected RGB values.",
+    "diagnosis": {
+      "knownSRGBFixture": [
+        40,
+        42,
+        54
+      ],
+      "oldSampler": [
+        52.98821747303009,
+        56.01996839046478,
+        70.00033020973206
+      ],
+      "correctedSampler": [
+        40,
+        42,
+        54
+      ],
+      "probe": "/private/tmp/snowfolio-reading-style-color-probe.swift",
+      "capturedVideo": "Downloaded exact failed test recording; Clearness Dark background is applied.",
+      "correction": "Draw screenshot pixel through its image color profile into a one-pixel sRGB CGContext; same expected RGB and .025 tolerance. Keep captured preview/RGB attachment. Require actual preview text before and after Settings changes.",
+      "workspaceRegression": "All style choices propagate through actual DocumentWorkspace; source and native views remain unchanged."
+    },
+    "priorityDiagnostics": 18,
+    "evidence": "Downloaded exact package/corpus/architecture reports and native xcodebuild log/xcresult; initial failure retained."
+  }
 }

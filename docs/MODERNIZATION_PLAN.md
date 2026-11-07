@@ -3,11 +3,11 @@
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
 Current checkpoint: bundled reading-style foundation, based on `dd69d88`.
-Local evidence verifies **296 package tests / 60 suites**, eight Address Sanitizer
+Local evidence verifies **297 package tests / 60 suites**, eight Address Sanitizer
 tests / three suites, eight arm64 test executables and an arm64 app build with
 verified bundled styles/licenses. The exact short-list selection/alignment regression
-also passes in light/dark. Native Settings document UI acceptance is pending hosted
-execution. Evidence and bounded performance measurements are in
+also passes in light/dark. The first hosted run passed package/corpus checks and exposed a screenshot
+color-sampling test error; corrected native Settings acceptance is pending rerun. Evidence and bounded performance measurements are in
 [the reading-style ledger](validation/reading-styles.json).
 
 Notebook, None and six original bundled CSS presentations are implemented for preview

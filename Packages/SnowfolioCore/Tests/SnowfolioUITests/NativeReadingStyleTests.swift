@@ -1,6 +1,8 @@
 import AppKit
+import DocumentCore
 import Foundation
 import RenderingCore
+import SwiftUI
 import Testing
 import WebKit
 
@@ -27,6 +29,62 @@ struct NativeReadingStyleTests {
     }
     Issue.record("Native reading style did not settle: \(stage)")
     throw CocoaError(.coderReadCorrupt)
+  }
+
+  @Test(
+    "Reading style choices propagate through the hosted workspace without replacing native views")
+  func workspaceStyles() async throws {
+    _ = NSApplication.shared
+    let domain = "WorkspaceReadingStyles." + UUID().uuidString
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let preferences = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+    let source = "# Reading style checkpoint\n\nPreserved source."
+    let document = MarkdownDocument(contents: TextFileContents(text: source))
+    let host = NSHostingController(
+      rootView: DocumentWorkspace(document: document, preferences: preferences))
+    let window = NSWindow(
+      contentRect: NSRect(x: 0, y: 0, width: 1100, height: 600),
+      styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false
+    window.contentViewController = host
+    window.setContentSize(NSSize(width: 1100, height: 600))
+    window.orderFront(nil)
+    defer { window.close() }
+    func descendant<T: NSView>(_ type: T.Type, in view: NSView) -> T? {
+      if let found = view as? T { return found }
+      return view.subviews.lazy.compactMap { descendant(type, in: $0) }.first
+    }
+    try await waitFor("workspace native surfaces") {
+      descendant(WKWebView.self, in: host.view) != nil
+        && descendant(MarkdownTextView.self, in: host.view) != nil
+    }
+    let web = try #require(descendant(WKWebView.self, in: host.view))
+    let editor = try #require(descendant(MarkdownTextView.self, in: host.view))
+    try await waitFor("workspace content") {
+      try await evaluate("return document.body.innerText;", in: web)
+        .contains("Reading style checkpoint")
+    }
+    let selection = NSRange(location: 2, length: 7)
+    editor.setSelectedRange(selection)
+    for entry in ReadingStyleEntry.all + [ReadingStyleEntry.notebook] {
+      await preferences.readingStyles.select(entry.id)
+      let style = preferences.documentStyle
+      try await waitFor("workspace " + entry.title) {
+        try await evaluate(
+          "return String(document.querySelector('#document-style').textContent===css && (document.getElementById('preview-content')===document.body)===bodyRoot);",
+          in: web, arguments: ["css": style.css, "bodyRoot": style.usesBodyRoot]) == "true"
+      }
+      if entry.id == "bundled:Clearness Dark" {
+        #expect(
+          try await evaluate("return getComputedStyle(document.body).backgroundColor;", in: web)
+            == "rgb(40, 42, 54)")
+      }
+      #expect(descendant(WKWebView.self, in: host.view) === web)
+      #expect(descendant(MarkdownTextView.self, in: host.view) === editor)
+      #expect(editor.selectedRange() == selection)
+      #expect(document.text.utf8.elementsEqual(source.utf8) && document.revision == 0)
+    }
   }
 
   @Test(

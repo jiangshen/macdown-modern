@@ -304,6 +304,9 @@ final class DocumentLifecycleTests: XCTestCase {
     editor.typeText(original)
     app.typeKey("a", modifierFlags: .command)
     editor.typeText("Style undo checkpoint")
+    let preview = app.webViews.firstMatch
+    let rendered = preview.staticTexts["Style undo checkpoint"].firstMatch
+    XCTAssertTrue(rendered.waitForExistence(timeout: 8), app.debugDescription)
     app.typeKey(",", modifierFlags: .command)
     let settings = app.windows["snowfolioSettings"]
     XCTAssertTrue(settings.waitForExistence(timeout: 5))
@@ -328,19 +331,38 @@ final class DocumentLifecycleTests: XCTestCase {
     app.typeKey("w", modifierFlags: .command)
     XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
     XCTAssertEqual(editor.value as? String, "Style undo checkpoint")
-    let preview = app.webViews.firstMatch
     XCTAssertTrue(preview.waitForExistence(timeout: 5))
+    XCTAssertTrue(rendered.waitForExistence(timeout: 8), app.debugDescription)
+    var lastPreview: XCUIScreenshot?
+    var paperRGB: [UInt8] = []
     let paper = NSPredicate { _, _ in
-      guard let bitmap = NSBitmapImageRep(data: preview.screenshot().pngRepresentation),
-        let color = bitmap.colorAt(x: bitmap.pixelsWide / 2, y: bitmap.pixelsHigh * 9 / 10)?
-          .usingColorSpace(.sRGB)
+      let snapshot = preview.screenshot()
+      lastPreview = snapshot
+      guard let image = NSBitmapImageRep(data: snapshot.pngRepresentation)?.cgImage,
+        let pixel = image.cropping(
+          to: CGRect(x: image.width / 2, y: image.height * 9 / 10, width: 1, height: 1)),
+        let space = CGColorSpace(name: CGColorSpace.sRGB),
+        let context = CGContext(
+          data: nil, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: space,
+          bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue),
+        let bytes = context.data
       else { return false }
-      return abs(color.redComponent - 40.0 / 255) < 0.025
-        && abs(color.greenComponent - 42.0 / 255) < 0.025
-        && abs(color.blueComponent - 54.0 / 255) < 0.025
+      // NSBitmapImageRep.colorAt returns calibrated RGB components even for an
+      // sRGB PNG. Draw through the image's profile into sRGB before comparing.
+      context.draw(pixel, in: CGRect(x: 0, y: 0, width: 1, height: 1))
+      paperRGB = (0..<3).map { bytes.load(fromByteOffset: $0, as: UInt8.self) }
+      return zip(paperRGB, [40, 42, 54]).allSatisfy { actual, expected in
+        abs(Double(actual) / 255 - Double(expected) / 255) < 0.025
+      }
     }
     expectation(for: paper, evaluatedWith: nil)
     waitForExpectations(timeout: 8)
+    if let lastPreview {
+      let image = XCTAttachment(screenshot: lastPreview)
+      image.name = "clearness-dark-preview-sRGB-" + paperRGB.map(String.init).joined(separator: "-")
+      image.lifetime = .keepAlways
+      add(image)
+    }
     app.typeKey(",", modifierFlags: .command)
     XCTAssertTrue(settings.waitForExistence(timeout: 5))
     XCTAssertEqual(picker.value as? String, "Clearness Dark")
