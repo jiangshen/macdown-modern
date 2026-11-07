@@ -103,7 +103,7 @@ struct NativeEditorSurfaceTests {
   }
 
   @Test(
-    "Page, caret, selection and moving current-line fonts restore without storage or undo changes")
+    "Native writing defaults and theme surfaces restore without source or undo changes")
   func lifecycle() async throws {
     let source = "# 中文 😀\r\nTail **bold**\r\n"
     let (document, coordinator, editor, scroll, window) = try host(source)
@@ -158,7 +158,15 @@ struct NativeEditorSurfaceTests {
     #expect(coordinator.highlighter.currentLineRange == nil)
     #expect(coordinator.highlighter.currentLineBackgroundRect() == nil)
     #expect((try attributes(editor, at: tail)[.font] as? NSFont)?.pointSize == 18)
-    #expect(editor.textStorage?.isEqual(to: try #require(original)) == true)
+    let expected = NSMutableAttributedString(attributedString: try #require(original))
+    expected.addAttribute(
+      .font, value: try #require(editor.font), range: NSRange(location: 0, length: expected.length))
+    let writingColor = NSColor(srgbRed: 17.0 / 255, green: 34.0 / 255, blue: 51.0 / 255, alpha: 1)
+    #expect(editor.font?.pointSize == 18 && editor.textColor == writingColor)
+    expected.addAttribute(
+      .foregroundColor, value: writingColor, range: NSRange(location: 0, length: expected.length))
+    #expect(editor.textStorage?.isEqual(to: expected) == true)
+    #expect(document.revision == 0)
     #expect(
       editor.string.utf8.elementsEqual(source.utf8) && document.text == source && !undo.canUndo)
 

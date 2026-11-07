@@ -2,8 +2,9 @@ import AppKit
 import EditorCore
 import MarkdownCore
 
-/// TextKit 2 rendering attributes and custom paragraphs are disposable presentation.
-/// They never enter NSTextStorage, source snapshots, or the undo stack.
+/// Syntax attributes and custom paragraphs are disposable presentation. Native
+/// writing font/color also drive typing, composition, carets and extra lines.
+/// Those view preferences never edit Markdown source or add an undo action.
 @MainActor
 final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDelegate {
   weak var editor: MarkdownTextView?
@@ -13,6 +14,9 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
   private var enabled = true
   private var font: NSFont?
   private var refreshingPresentation = false
+  private var settingNativeStyle = false
+  private var originalTextColor: NSColor?
+  private var pendingSurface = false
   private var themeID: UUID?
   private var themePresentation: NativeEditorTheme?
   private var zoomScale = 1.0
@@ -23,6 +27,7 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
 
   func attach(to editor: MarkdownTextView, document: MarkdownDocument) {
     self.editor = editor
+    originalTextColor = editor.textColor
     surfaceAppearance = NativeEditorSurfaceAppearance(editor: editor)
     self.document = document
     editor.syntaxHighlighter = self
@@ -44,7 +49,7 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     let themeGeometryChanged =
       self.themeID != theme?.id
       || (theme != nil
-        && (self.zoomScale != normalizedZoom || self.enabled != enabled
+        && (self.font != font || self.zoomScale != normalizedZoom || self.enabled != enabled
           || self.syntax?.id != syntax?.id
           || self.revision != revision))
     let canRefreshGeometry =
@@ -69,23 +74,26 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     self.revision = revision
     self.enabled = enabled
     self.font = font
-    if let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText, editor.font != font {
-      editor.viewportPresentationWillChange?()
-      editor.font = font
-      editor.viewportLayoutChanged?()
+    if presentationChanged { applySurfaceWhenSafe() }
+    if changed {
+      invalidate(geometryAlreadyChanging: themeGeometryChanged && canRefreshGeometry)
     }
-    if presentationChanged { surfaceAppearance?.apply(themePresentation) }
-    if changed { invalidate() }
     if themeGeometryChanged && canRefreshGeometry { editor?.viewportLayoutChanged?() }
   }
 
-  func invalidate() {
-    guard !refreshingPresentation,
+  func invalidate(geometryAlreadyChanging: Bool = false) {
+    guard !refreshingPresentation, !settingNativeStyle,
       let manager = editor?.textLayoutManager, let content = manager.textContentManager
     else {
       return
     }
     _ = refreshCurrentLine()
+    if pendingSurface { applySurfaceWhenSafe() }
+    let nativeFontChanged = synchronizeNativeWritingStyle(
+      geometryAlreadyChanging: geometryAlreadyChanging)
+    defer {
+      if nativeFontChanged && !geometryAlreadyChanging { editor?.viewportLayoutChanged?() }
+    }
     manager.invalidateRenderingAttributes(for: content.documentRange)
     // Refresh cached viewport fragments without forcing offscreen layout. Before
     // the first viewport exists, walk only fragments TextKit has already created.
@@ -119,15 +127,36 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     }
   }
 
-  func compositionChanged() {
-    if let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText, let font,
-      editor.font != font
-    {
-      editor.viewportPresentationWillChange?()
-      editor.font = font
-      editor.viewportLayoutChanged?()
+  func compositionChanged() { invalidate() }
+
+  private func applySurfaceWhenSafe() {
+    guard let editor else { return }
+    guard !editor.hasMarkedText(), !editor.isReceivingMarkedText else {
+      pendingSurface = true
+      return
     }
-    invalidate()
+    surfaceAppearance?.apply(themePresentation)
+    pendingSurface = false
+  }
+
+  /// Native default font/color are writing preferences shared by typing, marked
+  /// text, caret and extra-line layout. Semantic syntax remains in paragraph copies.
+  private func synchronizeNativeWritingStyle(geometryAlreadyChanging: Bool) -> Bool {
+    guard let editor, let font, !editor.hasMarkedText(), !editor.isReceivingMarkedText else {
+      return false
+    }
+    let attributes = themePresentation?.attributes(for: [], currentLine: currentLineRange != nil)
+    let desiredFont = attributes?[.font] as? NSFont ?? font
+    let desiredColor = attributes?[.foregroundColor] as? NSColor ?? originalTextColor
+    let fontChanged = editor.font != desiredFont
+    let colorChanged = editor.textColor != desiredColor
+    guard fontChanged || colorChanged else { return false }
+    if fontChanged && !geometryAlreadyChanging { editor.viewportPresentationWillChange?() }
+    settingNativeStyle = true
+    defer { settingNativeStyle = false }
+    if fontChanged { editor.font = desiredFont }
+    if colorChanged { editor.textColor = desiredColor }
+    return fontChanged
   }
 
   func textContentStorage(
@@ -166,10 +195,10 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
   }
 
   func selectionChanged() {
-    guard !refreshingPresentation, refreshCurrentLine() else { return }
+    guard !refreshingPresentation, !settingNativeStyle, refreshCurrentLine() else { return }
     let geometry = themePresentation?.currentLineChangesGeometry == true
     if geometry { editor?.viewportPresentationWillChange?() }
-    invalidate()
+    invalidate(geometryAlreadyChanging: geometry)
     if geometry { editor?.viewportLayoutChanged?() }
   }
 
@@ -245,6 +274,8 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
   }
 
   func detach() {
+    let restoreWritingStyle = themePresentation != nil || pendingSurface
+    let defaultFont = restoreWritingStyle ? font : nil
     surfaceAppearance?.restore()
     surfaceAppearance = nil
     currentLineRange = nil
@@ -257,6 +288,12 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     }
     editor?.textLayoutManager?.renderingAttributesValidator = nil
     editor?.syntaxHighlighter = nil
+    if let editor, restoreWritingStyle, !editor.hasMarkedText(), !editor.isReceivingMarkedText {
+      if let defaultFont, editor.font != defaultFont { editor.font = defaultFont }
+      if editor.textColor != originalTextColor { editor.textColor = originalTextColor }
+    }
+    originalTextColor = nil
+    pendingSurface = false
     editor = nil
     document = nil
     syntax = nil

@@ -38,7 +38,7 @@ struct NativeEditorThemeTests {
   }
 
   @Test(
-    "Real TextKit layout changes fonts and traits without changing backing attributes, text or undo"
+    "Syntax fonts stay out of storage while native writing defaults preserve source and undo"
   )
   func paragraphFonts() async throws {
     let source = "# 中文 **bold *italic***\r\n\r\nTail `code` and _under_."
@@ -101,7 +101,13 @@ struct NativeEditorThemeTests {
         as? NSFont)?.pointSize == 12)
     #expect(
       (code[.foregroundColor] as? NSColor)?.usingColorSpace(.sRGB)?.greenComponent == 136.0 / 255)
-    #expect(editor.textStorage?.isEqual(to: try #require(backing)) == true)
+    let writingBacking = NSMutableAttributedString(attributedString: try #require(backing))
+    let writingColor = NSColor(srgbRed: 17.0 / 255, green: 34.0 / 255, blue: 51.0 / 255, alpha: 1)
+    #expect(editor.font == font && editor.textColor == writingColor)
+    writingBacking.addAttribute(
+      .foregroundColor, value: writingColor,
+      range: NSRange(location: 0, length: writingBacking.length))
+    #expect(editor.textStorage?.isEqual(to: writingBacking) == true)
     #expect(editor.string.utf8.elementsEqual(source.utf8) && document.text == source)
     #expect(editor.selectedRange() == selected && !undo.canUndo)
 

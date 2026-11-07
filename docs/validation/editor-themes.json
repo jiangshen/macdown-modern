@@ -67,10 +67,9 @@
   },
   "remaining": [
     "Broad native source-coordinate acceptance, including lazy continuations, partial-tab indentation and extension callback contexts",
-    "Finish native insertion/caret/extra-line typography and themed typing/scrolling acceptance",
-    "Theme catalog/import and persistence/Settings",
-    "Custom CSS and template compatibility",
-    "Live visual/IME/undo acceptance",
+    "Theme catalog/import and saved choices/Settings with validation and ignored-attribute feedback",
+    "Actual native theme visual/keyboard/VoiceOver/real IME/resize/scrolling and measured large-document acceptance",
+    "Custom CSS/template compatibility",
     "Safe coupled legacy retirement"
   ],
   "fullGoal": "active; incomplete",
@@ -116,7 +115,7 @@
     ],
     "remaining": [
       "Broad native source-coordinate acceptance beyond the verified source-prefix cases",
-      "Native insertion/caret/extra-line typography and themed typing/scrolling acceptance",
+      "Actual native themed typing/caret/IME/VoiceOver/resize/scrolling acceptance",
       "Catalog/import/settings persistence",
       "Actual app visual/keyboard/VoiceOver/real IME acceptance",
       "Native large-document latency/memory measurements",
@@ -187,7 +186,7 @@
     "shippingUIConsumer": false,
     "remaining": [
       "Broad native coordinate acceptance including lazy continuations, partial tabs and callback subcontexts",
-      "Native insertion/caret/extra-line typography and themed typing/scrolling acceptance",
+      "Actual native themed typing/caret/IME/VoiceOver/resize/scrolling acceptance",
       "Catalog/import/settings persistence",
       "Real visual/keyboard/VoiceOver/IME/scrolling and measured large-document acceptance",
       "Custom CSS/templates and coupled legacy retirement"
@@ -271,7 +270,7 @@
     },
     "shippingUIConsumer": false,
     "remaining": [
-      "Resolve empty-document and terminal extra-line insertion/caret typography when theme global/current-line font differs from base font; native 22pt paragraph spike still produced a 17pt-height extra line from the 14pt base font",
+      "Actual native themed typing/caret/real IME/VoiceOver/resize/scrolling acceptance; empty/extra-line font metrics are closed by nativeInsertionTypography",
       "Catalog/import/settings persistence and validation/ignored-attribute feedback",
       "Actual app visual/keyboard/VoiceOver/real IME, resize/scroll and measured large-document acceptance",
       "Broader native source-coordinate acceptance",
@@ -280,6 +279,65 @@
     "hosted": {
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42379207374",
       "commit": "ded3f5212152b01ccf479fb9ba04d29b550c8b99",
+      "result": "passed",
+      "packageTests": 245,
+      "packageSuites": 48,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": 8,
+      "priorityInversionWarnings": 14,
+      "evidence": "Downloaded original package/corpus and native artifacts; exact checkpoint counts verified"
+    }
+  },
+  "nativeInsertionTypography": {
+    "problem": "Decorated paragraphs used theme fonts while the native default writing font remained 14pt; empty/terminal carets stayed 17pt high rather than matching a native 22pt editor (26pt high). Native writing color also stayed at the previous system color.",
+    "architecture": [
+      "NSTextView.font and NSTextView.textColor now supply the effective native default writing style, including current-line fallback and document zoom",
+      "These native preferences intentionally update uniform backing font/foreground attributes; Markdown bytes, document revision and user undo/redo do not change",
+      "Semantic heading/code/emphasis fonts, colors and traits remain disposable paragraph presentation rather than stored span styles",
+      "Reentrancy guards prevent native preference setters from recursively restyling selection or text notifications",
+      "Writing/page/caret/selection changes wait until native marked text finishes so old writing colors cannot be paired with a new page color",
+      "Default writing font/foreground restore when themes are removed or the editor detaches"
+    ],
+    "localValidation": {
+      "packageTests": 248,
+      "packageSuites": 49,
+      "nativeBuildForTesting": "passed",
+      "arm64App": "verified",
+      "diagnostics": "complete captures; zero warnings/errors in package and native Swift 6 builds",
+      "strictChangedSwiftFormatting": "passed",
+      "parserSourceProvenance": "verified unchanged",
+      "arm64TestExecutables": 8
+    },
+    "nativeTests": [
+      "48 native/control comparisons: four empty/nonempty/LF/CRLF sources, editor/current-line rules, monospaced/Helvetica faces and 50/100/200% zoom",
+      "Concrete CGFloat font-size assertions and native caret height agreement within 0.1 points; source bytes and document revision stay unchanged",
+      "Japanese marked text, selection, complete native preedit attributes and old palette survive a pending light/dark/font change; the new writing/page palette applies after unmarking",
+      "Typing and unique-pasteboard paste undo/redo across a 14pt-to-themed-24pt writing default; history labels/revision do not change on style changes; inserted native font is 24pt",
+      "Backing snapshots permit exactly the native uniform writing font/foreground preferences while catching semantic span-font/trait/background leaks; disabling a theme restores original defaults"
+    ],
+    "fixtureCorrections": [
+      "The 96 reference/subject windows initially scheduled enough AppKit NSAnimation workers to reach the sampled 64-thread dispatch soft limit and starve diagram work; the already-failing fixture process was stopped after sampling. New fixture windows disable animations. All diagram checks pass in the complete rerun, without changing production behavior or test coverage.",
+      "Font-size assertions now compare explicitly typed CGFloat values; mixed optional CGFloat/Double expressions produced false macro comparisons despite identical printed point sizes. Native reference-height assertions remain unchanged."
+    ],
+    "evidence": {
+      "metricsBefore": "/private/tmp/snowfolio-insertion-font-before.json",
+      "paletteBefore": "/private/tmp/snowfolio-writing-palette-before.json",
+      "sampledFixture": "/private/tmp/snowfolio-insertion-hang-sample.txt",
+      "failedAnimationRun": "/private/tmp/snowfolio-insertion-animation-before.json",
+      "typedAssertionRun": "/private/tmp/snowfolio-insertion-typed-assertion-before.json",
+      "fullPackage": "/private/tmp/snowfolio-insertion-full.json",
+      "nativeBuild": "/private/tmp/snowfolio-insertion-native.json"
+    },
+    "shippingUIConsumer": false,
+    "remaining": [
+      "Broad native source-coordinate acceptance, including lazy continuations, partial-tab indentation and extension callback contexts",
+      "Theme catalog/import and saved choices/Settings with validation and ignored-attribute feedback",
+      "Actual native theme visual/keyboard/VoiceOver/real IME/resize/scrolling and measured large-document acceptance",
+      "Custom CSS/template compatibility",
+      "Safe coupled legacy retirement"
+    ],
+    "hosted": {
       "result": "pending"
     }
   }

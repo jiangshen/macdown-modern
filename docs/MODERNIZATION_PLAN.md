@@ -1988,3 +1988,59 @@ resolution before theme selection/import is exposed. Catalog/persistence/validat
 real visual/keyboard/VoiceOver/IME and native scrolling/large-document measurements, broad
 source-coordinate acceptance, custom CSS/templates and coupled legacy retirement remain
 required. No user-facing theme picker is exposed. The full modernization goal stays active.
+
+
+### Hosted surface acceptance
+
+Downloaded run [42379207374](https://github.com/jiangshen/snowfolio/actions/runs/42379207374),
+commit `ded3f5212152b01ccf479fb9ba04d29b550c8b99`, passed both jobs: 245 tests / 48 suites,
+eight arm64 binaries, 652 CommonMark examples and eight native UI tests. Fourteen runtime
+priority-inversion warnings remain recorded, with attribution and performance gates open.
+
+## Native writing defaults and empty-line typography — 2026-11-07
+
+The empty/extra-line metric gap is resolved through native writing preferences. Keeping
+the native default font at 14pt while supplying a 22pt copied paragraph left the native
+empty/terminal caret at 17pt high, versus 26pt in an ordinary 22pt NSTextView. Native
+writing foreground also retained the previous system color, which could mismatch a
+new theme page during composition. The highlighter now aligns native `font`/`textColor`
+with the effective editor/current-line writing defaults and zoom. It queues page/caret/
+selection and writing-style changes until marked text finishes, preserving a coherent
+palette and the complete native preedit rather than modifying composition in progress.
+
+This deliberately refines the earlier all-backing-attributes-unchanged invariant:
+NSTextView's native default font/foreground preferences update uniform backing font and
+foreground attributes. The document is still plain Markdown: source bytes, revision and
+undo/redo do not change on style changes. Semantic heading/code/emphasis fonts, colors,
+traits and backgrounds remain disposable paragraph copies. Tests now allow exactly the
+native uniform writing preferences while still catching stored semantic span attributes;
+theme removal restores original defaults. No custom input interception, Markdown source
+rewriting or custom extra-line fragment implementation was introduced. Reentrancy guards
+cover native preference setters, and viewport hooks surround font geometry changes.
+
+A 48-case native/control matrix covers empty and nonempty text, terminal LF/CRLF,
+editor/current-line rules, monospaced/Helvetica faces and 50/100/200% zoom. Native font
+sizes and caret heights match an ordinary NSTextView using the intended font. Japanese
+preedit keeps its marked range, selected range, full native attributes and palette during
+a pending theme change. Typing and isolated-pasteboard paste preserve native undo/redo
+across writing-default changes, including UTF-8 Unicode/CRLF and subsequent themed input.
+Programmatic composition is not real keyboard IME/candidate-window acceptance.
+
+The reference fixture's 96 animated windows initially exhausted the sampled 64-thread
+dispatch soft limit with AppKit NSAnimation workers and starved diagram tests. After
+capturing that state, the already-failing owned fixture process was stopped. Only the
+new fixture windows now disable animation. The full rerun includes every diagram and
+editor check. Exact font-size assertions use concrete CGFloat values to avoid mixed
+optional CGFloat/Double macro comparisons; native reference-height assertions were
+retained. No production workaround or skipped assertions were added for these fixtures.
+
+All 248 tests / 49 suites pass. Native arm64 app build-for-testing, eight arm64 test
+executables, strict formatting and unchanged parser provenance pass. Package and native
+Swift 6 builds have complete captures with zero warnings/errors. Exact evidence and
+hosted follow-up are in `validation/editor-themes.json`.
+
+Next: theme catalog/import, saved choices and Settings validation, followed by actual
+visual/keyboard/VoiceOver/real IME/resize/scroll and measured large-document acceptance.
+Broader source-coordinate correctness, custom CSS/templates, safe coupled legacy
+retirement and the other full roadmap gates remain required. No theme picker is exposed
+yet. The full modernization goal remains active and incomplete.
