@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-06",
+  "product": "Snowfolio",
+  "feature": "Linked scrolling and reading positions",
+  "implementation": {
+    "source": "Public TextKit 2 geometry and UTF-16 line map",
+    "preview": "Isolated WebKit source-position bridge; page JavaScript disabled",
+    "scope": "Scroll linking only in split mode",
+    "preference": "editorSyncScrolling",
+    "storage": "Per-scene coordinates plus latest per-file positions; 128 hashed URL keys; no document text",
+    "cacheRenameBehavior": "A changed file URL starts a separate cache entry"
+  },
+  "validation": {
+    "tests": 135,
+    "suites": 27,
+    "nativeArm64TestExecutables": 7,
+    "nativeBuildForTesting": "passed",
+    "swiftFormatting": "passed",
+    "diffCheck": "passed",
+    "xcuitestExecution": "Not run; existing automation enablement timeout remains open"
+  },
+  "coverage": [
+    "Two-way native NSTextView/WKWebView movement without text, selection or undo changes",
+    "Keyboard paging and live-scroll notifications",
+    "Disabled linking and stale preview revision rejection",
+    "Page-world bridge and message handler unavailable",
+    "CR/LF/CRLF and non-BMP UTF-16 positions",
+    "Fractional visual-line restoration and externally shortened documents",
+    "Restored anchor survives native focus adjustment",
+    "Hidden closing viewport cannot overwrite visible position",
+    "Preview reading position survives local-resource context reload",
+    "Initial split preview and deferred document snapshot render",
+    "Per-file cache persistence, pane merging, unchanged writes, limits and invalid inputs"
+  ],
+  "directDesktop": {
+    "keyboardPaging": "Observed corresponding source and preview content in the app",
+    "positionCache": "Observed durable coordinate records and an earlier fresh launch with matching nonzero scroll positions",
+    "finalVisualRelaunch": "Pending: Mac locked before final reviewed-build acceptance",
+    "physicalWheelGesture": "Not verified: desktop scrolling action returned noWindowsAvailable"
+  },
+  "remaining": [
+    "Final repeated-relaunch visual acceptance with the reviewed build",
+    "Physical wheel/trackpad and scrollbar gestures",
+    "Multiple tab/group reading restoration, real IME and VoiceOver",
+    "Performance measurements and remaining modernization/release gates"
+  ],
+  "fullGoal": "active",
+  "legacyRemoval": "No additional deletion: old target still depends on unmigrated behavior"
+}

@@ -15,6 +15,7 @@ struct SnowfolioApp: App {
     .commands {
       TextEditingCommands()
       DocumentTabCommands()
+      DocumentScrollCommands(preferences: preferences)
       DocumentExportCommands()
       MarkdownFormatCommands()
     }

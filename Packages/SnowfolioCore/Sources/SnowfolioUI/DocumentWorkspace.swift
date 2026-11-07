@@ -5,6 +5,8 @@ public struct DocumentWorkspace: View {
   public let document: MarkdownDocument
   public let preferences: AppPreferences
   @Environment(\.openDocument) private var openDocument
+  @Environment(\.scenePhase) private var scenePhase
+  @State private var scrolling = DocumentScrollCoordinator()
   @State private var droppedDocuments = DroppedDocumentOpener()
   @State private var processor = MarkdownProcessor()
   @State private var output = DocumentExportController()
@@ -17,6 +19,8 @@ public struct DocumentWorkspace: View {
   @State private var previewLoadRevision: UInt64?
   @State private var previewOptions: MarkdownRenderingOptions?
   @State private var renderedRevision: UInt64?
+  @SceneStorage("sourceViewport") private var sourceViewport: Data?
+  @SceneStorage("previewViewport") private var previewViewport: Data?
   @SceneStorage("editorSelection") private var editorSelection: Data?
   @SceneStorage("workspaceMode") private var mode = WorkspaceMode.split
   @State private var manualRefresh = 0
@@ -77,7 +81,8 @@ public struct DocumentWorkspace: View {
           html: previewHTML, syntax: sourceSyntax, syntaxRevision: parsedRevision,
           revision: renderedRevision, callouts: callouts, mode: mode,
           previewError: $previewError, openDroppedFiles: openDroppedFiles,
-          editorSelection: $editorSelection)
+          editorSelection: $editorSelection, scrolling: scrolling,
+          sourceViewportStorage: $sourceViewport, previewViewportStorage: $previewViewport)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")
@@ -144,6 +149,12 @@ public struct DocumentWorkspace: View {
     .focusedSceneValue(\.markdownEditor, editing)
     .onChange(of: preferences.strikethrough, initial: true) { _, value in
       editing.setStrikethroughEnabled(value)
+    }
+    // Scene restoration may deliver these values after native views are created.
+    .onChange(of: sourceViewport) { _, _ in scrolling.layoutChanged() }
+    .onChange(of: previewViewport) { _, _ in scrolling.layoutChanged() }
+    .onChange(of: scenePhase) { _, phase in
+      if phase != .active { scrolling.flush() }
     }
     .onAppear {
       callouts.document = document

@@ -1,4 +1,5 @@
 import AppKit
+import EditorCore
 import RenderingCore
 import SwiftUI
 import WebKit
@@ -10,6 +11,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   public let style: DocumentStyle
   public let revision: UInt64?
   public let callouts: CalloutEditorController?
+  public var scrolling: DocumentScrollCoordinator?
   public var openDroppedFiles: (@MainActor ([URL]) -> Bool)?
   public var onError: @MainActor (String?) -> Void
 
@@ -18,6 +20,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     revision: UInt64? = nil,
     callouts: CalloutEditorController? = nil,
     openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
+    scrolling: DocumentScrollCoordinator? = nil,
     onError: @escaping @MainActor (String?) -> Void = { _ in }
   ) {
     self.html = html
@@ -28,26 +31,42 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     self.callouts = callouts
     self.onError = onError
     self.openDroppedFiles = openDroppedFiles
+    self.scrolling = scrolling
   }
 
   public func makeCoordinator() -> Coordinator { Coordinator() }
 
-  static func configuration(handler: LocalResourceHandler) -> WKWebViewConfiguration {
+  static func configuration(
+    handler: LocalResourceHandler, scrollHandler: (any WKScriptMessageHandler)? = nil
+  ) -> WKWebViewConfiguration {
     let configuration = WKWebViewConfiguration()
     configuration.websiteDataStore = .nonPersistent()
     configuration.defaultWebpagePreferences.allowsContentJavaScript = false
     configuration.setURLSchemeHandler(handler, forURLScheme: "mdasset")
+    if let scrollHandler {
+      configuration.userContentController.add(
+        WeakScrollMessageHandler(scrollHandler), contentWorld: .defaultClient,
+        name: "snowfolioScroll")
+      configuration.userContentController.addUserScript(
+        WKUserScript(
+          source: PreviewScroll.bootstrap, injectionTime: .atDocumentEnd, forMainFrameOnly: true,
+          in: .defaultClient))
+    }
     return configuration
   }
 
   public func makeNSView(context: Context) -> WKWebView {
     let coordinator = context.coordinator
     let view = MarkdownPreviewWebView(
-      frame: .zero, configuration: Self.configuration(handler: coordinator.resources))
+      frame: .zero,
+      configuration: Self.configuration(handler: coordinator.resources, scrollHandler: coordinator))
     view.setAccessibilityIdentifier("markdownPreview")
     view.setAccessibilityLabel(String(localized: "Markdown preview"))
     view.registerForDraggedTypes([.fileURL])
     view.fileDrop.openFiles = openDroppedFiles
+    coordinator.scrolling = scrolling
+    scrolling?.attachPreview(coordinator)
+    view.viewportLayoutChanged = { [weak coordinator] in coordinator?.scrolling?.layoutChanged() }
     view.navigationDelegate = coordinator
     coordinator.onError = onError
     coordinator.callouts = callouts
@@ -58,6 +77,11 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   }
 
   public func updateNSView(_ view: WKWebView, context: Context) {
+    if context.coordinator.scrolling !== scrolling {
+      context.coordinator.scrolling?.detachPreview(context.coordinator)
+      context.coordinator.scrolling = scrolling
+    }
+    scrolling?.attachPreview(context.coordinator)
     (view as? MarkdownPreviewWebView)?.fileDrop.openFiles = openDroppedFiles
     context.coordinator.onError = onError
     context.coordinator.callouts = callouts
@@ -67,6 +91,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   }
 
   public static func dismantleNSView(_ view: WKWebView, coordinator: Coordinator) {
+    coordinator.scrolling?.detachPreview(coordinator)
+    coordinator.scrolling = nil
+    (view as? MarkdownPreviewWebView)?.viewportLayoutChanged = nil
     (view as? MarkdownPreviewWebView)?.fileDrop.openFiles = nil
     view.stopLoading()
     view.navigationDelegate = nil
@@ -75,8 +102,13 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   }
 
   @MainActor
-  public final class Coordinator: NSObject, WKNavigationDelegate {
+  public final class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
     let resources = LocalResourceHandler()
+    weak var scrolling: DocumentScrollCoordinator?
+    private weak var scrollView: WKWebView?
+    private var scrollContextRevision: UInt64?
+    private var activatingScrollContext = false
+    private var failedScrollRevision: UInt64?
     weak var callouts: CalloutEditorController?
     private var pendingRevision: UInt64?
     private var appliedRevision: UInt64?
@@ -98,12 +130,17 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       _ view: WKWebView, html: String, directory: URL?, remoteImages: Bool,
       style: DocumentStyle = .init(), revision: UInt64? = nil
     ) {
+      scrollView = view
       pendingHTML = html
       pendingRevision = revision
       pendingStyle = style
       resources.directory = directory
       if loadedRemoteImages != remoteImages || loadedDirectory != directory {
+        scrolling?.previewWillReload()
         ready = false
+        scrollContextRevision = nil
+        activatingScrollContext = false
+        failedScrollRevision = nil
         generation = UUID()
         applying = false
         resources.cancelAll()
@@ -137,7 +174,10 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         return
       }
       guard pendingHTML != appliedHTML else {
-        if contentValid { appliedRevision = pendingRevision }
+        if contentValid {
+          appliedRevision = pendingRevision
+          activateScrollContext(in: view)
+        }
         return
       }
       let sent = pendingHTML
@@ -166,6 +206,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
           self.onError(
             String(localized: "The preview could not update. Reopen the document to try again."))
         }
+        self.activateScrollContext(in: view)
         self.applyLatest(to: view)
       }
     }
@@ -191,6 +232,79 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         }
         self.applyLatest(to: view)
       }
+    }
+
+    func isReadyForScrolling(revision: UInt64) -> Bool {
+      guard let view = scrollView else { return false }
+      return ready && contentValid && !applying && appliedRevision == revision
+        && scrollContextRevision == revision && view.window != nil
+        && !view.isHiddenOrHasHiddenAncestor && view.bounds.height > 0
+    }
+
+    private func activateScrollContext(in view: WKWebView) {
+      guard scrolling != nil, ready, contentValid, !applying,
+        let revision = appliedRevision, !activatingScrollContext,
+        failedScrollRevision != revision
+      else { return }
+      if scrollContextRevision == revision {
+        scrolling?.layoutChanged()
+        return
+      }
+      activatingScrollContext = true
+      let generation = generation
+      view.callAsyncJavaScript(
+        PreviewScroll.activate,
+        arguments: ["token": generation.uuidString, "revision": String(revision)],
+        in: nil, in: .defaultClient
+      ) { [weak self, weak view] result in
+        guard let self, let view, self.generation == generation else { return }
+        self.activatingScrollContext = false
+        if case .success(let value) = result, (value as? Bool) == true,
+          self.appliedRevision == revision
+        {
+          self.scrollContextRevision = revision
+          self.scrolling?.layoutChanged()
+        } else if self.appliedRevision == revision {
+          self.failedScrollRevision = revision
+          self.onError(
+            String(localized: "Scroll linking could not start. Reopen the document to try again."))
+        }
+        if self.appliedRevision != revision { self.activateScrollContext(in: view) }
+      }
+    }
+
+    func moveForScrolling(
+      to position: MarkdownScrollPosition,
+      completion: @escaping @MainActor () -> Void
+    ) {
+      guard position.isValid, let view = scrollView, let revision = appliedRevision,
+        isReadyForScrolling(revision: revision)
+      else {
+        completion()
+        return
+      }
+      view.callAsyncJavaScript(
+        PreviewScroll.move,
+        arguments: ["line": position.line, "atTop": position.atTop, "atBottom": position.atBottom],
+        in: nil, in: .defaultClient
+      ) { _ in completion() }
+    }
+
+    public func userContentController(
+      _ userContentController: WKUserContentController,
+      didReceive message: WKScriptMessage
+    ) {
+      guard message.name == "snowfolioScroll", message.frameInfo.isMainFrame,
+        let view = scrollView, message.webView === view, view.window?.isVisible == true,
+        !view.isHiddenOrHasHiddenAncestor, let body = message.body as? [String: Any],
+        let data = try? JSONSerialization.data(withJSONObject: body),
+        let value = try? JSONDecoder().decode(PreviewScrollMessage.self, from: data),
+        value.token == generation.uuidString, let revision = UInt64(value.revision),
+        revision == appliedRevision
+      else { return }
+      scrolling?.previewScrolled(
+        value.position, revision: revision,
+        programmatic: value.programmatic, settled: value.settled)
     }
 
     public func webView(
@@ -315,5 +429,25 @@ final class LocalResourceHandler: NSObject, WKURLSchemeHandler {
   func cancelAll() {
     for task in tasks.values { task.cancel() }
     tasks.removeAll()
+  }
+}
+
+private struct PreviewScrollMessage: Decodable {
+  let token: String
+  let revision: String
+  let position: MarkdownScrollPosition
+  let programmatic: Bool
+  let settled: Bool
+}
+
+@MainActor
+private final class WeakScrollMessageHandler: NSObject, WKScriptMessageHandler {
+  private weak var target: (any WKScriptMessageHandler)?
+  init(_ target: any WKScriptMessageHandler) { self.target = target }
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceive message: WKScriptMessage
+  ) {
+    target?.userContentController(userContentController, didReceive: message)
   }
 }

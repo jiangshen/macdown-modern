@@ -18,30 +18,42 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   @Binding var previewError: String?
   var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
   @Binding var editorSelection: Data?
+  var scrolling: DocumentScrollCoordinator? = nil
+  var sourceViewportStorage: Binding<Data?> = .constant(nil)
+  var previewViewportStorage: Binding<Data?> = .constant(nil)
   @Environment(\.undoManager) private var undoManager
 
   func makeNSViewController(context: Context) -> Controller {
-    Controller(editor: editorSurface, preview: previewSurface, mode: mode)
+    configureScrolling()
+    return Controller(editor: editorSurface, preview: previewSurface, mode: mode)
   }
 
   func updateNSViewController(_ controller: Controller, context: Context) {
+    configureScrolling()
     controller.editorHost.rootView = editorSurface
     controller.previewHost.rootView = previewSurface
     controller.setMode(mode, editing: editing)
+  }
+
+  private func configureScrolling() {
+    scrolling?.configure(
+      document: document, linked: preferences.synchronizedScrolling && mode == .split,
+      mode: mode, sourceStorage: sourceViewportStorage, previewStorage: previewViewportStorage)
   }
 
   private var editorSurface: EditorSurface {
     EditorSurface(
       document: document, preferences: preferences, commands: editing, undoManager: undoManager,
       syntax: syntax, syntaxRevision: syntaxRevision, openDroppedFiles: openDroppedFiles,
-      editorSelection: $editorSelection)
+      editorSelection: $editorSelection, scrolling: scrolling)
   }
 
   private var previewSurface: PreviewSurface {
     PreviewSurface(
       html: html, directory: document.fileURL?.deletingLastPathComponent(),
       remoteImages: preferences.remoteImages, style: preferences.documentStyle, revision: revision,
-      callouts: callouts, openDroppedFiles: openDroppedFiles, error: $previewError
+      callouts: callouts, openDroppedFiles: openDroppedFiles, scrolling: scrolling,
+      error: $previewError
     )
   }
 
@@ -111,6 +123,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     var syntaxRevision: UInt64? = nil
     var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
     @Binding var editorSelection: Data?
+    var scrolling: DocumentScrollCoordinator? = nil
     var body: some View {
       NativeMarkdownEditor(
         document: document, fontName: preferences.editorFontName,
@@ -118,7 +131,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
         strikethroughEnabled: preferences.strikethrough, commands: commands,
         hostUndoManager: undoManager, syntax: syntax, syntaxRevision: syntaxRevision,
         syntaxHighlighting: preferences.syntaxHighlighting, selectionStorage: $editorSelection,
-        openDroppedFiles: openDroppedFiles
+        openDroppedFiles: openDroppedFiles, scrolling: scrolling
       )
     }
   }
@@ -131,11 +144,13 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     var revision: UInt64? = nil
     var callouts: CalloutEditorController? = nil
     var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
+    var scrolling: DocumentScrollCoordinator? = nil
     @Binding var error: String?
     var body: some View {
       NativeMarkdownPreview(
         html: html, directory: directory, remoteImages: remoteImages, style: style,
-        revision: revision, callouts: callouts, openDroppedFiles: openDroppedFiles
+        revision: revision, callouts: callouts, openDroppedFiles: openDroppedFiles,
+        scrolling: scrolling
       ) {
         error = $0
       }

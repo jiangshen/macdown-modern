@@ -31,6 +31,8 @@ public struct MarkdownSettingsView: View {
             }
           }
           Section("Preview") {
+            Toggle("Link editor and preview scrolling", isOn: $preferences.synchronizedScrolling)
+              .accessibilityIdentifier("synchronizedScrolling")
             Toggle("Render manually", isOn: $preferences.manualRendering)
           }
         }.formStyle(.grouped)

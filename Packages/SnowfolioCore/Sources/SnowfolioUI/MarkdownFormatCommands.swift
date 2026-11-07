@@ -99,6 +99,27 @@ public struct MarkdownFormatCommands: Commands {
 @MainActor
 final class MarkdownTextView: NSTextView {
   let fileDrop = MarkdownFileDropHandler()
+  var viewportLayoutChanged: (@MainActor () -> Void)?
+  var viewportInputBegan: (@MainActor () -> Void)?
+
+  override func doCommand(by selector: Selector) {
+    viewportInputBegan?()
+    super.doCommand(by: selector)
+  }
+
+  override func scrollWheel(with event: NSEvent) {
+    viewportInputBegan?()
+    super.scrollWheel(with: event)
+  }
+
+  override func mouseDown(with event: NSEvent) {
+    viewportInputBegan?()
+    super.mouseDown(with: event)
+  }
+  override func layout() {
+    super.layout()
+    viewportLayoutChanged?()
+  }
 
   override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
     fileDrop.operation(for: sender) ?? super.draggingEntered(sender)

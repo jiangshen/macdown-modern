@@ -34,6 +34,8 @@ public enum PreviewHTML {
     const codeStyle = document.getElementById("code-style");
     if (codeStyle) codeStyle.textContent = codeCSS;
     if (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);
+    globalThis.__snowfolioScroll?.invalidateGeometry();
+    globalThis.__snowfolioScroll?.markProgrammatic();
     return true;
     """
 
@@ -68,6 +70,8 @@ public enum PreviewHTML {
     sync(root, incoming);
     if (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);
     else window.scrollTo(0, previousY);
+    globalThis.__snowfolioScroll?.invalidateGeometry();
+    globalThis.__snowfolioScroll?.markProgrammatic();
     return true;
     """
 }

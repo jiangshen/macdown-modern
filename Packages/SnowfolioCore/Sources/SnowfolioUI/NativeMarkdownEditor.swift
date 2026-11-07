@@ -16,6 +16,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   public var syntax: MarkdownSyntax?
   public var syntaxRevision: UInt64?
   public var syntaxHighlighting: Bool
+  public var scrolling: DocumentScrollCoordinator?
   public var selectionStorage: Binding<Data?>?
   public var openDroppedFiles: (@MainActor ([URL]) -> Bool)?
   @Environment(\.undoManager) private var undoManager
@@ -26,7 +27,8 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     commands: EditorCommandController? = nil, hostUndoManager: UndoManager? = nil,
     syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true,
     selectionStorage: Binding<Data?>? = nil,
-    openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
+    openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
+    scrolling: DocumentScrollCoordinator? = nil
   ) {
     self.document = document
     self.fontName = fontName
@@ -39,6 +41,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     self.syntaxRevision = syntaxRevision
     self.syntaxHighlighting = syntaxHighlighting
     self.selectionStorage = selectionStorage
+    self.scrolling = scrolling
     self.openDroppedFiles = openDroppedFiles
   }
 
@@ -55,6 +58,8 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     (view.documentView as? MarkdownTextView)?.fileDrop.openFiles = openDroppedFiles
     view.documentView?.registerForDraggedTypes([.fileURL])
     context.coordinator.restoreSelectionIfNeeded()
+    context.coordinator.scrolling = scrolling
+    if let editor = view.documentView as? MarkdownTextView { scrolling?.attachSource(editor) }
     return view
   }
 
@@ -116,6 +121,12 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       (scrollView.documentView as? MarkdownTextView)?.commandController = commands
       commands?.focusChanged(scrollView.window?.firstResponder === scrollView.documentView)
     }
+    if context.coordinator.scrolling !== scrolling {
+      if let editor = scrollView.documentView as? MarkdownTextView {
+        context.coordinator.scrolling?.detachSource(editor)
+      }
+      context.coordinator.scrolling = scrolling
+    }
     Self.synchronize(scrollView, document: document, coordinator: context.coordinator)
     context.coordinator.restoreSelectionIfNeeded()
     (scrollView.documentView as? MarkdownTextView)?.fileDrop.openFiles = openDroppedFiles
@@ -125,6 +136,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     {
       window.makeFirstResponder(editor)
     }
+    if let editor = editor as? MarkdownTextView { scrolling?.attachSource(editor) }
     let size = min(72, max(8, fontSize))
     let font =
       NSFont(name: fontName, size: size) ?? .monospacedSystemFont(ofSize: size, weight: .regular)
@@ -141,6 +153,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
         offset = max(0, offset - 1)
       }
       let range = NSRange(location: offset, length: 0)
+      scrolling?.sourceEditedOrNavigated()
       editor.setSelectedRange(range)
       editor.scrollRangeToVisible(range)
       editor.window?.makeFirstResponder(editor)
@@ -174,6 +187,10 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   }
 
   public static func dismantleNSView(_ scrollView: NSScrollView, coordinator: Coordinator) {
+    if let editor = scrollView.documentView as? MarkdownTextView {
+      coordinator.scrolling?.detachSource(editor)
+    }
+    coordinator.scrolling = nil
     (scrollView.documentView as? MarkdownTextView)?.fileDrop.openFiles = nil
     coordinator.highlighter.detach()
     (scrollView.documentView as? NSTextView)?.delegate = nil
@@ -186,6 +203,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   @MainActor
   public final class Coordinator: NSObject, NSTextViewDelegate {
     let highlighter = NativeSyntaxHighlighter()
+    weak var scrolling: DocumentScrollCoordinator?
     var document: MarkdownDocument
     weak var editor: NSTextView?
     weak var undoManager: UndoManager? {
@@ -269,6 +287,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       manager?.endUndoGrouping()
       editor.breakUndoCoalescing()
       document.acceptNativeEdit(editor.string)
+      scrolling?.sourceEditedOrNavigated()
       editor.scrollRangeToVisible(transaction.selection)
       return true
     }
@@ -393,6 +412,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     public func textDidChange(_ notification: Notification) {
       guard !isSynchronizing, let editor = notification.object as? NSTextView else { return }
       document.acceptNativeEdit(editor.string)
+      scrolling?.sourceEditedOrNavigated()
       highlighter.invalidate()
       commands?.compositionChanged(editor.hasMarkedText())
     }
@@ -401,7 +421,10 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       guard !isSynchronizing, let editor else { return }
       let revision = document.revision
       document.acceptNativeEdit(editor.string)
-      if document.revision != revision { highlighter.invalidate() }
+      if document.revision != revision {
+        scrolling?.sourceEditedOrNavigated()
+        highlighter.invalidate()
+      }
     }
 
     public func undoManager(for view: NSTextView) -> UndoManager? { undoManager }

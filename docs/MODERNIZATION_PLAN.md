@@ -117,7 +117,7 @@ verification. No essential feature is authorized for silent removal.
 | --- | --- | --- |
 | Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Pending app integration |
 | Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Pending |
-| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize verified; swap, linked scrolling and zoom pending |
+| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize and linked scrolling implemented; swap and zoom pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
@@ -329,6 +329,49 @@ not be completed through the current UI control surface (noWindowsAvailable), so
 end-to-end acceptance check remains open. Do not equate protocol-level integration
 coverage with a completed Finder drag gesture. Sandboxed release access remains part
 of production readiness. See `docs/validation/file-drops.json`.
+
+#### Linked scrolling and reading-position restoration — implemented increment (2026-11-06)
+
+Editor and preview scrolling now share source-line coordinates in split mode, with a
+View-menu command and Editor setting using the historical `editorSyncScrolling` key.
+Explicit disabled choices migrate; the default remains enabled. Native wheel/live-scroll,
+keyboard commands, edits and outline navigation select the source as the driver. Preview
+scrolling selects the preview. Programmatic movement suppresses feedback, and a new user
+gesture supersedes queued movement. Stale preview revisions cannot move current source.
+Hidden single-pane modes retain their independent positions and do not link scrolling.
+
+Source coordinates use UTF-16 line maps and public TextKit 2 segment geometry. They do
+not change selection, document bytes or undo. Restored source anchors survive later
+native caret/focus adjustments until the user scrolls or navigates. Preview coordinates
+come from rendered `data-sourcepos` blocks, including nested lists/callouts, with exact
+top/bottom handling, coalesced reports, cached geometry and reload-generation checks.
+The trusted bridge exists only in WebKit's isolated client world; page JavaScript and
+active document content remain disabled, and exports contain no bridge script.
+
+Per-scene offsets are supplemented by bounded durable per-file positions because native
+scene recreation did not reliably restore the newly added viewport values in direct
+checks. The latest file position takes precedence over stale scene data. The app stores
+at most 128 hashed file-URL keys with coordinates/timestamps, never source text; a renamed
+or moved file currently starts a new cache entry. Writes are debounced and deterministically
+encoded, skip unchanged values, preserve the other pane, and flush on scroll completion
+and deactivation. Hidden closing viewports cannot replace the last visible position.
+
+Validation: 135 tests across 27 suites, seven native arm64 test executables, native
+build-for-testing, strict Swift formatting and diff checks. Native coverage includes
+two-way movement, disabling, stale revision rejection, isolated-world boundaries,
+Unicode/newline mapping, source offsets/fractional lines, shortened files, native focus
+adjustments, hidden-window persistence, preview context reloads, first split layout,
+deferred document snapshots and bounded durable storage. Direct desktop checks verified
+keyboard paging moves both panes to corresponding content. The final repeated-relaunch
+visual check remains open after the Mac locked; earlier observations exposed launch-time
+source drawing/focus issues now addressed by the reviewed implementation. Do not claim
+that final acceptance passed until it is observed. Trackpad/mouse-wheel end-to-end checks,
+multiple groups/tabs, real IME/VoiceOver and measured performance remain open. See
+`docs/validation/linked-scrolling.json`.
+
+The full modernization goal stays active. No additional legacy implementation is deleted
+while the original target still consumes unmigrated renderer/accessory behavior. Release
+installation and default association remain gated on broader reliability and parity.
 
 ### M5 — Productivity and system features
 

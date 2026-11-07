@@ -172,6 +172,11 @@ final class MarkdownFileDropButton: NSButton {
 
 final class MarkdownPreviewWebView: WKWebView {
   let fileDrop = MarkdownFileDropHandler()
+  var viewportLayoutChanged: (@MainActor () -> Void)?
+  override func layout() {
+    super.layout()
+    viewportLayoutChanged?()
+  }
 
   override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
     fileDrop.operation(for: sender) ?? super.draggingEntered(sender)

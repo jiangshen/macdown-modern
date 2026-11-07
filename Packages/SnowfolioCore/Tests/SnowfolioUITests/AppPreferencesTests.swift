@@ -6,6 +6,19 @@ import Testing
 @Suite("Application preferences")
 @MainActor
 struct AppPreferencesTests {
+  @Test("Scroll linking defaults on and preserves an explicit disabled choice")
+  func scrollLinkPreference() throws {
+    let domain = "ScrollPreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let preferences = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+    #expect(preferences.synchronizedScrolling)
+    preferences.synchronizedScrolling = false
+    #expect(
+      !AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+        .synchronizedScrolling)
+  }
+
   @Test("Legacy choices initialize the UI and changes persist across application models")
   func persistence() throws {
     let domain = "AppPreferencesTests.\(UUID().uuidString)"
@@ -16,12 +29,15 @@ struct AppPreferencesTests {
       legacyValues: [
         "editorConvertTabs": true, "editorInsertPrefixInBlock": false,
         "editorAutoIncrementNumberedLists": false, "editorCompleteMatchingCharacters": true,
-        "editorUnorderedListMarkerType": 2,
+        "editorUnorderedListMarkerType": 2, "editorSyncScrolling": false,
         "extensionTables": false, "extensionStrikethough": true,
         "htmlDetectFrontMatter": false, "htmlRendersTOC": false,
         "htmlSyntaxHighlighting": false, "htmlHighlightingThemeName": "tomorrow",
         "editorBaseFontInfo": ["name": "Menlo-Regular", "size": 18],
       ])
+    #expect(!preferences.synchronizedScrolling)
+    preferences.synchronizedScrolling = true
+    #expect(defaults.bool(forKey: "editorSyncScrolling"))
     #expect(preferences.editorBehavior.convertTabs)
     #expect(!preferences.editorBehavior.continueBlocks)
     #expect(!preferences.editorBehavior.incrementLists)
@@ -58,6 +74,7 @@ struct AppPreferencesTests {
     let reopened = AppPreferences(
       defaults: defaults, domainName: domain,
       legacyValues: ["extensionTables": false])
+    #expect(reopened.synchronizedScrolling)
     #expect(!reopened.restoreDocumentsOnLaunch)
     #expect(!reopened.preferDocumentTabs)
     #expect(reopened.editorBehavior.continueBlocks)
