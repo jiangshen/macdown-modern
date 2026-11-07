@@ -11,7 +11,7 @@
     "cacheRenameBehavior": "A changed file URL starts a separate cache entry"
   },
   "validation": {
-    "tests": 135,
+    "tests": 136,
     "suites": 27,
     "nativeArm64TestExecutables": 7,
     "nativeBuildForTesting": "passed",
@@ -30,7 +30,8 @@
     "Hidden closing viewport cannot overwrite visible position",
     "Preview reading position survives local-resource context reload",
     "Initial split preview and deferred document snapshot render",
-    "Per-file cache persistence, pane merging, unchanged writes, limits and invalid inputs"
+    "Per-file cache persistence, pane merging, unchanged writes, limits and invalid inputs",
+    "Hosted split-view restoration after deferred document load, delayed styling and native focus; bitmap text coverage matches ordinary paging in light/dark appearance"
   ],
   "directDesktop": {
     "keyboardPaging": "Observed corresponding source and preview content in the app",
@@ -45,5 +46,21 @@
     "Performance measurements and remaining modernization/release gates"
   ],
   "fullGoal": "active",
-  "legacyRemoval": "No additional deletion: old target still depends on unmigrated behavior"
+  "legacyRemoval": "No additional deletion: old target still depends on unmigrated behavior",
+  "deferredLoadRepair": {
+    "problem": "The document model can advance before NSTextView receives the loaded text; early restoration clamped the saved offset against the empty native snapshot.",
+    "behavior": "Native source identity and revision gate capture and movement. Initial creation, synchronization, native edits, formatting and undo/redo publish the revision actually in NSTextView.",
+    "reproduction": "The hosted deferred-load test failed in both appearances before the repair, retaining offset zero rather than the saved visual line.",
+    "nativeDrawing": {
+      "light": {
+        "baselineInkSamples": 14289,
+        "restoredInkSamples": 14289
+      },
+      "dark": {
+        "baselineInkSamples": 15507,
+        "restoredInkSamples": 15507
+      }
+    },
+    "manualBitmapInspection": "Both restored native-view images show complete wrapped text, syntax colors, Chinese and emoji."
+  }
 }

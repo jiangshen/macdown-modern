@@ -232,6 +232,122 @@ struct NativeScrollTests {
     #expect(fixture.sourceData == saved)
   }
 
+  @Test(
+    "Restored source paints through deferred loading, styling and native focus",
+    arguments: [false, true])
+  func restoredSourcePainting(dark: Bool) async throws {
+    let source = (1...120).map {
+      "## Note \($0)\n\nA winter thought with **bold words**, plain words across the whole line, 中文 and 😀.\n\n- Read\n- Write\n\n"
+    }.joined()
+    let parsed = try await MarkdownProcessor().render(source, includeSyntax: true)
+    let domain = "RestoredPaintingTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let preferences = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+    let appearance = try #require(NSAppearance(named: dark ? .darkAqua : .aqua))
+    func root(
+      document: MarkdownDocument, scrolling: DocumentScrollCoordinator,
+      editing: EditorCommandController, saved: Data?, styled: Bool
+    ) -> NativeDocumentSplit {
+      NativeDocumentSplit(
+        document: document, preferences: preferences, editing: editing,
+        html: styled ? parsed.html : "", syntax: styled ? parsed.syntax : nil,
+        syntaxRevision: styled ? document.revision : nil,
+        revision: styled ? document.revision : nil,
+        mode: .split, previewError: .constant(nil), editorSelection: .constant(nil),
+        scrolling: scrolling, sourceViewportStorage: .constant(saved))
+    }
+    func window(host: NSViewController) -> NSWindow {
+      let window = NSWindow(
+        contentRect: NSRect(x: 0, y: 0, width: 1000, height: 600),
+        styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+      window.isReleasedWhenClosed = false
+      window.appearance = appearance
+      window.contentViewController = host
+      window.setContentSize(NSSize(width: 1000, height: 600))
+      window.orderFront(nil)
+      return window
+    }
+    func editor(in view: NSView) -> MarkdownTextView? {
+      if let source = view as? MarkdownTextView { return source }
+      return view.subviews.lazy.compactMap { editor(in: $0) }.first
+    }
+    let originalDocument = MarkdownDocument(contents: TextFileContents(text: source))
+    let originalScrolling = DocumentScrollCoordinator()
+    let originalEditing = EditorCommandController()
+    let originalHost = NSHostingController(
+      rootView: root(
+        document: originalDocument,
+        scrolling: originalScrolling, editing: originalEditing, saved: nil, styled: true))
+    let originalWindow = window(host: originalHost)
+    defer { originalWindow.close() }
+    try await waitFor("baseline source layout") {
+      guard let view = editor(in: originalHost.view) else { return false }
+      return view.bounds.width > 300 && view.visibleRect.height > 400
+    }
+    let original = try #require(editor(in: originalHost.view))
+    original.doCommand(by: #selector(NSResponder.scrollPageDown(_:)))
+    try await waitFor { originalScrolling.captureSource()?.offset ?? 0 > 0 }
+    let saved = try #require(originalScrolling.captureSource())
+    let savedData = try JSONEncoder().encode(saved)
+    let restoredDocument = MarkdownDocument()
+    let restoredScrolling = DocumentScrollCoordinator()
+    let restoredEditing = EditorCommandController()
+    let restoredHost = NSHostingController(
+      rootView: root(
+        document: restoredDocument,
+        scrolling: restoredScrolling, editing: restoredEditing, saved: savedData, styled: false))
+    let restoredWindow = window(host: restoredHost)
+    defer { restoredWindow.close() }
+    try await waitFor("empty source created") { editor(in: restoredHost.view) != nil }
+    try await restoredDocument.apply(snapshot: TextFileContents(text: source), previous: nil)
+    await Task.yield()
+    restoredHost.rootView = root(
+      document: restoredDocument, scrolling: restoredScrolling,
+      editing: restoredEditing, saved: savedData, styled: true)
+    let restored = try #require(editor(in: restoredHost.view))
+    restoredWindow.makeFirstResponder(restored)
+    try await waitFor("restored styled reading line") {
+      guard let actual = restoredScrolling.captureSource() else { return false }
+      return actual.offset == saved.offset && abs(actual.fraction - saved.fraction) < 0.1
+    }
+    func pixels(in editor: NSTextView, name: String) throws -> Int {
+      editor.layoutSubtreeIfNeeded()
+      editor.displayIfNeeded()
+      let rect = editor.visibleRect
+      let bitmap = try #require(editor.bitmapImageRepForCachingDisplay(in: rect))
+      editor.cacheDisplay(in: rect, to: bitmap)
+      if let data = bitmap.representation(using: .png, properties: [:]) {
+        try data.write(
+          to: URL(filePath: "/private/tmp/snowfolio-\(dark ? "dark" : "light")-\(name).png"))
+      }
+      let background = try #require(bitmap.colorAt(x: 0, y: 0)?.usingColorSpace(.deviceRGB))
+      var ink = 0
+      for y in stride(from: 0, to: bitmap.pixelsHigh, by: 2) {
+        for x in stride(from: 0, to: bitmap.pixelsWide, by: 2) {
+          guard let color = bitmap.colorAt(x: x, y: y)?.usingColorSpace(.deviceRGB) else {
+            continue
+          }
+          let distance =
+            abs(color.redComponent - background.redComponent)
+            + abs(color.greenComponent - background.greenComponent)
+            + abs(color.blueComponent - background.blueComponent)
+          if color.alphaComponent > 0.8 && distance > 0.25 { ink += 1 }
+        }
+      }
+      return ink
+    }
+    let baseline = try pixels(in: original, name: "paged-source")
+    let reopened = try pixels(in: restored, name: "restored-source")
+    print("Source painting ink samples", dark, baseline, reopened)
+    #expect(baseline > 1000)
+    #expect(Double(reopened) >= Double(baseline) * 0.9)
+    #expect(restored.string == source)
+    #expect(restored.textLayoutManager != nil)
+    #expect(restoredDocument.revision == 1)
+    #expect(restored.selectedRange().location == 0)
+  }
+
   @Test("Source position and fractional visual line restore without touching selection or undo")
   func sourceRestoration() async throws {
     let source = (1...160).map { "Paragraph \($0) 中文 😀\n\n" }.joined()

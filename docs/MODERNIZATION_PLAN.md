@@ -356,7 +356,7 @@ or moved file currently starts a new cache entry. Writes are debounced and deter
 encoded, skip unchanged values, preserve the other pane, and flush on scroll completion
 and deactivation. Hidden closing viewports cannot replace the last visible position.
 
-Validation: 135 tests across 27 suites, seven native arm64 test executables, native
+Validation: 136 tests across 27 suites, seven native arm64 test executables, native
 build-for-testing, strict Swift formatting and diff checks. Native coverage includes
 two-way movement, disabling, stale revision rejection, isolated-world boundaries,
 Unicode/newline mapping, source offsets/fractional lines, shortened files, native focus
@@ -368,6 +368,18 @@ source drawing/focus issues now addressed by the reviewed implementation. Do not
 that final acceptance passed until it is observed. Trackpad/mouse-wheel end-to-end checks,
 multiple groups/tabs, real IME/VoiceOver and measured performance remain open. See
 `docs/validation/linked-scrolling.json`.
+
+A hosted deferred-load regression reproduced and repaired the remaining early-source
+restoration race: the document model can have loaded text while NSTextView still contains
+its initial empty snapshot. Native source identity/revision now gate capture and movement,
+with readiness published after initial creation, synchronization, native edits, formatting
+and undo/redo. Restoration waits for the actual native snapshot rather than clamping its
+saved offset against the empty editor. The full split-view test fails before this repair
+in both appearances, then passes with the restored reading line and bitmap text coverage
+identical to ordinary native paging (14,289 light / 15,507 dark ink samples). Generated
+native bitmap inspection confirms complete wrapped text, syntax colors, Chinese and emoji.
+This strengthens the native evidence; the final desktop relaunch check remains open while
+the Mac is locked.
 
 The full modernization goal stays active. No additional legacy implementation is deleted
 while the original target still consumes unmigrated renderer/accessory behavior. Release

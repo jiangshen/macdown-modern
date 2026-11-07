@@ -99,6 +99,14 @@ public struct MarkdownFormatCommands: Commands {
 @MainActor
 final class MarkdownTextView: NSTextView {
   let fileDrop = MarkdownFileDropHandler()
+  // The native snapshot may lag the reference model while a file loads.
+  private(set) weak var sourceDocument: MarkdownDocument?
+  private(set) var sourceRevision: UInt64?
+
+  func markSourceSynchronized(with document: MarkdownDocument) {
+    sourceDocument = document
+    sourceRevision = document.revision
+  }
   var viewportLayoutChanged: (@MainActor () -> Void)?
   var viewportInputBegan: (@MainActor () -> Void)?
 

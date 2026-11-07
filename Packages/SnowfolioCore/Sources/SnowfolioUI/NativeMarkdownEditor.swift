@@ -98,6 +98,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     editor.setAccessibilityIdentifier("markdownSourceEditor")
     editor.setAccessibilityLabel(String(localized: "Markdown source"))
     editor.string = document.text
+    editor.markSourceSynchronized(with: document)
     coordinator.editor = editor
     coordinator.highlighter.attach(to: editor, document: document)
     editor.delegate = coordinator
@@ -164,9 +165,11 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   static func synchronize(
     _ scrollView: NSScrollView, document: MarkdownDocument, coordinator: Coordinator
   ) {
-    guard let editor = scrollView.documentView as? NSTextView,
-      !editor.hasMarkedText(), !editor.string.utf8.elementsEqual(document.text.utf8)
+    guard let editor = scrollView.documentView as? MarkdownTextView,
+      !editor.hasMarkedText(), !editor.isReceivingMarkedText
     else { return }
+    defer { editor.markSourceSynchronized(with: document) }
+    guard !editor.string.utf8.elementsEqual(document.text.utf8) else { return }
     let previousSelection = editor.selectedRange()
     coordinator.isSynchronizing = true
     editor.string = document.text
@@ -287,6 +290,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       manager?.endUndoGrouping()
       editor.breakUndoCoalescing()
       document.acceptNativeEdit(editor.string)
+      (editor as? MarkdownTextView)?.markSourceSynchronized(with: document)
       scrolling?.sourceEditedOrNavigated()
       editor.scrollRangeToVisible(transaction.selection)
       return true
@@ -412,6 +416,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     public func textDidChange(_ notification: Notification) {
       guard !isSynchronizing, let editor = notification.object as? NSTextView else { return }
       document.acceptNativeEdit(editor.string)
+      (editor as? MarkdownTextView)?.markSourceSynchronized(with: document)
       scrolling?.sourceEditedOrNavigated()
       highlighter.invalidate()
       commands?.compositionChanged(editor.hasMarkedText())
@@ -421,6 +426,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       guard !isSynchronizing, let editor else { return }
       let revision = document.revision
       document.acceptNativeEdit(editor.string)
+      (editor as? MarkdownTextView)?.markSourceSynchronized(with: document)
       if document.revision != revision {
         scrolling?.sourceEditedOrNavigated()
         highlighter.invalidate()

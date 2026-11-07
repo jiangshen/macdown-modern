@@ -221,7 +221,8 @@ public final class DocumentScrollCoordinator: NSObject {
   }
 
   func captureSource() -> SourceReadingPosition? {
-    guard let editor, let clip, editor.window?.isVisible == true,
+    guard let document, let editor, let clip, editor.sourceDocument === document,
+      editor.sourceRevision == document.revision, editor.window?.isVisible == true,
       !editor.isHiddenOrHasHiddenAncestor,
       clip.bounds.height > 0
     else { return nil }
@@ -251,7 +252,9 @@ public final class DocumentScrollCoordinator: NSObject {
 
   @discardableResult
   private func moveSource(to reading: SourceReadingPosition) -> Bool {
-    guard reading.isValid, let editor, let clip, editor.window != nil,
+    guard reading.isValid, let document, let editor, let clip,
+      editor.sourceDocument === document, editor.sourceRevision == document.revision,
+      editor.window != nil,
       !editor.isHiddenOrHasHiddenAncestor, !editor.hasMarkedText(), clip.bounds.height > 0
     else { return false }
     applyingSource = true
