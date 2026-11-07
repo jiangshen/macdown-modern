@@ -16,6 +16,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   var callouts: CalloutEditorController? = nil
   let mode: WorkspaceMode
   @Binding var previewError: String?
+  var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
   @Binding var editorSelection: Data?
   @Environment(\.undoManager) private var undoManager
 
@@ -32,14 +33,15 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   private var editorSurface: EditorSurface {
     EditorSurface(
       document: document, preferences: preferences, commands: editing, undoManager: undoManager,
-      syntax: syntax, syntaxRevision: syntaxRevision, editorSelection: $editorSelection)
+      syntax: syntax, syntaxRevision: syntaxRevision, openDroppedFiles: openDroppedFiles,
+      editorSelection: $editorSelection)
   }
 
   private var previewSurface: PreviewSurface {
     PreviewSurface(
       html: html, directory: document.fileURL?.deletingLastPathComponent(),
       remoteImages: preferences.remoteImages, style: preferences.documentStyle, revision: revision,
-      callouts: callouts, error: $previewError
+      callouts: callouts, openDroppedFiles: openDroppedFiles, error: $previewError
     )
   }
 
@@ -107,6 +109,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     let undoManager: UndoManager?
     var syntax: MarkdownSyntax? = nil
     var syntaxRevision: UInt64? = nil
+    var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
     @Binding var editorSelection: Data?
     var body: some View {
       NativeMarkdownEditor(
@@ -114,7 +117,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
         fontSize: preferences.editorFontSize, behavior: preferences.editorBehavior,
         strikethroughEnabled: preferences.strikethrough, commands: commands,
         hostUndoManager: undoManager, syntax: syntax, syntaxRevision: syntaxRevision,
-        syntaxHighlighting: preferences.syntaxHighlighting, selectionStorage: $editorSelection
+        syntaxHighlighting: preferences.syntaxHighlighting, selectionStorage: $editorSelection,
+        openDroppedFiles: openDroppedFiles
       )
     }
   }
@@ -126,11 +130,12 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     var style: DocumentStyle = .init()
     var revision: UInt64? = nil
     var callouts: CalloutEditorController? = nil
+    var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
     @Binding var error: String?
     var body: some View {
       NativeMarkdownPreview(
         html: html, directory: directory, remoteImages: remoteImages, style: style,
-        revision: revision, callouts: callouts
+        revision: revision, callouts: callouts, openDroppedFiles: openDroppedFiles
       ) {
         error = $0
       }

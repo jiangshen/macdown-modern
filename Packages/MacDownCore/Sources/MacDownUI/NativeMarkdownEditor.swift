@@ -17,6 +17,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   public var syntaxRevision: UInt64?
   public var syntaxHighlighting: Bool
   public var selectionStorage: Binding<Data?>?
+  public var openDroppedFiles: (@MainActor ([URL]) -> Bool)?
   @Environment(\.undoManager) private var undoManager
 
   public init(
@@ -24,7 +25,8 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     behavior: EditorBehavior = .init(), strikethroughEnabled: Bool = true,
     commands: EditorCommandController? = nil, hostUndoManager: UndoManager? = nil,
     syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true,
-    selectionStorage: Binding<Data?>? = nil
+    selectionStorage: Binding<Data?>? = nil,
+    openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
   ) {
     self.document = document
     self.fontName = fontName
@@ -37,6 +39,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     self.syntaxRevision = syntaxRevision
     self.syntaxHighlighting = syntaxHighlighting
     self.selectionStorage = selectionStorage
+    self.openDroppedFiles = openDroppedFiles
   }
 
   public func makeCoordinator() -> Coordinator { Coordinator(document: document) }
@@ -49,6 +52,8 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     commands?.coordinator = context.coordinator
     context.coordinator.selectionStorage = selectionStorage
     let view = Self.makeScrollView(document: document, coordinator: context.coordinator)
+    (view.documentView as? MarkdownTextView)?.fileDrop.openFiles = openDroppedFiles
+    view.documentView?.registerForDraggedTypes([.fileURL])
     context.coordinator.restoreSelectionIfNeeded()
     return view
   }
@@ -113,6 +118,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     }
     Self.synchronize(scrollView, document: document, coordinator: context.coordinator)
     context.coordinator.restoreSelectionIfNeeded()
+    (scrollView.documentView as? MarkdownTextView)?.fileDrop.openFiles = openDroppedFiles
     guard let editor = scrollView.documentView as? NSTextView else { return }
     if let window = editor.window, window.firstResponder === window,
       !editor.isHiddenOrHasHiddenAncestor
@@ -168,6 +174,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   }
 
   public static func dismantleNSView(_ scrollView: NSScrollView, coordinator: Coordinator) {
+    (scrollView.documentView as? MarkdownTextView)?.fileDrop.openFiles = nil
     coordinator.highlighter.detach()
     (scrollView.documentView as? NSTextView)?.delegate = nil
     coordinator.undoManager = nil

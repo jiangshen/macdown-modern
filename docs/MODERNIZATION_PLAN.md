@@ -308,6 +308,27 @@ remains unavailable because automation enablement times out. No replaced legacy 
 file-lifecycle implementation was deleted while the old target still consumes it.
 See `docs/validation/native-tabs.json`.
 
+#### Markdown file drops — implemented increment (2026-11-06)
+
+The sidebar has a native Open Files button/drop destination, and the native source and
+preview surfaces route complete batches of local `.md`/`.markdown` file references to
+the document host. Non-Markdown and mixed drops fall through to the existing native
+surface behavior. The source is never replaced by dropped paths or contents. Only
+copy operations are accepted; no source file is moved or deleted. Batch opening retains
+original security-scoped URLs, deduplicates normalized references in order, balances
+explicit access, continues after file errors and stops on user cancellation. A newly
+created document window joins the originating group; an already-open document keeps
+its own existing group. Closing the anchor prevents late placement from reopening it.
+
+Six integration tests use private native pasteboards and real NSTextView/WKWebView
+surfaces, plus batch-failure/cancellation and native tab grouping checks. All 122 tests
+across 24 suites pass; native build-for-testing passes. The sidebar layout and its
+Open Files chooser were checked directly. Physical cross-window Finder dragging could
+not be completed through the current UI control surface (noWindowsAvailable), so that
+end-to-end acceptance check remains open. Do not equate protocol-level integration
+coverage with a completed Finder drag gesture. Sandboxed release access remains part
+of production readiness. See `docs/validation/file-drops.json`.
+
 ### M5 — Productivity and system features
 
 - Command palette/Quick Open/workspace search, optional syntax enhancements and table

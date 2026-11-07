@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-06",
+  "milestone": "Native multi-file drop routing; physical Finder gesture acceptance remains open",
+  "implemented": [
+    "Markdown file references on sidebar button, source and preview",
+    "Copy-only native drag operation; non-Markdown/mixed batches retain original surface handling",
+    "Sequential native document opening with ordered deduplication, scoped access and per-file errors",
+    "Cancellation stops batch; only newly created windows join original group"
+  ],
+  "tests": {
+    "count": 122,
+    "suites": 24,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "nativeBuild": "build-for-testing passed"
+  },
+  "nativeUI": [
+    "Observed native sidebar button in running app and inspected layout",
+    "Clicked Open Files; observed native multi-file chooser",
+    "Prepared two authored fixtures in Finder",
+    "Physical cross-window drag returned noWindowsAvailable; no new tabs were observed"
+  ],
+  "remaining": [
+    "Physical Finder multi-file drag into each destination",
+    "End-to-end native OpenDocumentAction from a delivered drag",
+    "Sandboxed release file access",
+    "Remaining tab restoration and accessibility gates"
+  ]
+}

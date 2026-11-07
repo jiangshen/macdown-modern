@@ -4,6 +4,8 @@ import SwiftUI
 public struct DocumentWorkspace: View {
   public let document: MarkdownDocument
   public let preferences: AppPreferences
+  @Environment(\.openDocument) private var openDocument
+  @State private var droppedDocuments = DroppedDocumentOpener()
   @State private var processor = MarkdownProcessor()
   @State private var output = DocumentExportController()
   @State private var editing = EditorCommandController()
@@ -41,26 +43,32 @@ public struct DocumentWorkspace: View {
 
   public var body: some View {
     NavigationSplitView {
-      List {
-        Section("Outline") {
-          if !headings.isEmpty {
-            ForEach(headings) { heading in
-              Button {
-                if mode == .preview { mode = .split }
-                document.navigate(toUTF16Offset: heading.utf16Offset)
-              } label: {
-                Text(heading.title.isEmpty ? String(localized: "Untitled heading") : heading.title)
+      VStack(spacing: 8) {
+        List {
+          Section("Outline") {
+            if !headings.isEmpty {
+              ForEach(headings) { heading in
+                Button {
+                  if mode == .preview { mode = .split }
+                  document.navigate(toUTF16Offset: heading.utf16Offset)
+                } label: {
+                  Text(
+                    heading.title.isEmpty ? String(localized: "Untitled heading") : heading.title
+                  )
                   .lineLimit(2)
                   .padding(.leading, CGFloat(heading.level - 1) * 10)
-              }.buttonStyle(.plain)
-                .disabled(parsedRevision != document.revision)
+                }.buttonStyle(.plain)
+                  .disabled(parsedRevision != document.revision)
+              }
+            } else {
+              Text("Headings appear here").foregroundStyle(.secondary)
             }
-          } else {
-            Text("Headings appear here").foregroundStyle(.secondary)
           }
         }
+        .listStyle(.sidebar)
+        DocumentDropButton(openFiles: openDroppedFiles)
+          .frame(height: 28).padding([.horizontal, .bottom], 12)
       }
-      .listStyle(.sidebar)
       .navigationSplitViewColumnWidth(min: 160, ideal: 210, max: 340)
     } detail: {
       VStack(spacing: 0) {
@@ -68,7 +76,8 @@ public struct DocumentWorkspace: View {
           document: document, preferences: preferences, editing: editing,
           html: previewHTML, syntax: sourceSyntax, syntaxRevision: parsedRevision,
           revision: renderedRevision, callouts: callouts, mode: mode,
-          previewError: $previewError, editorSelection: $editorSelection)
+          previewError: $previewError, openDroppedFiles: openDroppedFiles,
+          editorSelection: $editorSelection)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")
@@ -122,7 +131,7 @@ public struct DocumentWorkspace: View {
         .disabled(!output.isAvailable)
       }
       ToolbarItem {
-        if loading || output.isBusy {
+        if loading || output.isBusy || droppedDocuments.isOpening {
           ProgressView().controlSize(.small).accessibilityLabel("Updating preview")
         }
       }
@@ -152,7 +161,29 @@ public struct DocumentWorkspace: View {
     } message: {
       Text(output.errorMessage ?? "")
     }
+    .alert(
+      "Couldn’t Open Files",
+      isPresented: Binding(
+        get: { !droppedDocuments.failures.isEmpty },
+        set: { if !$0 { droppedDocuments.failures.removeAll() } }
+      )
+    ) {
+      Button("OK", role: .cancel) { droppedDocuments.failures.removeAll() }
+    } message: {
+      Text(droppedDocuments.failures.joined(separator: "\n"))
+    }
     .task(id: request) { await render(request) }
+  }
+
+  private func openDroppedFiles(_ urls: [URL]) -> Bool {
+    guard MarkdownFileDrop.accepts(urls) else { return false }
+    let anchor = DocumentWindowAnchor(output.window)
+    Task { @MainActor in
+      await droppedDocuments.open(urls, from: anchor) { url in
+        try await openDocument(at: url)
+      }
+    }
+    return true
   }
 
   private func render(_ request: RenderRequest) async {

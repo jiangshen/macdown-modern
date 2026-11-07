@@ -10,12 +10,14 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   public let style: DocumentStyle
   public let revision: UInt64?
   public let callouts: CalloutEditorController?
+  public var openDroppedFiles: (@MainActor ([URL]) -> Bool)?
   public var onError: @MainActor (String?) -> Void
 
   public init(
     html: String, directory: URL?, remoteImages: Bool = false, style: DocumentStyle = .init(),
     revision: UInt64? = nil,
     callouts: CalloutEditorController? = nil,
+    openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
     onError: @escaping @MainActor (String?) -> Void = { _ in }
   ) {
     self.html = html
@@ -25,6 +27,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     self.revision = revision
     self.callouts = callouts
     self.onError = onError
+    self.openDroppedFiles = openDroppedFiles
   }
 
   public func makeCoordinator() -> Coordinator { Coordinator() }
@@ -39,10 +42,12 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
 
   public func makeNSView(context: Context) -> WKWebView {
     let coordinator = context.coordinator
-    let view = WKWebView(
+    let view = MarkdownPreviewWebView(
       frame: .zero, configuration: Self.configuration(handler: coordinator.resources))
     view.setAccessibilityIdentifier("markdownPreview")
     view.setAccessibilityLabel(String(localized: "Markdown preview"))
+    view.registerForDraggedTypes([.fileURL])
+    view.fileDrop.openFiles = openDroppedFiles
     view.navigationDelegate = coordinator
     coordinator.onError = onError
     coordinator.callouts = callouts
@@ -53,6 +58,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   }
 
   public func updateNSView(_ view: WKWebView, context: Context) {
+    (view as? MarkdownPreviewWebView)?.fileDrop.openFiles = openDroppedFiles
     context.coordinator.onError = onError
     context.coordinator.callouts = callouts
     context.coordinator.update(
@@ -61,6 +67,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   }
 
   public static func dismantleNSView(_ view: WKWebView, coordinator: Coordinator) {
+    (view as? MarkdownPreviewWebView)?.fileDrop.openFiles = nil
     view.stopLoading()
     view.navigationDelegate = nil
     coordinator.resources.cancelAll()

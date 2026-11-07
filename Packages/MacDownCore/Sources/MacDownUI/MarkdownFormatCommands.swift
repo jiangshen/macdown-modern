@@ -98,6 +98,22 @@ public struct MarkdownFormatCommands: Commands {
 
 @MainActor
 final class MarkdownTextView: NSTextView {
+  let fileDrop = MarkdownFileDropHandler()
+
+  override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
+    fileDrop.operation(for: sender) ?? super.draggingEntered(sender)
+  }
+  override func draggingUpdated(_ sender: any NSDraggingInfo) -> NSDragOperation {
+    fileDrop.operation(for: sender) ?? super.draggingUpdated(sender)
+  }
+  override func prepareForDragOperation(_ sender: any NSDraggingInfo) -> Bool {
+    if let operation = fileDrop.operation(for: sender) { return operation == .copy }
+    return super.prepareForDragOperation(sender)
+  }
+  override func performDragOperation(_ sender: any NSDraggingInfo) -> Bool {
+    fileDrop.perform(sender) ?? super.performDragOperation(sender)
+  }
+
   weak var commandController: EditorCommandController?
   weak var syntaxHighlighter: NativeSyntaxHighlighter?
   private(set) var isReceivingMarkedText = false
