@@ -1607,3 +1607,12 @@ styles/templates, other editor/workspace/productivity and system integrations, r
 and VoiceOver gates, measured native performance, release/signing/notarization/install
 and default-handler readiness, and safe retirement of the coupled legacy target.
 The complete modernization goal remains active.
+
+
+Hosted run [42362496518](https://github.com/jiangshen/snowfolio/actions/runs/42362496518)
+for `27bc74d` passed both jobs. Downloaded evidence confirms all seven native UI tests
+(including the actual underline Settings/preview/⌘U/undo/redo/disabled-command sequence),
+208 package tests in 42 suites, eight arm64 executables and 652/652 core CommonMark
+examples. The native log still emits priority-inversion diagnostics; the existing
+performance attribution gate and live source-color repaint observation remain open.
+This is a verified development increment, not release readiness or full-goal completion.

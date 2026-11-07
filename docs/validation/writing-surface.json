@@ -26,6 +26,21 @@
         "native-app",
         "swift-foundations"
       ]
+    },
+    "additionalHostedRun": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42362496518",
+      "commit": "27bc74dc54319a77c8f49d6c36a8f9f1d71c1124",
+      "result": "passed",
+      "jobs": [
+        "native-app",
+        "swift-foundations"
+      ],
+      "nativeUITests": 7,
+      "packageTests": 208,
+      "packageSuites": 42,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "evidence": "Downloaded native xcodebuild log/result bundle and package/corpus artifacts; exact totals verified"
     }
   },
   "goal": "active; full modernization incomplete",
