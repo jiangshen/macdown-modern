@@ -78,7 +78,7 @@
     "change": "Shared generated markers and .5em gap for ordinary unstyled numbered/bulleted lists; shared hanging text edge",
     "preserved": [
       "Semantic ol/ul/li",
-      "Native list starts and selection/copy text",
+      "Native list starts and selected text against the native-marker baseline",
       "Wrapped hanging indentation",
       "Nested disc/circle/square appearance",
       "Authored type/style/class lists and individually styled items",
@@ -89,14 +89,28 @@
     "live": "Before seam reproduced; final rebuilt app removes bullet rectangle; First/Second/dfdfd share text edge, number spacing improved; user source unchanged and tabs preserved",
     "localValidation": {
       "nativeBuildForTesting": "passed",
-      "packageTests": 222,
-      "packageSuites": 43,
+      "packageTests": 223,
+      "packageSuites": 44,
       "arm64TestExecutables": 8,
       "changedSwiftStrictFormatting": "passed",
       "firstPartyDiffCheck": "passed"
     },
     "hosted": {
-      "result": "pending"
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42369808017",
+      "commit": "c5cfb6c41d2d85b15c0e5ef6c1947c70715b2b04",
+      "result": "passed",
+      "jobs": [
+        "swift-foundations",
+        "native-app"
+      ],
+      "packageTests": 223,
+      "packageSuites": 44,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": 8,
+      "evidence": "Downloaded exact package/corpus artifacts and native xcodebuild log/result bundle; totals verified",
+      "priorityInversionWarnings": 12,
+      "performanceAttribution": "Existing measured native performance and warning attribution gate remains open"
     }
   }
 }

@@ -1745,7 +1745,7 @@ Numbers also had only a .15em gap before text, while bullets used native spacing
 Ordinary unstyled numbered and bulleted lists now share a .5em marker-to-text gap,
 a common hanging text edge, and positioned generated markers. This removes the
 remaining native bullet marker selection seam while preserving semantic ol/ul/li,
-list start values, selection/copy text and wrapping. Native nested circle/square
+list start values, selected text and wrapping. Native nested circle/square
 appearances are retained. Explicit type/style/class lists, individually styled items
 and task checkboxes keep their own marker behavior. Property lists are excluded.
 
@@ -1756,3 +1756,14 @@ font/size change. Direct desktop checks reproduced the seam before rebuilding an
 confirmed it gone afterward, with aligned First/Second/dfdfd text and a clearer number
 gap. The user's current source bytes and original tabs were preserved. Evidence and
 final hosted state are tracked in `validation/list-selection.json`.
+
+
+### Hosted mixed-list acceptance
+
+Run [42369808017](https://github.com/jiangshen/snowfolio/actions/runs/42369808017),
+code commit `c5cfb6c41d2d85b15c0e5ef6c1947c70715b2b04`, passed both jobs. Downloaded
+artifacts verify 223 package tests / 44 suites, eight arm64 executables, all 652
+CommonMark examples and eight native document UI tests with zero failures. The
+mixed-list light/dark and compact/loose cases pass in the package job. Exact native
+runtime warning counts remain in the ledger; this does not close M6 attribution.
+The full modernization goal stays active.
