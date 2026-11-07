@@ -83,3 +83,42 @@ logical/allocated byte totals and preservation decisions are recorded in
 `validation/project-cleanup.json`. Moving bytes to Trash reduces active build clutter;
 it does **not** free disk space until Trash is emptied. No instruction to empty it was
 inferred. Current app output and current validation reports remain available.
+
+
+## Source-coordinate mapping cost — 2026-11-07
+
+The physical inline-coordinate correction adds a measured parsing cost. The comparison
+uses exact pre-change commit `a32f279` and the updated release arm64 audit executable,
+three fresh processes per version/workload/size, one first render and five warm renders
+per process, with alternating version order and sequential execution. Builds and
+Instruments do not overlap the timing matrix. Values below are the median of the three
+process warm medians; they are not typing latency or p95.
+
+| Workload | Bytes | Before ms | After ms |
+| --- | ---: | ---: | ---: |
+| prose | 100,000 | 1.53 | 2.12 |
+| prose | 1,000,000 | 13.70 | 16.41 |
+| prose | 10,000,000 | 150.92 | 172.32 |
+| mixed | 100,000 | 8.26 | 8.66 |
+| mixed | 1,000,000 | 86.77 | 92.30 |
+| mixed | 10,000,000 | 895.95 | 964.09 |
+| long-line | 100,000 | 3.24 | 3.34 |
+| long-line | 1,000,000 | 34.89 | 35.23 |
+| long-line | 10,000,000 | 397.44 | 414.73 |
+
+The initial implementation cost about 0.9 ms for the 100 KB mixed case. A bounded CPU
+profile of the 10 MB prose workload identified redundant line scanning and descendant
+traversal in mapping. Native finalized single-line bounds now avoid another scan, and
+verified identity maps skip descendant walks. The final mixed cost is about 0.4 ms at
+100 KB and 5.5 ms at 1 MB. This is a correctness cost, not a performance improvement over
+the pre-change parser. Peak RSS varies across the fresh-process samples; no memory
+improvement or absence of leaks is inferred. The 10 MB full-render paths remain outside
+the app’s automatic preview size guard and remain M6 optimization targets.
+
+The profile saved and exported 35,529 CPU samples after the first two seconds of a
+10.38-second bounded recording. Its command exited 54 after saving the time-limited
+trace; the decoded CPU data and exit status are both retained in the ledger. Inclusive
+sampled cycle shares overlap and are not wall-clock proportions. Full methodology,
+per-process medians/RSS, raw artifact paths and limitations are recorded in
+`validation/source-coordinates.json`. These measurements do not close native app typing,
+WebKit publication, energy, memory-growth or other M6 acceptance gates.

@@ -16,6 +16,7 @@ final class MarkdownSourceMetadata {
   private let source: String
   private(set) lazy var bytes = Array(source.utf8)
   private(set) lazy var lines = Self.lineRanges(bytes)
+  private lazy var inlineCoordinates = MarkdownInlineSourceCoordinates(source: self)
   private let collectDefinitions: Bool
   private(set) var definitions: [Definition] = []
 
@@ -27,6 +28,13 @@ final class MarkdownSourceMetadata {
     }
     native = extensionPointer
     cmark_syntax_extension_set_private(native, Unmanaged.passUnretained(self).toOpaque(), nil)
+    cmark_syntax_extension_set_inline_source_func(native) { extensionPointer, parent, entering in
+      guard let extensionPointer, let parent,
+        let pointer = cmark_syntax_extension_get_private(extensionPointer)
+      else { return }
+      Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
+        .inlineCoordinates.observe(parent, entering: entering != 0)
+    }
     if collectDefinitions {
       cmark_syntax_extension_set_block_source_func(native) { extensionPointer, node in
         guard let extensionPointer, let node,

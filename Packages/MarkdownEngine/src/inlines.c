@@ -311,7 +311,7 @@ static void adjust_subj_node_newlines(subject *subj, cmark_node *node, int match
   if (newlines) {
     subj->line += newlines;
     node->end_line += newlines;
-    node->end_column = since_newline;
+    node->end_column = since_newline + subj->block_offset;
     subj->column_offset = -subj->pos + since_newline + extra;
   }
 }
@@ -1013,7 +1013,7 @@ static cmark_node *handle_pointy_brace(subject *subj, int options) {
     contents = cmark_chunk_dup(&subj->input, subj->pos - 1, matchlen + 1);
     subj->pos += matchlen;
     cmark_node *node = make_raw_html(subj, subj->pos - matchlen - 1, subj->pos - 1, contents);
-    adjust_subj_node_newlines(subj, node, matchlen, 1, options);
+    adjust_subj_node_newlines(subj, node, matchlen + 1, 0, options);
     return node;
   }
 
@@ -1023,7 +1023,7 @@ static cmark_node *handle_pointy_brace(subject *subj, int options) {
       contents = cmark_chunk_dup(&subj->input, subj->pos - 1, matchlen + 1);
       subj->pos += matchlen;
       cmark_node *node = make_raw_html(subj, subj->pos - matchlen - 1, subj->pos - 1, contents);
-      adjust_subj_node_newlines(subj, node, matchlen, 1, options);
+      adjust_subj_node_newlines(subj, node, matchlen + 1, 0, options);
       return node;
     }
   }
@@ -1737,6 +1737,14 @@ static int parse_inline(cmark_parser *parser, subject *subj, cmark_node *parent,
   return 1;
 }
 
+static void notify_inline_source(cmark_parser *parser, cmark_node *parent, int entering) {
+  for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {
+    cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;
+    if (extension->inline_source_func)
+      extension->inline_source_func(extension, parent, entering);
+  }
+}
+
 // Parse inlines from parent's string_content, adding as children of parent.
 void cmark_parse_inlines(cmark_parser *parser,
                          cmark_node *parent,
@@ -1748,6 +1756,7 @@ void cmark_parse_inlines(cmark_parser *parser,
   if ((options & CMARK_OPT_PRESERVE_WHITESPACE) == 0)
     cmark_chunk_rtrim(&subj.input);
 
+  notify_inline_source(parser, parent, 1);
   while (!is_eof(&subj) && parse_inline(parser, &subj, parent, options))
     ;
 
@@ -1759,6 +1768,7 @@ void cmark_parse_inlines(cmark_parser *parser,
   while (subj.last_bracket) {
     pop_bracket(&subj);
   }
+  notify_inline_source(parser, parent, 0);
 }
 
 // Parse zero or more space characters, including at most one newline.

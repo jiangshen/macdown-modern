@@ -2135,3 +2135,38 @@ launched at 03:47:34 PST, before the latest theme/Settings executable rebuild at
 Mac remained locked. This checkpoint does not claim a fresh source-editor selection
 reproduction or visual confirmation of that user process. The mixed-list preview
 regressions remain passing. The full modernization goal stays active and incomplete.
+
+
+## Physical inline source coordinates — 2026-11-07
+
+New regressions reproduce misplaced native inline ranges on lazy list/quote continuation
+lines and partial-tab indentation, including Unicode text. Native inline buffers omit
+container prefixes and can replace the unconsumed part of a tab with spaces; their
+original first-line column base is insufficient for later physical source lines.
+
+A generic opt-in native inline-context observer now brackets both root and recursive
+extension calls. Swift derives physical coordinates only from byte-identical fragments,
+without another Markdown grammar or any source rewriting. Synthetic tab spaces point to
+the original tab byte. Nested contexts derive maps from their exact outer buffer slices;
+their descendants are reconciled once. Buffers are borrowed only inside the balanced
+callbacks, and root completion clears context bookkeeping. Native multiline endpoints
+retain the same context base as starts. A second regression proves and fixes the
+one-byte-short end of multiline HTML tags. All C replacements remain recorded and
+reversible to the original upstream hashes; application-owned mapping policy is Swift.
+
+Local validation passes **263 tests / 53 suites**, including actual TextKit fonts on
+lazy/partial-tab Unicode spans with unchanged source, selection, revision and undo.
+**25 source/syntax Address Sanitizer tests / four suites** pass with no diagnostics.
+Final arm64 app and corpus/hosted results are recorded in `validation/source-coordinates.json`.
+
+This does not close the complete source-coordinate gate: non-identity transformations
+such as escaped table-cell buffers and malformed/NUL replacement contexts need further
+characterization. Direct desktop selection/IME/VoiceOver/scroll/resize and full M6
+performance acceptance also remain open. The modernization goal remains active.
+
+
+Final local source-coordinate checks include the native arm64 app build, all eight
+arm64 test executables and 652/652 pinned CommonMark examples, with complete diagnostic
+captures and zero compiler warnings/errors. Every native replacement reverses to the
+recorded upstream source bytes. The source-map performance comparison and limitations
+are in `PERFORMANCE_AUDIT.md`; no native app latency or memory-leak claim is inferred.

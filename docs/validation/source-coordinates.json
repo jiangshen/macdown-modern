@@ -1,0 +1,455 @@
+{
+  "milestone": "Physical native inline source positions: lazy continuations, partial tabs and recursive callback contexts",
+  "date": "2026-11-07",
+  "fullGoal": "active; incomplete",
+  "reproduced": [
+    "Native strong spans on unindented list/quote continuations begin two or four bytes too far right",
+    "Partially consumed tabs leave synthetic spaces in native inline buffers, shifting Unicode highlighting",
+    "Recursive dialect contexts reuse their initial column base on later lines",
+    "Multiline native HTML endpoints omit the final tag byte"
+  ],
+  "implementation": [
+    "Generic opt-in cmark inline-context enter/exit observers; first-party mapping policy is Swift",
+    "Byte-identity-verified physical-line maps preserve native grammar, source bytes, literals and ownership",
+    "A partially consumed tab maps its synthetic leading spaces to the one original tab byte",
+    "Recursive contexts derive their map from the exact outer buffer slice; each descendant is mapped once",
+    "Native multiline endpoints now retain the context base; HTML counts the complete already-recognized lexeme",
+    "Only context-scoped pointers are borrowed; root completion clears recursive-context identities",
+    "Finalized single-line blocks avoid redundant scanning; already-correct positions avoid redundant descendant traversal"
+  ],
+  "validation": {
+    "packageTests": 263,
+    "packageSuites": 53,
+    "addressSanitizerTests": 25,
+    "addressSanitizerSuites": 4,
+    "packageDiagnostics": "complete captures; zero warnings/errors",
+    "nativeBuildForTesting": "passed; complete capture, zero compiler warnings/errors",
+    "nativeParserProvenance": "all local replacements reverse to exact upstream hashes",
+    "commonMark": {
+      "passed": 652,
+      "total": 652,
+      "mismatches": 0,
+      "specSHA256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20"
+    },
+    "arm64App": "verified",
+    "arm64TestExecutables": 8,
+    "changedSwiftStrictFormatting": "passed",
+    "firstPartyDiffCheck": "passed"
+  },
+  "tests": [
+    "LF/CRLF/CR, Unicode and exact inclusive byte endpoints",
+    "Lazy list/quote/nested quote-list continuations and whole/partial tab indentation",
+    "Native/legacy emphasis, underline, quotation, highlight, superscript, links, images, inline math and code",
+    "Recursive multiline children, following spans and full multiline HTML endpoints",
+    "Syntax-enabled and plain render models agree",
+    "Real TextKit fonts reach only the intended Unicode bold text; tail font, source bytes, selection, revision and undo remain correct"
+  ],
+  "performance": {
+    "baselineCommit": "a32f279",
+    "method": "Release arm64, exact prior commit versus optimized mapping worktree; three fresh processes each, one first and five warm renders per process; alternating order; sequential with no builds or Instruments overlapping. Median of process warm medians; not UI latency or p95.",
+    "scope": "Complete MarkdownProcessor render with syntax; excludes actual app typing/layout, WebKit publication, file I/O, math and diagrams",
+    "initialComparison": "/private/tmp/snowfolio-source-coordinate-performance/comparison.json",
+    "optimizedRawComparison": "/private/tmp/snowfolio-source-coordinate-performance-optimized/comparison.json",
+    "optimizedComparisonSHA256": "1229d3ea207625e7a42604d3cc1fe22fd8ff92265c024c2fbcfc7805039b9421",
+    "cases": [
+      {
+        "workload": "prose",
+        "bytes": 100000,
+        "warmMedianChangePercent": 38.93365903478252,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            1.479625,
+            1.565625,
+            1.529417
+          ],
+          "medianWarmMilliseconds": 1.529417,
+          "processPeakResidentBytes": [
+            12206080,
+            12042240,
+            12156928
+          ],
+          "firstRenderMilliseconds": [
+            2.043542,
+            1.897583,
+            1.87175
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            3.144875,
+            2.124875,
+            1.626
+          ],
+          "medianWarmMilliseconds": 2.124875,
+          "processPeakResidentBytes": [
+            12222464,
+            12320768,
+            12353536
+          ],
+          "firstRenderMilliseconds": [
+            5.224375,
+            2.829208,
+            1.916833
+          ]
+        }
+      },
+      {
+        "workload": "prose",
+        "bytes": 1000000,
+        "warmMedianChangePercent": 19.720807726331778,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            13.614417,
+            13.702958,
+            13.918208
+          ],
+          "medianWarmMilliseconds": 13.702958,
+          "processPeakResidentBytes": [
+            40042496,
+            40042496,
+            39976960
+          ],
+          "firstRenderMilliseconds": [
+            16.63775,
+            15.48675,
+            15.424625
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            16.405292,
+            16.569209,
+            16.240708
+          ],
+          "medianWarmMilliseconds": 16.405292,
+          "processPeakResidentBytes": [
+            39927808,
+            39927808,
+            39927808
+          ],
+          "firstRenderMilliseconds": [
+            18.260334,
+            18.320459,
+            18.076625
+          ]
+        }
+      },
+      {
+        "workload": "prose",
+        "bytes": 10000000,
+        "warmMedianChangePercent": 14.181170257528208,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            150.9155,
+            148.186959,
+            153.091916
+          ],
+          "medianWarmMilliseconds": 150.9155,
+          "processPeakResidentBytes": [
+            337756160,
+            337756160,
+            337838080
+          ],
+          "firstRenderMilliseconds": [
+            167.426875,
+            168.019,
+            173.691917
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            172.317084,
+            171.6,
+            180.890833
+          ],
+          "medianWarmMilliseconds": 172.317084,
+          "processPeakResidentBytes": [
+            337395712,
+            337395712,
+            337477632
+          ],
+          "firstRenderMilliseconds": [
+            194.312584,
+            193.294084,
+            202.216708
+          ]
+        }
+      },
+      {
+        "workload": "mixed",
+        "bytes": 100000,
+        "warmMedianChangePercent": 4.928978979560972,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            8.127333,
+            8.255584,
+            8.394083
+          ],
+          "medianWarmMilliseconds": 8.255584,
+          "processPeakResidentBytes": [
+            51576832,
+            51412992,
+            51445760
+          ],
+          "firstRenderMilliseconds": [
+            292.741333,
+            291.514333,
+            291.970167
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            8.809,
+            8.650792,
+            8.6625
+          ],
+          "medianWarmMilliseconds": 8.6625,
+          "processPeakResidentBytes": [
+            51396608,
+            51478528,
+            51494912
+          ],
+          "firstRenderMilliseconds": [
+            296.643875,
+            293.5175,
+            300.291542
+          ]
+        }
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "warmMedianChangePercent": 6.365358541230304,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            86.431875,
+            86.77175,
+            88.009292
+          ],
+          "medianWarmMilliseconds": 86.77175,
+          "processPeakResidentBytes": [
+            160055296,
+            159858688,
+            160251904
+          ],
+          "firstRenderMilliseconds": [
+            376.389625,
+            373.703583,
+            379.179583
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            92.016209,
+            92.295208,
+            92.295083
+          ],
+          "medianWarmMilliseconds": 92.295083,
+          "processPeakResidentBytes": [
+            160284672,
+            160202752,
+            160235520
+          ],
+          "firstRenderMilliseconds": [
+            382.009875,
+            379.962542,
+            382.328833
+          ]
+        }
+      },
+      {
+        "workload": "mixed",
+        "bytes": 10000000,
+        "warmMedianChangePercent": 7.605815043054376,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            891.860416,
+            901.92825,
+            895.948792
+          ],
+          "medianWarmMilliseconds": 895.948792,
+          "processPeakResidentBytes": [
+            1220214784,
+            1220329472,
+            1216561152
+          ],
+          "firstRenderMilliseconds": [
+            1234.785375,
+            1249.823708,
+            1264.563333
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            960.77525,
+            964.093,
+            966.097417
+          ],
+          "medianWarmMilliseconds": 964.093,
+          "processPeakResidentBytes": [
+            1155891200,
+            1155858432,
+            1156169728
+          ],
+          "firstRenderMilliseconds": [
+            1313.594334,
+            1296.350042,
+            1319.730458
+          ]
+        }
+      },
+      {
+        "workload": "long-line",
+        "bytes": 100000,
+        "warmMedianChangePercent": 2.8773900757169013,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            3.119083,
+            3.252375,
+            3.242209
+          ],
+          "medianWarmMilliseconds": 3.242209,
+          "processPeakResidentBytes": [
+            15777792,
+            15810560,
+            15564800
+          ],
+          "firstRenderMilliseconds": [
+            3.576917,
+            3.486542,
+            3.561583
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            3.327041,
+            3.3355,
+            3.355375
+          ],
+          "medianWarmMilliseconds": 3.3355,
+          "processPeakResidentBytes": [
+            15892480,
+            15925248,
+            15777792
+          ],
+          "firstRenderMilliseconds": [
+            3.668791,
+            3.665667,
+            3.620291
+          ]
+        }
+      },
+      {
+        "workload": "long-line",
+        "bytes": 1000000,
+        "warmMedianChangePercent": 0.98892237816397,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            34.185625,
+            34.886459,
+            34.88825
+          ],
+          "medianWarmMilliseconds": 34.886459,
+          "processPeakResidentBytes": [
+            76726272,
+            76709888,
+            75218944
+          ],
+          "firstRenderMilliseconds": [
+            37.603792,
+            35.921,
+            35.984958
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            35.231459,
+            34.59275,
+            35.412
+          ],
+          "medianWarmMilliseconds": 35.231459,
+          "processPeakResidentBytes": [
+            73940992,
+            73940992,
+            72482816
+          ],
+          "firstRenderMilliseconds": [
+            38.013,
+            37.900167,
+            37.87125
+          ]
+        }
+      },
+      {
+        "workload": "long-line",
+        "bytes": 10000000,
+        "warmMedianChangePercent": 4.349358354009691,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            397.444625,
+            405.31025,
+            396.077667
+          ],
+          "medianWarmMilliseconds": 397.444625,
+          "processPeakResidentBytes": [
+            766427136,
+            766492672,
+            766525440
+          ],
+          "firstRenderMilliseconds": [
+            396.399792,
+            397.3775,
+            392.137792
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            414.730916,
+            414.774666,
+            411.833709
+          ],
+          "medianWarmMilliseconds": 414.730916,
+          "processPeakResidentBytes": [
+            812138496,
+            812122112,
+            797933568
+          ],
+          "firstRenderMilliseconds": [
+            414.217542,
+            405.244625,
+            409.880834
+          ]
+        }
+      }
+    ],
+    "interpretation": "Accuracy has a measured background parsing cost. Peak RSS varies across fresh processes; these samples do not prove memory improvement, app latency, p95, energy behavior or M6 completion."
+  },
+  "profile": {
+    "trace": "/private/tmp/snowfolio-source-columns-prose.trace",
+    "analysis": "/private/tmp/snowfolio-source-columns-profile.json",
+    "samples": 35529,
+    "windowStartMilliseconds": 2000,
+    "recordingSeconds": 10.377361,
+    "endReason": "Time limit reached",
+    "recordCommandExitCode": 54,
+    "captureStatus": "Saved bounded trace, CPU table decoded successfully; command exit code retained rather than called a clean exit",
+    "finding": "Before optimization, inline mapping observation accounted for 23.66% inclusive sampled CPU cycles in the 10 MB prose workload; context creation 18.67%, inclusive shares overlap. Avoid redundant native line discovery and identity-map traversal."
+  },
+  "evidence": {
+    "failingColumns": "/private/tmp/snowfolio-source-columns-before.json",
+    "failingMultilineHTML": "/private/tmp/snowfolio-source-contexts.json",
+    "targeted": "/private/tmp/snowfolio-source-contexts-after.json",
+    "fullPackage": "/private/tmp/snowfolio-source-columns-final-full.json",
+    "sanitizer": "/private/tmp/snowfolio-source-columns-asan.json",
+    "nativeBuild": "/private/tmp/snowfolio-source-columns-native.json"
+  },
+  "remaining": [
+    "Non-identity native transformations, including escaped table-cell buffers and malformed/NUL replacement contexts, need further source-coordinate characterization",
+    "Direct desktop selection/IME/VoiceOver/scroll/resize acceptance",
+    "Native typing and publication performance, memory growth and energy measurements",
+    "Custom CSS/templates, remaining app feature parity and safe legacy retirement"
+  ],
+  "hosted": {
+    "result": "pending push"
+  }
+}

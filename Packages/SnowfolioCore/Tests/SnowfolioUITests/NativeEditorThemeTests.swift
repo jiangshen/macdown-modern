@@ -258,4 +258,50 @@ struct NativeEditorThemeTests {
       (attributes[.foregroundColor] as? NSColor)?.usingColorSpace(.sRGB)?.redComponent == 17.0 / 255
     )
   }
+
+  @Test("Physical lazy-list and partial-tab ranges decorate only the authored bold span")
+  func physicalSourceFonts() async throws {
+    let theme = try EditorTheme.parse("STRONG\nfont-size: 26px\nfont-style: bold\n")
+    let font = NSFont.monospacedSystemFont(ofSize: 14, weight: .regular)
+    for source in [
+      "- first\n**中文 😀** tail", "- first\r\n\t**中文 😀** tail",
+      "> first\r**中文 😀** tail", ">\t**中文 😀** tail",
+      "> before _start\n**中文 😀** end_ tail",
+    ] {
+      var options = MarkdownRenderingOptions()
+      options.underline = true
+      let parsed = try await MarkdownProcessor().render(
+        source, options: options, includeSyntax: true)
+      let document = MarkdownDocument(contents: TextFileContents(text: source))
+      let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+      let undo = UndoManager()
+      undo.groupsByEvent = false
+      coordinator.undoManager = undo
+      let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
+      let editor = try #require(scroll.documentView as? MarkdownTextView)
+      let window = NSWindow(
+        contentRect: NSRect(x: 0, y: 0, width: 700, height: 300),
+        styleMask: .titled, backing: .buffered, defer: false)
+      window.isReleasedWhenClosed = false
+      window.animationBehavior = .none
+      window.contentView = scroll
+      window.orderFront(nil)
+      defer { window.close() }
+      editor.font = font
+      let selection = (source as NSString).range(of: "中文 😀")
+      editor.setSelectedRange(selection)
+      coordinator.highlighter.update(
+        syntax: parsed.syntax, revision: 0, enabled: true, font: font,
+        document: document, theme: theme)
+      let bold = try laidOut(selection.location, in: editor).0
+      let actualFont = try #require(bold[.font] as? NSFont)
+      #expect(actualFont.pointSize == 26)
+      #expect(NSFontManager.shared.traits(of: actualFont).contains(.boldFontMask))
+      let tail = try laidOut((source as NSString).range(of: "tail").location, in: editor).0
+      #expect((tail[.font] as? NSFont)?.pointSize == 14)
+      #expect(editor.string.utf8.elementsEqual(source.utf8) && document.revision == 0)
+      #expect(editor.selectedRange() == selection && !undo.canUndo)
+    }
+  }
+
 }

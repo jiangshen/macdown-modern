@@ -44,6 +44,36 @@
       "before": "  if (new_inl != NULL) {\n    append_child(parent, new_inl);",
       "after": "  if (new_inl != NULL) {\n    S_update_link_context(subj, new_inl);\n    append_child(parent, new_inl);",
       "reason": "Apply the same context invariant to existing inline extension subtrees"
+    },
+    {
+      "before": "// Parse inlines from parent's string_content, adding as children of parent.",
+      "after": "static void notify_inline_source(cmark_parser *parser, cmark_node *parent, int entering) {\n  for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {\n    cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;\n    if (extension->inline_source_func)\n      extension->inline_source_func(extension, parent, entering);\n  }\n}\n\n// Parse inlines from parent's string_content, adding as children of parent.",
+      "reason": "Dispatch generic inline-context metadata observers at explicit native boundaries"
+    },
+    {
+      "before": "  while (!is_eof(&subj) && parse_inline(parser, &subj, parent, options))",
+      "after": "  notify_inline_source(parser, parent, 1);\n  while (!is_eof(&subj) && parse_inline(parser, &subj, parent, options))",
+      "reason": "Observe the context before native inline parsing, including recursive extension calls"
+    },
+    {
+      "before": "  while (subj.last_bracket) {\n    pop_bracket(&subj);\n  }\n}\n\n// Parse zero or more",
+      "after": "  while (subj.last_bracket) {\n    pop_bracket(&subj);\n  }\n  notify_inline_source(parser, parent, 0);\n}\n\n// Parse zero or more",
+      "reason": "Allow position-only reconciliation after native inline structure is complete"
+    },
+    {
+      "before": "    node->end_column = since_newline;",
+      "after": "    node->end_column = since_newline + subj->block_offset;",
+      "reason": "Keep multiline end columns in the same native context coordinate system as start columns"
+    },
+    {
+      "before": "\n    adjust_subj_node_newlines(subj, node, matchlen, 1, options);",
+      "after": "\n    adjust_subj_node_newlines(subj, node, matchlen + 1, 0, options);",
+      "reason": "Include the complete native HTML lexeme in multiline end positions; keep the following subject offset unchanged"
+    },
+    {
+      "before": "\n      adjust_subj_node_newlines(subj, node, matchlen, 1, options);",
+      "after": "\n      adjust_subj_node_newlines(subj, node, matchlen + 1, 0, options);",
+      "reason": "Include the complete native HTML lexeme in multiline end positions; keep the following subject offset unchanged"
     }
   ],
   "src/include/cmark-gfm.h": [
@@ -90,6 +120,11 @@
       "before": "  cmark_source_prefix_func        source_prefix_func;",
       "after": "  cmark_source_prefix_func        source_prefix_func;\n  cmark_block_source_func         block_source_func;",
       "reason": "Store an optional read-only block metadata observer independently of grammar callbacks"
+    },
+    {
+      "before": "  cmark_block_source_func         block_source_func;",
+      "after": "  cmark_block_source_func         block_source_func;\n  cmark_inline_source_func        inline_source_func;",
+      "reason": "Store an optional inline-context metadata observer"
     }
   ],
   "src/syntax_extension.c": [
@@ -107,6 +142,11 @@
       "before": "void cmark_syntax_extension_set_postprocess_func",
       "after": "void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func) {\n  extension->block_source_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
       "reason": "Assign the generic finalized-block metadata callback"
+    },
+    {
+      "before": "void cmark_syntax_extension_set_postprocess_func(",
+      "after": "void cmark_syntax_extension_set_inline_source_func(cmark_syntax_extension *extension,\n                                                   cmark_inline_source_func func) {\n  extension->inline_source_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func(",
+      "reason": "Install the opt-in inline-context metadata observer"
     }
   ],
   "src/include/cmark-gfm-extension_api.h": [
@@ -134,6 +174,16 @@
       "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
       "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
       "reason": "Declare generic finalized-block source observer; not an upstream API"
+    },
+    {
+      "before": "typedef cmark_node *(*cmark_postprocess_func)",
+      "after": "/** Snowfolio metadata bridge (not upstream): brackets one native inline\n * parsing context, including recursive extension subcontexts. entering is 1\n * before inline parsing and 0 after it. Observers may reconcile descendant\n * source positions on exit; content, ownership and grammar must remain intact.\n */\ntypedef void (*cmark_inline_source_func) (cmark_syntax_extension *extension,\n                                         cmark_node *parent,\n                                         int entering);\n\ntypedef cmark_node *(*cmark_postprocess_func)",
+      "reason": "Expose opt-in native inline-context boundaries without adding grammar"
+    },
+    {
+      "before": "void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func);",
+      "after": "void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_inline_source_func(cmark_syntax_extension *extension,\n                                                   cmark_inline_source_func func);",
+      "reason": "Declare the generic inline-context metadata observer setter"
     }
   ],
   "src/html.c": [

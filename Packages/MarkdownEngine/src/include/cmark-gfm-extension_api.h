@@ -269,6 +269,15 @@ typedef void (*cmark_source_prefix_func) (cmark_syntax_extension *extension,
 typedef void (*cmark_block_source_func) (cmark_syntax_extension *extension,
                                         cmark_node *node);
 
+/** Snowfolio metadata bridge (not upstream): brackets one native inline
+ * parsing context, including recursive extension subcontexts. entering is 1
+ * before inline parsing and 0 after it. Observers may reconcile descendant
+ * source positions on exit; content, ownership and grammar must remain intact.
+ */
+typedef void (*cmark_inline_source_func) (cmark_syntax_extension *extension,
+                                         cmark_node *parent,
+                                         int entering);
+
 typedef cmark_node *(*cmark_postprocess_func) (cmark_syntax_extension *extension,
                                                cmark_parser *parser,
                                                cmark_node *root);
@@ -428,6 +437,10 @@ void cmark_syntax_extension_set_source_prefix_func(cmark_syntax_extension *exten
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,
                                                   cmark_block_source_func func);
+
+CMARK_GFM_EXPORT
+void cmark_syntax_extension_set_inline_source_func(cmark_syntax_extension *extension,
+                                                   cmark_inline_source_func func);
 
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_postprocess_func(cmark_syntax_extension *extension,
