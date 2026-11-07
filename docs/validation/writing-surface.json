@@ -1,15 +1,15 @@
 {
   "product": "Snowfolio",
   "date": "2026-11-07",
-  "request": "Redesign the abrupt tab-strip / split-divider junction",
+  "request": "Extend both panes to the edges, including the preview; remove rounded inset gaps",
   "design": {
-    "topGapPoints": 12,
-    "sideAndBottomGutterPoints": 10,
-    "outerCornerRadiusPoints": 12,
-    "dividerEndInsetPoints": 18,
+    "topGapPoints": 0,
+    "sideAndBottomGutterPoints": 0,
+    "outerCornerRadiusPoints": 0,
+    "dividerEndInsetPoints": 0,
     "nativeTabBar": true,
     "nativeResizeTracking": true,
-    "semanticSeparatorColor": true,
+    "nativeFullHeightDivider": true,
     "editorAndPreviewInstancesPreserved": true
   },
   "verification": {
@@ -17,23 +17,46 @@
     "focusedTests": 16,
     "suites": 3,
     "result": "passed",
-    "live": [
-      "Both existing document tabs selected in turn",
-      "Editor-only, preview-only and split layouts",
-      "Split fraction restored",
-      "Original source and First selection preserved",
-      "Gap, rounded surface and shortened divider inspected in the app"
-    ],
-    "hostedCombinedRun": {
-      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42358487380",
-      "commit": "e15ebfc0f8b346028cdd20cd9c8b3f8b77dffd9d",
-      "result": "passed",
-      "nativeUITests": 6,
-      "packageTests": 199,
-      "packageSuites": 41,
-      "arm64TestExecutables": 8,
-      "commonMarkExamples": 652
-    }
+    "live": "Observed full-height divider and flush editor/preview surfaces in the running app; no inset preview corners or outer card gaps",
+    "hostedCurrentRun": "pending branch push; preceding combined run retained under history"
   },
-  "goal": "active; full modernization incomplete"
+  "goal": "active; full modernization incomplete",
+  "history": [
+    {
+      "design": {
+        "topGapPoints": 12,
+        "sideAndBottomGutterPoints": 10,
+        "outerCornerRadiusPoints": 12,
+        "dividerEndInsetPoints": 18,
+        "nativeTabBar": true,
+        "nativeResizeTracking": true,
+        "semanticSeparatorColor": true,
+        "editorAndPreviewInstancesPreserved": true
+      },
+      "verification": {
+        "nativeBuildForTesting": "passed",
+        "focusedTests": 16,
+        "suites": 3,
+        "result": "passed",
+        "live": [
+          "Both existing document tabs selected in turn",
+          "Editor-only, preview-only and split layouts",
+          "Split fraction restored",
+          "Original source and First selection preserved",
+          "Gap, rounded surface and shortened divider inspected in the app"
+        ],
+        "hostedCombinedRun": {
+          "run": "https://github.com/jiangshen/snowfolio/actions/runs/42358487380",
+          "commit": "e15ebfc0f8b346028cdd20cd9c8b3f8b77dffd9d",
+          "result": "passed",
+          "nativeUITests": 6,
+          "packageTests": 199,
+          "packageSuites": 41,
+          "arm64TestExecutables": 8,
+          "commonMarkExamples": 652
+        }
+      },
+      "supersededBy": "User requested edge-to-edge panes and no rounded preview gaps on 2026-11-07"
+    }
+  ]
 }

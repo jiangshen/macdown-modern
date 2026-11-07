@@ -1532,3 +1532,16 @@ passed both jobs, all six native document/Settings UI tests, 199 package tests i
 41 suites, eight arm64 test executables and all 652 core CommonMark examples.
 The updated writing surface is running on this Mac, with the original document
 text/selection and split mode restored. Full modernization remains active.
+
+
+### Current writing surface — edge-to-edge refinement (2026-11-07)
+
+The user superseded the inset-card design and requested both panes extend all the
+way, with no gaps around the preview's rounded surface. Removed the workspace
+outer padding/rounded clipping and the custom inset divider drawing. Both panes
+now fill the native content area, and the standard NSSplitView divider runs the
+full height. The native window's own corners and tab controls remain system-owned.
+The unused custom divider implementation was removed. Native build-for-testing,
+16 existing editing/pane/scroll tests and direct desktop inspection pass. The
+current geometry and historical inset design evidence are recorded separately in
+`validation/writing-surface.json`. This change does not alter document text.

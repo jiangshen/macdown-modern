@@ -1,4 +1,3 @@
-import AppKit
 import MarkdownCore
 import SwiftUI
 
@@ -88,12 +87,7 @@ public struct DocumentWorkspace: View {
           revision: renderedRevision, callouts: callouts, mode: mode,
           previewError: $previewError, openDroppedFiles: openDroppedFiles,
           editorSelection: $editorSelection, scrolling: scrolling, zoomScale: zoom.scale,
-          sourceViewportStorage: $sourceViewport, previewViewportStorage: $previewViewport
-        )
-        .clipShape(.rect(cornerRadius: 12))
-        .padding(.horizontal, 10)
-        .padding(.top, 12)
-        .padding(.bottom, 10)
+          sourceViewportStorage: $sourceViewport, previewViewportStorage: $previewViewport)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")
@@ -110,7 +104,6 @@ public struct DocumentWorkspace: View {
             .padding(6)
         }
       }
-      .background(Color(nsColor: .windowBackgroundColor))
     }
     .toolbar {
       ToolbarItem {
