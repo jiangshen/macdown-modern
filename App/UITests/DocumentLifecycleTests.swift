@@ -340,9 +340,11 @@ final class DocumentLifecycleTests: XCTestCase {
     let open = app.buttons["OKButton"].firstMatch
     XCTAssertTrue(open.waitForExistence(timeout: 5))
     open.click()
-    let reviewTitle = app.staticTexts["Review Theme"].firstMatch
-    XCTAssertTrue(reviewTitle.waitForExistence(timeout: 5), app.debugDescription)
-    app.buttons["Import"].click()
+    let review = settings.sheets.firstMatch
+    XCTAssertTrue(review.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(settings.sheets.count, 1)
+    XCTAssertTrue(review.staticTexts["Review Theme"].exists)
+    review.buttons["Import"].click()
     let imported = NSPredicate { _, _ in picker.value as? String == "Snowfolio UI Theme" }
     expectation(for: imported, evaluatedWith: nil)
     waitForExpectations(timeout: 8)

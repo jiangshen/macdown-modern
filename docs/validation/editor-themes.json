@@ -403,6 +403,21 @@
       "Actual desktop import/picker/selection visual acceptance",
       "Real IME/VoiceOver, resizing/scrolling and measured large-document theme performance",
       "Broad native source-coordinate acceptance, custom CSS/templates and coupled legacy retirement"
-    ]
+    ],
+    "hostedControlFollowUp": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42386924025",
+      "commit": "a14c38c8eb224b3b8c67439f02a9ad06a1a57c5b",
+      "result": "package passed; native test reached review after unique Import/Reload and successful file selection",
+      "nativeFailure": "Unscoped Import query also matched the macOS Touch Bar mirror. Native hierarchy shows the intended action inside the Settings alert sheet. Query now scopes to that single sheet; no production workaround or weakened import/undo assertion.",
+      "packageTests": 259,
+      "packageSuites": 52,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": {
+        "passed": 8,
+        "failed": 1
+      },
+      "finalHosted": "pending"
+    }
   }
 }

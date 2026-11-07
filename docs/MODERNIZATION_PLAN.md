@@ -2097,3 +2097,11 @@ buttons acquired the same identifier and "Custom themes" label. Compound theme r
 now keep their controls’ own identifiers/labels. The test explicitly requires one
 Import and one Reload match, without selecting an arbitrary duplicate. Eight existing
 UI methods passed; final import/review acceptance awaits the corrected hosted run.
+
+
+The corrected-control run `42386924025` again passes package/corpus checks. Native
+Import/Reload identities now pass, the `.style` panel selects the fixture, and Review
+Theme appears. The test’s global Import-button query also matched macOS’s Touch Bar
+mirror. The captured hierarchy identifies the intended action inside the Settings
+alert sheet; the query now scopes to that single sheet. Import/review/undo assertions
+remain intact. Final hosted acceptance is still pending rather than inferred.
