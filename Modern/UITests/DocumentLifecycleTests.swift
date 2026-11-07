@@ -7,7 +7,7 @@ final class DocumentLifecycleTests: XCTestCase {
     let app = XCUIApplication()
     app.launchArguments = [
       "-ApplePersistenceIgnoreState", "YES", "-NSQuitAlwaysKeepsWindows", "NO",
-      "-AppleWindowTabbingMode", "manual",
+      "-AppleWindowTabbingMode", "manual", "-preferDocumentTabs", "NO",
     ]
     app.launch()
     return app

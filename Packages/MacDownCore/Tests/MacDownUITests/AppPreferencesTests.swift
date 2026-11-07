@@ -40,6 +40,8 @@ struct AppPreferencesTests {
     #expect(preferences.editorFontSize == 18)
     #expect(!preferences.remoteImages)
     #expect(!preferences.rawHTML)
+    #expect(preferences.preferDocumentTabs)
+    preferences.preferDocumentTabs = false
     preferences.continueBlocks = true
     preferences.unorderedMarkerType = 1
     preferences.syntaxHighlighting = false
@@ -53,6 +55,7 @@ struct AppPreferencesTests {
     let reopened = AppPreferences(
       defaults: defaults, domainName: domain,
       legacyValues: ["extensionTables": false])
+    #expect(!reopened.preferDocumentTabs)
     #expect(reopened.editorBehavior.continueBlocks)
     #expect(reopened.editorBehavior.unorderedMarker == "+")
     #expect(reopened.editorBehavior.pairDelimiters)

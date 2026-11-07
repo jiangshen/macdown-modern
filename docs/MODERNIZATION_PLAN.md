@@ -261,6 +261,27 @@ future idea or a claim already established by DocumentGroup.
   restore the selected document/tab group after relaunch. Use current SDK APIs and
   native document-host evidence before marking this follow-on goal complete.
 
+#### Native tab foundation — verified increment (2026-11-06)
+
+Document windows now share an explicit tabbing identity and prefer native tabs by
+default, with a persisted Documents setting to follow the system preference instead.
+The bridge preserves the document host's delegate, window identity, restoration and
+close/save ownership. Workspace layout uses per-scene storage.
+
+Direct native checks opened two selected Markdown files in one tab group, created a
+third tab with the native “+” button, switched between independent sources, and undid
+an edit in its original tab without changing the other. A native integration test also
+checks separate selections/undo managers and closing one tab without changing the other.
+
+The complete follow-on goal remains open. A custom New Tab menu/Command-T action was
+removed from this increment: the generic document action reused a blank document, while
+sending the native responder action directly created a separate window. Keep the working
+native “+” control and complete explicit shortcut routing in the next pass. Finder routing,
+multi-file drops, duplicate-file activation, moving/merging/reordering, dirty-close cancel,
+full keyboard/VoiceOver behavior, and restoration of groups/selection/scroll still require
+end-to-end evidence. Scene storage alone does not establish restoration acceptance.
+See `docs/validation/native-tabs.json`.
+
 ### M5 — Productivity and system features
 
 - Command palette/Quick Open/workspace search, optional syntax enhancements and table

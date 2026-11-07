@@ -11,6 +11,7 @@ import RenderingCore
 public final class AppPreferences {
   @ObservationIgnored private let defaults: UserDefaults
 
+  public var preferDocumentTabs: Bool { didSet { save(preferDocumentTabs, "preferDocumentTabs") } }
   public var syntaxHighlighting: Bool {
     didSet { save(syntaxHighlighting, "editorSyntaxHighlighting") }
   }
@@ -65,6 +66,7 @@ public final class AppPreferences {
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }
+    preferDocumentTabs = boolean("preferDocumentTabs", fallback: true)
     frontMatter = boolean("htmlDetectFrontMatter", fallback: true)
     tableOfContents = boolean("htmlRendersTOC", fallback: true)
     codeHighlighting = boolean("htmlSyntaxHighlighting", fallback: true)

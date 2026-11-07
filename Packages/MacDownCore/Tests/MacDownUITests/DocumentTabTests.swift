@@ -1,0 +1,68 @@
+import AppKit
+import DocumentCore
+import Testing
+
+@testable import MacDownUI
+
+@Suite("Native document tabs", .serialized)
+@MainActor
+struct DocumentTabTests {
+  @Test("Native tab switching and closing preserve separate editors and undo histories")
+  func independentTabState() throws {
+    _ = NSApplication.shared
+    let first = MarkdownDocument(contents: TextFileContents(text: "first document"))
+    let second = MarkdownDocument(contents: TextFileContents(text: "second document"))
+    let firstManager = UndoManager()
+    let secondManager = UndoManager()
+    firstManager.groupsByEvent = false
+    secondManager.groupsByEvent = false
+    let firstCoordinator = NativeMarkdownEditor.Coordinator(document: first)
+    let secondCoordinator = NativeMarkdownEditor.Coordinator(document: second)
+    firstCoordinator.undoManager = firstManager
+    secondCoordinator.undoManager = secondManager
+    let firstScroll = NativeMarkdownEditor.makeScrollView(
+      document: first, coordinator: firstCoordinator)
+    let secondScroll = NativeMarkdownEditor.makeScrollView(
+      document: second, coordinator: secondCoordinator)
+    let firstEditor = try #require(firstScroll.documentView as? NSTextView)
+    let secondEditor = try #require(secondScroll.documentView as? NSTextView)
+    let firstWindow = NSWindow()
+    let secondWindow = NSWindow()
+    firstWindow.isReleasedWhenClosed = false
+    secondWindow.isReleasedWhenClosed = false
+    defer {
+      secondWindow.close()
+      firstWindow.close()
+    }
+    firstWindow.contentView = firstScroll
+    secondWindow.contentView = secondScroll
+    let originalIdentifier = NSUserInterfaceItemIdentifier("host-owned-document")
+    firstWindow.identifier = originalIdentifier
+    DocumentWindowPolicy.configure(firstWindow, preferTabs: true)
+    DocumentWindowPolicy.configure(secondWindow, preferTabs: true)
+    #expect(firstWindow.identifier == originalIdentifier)
+    firstWindow.addTabbedWindow(secondWindow, ordered: .above)
+    let group = try #require(firstWindow.tabGroup)
+    #expect(group.windows.count == 2)
+    #expect(secondWindow.tabGroup === group)
+
+    firstEditor.setSelectedRange(NSRange(location: 1, length: 3))
+    group.selectedWindow = secondWindow
+    secondEditor.setSelectedRange(NSRange(location: 0, length: 6))
+    secondManager.beginUndoGrouping()
+    secondEditor.insertText("changed", replacementRange: secondEditor.selectedRange())
+    secondManager.endUndoGrouping()
+    #expect(second.text == "changed document")
+    #expect(first.text == "first document")
+    #expect(firstEditor.selectedRange() == NSRange(location: 1, length: 3))
+    #expect(!firstManager.canUndo)
+    secondManager.undo()
+    #expect(second.text == "second document")
+    group.selectedWindow = firstWindow
+    #expect(firstEditor.string == "first document")
+    #expect(firstEditor.selectedRange() == NSRange(location: 1, length: 3))
+    secondWindow.close()
+    #expect(firstEditor.string == "first document")
+    #expect(firstWindow.tabGroup?.windows.count == 1)
+  }
+}

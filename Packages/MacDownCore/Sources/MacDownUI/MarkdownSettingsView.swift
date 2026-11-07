@@ -37,6 +37,14 @@ public struct MarkdownSettingsView: View {
       }
       Tab("Documents", systemImage: "doc.richtext") {
         Form {
+          Section("Windows") {
+            Toggle("Prefer tabs for new documents", isOn: $preferences.preferDocumentTabs)
+              .accessibilityIdentifier("preferDocumentTabs")
+            Text(
+              "Turn off to follow your Mac’s window setting. Tabs can also be moved into separate windows."
+            )
+            .font(.caption).foregroundStyle(.secondary)
+          }
           Section("Notebook style") {
             Text("Quiet typography and generous spacing for your preview and styled exports.")
               .font(.caption).foregroundStyle(.secondary)

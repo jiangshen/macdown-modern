@@ -168,22 +168,33 @@ public struct DocumentExportCommands: Commands {
 }
 
 struct DocumentWindowBridge: NSViewRepresentable {
+  let preferTabs: Bool
   let output: DocumentExportController
-  func makeNSView(context: Context) -> WindowView { WindowView(output: output) }
+  init(output: DocumentExportController, preferTabs: Bool = true) {
+    self.output = output
+    self.preferTabs = preferTabs
+  }
+  func makeNSView(context: Context) -> WindowView {
+    WindowView(output: output, preferTabs: preferTabs)
+  }
   func updateNSView(_ view: WindowView, context: Context) {
     view.output = output
+    view.preferTabs = preferTabs
     view.synchronizeWindow()
   }
   static func dismantleNSView(_ view: WindowView, coordinator: ()) { view.output?.window = nil }
 
   final class WindowView: NSView {
     weak var output: DocumentExportController?
-    init(output: DocumentExportController) {
+    var preferTabs: Bool
+    init(output: DocumentExportController, preferTabs: Bool) {
       self.output = output
+      self.preferTabs = preferTabs
       super.init(frame: .zero)
     }
     required init?(coder: NSCoder) { nil }
     func synchronizeWindow() {
+      if let window { DocumentWindowPolicy.configure(window, preferTabs: preferTabs) }
       guard output?.window !== window else { return }
       Task { @MainActor [weak self] in
         guard let self, self.output?.window !== self.window else { return }

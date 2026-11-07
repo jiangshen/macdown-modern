@@ -15,7 +15,7 @@ public struct DocumentWorkspace: View {
   @State private var previewLoadRevision: UInt64?
   @State private var previewOptions: MarkdownRenderingOptions?
   @State private var renderedRevision: UInt64?
-  @State private var mode = WorkspaceMode.split
+  @SceneStorage("workspaceMode") private var mode = WorkspaceMode.split
   @State private var manualRefresh = 0
   @State private var lastRequestedRefresh = 0
   @State private var loading = false
@@ -126,7 +126,10 @@ public struct DocumentWorkspace: View {
         }
       }
     }
-    .background(DocumentWindowBridge(output: output).frame(width: 0, height: 0))
+    .background(
+      DocumentWindowBridge(output: output, preferTabs: preferences.preferDocumentTabs).frame(
+        width: 0, height: 0)
+    )
     .focusedSceneValue(\.documentExport, output)
     .focusedSceneValue(\.markdownEditor, editing)
     .onChange(of: preferences.strikethrough, initial: true) { _, value in
