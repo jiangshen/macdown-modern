@@ -78,7 +78,9 @@ struct NativeSelectionRenderingTests {
   private func evaluate(_ script: String, in web: WKWebView) async throws -> String {
     try #require(
       try await web.callAsyncJavaScript(
-        script, arguments: [:], in: nil, contentWorld: .defaultClient)
+        "try {\n" + script
+          + "\n} catch (error) { throw new Error(stage + ': ' + error.name + ': ' + error.message); }",
+        arguments: ["stage": String(script.prefix(96))], in: nil, contentWorld: .defaultClient)
         as? String)
   }
 
@@ -89,7 +91,7 @@ struct NativeSelectionRenderingTests {
       try await evaluate(
         """
         const style=getComputedStyle(document.querySelector('li'),'::selection');
-        const context=document.createElement('canvas').getContext('2d');
+        const context=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
         context.canvas.width=2; context.canvas.height=1;
         context.fillStyle=getComputedStyle(document.body).backgroundColor; context.fillRect(0,0,2,1);
         context.fillStyle=style.backgroundColor; context.fillRect(0,0,2,1); context.fillRect(1,0,1,1);

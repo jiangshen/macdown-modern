@@ -61,5 +61,11 @@
     "nativeAppBuildForTesting": "passed",
     "strictChangedSwiftFormatting": "passed",
     "firstPartyDiffCheck": "passed"
+  },
+  "hostedInitialRun": {
+    "URL": "https://github.com/jiangshen/snowfolio/actions/runs/42350168475",
+    "nativeApp": "passed",
+    "packageJob": "failed in new regression: WebKit InvalidStateError on virtual runner; no skipped or weakened assertions",
+    "followUp": "Request CPU readback canvas and include script-stage diagnostics; subsequent hosted confirmation required"
   }
 }
