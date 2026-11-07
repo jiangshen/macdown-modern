@@ -8,7 +8,12 @@ public struct DocumentWorkspace: View {
   @State private var output = DocumentExportController()
   @State private var editing = EditorCommandController()
   @State private var callouts = CalloutEditorController()
-  @State private var rendered: RenderedMarkdown?
+  @State private var previewHTML = ""
+  @State private var sourceSyntax: MarkdownSyntax?
+  @State private var headings: [MarkdownHeading] = []
+  @State private var parsedRevision: UInt64?
+  @State private var previewLoadRevision: UInt64?
+  @State private var previewOptions: MarkdownRenderingOptions?
   @State private var renderedRevision: UInt64?
   @State private var mode = WorkspaceMode.split
   @State private var manualRefresh = 0
@@ -25,7 +30,9 @@ public struct DocumentWorkspace: View {
 
   private var request: RenderRequest {
     RenderRequest(
-      revision: preferences.manualRendering ? document.loadRevision : document.revision,
+      revision: preferences.manualRendering && !preferences.syntaxHighlighting
+        ? document.loadRevision : document.revision,
+      loadRevision: document.loadRevision, syntaxHighlighting: preferences.syntaxHighlighting,
       options: preferences.renderingOptions, manualRefresh: manualRefresh,
       manual: preferences.manualRendering)
   }
@@ -34,8 +41,8 @@ public struct DocumentWorkspace: View {
     NavigationSplitView {
       List {
         Section("Outline") {
-          if let rendered, !rendered.headings.isEmpty {
-            ForEach(rendered.headings) { heading in
+          if !headings.isEmpty {
+            ForEach(headings) { heading in
               Button {
                 if mode == .preview { mode = .split }
                 document.navigate(toUTF16Offset: heading.utf16Offset)
@@ -44,7 +51,7 @@ public struct DocumentWorkspace: View {
                   .lineLimit(2)
                   .padding(.leading, CGFloat(heading.level - 1) * 10)
               }.buttonStyle(.plain)
-                .disabled(renderedRevision != document.revision)
+                .disabled(parsedRevision != document.revision)
             }
           } else {
             Text("Headings appear here").foregroundStyle(.secondary)
@@ -57,7 +64,8 @@ public struct DocumentWorkspace: View {
       VStack(spacing: 0) {
         NativeDocumentSplit(
           document: document, preferences: preferences, editing: editing,
-          html: rendered?.html ?? "", revision: renderedRevision, callouts: callouts, mode: mode,
+          html: previewHTML, syntax: sourceSyntax, syntaxRevision: parsedRevision,
+          revision: renderedRevision, callouts: callouts, mode: mode,
           previewError: $previewError)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
@@ -150,15 +158,25 @@ public struct DocumentWorkspace: View {
       loading = true
       let revision = document.revision
       let result = try await processor.render(
-        source, options: request.options, interactiveCallouts: true)
+        source, options: request.options, interactiveCallouts: true,
+        includeSyntax: request.syntaxHighlighting)
       try Task.checkCancellation()
       guard revision == document.revision else {
         loading = false
         return
       }
-      callouts.setTargets(result.nodes, revision: revision)
-      rendered = result
-      renderedRevision = revision
+      sourceSyntax = result.syntax
+      headings = result.headings
+      parsedRevision = revision
+      if !request.manual || explicitlyRequested || renderedRevision == nil
+        || previewLoadRevision != request.loadRevision || previewOptions != request.options
+      {
+        callouts.setTargets(result.nodes, revision: revision)
+        previewHTML = result.html
+        renderedRevision = revision
+        previewLoadRevision = request.loadRevision
+        previewOptions = request.options
+      }
       error = nil
       loading = false
     } catch is CancellationError {
@@ -174,6 +192,8 @@ public struct DocumentWorkspace: View {
 
 private struct RenderRequest: Hashable {
   let revision: UInt64
+  let loadRevision: UInt64
+  let syntaxHighlighting: Bool
   let options: MarkdownRenderingOptions
   let manualRefresh: Int
   let manual: Bool

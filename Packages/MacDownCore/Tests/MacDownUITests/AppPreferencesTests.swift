@@ -32,6 +32,7 @@ struct AppPreferencesTests {
     #expect(!preferences.rawHTML)
     preferences.continueBlocks = true
     preferences.unorderedMarkerType = 1
+    preferences.syntaxHighlighting = false
     preferences.alerts = false
     preferences.tables = true
     preferences.manualRendering = true
@@ -45,6 +46,7 @@ struct AppPreferencesTests {
     #expect(reopened.editorBehavior.continueBlocks)
     #expect(reopened.editorBehavior.unorderedMarker == "+")
     #expect(reopened.editorBehavior.pairDelimiters)
+    #expect(!reopened.syntaxHighlighting)
     #expect(!reopened.renderingOptions.alerts)
     #expect(reopened.renderingOptions.tables)
     #expect(reopened.manualRendering)

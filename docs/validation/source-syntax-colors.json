@@ -1,0 +1,43 @@
+{
+  "milestone": "M3/M4 source syntax colors; full modernization remains active",
+  "date": "2026-11-06",
+  "implemented": [
+    "Optional persisted source syntax colors",
+    "Off-main AST-based UTF-16 syntax runs",
+    "Temporary TextKit 2 foreground/background attributes without source/storage/undo mutation",
+    "Cached viewport refresh and lazy offscreen validation",
+    "Stale-revision and marked-text rejection",
+    "Manual preview publication separated from source syntax parsing"
+  ],
+  "tests": {
+    "count": 91,
+    "suites": 19,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "nativeBuild": "build-for-testing passed; arm64 only",
+  "nativeUI": [
+    "Relaunched final development binary",
+    "Observed semantic heading/emphasis/link/code colors",
+    "Replaced Bold with Strong and observed updated preview",
+    "Native undo restored original source, selection and preview"
+  ],
+  "limitations": [
+    "Color-only source presentation; temporary font/decoration traits were not reliably honored in visual inspection",
+    "Custom source theme/font and remaining dialect parity pending",
+    "Existing 1 MiB automatic parse pause; no incremental parsing or performance claim",
+    "Real IME, broader accessibility/system appearance and XCUITest runner gates remain open"
+  ],
+  "legacyCleanup": {
+    "commit": "32b9624",
+    "removed": [
+      "NSString.matchesForPattern:",
+      "MPStringIsNewline"
+    ],
+    "linesRemoved": 17,
+    "evidence": "Only declarations/definitions appeared in repository symbol search; no callers or dynamic selector lookup found",
+    "fullLegacyBuild": "Not claimed; old dependency baseline remains unavailable"
+  },
+  "appleReference": "https://developer.apple.com/documentation/appkit/nstextlayoutmanager"
+}

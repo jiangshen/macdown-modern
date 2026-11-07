@@ -1,5 +1,6 @@
 import AppKit
 import EditorCore
+import MarkdownCore
 import SwiftUI
 
 /// Native editing surface. It never requests the legacy layoutManager, which would
@@ -12,12 +13,16 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   public var strikethroughEnabled: Bool
   public var commands: EditorCommandController?
   public var hostUndoManager: UndoManager?
+  public var syntax: MarkdownSyntax?
+  public var syntaxRevision: UInt64?
+  public var syntaxHighlighting: Bool
   @Environment(\.undoManager) private var undoManager
 
   public init(
     document: MarkdownDocument, fontName: String = "Menlo-Regular", fontSize: Double = 14,
     behavior: EditorBehavior = .init(), strikethroughEnabled: Bool = true,
-    commands: EditorCommandController? = nil, hostUndoManager: UndoManager? = nil
+    commands: EditorCommandController? = nil, hostUndoManager: UndoManager? = nil,
+    syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true
   ) {
     self.document = document
     self.fontName = fontName
@@ -26,6 +31,9 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     self.strikethroughEnabled = strikethroughEnabled
     self.commands = commands
     self.hostUndoManager = hostUndoManager
+    self.syntax = syntax
+    self.syntaxRevision = syntaxRevision
+    self.syntaxHighlighting = syntaxHighlighting
   }
 
   public func makeCoordinator() -> Coordinator { Coordinator(document: document) }
@@ -73,6 +81,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     editor.setAccessibilityLabel(String(localized: "Markdown source"))
     editor.string = document.text
     coordinator.editor = editor
+    coordinator.highlighter.attach(to: editor, document: document)
     editor.delegate = coordinator
     scrollView.documentView = editor
     return scrollView
@@ -96,7 +105,9 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     let size = min(72, max(8, fontSize))
     let font =
       NSFont(name: fontName, size: size) ?? .monospacedSystemFont(ofSize: size, weight: .regular)
-    if editor.font != font { editor.font = font }
+    context.coordinator.highlighter.update(
+      syntax: syntax, revision: syntaxRevision,
+      enabled: syntaxHighlighting, font: font, document: document)
     if let request = document.selectionRequest,
       request.id != context.coordinator.selectionID, !editor.hasMarkedText()
     {
@@ -135,10 +146,12 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       end = max(location, end - 1)
     }
     editor.setSelectedRange(NSRange(location: location, length: end - location))
+    coordinator.highlighter.invalidate()
     coordinator.isSynchronizing = false
   }
 
   public static func dismantleNSView(_ scrollView: NSScrollView, coordinator: Coordinator) {
+    coordinator.highlighter.detach()
     (scrollView.documentView as? NSTextView)?.delegate = nil
     coordinator.undoManager = nil
     coordinator.commands?.focusChanged(false)
@@ -148,6 +161,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
 
   @MainActor
   public final class Coordinator: NSObject, NSTextViewDelegate {
+    let highlighter = NativeSyntaxHighlighter()
     var document: MarkdownDocument
     weak var editor: NSTextView?
     weak var undoManager: UndoManager? {
@@ -325,12 +339,15 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     public func textDidChange(_ notification: Notification) {
       guard !isSynchronizing, let editor = notification.object as? NSTextView else { return }
       document.acceptNativeEdit(editor.string)
+      highlighter.invalidate()
       commands?.compositionChanged(editor.hasMarkedText())
     }
 
     @objc private func undoStateChanged(_ notification: Notification) {
       guard !isSynchronizing, let editor else { return }
+      let revision = document.revision
       document.acceptNativeEdit(editor.string)
+      if document.revision != revision { highlighter.invalidate() }
     }
 
     public func undoManager(for view: NSTextView) -> UndoManager? { undoManager }

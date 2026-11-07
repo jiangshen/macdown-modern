@@ -99,6 +99,7 @@ public struct MarkdownFormatCommands: Commands {
 @MainActor
 final class MarkdownTextView: NSTextView {
   weak var commandController: EditorCommandController?
+  weak var syntaxHighlighter: NativeSyntaxHighlighter?
   private(set) var isReceivingMarkedText = false
   private(set) var isReadingPasteboard = false
 
@@ -115,12 +116,15 @@ final class MarkdownTextView: NSTextView {
     defer {
       isReceivingMarkedText = false
       commandController?.compositionChanged(hasMarkedText())
+      syntaxHighlighter?.compositionChanged()
     }
+    syntaxHighlighter?.invalidate()
     super.setMarkedText(string, selectedRange: selectedRange, replacementRange: replacementRange)
   }
 
   override func unmarkText() {
     super.unmarkText()
+    syntaxHighlighter?.compositionChanged()
     commandController?.compositionChanged(hasMarkedText())
   }
   override func becomeFirstResponder() -> Bool {

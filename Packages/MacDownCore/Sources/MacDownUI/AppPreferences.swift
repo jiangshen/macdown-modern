@@ -10,6 +10,9 @@ import RenderingCore
 public final class AppPreferences {
   @ObservationIgnored private let defaults: UserDefaults
 
+  public var syntaxHighlighting: Bool {
+    didSet { save(syntaxHighlighting, "editorSyntaxHighlighting") }
+  }
   public var alerts: Bool { didSet { save(alerts, "extensionAlerts") } }
   public var tables: Bool { didSet { save(tables, "extensionTables") } }
   public var strikethrough: Bool { didSet { save(strikethrough, "extensionStrikethough") } }
@@ -55,6 +58,7 @@ public final class AppPreferences {
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }
+    syntaxHighlighting = boolean("editorSyntaxHighlighting", fallback: true)
     alerts = boolean("extensionAlerts", fallback: true)
     tables = boolean("extensionTables", fallback: true)
     strikethrough = boolean("extensionStrikethough", fallback: true)

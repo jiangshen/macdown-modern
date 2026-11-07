@@ -1,4 +1,5 @@
 import AppKit
+import MarkdownCore
 import RenderingCore
 import SwiftUI
 
@@ -9,6 +10,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   let preferences: AppPreferences
   let editing: EditorCommandController
   let html: String
+  var syntax: MarkdownSyntax? = nil
+  var syntaxRevision: UInt64? = nil
   var revision: UInt64? = nil
   var callouts: CalloutEditorController? = nil
   let mode: WorkspaceMode
@@ -27,7 +30,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
 
   private var editorSurface: EditorSurface {
     EditorSurface(
-      document: document, preferences: preferences, commands: editing, undoManager: undoManager)
+      document: document, preferences: preferences, commands: editing, undoManager: undoManager,
+      syntax: syntax, syntaxRevision: syntaxRevision)
   }
 
   private var previewSurface: PreviewSurface {
@@ -100,12 +104,15 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     let preferences: AppPreferences
     let commands: EditorCommandController
     let undoManager: UndoManager?
+    var syntax: MarkdownSyntax? = nil
+    var syntaxRevision: UInt64? = nil
     var body: some View {
       NativeMarkdownEditor(
         document: document, fontName: preferences.editorFontName,
         fontSize: preferences.editorFontSize, behavior: preferences.editorBehavior,
         strikethroughEnabled: preferences.strikethrough, commands: commands,
-        hostUndoManager: undoManager
+        hostUndoManager: undoManager, syntax: syntax, syntaxRevision: syntaxRevision,
+        syntaxHighlighting: preferences.syntaxHighlighting
       )
     }
   }

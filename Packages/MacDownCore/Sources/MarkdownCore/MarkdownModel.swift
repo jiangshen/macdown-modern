@@ -87,6 +87,7 @@ public struct RenderedMarkdown: Sendable {
   public let html: String
   public let nodes: [MarkdownNode]
   public let headings: [MarkdownHeading]
+  public let syntax: MarkdownSyntax?
 }
 
 public enum MarkdownRenderingError: Error, Sendable {

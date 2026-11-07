@@ -11,6 +11,8 @@ public struct MarkdownSettingsView: View {
       Tab("Editor", systemImage: "textformat") {
         Form {
           Section("Typography") {
+            Toggle("Highlight Markdown syntax", isOn: $preferences.syntaxHighlighting)
+              .accessibilityIdentifier("editorSyntaxHighlighting")
             TextField("Font name", text: $preferences.editorFontName)
             Stepper(
               "Font size: \(Int(preferences.editorFontSize)) pt",

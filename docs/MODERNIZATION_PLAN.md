@@ -684,3 +684,39 @@ highlighting, custom theme migration, broader accessibility/system-appearance ch
 the older Settings inspection issue and the remaining roadmap stay open. No legacy
 implementation is deleted at this partial feature gate, and no release/default handler
 is installed or changed before the core reliability/parity gates.
+
+## Source syntax colors and progressive cleanup — 2026-11-06
+
+The source editor now has an optional, persisted “Highlight Markdown syntax” setting.
+Parser-owned ranges drive semantic heading, emphasis, link, code, quote/comment and
+marker colors through native TextKit 2 rendering attributes. The original source stays
+fully visible. Off-main AST processing composes nested styles, maps UTF-8 endpoints to
+UTF-16 in one scalar pass and resolves overlapping ranges with an event sweep. Native
+presentation binary-searches runs for cached/visible fragments; scrolling uses the
+validator rather than forcing full-document layout. Source edits invalidate old styles;
+stale revisions and marked-text composition cannot apply styles to different text.
+
+Source syntax/outline parsing is separate from preview publication: manual preview can
+stay unchanged while source syntax follows edits. Exports opt out of syntax generation.
+The existing 1 MiB automatic-parse threshold remains; this is not incremental parsing.
+The editor maintains its selected base font and layout metrics. Actual visual inspection
+showed temporary font/decoration traits were not reliably honored by NSTextView, so the
+final implementation uses supported foreground/background colors and does not claim
+source bold/italic/strikethrough glyph styling. Preview/export formatting is unaffected.
+Custom source themes, font treatments and remaining dialect parity are still required.
+
+Validation: 91 tests in 19 suites passed, with seven native arm64 executables. Tests cover
+nested styles, Unicode/CR/LF/CRLF boundaries, literal fenced/indented code, optional syntax
+without HTML/AST changes, 2,000 spans on a Unicode line, native temporary color attributes,
+unchanged storage/selection/undo, stale snapshots, composition and preference persistence.
+Native app build-for-testing and strict Swift formatting passed. The final development
+binary was relaunched: heading/emphasis/link/code colors were visually observed, then
+“Bold” was changed to “Strong” and native undo restored the exact original text/preview.
+This does not close real IME, VoiceOver, system-appearance or XCUITest runner gates.
+
+The user's renewed request to progressively delete unneeded original code is part of
+each migration increment. Two verified dead legacy helpers (17 lines including their
+declarations) were removed in a separate commit; the retirement ledger is in
+`SOURCE_INVENTORY.md`. Helpers and subsystems with remaining callers/parity gaps stay
+until their replacement is verified. No essential writing feature, license or still-used
+resource was removed. The full modernization goal remains active.

@@ -13,7 +13,7 @@ public actor MarkdownProcessor {
 
   public func render(
     _ source: String, options: MarkdownRenderingOptions = .init(),
-    interactiveCallouts: Bool = false,
+    interactiveCallouts: Bool = false, includeSyntax: Bool = false,
     transformDestination: (@Sendable (MarkdownNodeKind, String) throws -> String)? = nil
   ) throws
     -> RenderedMarkdown
@@ -141,6 +141,8 @@ public actor MarkdownProcessor {
       throw MarkdownRenderingError.allocationFailure
     }
     defer { free(html) }
-    return RenderedMarkdown(html: String(cString: html), nodes: nodes, headings: headings)
+    return RenderedMarkdown(
+      html: String(cString: html), nodes: nodes, headings: headings,
+      syntax: includeSyntax ? try MarkdownSyntax.build(source: source, nodes: nodes) : nil)
   }
 }
