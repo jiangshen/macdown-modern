@@ -22,6 +22,8 @@ public actor MarkdownProcessor {
     -> RenderedMarkdown
   {
     try Task.checkCancellation()
+    let front = options.frontMatter ? try MarkdownFrontMatter.detect(in: source) : nil
+    let parserSource = front?.maskedSource ?? source
     _ = Self.registeredExtensions
     var flags = CMARK_OPT_SOURCEPOS | CMARK_OPT_VALIDATE_UTF8
     if options.footnotes { flags |= CMARK_OPT_FOOTNOTES }
@@ -42,7 +44,7 @@ public actor MarkdownProcessor {
       }
       cmark_parser_attach_syntax_extension(parser, ext)
     }
-    try source.utf8CString.withUnsafeBufferPointer { bytes in
+    try parserSource.utf8CString.withUnsafeBufferPointer { bytes in
       guard let base = bytes.baseAddress else { return }
       let length = bytes.count - 1
       for offset in stride(from: 0, to: length, by: 65_536) {
@@ -61,6 +63,9 @@ public actor MarkdownProcessor {
     defer { cmark_iter_free(iterator) }
     var nodes: [MarkdownNode] = []
     var headings: [MarkdownHeading] = []
+    var headingNodes: [UnsafeMutablePointer<cmark_node>] = []
+    var tocNodes: [UnsafeMutablePointer<cmark_node>] = []
+    var anchors = HeadingAnchors()
     var lineStarts = [0]
     var offset = 0
     var previousCR = false
@@ -111,6 +116,11 @@ public actor MarkdownProcessor {
             line: Int(cmark_node_get_end_line(node)), column: Int(cmark_node_get_end_column(node)))
         ) : nil
       if options.codeHighlighting, kind == .codeBlock { codeBlocks.append(node) }
+      if options.tableOfContents, kind == .paragraph,
+        MarkdownNavigation.isTableOfContents(node, source: sourceText, lineStarts: lineStarts)
+      {
+        tocNodes.append(node)
+      }
       var marker: CalloutMarker?
       if options.alerts, kind == .blockquote, line > 0, line <= lineStarts.count {
         let start = lineStarts[line - 1]
@@ -126,13 +136,23 @@ public actor MarkdownProcessor {
           destination: cmark_node_get_url(node).map { String(cString: $0) },
           headingLevel: kind == .heading ? Int(cmark_node_get_heading_level(node)) : nil,
           callout: marker?.kind, calloutEmoji: marker?.emoji))
+      if kind == .document, let metadata = front?.metadata {
+        nodes.append(
+          MarkdownNode(
+            id: nodes.count, parentID: id, kind: .frontMatter, range: metadata.range,
+            literal: sourceText.substring(with: metadata.utf16Range), destination: nil,
+            headingLevel: nil, callout: nil, calloutEmoji: nil))
+      }
       if kind == .heading, let title = cmark_render_plaintext(node, 0, 0) {
+        let headingTitle = String(cString: title).trimmingCharacters(in: .newlines)
+        headingNodes.append(node)
         headings.append(
           MarkdownHeading(
             id: id,
-            title: String(cString: title).trimmingCharacters(in: .newlines),
+            title: headingTitle,
             level: Int(cmark_node_get_heading_level(node)), sourceLine: line,
-            utf16Offset: lineStarts[min(max(0, line - 1), lineStarts.count - 1)]))
+            utf16Offset: lineStarts[min(max(0, line - 1), lineStarts.count - 1)],
+            anchor: anchors.next(for: headingTitle)))
         free(title)
       }
     }
@@ -140,6 +160,14 @@ public actor MarkdownProcessor {
     for (quote, marker) in callouts {
       try Task.checkCancellation()
       try marker.kind.decorate(quote, emoji: marker.emoji, interactive: interactiveCallouts)
+    }
+    for (index, node) in headingNodes.enumerated() {
+      try Task.checkCancellation()
+      try MarkdownNavigation.decorateHeading(node, heading: headings[index], index: index)
+    }
+    if !tocNodes.isEmpty {
+      let toc = try MarkdownNavigation.tableOfContents(headings)
+      for node in tocNodes { try MarkdownNavigation.decorateTOC(node, html: toc) }
     }
     var highlightedCodeBlocks = 0
     for block in codeBlocks {
@@ -176,8 +204,9 @@ public actor MarkdownProcessor {
     }
     defer { free(html) }
     return RenderedMarkdown(
-      html: String(cString: html), nodes: nodes, headings: headings,
+      html: (front?.metadata?.html ?? "") + String(cString: html), nodes: nodes, headings: headings,
       syntax: includeSyntax ? try MarkdownSyntax.build(source: source, nodes: nodes) : nil,
-      highlightedCodeBlocks: highlightedCodeBlocks)
+      highlightedCodeBlocks: highlightedCodeBlocks, frontMatter: front?.metadata,
+      notices: front?.notice.map { [$0] } ?? [])
   }
 }

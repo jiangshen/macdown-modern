@@ -14,6 +14,8 @@ public final class AppPreferences {
   public var syntaxHighlighting: Bool {
     didSet { save(syntaxHighlighting, "editorSyntaxHighlighting") }
   }
+  public var frontMatter: Bool { didSet { save(frontMatter, "htmlDetectFrontMatter") } }
+  public var tableOfContents: Bool { didSet { save(tableOfContents, "htmlRendersTOC") } }
   public var codeHighlighting: Bool { didSet { save(codeHighlighting, "htmlSyntaxHighlighting") } }
   public var codeTheme: CodeHighlightTheme {
     didSet { defaults.set(codeTheme.rawValue, forKey: "htmlHighlightingThemeName") }
@@ -63,6 +65,8 @@ public final class AppPreferences {
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }
+    frontMatter = boolean("htmlDetectFrontMatter", fallback: true)
+    tableOfContents = boolean("htmlRendersTOC", fallback: true)
     codeHighlighting = boolean("htmlSyntaxHighlighting", fallback: true)
     codeTheme = .legacyName(defaults.string(forKey: "htmlHighlightingThemeName"))
     syntaxHighlighting = boolean("editorSyntaxHighlighting", fallback: true)
@@ -112,6 +116,8 @@ public final class AppPreferences {
 
   public var renderingOptions: MarkdownRenderingOptions {
     var options = MarkdownRenderingOptions()
+    options.frontMatter = frontMatter
+    options.tableOfContents = tableOfContents
     options.codeHighlighting = codeHighlighting
     options.alerts = alerts
     options.tables = tables

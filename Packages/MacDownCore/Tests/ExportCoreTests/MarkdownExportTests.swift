@@ -119,4 +119,24 @@ struct MarkdownExportTests {
     #expect(plain.fragment.contains("let greeting = &quot;Hello&quot;"))
   }
 
+  @Test("Properties, heading IDs and TOC links are preserved in standalone exports")
+  func metadataNavigation() async throws {
+    let source = "---\ntitle: '<b>Kept literal</b>'\n---\n\n[TOC]\n\n# Heading\n\n## 中文"
+    let output = try await MarkdownExport.build(source: source, title: "Metadata", directory: nil)
+    #expect(output.fragment.contains("md-frontmatter"))
+    #expect(output.fragment.contains("&lt;b&gt;Kept literal&lt;/b&gt;"))
+    #expect(output.fragment.contains("href=\"#heading\""))
+    #expect(output.fragment.contains("id=\"heading\""))
+    #expect(output.fragment.contains("id=\"toc_1\""))
+    #expect(!output.document.contains("<script"))
+    var options = MarkdownRenderingOptions()
+    options.frontMatter = false
+    options.tableOfContents = false
+    let plain = try await MarkdownExport.build(
+      source: source, options: options, title: "Metadata", directory: nil, includeStyles: false)
+    #expect(!plain.fragment.contains("md-frontmatter"))
+    #expect(!plain.fragment.contains("md-toc"))
+    #expect(plain.fragment.contains("[TOC]"))
+  }
+
 }

@@ -245,7 +245,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
           let line = Int(url.path.dropFirst()), line > 0
         {
           showCalloutPicker(line: line, in: webView)
-        } else if let fragment = url.fragment, ["mdasset", "about"].contains(url.scheme ?? "") {
+        } else if let fragment = URLComponents(url: url, resolvingAgainstBaseURL: false)?.fragment,
+          ["mdasset", "about"].contains(url.scheme ?? "")
+        {
           webView.callAsyncJavaScript(
             "document.getElementById(id)?.scrollIntoView();",
             arguments: ["id": fragment], in: nil, in: .defaultClient)

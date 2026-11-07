@@ -67,6 +67,10 @@ public struct MarkdownSettingsView: View {
       }
       Tab("Markdown", systemImage: "text.document") {
         Form {
+          Toggle("Show YAML front matter as properties", isOn: $preferences.frontMatter)
+            .accessibilityIdentifier("markdownFrontMatter")
+          Toggle("Expand [TOC] into a table of contents", isOn: $preferences.tableOfContents)
+            .accessibilityIdentifier("markdownTableOfContents")
           Toggle("Notes, tips and warnings", isOn: $preferences.alerts)
             .accessibilityIdentifier("markdownAlerts")
           Toggle("Tables", isOn: $preferences.tables)

@@ -132,3 +132,12 @@ language components, the eight built-in themes, MIT notice, catalog and provenan
 app. This replaces the modern app's need for legacy Prism loaders and page scripts.
 `Dependency/prism` and the old MPRenderer remain only for the not-yet-retired legacy target;
 remove their obsolete build/resource references once remaining renderer parity passes.
+
+## Ordered metadata ownership boundary
+
+The modern parser uses the maintained CYaml event backend bundled with SPM Yams 6.2.2.
+`MarkdownFrontMatter.swift` owns the bounded Swift composer/value graph and responsive
+property HTML; `MarkdownNavigation.swift` owns heading IDs and TOC decoration. Original
+YAML-framework/HTMLTabularize and Hoedown TOC code are no longer needed by the modern app,
+but their old-target consumers (including presumed filename logic) remain to migrate.
+Yams and libyaml notices are retained in `Modern/Resources/Licenses`.

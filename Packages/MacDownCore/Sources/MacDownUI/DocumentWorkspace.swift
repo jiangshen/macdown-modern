@@ -20,6 +20,7 @@ public struct DocumentWorkspace: View {
   @State private var lastRequestedRefresh = 0
   @State private var loading = false
   @State private var error: String?
+  @State private var renderNotices: [MarkdownRenderNotice] = []
   @State private var previewError: String?
   @State private var largeFilePaused = false
 
@@ -70,6 +71,16 @@ public struct DocumentWorkspace: View {
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")
+        } else if !renderNotices.isEmpty, parsedRevision == document.revision {
+          Text(
+            renderNotices.contains(.complexFrontMatter)
+              ? String(
+                localized:
+                  "This metadata block is too complex to display as properties. It is shown as Markdown."
+              )
+              : String(localized: "Front matter is not valid YAML. It is shown as Markdown.")
+          )
+          .font(.caption).foregroundStyle(.secondary).padding(8)
         } else if largeFilePaused {
           HStack {
             Text("Live preview is paused for this large document.")
@@ -165,6 +176,7 @@ public struct DocumentWorkspace: View {
         loading = false
         return
       }
+      renderNotices = result.notices
       sourceSyntax = result.syntax
       headings = result.headings
       parsedRevision = revision

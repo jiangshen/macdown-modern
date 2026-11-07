@@ -77,6 +77,20 @@ public struct DocumentStyle: Hashable, Sendable {
       accent-color: #287eaa; width: 1em; height: 1em; margin: 0 .5em 0 -1.45em;
       vertical-align: -.1em; opacity: 1;
     }
+    .md-toc { margin: 1em 0; padding: 12px 16px; border-inline-start: 2px solid var(--border); }
+    .md-toc > ul { margin: 0; } .md-toc a { text-decoration: none; }
+    .md-toc a:hover { text-decoration: underline; }
+    .md-frontmatter { margin: 0 0 2em; color: var(--muted); }
+    .md-properties { margin: 0; font-size: .875em; }
+    .md-property { display: grid; grid-template-columns: minmax(96px, .3fr) minmax(0, 1fr); gap: 1em; padding: .5em 0; border-bottom: 1px solid var(--border); }
+    .md-property dt { color: var(--muted); font-weight: 500; }
+    .md-property dd { margin: 0; min-width: 0; color: var(--ink); white-space: pre-wrap; }
+    .md-property .md-properties { font-size: inherit; }
+    .md-property .md-property { grid-template-columns: minmax(80px, .35fr) minmax(0, 1fr); border: 0; padding: .15em 0; }
+    .md-property-list { display: flex; flex-wrap: wrap; gap: .35em; list-style: none; padding: 0; margin: 0; }
+    .md-property-list > li { padding: .05em .5em; margin: 0; border-radius: 4px; background: var(--surface); }
+    @media (max-width: 400px) { .md-property { grid-template-columns: minmax(72px, .3fr) minmax(0, 1fr); gap: .6em; } .md-property .md-property { display: block; } }
+    .md-legacy-anchor { display: block; height: 0; scroll-margin-top: 28px; }
     blockquote {
       margin: 1em 0; border-inline-start: 3px solid var(--ink);
       padding: .1em 0 .1em 1em;

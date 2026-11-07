@@ -13,7 +13,10 @@ let package = Package(
     .library(name: "ExportCore", targets: ["ExportCore"]),
     .library(name: "PreferencesCore", targets: ["PreferencesCore"]),
   ],
-  dependencies: [.package(url: "https://github.com/swiftlang/swift-cmark.git", exact: "0.9.0")],
+  dependencies: [
+    .package(url: "https://github.com/swiftlang/swift-cmark.git", exact: "0.9.0"),
+    .package(url: "https://github.com/jpsim/Yams.git", exact: "6.2.2"),
+  ],
   targets: [
     .target(name: "DocumentCore"),
     .target(name: "CodeHighlightCore", resources: [.process("Resources")]),
@@ -26,6 +29,7 @@ let package = Package(
       name: "MarkdownCore",
       dependencies: [
         "EmojiCore", "CodeHighlightCore",
+        .product(name: "Yams", package: "Yams"),
         .product(name: "cmark-gfm", package: "swift-cmark"),
         .product(name: "cmark-gfm-extensions", package: "swift-cmark"),
       ]),

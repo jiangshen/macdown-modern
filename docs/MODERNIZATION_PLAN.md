@@ -120,7 +120,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
-| Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter tables and TOC | Pending |
+| Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, literal YAML properties, heading links and TOC implemented; math/diagram rendering pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | Pending |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
@@ -239,6 +239,27 @@ selected third-party revisions with Package.resolved when their integration begi
 - Native tabs/windows, restoration, keyboard focus, light/dark/high-contrast appearance,
   Reduce Motion, VoiceOver and Retina layout validation with runtime screenshots.
 - Gate: keyboard-only open/edit/search/export, theme/window restoration and IME tests.
+
+### Explicit follow-on goal — multiple Markdown files in native tabs
+
+The user explicitly requests multi-tab support after the current work. Treat this as a
+required product capability, with its own implementation and verification pass, not a
+future idea or a claim already established by DocumentGroup.
+
+- Open multiple `.md`/`.markdown` files into one window as separate native document tabs.
+- Support File → Open, Finder/Open With and dropping multiple selected files; route
+  already-open documents to the existing tab instead of creating duplicate editors.
+- Allow creating/switching/closing/reordering tabs using native controls and shortcuts,
+  as well as moving a tab into another window and merging document windows.
+- Keep each document's source, selection, preview/scroll position, file URL, dirty state,
+  autosave and undo/redo history separate. Closing one tab must not lose another's work.
+- Preserve native multiple-window workflows. Scope shared settings globally and
+  document-specific state to its tab. Keep tabs keyboard/VoiceOver accessible and use
+  native Apple appearance so they fit the current design.
+- Verify two or more real Markdown files side by side in a tab group, edit/undo/save
+  independently, switch repeatedly, cancel closing a dirty tab, close a clean tab, and
+  restore the selected document/tab group after relaunch. Use current SDK APIs and
+  native document-host evidence before marking this follow-on goal complete.
 
 ### M5 — Productivity and system features
 
@@ -828,3 +849,59 @@ owns unmigrated math/diagram, custom-template and accessory behavior. Continue p
 removal at verified parity gates, retaining licenses/resources and Git history. The
 full modernization goal stays active; no production release/default-handler change
 is made by this development increment.
+
+## Ordered front matter and portable navigation — 2026-11-06
+
+YAML front matter now renders as compact semantic document properties, with nested
+property rows and wrapping list chips. This follows the independent-product direction
+while retaining authored order, scalar spelling (including `001`, dates, `false`, `null`
+and empty values), nested collections and aliases. Metadata strings are escaped text,
+not Markdown, HTML, executable tags or configuration commands. Existing explicit
+`htmlDetectFrontMatter` and `htmlRendersTOC` preferences migrate and persist independently.
+New controls are in Markdown settings; invalid/over-limit metadata remains visible as
+ordinary Markdown with a revision-checked notice.
+
+Yams 6.2.2 is pinned at `a27b21e0c81c5bf42049b897a62aaf387e80f279` through SPM. Its
+maintained CYaml/libyaml event parser validates YAML; a bounded first-party Swift
+composer stores ordered scalar/sequence/mapping values with shared integer references
+for aliases. It does not invoke tagged-object constructors or expand aliases into an
+unbounded recursive object graph. Limits: 64 KiB header payload, 4,096 nodes/expanded
+render visits, 8,192 events, depth 32 and 256 KiB metadata HTML. Cycles, duplicate scalar
+keys, malformed/undefined aliases and excessive graphs fall back visibly. Still-needed
+Yams and libyaml MIT notices ship in the native app. This is a maintained third-party C
+boundary; first-party application logic remains Swift.
+
+Internally masking the valid preamble preserves every UTF-8 byte position and original
+line ending while keeping metadata out of the Markdown grammar. The stored document
+text/bytes are unchanged. The owned AST has a front-matter node with the original range;
+headings, outline UTF-16 offsets, callout marker lines and source syntax still map to the
+actual file. Only initial exact `---` blocks closed by `---` or `...` are recognized;
+indented delimiter text in YAML block scalars is retained. Ordinary documents avoid a
+new full-source copy when no opening fence exists.
+
+Headings now have deterministic, unique human-readable Unicode IDs. Generated IDs
+reserve application element IDs and the old `toc_N` namespace. Original heading children
+still use cmark's escaping/rendering. Empty zero-width `toc_N` aliases preserve legacy
+links. An AST-recognized standalone `[TOC]` expands into accessible nested navigation;
+escaped/entity/code/reference-link spellings remain ordinary content. TOC links use
+escaped titles and percent-encoded fragment URLs. The native navigation handler decodes
+fragments once through URLComponents before looking up the target. Metadata, heading
+links and TOC survive HTML/PDF/print without page scripts or network resources.
+
+Validation: 111 tests in 22 suites passed, seven native arm64 test executables, native
+app build-for-testing, strict Swift formatting and diff checks. Added coverage includes
+ordered literal/nested YAML, aliases, malformed/duplicate/cyclic/exponential/deep input,
+CR/LF/CRLF and non-BMP source offsets, escaped TOC markers, skipped heading levels,
+multiple/nested TOCs, duplicate/Unicode/reserved heading IDs, unchanged AST when TOC is
+disabled, exact safe native property text, real Unicode and legacy-link scrolling,
+standalone export, native PDF properties and persisted preferences. A fresh final native
+process displayed the compact property layout and nested contents; a clicked Unicode
+contents link moved the preview to its target. See `validation/metadata-navigation.json`
+and `design/notebook/MetadataDemo.md`.
+
+The user-requested native multi-document tab milestone above is explicitly next. It is
+not yet implemented/verified by these document-rendering tests. Metadata-based suggested
+filenames/window titles, complete VoiceOver/keyboard/system appearance checks, measured
+performance, the wider renderer/dialect/integration roadmap and progressive retirement
+remain open. No further legacy files are deleted here because the old target still
+consumes its renderer, metadata and title helpers. The full goal stays active.

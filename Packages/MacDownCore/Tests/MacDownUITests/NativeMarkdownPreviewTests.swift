@@ -350,4 +350,69 @@ struct NativeMarkdownPreviewTests {
     }
   }
 
+  @Test(
+    "Properties and generated Unicode/legacy links work in the native preview without changing source positions"
+  )
+  func metadataNavigation() async throws {
+    _ = NSApplication.shared
+    let source =
+      "---\ntitle: 'A useful document'\nunsafe: '<img src=x onerror=alert(1)>'\n---\n\n[TOC]\n\n[Legacy link](#toc_2)\n\n# Start\n\n"
+      + String(repeating: "A little room to read.\n\n", count: 70)
+      + "## 中 文\n\nA Unicode checkpoint.\n\n# Final\n\nDone.\n\n"
+      + String(repeating: "Reading space after the target.\n\n", count: 30)
+    let result = try await MarkdownProcessor().render(source)
+    let coordinator = NativeMarkdownPreview.Coordinator()
+    let view = WKWebView(
+      frame: NSRect(x: 0, y: 0, width: 800, height: 500),
+      configuration: NativeMarkdownPreview.configuration(handler: coordinator.resources))
+    view.navigationDelegate = coordinator
+    let window = NSWindow(
+      contentRect: view.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.contentView = view
+    window.orderFront(nil)
+    defer {
+      view.stopLoading()
+      view.navigationDelegate = nil
+      coordinator.resources.cancelAll()
+      window.orderOut(nil)
+    }
+    coordinator.update(view, html: result.html, directory: nil, remoteImages: false)
+    try await waitFor {
+      (try? await evaluate(
+        "return String(document.querySelectorAll('.md-frontmatter > .md-properties > .md-property > dt').length);",
+        in: view)) == "2"
+    }
+    #expect(
+      try await evaluate(
+        "return document.querySelector('.md-frontmatter .md-property:last-child > dd').textContent;",
+        in: view)
+        == "<img src=x onerror=alert(1)>")
+    #expect(
+      try await evaluate("return String(document.querySelectorAll('img,script').length);", in: view)
+        == "0")
+    #expect(
+      try await evaluate(
+        "const ids = [...document.querySelectorAll('[id]')].map(n => n.id); return String(new Set(ids).size === ids.length);",
+        in: view) == "true")
+    #expect(
+      try await evaluate("return document.getElementById('start').dataset.sourcepos;", in: view)
+        == "10:1-10:7")
+    _ = try await evaluate(
+      "document.querySelector('.md-toc a[href*=\"%E4%B8%AD\"]').click(); return 'clicked';",
+      in: view)
+    try await waitFor {
+      (try? await evaluate(
+        "return String(window.scrollY > 500 && document.getElementById('中-文').getBoundingClientRect().top < 100);",
+        in: view)) == "true"
+    }
+    _ = try await evaluate(
+      "window.scrollTo(0,0); document.querySelector('a[href=\"#toc_2\"]').click(); return 'clicked';",
+      in: view)
+    try await waitFor {
+      (try? await evaluate(
+        "return String(window.scrollY > 500 && document.getElementById('toc_2').getBoundingClientRect().top < 500);",
+        in: view)) == "true"
+    }
+  }
+
 }

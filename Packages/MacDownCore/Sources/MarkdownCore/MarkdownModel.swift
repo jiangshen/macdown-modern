@@ -13,7 +13,7 @@ public struct MarkdownSourceRange: Equatable, Sendable {
 }
 
 public enum MarkdownNodeKind: Equatable, Sendable {
-  case document, heading, paragraph, text, codeBlock, inlineCode, link, image
+  case document, frontMatter, heading, paragraph, text, codeBlock, inlineCode, link, image
   case emphasis, strong, strikethrough, list, listItem, blockquote, html
   case table, tableRow, tableCell, thematicBreak, softBreak, lineBreak
   case other(String)
@@ -67,6 +67,7 @@ public struct MarkdownHeading: Identifiable, Equatable, Sendable {
   public let level: Int
   public let sourceLine: Int
   public let utf16Offset: Int
+  public let anchor: String
 }
 
 public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
@@ -80,6 +81,8 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var rawHTML = false
   public var alerts = true
   public var codeHighlighting = true
+  public var frontMatter = true
+  public var tableOfContents = true
 
   public init() {}
 }
@@ -90,6 +93,8 @@ public struct RenderedMarkdown: Sendable {
   public let headings: [MarkdownHeading]
   public let syntax: MarkdownSyntax?
   public let highlightedCodeBlocks: Int
+  public let frontMatter: MarkdownFrontMatter?
+  public let notices: [MarkdownRenderNotice]
 }
 
 public enum MarkdownRenderingError: Error, Sendable {

@@ -14,7 +14,7 @@ struct NativeWebOutputTests {
   func paginatedPDF() async throws {
     _ = NSApplication.shared
     let markdown =
-      "# First page\n\n"
+      "---\ntitle: Metadata checkpoint\nstatus: Ready\n---\n\n[TOC]\n\n# First page\n\n"
       + (0..<150).map { "Paragraph \($0): portable Markdown export.\n\n" }.joined()
       + "## Final checkpoint\n\n日本語 中文 👩‍💻\n\n> [!WARNING]\n> Notebook callout checkpoint.\n\n```swift\nlet lastCodeValue = 42\n```\n"
     let export = try await MarkdownExport.build(
@@ -38,6 +38,7 @@ struct NativeWebOutputTests {
     #expect(pdf.pageCount >= 3)
     #expect(pdf.pageCount < 20)
     let contents = try #require(pdf.string)
+    #expect(contents.contains("Metadata checkpoint"))
     #expect(contents.contains("First page"))
     #expect(contents.contains("Paragraph 149"))
     #expect(contents.contains("Final checkpoint"))

@@ -1,0 +1,68 @@
+{
+  "milestone": "M3/M4 ordered front matter and portable heading navigation; full modernization remains active",
+  "date": "2026-11-06",
+  "yamlDependency": {
+    "package": "Yams",
+    "version": "6.2.2",
+    "revision": "a27b21e0c81c5bf42049b897a62aaf387e80f279",
+    "boundary": "CYaml/libyaml event parsing with a bounded Swift composer; no tagged object construction",
+    "licenses": [
+      "Modern/Resources/Licenses/Yams.txt",
+      "Modern/Resources/Licenses/libyaml.txt"
+    ]
+  },
+  "implemented": [
+    "Ordered literal YAML front matter with nested properties and wrapping list chips",
+    "Shared alias graph with bounded safe rendering and visible fallback",
+    "UTF-8/UTF-16/source-line preservation via internal preamble masking",
+    "Unique Unicode heading IDs and legacy toc_N aliases",
+    "AST-recognized [TOC] expansion with nested accessible links",
+    "Single-decoded native fragment navigation",
+    "Independent persisted front-matter/TOC preferences",
+    "Shared preview, standalone HTML and native PDF/print rendering"
+  ],
+  "tests": {
+    "count": 111,
+    "suites": 22,
+    "arm64TestExecutables": 7,
+    "result": "passed",
+    "log": "/private/tmp/macdown-editing-validation/swift-test.log"
+  },
+  "nativeBuild": "build-for-testing passed; arm64-only main executable; Yams and libyaml licenses observed in app resources",
+  "directNativeUI": [
+    "Relaunched final app and opened the authored metadata fixture",
+    "Observed semantic property rows, nested fields and wrapping list chips",
+    "Observed nested table of contents and correct source outline",
+    "Clicked a Unicode contents link and observed preview scrolling to its section"
+  ],
+  "verified": [
+    "Literal numbers/booleans/dates/null/empty values and authored mapping order",
+    "Nested collections, aliases and block scalars containing delimiter-like text",
+    "Visible fallback for malformed, undefined-alias, duplicate-key, cyclic, deep, oversized and alias-expansion input",
+    "Original CR/LF/CRLF/Unicode source positions, outline offsets and callout lines",
+    "Heading collisions, duplicates, legacy namespace and application-owned IDs",
+    "Literal/escaped/code/reference TOC spellings are not expanded",
+    "Native WebKit exact escaped metadata text without script or image elements",
+    "Native Unicode and legacy fragment scrolling",
+    "Scriptless standalone export and metadata text in native PDF",
+    "Migrated explicit false preferences and independent persistence"
+  ],
+  "limits": {
+    "headerBytes": 65536,
+    "nodesAndRenderVisits": 4096,
+    "events": 8192,
+    "depth": 32,
+    "metadataHTMLBytes": 262144
+  },
+  "fixture": "docs/design/notebook/MetadataDemo.md",
+  "nextExplicitGoal": "Native multiple Markdown document tabs with separate state/undo/save and restoration; acceptance checks are in MODERNIZATION_PLAN.md",
+  "remaining": [
+    "Native multi-document tabs are next, not yet verified",
+    "Metadata-based suggested filenames/window titles",
+    "Full VoiceOver/keyboard/system appearance coverage",
+    "M6 performance measurement",
+    "Remaining math/diagram/custom CSS/template/dialect/integration work",
+    "Progressive legacy target/source retirement"
+  ],
+  "legacySourceRemoved": false
+}
