@@ -34,7 +34,9 @@ final class NativeSyntaxHighlighter {
     self.enabled = enabled
     self.font = font
     if let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText, editor.font != font {
+      editor.viewportPresentationWillChange?()
       editor.font = font
+      editor.viewportLayoutChanged?()
     }
     if changed { invalidate() }
   }
@@ -65,7 +67,9 @@ final class NativeSyntaxHighlighter {
     if let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText, let font,
       editor.font != font
     {
+      editor.viewportPresentationWillChange?()
       editor.font = font
+      editor.viewportLayoutChanged?()
     }
     invalidate()
   }

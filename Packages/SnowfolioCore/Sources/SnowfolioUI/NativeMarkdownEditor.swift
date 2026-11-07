@@ -9,6 +9,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   public let document: MarkdownDocument
   public var fontName: String
   public var fontSize: Double
+  public var zoomScale: Double
   public var behavior: EditorBehavior
   public var strikethroughEnabled: Bool
   public var commands: EditorCommandController?
@@ -28,11 +29,12 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true,
     selectionStorage: Binding<Data?>? = nil,
     openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
-    scrolling: DocumentScrollCoordinator? = nil
+    scrolling: DocumentScrollCoordinator? = nil, zoomScale: Double = 1
   ) {
     self.document = document
     self.fontName = fontName
     self.fontSize = fontSize
+    self.zoomScale = zoomScale
     self.behavior = behavior
     self.strikethroughEnabled = strikethroughEnabled
     self.commands = commands
@@ -138,7 +140,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       window.makeFirstResponder(editor)
     }
     if let editor = editor as? MarkdownTextView { scrolling?.attachSource(editor) }
-    let size = min(72, max(8, fontSize))
+    let size = DocumentZoomController.sourceFontSize(base: fontSize, scale: zoomScale)
     let font =
       NSFont(name: fontName, size: size) ?? .monospacedSystemFont(ofSize: size, weight: .regular)
     context.coordinator.highlighter.update(

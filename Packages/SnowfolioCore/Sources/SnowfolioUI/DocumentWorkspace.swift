@@ -7,6 +7,7 @@ public struct DocumentWorkspace: View {
   @Environment(\.openDocument) private var openDocument
   @Environment(\.scenePhase) private var scenePhase
   @State private var scrolling = DocumentScrollCoordinator()
+  @State private var zoom: DocumentZoomController
   @State private var droppedDocuments = DroppedDocumentOpener()
   @State private var processor = MarkdownProcessor()
   @State private var output = DocumentExportController()
@@ -22,6 +23,7 @@ public struct DocumentWorkspace: View {
   @SceneStorage("sourceViewport") private var sourceViewport: Data?
   @SceneStorage("previewViewport") private var previewViewport: Data?
   @SceneStorage("editorSelection") private var editorSelection: Data?
+  @SceneStorage("workspaceZoomPercent") private var zoomPercent = 100
   @SceneStorage("workspaceMode") private var mode = WorkspaceMode.split
   @State private var manualRefresh = 0
   @State private var lastRequestedRefresh = 0
@@ -31,9 +33,12 @@ public struct DocumentWorkspace: View {
   @State private var previewError: String?
   @State private var largeFilePaused = false
 
-  public init(document: MarkdownDocument, preferences: AppPreferences) {
+  public init(
+    document: MarkdownDocument, preferences: AppPreferences, zoom: DocumentZoomController? = nil
+  ) {
     self.document = document
     self.preferences = preferences
+    _zoom = State(initialValue: zoom ?? DocumentZoomController())
   }
 
   private var request: RenderRequest {
@@ -81,7 +86,7 @@ public struct DocumentWorkspace: View {
           html: previewHTML, syntax: sourceSyntax, syntaxRevision: parsedRevision,
           revision: renderedRevision, callouts: callouts, mode: mode,
           previewError: $previewError, openDroppedFiles: openDroppedFiles,
-          editorSelection: $editorSelection, scrolling: scrolling,
+          editorSelection: $editorSelection, scrolling: scrolling, zoomScale: zoom.scale,
           sourceViewportStorage: $sourceViewport, previewViewportStorage: $previewViewport)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
@@ -148,6 +153,17 @@ public struct DocumentWorkspace: View {
     )
     .focusedSceneValue(\.documentExport, output)
     .focusedSceneValue(\.markdownEditor, editing)
+    .focusedSceneValue(\.documentZoom, zoom)
+    .onChange(of: document.fileURL, initial: true) { _, url in
+      zoom.configure(fileURL: url, scenePercent: zoomPercent)
+    }
+    .onChange(of: zoomPercent) { _, value in
+      zoom.configure(fileURL: document.fileURL, scenePercent: value)
+    }
+    .onChange(of: zoom.percent) { _, value in
+      zoomPercent = value
+      zoom.persist(fileURL: document.fileURL)
+    }
     .onChange(of: preferences.strikethrough, initial: true) { _, value in
       editing.setStrikethroughEnabled(value)
     }

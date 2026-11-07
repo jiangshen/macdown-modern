@@ -13,6 +13,7 @@ final class DocumentReadingStore {
   struct Entry: Codable, Equatable {
     var source: Data?
     var preview: Data?
+    var zoomPercent: Int? = nil
     var updated: Date
   }
 
@@ -35,17 +36,23 @@ final class DocumentReadingStore {
     return try? JSONDecoder().decode(Entry.self, from: data)
   }
 
-  func save(source: Data?, preview: Data?, for url: URL) {
-    guard let key = key(for: url), source != nil || preview != nil,
+  func save(source: Data? = nil, preview: Data? = nil, zoomPercent: Int? = nil, for url: URL) {
+    guard let key = key(for: url), source != nil || preview != nil || zoomPercent != nil,
+      zoomPercent.map({ (50...300).contains($0) }) ?? true,
       (source?.count ?? 0) <= 1024, (preview?.count ?? 0) <= 1024
     else { return }
     let previous = entry(for: url)
     let source = source ?? previous?.source
     let preview = preview ?? previous?.preview
-    guard source != previous?.source || preview != previous?.preview else { return }
+    let zoom = zoomPercent ?? previous?.zoomPercent
+    guard
+      source != previous?.source || preview != previous?.preview || zoom != previous?.zoomPercent
+    else { return }
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.sortedKeys]
-    guard let data = try? encoder.encode(Entry(source: source, preview: preview, updated: .now))
+    guard
+      let data = try? encoder.encode(
+        Entry(source: source, preview: preview, zoomPercent: zoom, updated: .now))
     else { return }
     var records = defaults.dictionary(forKey: Self.storageKey) ?? [:]
     records[key] = data

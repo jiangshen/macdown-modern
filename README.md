@@ -6,7 +6,7 @@ the glacial-blue layered app and document icons, readable notebook styling, and 
 Mac controls.
 
 The Swift app includes a TextKit 2 editor, native document tabs, linked scrolling,
-configurable pane order, live preview, syntax colors, callouts with an emoji picker,
+configurable pane order, per-document reading zoom, live preview, syntax colors, callouts with an emoji picker,
 YAML properties, a table of contents, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
 performance measurement and release readiness are still in progress. See the
 [modernization roadmap](docs/MODERNIZATION_PLAN.md) and
@@ -35,6 +35,11 @@ are recorded separately in `docs/validation`.
 The original Objective-C application remains a migration reference until its essential
 features are replaced and verified. The new app builds independently of CocoaPods.
 Legacy source is progressively retired, with all required licenses preserved.
+
+Reading zoom is in the View menu: **⌘⌥+** / **⌘⌥−** to magnify and **⌘⌥0** for
+actual size. It changes the source and preview together without changing document text
+or export typography. Each document remembers its own zoom. Editor settings can also
+scale the preview relative to the editor's configured font size.
 
 ## Identity and attribution
 

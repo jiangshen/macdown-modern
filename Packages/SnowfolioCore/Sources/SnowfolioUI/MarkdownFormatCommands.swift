@@ -108,6 +108,7 @@ final class MarkdownTextView: NSTextView {
     sourceRevision = document.revision
   }
   var viewportLayoutChanged: (@MainActor () -> Void)?
+  var viewportPresentationWillChange: (@MainActor () -> Void)?
   var viewportInputBegan: (@MainActor () -> Void)?
 
   override func doCommand(by selector: Selector) {

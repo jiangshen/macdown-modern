@@ -31,6 +31,7 @@ public final class DocumentScrollCoordinator: NSObject {
   private var restoredSource = false
   private var restoredPreview = false
   private var sourceReading: SourceReadingPosition?
+  private var presentationAnchor: SourceReadingPosition?
   private var previewReading: MarkdownScrollPosition?
   private var map: SourceLineMap?
   private var mapRevision: UInt64?
@@ -113,6 +114,7 @@ public final class DocumentScrollCoordinator: NSObject {
     }
     editor.viewportInputBegan = { [weak self] in self?.sourceEditedOrNavigated() }
     editor.viewportLayoutChanged = { [weak self] in self?.layoutChanged() }
+    editor.viewportPresentationWillChange = { [weak self] in self?.sourcePresentationWillChange() }
     layoutChanged()
   }
 
@@ -130,6 +132,7 @@ public final class DocumentScrollCoordinator: NSObject {
     }
     editor?.viewportInputBegan = nil
     editor?.viewportLayoutChanged = nil
+    editor?.viewportPresentationWillChange = nil
     editor = nil
     clip = nil
   }
@@ -157,7 +160,26 @@ public final class DocumentScrollCoordinator: NSObject {
     sendingPreview = false
   }
 
+  func sourcePresentationWillChange() {
+    presentationAnchor = presentationAnchor ?? captureSource() ?? sourceReading
+    needsAlignment = linked
+  }
+
+  func previewPresentationChanged(to position: MarkdownScrollPosition?, userInitiated: Bool) {
+    if let position, position.isValid { previewReading = position }
+    if userInitiated {
+      presentationAnchor = nil
+      pendingPreview = nil
+      previewWasUsed = true
+      restoredPreview = true
+      driver = .preview
+    }
+    needsAlignment = linked
+    layoutChanged()
+  }
+
   func sourceEditedOrNavigated() {
+    presentationAnchor = nil
     sourceWasUsed = true
     restoredSource = true
     driver = .source
@@ -174,7 +196,17 @@ public final class DocumentScrollCoordinator: NSObject {
       self.restorePreviewIfNeeded()
       // Native focus/layout can reveal the restored selection after our first
       // scroll. Retain the reading anchor until the user chooses a new position.
-      if !self.sourceWasUsed, self.restoredSource, let anchor = self.sourceReading,
+      if let anchor = self.presentationAnchor,
+        let actual = self.captureSource(), !self.sameReadingLine(actual, anchor)
+      {
+        if self.moveSource(to: anchor) {
+          // Wrapping/clamping can change the exact start of the visual line.
+          // Retain its actual new anchor rather than repeatedly chasing the old one.
+          self.presentationAnchor = self.sourceReading
+        }
+      }
+      if self.presentationAnchor == nil, !self.sourceWasUsed, self.restoredSource,
+        let anchor = self.sourceReading,
         let actual = self.captureSource(), !self.sameReadingLine(actual, anchor)
       {
         self.moveSource(to: anchor)
@@ -315,7 +347,10 @@ public final class DocumentScrollCoordinator: NSObject {
       restoredSource = true
       return
     }
-    if moveSource(to: reading) { restoredSource = true }
+    if moveSource(to: reading) {
+      restoredSource = true
+      presentationAnchor = nil
+    }
   }
 
   private func restorePreviewIfNeeded() {
@@ -340,7 +375,10 @@ public final class DocumentScrollCoordinator: NSObject {
   private func alignIfNeeded() {
     guard linked, needsAlignment, previewIsReady, editor?.hasMarkedText() == false else { return }
     if driver == .preview, let position = previewReading {
+      let retainingPresentation = presentationAnchor != nil
+      presentationAnchor = nil
       moveSource(to: position)
+      if retainingPresentation { presentationAnchor = sourceReading }
     } else if savedSource != nil, !restoredSource, !sourceWasUsed {
       return
     } else if let position = sourcePosition() {
@@ -373,6 +411,7 @@ public final class DocumentScrollCoordinator: NSObject {
     guard position.isValid, let document, document.revision == revision else { return }
     previewReading = position
     if !programmatic {
+      presentationAnchor = nil
       // A new user gesture supersedes queued movement from the other pane.
       pendingPreview = nil
       needsAlignment = false
@@ -388,9 +427,14 @@ public final class DocumentScrollCoordinator: NSObject {
   @objc private func sourceBoundsChanged(_ notification: Notification) {
     guard !applyingSource, editor?.hasMarkedText() == false else { return }
     if liveSourceScroll {
+      presentationAnchor = nil
       sourceWasUsed = true
       restoredSource = true
       driver = .source
+    }
+    if presentationAnchor != nil {
+      layoutChanged()
+      return
     }
     if !restoredSource, savedSource != nil {
       layoutChanged()
@@ -409,6 +453,7 @@ public final class DocumentScrollCoordinator: NSObject {
     }
   }
   @objc private func sourceScrollStarted(_ notification: Notification) {
+    presentationAnchor = nil
     liveSourceScroll = true
     sourceWasUsed = true
     restoredSource = true

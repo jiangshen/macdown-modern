@@ -15,6 +15,9 @@ public final class AppPreferences {
     didSet { save(restoreDocumentsOnLaunch, "NSQuitAlwaysKeepsWindows") }
   }
   public var preferDocumentTabs: Bool { didSet { save(preferDocumentTabs, "preferDocumentTabs") } }
+  public var previewFollowsEditorFont: Bool {
+    didSet { save(previewFollowsEditorFont, "previewZoomRelativeToBaseFontSize") }
+  }
   public var editorOnRight: Bool { didSet { save(editorOnRight, "editorOnRight") } }
   public var synchronizedScrolling: Bool {
     didSet { save(synchronizedScrolling, "editorSyncScrolling") }
@@ -81,6 +84,7 @@ public final class AppPreferences {
     tableOfContents = boolean("htmlRendersTOC", fallback: true)
     codeHighlighting = boolean("htmlSyntaxHighlighting", fallback: true)
     codeTheme = .legacyName(defaults.string(forKey: "htmlHighlightingThemeName"))
+    previewFollowsEditorFont = boolean("previewZoomRelativeToBaseFontSize", fallback: false)
     editorOnRight = boolean("editorOnRight", fallback: false)
     synchronizedScrolling = boolean("editorSyncScrolling", fallback: true)
     syntaxHighlighting = boolean("editorSyntaxHighlighting", fallback: true)

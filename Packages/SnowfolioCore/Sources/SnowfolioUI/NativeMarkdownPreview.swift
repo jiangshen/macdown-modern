@@ -10,6 +10,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   public let remoteImages: Bool
   public let style: DocumentStyle
   public let revision: UInt64?
+  public var zoomScale: Double
   public let callouts: CalloutEditorController?
   public var scrolling: DocumentScrollCoordinator?
   public var openDroppedFiles: (@MainActor ([URL]) -> Bool)?
@@ -20,7 +21,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     revision: UInt64? = nil,
     callouts: CalloutEditorController? = nil,
     openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
-    scrolling: DocumentScrollCoordinator? = nil,
+    scrolling: DocumentScrollCoordinator? = nil, zoomScale: Double = 1,
     onError: @escaping @MainActor (String?) -> Void = { _ in }
   ) {
     self.html = html
@@ -32,6 +33,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     self.onError = onError
     self.openDroppedFiles = openDroppedFiles
     self.scrolling = scrolling
+    self.zoomScale = zoomScale
   }
 
   public func makeCoordinator() -> Coordinator { Coordinator() }
@@ -72,7 +74,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     coordinator.callouts = callouts
     coordinator.update(
       view, html: html, directory: directory, remoteImages: remoteImages, style: style,
-      revision: revision)
+      revision: revision, zoomScale: zoomScale)
     return view
   }
 
@@ -87,7 +89,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     context.coordinator.callouts = callouts
     context.coordinator.update(
       view, html: html, directory: directory, remoteImages: remoteImages, style: style,
-      revision: revision)
+      revision: revision, zoomScale: zoomScale)
   }
 
   public static func dismantleNSView(_ view: WKWebView, coordinator: Coordinator) {
@@ -119,6 +121,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     private var generation = UUID()
     private var ready = false
     private var applying = false
+    private var zooming = false
+    private var pendingZoom = 1.0
+    private var failedZoom: Double?
     private var pendingHTML = ""
     private var pendingStyle = DocumentStyle()
     private var appliedStyle: DocumentStyle?
@@ -128,12 +133,14 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
 
     func update(
       _ view: WKWebView, html: String, directory: URL?, remoteImages: Bool,
-      style: DocumentStyle = .init(), revision: UInt64? = nil
+      style: DocumentStyle = .init(), revision: UInt64? = nil, zoomScale: Double = 1
     ) {
       scrollView = view
       pendingHTML = html
       pendingRevision = revision
       pendingStyle = style
+      pendingZoom = zoomScale.isFinite ? min(16, max(0.25, zoomScale)) : 1
+      if failedZoom != pendingZoom { failedZoom = nil }
       resources.directory = directory
       if loadedRemoteImages != remoteImages || loadedDirectory != directory {
         scrolling?.previewWillReload()
@@ -143,6 +150,8 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         failedScrollRevision = nil
         generation = UUID()
         applying = false
+        zooming = false
+        failedZoom = nil
         resources.cancelAll()
         appliedHTML = nil
         appliedRevision = nil
@@ -176,7 +185,11 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       guard pendingHTML != appliedHTML else {
         if contentValid {
           appliedRevision = pendingRevision
-          activateScrollContext(in: view)
+          if abs(view.pageZoom - pendingZoom) > 0.0001, failedZoom != pendingZoom {
+            applyZoom(to: view)
+          } else {
+            activateScrollContext(in: view)
+          }
         }
         return
       }
@@ -206,7 +219,6 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
           self.onError(
             String(localized: "The preview could not update. Reopen the document to try again."))
         }
-        self.activateScrollContext(in: view)
         self.applyLatest(to: view)
       }
     }
@@ -231,6 +243,55 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
           self.onError(String(localized: "The document style could not update."))
         }
         self.applyLatest(to: view)
+      }
+    }
+
+    private func applyZoom(to view: WKWebView) {
+      let scale = pendingZoom
+      let generation = generation
+      applying = true
+      zooming = true
+      view.callAsyncJavaScript(PreviewZoom.capture, arguments: [:], in: nil, in: .defaultClient) {
+        [weak self, weak view] result in
+        guard let self, let view, self.generation == generation else { return }
+        guard case .success(let value) = result,
+          let data = try? JSONSerialization.data(withJSONObject: value),
+          let anchor = try? JSONDecoder().decode(PreviewZoomAnchor.self, from: data),
+          anchor.fraction.isFinite, (0...1).contains(anchor.fraction)
+        else {
+          self.failedZoom = scale
+          self.applying = false
+          self.zooming = false
+          self.onError(String(localized: "The reading zoom could not update."))
+          self.applyLatest(to: view)
+          return
+        }
+        view.pageZoom = scale
+        let position = anchor.position.flatMap { $0.isValid ? $0 : nil }
+        view.callAsyncJavaScript(
+          PreviewZoom.restore,
+          arguments: [
+            "line": position.map { $0.line as Any } ?? NSNull(),
+            "atTop": position?.atTop ?? false, "atBottom": position?.atBottom ?? false,
+            "fraction": anchor.fraction,
+            "inputEpoch": anchor.inputEpoch.map { $0 as Any } ?? NSNull(),
+          ], in: nil, in: .defaultClient
+        ) { [weak self, weak view] result in
+          guard let self, let view, self.generation == generation else { return }
+          self.applying = false
+          self.zooming = false
+          if case .failure = result {
+            self.onError(String(localized: "The preview reading position could not be restored."))
+          }
+          if case .success(let value) = result,
+            let data = try? JSONSerialization.data(withJSONObject: value),
+            let actual = try? JSONDecoder().decode(PreviewZoomAnchor.self, from: data)
+          {
+            self.scrolling?.previewPresentationChanged(
+              to: actual.position, userInitiated: actual.inputEpoch != anchor.inputEpoch)
+          }
+          self.applyLatest(to: view)
+        }
       }
     }
 
@@ -294,7 +355,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       _ userContentController: WKUserContentController,
       didReceive message: WKScriptMessage
     ) {
-      guard message.name == "snowfolioScroll", message.frameInfo.isMainFrame,
+      guard !zooming, message.name == "snowfolioScroll", message.frameInfo.isMainFrame,
         let view = scrollView, message.webView === view, view.window?.isVisible == true,
         !view.isHiddenOrHasHiddenAncestor, let body = message.body as? [String: Any],
         let data = try? JSONSerialization.data(withJSONObject: body),
@@ -330,7 +391,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     }
 
     private func showCalloutPicker(line: Int, in view: WKWebView) {
-      guard ready, contentValid, let revision = appliedRevision, let callouts else { return }
+      guard ready, contentValid, !applying, let revision = appliedRevision, let callouts else {
+        return
+      }
       let generation = generation
       view.callAsyncJavaScript(
         "const icon = document.querySelector('a.md-callout-icon[href=\"mdcallout://icon/' + line + '\"]'); if (!icon) return ''; const r = icon.getBoundingClientRect(); return JSON.stringify([r.x,r.y,r.width,r.height]);",
@@ -342,8 +405,10 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
           let values = try? JSONDecoder().decode([Double].self, from: data),
           values.count == 4, values.allSatisfy(\.isFinite)
         else { return }
-        let y = view.isFlipped ? values[1] : view.bounds.height - values[1] - values[3]
-        let rect = NSRect(x: values[0], y: y, width: values[2], height: values[3]).intersection(
+        // DOM rectangles use CSS pixels; popover anchors use native view points.
+        let scaled = values.map { $0 * view.pageZoom }
+        let y = view.isFlipped ? scaled[1] : view.bounds.height - scaled[1] - scaled[3]
+        let rect = NSRect(x: scaled[0], y: y, width: scaled[2], height: scaled[3]).intersection(
           view.bounds)
         guard !rect.isEmpty else { return }
         if !callouts.present(line: line, revision: revision, relativeTo: rect, in: view) {
@@ -430,6 +495,12 @@ final class LocalResourceHandler: NSObject, WKURLSchemeHandler {
     for task in tasks.values { task.cancel() }
     tasks.removeAll()
   }
+}
+
+private struct PreviewZoomAnchor: Decodable {
+  let position: MarkdownScrollPosition?
+  let fraction: Double
+  let inputEpoch: Int?
 }
 
 private struct PreviewScrollMessage: Decodable {

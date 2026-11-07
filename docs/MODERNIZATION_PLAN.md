@@ -117,7 +117,7 @@ verification. No essential feature is authorized for silent removal.
 | --- | --- | --- |
 | Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Pending app integration |
 | Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Pending |
-| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling and pane order implemented; zoom pending |
+| Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
@@ -413,6 +413,51 @@ open while the Mac is locked. See `docs/validation/pane-order.json`.
 No legacy files are deleted here: the old target still consumes its split-view and
 preference implementation. Zoom, additional parity, performance and production-release
 requirements remain part of the active modernization goal.
+
+#### Per-document reading zoom — implemented increment (2026-11-06)
+
+Each document owns a 50–300% reading zoom, routed through the focused scene. The View
+menu provides Zoom In, Zoom Out and Actual Size with Command–Option–plus/minus/zero;
+existing Command–minus strikethrough and Command–zero paragraph shortcuts remain.
+Scene storage and the bounded per-file reading cache preserve zoom independently of
+other documents. The latest file record wins over stale scene values, and user changes
+win over delayed restoration. The optional cache field decodes older position records;
+zoom writes merge with the two panes and skip unchanged values.
+
+TextKit 2 uses a presentation font derived from the configured editor font and zoom.
+The preview uses public WKWebView.pageZoom. The historical
+`previewZoomRelativeToBaseFontSize` choice is migrated and exposed as **Scale preview
+with editor font** (off by default), using the editor base size divided by 14. Reading
+zoom stays separate from source snapshots, selection, undo, saved typography and the
+independent HTML/PDF/print output surfaces. Callout popover anchors account for page zoom.
+
+Source UTF-16/visual-line and trusted preview source-block anchors survive reflow. Latest
+zoom requests coalesce with the serialized content/style pipeline, and navigation
+generations reject stale work. Animation-frame waits have a bounded fallback for hidden
+tabs/locked desktops. New input supersedes a pending viewport restore; preview-led
+scrolling remains the driver across reflow. Preview bridge/scripts remain isolated from
+page JavaScript and never enter exported documents.
+
+Validation: **145 tests in 30 suites**, seven native arm64 test executables, native
+build-for-testing, strict changed-Swift formatting and diff checks pass. Hosted coverage
+includes source/preview scale changes, configured typography, native view identity,
+selection/text/revision, undo/redo, source-led and preview-led anchors, rapid zoom,
+changed-directory navigation, no-bootstrap fractional fallback and user input during a
+pending preview restore. Unit tests cover limits, independent controllers, old cache
+records, merging, durable-vs-scene precedence, save-as continuity and preference migration.
+
+An intermittent `NSTextLayoutManagerBreakOnNilContentManager` diagnostic was emitted by
+the hosted zoom test; it passed without a crash or failed assertion. Three focused runs
+under a symbolic debugger breakpoint passed without reproducing it. Keep this in the
+native acceptance follow-up rather than claiming a warning-free desktop session.
+The test host has no SwiftUI App lifecycle, so this does not prove actual scene restoration
+or menu focus routing. Direct desktop/relaunch, real IME/VoiceOver, physical scrolling,
+multiple tab/window scene routing and the other modernization gates remain open. The Mac
+is still locked and the existing unlock request is pending. See
+`docs/validation/document-zoom.json`.
+
+No further legacy deletion or production installation/default association is claimed.
+The original target still needs its unmigrated renderer, theme and accessory behavior.
 
 ### M5 — Productivity and system features
 

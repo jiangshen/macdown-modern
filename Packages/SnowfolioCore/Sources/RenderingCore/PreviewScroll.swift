@@ -6,6 +6,7 @@ public enum PreviewScroll {
   public static let bootstrap = """
     (() => {
       if (globalThis.__snowfolioScroll) return;
+      let inputEpoch = 0;
       let token = '', revision = '', targetY = null, frame = 0, ended = 0, geometry = null, retainedPosition = null;
       function blocks() {
         if (geometry) return geometry;
@@ -63,6 +64,9 @@ public enum PreviewScroll {
         markProgrammatic();
         return true;
       }
+      for (const type of ['wheel','pointerdown','touchstart','keydown']) {
+        window.addEventListener(type, () => {inputEpoch++; retainedPosition=null; targetY=null;}, {passive:true,capture:true});
+      }
       window.addEventListener('scroll', () => {
         if (targetY === null || Math.abs(window.scrollY-targetY) >= 2) retainedPosition=null;
         if (!frame) frame=requestAnimationFrame(() => {frame=0; report(false);});
@@ -77,6 +81,7 @@ public enum PreviewScroll {
       globalThis.__snowfolioScroll = {
         invalidateGeometry() {geometry=null;},
         activate(nextToken,nextRevision) {if (revision!==nextRevision || token!==nextToken) retainedPosition=null; token=nextToken; revision=nextRevision; geometry=null; markProgrammatic();},
+        get inputEpoch() {return inputEpoch;},
         position, scrollToPosition, markProgrammatic
       };
     })();

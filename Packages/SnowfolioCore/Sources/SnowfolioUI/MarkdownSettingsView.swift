@@ -31,6 +31,8 @@ public struct MarkdownSettingsView: View {
             }
           }
           Section("Preview") {
+            Toggle("Scale preview with editor font", isOn: $preferences.previewFollowsEditorFont)
+              .accessibilityIdentifier("previewFollowsEditorFont")
             Toggle("Place editor on the right", isOn: $preferences.editorOnRight)
               .accessibilityIdentifier("editorOnRight")
             Toggle("Link editor and preview scrolling", isOn: $preferences.synchronizedScrolling)

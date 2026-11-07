@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-06",
+  "product": "Snowfolio",
+  "feature": "Per-document reading zoom",
+  "controls": {
+    "viewMenu": [
+      "Zoom In",
+      "Zoom Out",
+      "Actual Size"
+    ],
+    "shortcuts": [
+      "Command-Option-plus",
+      "Command-Option-minus",
+      "Command-Option-zero"
+    ],
+    "settings": "Scale preview with editor font"
+  },
+  "scope": {
+    "rangePercent": [
+      50,
+      300
+    ],
+    "perDocument": true,
+    "sceneKey": "workspaceZoomPercent",
+    "durableCache": "documentReadingPositions; optional zoomPercent merges with existing pane records",
+    "previewRelativeKey": "previewZoomRelativeToBaseFontSize",
+    "previewRelativeDefault": false,
+    "previewRelativeFormula": "workspaceScale * editorBaseFontSize / 14 when enabled"
+  },
+  "implementation": {
+    "source": "TextKit 2 presentation font; source/selection/undo retained",
+    "preview": "Public WKWebView.pageZoom; trusted isolated-world viewport capture/restore",
+    "reflow": "Source UTF-16 and preview source-block anchors; user-input epoch supersedes stale restores",
+    "pipeline": "Content/style/zoom serialized, latest requests coalesced, navigation-generation guarded",
+    "hiddenTabs": "Animation-frame wait bounded by a timer fallback",
+    "callouts": "CSS pixel anchors scaled to native view points",
+    "exports": "Separate typography and web output surfaces; no reading zoom in export HTML"
+  },
+  "validation": {
+    "tests": 145,
+    "suites": 30,
+    "arm64TestExecutables": 7,
+    "nativeBuildForTesting": "passed",
+    "changedSwiftFormatting": "passed",
+    "diffCheck": "passed"
+  },
+  "nativeCoverage": [
+    "Complete hosted workspace at several magnifications",
+    "Exact native editor and preview identities",
+    "Source text/revision/selection/undo/redo preserved",
+    "Source-led and preview-led reflow anchors",
+    "Preview relative-font toggle",
+    "Rapid zoom and context navigation",
+    "No-bootstrap scroll fraction fallback",
+    "New user input supersedes captured preview position"
+  ],
+  "modelCoverage": [
+    "Zoom bounds and independent controllers",
+    "Restore precedence and user intent",
+    "Old records decode without zoom",
+    "Zoom/viewport cache merging and unchanged-write suppression",
+    "Saved-file zoom and save-as continuity",
+    "Legacy true and explicit false preference migration"
+  ],
+  "limitations": [
+    "Mac locked: direct desktop and repeated-relaunch acceptance pending existing unlock request",
+    "Hosted NSHostingController tests do not exercise actual SwiftUI scene storage lifecycle or menu focus routing",
+    "Intermittent TextKit nil-content-manager diagnostic in hosted zoom test; no failed assertion/crash; three debugger runs did not reproduce",
+    "Prior full-run scrolling timeouts passed in focused checks; final full suite passed after waiting for completed zoom/scroll context in the new gesture test",
+    "XCUITest bundle compiles; execution remains unavailable because automation enabling previously timed out",
+    "No production install, default association, release or additional legacy deletion"
+  ],
+  "fullGoal": "active"
+}
