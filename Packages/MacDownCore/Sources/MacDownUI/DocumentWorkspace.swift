@@ -15,6 +15,7 @@ public struct DocumentWorkspace: View {
   @State private var previewLoadRevision: UInt64?
   @State private var previewOptions: MarkdownRenderingOptions?
   @State private var renderedRevision: UInt64?
+  @SceneStorage("editorSelection") private var editorSelection: Data?
   @SceneStorage("workspaceMode") private var mode = WorkspaceMode.split
   @State private var manualRefresh = 0
   @State private var lastRequestedRefresh = 0
@@ -67,7 +68,7 @@ public struct DocumentWorkspace: View {
           document: document, preferences: preferences, editing: editing,
           html: previewHTML, syntax: sourceSyntax, syntaxRevision: parsedRevision,
           revision: renderedRevision, callouts: callouts, mode: mode,
-          previewError: $previewError)
+          previewError: $previewError, editorSelection: $editorSelection)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")

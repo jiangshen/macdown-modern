@@ -103,6 +103,21 @@ final class MarkdownTextView: NSTextView {
   private(set) var isReceivingMarkedText = false
   private(set) var isReadingPasteboard = false
 
+  /// Restored UI offsets may refer to an externally shortened document. Clamp them
+  /// without changing source bytes, undo state, or splitting a UTF-16 surrogate pair.
+  func restoreSelection(location: Int, length: Int) {
+    let source = string as NSString
+    var start = min(source.length, max(0, location))
+    var end = start + min(source.length - start, max(0, length))
+    if start < source.length, (0xDC00...0xDFFF).contains(source.character(at: start)) { start -= 1 }
+    if length <= 0 {
+      end = start
+    } else if end < source.length, (0xDC00...0xDFFF).contains(source.character(at: end)) {
+      end += 1
+    }
+    setSelectedRange(NSRange(location: start, length: end - start))
+  }
+
   override func readSelection(from pboard: NSPasteboard, type: NSPasteboard.PasteboardType) -> Bool
   {
     let previous = isReadingPasteboard

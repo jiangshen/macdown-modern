@@ -65,4 +65,48 @@ struct DocumentTabTests {
     #expect(firstEditor.string == "first document")
     #expect(firstWindow.tabGroup?.windows.count == 1)
   }
+  @Test("Explicit tab placement ignores existing and utility windows and expires safely")
+  func explicitTabPlacement() throws {
+    _ = NSApplication.shared
+    let anchor = NSWindow()
+    let existing = NSWindow()
+    let created = NSWindow()
+    let utility = NSWindow()
+    for window in [anchor, existing, created, utility] { window.isReleasedWhenClosed = false }
+    defer { for window in [created, existing, utility, anchor] { window.close() } }
+    for window in [anchor, existing, created] {
+      DocumentWindowPolicy.configure(window, preferTabs: false)
+    }
+    let placement = DocumentTabPlacement()
+    let now = ContinuousClock.now
+    placement.request(from: anchor, existingWindows: [anchor, existing], now: now)
+    #expect(!placement.place(existing, now: now))
+    #expect(!placement.place(utility, now: now))
+    #expect(placement.place(created, now: now))
+    #expect(created.tabGroup === anchor.tabGroup)
+    #expect(anchor.tabGroup?.selectedWindow === created)
+    #expect(!placement.place(existing, now: now))
+
+    let expired = DocumentTabPlacement()
+    expired.request(from: anchor, existingWindows: [anchor], now: now)
+    #expect(!expired.place(existing, now: now.advanced(by: .seconds(6))))
+    #expect(existing.tabGroup !== anchor.tabGroup)
+  }
+
+  @Test("A pending tab request cannot reopen a closed anchor")
+  func closingAnchorCancelsPlacement() {
+    _ = NSApplication.shared
+    let anchor = NSWindow()
+    let created = NSWindow()
+    anchor.isReleasedWhenClosed = false
+    created.isReleasedWhenClosed = false
+    defer { created.close() }
+    DocumentWindowPolicy.configure(anchor, preferTabs: true)
+    DocumentWindowPolicy.configure(created, preferTabs: true)
+    let placement = DocumentTabPlacement()
+    placement.request(from: anchor, existingWindows: [anchor])
+    anchor.close()
+    #expect(!placement.place(created))
+  }
+
 }

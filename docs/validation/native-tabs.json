@@ -5,34 +5,60 @@
     "Common native document tab identity with preferred tabbing",
     "Persisted preference to follow system tabbing instead",
     "Per-scene workspace layout storage",
-    "Preserved native document host ownership"
+    "Preserved native document host ownership",
+    "New Tab / Command-T creates a fresh native document in the originating tab group",
+    "Placement requests expire and are cancelled when the anchor closes",
+    "Native reopen preference with app-scoped fallback and preserved explicit choices",
+    "Per-scene source selection with delayed-load, stale-offset and UTF-16 handling",
+    "Initial keyboard focus for visible source when no control is focused"
   ],
   "directNativeUI": [
     "Selected and opened two real Markdown fixtures together; observed two native tabs",
     "Native plus button created a third tab",
     "Edited one source, switched to the other and verified independent contents",
-    "Returned to edited tab, undid typing and newline, saved restored fixture"
+    "Returned to edited tab, undid typing and newline, saved restored fixture",
+    "Repeated Command-T produced new tabs even with another empty tab open",
+    "Control-Tab switched between documents",
+    "Move Tab to New Window detached a tab; Merge All Windows rejoined it",
+    "Unsaved tab close presented the native save sheet; Cancel preserved the tab and source",
+    "Saved the new untitled tab to an authored temporary fixture",
+    "Opening an already-open document through Open Recent selected its existing tab; count stayed at two",
+    "Quit/relaunch restored the two-document group and selected tab",
+    "Restored split/preview/editor layouts independently per document",
+    "Keyboard selections of 8:9 and 0:34 restored independently after relaunch; final native UI exposed both selected texts"
   ],
   "integrationTest": "DocumentTabTests.independentTabState: native NSWindow tab group, separate models/editors/undo managers, retained selection on switch and surviving document on close",
   "remaining": [
-    "Explicit New Tab menu/Command-T routing",
-    "Finder routing and duplicate document activation",
     "Multiple file drop handling",
-    "Moving, merging and reordering tabs",
-    "Cancel dirty close",
-    "Selected tab/group and selection/scroll restoration",
-    "Keyboard and VoiceOver audit"
+    "Finder/Open With routing",
+    "Drag reordering",
+    "Restoring multiple separate groups and source/preview scroll positions",
+    "Full keyboard and VoiceOver audit",
+    "Accessibility-set selection change handling"
   ],
   "validation": {
     "nativeBuild": "build-for-testing passed; arm64-only app",
     "fullRegression": "passed",
-    "testCount": 112,
+    "testCount": 116,
     "suiteCount": 23,
     "arm64TestExecutables": 7,
     "format": "swift-format strict lint and git diff --check passed"
   },
   "notes": [
-    "Generic newDocument action can reuse blank documents; direct newWindowForTab responder dispatch created a separate window. Custom command omitted pending a verified solution.",
+    "The native newWindowForTab responder action creates a fresh host-owned document; the bridge explicitly places it in its originating group.",
+    "A request expires after five seconds; under unusually delayed window creation its placement may fall back to host policy.",
+    "Scene storage saves only UI offsets, leaving document bytes and undo ownership with the native host.",
     "XCUITest execution remains blocked by automation enablement timeout; not claimed passed."
+  ],
+  "integrationTests": [
+    "Native tab switching/close retains separate models, selections and undo histories",
+    "Explicit placement ignores existing and utility windows, expires safely and cancels on anchor close",
+    "Native restored selection clamps Int.max/negative/stale and surrogate offsets without source/undo changes",
+    "Scene selection waits for the first snapshot and retains later user selection",
+    "Native reopen and tab preference persistence"
+  ],
+  "appleReferences": [
+    "https://developer.apple.com/documentation/appkit/nsresponder/newwindowfortab(_:)",
+    "https://developer.apple.com/documentation/appkit/nswindow/addtabbedwindow(_:ordered:)"
   ]
 }

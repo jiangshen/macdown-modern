@@ -40,6 +40,9 @@ struct AppPreferencesTests {
     #expect(preferences.editorFontSize == 18)
     #expect(!preferences.remoteImages)
     #expect(!preferences.rawHTML)
+    #expect(preferences.restoreDocumentsOnLaunch)
+    preferences.restoreDocumentsOnLaunch = false
+    #expect(!defaults.bool(forKey: "NSQuitAlwaysKeepsWindows"))
     #expect(preferences.preferDocumentTabs)
     preferences.preferDocumentTabs = false
     preferences.continueBlocks = true
@@ -55,6 +58,7 @@ struct AppPreferencesTests {
     let reopened = AppPreferences(
       defaults: defaults, domainName: domain,
       legacyValues: ["extensionTables": false])
+    #expect(!reopened.restoreDocumentsOnLaunch)
     #expect(!reopened.preferDocumentTabs)
     #expect(reopened.editorBehavior.continueBlocks)
     #expect(reopened.editorBehavior.unorderedMarker == "+")

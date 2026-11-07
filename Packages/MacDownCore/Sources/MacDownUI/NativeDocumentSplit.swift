@@ -16,6 +16,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   var callouts: CalloutEditorController? = nil
   let mode: WorkspaceMode
   @Binding var previewError: String?
+  @Binding var editorSelection: Data?
   @Environment(\.undoManager) private var undoManager
 
   func makeNSViewController(context: Context) -> Controller {
@@ -31,7 +32,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   private var editorSurface: EditorSurface {
     EditorSurface(
       document: document, preferences: preferences, commands: editing, undoManager: undoManager,
-      syntax: syntax, syntaxRevision: syntaxRevision)
+      syntax: syntax, syntaxRevision: syntaxRevision, editorSelection: $editorSelection)
   }
 
   private var previewSurface: PreviewSurface {
@@ -106,13 +107,14 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     let undoManager: UndoManager?
     var syntax: MarkdownSyntax? = nil
     var syntaxRevision: UInt64? = nil
+    @Binding var editorSelection: Data?
     var body: some View {
       NativeMarkdownEditor(
         document: document, fontName: preferences.editorFontName,
         fontSize: preferences.editorFontSize, behavior: preferences.editorBehavior,
         strikethroughEnabled: preferences.strikethrough, commands: commands,
         hostUndoManager: undoManager, syntax: syntax, syntaxRevision: syntaxRevision,
-        syntaxHighlighting: preferences.syntaxHighlighting
+        syntaxHighlighting: preferences.syntaxHighlighting, selectionStorage: $editorSelection
       )
     }
   }

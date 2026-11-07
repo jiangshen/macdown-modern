@@ -169,7 +169,7 @@ struct MarkdownCommandIntegrationTests {
     manager.groupsByEvent = false
     let editor = NativeDocumentSplit.EditorSurface(
       document: document, preferences: preferences,
-      commands: commands, undoManager: manager)
+      commands: commands, undoManager: manager, editorSelection: .constant(nil))
     let preview = NativeDocumentSplit.PreviewSurface(
       html: "<p>word</p>", directory: nil,
       remoteImages: false, error: .constant(nil))

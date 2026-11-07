@@ -11,6 +11,9 @@ import RenderingCore
 public final class AppPreferences {
   @ObservationIgnored private let defaults: UserDefaults
 
+  public var restoreDocumentsOnLaunch: Bool {
+    didSet { save(restoreDocumentsOnLaunch, "NSQuitAlwaysKeepsWindows") }
+  }
   public var preferDocumentTabs: Bool { didSet { save(preferDocumentTabs, "preferDocumentTabs") } }
   public var syntaxHighlighting: Bool {
     didSet { save(syntaxHighlighting, "editorSyntaxHighlighting") }
@@ -58,6 +61,8 @@ public final class AppPreferences {
     legacyValues: [String: Any]? = nil
   ) {
     self.defaults = defaults
+    // App-scoped fallback only; explicit app, system and launch-argument choices win.
+    defaults.register(defaults: ["NSQuitAlwaysKeepsWindows": true])
     let domain = domainName ?? Bundle.main.bundleIdentifier ?? "local.macdown.modern"
     let legacy =
       legacyValues ?? defaults.persistentDomain(forName: "com.uranusjr.macdown")
@@ -66,6 +71,7 @@ public final class AppPreferences {
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }
+    restoreDocumentsOnLaunch = boolean("NSQuitAlwaysKeepsWindows", fallback: true)
     preferDocumentTabs = boolean("preferDocumentTabs", fallback: true)
     frontMatter = boolean("htmlDetectFrontMatter", fallback: true)
     tableOfContents = boolean("htmlRendersTOC", fallback: true)

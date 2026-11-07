@@ -1,5 +1,6 @@
 import AppKit
 import DocumentCore
+import SwiftUI
 import Testing
 
 @testable import MacDownUI
@@ -65,4 +66,47 @@ struct NativeMarkdownEditorTests {
     #expect(editor.hasMarkedText())
     editor.unmarkText()
   }
+  @Test("Restored selections clamp stale offsets and preserve source and undo")
+  func restoredSelection() throws {
+    let document = MarkdownDocument(contents: TextFileContents(text: "A😀B"))
+    let manager = UndoManager()
+    let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+    coordinator.undoManager = manager
+    let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
+    let editor = try #require(scroll.documentView as? MarkdownTextView)
+    editor.restoreSelection(location: Int.max, length: Int.max)
+    #expect(editor.selectedRange() == NSRange(location: 4, length: 0))
+    editor.restoreSelection(location: -100, length: Int.max)
+    #expect(editor.selectedRange() == NSRange(location: 0, length: 4))
+    editor.restoreSelection(location: 2, length: 0)
+    #expect(editor.selectedRange() == NSRange(location: 1, length: 0))
+    #expect(document.text == "A😀B")
+    #expect(!manager.canUndo)
+  }
+
+  @Test("Scene selection restoration waits for initial load and does not reset later edits")
+  func sceneSelectionRestoration() async throws {
+    var stored: Data? = try JSONEncoder().encode(EditorSelectionState(location: 3, length: 2))
+    let document = MarkdownDocument()
+    let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+    coordinator.selectionStorage = Binding(get: { stored }, set: { stored = $0 })
+    let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
+    let editor = try #require(scroll.documentView as? MarkdownTextView)
+    coordinator.restoreSelectionIfNeeded()
+    #expect(editor.selectedRange() == NSRange(location: 0, length: 0))
+    try await document.apply(snapshot: TextFileContents(text: "abcdef"), previous: nil)
+    NativeMarkdownEditor.synchronize(scroll, document: document, coordinator: coordinator)
+    coordinator.restoreSelectionIfNeeded()
+    #expect(editor.selectedRange() == NSRange(location: 3, length: 2))
+    editor.setSelectedRange(NSRange(location: 1, length: 1))
+    coordinator.textViewDidChangeSelection(
+      Notification(name: NSTextView.didChangeSelectionNotification))
+    let captured = try JSONDecoder().decode(EditorSelectionState.self, from: #require(stored))
+    #expect(captured == EditorSelectionState(location: 1, length: 1))
+    coordinator.restoreSelectionIfNeeded()
+    #expect(editor.selectedRange() == NSRange(location: 1, length: 1))
+    #expect(document.revision == 1)
+    #expect(document.text == "abcdef")
+  }
+
 }

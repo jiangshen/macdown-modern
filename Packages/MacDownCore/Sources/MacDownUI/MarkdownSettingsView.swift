@@ -38,6 +38,10 @@ public struct MarkdownSettingsView: View {
       Tab("Documents", systemImage: "doc.richtext") {
         Form {
           Section("Windows") {
+            Toggle(
+              "Restore open documents when reopening", isOn: $preferences.restoreDocumentsOnLaunch
+            )
+            .accessibilityIdentifier("restoreDocumentsOnLaunch")
             Toggle("Prefer tabs for new documents", isOn: $preferences.preferDocumentTabs)
               .accessibilityIdentifier("preferDocumentTabs")
             Text(

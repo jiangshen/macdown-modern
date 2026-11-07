@@ -273,13 +273,39 @@ third tab with the native “+” button, switched between independent sources, 
 an edit in its original tab without changing the other. A native integration test also
 checks separate selections/undo managers and closing one tab without changing the other.
 
-The complete follow-on goal remains open. A custom New Tab menu/Command-T action was
-removed from this increment: the generic document action reused a blank document, while
-sending the native responder action directly created a separate window. Keep the working
-native “+” control and complete explicit shortcut routing in the next pass. Finder routing,
-multi-file drops, duplicate-file activation, moving/merging/reordering, dirty-close cancel,
-full keyboard/VoiceOver behavior, and restoration of groups/selection/scroll still require
-end-to-end evidence. Scene storage alone does not establish restoration acceptance.
+#### Tab commands and native session restoration — verified increment (2026-11-06)
+
+File → New Tab / Command-T now asks the native document host for a fresh untitled
+document and places the resulting window in the originating tab group. A short-lived
+placement request ignores existing/utility windows and expires after five seconds;
+closing its anchor cancels it. It does not replace the document host, window delegate,
+restoration class, undo manager or file coordination. The bridge applies window tabbing
+policy before attachment as well as after it.
+
+A Documents setting controls native reopen behavior using the app-scoped
+`NSQuitAlwaysKeepsWindows` preference. Its registered fallback is true; explicit app,
+system and launch-argument choices retain precedence. No machine-wide setting changes.
+Native host restoration reopened two saved documents in the same group with the same
+selected tab. Per-scene layout and source-selection offsets restore independently.
+Selection restoration waits for the initial document snapshot, clamps stale/Unicode
+UTF-16 offsets, avoids marked text, and does not change source or undo history.
+Visible source panes receive keyboard focus only when the host has left focus on the
+window itself. Scene storage contains UI offsets only, never a duplicate document.
+
+Direct native checks verified repeated Command-T with a blank document already open,
+Control-Tab switching, Move Tab to New Window, Merge All Windows, canceling an unsaved
+tab close, saving a new tab, activating an existing tab through Open Recent, and repeated
+quit/relaunch with different editor layouts and selections in two documents. Source
+selection was explicitly checked with keyboard input and after relaunch; simply setting
+an accessibility selection did not produce a native selection-change notification.
+
+The full tab follow-on goal remains open: multi-file drops, Finder/Open With routing,
+drag reordering, restoring multiple separate groups, source/preview scroll positions,
+and the complete keyboard/VoiceOver audit still require implementation or direct
+end-to-end evidence. The regression suite passes 116 tests across 23 suites and seven
+native arm64 test executables. The native build-for-testing passes; XCUITest execution
+remains unavailable because automation enablement times out. No replaced legacy tab or
+file-lifecycle implementation was deleted while the old target still consumes it.
 See `docs/validation/native-tabs.json`.
 
 ### M5 — Productivity and system features

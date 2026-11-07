@@ -16,13 +16,15 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   public var syntax: MarkdownSyntax?
   public var syntaxRevision: UInt64?
   public var syntaxHighlighting: Bool
+  public var selectionStorage: Binding<Data?>?
   @Environment(\.undoManager) private var undoManager
 
   public init(
     document: MarkdownDocument, fontName: String = "Menlo-Regular", fontSize: Double = 14,
     behavior: EditorBehavior = .init(), strikethroughEnabled: Bool = true,
     commands: EditorCommandController? = nil, hostUndoManager: UndoManager? = nil,
-    syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true
+    syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true,
+    selectionStorage: Binding<Data?>? = nil
   ) {
     self.document = document
     self.fontName = fontName
@@ -34,6 +36,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     self.syntax = syntax
     self.syntaxRevision = syntaxRevision
     self.syntaxHighlighting = syntaxHighlighting
+    self.selectionStorage = selectionStorage
   }
 
   public func makeCoordinator() -> Coordinator { Coordinator(document: document) }
@@ -44,16 +47,21 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     context.coordinator.strikethroughEnabled = strikethroughEnabled
     context.coordinator.commands = commands
     commands?.coordinator = context.coordinator
-    return Self.makeScrollView(document: document, coordinator: context.coordinator)
+    context.coordinator.selectionStorage = selectionStorage
+    let view = Self.makeScrollView(document: document, coordinator: context.coordinator)
+    context.coordinator.restoreSelectionIfNeeded()
+    return view
   }
 
   static func makeScrollView(document: MarkdownDocument, coordinator: Coordinator) -> NSScrollView {
     let scrollView = NSScrollView()
+    scrollView.identifier = NSUserInterfaceItemIdentifier("markdownSourceScroll")
     scrollView.hasVerticalScroller = true
     scrollView.autohidesScrollers = true
     scrollView.borderType = .noBorder
 
     let editor = MarkdownTextView(usingTextLayoutManager: true)
+    editor.identifier = NSUserInterfaceItemIdentifier("markdownSourceEditor")
     editor.commandController = coordinator.commands
     editor.isRichText = false
     editor.importsGraphics = false
@@ -88,6 +96,9 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   }
 
   public func updateNSView(_ scrollView: NSScrollView, context: Context) {
+    context.coordinator.isUpdatingView = true
+    defer { context.coordinator.isUpdatingView = false }
+    context.coordinator.selectionStorage = selectionStorage
     context.coordinator.document = document
     context.coordinator.undoManager = hostUndoManager ?? undoManager
     context.coordinator.behavior = behavior
@@ -101,7 +112,13 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       commands?.focusChanged(scrollView.window?.firstResponder === scrollView.documentView)
     }
     Self.synchronize(scrollView, document: document, coordinator: context.coordinator)
+    context.coordinator.restoreSelectionIfNeeded()
     guard let editor = scrollView.documentView as? NSTextView else { return }
+    if let window = editor.window, window.firstResponder === window,
+      !editor.isHiddenOrHasHiddenAncestor
+    {
+      window.makeFirstResponder(editor)
+    }
     let size = min(72, max(8, fontSize))
     let font =
       NSFont(name: fontName, size: size) ?? .monospacedSystemFont(ofSize: size, weight: .regular)
@@ -336,6 +353,36 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       } catch { return true }
     }
 
+    var selectionStorage: Binding<Data?>?
+    var isUpdatingView = false
+    private var didRestoreSelection = false
+
+    func restoreSelectionIfNeeded() {
+      guard !didRestoreSelection, let editor = editor as? MarkdownTextView,
+        !editor.hasMarkedText(), let data = selectionStorage?.wrappedValue
+      else { return }
+      // The reference document host can deliver its first snapshot after view creation.
+      guard document.loadRevision > 0 || !document.text.isEmpty else { return }
+      didRestoreSelection = true
+      guard let state = try? JSONDecoder().decode(EditorSelectionState.self, from: data) else {
+        return
+      }
+      let previous = isSynchronizing
+      isSynchronizing = true
+      defer { isSynchronizing = previous }
+      editor.restoreSelection(location: state.location, length: state.length)
+    }
+
+    public func textViewDidChangeSelection(_ notification: Notification) {
+      guard !isSynchronizing, !isUpdatingView, let editor, !editor.hasMarkedText(),
+        let selectionStorage
+      else { return }
+      didRestoreSelection = true
+      let selection = editor.selectedRange()
+      selectionStorage.wrappedValue = try? JSONEncoder().encode(
+        EditorSelectionState(location: selection.location, length: selection.length))
+    }
+
     public func textDidChange(_ notification: Notification) {
       guard !isSynchronizing, let editor = notification.object as? NSTextView else { return }
       document.acceptNativeEdit(editor.string)
@@ -354,4 +401,10 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
 
     deinit { NotificationCenter.default.removeObserver(self) }
   }
+}
+
+/// UI offsets only; the document host remains the sole owner of saved source data.
+struct EditorSelectionState: Codable, Equatable {
+  let location: Int
+  let length: Int
 }

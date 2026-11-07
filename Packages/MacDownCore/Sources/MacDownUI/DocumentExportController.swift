@@ -199,7 +199,12 @@ struct DocumentWindowBridge: NSViewRepresentable {
       Task { @MainActor [weak self] in
         guard let self, self.output?.window !== self.window else { return }
         self.output?.window = self.window
+        if let window = self.window { DocumentTabPlacement.shared.place(window) }
       }
+    }
+    override func viewWillMove(toWindow newWindow: NSWindow?) {
+      if let newWindow { DocumentWindowPolicy.configure(newWindow, preferTabs: preferTabs) }
+      super.viewWillMove(toWindow: newWindow)
     }
     override func viewDidMoveToWindow() {
       super.viewDidMoveToWindow()
