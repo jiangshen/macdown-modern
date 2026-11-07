@@ -563,6 +563,37 @@
     "Custom CSS/templates, other feature parity, release readiness and safe coupled legacy retirement"
   ],
   "hosted": {
-    "status": "pending code push and artifact verification"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42396415587",
+    "commit": "c6c8b228e2007bf41d0f91c1597c204de2b8b2e0",
+    "result": "passed both jobs; downloaded exact package/corpus and native log/result artifacts verified",
+    "packageTests": 266,
+    "packageSuites": 53,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "nativeUITests": 9,
+    "nativeUIFailures": 0,
+    "priorityInversionWarnings": 15,
+    "appIntentsMetadataWarnings": 2,
+    "performanceAttribution": "Priority-inversion warnings remain an open native runtime attribution gate; no first-party cause or improvement is inferred.",
+    "passedNativeMethods": [
+      "-[SnowfolioUITests.DocumentLifecycleTests testEditorThemePickerSearchImportAndUndo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testFencedCodePreferenceUpdatesCurrentPreview]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testIntrawordPreferenceRoundTrip]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testLivePreviewUpdatesAfterEditingAndUndo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testMultipleDocumentWindows]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testNewDocumentTypingUndoRedo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testOpenExistingMarkdownAndSave]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testSettingsSearchHistoryAndWindowReopen]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testUnderlinePreferenceAndNativeCommand]"
+    ],
+    "coreArtifactDirectory": "/private/tmp/snowfolio-table-hosted-core",
+    "nativeArtifactDirectory": "/private/tmp/snowfolio-table-hosted-native",
+    "nativeResultBundle": "/private/tmp/snowfolio-table-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_17-28-40-+0000.xcresult",
+    "artifactSHA256": {
+      "/private/tmp/snowfolio-table-hosted-core/snowfolio-validation/swift-test.log": "e5955960bb03b1a7adba407f97e45cd7583c17d2846b7b736e66b146187b1914",
+      "/private/tmp/snowfolio-table-hosted-core/snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "/private/tmp/snowfolio-table-hosted-core/snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "/private/tmp/snowfolio-table-hosted-native/xcodebuild.log": "11e19829aed481211b03e9a83ed37228de4e079b978c8c5e1749c7cf0b77fbc6"
+    }
   }
 }

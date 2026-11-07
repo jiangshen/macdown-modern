@@ -2218,3 +2218,21 @@ contexts also remain. The user desktop is still locked; the existing app process
 user documents/Open panel are preserved, so no fresh desktop selection confirmation is
 claimed. Real IME/VoiceOver, app performance, CSS/templates, remaining parity and safe
 legacy retirement remain open. The full modernization goal stays active.
+
+
+### Hosted table-coordinate acceptance
+
+Run [42396415587](https://github.com/jiangshen/snowfolio/actions/runs/42396415587),
+code `c6c8b228e2007bf41d0f91c1597c204de2b8b2e0`, passes both jobs. Downloaded
+artifacts confirm **266 package tests / 53 suites**, eight arm64 test executables,
+652/652 CommonMark examples and **nine native document UI tests with zero failures**.
+The native theme search/import/undo and Settings/document walkthroughs all pass.
+Fifteen runtime priority-inversion warnings remain an open attribution gate; two
+App Intents metadata notices reflect the absent framework integration. No performance
+fix is inferred from their count. Exact evidence and hashes are in
+`validation/table-source-coordinates.json`.
+
+Direct user-desktop acceptance remains pending while the Mac is locked, and the
+existing running process predates the latest rebuild. The source-coordinate gates
+above, real IME/VoiceOver, full native performance, remaining parity and safe legacy
+retirement remain required. The full modernization goal remains active and incomplete.
