@@ -79,12 +79,24 @@ text and link destinations retain their normal scopes. HTML/PDF/print share the 
 rendered result. Malformed empty/unclosed superscript markers stay visible; complex
 input has bounded parsing with a preview notice and remaining literal markers.
 
-The native parser remains pinned to swift-cmark 0.9.0. Its local package has a small
-configuration patch disabling Apple's attributed-string grammar, which can swallow
-text in ordinary Markdown. Source hashes, the exact patch and distribution notice are
-verified before builds. The current core CommonMark 0.31.2 audit passes 641/652 examples;
-11 inherited differences remain tracked in the roadmap. This does not establish full
-standards conformance or completion of the migration.
+The native parser remains pinned to swift-cmark 0.9.0, with three audited backports
+from CommonMark/cmark 0.31.2 for numeric references, Unicode punctuation/symbols and
+nested strong tags. Apple's attributed-string grammar is disabled because it can
+swallow text in ordinary Markdown. Source hashes, reversible patches and original
+notices are verified before builds. **All 652 published CommonMark 0.31.2 examples pass**
+through the core parser audit. This is a core corpus result; the wider app/GFM,
+optional-dialect and migration acceptance gates remain separate.
+
+To reproduce the published corpus check, download its checksum-pinned fixtures and run:
+
+```sh
+curl --fail --silent --show-error https://spec.commonmark.org/0.31.2/spec.json -o /tmp/snowfolio-commonmark-spec.json
+bash Tools/validate-commonmark.sh /tmp/snowfolio-commonmark-spec.json
+```
+
+The audit builds a development-only Swift executable from the exact packaged parser.
+It never runs document scripts and is not part of the shipping application. CI runs
+this audit and retains package logs and native UI result bundles for seven days.
 
 ## Identity and attribution
 

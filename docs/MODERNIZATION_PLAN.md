@@ -1297,3 +1297,63 @@ Settings/keyboard/VoiceOver/IME desktop acceptance and XCUITest execution retain
 existing environment gates. No further legacy subsystem is deleted: the original target
 still consumes its renderer, highlighter and formatting resource references. Continue
 retirement when the coupled features reach parity. The full Snowfolio goal remains active.
+
+
+## Published CommonMark corpus — corrected and verified increment
+
+The 11 inherited differences recorded in the previous increment are now corrected.
+All **652/652 published CommonMark 0.31.2 examples** pass, with exact HTML comparison,
+using the `cmark-audit` development executable linked to the same packaged native parser.
+The checker still fails on every mismatch and verifies the published fixture checksum;
+no cases, nested tags or entity text are normalized away to obtain this result.
+
+Three upstream CommonMark/cmark 0.31.2 behaviors are backported into swift-cmark 0.9.0:
+seven-digit decimal/six-digit hexadecimal reference limits; Unicode punctuation-or-symbol
+classification for emphasis flanking; and preservation of nested `<strong>` elements.
+Source release `eec0eeba6d31189fd828314576494566d539b1e3` and its archive hash are pinned.
+The Unicode routine retains the existing exported function name for API compatibility.
+These are maintained third-party C backports, not another first-party Markdown parser.
+First-party application integration, dialects and audit command stay Swift. The existing
+attribute-grammar configuration gate remains in place.
+
+`Tools/vendor-cmark.py` now accepts both pinned archives and records exact reversible
+replacements in `Packages/MarkdownEngine/Patches.json`, with upstream hashes/origins in
+`Provenance.json`. Every other native source file stays byte-identical to 0.9.0.
+`verify-markdown-engine.py` checks packaged hashes, reverses each patch to prove its original
+hash, rejects unexpected source files and verifies both original distribution notices.
+The complete CommonMark COPYING notice (BSD and component MIT notices) is preserved in
+the package and app. Native packaging compares both shipped parser notices byte-for-byte.
+
+`Tools/validate-commonmark.sh` builds the development-only `cmark-audit` executable from
+this exact local package, verifies arm64, then runs all official fixtures. The fixture
+file is supplied explicitly and checksum-checked; ordinary app builds and runtime need
+no spec download. The audit target is not linked into the application. The existing
+hosted workflow now triggers for all package/tool changes and runs this full corpus check
+as well as the package/native-app jobs. The official `xcode-27` arm64 runner label was
+checked against actions/runner-images. Parser/package logs and native `.xcresult` bundles
+are retained for seven days with the checksum-pinned official artifact action.
+
+App-facing regressions verify the corrected AST/HTML nesting, decimal/hex bounds, literal
+code handling, currency/emoji/letter flanking and fresh styled/plain exports. Validation:
+**186 tests in 37 suites**, eight native arm64 test executables, native build-for-testing,
+**652 official corpus examples**, and **12 AddressSanitizer tests in two suites** all pass.
+Changed Swift formatting, script/workflow syntax, first-party diff checks and source/
+notice provenance checks passed. The published corpus summary is updated in
+`validation/commonmark-core.json`; broader evidence is in `validation/commonmark-backports.json`.
+
+Read-only inspection also confirmed successful hosted `native-app` and package jobs for
+prior commit `62344f7` (run `42346495525`). That workflow actually invokes the native
+`xcodebuild test` path for the three checked-in document lifecycle UI methods. The local
+UI automation limitation therefore does not establish a universal runner blocker. New
+retained result bundles will provide method-level evidence; do not infer tests for
+settings, tabs, real IME or VoiceOver from the three lifecycle methods. Local direct
+user-desktop checks remain a separate acceptance gate.
+
+This closes the **11 published core-corpus differences**, not the full modernization or
+every normative/Unicode/GFM/app-rendering case. Optional extensions, application safety
+filtering, heading/navigation decorations and exports have their own integration gates.
+Underline/quote/fence/intraword choices, custom themes/templates, productivity/macOS
+features, measured performance, real input/accessibility and production release/install/
+default-handler work remain required. The original renderer still has coupled legacy
+target consumers; no additional legacy files are deleted here. The full Snowfolio goal
+remains active.

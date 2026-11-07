@@ -1,0 +1,64 @@
+{
+  "product": "Snowfolio",
+  "date": "2026-11-06",
+  "increment": "Published CommonMark corpus corrections",
+  "nativeBase": {
+    "version": "swift-cmark 0.9.0",
+    "revision": "08ddb528923cc1a6527e02b7a1aee9e516ca749a"
+  },
+  "backports": {
+    "version": "CommonMark/cmark 0.31.2",
+    "revision": "eec0eeba6d31189fd828314576494566d539b1e3",
+    "archiveSHA256": "f9bc5ca38bcb0b727f0056100fac4d743e768872e3bacec7746de28f5700d697",
+    "behaviors": [
+      "Decimal/hex reference digit bounds",
+      "Unicode punctuation-or-symbol table",
+      "Nested strong HTML tags"
+    ]
+  },
+  "firstPartyBoundary": "Application integration and audit tool are Swift; explicit third-party C backports preserve maintained grammar and original notices",
+  "validation": {
+    "tests": 186,
+    "suites": 37,
+    "arm64TestExecutables": 8,
+    "officialCommonMarkExamples": 652,
+    "officialMismatches": 0,
+    "nativeBuildForTesting": "passed",
+    "addressSanitizer": "12 tests in 2 suites passed",
+    "changedSwiftStrictFormatting": "passed",
+    "scriptAndWorkflowSyntax": "passed",
+    "firstPartyDiffCheck": "passed",
+    "sourceAndPackagedNoticeChecks": "passed"
+  },
+  "CI": {
+    "runner": "Official xcode-27 arm64 image",
+    "workflow": ".github/workflows/snowfolio.yml",
+    "newCommonMarkStep": "configured; local identical command passes",
+    "artifactRetentionDays": 7,
+    "artifactAction": "actions/upload-artifact v7.0.2 / cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+    "priorHostedRun": {
+      "id": 42346495525,
+      "commit": "62344f787956ae87fcfd3695fb83dfed77d10000",
+      "conclusion": "success",
+      "URL": "https://github.com/jiangshen/snowfolio/actions/runs/42346495525",
+      "scope": "native-app xcodebuild test step and package tests; method-level bundles were not retained in that run"
+    }
+  },
+  "evidence": [
+    "/private/tmp/snowfolio-commonmark-validation/commonmark.json",
+    "/private/tmp/snowfolio-validation/swift-test.log",
+    "/private/tmp/snowfolio-conformance-native-build.log",
+    "/private/tmp/snowfolio-conformance-asan.log"
+  ],
+  "remaining": [
+    "Full app/GFM/optional-dialect corpus acceptance",
+    "Underline/quote/fence/intraword preferences",
+    "Custom styles/templates and remaining editor/workspace/integration features",
+    "Actual input/accessibility/system appearance acceptance",
+    "Measured performance and production release/install/default handler",
+    "Progressive retirement of coupled original target code"
+  ],
+  "goal": "active; incomplete",
+  "productionInstalled": false,
+  "defaultHandlerChanged": false
+}

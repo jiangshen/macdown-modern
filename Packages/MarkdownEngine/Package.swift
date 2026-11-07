@@ -6,10 +6,12 @@ let package = Package(
   name: "SnowfolioMarkdownEngine",
   platforms: [.macOS("27.0")],
   products: [
+    .executable(name: "cmark-audit", targets: ["cmark-audit"]),
     .library(name: "cmark-gfm", targets: ["cmark-gfm"]),
     .library(name: "cmark-gfm-extensions", targets: ["cmark-gfm-extensions"]),
   ],
   targets: [
+    .executableTarget(name: "cmark-audit", dependencies: ["cmark-gfm"], path: "Audit"),
     .target(
       name: "cmark-gfm", path: "src",
       exclude: ["scanners.re", "libcmark-gfm.pc.in", "config.h.in", "CMakeLists.txt"],

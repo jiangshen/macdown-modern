@@ -4,8 +4,21 @@
   "revision": "08ddb528923cc1a6527e02b7a1aee9e516ca749a",
   "archiveURL": "https://codeload.github.com/swiftlang/swift-cmark/tar.gz/refs/tags/0.9.0",
   "archiveSHA256": "21e88b2ac458edda8c3376336e589f6aff2d9ac1091794ab6461299e6248e0e7",
-  "patch": "Two preprocessor directives make the ^[ attributed-string grammar optional via CMARK_DISABLE_ATTRIBUTES; all other native engine source is unchanged.",
-  "reason": "This grammar is outside CommonMark/GFM and original MacDown. Its failed reference matching can swallow visible text. The app opts out; native grammar remains the same pinned maintained parser.",
+  "configuration": "CMARK_DISABLE_ATTRIBUTES disables the Apple attributed-string inline grammar that can swallow ordinary Markdown text.",
+  "backports": {
+    "source": "https://github.com/commonmark/cmark",
+    "version": "0.31.2",
+    "revision": "eec0eeba6d31189fd828314576494566d539b1e3",
+    "archiveURL": "https://codeload.github.com/commonmark/cmark/tar.gz/refs/tags/0.31.2",
+    "archiveSHA256": "f9bc5ca38bcb0b727f0056100fac4d743e768872e3bacec7746de28f5700d697",
+    "files": {
+      "COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
+      "src/houdini_html_u.c": "184a3c3e7885335a1cb484ef370b17f6170574bc1fffc84a5a9fca92b49fa486",
+      "src/html.c": "5ea4867fc61ae562fe5ff1b8e91971d5c7dd671a1c9e25b0b1200212f3f3a0a1",
+      "src/utf8.c": "882f8364abef18c18834d79d8693c3152bb65962d49bf988c50718971775d775"
+    }
+  },
+  "patches": "Patches.json contains exact reversible native-source replacements and their upstream origin",
   "originalFiles": {
     "COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
     "extensions/CMakeLists.txt": "93bfb15d19e2e8273694c880aa6827c7a0d7362c215c75758b11e9b7b6535623",
@@ -86,7 +99,9 @@
   },
   "files": {
     "COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
-    "Package.swift": "885d6e00405f71fa6389fea1e5413bdee886238edadf9dcd81be3cc47bff9100",
+    "CommonMark-COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
+    "Package.swift": "21d64f677d8c91a5136a059dc13df34a5cce228d7aefa146273123573eb5734a",
+    "Patches.json": "96706b0f2415c82139d85fdd5131811fab32215a5b9bca47e9c49f17a7ee37e2",
     "extensions/CMakeLists.txt": "93bfb15d19e2e8273694c880aa6827c7a0d7362c215c75758b11e9b7b6535623",
     "extensions/autolink.c": "7b448954aa5bc180b648e1fe14323e5b690667be5656a6445ea03ba0f9b30f06",
     "extensions/autolink.h": "32b32d557c19d18c30b8fa01a5b8475f910a3fae48ef78fbde4e089c48f1e216",
@@ -117,8 +132,8 @@
     "src/footnotes.c": "da853b3ca7f27bbabadb48596457243489dbeb1782a385795733ab8066dd181b",
     "src/houdini_href_e.c": "d874af4ad2fb4d0330642fd71ef286ec457ddb8bd7b614a758852a20ba2b8132",
     "src/houdini_html_e.c": "d7120b3b23c1de34ed80cdde0fa5a1c5e4d2fc96b6200542cd88dfd8404d793a",
-    "src/houdini_html_u.c": "c7c93050a9a74736a9e7f972bc5179231d464477ddfb02d71f2027bf7e6bd050",
-    "src/html.c": "58f32daa6b32b36af5f43668405ef513ac66d338016e516bf47bb874e87c7ea0",
+    "src/houdini_html_u.c": "08d9486d7bbfdfc6af27340d52ec99d8c752b3003a6b17813fcbe4118ae1af2a",
+    "src/html.c": "ad7f74c0b78f760fb3517ebac7fa3b7d3347c13d7457609b8a925bc8a20d43a6",
     "src/include/buffer.h": "3686f08a83fe00e0e1038eeb7bd4b1d290f17d2d00acfc898243311213a5156f",
     "src/include/chunk.h": "f9d917447677c5d260c54214cfff40e8808be31b5a6f8874dd7a04ae14a97c03",
     "src/include/cmark-gfm-extension_api.h": "3a69f68d60a1e14ba003c8a4f9dd32025b53e4c5aaf7279da06f386020c0a47f",
@@ -160,7 +175,7 @@
     "src/scanners.c": "7e0d16ca84acf11219bc3a4a5ad4bfd9891ae319ffec60552c67d2f6ecbc3cac",
     "src/scanners.re": "004b7c303e81982abb807cbdfa9a949130435c064cce019ba159ad2af7d6cdbe",
     "src/syntax_extension.c": "5a389a9869fb7176f119ac492c54e7812dc669dd5612726d6c83f48cc7b4204a",
-    "src/utf8.c": "8565221e756c1e8dbb545725911704564937956b06b8ff00ec473cd32413a6f3",
+    "src/utf8.c": "f41b3ab8b51deeceb15ae565c169e23182553915780e20e990558d496129c019",
     "src/xml.c": "d06c7bedc1c5914906fafcac31c315844ebe0595625db2ee06ea047f23ed9579"
   }
 }

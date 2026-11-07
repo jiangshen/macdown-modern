@@ -159,3 +159,16 @@ struct MarkdownExportTests {
   }
 
 }
+
+extension MarkdownExportTests {
+  @Test("Portable output retains standard nested emphasis and literal overlong references")
+  func commonmarkCorrections() async throws {
+    let source = "****important**** and &#00000065; *€*word"
+    for styled in [false, true] {
+      let result = try await MarkdownExport.build(
+        source: source, title: "Conformance", directory: nil, includeStyles: styled)
+      #expect(result.fragment.contains("<strong><strong>important</strong></strong>"))
+      #expect(result.document.contains("&amp;#00000065; *€*word"))
+    }
+  }
+}

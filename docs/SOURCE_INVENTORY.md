@@ -206,3 +206,21 @@ so this increment does not delete their files or claim the zero-legacy-code gate
 A new standards ledger records the 11 inherited CommonMark differences found by the
 broader corpus audit. Retire these subsystems only after the remaining replacements
 and desktop acceptance gates pass.
+
+
+## CommonMark backport update
+
+The preceding two-directive configuration record describes commit `62344f7`. The current
+native parser additionally contains three upstream CommonMark/cmark 0.31.2 backports in
+`src/html.c`, `src/houdini_html_u.c` and `src/utf8.c`. The first preserves native nested
+strong nodes in HTML; the others implement standard reference digit bounds and Unicode
+punctuation/symbol flanking. These remain explicit third-party C code, sourced from a
+checksum-pinned maintained release with the complete COPYING notice. All remaining native
+source matches swift-cmark 0.9.0. `Patches.json` and provenance describe the exact changes;
+build verification reverses them to verify original hashes.
+
+`Packages/MarkdownEngine/Audit/ParserAudit.swift` is a first-party development tool. It
+reads stdin and prints the core engine HTML for corpus checks; it is not the app's future
+user-facing CLI and is not linked or bundled into Snowfolio. All first-party application
+logic remains Swift. The new corpus pass does not yet authorize deleting the coupled
+legacy renderer/editor/custom-template implementation.

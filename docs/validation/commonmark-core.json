@@ -2,72 +2,32 @@
   "spec": "CommonMark 0.31.2",
   "source": "https://spec.commonmark.org/0.31.2/spec.json",
   "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
-  "engine": "swift-cmark 0.9.0 with CMARK_DISABLE_ATTRIBUTES",
   "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
   "total": 652,
-  "passed": 641,
-  "failed": 11,
+  "passed": 652,
+  "failed": 0,
+  "failures": [],
+  "engine": "swift-cmark 0.9.0 with pinned CommonMark/cmark 0.31.2 backports and CMARK_DISABLE_ATTRIBUTES",
   "baselineComparison": {
-    "engine": "Unmodified swift-cmark 0.9.0",
+    "commit": "62344f7",
+    "unmodifiedSource": "swift-cmark 0.9.0",
     "passed": 641,
     "failed": 11,
-    "failuresIdentical": true
+    "previouslyVerified": "identical differences with and without the attribute configuration gate"
   },
-  "failingExamples": [
-    {
-      "example": 28,
-      "section": "Entity and numeric character references"
-    },
-    {
-      "example": 354,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 389,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 417,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 425,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 426,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 427,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 464,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 465,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 466,
-      "section": "Emphasis and strong emphasis"
-    },
-    {
-      "example": 468,
-      "section": "Emphasis and strong emphasis"
+  "backports": {
+    "source": "https://github.com/commonmark/cmark",
+    "version": "0.31.2",
+    "revision": "eec0eeba6d31189fd828314576494566d539b1e3",
+    "archiveURL": "https://codeload.github.com/commonmark/cmark/tar.gz/refs/tags/0.31.2",
+    "archiveSHA256": "f9bc5ca38bcb0b727f0056100fac4d743e768872e3bacec7746de28f5700d697",
+    "files": {
+      "COPYING": "c22e885f33b821bddb24cf007145e5540655b6c0f403e49e6c76a93c28e6d9a9",
+      "src/houdini_html_u.c": "184a3c3e7885335a1cb484ef370b17f6170574bc1fffc84a5a9fca92b49fa486",
+      "src/html.c": "5ea4867fc61ae562fe5ff1b8e91971d5c7dd671a1c9e25b0b1200212f3f3a0a1",
+      "src/utf8.c": "882f8364abef18c18834d79d8693c3152bb65962d49bf988c50718971775d775"
     }
-  ],
-  "categories": [
-    "Overlong numeric character reference handling",
-    "Currency-symbol Unicode punctuation flanking",
-    "Nested strong flattening"
-  ],
-  "reproduction": "Tools/check-commonmark.py --program PATH_TO_NATIVE_CLI --spec-file PATH_TO_OFFICIAL_SPEC_JSON --output REPORT.json; exits 1 while any differences remain",
-  "fullReports": [
-    "/private/tmp/snowfolio-commonmark-spec.json",
-    "/private/tmp/snowfolio-commonmark-baseline.json"
-  ],
-  "conformanceGate": "open; this tests the core native parser and does not prove complete application conformance"
+  },
+  "reproduction": "bash Tools/validate-commonmark.sh PATH_TO_OFFICIAL_SPEC_JSON [ARTIFACT_DIRECTORY]",
+  "conformanceGate": "All 652 published core examples pass; wider normative/app/GFM/optional-dialect acceptance is separate"
 }
