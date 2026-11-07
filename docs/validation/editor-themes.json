@@ -212,6 +212,8 @@
       "after": "240 package tests / 47 suites; 13 Address Sanitizer syntax tests / 2 suites; native arm64 build-for-testing; complete capture and no diagnostics",
       "evidence": "/private/tmp/snowfolio-empty-prefix-regression.json",
       "hosted": {
+        "run": "https://github.com/jiangshen/snowfolio/actions/runs/42376569726",
+        "commit": "3e72ca6f017165d3df24c14f55d273996562680e",
         "result": "pending"
       }
     }
