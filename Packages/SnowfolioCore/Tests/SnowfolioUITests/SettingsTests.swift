@@ -38,13 +38,15 @@ struct SettingsTests {
     #expect(SettingsCatalog.search("MARKDOWN fence").map(\.id) == ["markdownFencedCode"])
     #expect(SettingsCatalog.search("inline equations").map(\.id) == ["markdownInlineMath"])
     #expect(SettingsCatalog.search("intraword").map(\.id) == ["markdownIntraword"])
+    #expect(SettingsCatalog.search("source theme").map(\.id) == ["editorFontName", "editorTheme"])
+    #expect(SettingsCatalog.search("import style").map(\.id) == ["importEditorTheme"])
     #expect(SettingsCatalog.search("checkbox").map(\.id) == ["markdownTaskLists"])
     #expect(SettingsCatalog.search("privacy network").map(\.id) == ["previewRemoteImages"])
     let result = try #require(SettingsCatalog.search("sync").first)
     #expect(result.location == .init(pane: .editor, itemID: "synchronizedScrolling"))
     let entries = SettingsCatalog.sections.flatMap(\.entries)
     #expect(Set(entries.map(\.id)).count == entries.count)
-    #expect(entries.count == 41)
+    #expect(entries.count == 43)
   }
 
   @Test("Settings switches persist through the existing preference model")

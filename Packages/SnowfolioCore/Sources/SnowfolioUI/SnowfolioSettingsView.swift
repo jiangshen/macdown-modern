@@ -241,6 +241,10 @@ private struct SettingsPreferenceRow: View {
         caption
       }
       .pickerStyle(.menu)
+    case .editorTheme:
+      EditorThemePicker(library: preferences.editorThemes)
+    case .importEditorTheme:
+      EditorThemeImportControl(library: preferences.editorThemes)
     case .editorFont:
       LabeledContent {
         TextField("", text: $preferences.editorFontName)

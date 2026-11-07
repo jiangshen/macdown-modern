@@ -294,6 +294,79 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testEditorThemePickerSearchImportAndUndo() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let file = directory.appendingPathComponent("Snowfolio UI Theme.style")
+    let bytes = Data(
+      "editor\nforeground: 112233\nbackground: e0efff\nfont-size: 24px\ncustom-field: retained\n"
+        .utf8)
+    try bytes.write(to: file)
+    let app = launch(arguments: ["-editorThemeSelection", "automatic"])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    let source = "1. First\n2. Second\n\n- Bullet"
+    editor.typeText(source)
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Theme undo checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("source theme")
+    let result = settings.outlines.firstMatch.staticTexts["Theme"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let picker = settings.popUpButtons["editorTheme"]
+    XCTAssertTrue(picker.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertTrue(settings.frame.contains(picker.frame))
+    picker.click()
+    XCTAssertTrue(app.menuItems["Automatic"].waitForExistence(timeout: 3))
+    XCTAssertTrue(app.menuItems["Solarized (Dark)"].exists)
+    app.menuItems["Solarized (Dark)"].click()
+    XCTAssertEqual(picker.value as? String, "Solarized (Dark)")
+    settings.buttons["importEditorTheme"].click()
+    app.typeKey("g", modifierFlags: [.command, .shift])
+    let path = app.textFields["PathTextField"].firstMatch
+    XCTAssertTrue(path.waitForExistence(timeout: 5), app.debugDescription)
+    path.click()
+    app.typeKey("a", modifierFlags: .command)
+    path.typeText(file.path + "\n")
+    let open = app.buttons["OKButton"].firstMatch
+    XCTAssertTrue(open.waitForExistence(timeout: 5))
+    open.click()
+    let review = app.alerts.firstMatch
+    XCTAssertTrue(review.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertTrue(review.staticTexts["Review Theme"].exists)
+    review.buttons["Import"].click()
+    let imported = NSPredicate { _, _ in picker.value as? String == "Snowfolio UI Theme" }
+    expectation(for: imported, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, "Theme undo checkpoint")
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, source)
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "Theme undo checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertEqual(picker.value as? String, "Snowfolio UI Theme")
+    picker.click()
+    app.menuItems["Automatic"].click()
+    XCTAssertEqual(picker.value as? String, "Automatic")
+    XCTAssertEqual(try Data(contentsOf: file), bytes)
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "editor-theme-library-restored-to-automatic"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
   func testOpenExistingMarkdownAndSave() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

@@ -10,6 +10,7 @@ import RenderingCore
 @Observable
 public final class AppPreferences {
   @ObservationIgnored private let defaults: UserDefaults
+  public let editorThemes: EditorThemeLibrary
 
   public var restoreDocumentsOnLaunch: Bool {
     didSet { save(restoreDocumentsOnLaunch, "NSQuitAlwaysKeepsWindows") }
@@ -75,7 +76,7 @@ public final class AppPreferences {
 
   public init(
     defaults: UserDefaults = .standard, domainName: String? = nil,
-    legacyValues: [String: Any]? = nil
+    legacyValues: [String: Any]? = nil, editorThemeRepository: EditorThemeRepository = .standard
   ) {
     self.defaults = defaults
     // App-scoped fallback only; explicit app, system and launch-argument choices win.
@@ -144,6 +145,7 @@ public final class AppPreferences {
     let font = defaults.dictionary(forKey: "editorBaseFontInfo")
     editorFontSize = min(72, max(8, (font?["size"] as? Double) ?? 14))
     editorFontName = (font?["name"] as? String) ?? "Menlo-Regular"
+    editorThemes = EditorThemeLibrary(defaults: defaults, repository: editorThemeRepository)
   }
 
   public var documentStyle: DocumentStyle {

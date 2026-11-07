@@ -5,6 +5,7 @@ repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 artifact_root="${SNOWFOLIO_APP_BUILD_DIR:-$repo_root/Build/Snowfolio}"
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
 python3 "$repo_root/Tools/verify-markdown-engine.py"
+python3 "$repo_root/Tools/verify-editor-themes.py"
 if ! command -v tuist >/dev/null 2>&1; then
     echo "Install Tuist first: brew install tuist" >&2
     exit 1
@@ -42,18 +43,20 @@ if [ ! -s "$app/Contents/Resources/MarkdownDocument.icns" ]; then
     echo "Compiled Markdown document icon is missing." >&2
     exit 1
 fi
-for license in Yams.txt libyaml.txt CommonMark-cmark.txt Hoedown-inline.txt; do
+for license in Yams.txt libyaml.txt CommonMark-cmark.txt Hoedown-inline.txt macdown.txt; do
     if [ ! -s "$app/Contents/Resources/$license" ]; then
         echo "Bundled dependency license is missing: $license" >&2
         exit 1
     fi
 done
-for license in swift-cmark.txt CommonMark-cmark.txt Hoedown-inline.txt; do
+for license in swift-cmark.txt CommonMark-cmark.txt Hoedown-inline.txt macdown.txt; do
     if ! cmp -s "$repo_root/App/Resources/Licenses/$license" "$app/Contents/Resources/$license"; then
         echo "Bundled native parser notice differs from verified source: $license" >&2
         exit 1
     fi
 done
+theme_resources="$app/Contents/Resources/SnowfolioCore_EditorCore.bundle/Contents/Resources/Themes"
+python3 "$repo_root/Tools/verify-editor-themes.py" "$theme_resources"
 highlight_resources="$app/Contents/Resources/SnowfolioCore_CodeHighlightCore.bundle/Contents/Resources"
 for resource in Prism.js Languages.json Prism-LICENSE.txt Prism-Provenance.json prism.css prism-coy.css prism-dark.css prism-funky.css prism-okaidia.css prism-solarizedlight.css prism-tomorrow.css prism-twilight.css; do
     if [ ! -s "$highlight_resources/$resource" ]; then

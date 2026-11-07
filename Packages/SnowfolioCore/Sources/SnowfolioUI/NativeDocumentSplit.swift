@@ -177,8 +177,10 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
         strikethroughEnabled: preferences.strikethrough, commands: commands,
         hostUndoManager: undoManager, syntax: syntax, syntaxRevision: syntaxRevision,
         syntaxHighlighting: preferences.syntaxHighlighting, selectionStorage: $editorSelection,
-        openDroppedFiles: openDroppedFiles, scrolling: scrolling, zoomScale: zoomScale
+        openDroppedFiles: openDroppedFiles, scrolling: scrolling, zoomScale: zoomScale,
+        theme: preferences.editorThemes.theme
       )
+      .task { await preferences.editorThemes.loadIfNeeded() }
     }
   }
 

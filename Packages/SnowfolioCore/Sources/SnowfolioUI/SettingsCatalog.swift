@@ -72,6 +72,7 @@ struct SettingsEntry: Identifiable {
   enum Control {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy
+    case editorTheme, importEditorTheme
   }
   let id: String
   let title: String
@@ -139,9 +140,16 @@ enum SettingsCatalog {
           id: "editorSyntaxHighlighting", title: "Highlight Markdown syntax",
           control: .toggle(\.syntaxHighlighting)),
         .init(
-          id: "editorFontName", title: "Font name", detail: "The source editor uses its own font.",
+          id: "editorFontName", title: "Font name",
+          detail: "Themes can override the source editor’s font.",
           control: .editorFont),
         .init(id: "editorFontSize", title: "Font size", control: .editorSize),
+        .init(
+          id: "editorTheme", title: "Theme", detail: "Colors and typography for Markdown source.",
+          keywords: "style color palette theme", control: .editorTheme),
+        .init(
+          id: "importEditorTheme", title: "Custom themes", detail: "Import a .style file.",
+          keywords: "style import theme", control: .importEditorTheme),
       ]),
     .init(
       pane: .editor, title: "Typing",

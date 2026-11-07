@@ -1,0 +1,21 @@
+{
+  "source": "MacDown/Resources/Themes",
+  "notice": "LICENSE/macdown.txt; original theme comments retained byte-for-byte",
+  "sha256": {
+    "Mou Fresh Air+.style": "3e07b681f9e56bec4d1036b015877eec5fbd160049049895703bef292ceefa38",
+    "Mou Fresh Air.style": "769cc6393d4b8465314b833e1bfdd420ebc88850e1f648ffea11767b4780378f",
+    "Mou Night+.style": "39872c51d2972803efe27d7ea3114ce91c8718a07a3662c95b6a0ba65bed3f95",
+    "Mou Night.style": "3a7141f6ce52ba617d2da554efa0a77d02587789e80fb93bfa8642219f4171df",
+    "Mou Paper+.style": "df27e819d93eef4f42f116d04778ee72cbaefcf1c60401c42c29d568372608cc",
+    "Mou Paper.style": "28227900a310617c62593ae65581082dce83905ae366fc0f49ed0ec79cec5fd4",
+    "Solarized (Dark)+.style": "be586af79701e88d4cb96be7998a872ea0de112aae855a96e35765e3d7fc3196",
+    "Solarized (Dark).style": "d69113f482bdbfa6b1d575a5d1e7ca3628a930c443aa9a856559bd9fb35e7248",
+    "Solarized (Light)+.style": "30751252517c8d159fbc8c30af5387199c96bdb5b86a817f0f9bfc07d52212a4",
+    "Solarized (Light).style": "5d5ed023976fd319ae10532fe40c9d22d6faad6b3826dfe372846781d8f57d1c",
+    "Tomorrow Blue.style": "c6c1143811f2f0ef438998e2595a4dcb6b1cec4c79c84c5d8bcd32b632ba1e66",
+    "Tomorrow+.style": "08cde05e7ed3255be21881924ddc8ccb66554e76e4e29e5eed2d5e17e079707b",
+    "Tomorrow.style": "484219dc9b45ad3215bf3dfe1caeb29dc15948f9aae0663ef37b2292e4db4995",
+    "Writer+.style": "f23b609218f4e0b0491cec38e48293af0325b9e6aec79da60ee6a9cd277c3945",
+    "Writer.style": "4deb71d57e1bc79ae53132156946f891f02951a320a5205552966e4fcc458c10"
+  }
+}

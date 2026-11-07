@@ -2044,3 +2044,47 @@ visual/keyboard/VoiceOver/real IME/resize/scroll and measured large-document acc
 Broader source-coordinate correctness, custom CSS/templates, safe coupled legacy
 retirement and the other full roadmap gates remain required. No theme picker is exposed
 yet. The full modernization goal remains active and incomplete.
+
+
+## Theme catalog and Settings integration — 2026-11-07
+
+The editor now consumes an app-owned observable theme library. Settings → Editor
+provides Automatic, all 15 original bundled themes, read-only MacDown custom themes,
+and imported `.style` files. The original saved name migrates without changing the
+old preference domain. Explicit new Automatic takes precedence. Source theme search,
+custom import and reload use the existing System Settings-style form.
+
+A repository actor owns bounded regular-file reads and decoding. Imports preserve
+raw UTF-8/BOM/CRLF bytes and the original file; content hashes deduplicate immutable
+owned copies. An atomic directory rename publishes metadata and source together.
+Import review identifies recoverable grammar problems, ignored fields, very large
+fonts and unavailable native font faces. Damaged/missing selections keep the last good
+appearance and display recovery guidance; reimport repairs a damaged owned copy by
+recycling the old directory. No theme file is executed. Library-owned loading and
+generation checks protect against canceled view waiters and stale selections.
+
+Original theme assets/comments remain byte-identical. A reproducible verifier checks
+all 15 SHA256 values and the retained MacDown license, including the built app resource
+bundle. No coupled legacy implementation was removed at this checkpoint.
+
+Local validation passes **259 tests / 52 suites**, eight native arm64 test bundles,
+and an arm64 app build with zero compiler warnings/errors. The integration fixture
+selects every bundled theme and an imported theme through the actual observable
+SwiftUI/native editor wiring; editor identity, selection, source/revision and native
+undo/redo survive, including restoration to Automatic. A hosted UI regression exercises
+Settings search, the native menu, `.style` file panel, review, reopen and undo. Its
+result is recorded separately in `validation/editor-themes.json`.
+
+The Mac was locked during this checkpoint's direct visual check. Existing user tabs
+and the Open panel were preserved; this is not a claim of fresh desktop acceptance.
+The mixed-list selection/spacing correction from `c5cfb6c` remains in the current
+build and its light/dark compact/loose regressions pass. Direct confirmation of the
+user's running build still needs an unlocked desktop.
+
+The preceding writing-typography commit `38b2e1f` passed hosted run
+[42383079017](https://github.com/jiangshen/snowfolio/actions/runs/42383079017).
+Downloaded evidence verifies 248 tests / 49 suites, eight arm64 bundles, 652 CommonMark
+examples and eight UI tests. Fourteen existing priority-inversion warnings remain
+recorded without attributing a first-party cause. The full modernization goal remains
+active; real IME/VoiceOver, broader source-coordinate acceptance, measured performance,
+CSS/templates, release readiness and safe legacy retirement are still open.

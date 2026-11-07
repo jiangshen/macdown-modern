@@ -1,9 +1,9 @@
 {
-  "milestone": "Editor-theme grammar/model foundation; essential native theme support remains open",
+  "milestone": "Native editor themes, catalog/import and Settings; broader source/native acceptance remains open",
   "date": "2026-11-07",
   "implementation": {
     "owner": "EditorCore.EditorTheme, Swift",
-    "shippingUIConsumer": false,
+    "shippingUIConsumer": true,
     "sourceRewriting": false,
     "newNativeDependencies": false,
     "originalParserShipped": false,
@@ -67,7 +67,6 @@
   },
   "remaining": [
     "Broad native source-coordinate acceptance, including lazy continuations, partial-tab indentation and extension callback contexts",
-    "Theme catalog/import and saved choices/Settings with validation and ignored-attribute feedback",
     "Actual native theme visual/keyboard/VoiceOver/real IME/resize/scrolling and measured large-document acceptance",
     "Custom CSS/template compatibility",
     "Safe coupled legacy retirement"
@@ -340,7 +339,58 @@
     "hosted": {
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42383079017",
       "commit": "38b2e1f7681c781cfb7cfed37686566ea16dd796",
-      "result": "pending"
+      "result": "passed",
+      "packageTests": 248,
+      "packageSuites": 49,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": 8,
+      "priorityInversionWarnings": 14,
+      "evidence": "Downloaded exact package/corpus and native log/result artifacts; checkpoint counts verified"
     }
+  },
+  "catalogAndSettings": {
+    "implementation": [
+      "App-owned observable library connects the theme repository to existing native editor views and searchable System Settings-style controls",
+      "Automatic plus 15 bundled original themes; byte hashes, original comments and MIT distribution notice verified in source and built app",
+      "Read-only discovery of MacDown Application Support/Themes and saved editorStyleName migration; explicit new Automatic takes precedence",
+      "Imported UTF-8 .style bytes copied unchanged into content-addressed Application Support/Snowfolio/Themes; metadata/source publish together through an atomic directory rename",
+      "Size-bounded regular-file reads and parsing on a repository actor; no I/O or source parsing in layout",
+      "Import review reports grammar diagnostics, ignored settings, huge text sizes and unavailable native font faces",
+      "Missing or damaged choices retain the last good appearance with visible recovery guidance; reimport recycles a damaged owned copy before repair",
+      "Generation-checked publication and a library-owned loading task prevent a canceled view waiter or earlier choice from replacing the newest result"
+    ],
+    "localValidation": {
+      "packageTests": 259,
+      "packageSuites": 52,
+      "arm64TestExecutables": 8,
+      "nativeBuildForTesting": "passed; zero compiler warnings/errors",
+      "changedSwiftStrictFormatting": "passed",
+      "bundledThemeHashesAndNotices": "verified source and built bundle"
+    },
+    "tests": [
+      "Every bundled theme equals original reader fixture values",
+      "Exact BOM/CRLF import bytes, deduplication, reopen without original and damaged-copy repair with reversible recycling",
+      "Mutable legacy override/reload, saved-name fallback and read-only original files",
+      "Encoding/size/NUL/empty/nonregular/traversal rejection and import review notices",
+      "Preference migration, explicit Automatic, reopen persistence, unavailable selection and recovery",
+      "Canceled view waiter and concurrent choice publication",
+      "All 15 bundled choices and an imported theme update the same hosted SwiftUI/native editor, preserving source bytes, revision, selection and native undo/redo",
+      "Hosted UI test added for Settings search, picker, file import/review, reopen and document undo"
+    ],
+    "evidence": {
+      "fullPackage": "/private/tmp/snowfolio-theme-catalog-full.json",
+      "nativeBuild": "/private/tmp/snowfolio-theme-catalog-native.json",
+      "targetedIntegration": "/private/tmp/snowfolio-theme-integration.json"
+    },
+    "directDesktop": "Pending: Mac locked during this checkpoint; original tabs and Open panel were not touched",
+    "hosted": {
+      "result": "pending push"
+    },
+    "remaining": [
+      "Actual desktop import/picker/selection visual acceptance",
+      "Real IME/VoiceOver, resizing/scrolling and measured large-document theme performance",
+      "Broad native source-coordinate acceptance, custom CSS/templates and coupled legacy retirement"
+    ]
   }
 }
