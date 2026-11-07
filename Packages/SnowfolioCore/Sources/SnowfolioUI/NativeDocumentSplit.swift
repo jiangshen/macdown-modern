@@ -87,6 +87,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
       self.editorOnRight = editorOnRight
       self.mode = .split
       super.init(nibName: nil, bundle: nil)
+      splitView = WritingSplitView()
+      splitView.setAccessibilityIdentifier("documentPaneSplit")
       splitView.isVertical = true
       splitView.dividerStyle = .thin
       for item in editorOnRight ? [previewItem, editorItem] : [editorItem, previewItem] {
@@ -201,5 +203,19 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
         error = $0
       }
     }
+  }
+}
+
+/// Only the visual rule is inset. NSSplitView retains its standard resize target,
+/// cursor tracking and accessibility divider across the full pane height.
+private final class WritingSplitView: NSSplitView {
+  override func drawDivider(in rect: NSRect) {
+    guard isVertical else {
+      super.drawDivider(in: rect)
+      return
+    }
+    let rule = rect.insetBy(dx: 0, dy: min(18, rect.height / 2))
+    NSColor.separatorColor.setFill()
+    NSBezierPath(roundedRect: rule, xRadius: rule.width / 2, yRadius: rule.width / 2).fill()
   }
 }

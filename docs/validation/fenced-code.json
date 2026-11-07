@@ -44,7 +44,13 @@
     "styledPlainHTMLExport": "passed",
     "sourceCoordinatesAndSyntax": "passed",
     "preferenceMigrationPersistence": "passed",
-    "hostedSettingsRoundTrip": "Run 42353539370 failed at initial preview lookup: macOS WebKit exposed static text through AXValue instead of AXLabel. Test now matches either; rerun pending with rebuilt Settings.",
+    "hostedSettingsRoundTrip": {
+      "result": "passed",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42357907672",
+      "commit": "0d38f7fc4204c1ddd3a29dd451561d00eb8f9e21",
+      "test": "DocumentLifecycleTests.testFencedCodePreferenceUpdatesCurrentPreview()",
+      "method": "Actual native Settings switch, both preview transitions, exact source unchanged"
+    },
     "tests": 194,
     "parserReproduction": "Every regenerated source, manifest, patch and provenance byte matches checkout",
     "changedSwiftStrictFormatting": "passed",
@@ -60,10 +66,10 @@
     ],
     "savedPreferenceRestored": true,
     "runningPreferenceRestored": true,
-    "connection": "Completed after native UI reconnection"
+    "connection": "Completed after native UI reconnection",
+    "rebuiltSettingsRoundTrip": "Also passed in the new sidebar window; off/on observed, original enabled value and exact source restored"
   },
   "remaining": [
-    "Hosted actual Settings/preview round trip",
     "Underline/quote/intraword preferences",
     "Broader modernization/reliability/accessibility/performance/release and legacy retirement"
   ],

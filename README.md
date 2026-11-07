@@ -29,12 +29,21 @@ The validation helper checks that all test executables are native arm64.
 
 Use `bash Tools/build-snowfolio.sh --test` for the document lifecycle UI suite when
 Xcode UI automation is available. In the current environment the suite compiles, but
-execution times out while enabling automation; direct native checks and package tests
-are recorded separately in `docs/validation`.
+execution has previously timed out while enabling automation. The native hosted
+workflow runs the actual UI suite; direct desktop checks and package results are
+recorded separately in `docs/validation`.
 
 The original Objective-C application remains a migration reference until its essential
 features are replaced and verified. The new app builds independently of CocoaPods.
 Legacy source is progressively retired, with all required licenses preserved.
+
+## Settings
+
+Open **Snowfolio → Settings…** (**⌘,**) for a native System Settings-style window.
+The sidebar groups General, Appearance, Editor, Markdown and Privacy & Security.
+Search matches preference names and descriptions, then reveals the selected row.
+Back/forward navigation and your window size are remembered while you work. Existing
+saved choices continue to apply to documents, previews and exports.
 
 Reading zoom is in the View menu: **⌘⌥+** / **⌘⌥−** to magnify and **⌘⌥0** for
 actual size. It changes the source and preview together without changing document text
@@ -76,7 +85,7 @@ HTML exports and native PDF/print use the selected parsing option.
 
 ## Inline formatting
 
-Enable **Highlights (==text==)** and **Superscripts (^text or ^(text))** in Markdown
+Enable **Highlights** and **Superscripts** in Markdown
 settings. Both are optional and preserve existing MacDown choices. Highlights use a
 quiet yellow surface that adapts to light/dark appearance. With highlights enabled,
 **Format → Highlight** (**⌘=**) wraps or unwraps the selection as one undoable edit.

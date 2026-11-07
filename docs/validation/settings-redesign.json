@@ -45,23 +45,59 @@
     "oldImplementationTrash": "/Users/caden/.Trash/MarkdownSettingsView.swift"
   },
   "verification": {
-    "focusedTests": "3 passed: search, history and persisted switches",
+    "focusedTests": "5 passed: search, history, persisted switches, cold native window minimum and display bounds",
     "nativeBuildForTesting": "passed",
     "liveObserved": [
       "Measured sidebar width matches System Settings",
       "Native search/cancel controls",
       "Search navigates to and reveals disabled inline-math row at bottom of long Markdown pane",
-      "Grouped rows, descriptions, switches and native back/forward toolbar"
+      "Grouped rows, descriptions, switches and native back/forward toolbar",
+      "All five categories inspected in the final presentation",
+      "Search labels wrap to multiple lines",
+      "Native no-results state and cancel affordance",
+      "Keyboard Command-[ / Command-] history",
+      "Larger-window layout and restored size",
+      "Settings close/reopen retains the selected row and scroll position",
+      "Real Settings switch changes the preview without modifying source"
     ],
-    "finalLiveChecks": "pending Mac unlock",
-    "hostedUI": "pending",
+    "finalLiveChecks": "passed after unlock; every pane inspected; native popup opened/cancelled; keyboard back/forward; zoom/restore; close/reopen; multiline search results; no-results state; actual fence preview off/on with original enabled state and exact source restored; corrected sizing build also relaunched and observed",
+    "hostedUI": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42357907672",
+      "commit": "0d38f7fc4204c1ddd3a29dd451561d00eb8f9e21",
+      "status": "passed",
+      "nativeTests": 6,
+      "failures": 0,
+      "skipped": 0
+    },
     "packageTests": {
-      "tests": 197,
-      "suites": 40,
+      "tests": 199,
+      "suites": 41,
       "nativeArm64Executables": 8,
       "result": "passed"
     },
-    "changedSwiftStrictFormatting": "passed"
+    "changedSwiftStrictFormatting": "passed",
+    "hostedPackageAndCommonMark": "passed: 199 package tests / 41 suites / eight arm64 executables; all 652 published CommonMark examples"
   },
-  "goal": "active; full modernization incomplete"
+  "goal": "active; full modernization incomplete",
+  "windowRegression": {
+    "symptom": "First Settings window partially offscreen on a 1024-point display; right-side switches were unreachable",
+    "diagnosis": "Before first layout, automatic hosting sizing reduced the native frame to 1\u00d784 points after initial sizing. Centering that frame let later content grow beyond the screen.",
+    "fix": "Shared form minimum; disable hosting automatic window sizing; explicitly set native content size before centering; constrain restored frames to the current visible display.",
+    "tests": [
+      "A cold Settings host has its full minimum width before it is shown",
+      "Offscreen and disconnected-display positions fit the current display"
+    ],
+    "beforeRegressionTest": "failed with width 1 and height 84",
+    "afterRegressionTest": "passed",
+    "priorHostedRuns": [
+      "42356201909",
+      "42356356377",
+      "42357005348",
+      "42357349932"
+    ]
+  },
+  "limitations": [
+    "Native framework appearance follows the installed OS rather than copying private System Settings implementation",
+    "Increase Contrast and VoiceOver end-to-end acceptance remain part of the broader modernization audit"
+  ]
 }

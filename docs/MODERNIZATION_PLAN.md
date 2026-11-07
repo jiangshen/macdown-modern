@@ -1490,3 +1490,38 @@ reference at 231.5 pt in a 740×625 pt window. Search/navigation/persistence tes
 the full package pass (197 tests / 40 suites / eight arm64 executables). Native
 build-for-testing and strict formatting pass. Final live checks and hosted native
 UI execution remain pending; evidence is in `validation/settings-redesign.json`.
+
+
+The final presentation has now been checked on this Mac: all five panes, native
+font popup/cancel, keyboard back/forward, long-result wrapping, empty search,
+search-to-row, zoom/restore, close/reopen and a real fence preview off/on round trip.
+The original enabled setting and exact fixture text were restored. System Settings
+was left on General with empty search; no system preference value was changed.
+
+The hosted run exposed a real cold-open window placement bug on a 1024-point
+display. Automatic hosting sizing reduced the initially sized window to 1×84 pt
+before its first layout, so centering used the wrong width. Shared minimum form
+dimensions, explicit native content sizing and disabled hosting auto-sizing now
+keep the initial frame stable. Pure display-bound checks cover small/negative-origin
+displays; the actual cold native window regression failed before the final fix and
+passes after it. All 199 package tests / 41 suites / eight arm64 executables and the
+native build-for-testing pass. Final hosted UI result is being recorded separately.
+
+Hosted acceptance for the corrected Settings window is complete: run
+[42357907672](https://github.com/jiangshen/snowfolio/actions/runs/42357907672)
+on `0d38f7fc4204c1ddd3a29dd451561d00eb8f9e21` passed both jobs, including
+all six native document UI tests, the actual fence Settings/preview round trip,
+search/history/popups/every-category visibility/reopen, 199 package tests and the
+652-example core parser audit. The wider modernization goal remains active.
+
+### Tab-to-document transition — requested 2026-11-07
+
+The screenshot showed the split divider visually meeting the tab strip. The native
+tabs now sit above an inset writing surface with 12 pt top separation, 10 pt side
+and bottom gutters and 12 pt outer corners. The standard native split view draws
+its rule with 18 pt top/bottom insets and rounded ends; resize tracking and native
+divider accessibility stay with NSSplitView. The existing editor/preview hosts and
+document state remain intact. Direct desktop checks verified both tabs, all three
+workspace modes, the restored split fraction, source selection and exact text.
+Native app build-for-testing and 16 focused editing/pane/scroll tests passed; hosted
+verification of the combined final change follows.
