@@ -4,6 +4,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 artifact_root="${SNOWFOLIO_APP_BUILD_DIR:-$repo_root/Build/Snowfolio}"
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
+python3 "$repo_root/Tools/verify-markdown-engine.py"
 if ! command -v tuist >/dev/null 2>&1; then
     echo "Install Tuist first: brew install tuist" >&2
     exit 1

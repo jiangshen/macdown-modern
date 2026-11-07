@@ -6,6 +6,23 @@ import Testing
 @Suite("Application preferences")
 @MainActor
 struct AppPreferencesTests {
+  @Test("Inline dialect choices migrate independently and retain explicit disabled values")
+  func inlinePreferences() throws {
+    let domain = "InlinePreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let preferences = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["extensionHighlight": true, "extensionSuperscript": false])
+    #expect(preferences.renderingOptions.highlight && !preferences.renderingOptions.superscript)
+    preferences.highlight = false
+    preferences.superscript = true
+    let reopened = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["extensionHighlight": true, "extensionSuperscript": false])
+    #expect(!reopened.renderingOptions.highlight && reopened.renderingOptions.superscript)
+  }
+
   @Test("Diagram choices migrate independently and retain explicit disabled values")
   func diagramPreferences() throws {
     let domain = "DiagramPreferencesTests.\(UUID().uuidString)"

@@ -14,7 +14,7 @@ let package = Package(
     .library(name: "PreferencesCore", targets: ["PreferencesCore"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/swiftlang/swift-cmark.git", exact: "0.9.0"),
+    .package(path: "../MarkdownEngine"),
     .package(url: "https://github.com/jpsim/Yams.git", exact: "6.2.2"),
   ],
   targets: [
@@ -32,8 +32,8 @@ let package = Package(
       dependencies: [
         "EmojiCore", "CodeHighlightCore", "MathCore", "DiagramCore",
         .product(name: "Yams", package: "Yams"),
-        .product(name: "cmark-gfm", package: "swift-cmark"),
-        .product(name: "cmark-gfm-extensions", package: "swift-cmark"),
+        .product(name: "cmark-gfm", package: "MarkdownEngine"),
+        .product(name: "cmark-gfm-extensions", package: "MarkdownEngine"),
       ]),
     .target(
       name: "SnowfolioUI",
@@ -46,7 +46,8 @@ let package = Package(
     .testTarget(name: "RenderingCoreTests", dependencies: ["RenderingCore"]),
     .testTarget(name: "PreferencesCoreTests", dependencies: ["PreferencesCore"]),
     .testTarget(
-      name: "MarkdownCoreTests", dependencies: ["MarkdownCore", "CodeHighlightCore", "MathCore"]),
+      name: "MarkdownCoreTests", dependencies: ["MarkdownCore", "CodeHighlightCore", "MathCore"],
+      resources: [.process("Fixtures")]),
     .testTarget(name: "DocumentCoreTests", dependencies: ["DocumentCore"]),
     .testTarget(name: "EditorCoreTests", dependencies: ["EditorCore"]),
     .testTarget(

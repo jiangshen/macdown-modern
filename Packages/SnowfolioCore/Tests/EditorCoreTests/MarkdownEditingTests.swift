@@ -21,7 +21,9 @@ struct MarkdownEditingTests {
   @Test("Inline commands wrap and unwrap exactly the selected Unicode content")
   func inlineToggles() throws {
     let content = "中文 👩‍💻 cafe\u{301}"
-    for command in [MarkdownCommand.bold, .italic, .strikethrough, .comment, .inlineCode] {
+    for command in [
+      MarkdownCommand.bold, .italic, .strikethrough, .highlight, .comment, .inlineCode,
+    ] {
       let first = try apply(command, content, NSRange(location: 0, length: content.utf16.count))
       #expect((first.0 as NSString).substring(with: first.1).utf8.elementsEqual(content.utf8))
       let second = try apply(command, first.0, first.1)

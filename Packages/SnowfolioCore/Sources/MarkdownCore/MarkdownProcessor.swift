@@ -37,12 +37,17 @@ public actor MarkdownProcessor {
     let mathSyntax =
       options.math
       ? try MarkdownMath(source: parserSource, inlineDollars: options.inlineDollarMath) : nil
-    defer { withExtendedLifetime(mathSyntax) {} }
+    let inlineSyntax =
+      options.highlight || options.superscript
+      ? try MarkdownInlineExtensions(highlight: options.highlight, superscript: options.superscript)
+      : nil
+    defer { withExtendedLifetime((mathSyntax, inlineSyntax)) {} }
     guard let parser = cmark_parser_new(flags) else {
       throw MarkdownRenderingError.allocationFailure
     }
     defer { cmark_parser_free(parser) }
     if let mathSyntax { cmark_parser_attach_syntax_extension(parser, mathSyntax.native) }
+    if let inlineSyntax { cmark_parser_attach_syntax_extension(parser, inlineSyntax.native) }
     let extensions = [
       ("table", options.tables), ("strikethrough", options.strikethrough),
       ("tasklist", options.taskLists), ("autolink", options.autolinks), ("tagfilter", true),
@@ -103,7 +108,7 @@ public actor MarkdownProcessor {
       identifiers[UInt(bitPattern: node)] = id
       let parentID = cmark_node_parent(node).flatMap { identifiers[UInt(bitPattern: $0)] }
       let nativeName = String(cString: cmark_node_get_type_string(node))
-      var kind = MarkdownNodeKind(nativeName: nativeName)
+      var kind = inlineSyntax?.kind(for: node) ?? MarkdownNodeKind(nativeName: nativeName)
       if let token = mathSyntax?.token(for: node) {
         kind = .math(display: token.display)
         mathNodes.append((node, token.source, token.display, token.block))
@@ -293,6 +298,7 @@ public actor MarkdownProcessor {
       diagrams: renderedDiagrams, diagramUsesMath: diagramUsesMath,
       frontMatter: front?.metadata,
       notices: (front?.notice.map { [$0] } ?? []) + (mathNotices ? [.unsupportedMath] : [])
-        + (diagramNotices ? [.unsupportedDiagram] : []))
+        + (diagramNotices ? [.unsupportedDiagram] : [])
+        + (inlineSyntax?.limited == true ? [.complexInlineFormatting] : []))
   }
 }

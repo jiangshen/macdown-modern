@@ -10,7 +10,7 @@ public struct EditorBehavior: Equatable, Sendable {
 }
 
 public enum MarkdownCommand: Sendable {
-  case bold, italic, inlineCode, strikethrough, comment
+  case bold, italic, inlineCode, strikethrough, highlight, comment
   case heading(Int)
   case paragraph, orderedList, unorderedList, blockquote, indent, outdent
   case link(String?)
@@ -42,6 +42,8 @@ public enum MarkdownEditing {
     case .italic:
       return try toggleInline(
         in: text, selection: selection, prefix: "*", suffix: "*", distinguishStrong: true)
+    case .highlight:
+      return try toggleInline(in: text, selection: selection, prefix: "==", suffix: "==")
     case .strikethrough:
       return try toggleInline(in: text, selection: selection, prefix: "~~", suffix: "~~")
     case .comment:

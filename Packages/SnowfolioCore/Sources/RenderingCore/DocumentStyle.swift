@@ -41,7 +41,7 @@ public struct DocumentStyle: Hashable, Sendable {
     :root {
       color-scheme: light dark;
       --paper: #ffffff; --ink: #37352f; --muted: #68655f;
-      --border: #deddd9; --surface: #f7f6f3; --inline-code: #a4423b;
+      --highlight: #fbefbd; --border: #deddd9; --surface: #f7f6f3; --inline-code: #a4423b;
       --document-font: \(font.family); --document-size: \(textSize)px;
       --document-width: 708px;
     }
@@ -66,6 +66,8 @@ public struct DocumentStyle: Hashable, Sendable {
     h1 { font-size: 2em; } h2 { font-size: 1.5em; } h3 { font-size: 1.25em; }
     h4 { font-size: 1.125em; } h5,h6 { font-size: 1em; }
     strong { font-weight: 650; }
+    mark { color: inherit; background: var(--highlight); border-radius: .15em; padding: .04em .12em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+    sup { font-size: .75em; line-height: 0; }
     a { color: inherit; text-decoration-color: var(--muted); text-underline-offset: .18em; }
     a:hover { text-decoration-color: currentColor; }
     a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
@@ -125,7 +127,7 @@ public struct DocumentStyle: Hashable, Sendable {
     .footnotes a { color: var(--muted); }
     @media (max-width: 600px) { main { padding: 28px 24px 64px; } pre { padding: 16px; } }
     @media (prefers-color-scheme: dark) {
-      :root { --paper: #191919; --ink: #e6e4df; --muted: #aeaaa4; --border: #44433f; --surface: #252525; --inline-code: #f09b91; }
+      :root { --highlight: #51452b; --paper: #191919; --ink: #e6e4df; --muted: #aeaaa4; --border: #44433f; --surface: #252525; --inline-code: #f09b91; }
     }
     @media (prefers-color-scheme: dark) {
       .md-callout-note { --callout-background: #262625; } .md-callout-tip { --callout-background: #253128; }
@@ -138,7 +140,7 @@ public struct DocumentStyle: Hashable, Sendable {
       @media (prefers-color-scheme: dark) { :root { --ink: #ffffff; --muted: #dfdcd6; --border: #aaa69e; --inline-code: #ffbdb5; } }
     }
     @media print {
-      :root { color-scheme: light; --paper: #ffffff; --ink: #171614; --muted: #44413b; --border: #b8b5ae; --surface: #f7f6f3; --inline-code: #8b2520; }
+      :root { color-scheme: light; --highlight: #fbefbd; --paper: #ffffff; --ink: #171614; --muted: #44413b; --border: #b8b5ae; --surface: #f7f6f3; --inline-code: #8b2520; }
       main { max-width: none; padding: 0; }
       pre,pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
       h1,h2,h3,h4,h5,h6 { break-after: avoid; } tr,img { break-inside: avoid; }

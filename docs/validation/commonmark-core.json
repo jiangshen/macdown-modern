@@ -1,0 +1,73 @@
+{
+  "spec": "CommonMark 0.31.2",
+  "source": "https://spec.commonmark.org/0.31.2/spec.json",
+  "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+  "engine": "swift-cmark 0.9.0 with CMARK_DISABLE_ATTRIBUTES",
+  "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+  "total": 652,
+  "passed": 641,
+  "failed": 11,
+  "baselineComparison": {
+    "engine": "Unmodified swift-cmark 0.9.0",
+    "passed": 641,
+    "failed": 11,
+    "failuresIdentical": true
+  },
+  "failingExamples": [
+    {
+      "example": 28,
+      "section": "Entity and numeric character references"
+    },
+    {
+      "example": 354,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 389,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 417,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 425,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 426,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 427,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 464,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 465,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 466,
+      "section": "Emphasis and strong emphasis"
+    },
+    {
+      "example": 468,
+      "section": "Emphasis and strong emphasis"
+    }
+  ],
+  "categories": [
+    "Overlong numeric character reference handling",
+    "Currency-symbol Unicode punctuation flanking",
+    "Nested strong flattening"
+  ],
+  "reproduction": "Tools/check-commonmark.py --program PATH_TO_NATIVE_CLI --spec-file PATH_TO_OFFICIAL_SPEC_JSON --output REPORT.json; exits 1 while any differences remain",
+  "fullReports": [
+    "/private/tmp/snowfolio-commonmark-spec.json",
+    "/private/tmp/snowfolio-commonmark-baseline.json"
+  ],
+  "conformanceGate": "open; this tests the core native parser and does not prove complete application conformance"
+}

@@ -11,6 +11,7 @@ public final class EditorCommandController {
   @ObservationIgnored weak var coordinator: NativeMarkdownEditor.Coordinator?
   public private(set) var isFocused = false
   public private(set) var isComposing = false
+  public private(set) var allowsHighlight = false
   public private(set) var allowsStrikethrough = true
   public init() {}
 
@@ -24,12 +25,16 @@ public final class EditorCommandController {
   func compositionChanged(_ composing: Bool) {
     if isComposing != composing { isComposing = composing }
   }
+  func setHighlightEnabled(_ value: Bool) {
+    if allowsHighlight != value { allowsHighlight = value }
+  }
   func setStrikethroughEnabled(_ value: Bool) {
     if allowsStrikethrough != value { allowsStrikethrough = value }
   }
 
   public func perform(_ command: MarkdownCommand) {
     guard canPerform else { return }
+    if case .highlight = command, !allowsHighlight { return }
     _ = coordinator?.perform(command)
   }
 
@@ -64,6 +69,8 @@ public struct MarkdownFormatCommands: Commands {
         Button("Inline Code") { editor?.perform(.inlineCode) }.keyboardShortcut("k")
         Button("Strikethrough") { editor?.perform(.strikethrough) }.keyboardShortcut("-")
           .disabled(editor?.allowsStrikethrough != true)
+        Button("Highlight") { editor?.perform(.highlight) }.keyboardShortcut("=")
+          .disabled(editor?.allowsHighlight != true)
         Button("Comment") { editor?.perform(.comment) }.keyboardShortcut("/")
         Divider()
         Menu("Heading") {
@@ -207,6 +214,7 @@ extension MarkdownCommand {
     case .italic: String(localized: "Italic")
     case .inlineCode: String(localized: "Inline Code")
     case .strikethrough: String(localized: "Strikethrough")
+    case .highlight: String(localized: "Highlight")
     case .comment: String(localized: "Comment")
     case .heading: String(localized: "Heading")
     case .paragraph: String(localized: "Paragraph")

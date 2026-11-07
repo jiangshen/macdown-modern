@@ -7,7 +7,7 @@ Mac controls.
 
 The Swift app includes a TextKit 2 editor, native document tabs, linked scrolling,
 configurable pane order, per-document reading zoom, live preview, syntax colors, callouts with an emoji picker,
-YAML properties, a table of contents, optional offline equations and diagrams, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
+YAML properties, a table of contents, optional highlights/superscripts, offline equations and diagrams, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
 performance measurement and release readiness are still in progress. See the
 [modernization roadmap](docs/MODERNIZATION_PLAN.md) and
 [source inventory](docs/SOURCE_INVENTORY.md).
@@ -65,6 +65,26 @@ variant. Invalid, oversized, unsafe or timed-out diagrams retain their source co
 a preview notice. Diagram options default off and migrate existing MacDown preferences.
 Remote resources, callbacks and arbitrary JavaScript are unsupported. See the
 [diagram example](docs/design/notebook/DiagramDemo.md) and roadmap for remaining gates.
+
+## Inline formatting
+
+Enable **Highlights (==text==)** and **Superscripts (^text or ^(text))** in Markdown
+settings. Both are optional and preserve existing MacDown choices. Highlights use a
+quiet yellow surface that adapts to light/dark appearance. With highlights enabled,
+**Format → Highlight** (**⌘=**) wraps or unwraps the selection as one undoable edit.
+
+Use `==important==`, `x^2`, or `x^(a + b)`. Formatted text and references work inside
+these spans, and parenthesized superscripts can cross a source line. Code, image alt
+text and link destinations retain their normal scopes. HTML/PDF/print share the same
+rendered result. Malformed empty/unclosed superscript markers stay visible; complex
+input has bounded parsing with a preview notice and remaining literal markers.
+
+The native parser remains pinned to swift-cmark 0.9.0. Its local package has a small
+configuration patch disabling Apple's attributed-string grammar, which can swallow
+text in ordinary Markdown. Source hashes, the exact patch and distribution notice are
+verified before builds. The current core CommonMark 0.31.2 audit passes 641/652 examples;
+11 inherited differences remain tracked in the roadmap. This does not establish full
+standards conformance or completion of the migration.
 
 ## Identity and attribution
 

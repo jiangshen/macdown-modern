@@ -15,6 +15,7 @@ public struct MarkdownSourceRange: Equatable, Sendable {
 
 public enum MarkdownNodeKind: Equatable, Sendable {
   case document, frontMatter, heading, paragraph, text, codeBlock, inlineCode, link, image
+  case highlight, superscript
   case emphasis, strong, strikethrough, list, listItem, blockquote, html
   case table, tableRow, tableCell, thematicBreak, softBreak, lineBreak
   case math(display: Bool)
@@ -79,6 +80,8 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var taskLists = true
   public var autolinks = true
   public var footnotes = true
+  public var highlight = false
+  public var superscript = false
   public var smartPunctuation = false
   public var hardLineBreaks = false
   public var rawHTML = false
@@ -108,7 +111,8 @@ public struct RenderedMarkdown: Sendable {
 }
 
 public enum MarkdownRenderNotice: String, Sendable {
-  case invalidFrontMatter, complexFrontMatter, unsupportedMath, unsupportedDiagram
+  case invalidFrontMatter, complexFrontMatter, unsupportedMath, unsupportedDiagram,
+    complexInlineFormatting
 }
 
 public enum MarkdownRenderingError: Error, Sendable {

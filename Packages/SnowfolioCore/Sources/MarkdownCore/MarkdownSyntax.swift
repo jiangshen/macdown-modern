@@ -3,6 +3,7 @@ import Foundation
 public struct MarkdownSyntaxStyle: Equatable, Sendable {
   public enum Role: Sendable { case text, heading, code, link, quote, comment, marker }
   public var role: Role = .text
+  public var highlighted = false
   public var bold = false
   public var italic = false
   public var strikethrough = false
@@ -64,6 +65,7 @@ public struct MarkdownSyntax: Sendable {
       case .heading:
         style.role = .heading
         style.bold = true
+      case .highlight: style.highlighted = true
       case .strong: style.bold = true
       case .emphasis: style.italic = true
       case .strikethrough: style.strikethrough = true

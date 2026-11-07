@@ -181,3 +181,28 @@ Their legacy-target resource/build references remain coupled to the original ren
 which still supplies unmigrated templates, custom CSS, extensions and other behavior.
 No additional legacy subsystem is deleted at this partial gate; retire it after the
 remaining renderer and original-target consumers have been replaced and verified.
+
+
+## Inline dialect and parser configuration ownership
+
+`MarkdownCore/MarkdownInlineExtensions.swift` is first-party Swift, using native cmark
+callbacks for optional highlight and superscript nodes. `EditorCore` owns the restored
+highlight transaction; native UI/source styling and portable document CSS consume that
+owned representation. There is no regex-based document-wide Markdown rewrite.
+
+The parser now builds through `Packages/MarkdownEngine`, containing 76 original files
+from maintained swift-cmark 0.9.0 and its COPYING notice, plus a first-party Swift manifest
+and provenance. Exactly two C preprocessor directives expose a build opt-out for the
+unrequested attributed-string inline grammar that swallowed text during malformed-input
+tests. The manifest defines `CMARK_DISABLE_ATTRIBUTES`. This narrowly scoped third-party
+configuration patch is an explicit exception to the Swift-only first-party application
+rule; no original MacDown C/Objective-C is reused in modern app logic. All other native
+source matches the pinned release. Vendoring/verification tools preserve original and
+packaged hashes and license bytes; generated build artifacts are excluded.
+
+The old highlighter/renderer/Format-menu methods still have original-target callers.
+They remain coupled to unmigrated underline/quote/dialect/custom-theme/template behavior,
+so this increment does not delete their files or claim the zero-legacy-code gate achieved.
+A new standards ledger records the 11 inherited CommonMark differences found by the
+broader corpus audit. Retire these subsystems only after the remaining replacements
+and desktop acceptance gates pass.

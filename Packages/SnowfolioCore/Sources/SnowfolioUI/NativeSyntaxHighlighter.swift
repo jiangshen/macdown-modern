@@ -138,6 +138,9 @@ final class NativeSyntaxHighlighter {
         attributes[.foregroundColor] = NSColor.textColor
       }
     }
+    if style.highlighted, style.role != .code {
+      attributes[.backgroundColor] = NSColor.systemYellow.withAlphaComponent(0.18)
+    }
     return attributes
   }
 }

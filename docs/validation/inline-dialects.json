@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-06",
+  "product": "Snowfolio",
+  "feature": "Optional legacy highlight and superscript",
+  "preferences": {
+    "highlight": "extensionHighlight",
+    "superscript": "extensionSuperscript",
+    "default": false,
+    "independentMigrationAndExplicitFalse": "verified"
+  },
+  "grammar": [
+    "==highlight== with adjacent runs and legacy non-nesting",
+    "^token until ASCII whitespace",
+    "^(parenthesized content) with native delimiter/line handling",
+    "Native child Markdown, references, footnotes and code/image/URL scopes"
+  ],
+  "correctedLegacyBugs": [
+    "Malformed empty/unclosed superscripts retain markers instead of deleting source",
+    "Nested superscripts retain child text"
+  ],
+  "limits": {
+    "bareBodyBytes": 65536,
+    "recursiveBareLevels": 32,
+    "delimiterLookback": 128,
+    "boundaryIndex": "once per native inline container",
+    "fallback": "remaining literal markers and preview notice"
+  },
+  "parser": {
+    "source": "https://github.com/swiftlang/swift-cmark",
+    "version": "0.9.0",
+    "revision": "08ddb528923cc1a6527e02b7a1aee9e516ca749a",
+    "archiveSHA256": "21e88b2ac458edda8c3376336e589f6aff2d9ac1091794ab6461299e6248e0e7",
+    "package": "Packages/MarkdownEngine",
+    "originalFiles": 76,
+    "patch": "Exactly two preprocessor directives to make the attributed-string inline grammar optional; app defines CMARK_DISABLE_ATTRIBUTES",
+    "otherNativeFiles": "byte-identical",
+    "firstPartyException": "Third-party C configuration gate; all application orchestration/dialects/editor/UI are Swift",
+    "license": "Original COPYING matches bundled swift-cmark.txt"
+  },
+  "validation": {
+    "tests": 182,
+    "suites": 36,
+    "arm64TestExecutables": 8,
+    "nativeBuildForTesting": "passed",
+    "addressSanitizer": "9 inline tests passed",
+    "legacyFixtures": 20,
+    "deterministicMalformedCases": 500,
+    "nativeHighlightUndoAndSelection": "passed",
+    "temporarySourceBackgroundWithoutStorageChange": "passed",
+    "lightDarkContrast": "at least 4.5:1",
+    "nativeSuperscriptGeometry": "passed",
+    "HTMLAndPaginatedPDF": "passed",
+    "strictChangedSwiftFormatting": "passed",
+    "scriptSyntax": "passed",
+    "firstPartyDiffCheck": "passed; third-party source/license bytes preserved",
+    "parserProvenanceAndLicense": "passed"
+  },
+  "artifacts": [
+    "/private/tmp/snowfolio-inline-light.png",
+    "/private/tmp/snowfolio-inline-dark.png",
+    "/private/tmp/snowfolio-inline-export.pdf",
+    "/private/tmp/snowfolio-inline-asan.log"
+  ],
+  "commonmarkAudit": "641 of 652 official 0.31.2 examples pass; 11 differences identical in unmodified 0.9.0; see commonmark-core.json",
+  "fullGoal": "active; incomplete",
+  "productionInstalled": false,
+  "defaultHandlerChanged": false,
+  "legacyRetirement": "Original target consumers and remaining dialect/custom-style/template behavior still require the coupled subsystem"
+}

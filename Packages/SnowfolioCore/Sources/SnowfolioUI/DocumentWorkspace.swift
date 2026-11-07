@@ -157,6 +157,9 @@ public struct DocumentWorkspace: View {
       zoomPercent = value
       zoom.persist(fileURL: document.fileURL)
     }
+    .onChange(of: preferences.highlight, initial: true) { _, value in
+      editing.setHighlightEnabled(value)
+    }
     .onChange(of: preferences.strikethrough, initial: true) { _, value in
       editing.setStrikethroughEnabled(value)
     }
@@ -207,6 +210,11 @@ public struct DocumentWorkspace: View {
         String(localized: "Front matter is not valid YAML. It is shown as Markdown.")
       case .unsupportedMath:
         String(localized: "Some equations could not be rendered. Their TeX source is shown.")
+      case .complexInlineFormatting:
+        String(
+          localized:
+            "Some inline formatting is too complex to display. Remaining markers are shown as text."
+        )
       case .unsupportedDiagram:
         String(localized: "Some diagrams could not render completely. Check their source.")
       }

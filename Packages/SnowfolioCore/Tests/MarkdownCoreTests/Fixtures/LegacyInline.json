@@ -1,0 +1,107 @@
+{
+  "engine": "Built with Hoedown 3.0.7.",
+  "source": "https://github.com/hoedown/hoedown/tree/3.0.7",
+  "fixtureSourceSHA256": "25c8f7ad430046bbe63e4c91ca79f0a2ecaf8026d233fb21491f2adec55c0760",
+  "cases": [
+    {
+      "option": "highlight",
+      "source": "a ==bright== b",
+      "html": "<p>a <mark>bright</mark> b</p>"
+    },
+    {
+      "option": "highlight",
+      "source": "==*emphasis* **strong** [link](https://example.com)==",
+      "html": "<p><mark><em>emphasis</em> <strong>strong</strong> <a href=\"https://example.com\">link</a></mark></p>"
+    },
+    {
+      "option": "highlight",
+      "source": "== space== ==space == ===triple===",
+      "html": "<p>== space== ==space == =<mark>triple</mark>=</p>"
+    },
+    {
+      "option": "highlight",
+      "source": "a==b==c",
+      "html": "<p>a<mark>b</mark>c</p>"
+    },
+    {
+      "option": "highlight",
+      "source": "====x====",
+      "html": "<p>==<mark>x</mark>==</p>"
+    },
+    {
+      "option": "highlight",
+      "source": "==a===b==",
+      "html": "<p><mark>a</mark>=b==</p>"
+    },
+    {
+      "option": "highlight",
+      "source": "==a====b==",
+      "html": "<p><mark>a</mark><mark>b</mark></p>"
+    },
+    {
+      "option": "highlight",
+      "source": "==a ==b== c==",
+      "html": "<p>==a <mark>b</mark> c==</p>"
+    },
+    {
+      "option": "highlight",
+      "source": "==one\ntwo==",
+      "html": "<p><mark>one\ntwo</mark></p>"
+    },
+    {
+      "option": "highlight",
+      "source": "==`==code==` remains code==",
+      "html": "<p><mark><code>==code==</code> remains code</mark></p>"
+    },
+    {
+      "option": "highlight",
+      "source": "\\==escaped== and ==literal &amp; text==",
+      "html": "<p>==escaped== and <mark>literal &amp; text</mark></p>"
+    },
+    {
+      "option": "highlight",
+      "source": "unmatched ==source",
+      "html": "<p>unmatched ==source</p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^2 x^(a + b) x^word.",
+      "html": "<p>x<sup>2</sup> x<sup>a + b</sup> x<sup>word.</sup></p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^(**bold** and `code`) after",
+      "html": "<p>x<sup><strong>bold</strong> and <code>code</code></sup> after</p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^a^b",
+      "html": "<p>x<sup>a<sup>b</sup></sup></p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^(one\ntwo) after",
+      "html": "<p>x<sup>one\ntwo</sup> after</p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^a\\ b x^(a\\)b)",
+      "html": "<p>x<sup>a\\</sup> b x<sup>a)b</sup></p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^中文 😀^2",
+      "html": "<p>x<sup>中文</sup> 😀<sup>2</sup></p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^<em>hi</em>",
+      "html": "<p>x<sup><em>hi</em></sup></p>"
+    },
+    {
+      "option": "superscript",
+      "source": "x^ ",
+      "html": "<p>x^ </p>"
+    }
+  ]
+}

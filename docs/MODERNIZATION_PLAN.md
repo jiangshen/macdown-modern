@@ -115,14 +115,14 @@ verification. No essential feature is authorized for silent removal.
 
 | Category | Legacy capability / acceptance gate | Status |
 | --- | --- | --- |
-| Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Pending app integration |
-| Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Pending |
+| Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Native host and byte-preserving I/O implemented; final autosave/Versions/conflict desktop gates pending |
+| Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Native paths and simulated composition covered; real IME/VoiceOver/desktop acceptance pending |
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
-| Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC and offline equations implemented; remaining MathJax compatibility and diagrams pending |
-| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | Pending |
+| Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
+| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation and highlight/superscript implemented; underline, quote and fence/intraword preferences remain |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Pending |
@@ -1209,3 +1209,91 @@ only compiles in this environment. Large/adversarial performance, custom styles/
 MathJax-only compatibility, remaining editor/integration/release work and progressive
 legacy retirement remain open. No production install, default-handler change or further
 legacy subsystem deletion occurs at this gate. The full Snowfolio goal remains active.
+
+
+## Highlight/superscript dialects and parser visibility — 2026-11-06
+
+The original `extensionHighlight` and `extensionSuperscript` keys now migrate and
+persist independently, preserving explicit false and defaulting off. Settings enable
+`==highlight==`, bare `x^2` and parenthesized `x^(a + b)` syntax. Swift cmark extension
+callbacks build owned `.highlight`/`.superscript` AST values and semantic `<mark>`/`<sup>`
+output. Native inline parsing handles child emphasis, code, references, footnotes and
+escaping. Parenthesized spans use the native delimiter stack, so multiline source and
+following Unicode/CRLF coordinates stay intact. Bare spans reuse the same parser's
+reference map. Source text/bytes are never rewritten by rendering.
+
+Highlight grouping includes adjacent runs such as `==a====b==` and retains the original
+non-nested highlight behavior. A temporary, native arm64 build of exact Hoedown 3.0.7
+captured 20 characterization examples; `Tools/characterize-inline-dialects.py` reproduces
+them. The comparison permits CommonMark's existing paragraph-end space normalization.
+The old engine's malformed `^()`/unclosed and nested-superscript deletion bugs are
+intentionally corrected: source markers/text remain visible rather than losing authored
+content. Broader historical Markdown-version differences are not claimed eliminated.
+
+The original **Format → Highlight / ⌘=** command is integrated, selection-preserving and
+undoable as one native transaction. It follows the setting and native focus/composition
+availability. TextKit 2 highlights are disposable rendering backgrounds, including inside
+nested strong/emphasis spans, and never enter text storage or change layout/undo/source.
+Preview highlights use adaptive quiet yellow surfaces and inherit text color; tested
+light/dark contrast is at least 4.5:1. HTML/PDF/print use the same semantic markup. Source
+superscripts remain ordinary editable Markdown, without changing source glyph metrics.
+
+Bare superscript bodies are bounded to 64 KiB, recursive inline parsing to 32 levels,
+and native delimiter lookback to 128 records. Each inline container indexes whitespace
+and parenthesis boundaries once; malformed long tokens do not rescan a whole paragraph
+for every caret. Reaching a limit leaves remaining markers as text with a preview notice.
+The 500-case deterministic malformed corpus and long/deep inputs pass. These are resource
+bounds and regressions, not a replacement for M6's representative performance measurements.
+
+### Native parser packaging correction
+
+The malformed corpus exposed `swift-cmark`'s Apple attributed-string grammar (`^[...]`),
+which is outside the requested CommonMark/GFM and original MacDown syntax. Its reference
+matching can consume text without rendering it. This occurs before Swift receives the
+AST, so a rendering-only correction cannot recover every lost segment.
+
+The same maintained **swift-cmark 0.9.0 / 08ddb528923cc1a6527e02b7a1aee9e516ca749a** now
+builds through local `Packages/MarkdownEngine`. An integrity-pinned release archive supplies
+76 original source/license files. Exactly two preprocessor directives make the attribute
+inline case conditional on `CMARK_DISABLE_ATTRIBUTES`; the Swift manifest opts out.
+All other native source is byte-identical to that release. This is an explicit, minimal
+third-party C configuration exception; application orchestration, dialects, editor/UI and
+the package manifest stay Swift. No new first-party C Markdown implementation is introduced.
+The public native parser APIs, footnotes, GFM, math/diagram adapters and source mapping
+remain on the same version. Ordinary Markdown links after a literal caret work normally.
+
+`Tools/vendor-cmark.py` reproduces the source and manifest. `Provenance.json` stores original
+and packaged hashes; `Tools/verify-markdown-engine.py` verifies every source, the exact
+reversible two-directive patch, unexpected-source detection and the unchanged bundled
+COPYING notice before native builds/tests. The SwiftPM lockfile continues pinning Yams;
+the cmark source revision is now recorded in the local package provenance. Ordinary builds
+need no parser download. Local `.build` artifacts are excluded from the provenance set.
+
+### Verification and remaining gates
+
+**182 tests in 36 suites**, eight native arm64 test executables and native app
+build-for-testing passed. The nine inline-dialect tests also passed under AddressSanitizer,
+covering native delimiter/node lifetimes, 500 malformed combinations, long/deep source,
+legacy fixtures, Unicode/CRLF, references, raw HTML/destination safety, code/image scopes,
+and composition with front matter, callouts and math. Native integration verified
+command enablement, selection and undo/redo, temporary source backgrounds with unchanged
+text storage, both appearances, semantic geometry/contrast and actual paginated PDF text.
+Both native snapshots were inspected. Changed Swift formatting, first-party diff checks,
+script syntax and parser provenance/notice checks passed. See `validation/inline-dialects.json`.
+
+An additional audit ran all **652 official CommonMark 0.31.2** examples against a temporary
+CLI built from the same packaged native source. **641 pass; 11 differ**. A second CLI from
+unmodified 0.9.0 produces identical differences: overlong numeric entities, Unicode currency
+punctuation around emphasis, and nested strong flattening. `Tools/check-commonmark.py`
+records every mismatch and exits nonzero; it does not ignore the inherited cases. The
+summary is `validation/commonmark-core.json`. Fix these before claiming full standards
+conformance; the CLI audit alone also does not establish full app-renderer conformance.
+
+Remaining dialect work includes underline, quote, fenced-code/intraword-emphasis choices,
+other historical extension differences and the documented MathJax gaps. Custom source
+styles/CSS/templates, editing accessories, broader productivity/macOS integrations,
+measured performance and release/install/default-handler gates remain open. Actual
+Settings/keyboard/VoiceOver/IME desktop acceptance and XCUITest execution retain their
+existing environment gates. No further legacy subsystem is deleted: the original target
+still consumes its renderer, highlighter and formatting resource references. Continue
+retirement when the coupled features reach parity. The full Snowfolio goal remains active.
