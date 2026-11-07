@@ -1767,3 +1767,41 @@ CommonMark examples and eight native document UI tests with zero failures. The
 mixed-list light/dark and compact/loose cases pass in the package job. Exact native
 runtime warning counts remain in the ledger; this does not close M6 attribution.
 The full modernization goal stays active.
+
+
+## Editor-theme grammar foundation — 2026-11-07
+
+Custom styles remain an essential open gate. Inspection confirms the original `.style`
+format includes editor/background/caret/current-line/selection colors, RGB and ARGB,
+per-element colors, absolute/relative font sizes, font families and combined bold,
+italic and underline traits. A color-only selector would silently lose behavior, so
+no theme selector is exposed until native rendering can honor the whole model.
+
+`EditorCore.EditorTheme` is now a data-only Swift reader for the complete original
+selector/attribute vocabulary. It preserves duplicate scalar ordering, combined font
+traits, repeated special-editor rule replacement, case-sensitive names, custom
+attributes, UTF-8 BOM and CR/CRLF handling. Legacy px/pt suffixes both still mean points.
+Diagnostics report line numbers and parsing recovers at blank-line block boundaries.
+The reader performs no Markdown parsing, document edits, font lookup or I/O.
+
+The development capture tool compiles the unchanged vendored style parser plus its
+byte-identical name-table functions in a temporary directory. All five compiled
+source/header inputs have checksums in the fixture. No original parser is added to
+the shipping target. All 15 bundled themes plus six explicit grammar fixtures match
+the original output, without skips. Repeated captures reproduce identical JSON.
+The complete PEG Markdown Highlight notice remains bundled under its MIT option.
+
+Malformed inputs intentionally have safe modern bounds: 1 MiB source, 4,096 blocks,
+16,384 declarations, 256 diagnostics and signed font integers within ±4,096. NUL
+and excessive complexity fail explicitly. Colors require exact hexadecimal digits;
+empty names/values are diagnosed rather than inheriting the original parser's unsafe
+empty-string behavior. These are import validation rules, not changes to Markdown.
+
+All 227 package tests / 45 suites pass, with eight arm64 test executables. Native app
+build-for-testing and strict formatting pass. The four new theme tests cover original
+fixtures, malformed recovery, Unicode and relative-font values, and adversarial bounds.
+This checkpoint is the grammar/model foundation only. Full selector-to-AST mapping,
+actual native font/decoration/current-line rendering, custom theme catalog/import and
+settings, custom CSS and template compatibility, live acceptance and legacy retirement
+remain required. The new reader is not yet consumed by the app UI and is not claimed
+as shipped theme support. Hosted checks are tracked in `validation/editor-themes.json`.

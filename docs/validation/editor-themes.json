@@ -1,0 +1,68 @@
+{
+  "milestone": "Editor-theme grammar/model foundation; essential native theme support remains open",
+  "date": "2026-11-07",
+  "implementation": {
+    "owner": "EditorCore.EditorTheme, Swift",
+    "shippingUIConsumer": false,
+    "sourceRewriting": false,
+    "newNativeDependencies": false,
+    "originalParserShipped": false,
+    "features": [
+      "All 24 original syntax selectors and three editor selectors",
+      "Six-digit RGB and eight-digit ARGB colors",
+      "Caret/background/foreground aliases",
+      "Absolute and relative integer point sizes; original px/pt suffix behavior",
+      "Unicode font families and combined bold/italic/underlined traits",
+      "Case-sensitive rules/attribute names, original duplicate ordering and editor-rule replacement",
+      "Custom attribute retention, BOM and CR/CRLF",
+      "Line diagnostics and malformed block recovery"
+    ]
+  },
+  "characterization": {
+    "engine": "Unchanged vendored PEG Markdown Highlight style parser, MIT option",
+    "bundledThemes": 15,
+    "additionalCases": 6,
+    "total": 21,
+    "skips": 0,
+    "exactReproduction": "passed",
+    "provenance": "Five compiled original source/header SHA256 values embedded in fixture",
+    "shippingNotice": "App/Resources/Licenses/peg-markdown-highlight.txt"
+  },
+  "bounds": {
+    "sourceBytes": 1048576,
+    "blocks": 4096,
+    "declarations": 16384,
+    "diagnostics": 256,
+    "fontIntegerRange": [
+      -4096,
+      4096
+    ],
+    "explicitFailures": [
+      "NUL",
+      "oversized source",
+      "excessive blocks/declarations"
+    ],
+    "modernValidation": "Exact color hex digits and nonempty attribute name/value; no unsafe old empty-string or integer-overflow behavior"
+  },
+  "localValidation": {
+    "packageTests": 227,
+    "packageSuites": 45,
+    "arm64TestExecutables": 8,
+    "nativeBuildForTesting": "passed",
+    "strictChangedSwiftFormatting": "passed",
+    "parserSourceAndNotices": "verified unchanged",
+    "fixtureReproduction": "byte-identical"
+  },
+  "hosted": {
+    "result": "pending"
+  },
+  "remaining": [
+    "Wire every selector into native AST/source syntax",
+    "Render per-element fonts/traits/decoration/current-line safely in TextKit 2",
+    "Theme catalog/import and persistence/Settings",
+    "Custom CSS and template compatibility",
+    "Live visual/IME/undo acceptance",
+    "Safe coupled legacy retirement"
+  ],
+  "fullGoal": "active; incomplete"
+}

@@ -327,3 +327,17 @@ Custom themes/templates and remaining original-target callers still couple the o
 renderer/highlighter/formatting subsystem. Those files are not unused solely because
 word-formatting parity now passes. Preserve them and all licenses until their remaining
 replacements and acceptance checks make progressive Trash retirement safe.
+
+
+## Editor-theme reader foundation
+
+`EditorCore/EditorTheme.swift` independently reads the original `.style` data grammar.
+It retains the full font/color/trait vocabulary and reports bounded import diagnostics.
+`Tools/characterize-editor-themes.py` and the 21-case JSON fixture are development-only
+original-engine evidence, including all 15 original bundled themes. Neither the capture
+C wrapper nor the original PEG parser is added to a shipping target. The retained MIT
+notice covers the format compatibility work.
+
+The reader is not yet wired into native syntax presentation or settings. Existing
+highlighter/theme, custom CSS and template consumers therefore remain needed. Do not
+retire those coupled original files based on parser/model parity alone.

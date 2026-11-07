@@ -49,7 +49,8 @@ let package = Package(
       name: "MarkdownCoreTests", dependencies: ["MarkdownCore", "CodeHighlightCore", "MathCore"],
       resources: [.process("Fixtures")]),
     .testTarget(name: "DocumentCoreTests", dependencies: ["DocumentCore"]),
-    .testTarget(name: "EditorCoreTests", dependencies: ["EditorCore"]),
+    .testTarget(
+      name: "EditorCoreTests", dependencies: ["EditorCore"], resources: [.process("Fixtures")]),
     .testTarget(
       name: "SnowfolioUITests", dependencies: ["SnowfolioUI", "DocumentCore", "DiagramCore"]),
   ],

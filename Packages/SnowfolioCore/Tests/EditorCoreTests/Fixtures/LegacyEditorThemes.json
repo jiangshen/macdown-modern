@@ -1,0 +1,4504 @@
+{
+  "engine": "Vendored PEG Markdown Highlight style parser",
+  "notice": "LICENSE/peg-markdown-highlight.txt",
+  "sourceSHA256": {
+    "pmh_styleparser.c": "50028273945cacbc43388c03b1fdf3a03629d8dfc7cfc1673609228bbeacd2f0",
+    "pmh_styleparser.h": "abb30561fb61b29249381eded0b63b604440f45972b8593571710d2aa4956a07",
+    "pmh_parser_head.c": "a91476dcaad26de8b1c83bef38925ba30ac80404866f63ec5f107e5b6a77212a",
+    "pmh_parser.h": "36724d84cf356938f6c95c75369bd39e97c895f247505d03748072e6135429a3",
+    "pmh_definitions.h": "840465ab7bb7ee76fbc7c17fd106f960ab0e19af1c496d206afa53e92fcdea62"
+  },
+  "cases": [
+    {
+      "name": "Mou Fresh Air+.style",
+      "source": "editor\nforeground: 000000\nbackground: ffffff\ncaret: 000000\n\neditor-selection\nforeground: ffffff\nbackground: ff4f92\n\nH1\nforeground: 6c71c4\nfont-style: bold\nfont-size: 24px\n\nH2\nforeground: 6c71c4\nfont-style: bold\nfont-size: 20px\n\nH3\nforeground: 6c71c4\nfont-style: bold\nfont-size: 17px\n\nH4\nforeground: 268bd2\nfont-style: bold\nfont-size: 15px\n\nH5\nforeground: 268bd2\nfont-style: bold\nfont-size: 13px\n\nH6\nforeground: 268bd2\nfont-style: bold\nfont-size: 11px\n\nEMPH\nforeground: cb4b16\nfont-style: italic\n\nSTRONG\nforeground: dc322f\nfont-style: bold\n\nHRULE\nforeground: 586e75\n\nLIST_BULLET\nforeground: 93a1a1\n\nLIST_ENUMERATOR\nforeground: 93a1a1\n\nLINK\nforeground: 4e279a\n\nAUTO_LINK_URL\nforeground: 4e279a\n\nAUTO_LINK_EMAIL\nforeground: 4e279a\n\nREFERENCE\nforeground: bc670f\n\nIMAGE\nforeground: cf009a\n\nCODE\nforeground: 008c00\n\nVERBATIM\nforeground: 008c00\n\nHTML_ENTITY\nforeground: 6c71c4\n\nCOMMENT\nforeground: 93a1a1\n\nBLOCKQUOTE\nforeground: 93a1a1",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff000000"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffffffff"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff000000"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffff4f92"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:24"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:20"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:17"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:15"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:13"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:11"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcb4b16"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffdc322f"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff4e279a"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff4e279a"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff4e279a"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbc670f"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcf009a"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff008c00"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff008c00"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mou Fresh Air.style",
+      "source": "editor\nforeground: 000000\nbackground: ffffff\ncaret: 000000\n\neditor-selection\nforeground: ffffff\nbackground: ff4f92\n\nH1\nforeground: 6c71c4\nfont-style: bold\n\nH2\nforeground: 6c71c4\nfont-style: bold\n\nH3\nforeground: 6c71c4\nfont-style: bold\n\nH4\nforeground: 268bd2\nfont-style: bold\n\nH5\nforeground: 268bd2\nfont-style: bold\n\nH6\nforeground: 268bd2\n\nEMPH\nforeground: cb4b16\nfont-style: italic\n\nSTRONG\nforeground: dc322f\nfont-style: bold\n\nHRULE\nforeground: 586e75\n\nLIST_BULLET\nforeground: 93a1a1\n\nLIST_ENUMERATOR\nforeground: 93a1a1\n\nLINK\nforeground: 4e279a\n\nAUTO_LINK_URL\nforeground: 4e279a\n\nAUTO_LINK_EMAIL\nforeground: 4e279a\n\nREFERENCE\nforeground: bc670f\n\nIMAGE\nforeground: cf009a\n\nCODE\nforeground: 008c00\n\nVERBATIM\nforeground: 008c00\n\nHTML_ENTITY\nforeground: 6c71c4\n\nCOMMENT\nforeground: 93a1a1\n\nBLOCKQUOTE\nforeground: 93a1a1",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff000000"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffffffff"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff000000"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffff4f92"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcb4b16"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffdc322f"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff4e279a"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff4e279a"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff4e279a"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbc670f"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcf009a"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff008c00"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff008c00"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mou Night+.style",
+      "source": "editor\nforeground: eeeeee\nbackground: 282a36\ncaret: ff3319\n\neditor-selection\nforeground: ffffff\nbackground: ff4f92\n\nH1\nforeground: 8d7cd2\nfont-style: bold\nfont-size: 24px\n\nH2\nforeground: 8d7cd2\nfont-style: bold\nfont-size: 20px\n\nH3\nforeground: 8d7cd2\nfont-size: 17px\n\nH4\nforeground: 8d7cd2\nfont-size: 15px\n\nH5\nforeground: 8d7cd2\nfont-size: 13px\n\nH6\nforeground: 8d7cd2\nfont-size: 11px\n\nEMPH\nforeground: db8d50\nfont-style: italic\n\nSTRONG\nforeground: 00b2ce\nfont-style: bold\n\nHRULE\nforeground: 586e75\n\nLIST_BULLET\nforeground: ffff00\n\nLIST_ENUMERATOR\nforeground: ffff00\n\nLINK\nforeground: 59acf3\n\nAUTO_LINK_URL\nforeground: 59acf3\n\nAUTO_LINK_EMAIL\nforeground: 59acf3\n\nREFERENCE\nforeground: 618890\n\nIMAGE\nforeground: 85d065\n\nCODE\nforeground: cf009a\n\nVERBATIM\nforeground: cf009a\n\nHTML_ENTITY\nforeground: 6c71c4\n\nCOMMENT\nforeground: 93a1a1\n\nBLOCKQUOTE\nforeground: ff0000",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ffff3319"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff282a36"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffeeeeee"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffff4f92"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:24"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:20"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:17"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:15"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:13"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:11"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffdb8d50"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff00b2ce"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffff00"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffff00"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff59acf3"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff59acf3"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff59acf3"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff618890"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff85d065"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcf009a"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcf009a"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff0000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mou Night.style",
+      "source": "editor\nforeground: eeeeee\nbackground: 282a36\ncaret: ff3319\n\neditor-selection\nforeground: ffffff\nbackground: ff4f92\n\nH1\nforeground: 8d7cd2\nfont-style: bold\n\nH2\nforeground: 8d7cd2\nfont-style: bold\n\nH3\nforeground: 8d7cd2\nfont-style: bold\n\nH4\nforeground: 8d7cd2\nfont-style: bold\n\nH5\nforeground: 8d7cd2\nfont-style: bold\n\nH6\nforeground: 8d7cd2\nfont-style: bold\n\nEMPH\nforeground: db8d50\nfont-style: italic\n\nSTRONG\nforeground: 00b2ce\nfont-style: bold\n\nHRULE\nforeground: 586e75\n\nLIST_BULLET\nforeground: ffff00\n\nLIST_ENUMERATOR\nforeground: ffff00\n\nLINK\nforeground: 59acf3\n\nAUTO_LINK_URL\nforeground: 59acf3\n\nAUTO_LINK_EMAIL\nforeground: 59acf3\n\nREFERENCE\nforeground: 618890\n\nIMAGE\nforeground: 85d065\n\nCODE\nforeground: cf009a\n\nVERBATIM\nforeground: cf009a\n\nHTML_ENTITY\nforeground: 6c71c4\n\nCOMMENT\nforeground: 93a1a1\n\nBLOCKQUOTE\nforeground: ff0000",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ffff3319"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff282a36"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffeeeeee"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffff4f92"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff8d7cd2"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffdb8d50"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff00b2ce"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffff00"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffff00"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff59acf3"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff59acf3"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff59acf3"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff618890"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff85d065"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcf009a"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcf009a"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff0000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mou Paper+.style",
+      "source": "editor\nforeground: 000000\nbackground: ffffff\ncaret: 000000\n\nH1\nfont-style: bold\nfont-size: 24px\n\nH2\nfont-style: bold\nfont-size: 20px\n\nH3\nfont-style: bold\nfont-size: 17px\n\nH4\nfont-style: bold\nfont-size: 15px\nforeground: 333333\n\nH5\nfont-style: bold\nfont-size: 13px\nforeground: 333333\n\nH6\nfont-style: bold\nfont-size: 11px\nforeground: 333333\n\nEMPH\nfont-style: italic\n\nSTRONG\nfont-style: bold\n\nHRULE\nforeground: 555555\n\nLIST_BULLET\nforeground: bbbbbb\n\nLIST_ENUMERATOR\nforeground: bbbbbb\n\nLINK\nforeground: 555555\n\nAUTO_LINK_URL\nforeground: 555555\n\nAUTO_LINK_EMAIL\nforeground: 555555\n\nREFERENCE\nforeground: 555555\n\nIMAGE\nforeground: 555555\n\nCODE\nforeground: 555555\n\nVERBATIM\nforeground: 555555\n\nHTML_ENTITY\nforeground: 555555\n\nCOMMENT\nforeground: bbbbbb\n\nBLOCKQUOTE\nforeground: bbbbbb",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff000000"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffffffff"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff000000"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:24"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:20"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:17"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff333333"
+            },
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:15"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff333333"
+            },
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:13"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff333333"
+            },
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:11"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mou Paper.style",
+      "source": "editor\nforeground: 000000\nbackground: ffffff\ncaret: 000000\n\nH1\nfont-style: bold\n\nH2\nfont-style: bold\n\nH3\nfont-style: bold\n\nH4\nfont-style: bold\n\nH5\nfont-style: bold\n\nH6\nfont-style: bold\n\nEMPH\nfont-style: italic\n\nSTRONG\nfont-style: bold\n\nHRULE\nforeground: 555555\n\nLIST_BULLET\nforeground: bbbbbb\n\nLIST_ENUMERATOR\nforeground: bbbbbb\n\nLINK\nforeground: 555555\n\nAUTO_LINK_URL\nforeground: 555555\n\nAUTO_LINK_EMAIL\nforeground: 555555\n\nREFERENCE\nforeground: 555555\n\nIMAGE\nforeground: 555555\n\nCODE\nforeground: 555555\n\nVERBATIM\nforeground: 555555\n\nHTML_ENTITY\nforeground: 555555\n\nCOMMENT\nforeground: bbbbbb\n\nBLOCKQUOTE\nforeground: bbbbbb",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff000000"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffffffff"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff000000"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Solarized (Dark)+.style",
+      "source": "editor\nforeground: 839496\nbackground: 002b36\ncaret: fdf6e3\n\neditor-selection\nforeground: 002b36\nbackground: d33682\n\nH1\nforeground: b58900\nfont-style: bold\nfont-size: 24px\n\nH2\nforeground: b58900\nfont-style: bold\nfont-size: 20px\n\nH3\nforeground: b58900\nfont-style: bold\nfont-size: 17px\n\nH4\nforeground: b58900\nfont-style: bold\nfont-size: 15px\n\nH5\nforeground: b58900\nfont-style: bold\nfont-size: 13px\n\nH6\nforeground: b58900\nfont-style: bold\nfont-size: 11px\n\nEMPH\nforeground: 93a1a1\nfont-style: italic\n\nSTRONG\nforeground: 93a1a1\nfont-style: bold\n\nHRULE\nforeground: b58900\n\nLIST_BULLET\nforeground: 586e75\n\nLIST_ENUMERATOR\nforeground: 586e75\n\nLINK\nforeground: 268bd2\n\nAUTO_LINK_URL\nforeground: 268bd2\n\nAUTO_LINK_EMAIL\nforeground: 268bd2\n\nREFERENCE\nforeground: 6c71c4\n\nIMAGE\nforeground: cb4b16\n\nCODE\nforeground: 93a1a1\nbackground: 073642\n\nVERBATIM\nforeground: 93a1a1\nbackground: 073642\n\nHTML_ENTITY\nforeground: 586e75\n\nCOMMENT\nforeground: 586e75\n\nBLOCKQUOTE\nforeground: 839496\n",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "fffdf6e3"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff002b36"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff839496"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffd33682"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff002b36"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:24"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:20"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:17"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:15"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:13"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:11"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcb4b16"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff073642"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff073642"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff839496"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Solarized (Dark).style",
+      "source": "editor\nforeground: 839496\nbackground: 002b36\ncaret: fdf6e3\n\neditor-selection\nforeground: 002b36\nbackground: d33682\n\nH1\nforeground: b58900\n\nH2\nforeground: b58900\n\nH3\nforeground: b58900\n\nH4\nforeground: b58900\n\nH5\nforeground: b58900\n\nH6\nforeground: b58900\n\nEMPH\nforeground: 93a1a1\nfont-style: italic\n\nSTRONG\nforeground: 93a1a1\nfont-style: bold\n\nHRULE\nforeground: b58900\n\nLIST_BULLET\nforeground: 586e75\n\nLIST_ENUMERATOR\nforeground: 586e75\n\nLINK\nforeground: 268bd2\n\nAUTO_LINK_URL\nforeground: 268bd2\n\nAUTO_LINK_EMAIL\nforeground: 268bd2\n\nREFERENCE\nforeground: 6c71c4\n\nIMAGE\nforeground: cb4b16\n\nCODE\nforeground: 93a1a1\nbackground: 073642\n\nVERBATIM\nforeground: 93a1a1\nbackground: 073642\n\nHTML_ENTITY\nforeground: 586e75\n\nCOMMENT\nforeground: 586e75\n\nBLOCKQUOTE\nforeground: 839496\n",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "fffdf6e3"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff002b36"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff839496"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffd33682"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff002b36"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcb4b16"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff073642"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff073642"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff839496"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Solarized (Light)+.style",
+      "source": "editor\nforeground: 657b83\nbackground: fdf6e3\ncaret: 002b36\n\neditor-selection\nforeground: fdf6e3\nbackground: d33682\n\nH1\nforeground: b58900\nfont-style: bold\nfont-size: 24px\n\nH2\nforeground: b58900\nfont-style: bold\nfont-size: 20px\n\nH3\nforeground: b58900\nfont-style: bold\nfont-size: 17px\n\nH4\nforeground: b58900\nfont-style: bold\nfont-size: 15px\n\nH5\nforeground: b58900\nfont-style: bold\nfont-size: 13px\n\nH6\nforeground: b58900\nfont-style: bold\nfont-size: 11px\n\nEMPH\nforeground: 586e75\nfont-style: italic\n\nSTRONG\nforeground: 586e75\nfont-style: bold\n\nHRULE\nforeground: b58900\n\nLIST_BULLET\nforeground: 93a1a1\n\nLIST_ENUMERATOR\nforeground: 93a1a1\n\nLINK\nforeground: 268bd2\n\nAUTO_LINK_URL\nforeground: 268bd2\n\nAUTO_LINK_EMAIL\nforeground: 268bd2\n\nREFERENCE\nforeground: 6c71c4\n\nIMAGE\nforeground: cb4b16\n\nCODE\nforeground: 586e75\nbackground: eee8d5\n\nVERBATIM\nforeground: 586e75\nbackground: eee8d5\n\nHTML_ENTITY\nforeground: 93a1a1\n\nCOMMENT\nforeground: 93a1a1\n\nBLOCKQUOTE\nforeground: 657b83\n",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff002b36"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "fffdf6e3"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff657b83"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffd33682"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "fffdf6e3"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:24"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:20"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:17"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:15"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:13"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:11"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcb4b16"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffeee8d5"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffeee8d5"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff657b83"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Solarized (Light).style",
+      "source": "editor\nforeground: 657b83\nbackground: fdf6e3\ncaret: 002b36\n\neditor-selection\nforeground: fdf6e3\nbackground: d33682\n\nH1\nforeground: b58900\n\nH2\nforeground: b58900\n\nH3\nforeground: b58900\n\nH4\nforeground: b58900\n\nH5\nforeground: b58900\n\nH6\nforeground: b58900\n\nEMPH\nforeground: 586e75\nfont-style: italic\n\nSTRONG\nforeground: 586e75\nfont-style: bold\n\nHRULE\nforeground: b58900\n\nLIST_BULLET\nforeground: 93a1a1\n\nLIST_ENUMERATOR\nforeground: 93a1a1\n\nLINK\nforeground: 268bd2\n\nAUTO_LINK_URL\nforeground: 268bd2\n\nAUTO_LINK_EMAIL\nforeground: 268bd2\n\nREFERENCE\nforeground: 6c71c4\n\nIMAGE\nforeground: cb4b16\n\nCODE\nforeground: 586e75\nbackground: eee8d5\n\nVERBATIM\nforeground: 586e75\nbackground: eee8d5\n\nHTML_ENTITY\nforeground: 93a1a1\n\nCOMMENT\nforeground: 93a1a1\n\nBLOCKQUOTE\nforeground: 657b83\n",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff002b36"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "fffdf6e3"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff657b83"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffd33682"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "fffdf6e3"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffb58900"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff268bd2"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6c71c4"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcb4b16"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffeee8d5"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffeee8d5"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff586e75"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff93a1a1"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff657b83"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tomorrow Blue.style",
+      "source": "editor\nforeground: ffffff\nbackground: 002451\ncaret: ebbbff\n\neditor-selection\nforeground: ffffff\nbackground: 003f8e\n\nH1\nforeground: ff9da4\nfont-style: bold\n\nH2\nforeground: ff9da4\nfont-style: bold\n\nH3\nforeground: ff9da4\nfont-style: bold\n\nH4\nforeground: ff9da4\nfont-style: bold\n\nH5\nforeground: ff9da4\nfont-style: bold\n\nH6\nforeground: ff9da4\nfont-style: bold\n\nEMPH\nforeground: ffeead\nfont-style: italic\n\nSTRONG\nforeground: ffc58f\nfont-style: bold\n\nHRULE\nforeground: 7285b7\n\nLIST_BULLET\nforeground: bbdaff\n\nLIST_ENUMERATOR\nforeground: bbdaff\n\nLINK\nforeground: d1f1a9\n\nAUTO_LINK_URL\nforeground: d1f1a9\n\nAUTO_LINK_EMAIL\nforeground: d1f1a9\n\nREFERENCE\nforeground: 99ffff\n\nIMAGE\nforeground: ebbbff\n\nCODE\nforeground: 7285b7\n\nVERBATIM\nforeground: 7285b7\n\nHTML_ENTITY\nforeground: ebbbff\n\nCOMMENT\nforeground: 7285b7\n\nBLOCKQUOTE\nforeground: 7285b7",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ffebbbff"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff002451"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff003f8e"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff9da4"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff9da4"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff9da4"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff9da4"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff9da4"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffff9da4"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffeead"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffc58f"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff7285b7"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbdaff"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbdaff"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffd1f1a9"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffd1f1a9"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffd1f1a9"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff99ffff"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffebbbff"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff7285b7"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff7285b7"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffebbbff"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff7285b7"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff7285b7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tomorrow+.style",
+      "source": "editor\nforeground: cccccc\nbackground: 2d2d2d\ncaret: cc99cc\n\neditor-selection\nforeground: ffffff\nbackground: 515151\n\nH1\nforeground: 66cccc\nfont-style: bold\nfont-size: 24px\n\nH2\nforeground: 66cccc\nfont-style: bold\nfont-size: 20px\n\nH3\nforeground: 66cccc\nfont-size: 17px\n\nH4\nforeground: 66cccc\nfont-size: 15px\n\nH5\nforeground: 66cccc\nfont-size: 13px\n\nH6\nforeground: 66cccc\nfont-size: 11px\n\nEMPH\nforeground: ffcc66\nfont-style: italic\n\nSTRONG\nforeground: f99157\nfont-style: bold\n\nHRULE\nforeground: 999999\n\nLIST_BULLET\nforeground: 6699cc\n\nLIST_ENUMERATOR\nforeground: 6699cc\n\nLINK\nforeground: 99cc99\n\nAUTO_LINK_URL\nforeground: 99cc99\n\nAUTO_LINK_EMAIL\nforeground: 99cc99\n\nREFERENCE\nforeground: 66cccc\n\nIMAGE\nforeground: cc99cc\n\nCODE\nforeground: 999999\n\nVERBATIM\nforeground: 999999\n\nHTML_ENTITY\nforeground: cc99cc\n\nCOMMENT\nforeground: 888888\n\nBLOCKQUOTE\nforeground: f2777a",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ffcc99cc"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff2d2d2d"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcccccc"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff515151"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:24"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:20"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:17"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:15"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:13"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:11"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffcc66"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "fff99157"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff999999"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6699cc"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6699cc"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff99cc99"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff99cc99"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff99cc99"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcc99cc"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff999999"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff999999"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcc99cc"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff888888"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "fff2777a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tomorrow.style",
+      "source": "editor\nforeground: cccccc\nbackground: 2d2d2d\ncaret: cc99cc\n\neditor-selection\nforeground: ffffff\nbackground: 515151\n\nH1\nforeground: 66cccc\nfont-style: bold\n\nH2\nforeground: 66cccc\nfont-style: bold\n\nH3\nforeground: 66cccc\nfont-style: bold\n\nH4\nforeground: 66cccc\nfont-style: bold\n\nH5\nforeground: 66cccc\nfont-style: bold\n\nH6\nforeground: 66cccc\nfont-style: bold\n\nEMPH\nforeground: ffcc66\nfont-style: italic\n\nSTRONG\nforeground: f99157\nfont-style: bold\n\nHRULE\nforeground: 999999\n\nLIST_BULLET\nforeground: 6699cc\n\nLIST_ENUMERATOR\nforeground: 6699cc\n\nLINK\nforeground: 99cc99\n\nAUTO_LINK_URL\nforeground: 99cc99\n\nAUTO_LINK_EMAIL\nforeground: 99cc99\n\nREFERENCE\nforeground: 66cccc\n\nIMAGE\nforeground: cc99cc\n\nCODE\nforeground: 999999\n\nVERBATIM\nforeground: 999999\n\nHTML_ENTITY\nforeground: cc99cc\n\nCOMMENT\nforeground: 888888\n\nBLOCKQUOTE\nforeground: f2777a",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ffcc99cc"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff2d2d2d"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcccccc"
+            }
+          ]
+        },
+        {
+          "selector": "editor-selection",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ff515151"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffffff"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffffcc66"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "fff99157"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff999999"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6699cc"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff6699cc"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff99cc99"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff99cc99"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff99cc99"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff66cccc"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcc99cc"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff999999"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff999999"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffcc99cc"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff888888"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "fff2777a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Writer+.style",
+      "source": "editor\nforeground: 424242\nbackground: fafafa\ncaret: 00b9ff\n\nH1\nfont-style: bold\nfont-size: 24px\n\nH2\nfont-style: bold\nfont-size: 20px\n\nH3\nfont-style: bold\nfont-size: 17px\n\nH4\nfont-style: bold\nfont-size: 15px\n\nH5\nfont-style: bold\nfont-size: 13px\n\nH6\nfont-style: bold\nfont-size: 11px\n\nEMPH\nfont-style: italic\n\nSTRONG\nfont-style: bold\n\nHRULE\nforeground: 555555\n\nLIST_BULLET\nforeground: bbbbbb\n\nLIST_ENUMERATOR\nforeground: bbbbbb\n\nLINK\nforeground: 555555\n\nAUTO_LINK_URL\nforeground: 555555\n\nAUTO_LINK_EMAIL\nforeground: 555555\n\nREFERENCE\nforeground: 555555\n\nIMAGE\nforeground: 555555\n\nCODE\nforeground: 555555\n\nVERBATIM\nforeground: 555555\n\nHTML_ENTITY\nforeground: 555555\n\nCOMMENT\nforeground: bbbbbb\n\nBLOCKQUOTE\nforeground: bbbbbb",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff00b9ff"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "fffafafa"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff424242"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:24"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:20"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:17"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:15"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:13"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "0:11"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Writer.style",
+      "source": "editor\nforeground: 424242\nbackground: fafafa\ncaret: 00b9ff\n\nH1\nfont-style: bold\n\nH2\nfont-style: bold\n\nH3\nfont-style: bold\n\nH4\nfont-style: bold\n\nH5\nfont-style: bold\n\nH6\nfont-style: bold\n\nEMPH\nfont-style: italic\n\nSTRONG\nfont-style: bold\n\nHRULE\nforeground: 555555\n\nLIST_BULLET\nforeground: bbbbbb\n\nLIST_ENUMERATOR\nforeground: bbbbbb\n\nLINK\nforeground: 555555\n\nAUTO_LINK_URL\nforeground: 555555\n\nAUTO_LINK_EMAIL\nforeground: 555555\n\nREFERENCE\nforeground: 555555\n\nIMAGE\nforeground: 555555\n\nCODE\nforeground: 555555\n\nVERBATIM\nforeground: 555555\n\nHTML_ENTITY\nforeground: 555555\n\nCOMMENT\nforeground: bbbbbb\n\nBLOCKQUOTE\nforeground: bbbbbb",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff00b9ff"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "fffafafa"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff424242"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H3",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H4",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H5",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "H6",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "HRULE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_BULLET",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LIST_ENUMERATOR",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "LINK",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_URL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "AUTO_LINK_EMAIL",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "REFERENCE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "IMAGE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "CODE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "VERBATIM",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "HTML_ENTITY",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff555555"
+            }
+          ]
+        },
+        {
+          "selector": "COMMENT",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        },
+        {
+          "selector": "BLOCKQUOTE",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffbbbbbb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "aliases-and-ARGB",
+      "source": "editor\ncolor = 80112233\nbackground-color: FFFFFF\ncaret-color: 000000\n\nH1\nfont-size: +3px\nfont-family: Menlo\nfont-style: BOLD, Italic, Underlined\ncustom-property: retained\n",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "caret-color",
+              "kind": 2,
+              "value": "ff000000"
+            },
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffffffff"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "80112233"
+            }
+          ]
+        },
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "custom-property",
+              "kind": 6,
+              "value": "retained"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "7"
+            },
+            {
+              "name": "font-family",
+              "kind": 4,
+              "value": "Menlo"
+            },
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "1:3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "BOM-and-CRLF",
+      "source": "﻿# comment\r\neditor\r\nforeground: abcDEF # inline\r\n\r\nH2\rfont-size: -2pt\r",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffabcdef"
+            }
+          ]
+        },
+        {
+          "selector": "H2",
+          "attributes": [
+            {
+              "name": "font-size",
+              "kind": 3,
+              "value": "1:-2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "duplicate-attributes",
+      "source": "editor\nforeground: 112233\ncolor: 445566\n\nSTRONG\nfont-style: bold\nfont-style: italic\n\nSTRONG\nforeground: aabbcc\n",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff445566"
+            },
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff112233"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "2"
+            },
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "STRONG",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ffaabbcc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "duplicate-editor-blocks",
+      "source": "editor\nforeground: 112233\n\neditor\nbackground: aabbcc\n",
+      "rules": [
+        {
+          "selector": "editor",
+          "attributes": [
+            {
+              "name": "background-color",
+              "kind": 1,
+              "value": "ffaabbcc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unknown-and-invalid",
+      "source": "not-a-rule\nforeground: ffffff\n\nH1\nforeground: bad\nfont-size: nope\nfont-style: bold, sideways\n\nEMPH\nforeground: 010203\n",
+      "rules": [
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "font-style",
+              "kind": 5,
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "selector": "EMPH",
+          "attributes": [
+            {
+              "name": "foreground-color",
+              "kind": 0,
+              "value": "ff010203"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "case-sensitive-names",
+      "source": "h1\nforeground: 010203\n\nH1\nForeground: abcdef\nFONT-SIZE: 24px\n",
+      "rules": [
+        {
+          "selector": "H1",
+          "attributes": [
+            {
+              "name": "FONT-SIZE",
+              "kind": 6,
+              "value": "24px"
+            },
+            {
+              "name": "Foreground",
+              "kind": 6,
+              "value": "abcdef"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
