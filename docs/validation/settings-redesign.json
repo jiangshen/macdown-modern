@@ -1,0 +1,67 @@
+{
+  "product": "Snowfolio",
+  "date": "2026-11-07",
+  "request": "Rebuild Settings to match System Settings on this Mac",
+  "inspection": {
+    "panes": [
+      "General",
+      "Appearance",
+      "Keyboard",
+      "Language & Region"
+    ],
+    "interactions": [
+      "Search and result selection",
+      "Native popup opened and cancelled",
+      "Nested-page navigation",
+      "Back and forward"
+    ],
+    "systemPreferencesChanged": false,
+    "restoredView": "General; search empty",
+    "privateReferenceScreenshotsCommitted": false,
+    "measurements": {
+      "windowPoints": [
+        740,
+        625
+      ],
+      "sidebarDividerPoints": 231.5,
+      "detailHorizontalInsetPoints": 20
+    }
+  },
+  "implementation": {
+    "categories": [
+      "General",
+      "Appearance",
+      "Editor",
+      "Markdown",
+      "Privacy & Security"
+    ],
+    "preservedPreferences": 38,
+    "storageKeysChanged": false,
+    "nativeControls": true,
+    "nativeWindowChrome": true,
+    "search": "Every preference title, description, category and keywords; results retain query and reveal matching native row",
+    "history": "Bounded, branch-correct, including searched rows",
+    "window": "Single retained native window; close/reopen keeps navigation; autosaved frame; tabs disallowed",
+    "oldImplementationTrash": "/Users/caden/.Trash/MarkdownSettingsView.swift"
+  },
+  "verification": {
+    "focusedTests": "3 passed: search, history and persisted switches",
+    "nativeBuildForTesting": "passed",
+    "liveObserved": [
+      "Measured sidebar width matches System Settings",
+      "Native search/cancel controls",
+      "Search navigates to and reveals disabled inline-math row at bottom of long Markdown pane",
+      "Grouped rows, descriptions, switches and native back/forward toolbar"
+    ],
+    "finalLiveChecks": "pending Mac unlock",
+    "hostedUI": "pending",
+    "packageTests": {
+      "tests": 197,
+      "suites": 40,
+      "nativeArm64Executables": 8,
+      "result": "passed"
+    },
+    "changedSwiftStrictFormatting": "passed"
+  },
+  "goal": "active; full modernization incomplete"
+}

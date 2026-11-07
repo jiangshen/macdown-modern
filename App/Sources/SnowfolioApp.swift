@@ -13,6 +13,7 @@ struct SnowfolioApp: App {
       MarkdownDocument(configuration: configuration)
     }
     .commands {
+      SnowfolioSettingsCommands(preferences: preferences)
       TextEditingCommands()
       DocumentTabCommands()
       DocumentScrollCommands(preferences: preferences)
@@ -20,6 +21,5 @@ struct SnowfolioApp: App {
       DocumentExportCommands()
       MarkdownFormatCommands()
     }
-    Settings { MarkdownSettingsView(preferences: preferences) }
   }
 }

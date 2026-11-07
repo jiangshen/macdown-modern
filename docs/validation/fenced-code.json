@@ -44,7 +44,7 @@
     "styledPlainHTMLExport": "passed",
     "sourceCoordinatesAndSyntax": "passed",
     "preferenceMigrationPersistence": "passed",
-    "hostedSettingsRoundTrip": "implemented; awaiting hosted execution",
+    "hostedSettingsRoundTrip": "Run 42353539370 failed at initial preview lookup: macOS WebKit exposed static text through AXValue instead of AXLabel. Test now matches either; rerun pending with rebuilt Settings.",
     "tests": 194,
     "parserReproduction": "Every regenerated source, manifest, patch and provenance byte matches checkout",
     "changedSwiftStrictFormatting": "passed",
@@ -53,18 +53,17 @@
   },
   "nativeDesktop": {
     "observed": [
-      "Setting appears as native switch",
-      "Initial enabled fixture is a code block",
-      "Switch changes on to off"
+      "Enabled fixture renders literal **Fence checkpoint** in a code block",
+      "Disabling the actual Settings switch produces ordinary Markdown with bold checkpoint",
+      "Re-enabling restores the original code block",
+      "Source remains unchanged throughout"
     ],
-    "connection": "Timed out after Settings window close; full round trip not visually observed",
-    "mainThreadSample": "Idle in event loop in one-second sample; timeout cause not attributed",
     "savedPreferenceRestored": true,
-    "runningSessionMayRequireRelaunch": true
+    "runningPreferenceRestored": true,
+    "connection": "Completed after native UI reconnection"
   },
   "remaining": [
     "Hosted actual Settings/preview round trip",
-    "Any pending direct desktop final check",
     "Underline/quote/intraword preferences",
     "Broader modernization/reliability/accessibility/performance/release and legacy retirement"
   ],

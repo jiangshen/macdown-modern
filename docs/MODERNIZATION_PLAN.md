@@ -1471,3 +1471,22 @@ Underline, quote and intraword-emphasis choices, custom styles/templates, remain
 editor/workspace/integration capabilities, real input/accessibility, performance/release
 readiness and progressive legacy retirement remain required. The original renderer still
 has coupled consumers; this increment does not delete it. The full goal remains active.
+
+
+### System Settings parity — requested 2026-11-07 (in progress)
+
+Rebuild Snowfolio Settings around the actual System Settings UI on this Mac:
+searchable sidebar, category/detail routing, back/forward history, native grouped
+rows, switches/popups, descriptions, adaptive window chrome and scroll edges.
+Preserve all preference choices, stored keys and their real editor/preview/export
+effects. Verify search-to-row, navigation, resizing, reopen and persistence; retire
+the replaced toolbar-tab implementation after validation. The full modernization
+goal remains active.
+
+The replacement now builds and runs with all 38 existing preferences. Search
+reveals rows within the actual native grouped Form, including the disabled inline
+equation option at the bottom of Markdown. The native sidebar divider matches the
+reference at 231.5 pt in a 740×625 pt window. Search/navigation/persistence tests and
+the full package pass (197 tests / 40 suites / eight arm64 executables). Native
+build-for-testing and strict formatting pass. Final live checks and hosted native
+UI execution remain pending; evidence is in `validation/settings-redesign.json`.

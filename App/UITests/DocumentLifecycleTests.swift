@@ -85,17 +85,22 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertEqual(editor.value as? String, source)
     let preview = app.webViews.firstMatch
     let code = preview.staticTexts.matching(
-      NSPredicate(format: "label CONTAINS %@", "**Fence checkpoint**")
+      NSPredicate(
+        format: "label CONTAINS %@ OR value CONTAINS %@", "**Fence checkpoint**",
+        "**Fence checkpoint**")
     ).firstMatch
     let prose = preview.staticTexts.matching(
-      NSPredicate(format: "label CONTAINS %@ AND NOT (label CONTAINS %@)", "Fence checkpoint", "**")
+      NSPredicate(
+        format:
+          "(label CONTAINS %@ OR value CONTAINS %@) AND NOT (label CONTAINS %@ OR value CONTAINS %@)",
+        "Fence checkpoint", "Fence checkpoint", "**", "**")
     ).firstMatch
     XCTAssertTrue(code.waitForExistence(timeout: 8), app.debugDescription)
     func setFences() {
       app.typeKey(",", modifierFlags: .command)
-      let settings = app.windows["com_apple_SwiftUI_Settings_window"]
+      let settings = app.windows["snowfolioSettings"]
       XCTAssertTrue(settings.waitForExistence(timeout: 5))
-      settings.toolbars.buttons["Markdown"].click()
+      settings.staticTexts["Markdown"].firstMatch.click()
       let control = settings.switches["markdownFencedCode"]
       XCTAssertTrue(control.waitForExistence(timeout: 5), app.debugDescription)
       control.click()
@@ -112,6 +117,54 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertEqual(editor.value as? String, source)
     let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
     image.name = "fenced-code-restored-through-settings"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
+  func testSettingsSearchHistoryAndWindowReopen() {
+    let app = launch(arguments: ["-htmlMathJax", "NO"])
+    defer { app.terminate() }
+    _ = newDocument(in: app)
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5), app.debugDescription)
+    let sidebar = settings.outlines.firstMatch
+    sidebar.staticTexts["Appearance"].firstMatch.click()
+    XCTAssertTrue(settings.popUpButtons["documentFont"].waitForExistence(timeout: 5))
+    settings.popUpButtons["documentFont"].click()
+    XCTAssertTrue(app.menuItems["Serif"].waitForExistence(timeout: 3))
+    app.typeKey(.escape, modifierFlags: [])
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("inline equations")
+    let result = sidebar.staticTexts["Single dollar signs for inline equations"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let inlineMath = settings.switches["markdownInlineMath"]
+    XCTAssertTrue(inlineMath.waitForExistence(timeout: 5))
+    XCTAssertTrue(
+      settings.frame.contains(inlineMath.frame), "Search must reveal the entire offscreen setting")
+    XCTAssertFalse(inlineMath.isEnabled)
+    settings.buttons["settingsGoBack"].click()
+    XCTAssertTrue(settings.popUpButtons["documentFont"].waitForExistence(timeout: 5))
+    settings.buttons["settingsGoForward"].click()
+    XCTAssertTrue(inlineMath.waitForExistence(timeout: 5))
+    XCTAssertTrue(settings.frame.contains(inlineMath.frame))
+    search.click()
+    app.typeKey("a", modifierFlags: .command)
+    app.typeKey(.delete, modifierFlags: [])
+    sidebar.staticTexts["Editor"].firstMatch.click()
+    XCTAssertTrue(settings.textFields["editorFontName"].waitForExistence(timeout: 5))
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertTrue(settings.textFields["editorFontName"].waitForExistence(timeout: 5))
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertEqual(app.windows.matching(identifier: "snowfolioSettings").count, 1)
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "system-style-settings-editor"
     image.lifetime = .keepAlways
     add(image)
   }

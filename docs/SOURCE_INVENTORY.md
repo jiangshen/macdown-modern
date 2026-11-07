@@ -257,3 +257,15 @@ to check original hashes. Application grammar is not duplicated in a document pr
 and explicit known CommonMark differences for development. The tool/original characterizer
 are not bundled or app requirements. Legacy renderer/editor/custom-style consumers still
 prevent complete old-target retirement.
+
+
+## Settings window replacement (2026-11-07)
+
+`SettingsCatalog.swift` now supplies all 38 existing preference controls and search
+metadata; `SnowfolioSettingsView.swift` supplies the native sidebar/grouped forms;
+`SettingsWindowController.swift` owns the single native window and Settings command.
+Persisted keys and the shared `AppPreferences` model are unchanged. The superseded
+`MarkdownSettingsView.swift` was moved to native Trash after the replacement built
+and ran: `/Users/caden/.Trash/MarkdownSettingsView.swift`. This retires a duplicate
+modern implementation; original preference code with remaining parity obligations
+remains in the audit inventory. See `validation/settings-redesign.json`.
