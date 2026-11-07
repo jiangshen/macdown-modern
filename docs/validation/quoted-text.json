@@ -64,9 +64,27 @@
     "quotation": "Observed setting enabled and corresponding source/preview styles",
     "restore": "Original quote and underline choices both restored off; disposable draft discarded; original document tabs frontmost"
   },
-  "hostedCurrentRun": "pending branch push",
+  "hostedCurrentRun": {
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42366413412",
+    "commit": "eedaf69ca9bf4089e6dd9c9852f1a17491a3fd13",
+    "result": "passed",
+    "jobs": [
+      "native-app",
+      "swift-foundations"
+    ],
+    "nativeUITests": 7,
+    "packageTests": 214,
+    "packageSuites": 43,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "evidence": "Downloaded native xcodebuild log/result bundle and package/corpus artifacts; exact totals verified"
+  },
   "remaining": [
     "Independent intraword-emphasis preference",
     "Remaining full modernization and release acceptance gates"
-  ]
+  ],
+  "hostedDiagnostics": {
+    "priorityInversionWarnings": 10,
+    "status": "Passed; existing native QoS/performance attribution gate remains separate"
+  }
 }

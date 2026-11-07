@@ -89,7 +89,9 @@
     "appIntentsWarnings": "No AppIntents dependency; metadata extraction skipped"
   },
   "sourceRepaintFollowup": {
-    "status": "Corrected and directly verified; final hosted screenshot regression pending",
-    "record": "source-syntax-refresh.json"
+    "status": "Passed direct desktop checks and hosted displayed-source screenshot regression",
+    "record": "source-syntax-refresh.json",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42366413412",
+    "commit": "eedaf69ca9bf4089e6dd9c9852f1a17491a3fd13"
   }
 }

@@ -12,7 +12,7 @@
   ],
   "verification": {
     "fullWorkspace": "Inactive preferences, semantic source-color pixels and native Unicode undo/redo pass",
-    "actualDisplayedSource": "New XCUITest screenshot regression compiled; hosted execution pending",
+    "actualDisplayedSource": "Passed: hosted testUnderlinePreferenceAndNativeCommand checks teal pixels in the actual source UI screenshot before another edit",
     "live": "Observed orange to teal and back without another source edit; native undo/redo retained correct colors",
     "local": {
       "packageTests": 214,
@@ -27,9 +27,27 @@
     }
   },
   "cleanup": "Temporary content-free diagnostics removed; original preferences restored; disposable draft discarded",
-  "hostedCurrentRun": "pending branch push",
+  "hostedCurrentRun": {
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42366413412",
+    "commit": "eedaf69ca9bf4089e6dd9c9852f1a17491a3fd13",
+    "result": "passed",
+    "jobs": [
+      "native-app",
+      "swift-foundations"
+    ],
+    "nativeUITests": 7,
+    "packageTests": 214,
+    "packageSuites": 43,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "evidence": "Downloaded native xcodebuild log/result bundle and package/corpus artifacts; exact totals verified"
+  },
   "limits": [
     "Fresh cacheDisplay output alone did not prove this live defect fixed",
     "Native typing p95, energy and broad real IME acceptance remain separate"
-  ]
+  ],
+  "hostedDiagnostics": {
+    "priorityInversionWarnings": 10,
+    "status": "Passed; existing native QoS/performance attribution gate remains separate"
+  }
 }

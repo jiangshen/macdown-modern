@@ -1671,3 +1671,15 @@ Independent intraword-emphasis choice, custom themes/templates, remaining editor
 workspace productivity/system features, real IME and VoiceOver gates, measured native
 performance, shipping/install/default-handler readiness and safe coupled-source
 retirement remain outstanding. The full modernization goal remains active.
+
+
+Hosted acceptance passed on `eedaf69ca9bf4089e6dd9c9852f1a17491a3fd13`:
+[42366413412](https://github.com/jiangshen/snowfolio/actions/runs/42366413412)
+completed both jobs successfully. Downloaded artifacts confirm 214 package tests in
+43 suites, eight arm64 executables, all 652 published CommonMark examples and seven
+native document/Settings UI tests with zero failures. The underline test now checks
+teal source pixels from the actual UI screenshot before another edit, and passes with
+the paragraph presentation notification. The previously recorded live source-color
+refresh gate is closed for this reproduced Settings/undo sequence. Broader real IME,
+VoiceOver, native performance and release gates remain active; no full-goal completion
+or release-readiness claim follows from this increment.
