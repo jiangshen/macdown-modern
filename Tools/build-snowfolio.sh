@@ -42,13 +42,13 @@ if [ ! -s "$app/Contents/Resources/MarkdownDocument.icns" ]; then
     echo "Compiled Markdown document icon is missing." >&2
     exit 1
 fi
-for license in Yams.txt libyaml.txt CommonMark-cmark.txt; do
+for license in Yams.txt libyaml.txt CommonMark-cmark.txt Hoedown-inline.txt; do
     if [ ! -s "$app/Contents/Resources/$license" ]; then
         echo "Bundled dependency license is missing: $license" >&2
         exit 1
     fi
 done
-for license in swift-cmark.txt CommonMark-cmark.txt; do
+for license in swift-cmark.txt CommonMark-cmark.txt Hoedown-inline.txt; do
     if ! cmp -s "$repo_root/App/Resources/Licenses/$license" "$app/Contents/Resources/$license"; then
         echo "Bundled native parser notice differs from verified source: $license" >&2
         exit 1

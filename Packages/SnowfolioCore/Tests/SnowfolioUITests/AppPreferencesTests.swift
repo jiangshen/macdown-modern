@@ -6,6 +6,24 @@ import Testing
 @Suite("Application preferences")
 @MainActor
 struct AppPreferencesTests {
+  @Test("Underline defaults off, migrates enabled values and preserves explicit false")
+  func underlinePreference() throws {
+    let domain = "UnderlinePreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    #expect(!AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:]).underline)
+    defaults.removePersistentDomain(forName: domain)
+    let migrated = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["extensionUnderline": true])
+    #expect(migrated.underline && migrated.renderingOptions.underline)
+    migrated.underline = false
+    let reopened = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["extensionUnderline": true])
+    #expect(!reopened.underline && !reopened.renderingOptions.underline)
+  }
+
   @Test("Fenced-code preference defaults on and preserves migrated false across launches")
   func fencedCodePreference() throws {
     let domain = "FencePreferencesTests.\(UUID().uuidString)"

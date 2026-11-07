@@ -122,7 +122,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
-| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation and highlight/superscript and fenced-code preference implemented; underline, quote and intraword preferences remain |
+| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript and fenced-code preferences implemented; quote and independent intraword-emphasis preferences remain |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Pending |
@@ -1545,3 +1545,65 @@ The unused custom divider implementation was removed. Native build-for-testing,
 16 existing editing/pane/scroll tests and direct desktop inspection pass. The
 current geometry and historical inset design evidence are recorded separately in
 `validation/writing-surface.json`. This change does not alter document text.
+
+Hosted run [42359928178](https://github.com/jiangshen/snowfolio/actions/runs/42359928178)
+for `db6c5a2` passed both native-app and swift-foundations jobs, including the
+complete core CommonMark check. This result applies to the current edge-to-edge
+geometry; the preceding inset-card entry is historical.
+
+
+## Optional underline compatibility — 2026-11-07
+
+**Underlines** now preserves the original `extensionUnderline` choice, defaults off,
+and restores `_text_` as semantic `<u>` output when enabled. The same option controls
+preview, temporary source syntax, fresh HTML and native PDF/print. Double/triple
+underscore choices and intraword underlines follow original Hoedown behavior; disabled
+mode retains established CommonMark underscore grammar. Stars still provide emphasis.
+The Settings catalog now contains 39 preferences. Format → Underline (⌘U) follows the
+setting and native editor focus/composition state. It preserves Unicode selection and
+uses one native undo/redo step. Applying it inside `__bold__` uses equivalent star-bold
+markers so triple underscores do not accidentally turn bold into emphasis.
+
+`MarkdownDelimiterExtensions.swift` owns the compatibility grammar. It parses children
+through native cmark with shared references, keeps native code/HTML/destinations opaque,
+and preserves image-description marker behavior. Its span-search semantics derive from
+Hoedown 3.0.7; the original ISC notice is bundled and checked during native builds.
+No regex/source rewriting is used. A small, generic opt-in `match_inline_before` callback
+bridge is a documented local native-parser API, not an upstream API. It permits Swift
+extensions to handle built-in delimiters before native token dispatch and retains native
+multiline position accounting. A native context correction prevents extension-created
+link subtrees from becoming nested anchors, including existing superscripts. These are
+explicit, reversible third-party parser integration exceptions to the Swift application
+rule; the underline grammar itself remains Swift.
+
+The matcher limits recursive parsing to 32 levels, span bodies to 65,536 bytes and scan
+work to max(65,536, source byte count × 16). Long literal underscore runs are consumed in
+chunks. Unsupported oversized spans retain visible source and publish the existing
+complex-formatting notice. These bounds do not establish typing latency or whole-app
+memory/energy acceptance. General underscore editing inside arbitrary preformatted
+selections is not a semantic markup refactoring tool.
+
+Validation: all 84 original Hoedown characterization cases pass with 16 explicit native
+differences, all 652 core CommonMark examples pass, 208 package tests in 42 suites pass,
+and eight test executables are arm64. Seventeen parser/dialect/conformance tests pass
+under AddressSanitizer. Native build-for-testing, strict changed-Swift formatting,
+source/notice verification, exact reproduction of all 80 generated parser/package files,
+and exact characterization reproduction pass. Native checks cover light/dark preview,
+current/manual export snapshots, styled/plain HTML, native PDF text, source attributes,
+Unicode selection, undo/redo and focus/marked-text/preference gating. Direct desktop
+checks verified the Settings switch, preview round trip, bold selection with ⌘U, undo
+and disabled command. Original underline preference was restored off, the disposable
+unsaved document was discarded, and the original tabbed workspace returned to the front.
+Hosted verification for this increment is tracked in `validation/underline.json`.
+
+A live source-color refresh quirk was observed around the preference/undo round trip:
+source colors briefly stayed stale or cleared until a later native edit, while preview
+and source bytes were correct. Targeted same-revision color transition/storage/undo tests
+pass, but do not reproduce that visible repaint sequence. Keep the live presentation
+acceptance gate open; do not claim this observation fixed or dismiss it as parser parity.
+
+Remaining work includes quote and independent intraword-emphasis settings, custom
+styles/templates, other editor/workspace/productivity and system integrations, real IME
+and VoiceOver gates, measured native performance, release/signing/notarization/install
+and default-handler readiness, and safe retirement of the coupled legacy target.
+The complete modernization goal remains active.

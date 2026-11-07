@@ -269,3 +269,27 @@ Persisted keys and the shared `AppPreferences` model are unchanged. The supersed
 and ran: `/Users/caden/.Trash/MarkdownSettingsView.swift`. This retires a duplicate
 modern implementation; original preference code with remaining parity obligations
 remains in the audit inventory. See `validation/settings-redesign.json`.
+
+
+## Underline matcher and generic native extension bridge
+
+`MarkdownCore/MarkdownDelimiterExtensions.swift` is Swift application integration for
+the optional underscore dialect. Span-search semantics derive from Hoedown 3.0.7 and
+retain its complete original ISC notice in `App/Resources/Licenses/Hoedown-inline.txt`.
+`Tools/characterize-underline.py` is a development-only original-engine fixture capture;
+its 84 captured choices and 16 documented native differences live in test resources.
+It and the original Hoedown executable are not linked into the app.
+
+The maintained parser now also has a generic opt-in pre-token callback in `blocks.c`,
+`inlines.c`, `syntax_extension.c` and two extension headers, plus native link-context
+propagation for callback-created subtrees. This local API is explicitly not upstream;
+there is no underline grammar in C. The same pinned archive still provides all 76
+original files and notices. Reversible patches, original/packaged hashes and an isolated
+80-file reproduction verify exactly this boundary. Native app builds check the bundled
+Hoedown notice against the checked-in original notice.
+
+The legacy renderer/highlighter/formatting files still have original-target callers and
+unmigrated quote/intraword/custom-theme/template behavior. They are not duplicate dead
+files solely because underline parity is now implemented. Do not delete them until
+remaining replacements and desktop acceptance pass. The zero-legacy-code gate remains
+open, along with a live source-color repaint observation recorded in the roadmap.

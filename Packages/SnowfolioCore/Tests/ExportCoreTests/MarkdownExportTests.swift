@@ -26,6 +26,25 @@ struct MarkdownExportTests {
     }
   }
 
+  @Test("Styled and plain HTML honor the current underline preference", arguments: [false, true])
+  func underlinePreference(styled: Bool) async throws {
+    let source = "_Underline checkpoint_ and *italic*; a_b_c."
+    var options = MarkdownRenderingOptions()
+    let standard = try await MarkdownExport.build(
+      source: source, options: options, title: "Underline", directory: nil, includeStyles: styled)
+    #expect(standard.fragment.contains("<em>Underline checkpoint</em>"))
+    #expect(standard.fragment.contains("a_b_c"))
+    options.underline = true
+    let enabled = try await MarkdownExport.build(
+      source: source, options: options, title: "Underline", directory: nil, includeStyles: styled)
+    #expect(enabled.fragment.contains("<u>Underline checkpoint</u>"))
+    #expect(enabled.fragment.contains("<em>italic</em>"))
+    #expect(enabled.fragment.contains("a<u>b</u>c"))
+    #expect(enabled.document.contains("script-src 'none'"))
+    #expect(!enabled.document.contains("<script"))
+    #expect(enabled.document.contains("id=\"document-style\"") == styled)
+  }
+
   @Test("Math exports carry accessible equations and all fonts without executable scripts")
   func mathExport() async throws {
     var options = MarkdownRenderingOptions()

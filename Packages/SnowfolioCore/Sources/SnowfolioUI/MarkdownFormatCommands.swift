@@ -12,6 +12,7 @@ public final class EditorCommandController {
   public private(set) var isFocused = false
   public private(set) var isComposing = false
   public private(set) var allowsHighlight = false
+  public private(set) var allowsUnderline = false
   public private(set) var allowsStrikethrough = true
   public init() {}
 
@@ -25,6 +26,9 @@ public final class EditorCommandController {
   func compositionChanged(_ composing: Bool) {
     if isComposing != composing { isComposing = composing }
   }
+  func setUnderlineEnabled(_ value: Bool) {
+    if allowsUnderline != value { allowsUnderline = value }
+  }
   func setHighlightEnabled(_ value: Bool) {
     if allowsHighlight != value { allowsHighlight = value }
   }
@@ -35,6 +39,7 @@ public final class EditorCommandController {
   public func perform(_ command: MarkdownCommand) {
     guard canPerform else { return }
     if case .highlight = command, !allowsHighlight { return }
+    if case .underline = command, !allowsUnderline { return }
     _ = coordinator?.perform(command)
   }
 
@@ -66,6 +71,8 @@ public struct MarkdownFormatCommands: Commands {
       Group {
         Button("Bold") { editor?.perform(.bold) }.keyboardShortcut("b")
         Button("Italic") { editor?.perform(.italic) }.keyboardShortcut("i")
+        Button("Underline") { editor?.perform(.underline) }.keyboardShortcut("u")
+          .disabled(editor?.allowsUnderline != true)
         Button("Inline Code") { editor?.perform(.inlineCode) }.keyboardShortcut("k")
         Button("Strikethrough") { editor?.perform(.strikethrough) }.keyboardShortcut("-")
           .disabled(editor?.allowsStrikethrough != true)
@@ -215,6 +222,7 @@ extension MarkdownCommand {
     case .inlineCode: String(localized: "Inline Code")
     case .strikethrough: String(localized: "Strikethrough")
     case .highlight: String(localized: "Highlight")
+    case .underline: String(localized: "Underline")
     case .comment: String(localized: "Comment")
     case .heading: String(localized: "Heading")
     case .paragraph: String(localized: "Paragraph")

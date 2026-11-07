@@ -132,6 +132,8 @@ final class NativeSyntaxHighlighter {
         attributes[.foregroundColor] = NSColor.systemPurple
       } else if style.italic {
         attributes[.foregroundColor] = NSColor.systemOrange
+      } else if style.underlined {
+        attributes[.foregroundColor] = NSColor.systemTeal
       } else if style.strikethrough {
         attributes[.foregroundColor] = NSColor.secondaryLabelColor
       } else {

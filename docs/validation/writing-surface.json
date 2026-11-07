@@ -18,7 +18,15 @@
     "suites": 3,
     "result": "passed",
     "live": "Observed full-height divider and flush editor/preview surfaces in the running app; no inset preview corners or outer card gaps",
-    "hostedCurrentRun": "pending branch push; preceding combined run retained under history"
+    "hostedCurrentRun": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42359928178",
+      "commit": "db6c5a200e7457c8c32e55d5fddf6b5a6ceddae8",
+      "result": "passed",
+      "jobs": [
+        "native-app",
+        "swift-foundations"
+      ]
+    }
   },
   "goal": "active; full modernization incomplete",
   "history": [

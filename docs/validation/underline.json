@@ -1,0 +1,73 @@
+{
+  "milestone": "Optional underline dialect; full modernization remains active",
+  "date": "2026-11-07",
+  "preference": {
+    "key": "extensionUnderline",
+    "default": false,
+    "setting": "Underlines",
+    "catalogCount": 39,
+    "formatCommand": "Command-U"
+  },
+  "grammar": {
+    "owner": "Swift MarkdownDelimiterExtensions",
+    "childParser": "native cmark_parse_inlines with shared references",
+    "sourceRewriting": false,
+    "nativeBridge": "Local opt-in match_inline_before callback; generic API, not upstream",
+    "nestedLinkInvariant": "Native outer bracket context follows extension-created link subtrees; image descriptions stay opaque"
+  },
+  "bounds": {
+    "recursion": 32,
+    "bodyBytes": 65536,
+    "scanWork": "max(65536, sourceBytes * 16)",
+    "longLiteralRuns": "chunked",
+    "fallback": "Visible source and complexInlineFormatting notice"
+  },
+  "originalCharacterization": {
+    "engine": "Hoedown 3.0.7",
+    "archiveSHA256": "01b6021b1ec329b70687c0d240b12edcaf09c4aa28423ddf344d2bd9056ba920",
+    "cases": 84,
+    "explicitNativeDifferences": 16,
+    "skips": 0,
+    "reproducedExactly": true,
+    "license": "Original ISC notice copied byte-for-byte and bundled"
+  },
+  "localValidation": {
+    "packageTests": 208,
+    "packageSuites": 42,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "addressSanitizerTests": 17,
+    "addressSanitizerSuites": 3,
+    "nativeBuildForTesting": "passed",
+    "changedSwiftStrictFormatting": "passed",
+    "reproducedParserPackageFiles": 80,
+    "parserSourceAndNotices": "passed",
+    "focusedNativeColorTransitionTests": "passed after final test refinements"
+  },
+  "coverage": [
+    "Preference migration/persistence and default-off behavior",
+    "Native focus, selection, composition and option command gates",
+    "Unicode wrap/unwrap and bold preservation with native undo/redo",
+    "Light and dark preview computed underline decoration",
+    "Fresh manual-preview export snapshots",
+    "Styled and plain standalone HTML",
+    "Native PDF/print semantic text",
+    "References, footnotes, Unicode/CRLF source coordinates",
+    "Unsafe destinations/HTML policy and no nested link ancestors",
+    "Huge/unmatched literal input and visible bounded fallback"
+  ],
+  "live": {
+    "settingRoundTrip": "off \u2192 on \u2192 off; original restored",
+    "preview": "Observed underlined text/intraword underlines and return to CommonMark",
+    "command": "Observed bold Chinese selection \u2192 underline, native undo and disabled menu",
+    "cleanup": "Disposable unsaved document discarded; existing tabbed editing-lists workspace frontmost",
+    "layout": "Edge-to-edge panes and full-height divider observed again"
+  },
+  "hostedCurrentRun": "pending branch push",
+  "limitations": [
+    "Live source colors briefly stale/cleared around preference/undo round trip until a subsequent edit; targeted color tests pass but visible repaint sequence remains unclosed",
+    "Arbitrary nested source selections are not a semantic formatting refactoring tool",
+    "Quote and independent intraword-emphasis preferences remain",
+    "Broader modernization, native performance, accessibility, release/install and old-source retirement gates remain active"
+  ]
+}

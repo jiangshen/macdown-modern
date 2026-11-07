@@ -218,6 +218,9 @@ enum SettingsCatalog {
           control: .toggle(\.autolinks)),
         .init(id: "markdownFootnotes", title: "Footnotes", control: .toggle(\.footnotes)),
         .init(
+          id: "markdownUnderline", title: "Underlines",
+          detail: "Use _single underscores_ for underlined text.", control: .toggle(\.underline)),
+        .init(
           id: "markdownHighlight", title: "Highlights", detail: "Mark text with ==double equals==.",
           control: .toggle(\.highlight)),
         .init(

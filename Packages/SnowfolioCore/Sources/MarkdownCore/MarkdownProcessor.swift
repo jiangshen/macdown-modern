@@ -42,13 +42,17 @@ public actor MarkdownProcessor {
       options.highlight || options.superscript
       ? try MarkdownInlineExtensions(highlight: options.highlight, superscript: options.superscript)
       : nil
-    defer { withExtendedLifetime((mathSyntax, inlineSyntax)) {} }
+    let delimiterSyntax =
+      options.underline
+      ? try MarkdownDelimiterExtensions(sourceLength: parserSource.utf8.count) : nil
+    defer { withExtendedLifetime((mathSyntax, inlineSyntax, delimiterSyntax)) {} }
     guard let parser = cmark_parser_new(flags) else {
       throw MarkdownRenderingError.allocationFailure
     }
     defer { cmark_parser_free(parser) }
     if let mathSyntax { cmark_parser_attach_syntax_extension(parser, mathSyntax.native) }
     if let inlineSyntax { cmark_parser_attach_syntax_extension(parser, inlineSyntax.native) }
+    if let delimiterSyntax { cmark_parser_attach_syntax_extension(parser, delimiterSyntax.native) }
     let extensions = [
       ("table", options.tables), ("strikethrough", options.strikethrough),
       ("tasklist", options.taskLists), ("autolink", options.autolinks), ("tagfilter", true),
@@ -109,7 +113,9 @@ public actor MarkdownProcessor {
       identifiers[UInt(bitPattern: node)] = id
       let parentID = cmark_node_parent(node).flatMap { identifiers[UInt(bitPattern: $0)] }
       let nativeName = String(cString: cmark_node_get_type_string(node))
-      var kind = inlineSyntax?.kind(for: node) ?? MarkdownNodeKind(nativeName: nativeName)
+      var kind =
+        delimiterSyntax?.kind(for: node) ?? inlineSyntax?.kind(for: node)
+        ?? MarkdownNodeKind(nativeName: nativeName)
       if let token = mathSyntax?.token(for: node) {
         kind = .math(display: token.display)
         mathNodes.append((node, token.source, token.display, token.block))
@@ -300,6 +306,7 @@ public actor MarkdownProcessor {
       frontMatter: front?.metadata,
       notices: (front?.notice.map { [$0] } ?? []) + (mathNotices ? [.unsupportedMath] : [])
         + (diagramNotices ? [.unsupportedDiagram] : [])
-        + (inlineSyntax?.limited == true ? [.complexInlineFormatting] : []))
+        + (inlineSyntax?.limited == true || delimiterSyntax?.limited == true
+          ? [.complexInlineFormatting] : []))
   }
 }

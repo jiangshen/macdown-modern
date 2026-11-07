@@ -22,7 +22,7 @@ struct MarkdownEditingTests {
   func inlineToggles() throws {
     let content = "中文 👩‍💻 cafe\u{301}"
     for command in [
-      MarkdownCommand.bold, .italic, .strikethrough, .highlight, .comment, .inlineCode,
+      MarkdownCommand.bold, .italic, .strikethrough, .highlight, .underline, .comment, .inlineCode,
     ] {
       let first = try apply(command, content, NSRange(location: 0, length: content.utf16.count))
       #expect((first.0 as NSString).substring(with: first.1).utf8.elementsEqual(content.utf8))
@@ -30,6 +30,14 @@ struct MarkdownEditingTests {
       #expect(second.0.utf8.elementsEqual(content.utf8))
       #expect(second.1 == NSRange(location: 0, length: content.utf16.count))
     }
+  }
+
+  @Test("Underline keeps existing underscore bold markup visually bold")
+  func underlineBold() throws {
+    let first = try apply(.underline, "__word__", NSRange(location: 2, length: 4))
+    #expect(first.0 == "**_word_**")
+    #expect((first.0 as NSString).substring(with: first.1) == "word")
+    #expect(try apply(.underline, first.0, first.1).0 == "**word**")
   }
 
   @Test("Italic toggles distinguish bold from combined bold and italic")

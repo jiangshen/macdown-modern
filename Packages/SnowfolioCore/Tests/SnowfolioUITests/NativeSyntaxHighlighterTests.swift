@@ -31,7 +31,7 @@ struct NativeSyntaxHighlighterTests {
 
   @Test("Styling changes rendering but never storage, source, selection or native undo")
   func temporaryPresentation() async throws {
-    let source = "# 中文 👩🏽‍💻\n\n**bold *italic*** and `code`"
+    let source = "# 中文 👩🏽‍💻\n\n**bold *italic*** and `code`; _underlined_"
     let document = MarkdownDocument(contents: TextFileContents(text: source))
     let coordinator = NativeMarkdownEditor.Coordinator(document: document)
     let manager = UndoManager()
@@ -48,7 +48,8 @@ struct NativeSyntaxHighlighterTests {
     let selection = (source as NSString).range(of: "中文")
     editor.setSelectedRange(selection)
     let before = try #require(editor.textStorage).copy() as? NSAttributedString
-    let parsed = try await MarkdownProcessor().render(source, includeSyntax: true)
+    let processor = MarkdownProcessor()
+    let parsed = try await processor.render(source, includeSyntax: true)
     let font = try #require(editor.font)
     coordinator.highlighter.update(
       syntax: parsed.syntax, revision: document.revision, enabled: true, font: font,
@@ -56,6 +57,20 @@ struct NativeSyntaxHighlighterTests {
     let italicOffset = (source as NSString).range(of: "italic").location
     let shown = try #require(try renderedColor(at: italicOffset, in: editor))
     #expect(shown == NSColor.systemPink)
+    let underlineOffset = (source as NSString).range(of: "underlined").location
+    #expect(try renderedColor(at: underlineOffset, in: editor) == NSColor.systemOrange)
+    var options = MarkdownRenderingOptions()
+    options.underline = true
+    let optional = try await processor.render(source, options: options, includeSyntax: true)
+    coordinator.highlighter.update(
+      syntax: optional.syntax, revision: document.revision, enabled: true, font: font,
+      document: document)
+    #expect(try renderedColor(at: underlineOffset, in: editor) == NSColor.systemTeal)
+    coordinator.highlighter.update(
+      syntax: parsed.syntax, revision: document.revision, enabled: true, font: font,
+      document: document)
+    #expect(try renderedColor(at: underlineOffset, in: editor) == NSColor.systemOrange)
+
     #expect(editor.font == font)
     #expect(editor.textStorage?.isEqual(to: try #require(before)) == true)
     #expect(editor.string.utf8.elementsEqual(source.utf8))

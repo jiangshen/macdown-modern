@@ -1,0 +1,459 @@
+{
+  "engine": "Built with Hoedown 3.0.7.",
+  "source": "https://github.com/hoedown/hoedown/tree/3.0.7",
+  "fixtureSourceSHA256": "b4cf997bac768101f0cfcf61b8605e330622ccbaf2dd002c0a446809bce4f86f",
+  "cases": [
+    {
+      "source": "_under_",
+      "enabled": false,
+      "html": "<p><em>under</em></p>\n"
+    },
+    {
+      "source": "_under_",
+      "enabled": true,
+      "html": "<p><u>under</u></p>\n"
+    },
+    {
+      "source": "_under *em* **strong**_",
+      "enabled": false,
+      "html": "<p><em>under <em>em</em> <strong>strong</strong></em></p>\n"
+    },
+    {
+      "source": "_under *em* **strong**_",
+      "enabled": true,
+      "html": "<p><u>under <em>em</em> <strong>strong</strong></u></p>\n"
+    },
+    {
+      "source": "**_under_**",
+      "enabled": false,
+      "html": "<p><strong><em>under</em></strong></p>\n"
+    },
+    {
+      "source": "**_under_**",
+      "enabled": true,
+      "html": "<p><strong><u>under</u></strong></p>\n"
+    },
+    {
+      "source": "__strong__",
+      "enabled": false,
+      "html": "<p><strong>strong</strong></p>\n"
+    },
+    {
+      "source": "__strong__",
+      "enabled": true,
+      "html": "<p><strong>strong</strong></p>\n"
+    },
+    {
+      "source": "___both___",
+      "enabled": false,
+      "html": "<p><strong><em>both</em></strong></p>\n",
+      "nativeHTML": "<p><em><strong>both</strong></em></p>\n",
+      "nativeBehaviorNote": "Disabled underline retains existing CommonMark delimiter-run nesting rather than Hoedown emphasis grouping."
+    },
+    {
+      "source": "___both___",
+      "enabled": true,
+      "html": "<p><strong><em>both</em></strong></p>\n"
+    },
+    {
+      "source": "____four____",
+      "enabled": false,
+      "html": "<p>_<strong><em>four</em></strong>_</p>\n",
+      "nativeHTML": "<p><strong><strong>four</strong></strong></p>\n",
+      "nativeBehaviorNote": "Disabled underline retains existing CommonMark delimiter-run nesting rather than Hoedown emphasis grouping."
+    },
+    {
+      "source": "____four____",
+      "enabled": true,
+      "html": "<p>_<strong><em>four</em></strong>_</p>\n"
+    },
+    {
+      "source": "_____five_____",
+      "enabled": false,
+      "html": "<p>__<strong><em>five</em></strong>__</p>\n",
+      "nativeHTML": "<p><em><strong><strong>five</strong></strong></em></p>\n",
+      "nativeBehaviorNote": "Disabled underline retains existing CommonMark delimiter-run nesting rather than Hoedown emphasis grouping."
+    },
+    {
+      "source": "_____five_____",
+      "enabled": true,
+      "html": "<p>__<strong><em>five</em></strong>__</p>\n"
+    },
+    {
+      "source": "___a _under_ b___",
+      "enabled": false,
+      "html": "<p>_<strong>a <em>under</em> b</strong>_</p>\n",
+      "nativeHTML": "<p><em><strong>a <em>under</em> b</strong></em></p>\n",
+      "nativeBehaviorNote": "Disabled underline retains existing CommonMark delimiter-run nesting rather than Hoedown emphasis grouping."
+    },
+    {
+      "source": "___a _under_ b___",
+      "enabled": true,
+      "html": "<p>_<strong>a <u>under</u> b</strong>_</p>\n"
+    },
+    {
+      "source": "word_under_score",
+      "enabled": false,
+      "html": "<p>word<em>under</em>score</p>\n",
+      "nativeHTML": "<p>word_under_score</p>\n",
+      "nativeBehaviorNote": "Disabled underline retains CommonMark’s prohibition on intraword underscore emphasis. Enabled legacy underlines remain supported within words."
+    },
+    {
+      "source": "word_under_score",
+      "enabled": true,
+      "html": "<p>word<u>under</u>score</p>\n"
+    },
+    {
+      "source": "a_b_c",
+      "enabled": false,
+      "html": "<p>a<em>b</em>c</p>\n",
+      "nativeHTML": "<p>a_b_c</p>\n",
+      "nativeBehaviorNote": "Disabled underline retains CommonMark’s prohibition on intraword underscore emphasis. Enabled legacy underlines remain supported within words."
+    },
+    {
+      "source": "a_b_c",
+      "enabled": true,
+      "html": "<p>a<u>b</u>c</p>\n"
+    },
+    {
+      "source": "a_b_",
+      "enabled": false,
+      "html": "<p>a<em>b</em></p>\n",
+      "nativeHTML": "<p>a_b_</p>\n",
+      "nativeBehaviorNote": "Disabled underline retains CommonMark’s prohibition on intraword underscore emphasis. Enabled legacy underlines remain supported within words."
+    },
+    {
+      "source": "a_b_",
+      "enabled": true,
+      "html": "<p>a<u>b</u></p>\n"
+    },
+    {
+      "source": "_a_b",
+      "enabled": false,
+      "html": "<p><em>a</em>b</p>\n",
+      "nativeHTML": "<p>_a_b</p>\n",
+      "nativeBehaviorNote": "Disabled underline retains CommonMark’s prohibition on intraword underscore emphasis. Enabled legacy underlines remain supported within words."
+    },
+    {
+      "source": "_a_b",
+      "enabled": true,
+      "html": "<p><u>a</u>b</p>\n"
+    },
+    {
+      "source": "file_name_with_underlines",
+      "enabled": false,
+      "html": "<p>file<em>name</em>with_underlines</p>\n",
+      "nativeHTML": "<p>file_name_with_underlines</p>\n",
+      "nativeBehaviorNote": "Disabled underline retains CommonMark’s prohibition on intraword underscore emphasis. Enabled legacy underlines remain supported within words."
+    },
+    {
+      "source": "file_name_with_underlines",
+      "enabled": true,
+      "html": "<p>file<u>name</u>with_underlines</p>\n"
+    },
+    {
+      "source": "\\_literal_ and _under_",
+      "enabled": false,
+      "html": "<p>_literal_ and <em>under</em></p>\n"
+    },
+    {
+      "source": "\\_literal_ and _under_",
+      "enabled": true,
+      "html": "<p>_literal_ and <u>under</u></p>\n"
+    },
+    {
+      "source": "\\\\_under_",
+      "enabled": false,
+      "html": "<p>\\<em>under</em></p>\n"
+    },
+    {
+      "source": "\\\\_under_",
+      "enabled": true,
+      "html": "<p>\\<u>under</u></p>\n"
+    },
+    {
+      "source": "_ leading_",
+      "enabled": false,
+      "html": "<p>_ leading_</p>\n"
+    },
+    {
+      "source": "_ leading_",
+      "enabled": true,
+      "html": "<p>_ leading_</p>\n"
+    },
+    {
+      "source": "_trailing _",
+      "enabled": false,
+      "html": "<p>_trailing _</p>\n"
+    },
+    {
+      "source": "_trailing _",
+      "enabled": true,
+      "html": "<p>_trailing _</p>\n"
+    },
+    {
+      "source": "_trailing\t_",
+      "enabled": false,
+      "html": "<p>_trailing   _</p>\n",
+      "nativeHTML": "<p>_trailing\t_</p>\n",
+      "nativeBehaviorNote": "Native parsing preserves the literal input tab; Hoedown expands it before inline parsing."
+    },
+    {
+      "source": "_trailing\t_",
+      "enabled": true,
+      "html": "<p>_trailing   _</p>\n",
+      "nativeHTML": "<p>_trailing\t_</p>\n",
+      "nativeBehaviorNote": "Native parsing preserves the literal input tab; Hoedown expands it before inline parsing."
+    },
+    {
+      "source": "_one\ntwo_",
+      "enabled": false,
+      "html": "<p><em>one\ntwo</em></p>\n"
+    },
+    {
+      "source": "_one\ntwo_",
+      "enabled": true,
+      "html": "<p><u>one\ntwo</u></p>\n"
+    },
+    {
+      "source": "_one\r\ntwo_",
+      "enabled": false,
+      "html": "<p><em>one\ntwo</em></p>\n"
+    },
+    {
+      "source": "_one\r\ntwo_",
+      "enabled": true,
+      "html": "<p><u>one\ntwo</u></p>\n"
+    },
+    {
+      "source": "_中文 👩‍💻_",
+      "enabled": false,
+      "html": "<p><em>中文 👩‍💻</em></p>\n"
+    },
+    {
+      "source": "_中文 👩‍💻_",
+      "enabled": true,
+      "html": "<p><u>中文 👩‍💻</u></p>\n"
+    },
+    {
+      "source": "_a__b_",
+      "enabled": false,
+      "html": "<p><em>a</em><em>b</em></p>\n",
+      "nativeHTML": "<p><em>a__b</em></p>\n",
+      "nativeBehaviorNote": "Disabled underline retains existing CommonMark delimiter-run nesting rather than Hoedown emphasis grouping."
+    },
+    {
+      "source": "_a__b_",
+      "enabled": true,
+      "html": "<p><u>a</u><u>b</u></p>\n"
+    },
+    {
+      "source": "_a___b_",
+      "enabled": false,
+      "html": "<p><em>a</em>_<em>b</em></p>\n",
+      "nativeHTML": "<p><em>a___b</em></p>\n",
+      "nativeBehaviorNote": "Disabled underline retains existing CommonMark delimiter-run nesting rather than Hoedown emphasis grouping."
+    },
+    {
+      "source": "_a___b_",
+      "enabled": true,
+      "html": "<p><u>a</u>_<u>b</u></p>\n"
+    },
+    {
+      "source": "_before `code_ text` after_",
+      "enabled": false,
+      "html": "<p><em>before <code>code_ text</code> after</em></p>\n"
+    },
+    {
+      "source": "_before `code_ text` after_",
+      "enabled": true,
+      "html": "<p><u>before <code>code_ text</code> after</u></p>\n"
+    },
+    {
+      "source": "_before ``code_ text`` after_",
+      "enabled": false,
+      "html": "<p><em>before <code>code_ text</code> after</em></p>\n"
+    },
+    {
+      "source": "_before ``code_ text`` after_",
+      "enabled": true,
+      "html": "<p><u>before <code>code_ text</code> after</u></p>\n"
+    },
+    {
+      "source": "_unclosed `code_ after",
+      "enabled": false,
+      "html": "<p><em>unclosed `code</em> after</p>\n"
+    },
+    {
+      "source": "_unclosed `code_ after",
+      "enabled": true,
+      "html": "<p><u>unclosed `code</u> after</p>\n"
+    },
+    {
+      "source": "_before [label_](https://example.com) after_",
+      "enabled": false,
+      "html": "<p><em>before <a href=\"https://example.com\">label_</a> after</em></p>\n"
+    },
+    {
+      "source": "_before [label_](https://example.com) after_",
+      "enabled": true,
+      "html": "<p><u>before <a href=\"https://example.com\">label_</a> after</u></p>\n"
+    },
+    {
+      "source": "_before [label_][ref] after_\n\n[ref]: https://example.com",
+      "enabled": false,
+      "html": "<p><em>before <a href=\"https://example.com\">label_</a> after</em></p>\n"
+    },
+    {
+      "source": "_before [label_][ref] after_\n\n[ref]: https://example.com",
+      "enabled": true,
+      "html": "<p><u>before <a href=\"https://example.com\">label_</a> after</u></p>\n"
+    },
+    {
+      "source": "[a _label_](https://example.com)",
+      "enabled": false,
+      "html": "<p><a href=\"https://example.com\">a <em>label</em></a></p>\n"
+    },
+    {
+      "source": "[a _label_](https://example.com)",
+      "enabled": true,
+      "html": "<p><a href=\"https://example.com\">a <u>label</u></a></p>\n"
+    },
+    {
+      "source": "![a _alt_](image.png)",
+      "enabled": false,
+      "html": "<p><img src=\"image.png\" alt=\"a _alt_\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"a alt\" /></p>\n",
+      "nativeBehaviorNote": "Standard CommonMark image descriptions remove emphasis markers and use an XHTML void tag; Hoedown keeps raw alt markers."
+    },
+    {
+      "source": "![a _alt_](image.png)",
+      "enabled": true,
+      "html": "<p><img src=\"image.png\" alt=\"a _alt_\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"a _alt_\" /></p>\n",
+      "nativeBehaviorNote": "The optional dialect preserves literal image-description markers; native HTML emits the equivalent XHTML void tag."
+    },
+    {
+      "source": "[reference _label_][ref]\n\n[ref]: https://example.com",
+      "enabled": false,
+      "html": "<p><a href=\"https://example.com\">reference <em>label</em></a></p>\n"
+    },
+    {
+      "source": "[reference _label_][ref]\n\n[ref]: https://example.com",
+      "enabled": true,
+      "html": "<p><a href=\"https://example.com\">reference <u>label</u></a></p>\n"
+    },
+    {
+      "source": "[url](https://example.com/_path_ \"_title_\")",
+      "enabled": false,
+      "html": "<p><a href=\"https://example.com/_path_\" title=\"_title_\">url</a></p>\n"
+    },
+    {
+      "source": "[url](https://example.com/_path_ \"_title_\")",
+      "enabled": true,
+      "html": "<p><a href=\"https://example.com/_path_\" title=\"_title_\">url</a></p>\n"
+    },
+    {
+      "source": "<span title=\"_attribute_\">_body_</span>",
+      "enabled": false,
+      "html": "<p><span title=\"_attribute_\"><em>body</em></span></p>\n"
+    },
+    {
+      "source": "<span title=\"_attribute_\">_body_</span>",
+      "enabled": true,
+      "html": "<p><span title=\"_attribute_\"><u>body</u></span></p>\n"
+    },
+    {
+      "source": "_before <span title=\"_\">body</span> after_",
+      "enabled": false,
+      "html": "<p><em>before &lt;span title=&quot;</em>&quot;&gt;body</span> after_</p>\n",
+      "nativeHTML": "<p><em>before <span title=\"_\">body</span> after</em></p>\n",
+      "nativeBehaviorNote": "Disabled underline leaves raw HTML tags opaque to the maintained CommonMark delimiter grammar."
+    },
+    {
+      "source": "_before <span title=\"_\">body</span> after_",
+      "enabled": true,
+      "html": "<p><u>before &lt;span title=&quot;</u>&quot;&gt;body</span> after_</p>\n"
+    },
+    {
+      "source": "`_code_` and _under_",
+      "enabled": false,
+      "html": "<p><code>_code_</code> and <em>under</em></p>\n"
+    },
+    {
+      "source": "`_code_` and _under_",
+      "enabled": true,
+      "html": "<p><code>_code_</code> and <u>under</u></p>\n"
+    },
+    {
+      "source": "```text\n_under_\n```",
+      "enabled": false,
+      "html": "<pre><code class=\"language-text\">_under_\n</code></pre>\n"
+    },
+    {
+      "source": "```text\n_under_\n```",
+      "enabled": true,
+      "html": "<pre><code class=\"language-text\">_under_\n</code></pre>\n"
+    },
+    {
+      "source": "    _indented_\n",
+      "enabled": false,
+      "html": "<pre><code>_indented_\n</code></pre>\n"
+    },
+    {
+      "source": "    _indented_\n",
+      "enabled": true,
+      "html": "<pre><code>_indented_\n</code></pre>\n"
+    },
+    {
+      "source": "> _quoted_",
+      "enabled": false,
+      "html": "<blockquote>\n<p><em>quoted</em></p>\n</blockquote>\n"
+    },
+    {
+      "source": "> _quoted_",
+      "enabled": true,
+      "html": "<blockquote>\n<p><u>quoted</u></p>\n</blockquote>\n"
+    },
+    {
+      "source": "- _listed_",
+      "enabled": false,
+      "html": "<ul>\n<li><em>listed</em></li>\n</ul>\n"
+    },
+    {
+      "source": "- _listed_",
+      "enabled": true,
+      "html": "<ul>\n<li><u>listed</u></li>\n</ul>\n"
+    },
+    {
+      "source": "_unclosed",
+      "enabled": false,
+      "html": "<p>_unclosed</p>\n"
+    },
+    {
+      "source": "_unclosed",
+      "enabled": true,
+      "html": "<p>_unclosed</p>\n"
+    },
+    {
+      "source": "__",
+      "enabled": false,
+      "html": "<p>__</p>\n"
+    },
+    {
+      "source": "__",
+      "enabled": true,
+      "html": "<p>__</p>\n"
+    },
+    {
+      "source": "_ _",
+      "enabled": false,
+      "html": "<p>_ _</p>\n"
+    },
+    {
+      "source": "_ _",
+      "enabled": true,
+      "html": "<p>_ _</p>\n"
+    }
+  ]
+}

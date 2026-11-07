@@ -157,6 +157,9 @@ public struct DocumentWorkspace: View {
       zoomPercent = value
       zoom.persist(fileURL: document.fileURL)
     }
+    .onChange(of: preferences.underline, initial: true) { _, value in
+      editing.setUnderlineEnabled(value)
+    }
     .onChange(of: preferences.highlight, initial: true) { _, value in
       editing.setHighlightEnabled(value)
     }

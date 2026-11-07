@@ -103,7 +103,7 @@ static cmark_node *make_document(cmark_mem *mem) {
 int cmark_parser_attach_syntax_extension(cmark_parser *parser,
                                          cmark_syntax_extension *extension) {
   parser->syntax_extensions = cmark_llist_append(parser->mem, parser->syntax_extensions, extension);
-  if (extension->match_inline || extension->insert_inline_from_delim) {
+  if (extension->match_inline || extension->match_inline_before || extension->insert_inline_from_delim) {
     if (!parser->inline_syntax_extensions) {
       // if we're loading an inline extension into this parser for the first time,
       // allocate new buffers for the inline parser character arrays

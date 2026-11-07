@@ -296,6 +296,18 @@ void cmark_syntax_extension_set_match_block_func(cmark_syntax_extension *extensi
 
 /** See the documentation for 'cmark_syntax_extension'
  */
+/** Snowfolio extension API (not upstream): try this optional callback before
+ * built-in inline token handling. On success it must advance the cursor and
+ * return a positioned node. On failure it must return NULL without changing the
+ * parser. The parser adjusts consumed multiline spans and the returned node's
+ * end position; callback start/end positions initially describe a single line.
+ * Escapes, code, HTML and destinations consumed by earlier native tokens remain
+ * opaque. An unset callback leaves ordinary CommonMark behavior unchanged.
+ */
+CMARK_GFM_EXPORT
+void cmark_syntax_extension_set_match_inline_before_func(cmark_syntax_extension *extension,
+                                                         cmark_match_inline_func func);
+
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_match_inline_func(cmark_syntax_extension *extension,
                                                   cmark_match_inline_func func);

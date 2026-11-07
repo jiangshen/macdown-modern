@@ -8,15 +8,16 @@ import WebKit
 
 @testable import SnowfolioUI
 
-@Suite("Native highlight and superscript", .serialized, NativeUIExclusive())
+@Suite("Native optional inline formatting", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeInlineFormattingTests {
   private static let source =
-    "# Inline notebook\n\n==Review **important** text== and x^(2 + 1).\n\nEnd checkpoint."
+    "# Inline notebook\n\n==Review **important** text== and x^(2 + 1). _Underline checkpoint_.\n\nEnd checkpoint."
   private var options: MarkdownRenderingOptions {
     var options = MarkdownRenderingOptions()
     options.highlight = true
     options.superscript = true
+    options.underline = true
     return options
   }
 
@@ -27,7 +28,7 @@ struct NativeInlineFormattingTests {
 
   @Test("Source highlight is temporary and the original command uses one native undo step")
   func editor() async throws {
-    let source = "==中文 **important**== and x^2"
+    let source = "_Underlined_ ==中文 **important**== and x^2"
     let document = MarkdownDocument(contents: TextFileContents(text: source))
     let coordinator = NativeMarkdownEditor.Coordinator(document: document)
     let commands = EditorCommandController()
@@ -59,17 +60,22 @@ struct NativeInlineFormattingTests {
     editor.displayIfNeeded()
     let offset = (source as NSString).range(of: "important").location
     var background: NSColor?
+    var underlineColor: NSColor?
+    let underlineOffset = (source as NSString).range(of: "Underlined").location
     layout.enumerateRenderingAttributes(from: content.documentRange.location, reverse: false) {
       _, attributes, range in
       let start = content.offset(from: content.documentRange.location, to: range.location)
       let end = content.offset(from: content.documentRange.location, to: range.endLocation)
+      if start <= underlineOffset, end > underlineOffset {
+        underlineColor = attributes[.foregroundColor] as? NSColor
+      }
       if start <= offset, end > offset {
         background = attributes[.backgroundColor] as? NSColor
-        return false
       }
       return true
     }
     #expect(background == NSColor.systemYellow.withAlphaComponent(0.18))
+    #expect(underlineColor == NSColor.systemTeal)
     #expect(editor.textStorage?.attribute(.backgroundColor, at: offset, effectiveRange: nil) == nil)
     #expect(document.text == source && document.revision == 0 && !undo.canUndo)
     #expect(commands.canPerform)
@@ -77,18 +83,18 @@ struct NativeInlineFormattingTests {
     #expect(document.text == source)
     commands.setHighlightEnabled(true)
     commands.perform(.highlight)
-    #expect(document.text == "中文 **important** and x^2")
+    #expect(document.text == "_Underlined_ 中文 **important** and x^2")
     #expect(undo.undoActionName == "Highlight")
     undo.undo()
     #expect(document.text == source)
     #expect(editor.selectedRange() == selection)
     #expect(!undo.canUndo)
     undo.redo()
-    #expect(document.text == "中文 **important** and x^2")
+    #expect(document.text == "_Underlined_ 中文 **important** and x^2")
   }
 
   @Test(
-    "Preview uses legible adaptive highlights and raised superscripts", arguments: [false, true])
+    "Preview uses legible highlights, raised superscripts and underlines", arguments: [false, true])
   func preview(dark: Bool) async throws {
     let parsed = try await MarkdownProcessor().render(Self.source, options: options)
     let coordinator = NativeMarkdownPreview.Coordinator()
@@ -134,6 +140,12 @@ struct NativeInlineFormattingTests {
         const e=document.querySelector('sup'), s=getComputedStyle(e);
         return String(e.textContent==='2 + 1' && parseFloat(s.fontSize)<parseFloat(getComputedStyle(e.parentElement).fontSize) && s.verticalAlign==='super');
         """, in: web) == "true")
+    #expect(
+      try await evaluate(
+        """
+        const e=document.querySelector('u');
+        return String(e?.textContent==='Underline checkpoint' && getComputedStyle(e).textDecorationLine.includes('underline'));
+        """, in: web) == "true")
     #expect(!web.configuration.defaultWebpagePreferences.allowsContentJavaScript)
     let image = try await web.takeSnapshot(configuration: nil)
     let tiff = try #require(image.tiffRepresentation)
@@ -142,18 +154,21 @@ struct NativeInlineFormattingTests {
     try png.write(to: URL(filePath: "/private/tmp/snowfolio-inline-\(dark ? "dark" : "light").png"))
   }
 
-  @Test("Fresh HTML and native PDF carry both optional formats")
+  @Test("Fresh HTML and native PDF carry all optional inline formats")
   func exports() async throws {
     let export = try await MarkdownExport.build(
       source: Self.source, options: options,
       title: "Inline notebook", directory: nil)
     #expect(export.fragment.contains("<mark>Review <strong>important</strong> text</mark>"))
     #expect(export.fragment.contains("<sup>2 + 1</sup>"))
+    #expect(export.fragment.contains("<u>Underline checkpoint</u>"))
     #expect(!export.document.contains("<script"))
     let plain = try await MarkdownExport.build(
       source: Self.source, options: options,
       title: "Inline notebook", directory: nil, includeStyles: false)
-    #expect(plain.document.contains("<mark>") && plain.document.contains("<sup>"))
+    #expect(
+      plain.document.contains("<mark>") && plain.document.contains("<sup>")
+        && plain.document.contains("<u>"))
     let surface = NativeWebOutput()
     defer { surface.close() }
     try await surface.prepare(html: export.document)
@@ -170,7 +185,9 @@ struct NativeInlineFormattingTests {
     let pdf = try #require(PDFDocument(url: path))
     let text = try #require(pdf.string)
     #expect(pdf.pageCount == 1)
-    for label in ["Inline notebook", "Review", "important", "2 + 1", "End checkpoint."] {
+    for label in [
+      "Inline notebook", "Review", "important", "2 + 1", "Underline checkpoint", "End checkpoint.",
+    ] {
       #expect(text.contains(label), "Missing PDF label: \(label)")
     }
     try Data(contentsOf: path).write(to: URL(filePath: "/private/tmp/snowfolio-inline-export.pdf"))

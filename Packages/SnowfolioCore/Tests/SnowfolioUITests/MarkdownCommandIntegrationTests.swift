@@ -47,6 +47,27 @@ struct MarkdownCommandIntegrationTests {
     #expect(view.selectedRange() == NSRange(location: 9, length: 2))
   }
 
+  @Test("Underline preserves bold semantics, Unicode selection and native undo/redo")
+  func underlineUndo() throws {
+    let (document, coordinator, scroll, view, manager) = try editor("__中文__")
+    defer { withExtendedLifetime(scroll) {} }
+    let selection = NSRange(location: 2, length: 2)
+    view.setSelectedRange(selection)
+    #expect(coordinator.perform(.underline))
+    #expect(document.text == "**_中文_**")
+    #expect(view.selectedRange() == NSRange(location: 3, length: 2))
+    #expect(manager.undoActionName == "Underline")
+    manager.undo()
+    #expect(document.text == "__中文__")
+    #expect(view.selectedRange() == selection)
+    #expect(!manager.canUndo)
+    manager.redo()
+    #expect(document.text == "**_中文_**")
+    #expect(view.selectedRange() == NSRange(location: 3, length: 2))
+    #expect(coordinator.perform(.underline))
+    #expect(document.text == "**中文**")
+  }
+
   @Test("Return continues a checked task with one undoable native change")
   func listContinuation() throws {
     let (document, coordinator, scroll, view, manager) = try editor("- [x] 中文")
@@ -141,11 +162,22 @@ struct MarkdownCommandIntegrationTests {
     window.contentView = scroll
     #expect(window.makeFirstResponder(view))
     #expect(controller.canPerform)
+    view.setSelectedRange(NSRange(location: 0, length: 4))
+    controller.perform(.underline)
+    #expect(document.text == "word")
+    controller.setUnderlineEnabled(true)
+    controller.perform(.underline)
+    #expect(document.text == "_word_")
+    controller.perform(.underline)
+    #expect(document.text == "word")
     view.setMarkedText(
       "に", selectedRange: NSRange(location: 1, length: 0),
       replacementRange: NSRange(location: 0, length: 4))
     #expect(controller.isComposing)
     #expect(!controller.canPerform)
+    let composing = view.string
+    controller.perform(.underline)
+    #expect(view.string == composing && view.hasMarkedText())
     view.unmarkText()
     #expect(!controller.isComposing)
     #expect(controller.canPerform)
@@ -153,6 +185,7 @@ struct MarkdownCommandIntegrationTests {
     #expect(!controller.canPerform)
     let before = document.text
     controller.perform(.bold)
+    controller.perform(.underline)
     #expect(document.text == before)
   }
 

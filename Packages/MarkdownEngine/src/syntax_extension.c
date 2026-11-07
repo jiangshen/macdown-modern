@@ -58,6 +58,11 @@ void cmark_syntax_extension_set_match_block_func(cmark_syntax_extension *extensi
   extension->last_block_matches = func;
 }
 
+void cmark_syntax_extension_set_match_inline_before_func(cmark_syntax_extension *extension,
+                                                         cmark_match_inline_func func) {
+  extension->match_inline_before = func;
+}
+
 void cmark_syntax_extension_set_match_inline_func(cmark_syntax_extension *extension,
                                                   cmark_match_inline_func func) {
   extension->match_inline = func;

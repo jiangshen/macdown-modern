@@ -43,6 +43,7 @@ public final class AppPreferences {
   public var footnotes: Bool { didSet { save(footnotes, "extensionFootnotes") } }
   public var fencedCode: Bool { didSet { save(fencedCode, "extensionFencedCode") } }
   public var highlight: Bool { didSet { save(highlight, "extensionHighlight") } }
+  public var underline: Bool { didSet { save(underline, "extensionUnderline") } }
   public var superscript: Bool { didSet { save(superscript, "extensionSuperscript") } }
   public var smartPunctuation: Bool { didSet { save(smartPunctuation, "extensionSmartyPants") } }
   public var hardLineBreaks: Bool { didSet { save(hardLineBreaks, "htmlHardWrap") } }
@@ -108,6 +109,7 @@ public final class AppPreferences {
     fencedCode = boolean("extensionFencedCode", fallback: true)
     highlight = boolean("extensionHighlight", fallback: false)
     superscript = boolean("extensionSuperscript", fallback: false)
+    underline = boolean("extensionUnderline", fallback: false)
     smartPunctuation = boolean("extensionSmartyPants", fallback: false)
     hardLineBreaks = boolean("htmlHardWrap", fallback: false)
     rawHTML = boolean("previewRenderRawHTML", fallback: false)
@@ -164,6 +166,7 @@ public final class AppPreferences {
     options.fencedCode = fencedCode
     options.highlight = highlight
     options.superscript = superscript
+    options.underline = underline
     options.smartPunctuation = smartPunctuation
     options.hardLineBreaks = hardLineBreaks
     options.rawHTML = rawHTML

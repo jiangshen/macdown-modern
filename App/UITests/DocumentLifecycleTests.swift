@@ -122,6 +122,55 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testUnderlinePreferenceAndNativeCommand() {
+    let app = launch(arguments: ["-extensionUnderline", "NO"])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    editor.typeText("a_b_c")
+    let preview = app.webViews.firstMatch
+    XCTAssertTrue(preview.staticTexts["a_b_c"].firstMatch.waitForExistence(timeout: 8))
+    func toggleUnderline() {
+      app.typeKey(",", modifierFlags: .command)
+      let settings = app.windows["snowfolioSettings"]
+      XCTAssertTrue(settings.waitForExistence(timeout: 5))
+      settings.staticTexts["Markdown"].firstMatch.click()
+      let control = settings.switches["markdownUnderline"]
+      XCTAssertTrue(control.waitForExistence(timeout: 5), app.debugDescription)
+      control.click()
+      app.typeKey("w", modifierFlags: .command)
+      XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    }
+    toggleUnderline()
+    XCTAssertTrue(preview.staticTexts["abc"].firstMatch.waitForExistence(timeout: 8))
+    XCTAssertEqual(editor.value as? String, "a_b_c")
+    editor.click()
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Underline checkpoint")
+    app.typeKey("a", modifierFlags: .command)
+    app.typeKey("u", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "_Underline checkpoint_")
+    XCTAssertTrue(
+      preview.staticTexts["Underline checkpoint"].firstMatch.waitForExistence(timeout: 8))
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "Underline checkpoint")
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "_Underline checkpoint_")
+    toggleUnderline()
+    editor.click()
+    app.typeKey("a", modifierFlags: .command)
+    app.typeKey("u", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "_Underline checkpoint_")
+    app.menuBars.menuBarItems["Format"].click()
+    XCTAssertFalse(app.menuItems["Underline"].isEnabled)
+    app.typeKey(.escape, modifierFlags: [])
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "underline-setting-and-native-command"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
   func testSettingsSearchHistoryAndWindowReopen() {
     let app = launch(arguments: ["-htmlMathJax", "NO"])
     defer { app.terminate() }

@@ -7,6 +7,7 @@ public struct MarkdownSyntaxStyle: Equatable, Sendable {
   public var bold = false
   public var italic = false
   public var strikethrough = false
+  public var underlined = false
 }
 
 public struct MarkdownSyntaxRun: Equatable, Sendable {
@@ -69,6 +70,7 @@ public struct MarkdownSyntax: Sendable {
       case .strong: style.bold = true
       case .emphasis: style.italic = true
       case .strikethrough: style.strikethrough = true
+      case .underline: style.underlined = true
       case .codeBlock, .inlineCode, .frontMatter, .math, .diagram: style.role = .code
       case .link, .image: style.role = .link
       case .blockquote: style.role = .quote

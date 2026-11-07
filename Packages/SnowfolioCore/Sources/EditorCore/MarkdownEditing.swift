@@ -10,7 +10,7 @@ public struct EditorBehavior: Equatable, Sendable {
 }
 
 public enum MarkdownCommand: Sendable {
-  case bold, italic, inlineCode, strikethrough, highlight, comment
+  case bold, italic, inlineCode, strikethrough, highlight, underline, comment
   case heading(Int)
   case paragraph, orderedList, unorderedList, blockquote, indent, outdent
   case link(String?)
@@ -42,6 +42,23 @@ public enum MarkdownEditing {
     case .italic:
       return try toggleInline(
         in: text, selection: selection, prefix: "*", suffix: "*", distinguishStrong: true)
+    case .underline:
+      // Preserve an existing __strong__ span: three underscores mean combined
+      // emphasis in the legacy dialect, so use equivalent star markers for bold.
+      let string = text as NSString
+      let left = string.substring(to: selection.location)
+      let right = string.substring(from: NSMaxRange(selection))
+      if left.hasSuffix("__"), right.hasPrefix("__"),
+        !left.hasSuffix("___"), !right.hasPrefix("___")
+      {
+        let content = string.substring(with: selection)
+        return EditorTransaction(
+          edit: TextEdit(
+            range: NSRange(location: selection.location - 2, length: selection.length + 4),
+            replacement: "**_" + content + "_**"),
+          selection: NSRange(location: selection.location + 1, length: selection.length))
+      }
+      return try toggleInline(in: text, selection: selection, prefix: "_", suffix: "_")
     case .highlight:
       return try toggleInline(in: text, selection: selection, prefix: "==", suffix: "==")
     case .strikethrough:

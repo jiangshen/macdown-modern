@@ -117,29 +117,34 @@ struct NativeWebOutputTests {
     preferences.manualRendering = true
     preferences.tables = false
     preferences.fencedCode = false
+    preferences.underline = true
     preferences.documentFont = .serif
     preferences.documentTextSize = 20
     let document = MarkdownDocument(contents: TextFileContents(text: "Old text"))
     let output = DocumentExportController()
     output.document = document
     output.preferences = preferences
-    document.acceptNativeEdit("Newest text 中文")
+    document.acceptNativeEdit("Newest _text 中文_")
     let snapshot = try #require(output.snapshot())
-    #expect(snapshot.source == "Newest text 中文")
+    #expect(snapshot.source == "Newest _text 中文_")
     #expect(!snapshot.options.tables)
     #expect(!snapshot.options.fencedCode)
+    #expect(snapshot.options.underline)
     #expect(snapshot.style.font == .serif)
     #expect(snapshot.style.textSize == 20)
     preferences.documentTextSize = 12
+    preferences.underline = false
+    #expect(snapshot.options.underline)
     #expect(snapshot.style.textSize == 20)
     document.acceptNativeEdit("Later text")
-    #expect(snapshot.source == "Newest text 中文")
+    #expect(snapshot.source == "Newest _text 中文_")
     let export = try await MarkdownExport.build(
       source: snapshot.source, options: snapshot.options, title: snapshot.title,
       directory: snapshot.directory, style: snapshot.style)
     let surface = NativeWebOutput()
     defer { surface.close() }
     try await surface.prepare(html: export.document)
+    #expect(export.fragment.contains("<u>text 中文</u>"))
     let typography: String = try await withCheckedThrowingContinuation { continuation in
       surface.view.callAsyncJavaScript(
         "const style = getComputedStyle(document.body); return style.fontSize + ':' + style.fontFamily;",

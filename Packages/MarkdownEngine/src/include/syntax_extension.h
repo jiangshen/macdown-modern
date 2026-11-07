@@ -11,6 +11,7 @@ struct cmark_syntax_extension {
   cmark_match_block_func          last_block_matches;
   cmark_open_block_func           try_opening_block;
   cmark_match_inline_func         match_inline;
+  cmark_match_inline_func         match_inline_before;
   cmark_inline_from_delim_func    insert_inline_from_delim;
   cmark_llist                   * special_inline_chars;
   char                          * name;

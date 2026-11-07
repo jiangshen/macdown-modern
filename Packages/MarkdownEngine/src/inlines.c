@@ -1581,19 +1581,44 @@ void cmark_inlines_remove_special_character(cmark_parser *parser, unsigned char 
 static cmark_node *try_extensions(cmark_parser *parser,
                                   cmark_node *parent,
                                   unsigned char c,
-                                  subject *subj) {
+                                  subject *subj, bool before_builtin) {
   cmark_node *res = NULL;
   cmark_llist *tmp;
 
   for (tmp = parser->inline_syntax_extensions; tmp; tmp = tmp->next) {
     cmark_syntax_extension *ext = (cmark_syntax_extension *) tmp->data;
-    res = ext->match_inline(ext, parser, parent, c, subj);
+    cmark_match_inline_func callback = before_builtin ? ext->match_inline_before : ext->match_inline;
+    if (callback)
+      res = callback(ext, parser, parent, c, subj);
 
     if (res)
       break;
   }
 
   return res;
+}
+
+// Extension callbacks can return a subtree parsed in its own inline context.
+// Apply the same no-nested-link rule as handle_close_bracket to the outer context.
+static void S_update_link_context(subject *subj, cmark_node *root) {
+  cmark_node *node = root;
+  if (!subj->last_bracket)
+    return;
+  while (node) {
+    if (node->type == CMARK_NODE_LINK) {
+      subj->no_link_openers = true;
+      return;
+    }
+    if (node->type != CMARK_NODE_IMAGE && node->first_child) {
+      node = node->first_child;
+    } else {
+      while (node != root && !node->next)
+        node = node->parent;
+      if (node == root)
+        return;
+      node = node->next;
+    }
+  }
 }
 
 // Parse an inline, advancing subject, and add it as a child of parent.
@@ -1607,6 +1632,13 @@ static int parse_inline(cmark_parser *parser, subject *subj, cmark_node *parent,
   c = peek_char(subj);
   if (c == 0) {
     return 0;
+  }
+  new_inl = try_extensions(parser, parent, c, subj, true);
+  if (new_inl) {
+    adjust_subj_node_newlines(subj, new_inl, subj->pos - initpos, 0, options);
+    S_update_link_context(subj, new_inl);
+    cmark_node_append_child(parent, new_inl);
+    return 1;
   }
   switch (c) {
   case '\r':
@@ -1675,7 +1707,7 @@ static int parse_inline(cmark_parser *parser, subject *subj, cmark_node *parent,
 
   if (subj->pos == initpos) {
     if (!new_inl)
-      new_inl = try_extensions(parser, parent, c, subj);
+      new_inl = try_extensions(parser, parent, c, subj, false);
 
     if (!new_inl) {
       endpos = subject_find_special_char(parser, subj, options);
@@ -1698,6 +1730,7 @@ static int parse_inline(cmark_parser *parser, subject *subj, cmark_node *parent,
   }
 
   if (new_inl != NULL) {
+    S_update_link_context(subj, new_inl);
     append_child(parent, new_inl);
   }
 
