@@ -23,6 +23,19 @@ final class MarkdownInlineSourceCoordinates {
       return offset < expandedTabPrefix ? tab : delta + offset
     }
 
+    func snapshot() -> MarkdownTextSourceCoordinates.Row {
+      if let cell {
+        var count: Int32 = 0
+        var trim: Int32 = 0
+        let events = cmark_gfm_extensions_get_table_cell_source_escapes(cell, &count, &trim)
+        return .init(
+          delta: delta, expandedTabPrefix: expandedTabPrefix, tab: tab,
+          escapes: Array(UnsafeBufferPointer(start: events, count: Int(count))),
+          trim: Int(trim), cellOffset: cellOffset)
+      }
+      return .init(delta: delta, expandedTabPrefix: expandedTabPrefix, tab: tab)
+    }
+
     func translated(by offset: Int) -> Self {
       Self(
         delta: cell == nil ? delta + offset : delta,
@@ -55,6 +68,7 @@ final class MarkdownInlineSourceCoordinates {
   // Native buffers are borrowed only within these balanced parse callbacks.
   private var contexts: [Context] = []
   private var parsedContexts = Set<UInt>()
+  let textSources = MarkdownTextSourceCoordinates()
 
   init(source: MarkdownSourceMetadata) { self.source = source }
 
@@ -73,6 +87,7 @@ final class MarkdownInlineSourceCoordinates {
         parsedContexts.insert(context.identity)
       }
     }
+    recordTextSources(parent, context: context)
     guard context.changesPositions else { return }
     var current = parent.pointee.first_child
     while let node = current {
@@ -98,6 +113,120 @@ final class MarkdownInlineSourceCoordinates {
         { cursor = ancestor }
         current = cursor.pointee.next
       }
+    }
+  }
+
+  private func recordTextSources(_ parent: UnsafeMutablePointer<cmark_node>, context: Context) {
+    guard let input = context.input.baseAddress,
+      memchr(input, 64, context.input.count) != nil || memchr(input, 38, context.input.count) != nil
+    else { return }
+    var snapshots: [Int: MarkdownTextSourceCoordinates.Row] = [:]
+    func piece(_ node: UnsafeMutablePointer<cmark_node>, range: Range<Int>)
+      -> MarkdownTextSourceCoordinates.Piece?
+    {
+      let literal = node.pointee.as.literal
+      let row = Int(node.pointee.start_line) - context.line
+      let offset = Int(node.pointee.start_column) - context.base - 1
+      if let data = literal.data, row >= 0, row < context.lines.count, offset >= 0,
+        offset <= context.lines[row].count, range.count <= context.lines[row].count - offset,
+        let mapping = context.rows[row],
+        UInt(bitPattern: data)
+          == UInt(bitPattern: input.advanced(by: context.lines[row].lowerBound + offset))
+      {
+        let snapshot = snapshots[row] ?? mapping.snapshot()
+        snapshots[row] = snapshot
+        return .init(
+          range: range, mapping: .bytes(line: context.line + row, offset: offset, row: snapshot))
+      }
+      // Decoded entities, escapes and smart punctuation are native lexemes.
+      // Their decoded bytes share the complete recognized source boundaries.
+      guard
+        let start = context.physical(
+          line: Int(node.pointee.start_line), column: Int(node.pointee.start_column)),
+        let end = context.physical(
+          line: Int(node.pointee.end_line), column: Int(node.pointee.end_column), end: true)
+      else { return nil }
+      return .init(
+        range: range,
+        mapping: .atom(
+          .init(
+            start: .init(line: Int(node.pointee.start_line), column: start),
+            end: .init(line: Int(node.pointee.end_line), column: end))))
+    }
+    var current = parent.pointee.first_child
+    while let node = current {
+      if Task.isCancelled { return }
+      var last = node
+      if node.pointee.type == CMARK_NODE_TEXT.rawValue {
+        var group: [UnsafeMutablePointer<cmark_node>] = []
+        var cursor: UnsafeMutablePointer<cmark_node>? = node
+        var hasAt = false
+        var length = 0
+        while let text = cursor, text.pointee.type == CMARK_NODE_TEXT.rawValue {
+          let literal = text.pointee.as.literal
+          if literal.len > 0, let data = literal.data,
+            memchr(data, 64, Int(literal.len)) != nil
+          {
+            hasAt = true
+          }
+          length += Int(literal.len)
+          group.append(text)
+          cursor = text.pointee.next
+        }
+        if hasAt {
+          var bytes: [UInt8] = []
+          bytes.reserveCapacity(length)
+          var pieces: [MarkdownTextSourceCoordinates.Piece] = []
+          var valid = true
+          for text in group {
+            let literal = text.pointee.as.literal
+            guard literal.len > 0 else { continue }
+            guard let data = literal.data,
+              let mapping = piece(text, range: bytes.count..<(bytes.count + Int(literal.len)))
+            else {
+              valid = false
+              break
+            }
+            pieces.append(mapping)
+            bytes.append(contentsOf: UnsafeBufferPointer(start: data, count: Int(literal.len)))
+          }
+          if valid, let ending = group.last {
+            // Consolidation keeps the first node and copies the last end column.
+            // Capture its resulting bounds as well as bytes: an address can be
+            // reused after native footnote cleanup discards another text group.
+            let origin = MarkdownTextSourceCoordinates.Origin(
+              startLine: node.pointee.start_line,
+              startColumn: Int32(
+                context.physical(
+                  line: Int(node.pointee.start_line),
+                  column: Int(node.pointee.start_column)) ?? Int(node.pointee.start_column)),
+              endLine: node.pointee.end_line,
+              endColumn: Int32(
+                context.physical(
+                  line: Int(ending.pointee.end_line),
+                  column: Int(ending.pointee.end_column), end: true)
+                  ?? Int(ending.pointee.end_column)))
+            textSources.remember(.init(origin: origin, bytes: bytes, pieces: pieces), for: node)
+          }
+        }
+        // A native consolidation retains the group's first node. No donor
+        // pointer is stored; only owned bytes and immutable source maps remain.
+        if let next = cursor {
+          current = next
+          continue
+        }
+        last = group.last ?? node
+      } else if node.pointee.type != CMARK_NODE_LINK.rawValue,
+        !parsedContexts.contains(UInt(bitPattern: node)), let child = node.pointee.first_child
+      {
+        current = child
+        continue
+      }
+      var cursor = last
+      while cursor.pointee.next == nil, let ancestor = cursor.pointee.parent, ancestor != parent {
+        cursor = ancestor
+      }
+      current = cursor.pointee.next
     }
   }
 

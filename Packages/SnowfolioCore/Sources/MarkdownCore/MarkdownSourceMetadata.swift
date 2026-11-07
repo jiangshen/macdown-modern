@@ -43,6 +43,13 @@ final class MarkdownSourceMetadata {
       Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
         .inlineCoordinates.split(node, prefix: prefix, consumed: Int(consumed))
     }
+    cmark_syntax_extension_set_text_source_func(native) { extensionPointer, event in
+      guard let extensionPointer, let event,
+        let pointer = cmark_syntax_extension_get_private(extensionPointer)
+      else { return }
+      Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
+        .inlineCoordinates.textSources.observe(event.pointee)
+    }
     if collectDefinitions {
       cmark_syntax_extension_set_block_source_func(native) { extensionPointer, node in
         guard let extensionPointer, let node,
@@ -62,6 +69,8 @@ final class MarkdownSourceMetadata {
   }
 
   deinit { cmark_syntax_extension_free(cmark_get_default_mem_allocator(), native) }
+
+  func finishParsing() { inlineCoordinates.textSources.finish() }
 
   private func observe(_ node: UnsafeMutablePointer<cmark_node>) {
     guard cmark_node_get_type(node) == CMARK_NODE_FOOTNOTE_DEFINITION else { return }

@@ -1,7 +1,7 @@
 {
   "milestone": "Next source-coordinate gate: native GFM automatic link ranges",
   "date": "2026-11-07",
-  "status": "reproduced; not fixed",
+  "status": "historical failures; non-NUL automatic-link corrections verified locally in automatic-link-source.json; hosted gate pending",
   "fullGoal": "active; incomplete",
   "code": "dda9e7b76cb9390a9e8ae1509e522f340543d175",
   "scope": "Isolated autolink coordinate diagnostic of exact committed parser/core; no production source mutation",
@@ -240,5 +240,7 @@
     "Preserve native-recognized email source provenance through text consolidation/decoding without a second Markdown grammar",
     "Cover children, repeated links, entities/escapes, Unicode, multiline/nested scopes, references, footnotes and table escaping",
     "Coordinate this work with the independently reproduced NUL replacement projection gate; do not infer complete source acceptance from the passing package suite"
-  ]
+  ],
+  "followup": "automatic-link-source.json",
+  "diagnosticTokenNote": "The original probe collected .link token ranges. Automatic links use .automaticURL/.automaticEmail; the new regression suite asserts those proper tokens. The independently measured AST source-range failures remain valid."
 }

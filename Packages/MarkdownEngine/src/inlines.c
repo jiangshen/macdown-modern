@@ -2040,17 +2040,22 @@ int cmark_inline_parser_in_bracket(cmark_inline_parser *parser, int type) {
 }
 
 void cmark_node_unput(cmark_node *node, int n) {
-	node = node->last_child;
-	while (n > 0 && node && node->type == CMARK_NODE_TEXT) {
-		if (node->as.literal.len < n) {
-			n -= node->as.literal.len;
-			node->as.literal.len = 0;
-		} else {
-			node->as.literal.len -= n;
-			n = 0;
-		}
-		node = node->prev;
-	}
+  node = node->last_child;
+  while (n > 0 && node && node->type == CMARK_NODE_TEXT) {
+    const bufsize_t old_length = node->as.literal.len;
+    const bufsize_t removed = old_length < n ? old_length : n;
+    node->as.literal.len -= removed;
+    n -= removed;
+    if (node->as.literal.len == 0) {
+      node->start_line = node->end_line = 0;
+      node->start_column = node->end_column = 0;
+    } else if (node->start_line == node->end_line &&
+               node->end_column - node->start_column + 1 == old_length) {
+      // Keep source bounds aligned with a native byte-aligned text suffix.
+      node->end_column -= removed;
+    }
+    node = node->prev;
+  }
 }
 
 delimiter *cmark_inline_parser_get_last_delimiter(cmark_inline_parser *parser) {

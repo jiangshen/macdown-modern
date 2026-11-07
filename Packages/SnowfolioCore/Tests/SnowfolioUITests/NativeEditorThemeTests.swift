@@ -314,4 +314,61 @@ struct NativeEditorThemeTests {
     }
   }
 
+  @Test(
+    "Native automatic URL and email fonts decorate exact source spans without touching neighboring text"
+  )
+  func automaticLinkSourceFonts() async throws {
+    let theme = try EditorTheme.parse(
+      "AUTO_LINK_URL\nfont-size: 24px\n\nAUTO_LINK_EMAIL\nfont-size: 20px\n")
+    let font = NSFont.monospacedSystemFont(ofSize: 14, weight: .regular)
+    for (source, email) in [
+      ("- first\n\thttps://example.com tail user&#64;example.org after", "user&#64;example.org"),
+      (
+        "| Header | Other |\n|---|---|\n| a\\|b https://example.com tail user\\_name@example.org after | Value |",
+        "user\\_name@example.org"
+      ),
+      ("> before _https://example.com tail user&#64;example.org after_", "user&#64;example.org"),
+    ] {
+      var options = MarkdownRenderingOptions()
+      options.underline = true
+      let parsed = try await MarkdownProcessor().render(
+        source, options: options, includeSyntax: true)
+      let document = MarkdownDocument(contents: TextFileContents(text: source))
+      let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+      let undo = UndoManager()
+      undo.groupsByEvent = false
+      coordinator.undoManager = undo
+      let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
+      let editor = try #require(scroll.documentView as? MarkdownTextView)
+      let window = NSWindow(
+        contentRect: NSRect(x: 0, y: 0, width: 900, height: 300),
+        styleMask: .titled, backing: .buffered, defer: false)
+      window.isReleasedWhenClosed = false
+      window.animationBehavior = .none
+      window.contentView = scroll
+      window.orderFront(nil)
+      defer { window.close() }
+      editor.font = font
+      let selection = (source as NSString).range(of: "tail")
+      editor.setSelectedRange(selection)
+      coordinator.highlighter.update(
+        syntax: parsed.syntax, revision: 0, enabled: true,
+        font: font, document: document, theme: theme)
+      for (marker, size) in [
+        ("https://example.com", CGFloat(24)), (email, CGFloat(20)), ("tail", CGFloat(14)),
+        ("after", CGFloat(14)),
+      ] {
+        let range = (source as NSString).range(of: marker)
+        for offset in range.location..<NSMaxRange(range) {
+          let attributes = try laidOut(offset, in: editor).0
+          #expect(
+            (attributes[.font] as? NSFont)?.pointSize == size,
+            "\(source.debugDescription): \(marker)")
+        }
+      }
+      #expect(editor.string.utf8.elementsEqual(source.utf8) && document.revision == 0)
+      #expect(editor.selectedRange() == selection && !undo.canUndo)
+    }
+  }
+
 }

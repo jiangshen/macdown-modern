@@ -33,6 +33,7 @@ struct cmark_syntax_extension {
   cmark_block_source_func         block_source_func;
   cmark_inline_source_func        inline_source_func;
   cmark_block_split_func          block_split_func;
+  cmark_text_source_func          text_source_func;
   cmark_opaque_alloc_func         opaque_alloc_func;
   cmark_opaque_free_func          opaque_free_func;
   cmark_commonmark_escape_func    commonmark_escape_func;

@@ -74,6 +74,11 @@
       "before": "\n      adjust_subj_node_newlines(subj, node, matchlen, 1, options);",
       "after": "\n      adjust_subj_node_newlines(subj, node, matchlen + 1, 0, options);",
       "reason": "Include the complete native HTML lexeme in multiline end positions; keep the following subject offset unchanged"
+    },
+    {
+      "before": "void cmark_node_unput(cmark_node *node, int n) {\n\tnode = node->last_child;\n\twhile (n > 0 && node && node->type == CMARK_NODE_TEXT) {\n\t\tif (node->as.literal.len < n) {\n\t\t\tn -= node->as.literal.len;\n\t\t\tnode->as.literal.len = 0;\n\t\t} else {\n\t\t\tnode->as.literal.len -= n;\n\t\t\tn = 0;\n\t\t}\n\t\tnode = node->prev;\n\t}\n}\n",
+      "after": "void cmark_node_unput(cmark_node *node, int n) {\n  node = node->last_child;\n  while (n > 0 && node && node->type == CMARK_NODE_TEXT) {\n    const bufsize_t old_length = node->as.literal.len;\n    const bufsize_t removed = old_length < n ? old_length : n;\n    node->as.literal.len -= removed;\n    n -= removed;\n    if (node->as.literal.len == 0) {\n      node->start_line = node->end_line = 0;\n      node->start_column = node->end_column = 0;\n    } else if (node->start_line == node->end_line &&\n               node->end_column - node->start_column + 1 == old_length) {\n      // Keep source bounds aligned with a native byte-aligned text suffix.\n      node->end_column -= removed;\n    }\n    node = node->prev;\n  }\n}\n",
+      "reason": "Keep remaining and empty text source spans consistent when a recognized URL rewinds its scheme bytes"
     }
   ],
   "src/include/cmark-gfm.h": [
@@ -135,6 +140,11 @@
       "before": "  cmark_inline_source_func        inline_source_func;",
       "after": "  cmark_inline_source_func        inline_source_func;\n  cmark_block_split_func          block_split_func;",
       "reason": "Store an optional source-only native block-partition observer"
+    },
+    {
+      "before": "  cmark_block_split_func          block_split_func;",
+      "after": "  cmark_block_split_func          block_split_func;\n  cmark_text_source_func          text_source_func;",
+      "reason": "Store optional decoded-literal source observation"
     }
   ],
   "src/syntax_extension.c": [
@@ -162,6 +172,11 @@
       "before": "void cmark_syntax_extension_set_postprocess_func",
       "after": "void cmark_syntax_extension_set_block_split_func(cmark_syntax_extension *extension,\n                                                 cmark_block_split_func func) {\n  extension->block_split_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
       "reason": "Configure optional source-only block-split observation"
+    },
+    {
+      "before": "void cmark_syntax_extension_set_postprocess_func",
+      "after": "void cmark_syntax_extension_set_text_source_func(cmark_syntax_extension *extension,\n                                                 cmark_text_source_func func) {\n  extension->text_source_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Set the optional source-only native text observer"
     }
   ],
   "src/include/cmark-gfm-extension_api.h": [
@@ -209,6 +224,16 @@
       "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
       "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_block_split_func(cmark_syntax_extension *extension,\n                                                 cmark_block_split_func func);\n\n/** Local native helper (not upstream): resolve leading reference definitions in\n * an already bounded paragraph through the parser's ordinary grammar and source\n * callbacks. Returns whether nonblank content remains; caller retains ownership.\n */\nCMARK_GFM_EXPORT\nbool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node *node);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
       "reason": "Expose the native paragraph resolver and a source-only block-split observer"
+    },
+    {
+      "before": "typedef cmark_node *(*cmark_postprocess_func)",
+      "after": "/** Local source-only bridge (not upstream) for recognized partitions of a\n * decoded text literal. BEGIN/END bracket one immutable borrowed buffer; no\n * pointer may escape that lifetime. PARTITION offsets address the original\n * buffer: prefix is [start, lower), middle/middle_text [lower, upper), and\n * suffix [upper, length). Origin remains alive throughout. Observers may only\n * reconcile source fields; content, grammar and ownership must stay intact.\n */\ntypedef enum {\n  CMARK_TEXT_SOURCE_BEGIN = 0,\n  CMARK_TEXT_SOURCE_PARTITION = 1,\n  CMARK_TEXT_SOURCE_END = 2\n} cmark_text_source_phase;\n\ntypedef struct {\n  cmark_text_source_phase phase;\n  cmark_node *origin, *prefix, *middle, *middle_text, *suffix;\n  const unsigned char *literal;\n  int32_t length, start, lower, upper;\n} cmark_text_source_event;\n\ntypedef void (*cmark_text_source_func) (cmark_syntax_extension *extension,\n                                        const cmark_text_source_event *event);\n\ntypedef cmark_node *(*cmark_postprocess_func)",
+      "reason": "Expose balanced source metadata for native recognized decoded-literal partitions without duplicating grammar"
+    },
+    {
+      "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_text_source_func(cmark_syntax_extension *extension,\n                                                 cmark_text_source_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Configure the optional native text-partition source observer"
     }
   ],
   "src/html.c": [
@@ -404,6 +429,53 @@
       "before": "CMARK_GFM_EXPORT\nint32_t cmark_gfm_extensions_get_table_cell_source_offset(cmark_node *node, int32_t offset, bool end);",
       "after": "CMARK_GFM_EXPORT\nint32_t cmark_gfm_extensions_get_table_cell_source_offset(cmark_node *node, int32_t offset, bool end);\n\n/** Local metadata API (not upstream). Borrow ascending pre-trim normalized\n * offsets where native pipe escaping removed a source byte. The owning node\n * retains storage; never free/mutate it or retain it past that node's lifetime.\n * count and trim receive the event count and native leading-trim byte count.\n */\nCMARK_GFM_EXPORT\nconst int32_t *cmark_gfm_extensions_get_table_cell_source_escapes(cmark_node *node, int32_t *count, int32_t *trim);",
       "reason": "Document native sparse normalization provenance and borrowed storage lifetime"
+    }
+  ],
+  "extensions/autolink.c": [
+    {
+      "before": "  node->start_line = text->start_line =\n    node->end_line = text->end_line =\n    cmark_inline_parser_get_line(inline_parser);\n\n  node->start_column = text->start_column = start - 1;",
+      "after": "  node->start_line = text->start_line =\n    node->end_line = text->end_line =\n    cmark_inline_parser_get_line(inline_parser);\n\n  node->start_column = text->start_column = start;",
+      "reason": "Use the already one-based native column for recognized www links"
+    },
+    {
+      "before": "  cmark_inline_parser_set_offset(inline_parser, (int)(max_rewind + link_end));\n  cmark_node_unput(parent, rewind);",
+      "after": "  const int start = cmark_inline_parser_get_column(inline_parser) - rewind;\n  cmark_inline_parser_set_offset(inline_parser, (int)(max_rewind + link_end));\n  cmark_node_unput(parent, rewind);",
+      "reason": "Record the recognized URL start in its actual line/context coordinate system before advancing"
+    },
+    {
+      "before": "  node->start_line = text->start_line = node->end_line = text->end_line = cmark_inline_parser_get_line(inline_parser);\n\n  node->start_column = text->start_column = max_rewind - rewind;",
+      "after": "  node->start_line = text->start_line = node->end_line = text->end_line = cmark_inline_parser_get_line(inline_parser);\n\n  node->start_column = text->start_column = start;",
+      "reason": "URL source starts are columns, not offsets into a potentially multiline buffer"
+    },
+    {
+      "before": "#include <parser.h>",
+      "after": "#include <parser.h>\n#include <syntax_extension.h>",
+      "reason": "Access optional source metadata observers during native email partitioning"
+    },
+    {
+      "before": "static void postprocess_text(cmark_parser *parser, cmark_node *text) {",
+      "after": "static void observe_text_source(cmark_parser *parser, const cmark_text_source_event *event) {\n  for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {\n    cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;\n    if (extension->text_source_func)\n      extension->text_source_func(extension, event);\n  }\n}\n\nstatic void postprocess_text(cmark_parser *parser, cmark_node *text) {",
+      "reason": "Notify optional source observers only about actual native text operations"
+    },
+    {
+      "before": "  cmark_chunk detached_chunk = text->as.literal;",
+      "after": "  cmark_chunk detached_chunk = text->as.literal;\n  bool source_started = false;\n  cmark_text_source_event source = {0};\n  source.origin = text;\n  source.literal = detached_chunk.data;\n  source.length = detached_chunk.len;",
+      "reason": "Keep source metadata scoped to the existing immutable detached native buffer"
+    },
+    {
+      "before": "    cmark_node *link_node = cmark_node_new_with_mem(CMARK_NODE_LINK, parser->mem);",
+      "after": "    if (!source_started && (parser->options & CMARK_OPT_SOURCEPOS)) {\n      source.phase = CMARK_TEXT_SOURCE_BEGIN;\n      observe_text_source(parser, &source);\n      source_started = true;\n    }\n\n    cmark_node *link_node = cmark_node_new_with_mem(CMARK_NODE_LINK, parser->mem);",
+      "reason": "Begin source observation only after native grammar has actually recognized an email link"
+    },
+    {
+      "before": "    cmark_node_insert_after(link_node, post);\n\n    text->as.literal",
+      "after": "    cmark_node_insert_after(link_node, post);\n\n    if (source_started) {\n      source.phase = CMARK_TEXT_SOURCE_PARTITION;\n      source.prefix = text;\n      source.middle = link_node;\n      source.middle_text = link_text;\n      source.suffix = post;\n      source.start = (int32_t)start;\n      source.lower = (int32_t)(start + offset + max_rewind - rewind);\n      source.upper = (int32_t)(start + offset + max_rewind + link_end);\n      observe_text_source(parser, &source);\n    }\n\n    text->as.literal",
+      "reason": "Expose recognized prefix/link/suffix byte boundaries before mutating the current text literal"
+    },
+    {
+      "before": "  // Free the detached buffer.\n  cmark_chunk_free(parser->mem, &detached_chunk);",
+      "after": "  if (source_started) {\n    source.phase = CMARK_TEXT_SOURCE_END;\n    observe_text_source(parser, &source);\n  }\n\n  // Free the detached buffer.\n  cmark_chunk_free(parser->mem, &detached_chunk);",
+      "reason": "End source observation before freeing the borrowed native buffer"
     }
   ]
 }

@@ -1,0 +1,631 @@
+{
+  "milestone": "Automatic URL/www/email physical source ranges and decoded-text provenance",
+  "date": "2026-11-07",
+  "fullGoal": "active; incomplete",
+  "reproduced": [
+    "Recognized www links include their preceding byte",
+    "URL starts use a buffer offset rather than a one-based contextual line column",
+    "Native email postprocessing creates source-less link/text/suffix nodes after consolidation",
+    "URL rewinding leaves oversized source spans on preceding text and source fields on empty text"
+  ],
+  "implementation": [
+    "Native URL/www starts now use the correct contextual column before the parser advances; remaining and empty rewound text bounds stay consistent",
+    "Native recognized text partitions expose balanced BEGIN/PARTITION/END source events over one immutable borrowed decoded buffer; no grammar or ownership changes",
+    "Swift records candidate consecutive native TEXT groups before consolidation, using their retained first node identity, source bounds and complete decoded bytes",
+    "Plain byte fragments retain copied row metadata; decoded entities/escapes/smart punctuation retain their native lexeme boundaries; table escape arrays are copied only when needed",
+    "No native buffer or cell pointer escapes into owned text provenance; canonical source bounds and decoded bytes are verified at BEGIN",
+    "One full-buffer identity check precedes recognized offset partitions, avoiding repeated suffix scans; ending the operation and finishing parsing release active/pending maps",
+    "Both native link and label children receive exact physical ranges; empty prefix/suffix text has no source range",
+    "First-party integration remains Swift, document bytes remain unchanged, and every native patch reverses to recorded upstream hashes"
+  ],
+  "validation": {
+    "packageTests": 277,
+    "packageSuites": 54,
+    "addressSanitizerTests": 38,
+    "addressSanitizerSuites": 5,
+    "addressSanitizerDiagnostics": 0,
+    "nativeBuildForTesting": "passed; arm64-only executable verified",
+    "arm64TestExecutables": 8,
+    "diagnostics": "complete package/sanitizer/native captures; zero compiler warnings/errors",
+    "commonMark": {
+      "spec": "CommonMark 0.31.2",
+      "source": "https://spec.commonmark.org/0.31.2/spec.json",
+      "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+      "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+      "total": 652,
+      "passed": 652,
+      "failed": 0,
+      "failures": []
+    },
+    "changedSwiftStrictFormatting": "passed",
+    "firstPartyDiffCheck": "passed",
+    "nativeParserProvenance": "all replacements reverse exactly to original source hashes; distribution notices verified",
+    "editorThemes": "15 original assets and app-bundled notice verified"
+  },
+  "tests": [
+    "90 URL/www variants across LF/CRLF/CR, Unicode paths, entities/escapes, lazy/nested containers, partial tabs, headings, recursive quotation and escaped cells",
+    "108 email variants plus repeated-address checks across line endings, native entities and escaped underscores, containers, underline contexts and table pipe escaping",
+    "Native mailto/xmpp rules, preserved uppercase protocol-prefix behavior, multi-character entities, smart punctuation, footnotes and explicit-link label boundaries",
+    "Preceding and empty text ranges after URL rewind; discarded footnotes and a remaining identical email",
+    "2048 recognized email partitions after 8192 escaped pipes retain first/last source ranges and following strong syntax",
+    "Actual native TextKit font assertions cover complete URL/email source spans, including encoded/escaped source bytes; neighboring fonts, source, selection, revision and undo remain unchanged",
+    "Syntax-enabled/plain models agree; proper automaticURL/automaticEmail token ranges are asserted"
+  ],
+  "performance": {
+    "baselineCommit": "f86d87f",
+    "method": "Exact previous core/parser archive versus final release arm64 worktree, identical updated audit harness. Three fresh processes per version/workload/size, first render plus five warm full rerenders each. Alternating version order; sequential with no builds or Instruments overlapping. Median of process warm medians, not UI latency or p95.",
+    "raw": "/private/tmp/snowfolio-autolink-performance.json",
+    "rawSHA256": "f2144a6cc79236e34d389fd678e6ec0699b95b81b5483ce4a1e4daa3a417da48",
+    "harnessSHA256": "658eb58f30c25a17893f170b511be10572c6063804faa005a54cf8820ab0a086",
+    "processSamples": 54,
+    "cases": [
+      {
+        "workload": "prose",
+        "bytes": 100000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            1.794708,
+            1.698167,
+            1.775
+          ],
+          "medianWarmMilliseconds": 1.775,
+          "firstRenderMilliseconds": [
+            2.595,
+            2.119166,
+            2.099167
+          ],
+          "processPeakResidentBytes": [
+            12337152,
+            12369920,
+            12369920
+          ],
+          "nodes": [
+            2227,
+            2227,
+            2227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            1.793333,
+            1.711666,
+            1.779125
+          ],
+          "medianWarmMilliseconds": 1.779125,
+          "firstRenderMilliseconds": [
+            2.262209,
+            1.977083,
+            2.08175
+          ],
+          "processPeakResidentBytes": [
+            12124160,
+            12353536,
+            12369920
+          ],
+          "nodes": [
+            2227,
+            2227,
+            2227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "workload": "prose",
+        "bytes": 1000000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            18.126333,
+            16.860666,
+            16.838375
+          ],
+          "medianWarmMilliseconds": 16.860666,
+          "firstRenderMilliseconds": [
+            20.6905,
+            18.560459,
+            19.045833
+          ],
+          "processPeakResidentBytes": [
+            38240256,
+            39911424,
+            39911424
+          ],
+          "nodes": [
+            22227,
+            22227,
+            22227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            17.512208,
+            16.81425,
+            17.24
+          ],
+          "medianWarmMilliseconds": 17.24,
+          "firstRenderMilliseconds": [
+            19.053916,
+            18.832459,
+            19.436084
+          ],
+          "processPeakResidentBytes": [
+            39911424,
+            39911424,
+            39911424
+          ],
+          "nodes": [
+            22227,
+            22227,
+            22227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "workload": "prose",
+        "bytes": 10000000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            190.52125,
+            188.151416,
+            187.87825
+          ],
+          "medianWarmMilliseconds": 188.151416,
+          "firstRenderMilliseconds": [
+            211.297167,
+            213.027167,
+            213.657917
+          ],
+          "processPeakResidentBytes": [
+            337477632,
+            337297408,
+            337494016
+          ],
+          "nodes": [
+            222227,
+            222227,
+            222227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            185.734167,
+            181.898333,
+            184.33225
+          ],
+          "medianWarmMilliseconds": 184.33225,
+          "firstRenderMilliseconds": [
+            209.575459,
+            210.909292,
+            206.102542
+          ],
+          "processPeakResidentBytes": [
+            333971456,
+            333971456,
+            337477632
+          ],
+          "nodes": [
+            222227,
+            222227,
+            222227
+          ],
+          "syntaxRuns": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "workload": "mixed",
+        "bytes": 100000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            9.183292,
+            9.049583,
+            9.35125
+          ],
+          "medianWarmMilliseconds": 9.183292,
+          "firstRenderMilliseconds": [
+            304.654958,
+            303.663042,
+            305.983833
+          ],
+          "processPeakResidentBytes": [
+            51740672,
+            51609600,
+            51560448
+          ],
+          "nodes": [
+            12446,
+            12446,
+            12446
+          ],
+          "syntaxRuns": [
+            3190,
+            3190,
+            3190
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            9.094584,
+            9.07025,
+            9.148709
+          ],
+          "medianWarmMilliseconds": 9.094584,
+          "firstRenderMilliseconds": [
+            309.121292,
+            305.515917,
+            307.080667
+          ],
+          "processPeakResidentBytes": [
+            51494912,
+            51544064,
+            51478528
+          ],
+          "nodes": [
+            12446,
+            12446,
+            12446
+          ],
+          "syntaxRuns": [
+            3190,
+            3190,
+            3190
+          ]
+        }
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            95.234458,
+            97.4075,
+            96.572667
+          ],
+          "medianWarmMilliseconds": 96.572667,
+          "firstRenderMilliseconds": [
+            396.640875,
+            396.094458,
+            395.949584
+          ],
+          "processPeakResidentBytes": [
+            160219136,
+            160497664,
+            160333824
+          ],
+          "nodes": [
+            124571,
+            124571,
+            124571
+          ],
+          "syntaxRuns": [
+            31940,
+            31940,
+            31940
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            95.86025,
+            96.576375,
+            95.256666
+          ],
+          "medianWarmMilliseconds": 95.86025,
+          "firstRenderMilliseconds": [
+            397.052708,
+            396.062958,
+            398.867459
+          ],
+          "processPeakResidentBytes": [
+            160546816,
+            160055296,
+            160235520
+          ],
+          "nodes": [
+            124571,
+            124571,
+            124571
+          ],
+          "syntaxRuns": [
+            31940,
+            31940,
+            31940
+          ]
+        }
+      },
+      {
+        "workload": "mixed",
+        "bytes": 10000000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            986.911125,
+            1005.449208,
+            996.307416
+          ],
+          "medianWarmMilliseconds": 996.307416,
+          "firstRenderMilliseconds": [
+            1360.734792,
+            1383.7165,
+            1350.952958
+          ],
+          "processPeakResidentBytes": [
+            1154465792,
+            1158135808,
+            1158152192
+          ],
+          "nodes": [
+            1245977,
+            1245977,
+            1245977
+          ],
+          "syntaxRuns": [
+            319480,
+            319480,
+            319480
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            1004.709125,
+            989.237708,
+            1017.205
+          ],
+          "medianWarmMilliseconds": 1004.709125,
+          "firstRenderMilliseconds": [
+            1378.383667,
+            1371.6087499999999,
+            1366.029209
+          ],
+          "processPeakResidentBytes": [
+            1157988352,
+            1157890048,
+            1154383872
+          ],
+          "nodes": [
+            1245977,
+            1245977,
+            1245977
+          ],
+          "syntaxRuns": [
+            319480,
+            319480,
+            319480
+          ]
+        }
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 100000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            5.617834,
+            5.602375,
+            5.579417
+          ],
+          "medianWarmMilliseconds": 5.602375,
+          "firstRenderMilliseconds": [
+            6.415042,
+            6.152083,
+            5.938042
+          ],
+          "processPeakResidentBytes": [
+            17694720,
+            17842176,
+            17825792
+          ],
+          "nodes": [
+            10261,
+            10261,
+            10261
+          ],
+          "syntaxRuns": [
+            3846,
+            3846,
+            3846
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            7.365041,
+            7.231708,
+            7.321042
+          ],
+          "medianWarmMilliseconds": 7.321042,
+          "firstRenderMilliseconds": [
+            7.970166,
+            8.101291,
+            7.740875
+          ],
+          "processPeakResidentBytes": [
+            22200320,
+            22200320,
+            22495232
+          ],
+          "nodes": [
+            10261,
+            10261,
+            10261
+          ],
+          "syntaxRuns": [
+            6410,
+            6410,
+            6410
+          ]
+        }
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 1000000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            60.552709,
+            62.166834,
+            60.284334
+          ],
+          "medianWarmMilliseconds": 60.552709,
+          "firstRenderMilliseconds": [
+            65.462459,
+            65.205666,
+            65.1455
+          ],
+          "processPeakResidentBytes": [
+            105480192,
+            104890368,
+            105381888
+          ],
+          "nodes": [
+            102565,
+            102565,
+            102565
+          ],
+          "syntaxRuns": [
+            38460,
+            38460,
+            38460
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            79.093417,
+            79.118167,
+            79.085584
+          ],
+          "medianWarmMilliseconds": 79.093417,
+          "firstRenderMilliseconds": [
+            84.835833,
+            86.775292,
+            84.954625
+          ],
+          "processPeakResidentBytes": [
+            117440512,
+            116981760,
+            118276096
+          ],
+          "nodes": [
+            102565,
+            102565,
+            102565
+          ],
+          "syntaxRuns": [
+            64100,
+            64100,
+            64100
+          ]
+        }
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 10000000,
+        "before": {
+          "processWarmMedianMilliseconds": [
+            652.940417,
+            648.031541,
+            650.455625
+          ],
+          "medianWarmMilliseconds": 650.455625,
+          "firstRenderMilliseconds": [
+            698.771459,
+            704.016708,
+            708.614167
+          ],
+          "processPeakResidentBytes": [
+            981139456,
+            968785920,
+            976961536
+          ],
+          "nodes": [
+            1025645,
+            1025645,
+            1025645
+          ],
+          "syntaxRuns": [
+            384615,
+            384615,
+            384615
+          ]
+        },
+        "after": {
+          "processWarmMedianMilliseconds": [
+            865.691167,
+            887.022708,
+            879.548958
+          ],
+          "medianWarmMilliseconds": 879.548958,
+          "firstRenderMilliseconds": [
+            921.6225,
+            921.031,
+            919.546625
+          ],
+          "processPeakResidentBytes": [
+            1122418688,
+            1134706688,
+            1143144448
+          ],
+          "nodes": [
+            1025645,
+            1025645,
+            1025645
+          ],
+          "syntaxRuns": [
+            641025,
+            641025,
+            641025
+          ]
+        }
+      }
+    ],
+    "environment": {
+      "architecture": "arm64",
+      "os": "Version 27.2 (Build 26B123)",
+      "swift": "Apple Swift 6.4.2",
+      "host": "same Mac"
+    },
+    "interpretation": "Ordinary workloads are close in these samples. Link-heavy corrected rendering includes email source ranges/styles that were missing before; it adds parsing and syntax construction cost. Peak RSS is a process high water mark, not a leak or growth measurement. Ten MB renders exceed the automatic-preview guard. No typing, publication, p95, energy or full M6 acceptance is inferred."
+  },
+  "evidence": {
+    "before": "/private/tmp/snowfolio-autolinks-before.json",
+    "firstAfter": "/private/tmp/snowfolio-autolinks-after.json",
+    "surroundingTextBefore": "/private/tmp/snowfolio-autolinks-fragments.json",
+    "finalTargeted": "/private/tmp/snowfolio-autolink-origin-targeted.json",
+    "fullPackage": "/private/tmp/snowfolio-autolink-final-full.json",
+    "sanitizer": "/private/tmp/snowfolio-autolink-final-asan.json",
+    "nativeBuild": "/private/tmp/snowfolio-autolink-final-native.json",
+    "commonMark": "/private/tmp/snowfolio-autolink-commonmark-final/commonmark.json"
+  },
+  "remaining": [
+    "Native NUL replacement source projection remains reproduced and unimplemented; see null-source-characterization.json",
+    "Direct native desktop remains locked; existing running process predates rebuild and user documents/Open panel are preserved",
+    "Real IME, VoiceOver and final selection/resize/scroll acceptance",
+    "Full native app latency, publication, memory-growth and energy acceptance",
+    "Custom CSS/templates, remaining parity, integration/releases and safe coupled legacy retirement"
+  ],
+  "hosted": {
+    "status": "pending code push and exact artifact verification"
+  }
+}

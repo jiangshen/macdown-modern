@@ -290,6 +290,29 @@ typedef void (*cmark_block_split_func) (cmark_syntax_extension *extension,
                                        cmark_node *node, cmark_node *prefix,
                                        int32_t consumed);
 
+/** Local source-only bridge (not upstream) for recognized partitions of a
+ * decoded text literal. BEGIN/END bracket one immutable borrowed buffer; no
+ * pointer may escape that lifetime. PARTITION offsets address the original
+ * buffer: prefix is [start, lower), middle/middle_text [lower, upper), and
+ * suffix [upper, length). Origin remains alive throughout. Observers may only
+ * reconcile source fields; content, grammar and ownership must stay intact.
+ */
+typedef enum {
+  CMARK_TEXT_SOURCE_BEGIN = 0,
+  CMARK_TEXT_SOURCE_PARTITION = 1,
+  CMARK_TEXT_SOURCE_END = 2
+} cmark_text_source_phase;
+
+typedef struct {
+  cmark_text_source_phase phase;
+  cmark_node *origin, *prefix, *middle, *middle_text, *suffix;
+  const unsigned char *literal;
+  int32_t length, start, lower, upper;
+} cmark_text_source_event;
+
+typedef void (*cmark_text_source_func) (cmark_syntax_extension *extension,
+                                        const cmark_text_source_event *event);
+
 typedef cmark_node *(*cmark_postprocess_func) (cmark_syntax_extension *extension,
                                                cmark_parser *parser,
                                                cmark_node *root);
@@ -464,6 +487,10 @@ void cmark_syntax_extension_set_block_split_func(cmark_syntax_extension *extensi
  */
 CMARK_GFM_EXPORT
 bool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node *node);
+
+CMARK_GFM_EXPORT
+void cmark_syntax_extension_set_text_source_func(cmark_syntax_extension *extension,
+                                                 cmark_text_source_func func);
 
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_postprocess_func(cmark_syntax_extension *extension,

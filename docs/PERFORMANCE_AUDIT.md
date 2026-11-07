@@ -195,3 +195,40 @@ acceptance. These render-only measurements exclude native input/layout, WebKit
 publication, file I/O, math and diagrams. Ten MB renders exceed the automatic-preview
 guard. Full M6 remains open. Methodology, raw checksums, per-process timings and RSS
 are in `validation/table-paragraph-split.json`.
+
+
+## Automatic-link provenance cost — 2026-11-07
+
+The `autolinks` workload contains an encoded email, a Unicode URL and ordinary text.
+The corrected renderer now creates exact email source/style ranges that were absent
+before. This comparison measures the complete corrected workload.
+
+The before core/parser is exact commit `f86d87f`, with identical updated audit harness
+source in both release arm64 builds. Three fresh processes per case/version perform
+one first render and five warm full rerenders. Version order alternates; timing
+processes run sequentially, without builds or Instruments. Values below are medians
+of process warm medians, not app latency or p95.
+
+| Workload | Bytes | Before ms | After ms |
+| --- | ---: | ---: | ---: |
+| prose | 100,000 | 1.77 | 1.78 |
+| prose | 1,000,000 | 16.86 | 17.24 |
+| prose | 10,000,000 | 188.15 | 184.33 |
+| mixed | 100,000 | 9.18 | 9.09 |
+| mixed | 1,000,000 | 96.57 | 95.86 |
+| mixed | 10,000,000 | 996.31 | 1004.71 |
+| autolinks | 100,000 | 5.60 | 7.32 |
+| autolinks | 1,000,000 | 60.55 | 79.09 |
+| autolinks | 10,000,000 | 650.46 | 879.55 |
+
+Ordinary workloads are close in these samples. Link-heavy corrected rendering adds
+about 1.72 ms at 100 KB, 18.54 ms at 1 MB and 229.09 ms at 10 MB. It retains owned
+decoded provenance and builds additional email syntax intervals; these are correctness
+costs. Full decoded-buffer identity is checked once before recognized offset partitions,
+rather than scanning the remaining suffix for every address.
+
+Peak RSS varies across processes and cannot establish leaks or memory growth. These
+render-only measurements exclude native input/layout, WebKit publication, file I/O,
+math and diagrams. Ten MB renders exceed the automatic-preview guard. Full M6 remains
+open. Methodology, per-process timings/RSS, harness checksum and all 54 raw process
+samples are recorded in `validation/automatic-link-source.json`.

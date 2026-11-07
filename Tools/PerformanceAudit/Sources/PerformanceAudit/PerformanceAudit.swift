@@ -15,13 +15,14 @@ struct PerformanceAudit {
     guard arguments.count == 3, let bytes = Int(arguments[1]),
       (1_000...10_000_000).contains(bytes), let iterations = Int(arguments[2]),
       (1...100).contains(iterations),
-      ["prose", "mixed", "long-line", "escaped-cell", "table-prefix"].contains(arguments[0])
+      ["prose", "mixed", "long-line", "escaped-cell", "table-prefix", "autolinks"].contains(
+        arguments[0])
     else {
       throw NSError(
         domain: "PerformanceAudit", code: 1,
         userInfo: [
           NSLocalizedDescriptionKey:
-            "Usage: PerformanceAudit prose|mixed|long-line|escaped-cell|table-prefix BYTES ITERATIONS"
+            "Usage: PerformanceAudit prose|mixed|long-line|escaped-cell|table-prefix|autolinks BYTES ITERATIONS"
         ])
     }
     let workload = arguments[0]
@@ -49,6 +50,8 @@ struct PerformanceAudit {
         ```
 
         """ + "\n"
+    case "autolinks":
+      unit = "Before &amp; user&#64;example.com, then https://example.org/中文 and tail.\n\n"
     case "escaped-cell": unit = "a\\|"
     case "long-line": unit = "Unicode 中文 👩‍💻 **bold** and `code` in a long paragraph. "
     default: unit = "A calm paragraph of plain text for writing and reading, with Unicode 中文 👩‍💻.\n\n"

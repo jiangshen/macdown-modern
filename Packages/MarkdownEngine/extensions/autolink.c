@@ -4,6 +4,7 @@
 
 #include "autolink.h"
 #include <parser.h>
+#include <syntax_extension.h>
 #include <utf8.h>
 
 #if defined(_WIN32)
@@ -216,7 +217,7 @@ static cmark_node *www_match(cmark_parser *parser, cmark_node *parent,
     node->end_line = text->end_line =
     cmark_inline_parser_get_line(inline_parser);
 
-  node->start_column = text->start_column = start - 1;
+  node->start_column = text->start_column = start;
   node->end_column = text->end_column = cmark_inline_parser_get_column(inline_parser) - 1;
 
   return node;
@@ -257,6 +258,7 @@ static cmark_node *url_match(cmark_parser *parser, cmark_node *parent,
   if (link_end == 0)
     return NULL;
 
+  const int start = cmark_inline_parser_get_column(inline_parser) - rewind;
   cmark_inline_parser_set_offset(inline_parser, (int)(max_rewind + link_end));
   cmark_node_unput(parent, rewind);
 
@@ -272,7 +274,7 @@ static cmark_node *url_match(cmark_parser *parser, cmark_node *parent,
   
   node->start_line = text->start_line = node->end_line = text->end_line = cmark_inline_parser_get_line(inline_parser);
 
-  node->start_column = text->start_column = max_rewind - rewind;
+  node->start_column = text->start_column = start;
   node->end_column = text->end_column = cmark_inline_parser_get_column(inline_parser) - 1;
 
   return node;
@@ -320,6 +322,14 @@ static bool validate_protocol(const char protocol[], uint8_t *data, size_t rewin
   return !cmark_isalnum(prev_char);
 }
 
+static void observe_text_source(cmark_parser *parser, const cmark_text_source_event *event) {
+  for (cmark_llist *item = parser->syntax_extensions; item; item = item->next) {
+    cmark_syntax_extension *extension = (cmark_syntax_extension *)item->data;
+    if (extension->text_source_func)
+      extension->text_source_func(extension, event);
+  }
+}
+
 static void postprocess_text(cmark_parser *parser, cmark_node *text) {
   size_t start = 0;
   size_t offset = 0;
@@ -329,6 +339,11 @@ static void postprocess_text(cmark_parser *parser, cmark_node *text) {
   // the references into allocated buffers. The detached buffer is freed before we
   // return.
   cmark_chunk detached_chunk = text->as.literal;
+  bool source_started = false;
+  cmark_text_source_event source = {0};
+  source.origin = text;
+  source.literal = detached_chunk.data;
+  source.length = detached_chunk.len;
   text->as.literal = cmark_chunk_dup(&detached_chunk, 0, detached_chunk.len);
 
   uint8_t *data = text->as.literal.data;
@@ -418,6 +433,12 @@ found_at:
       continue;
     }
 
+    if (!source_started && (parser->options & CMARK_OPT_SOURCEPOS)) {
+      source.phase = CMARK_TEXT_SOURCE_BEGIN;
+      observe_text_source(parser, &source);
+      source_started = true;
+    }
+
     cmark_node *link_node = cmark_node_new_with_mem(CMARK_NODE_LINK, parser->mem);
     cmark_strbuf buf;
     cmark_strbuf_init(parser->mem, &buf, 10);
@@ -444,6 +465,18 @@ found_at:
 
     cmark_node_insert_after(link_node, post);
 
+    if (source_started) {
+      source.phase = CMARK_TEXT_SOURCE_PARTITION;
+      source.prefix = text;
+      source.middle = link_node;
+      source.middle_text = link_text;
+      source.suffix = post;
+      source.start = (int32_t)start;
+      source.lower = (int32_t)(start + offset + max_rewind - rewind);
+      source.upper = (int32_t)(start + offset + max_rewind + link_end);
+      observe_text_source(parser, &source);
+    }
+
     text->as.literal = cmark_chunk_dup(&detached_chunk, (bufsize_t)start, (bufsize_t)(offset + max_rewind - rewind));
     cmark_chunk_to_cstr(parser->mem, &text->as.literal);
 
@@ -456,6 +489,11 @@ found_at:
   // Convert the reference to allocated memory.
   assert(!text->as.literal.alloc);
   cmark_chunk_to_cstr(parser->mem, &text->as.literal);
+
+  if (source_started) {
+    source.phase = CMARK_TEXT_SOURCE_END;
+    observe_text_source(parser, &source);
+  }
 
   // Free the detached buffer.
   cmark_chunk_free(parser->mem, &detached_chunk);

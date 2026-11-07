@@ -84,6 +84,7 @@ public actor MarkdownProcessor {
       throw MarkdownRenderingError.allocationFailure
     }
     defer { cmark_node_free(root) }
+    sourceMetadata.finishParsing()
     try Task.checkCancellation()
     guard let iterator = cmark_iter_new(root) else {
       throw MarkdownRenderingError.allocationFailure

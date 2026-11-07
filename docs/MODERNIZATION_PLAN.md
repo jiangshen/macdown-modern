@@ -2,19 +2,18 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current code checkpoint: `dda9e7b` preserves paragraph literals, link definitions and
-physical source bounds before tables. Local evidence verifies 270 package tests / 53
-suites, 32 Address Sanitizer tests / four suites, eight arm64 test executables, an arm64
-app build and 652 CommonMark examples. Downloaded hosted artifacts confirm those
-core totals and nine passing native UI tests; the upload retry and runtime warnings
-are recorded in [the checkpoint ledger](validation/table-paragraph-split.json).
+Current implementation checkpoint: automatic URL/www/email source reconciliation.
+Local evidence verifies 277 package tests / 54 suites, 38 Address Sanitizer tests / five
+suites, eight arm64 test executables, an arm64 app build and 652 CommonMark examples.
+Exact results, render measurements and hosted follow-up are recorded in
+[the checkpoint ledger](validation/automatic-link-source.json).
 
-Next source-coordinate work is concrete: [automatic URL/www/email ranges](validation/autolink-source-characterization.json)
-and [native NUL replacement projection](validation/null-source-characterization.json)
-have reproduced failures. Neither is fixed or counted as passing. Direct desktop,
-real IME/VoiceOver, custom CSS/templates, remaining parity, complete native performance,
-release readiness and safe coupled legacy retirement remain required by the full plan.
-The chronological evidence below preserves prior checkpoints; it does not close these gates.
+Next source-coordinate work is the reproduced
+[native NUL replacement projection](validation/null-source-characterization.json).
+It is not fixed or counted as passing. Direct desktop, real IME/VoiceOver,
+custom CSS/templates, remaining parity, complete native performance, release readiness
+and safe coupled legacy retirement remain required by the full plan. The chronological
+evidence below preserves prior checkpoints; it does not close these gates.
 
 ## Scope and source of truth
 
@@ -2341,3 +2340,41 @@ This closes this partition checkpoint's hosted gate, not the overall source-coor
 or modernization goal. The independently reproduced automatic-link and NUL cases
 above are next. Direct desktop/real IME/VoiceOver, full app performance, remaining
 feature parity, integration/releases and safe legacy retirement remain open.
+
+
+## Automatic-link source reconciliation — 2026-11-07
+
+Recognized URL/www links now start at the correct one-based contextual byte column.
+Native URL rewind also keeps preceding text bounds synchronized and clears source
+fields from empty text. Email postprocessing retains its native recognition rules
+while exposing balanced source-only events for the existing immutable decoded buffer.
+
+Swift captures candidate consecutive native text groups before consolidation. Plain
+fragments carry owned row snapshots, including sparse table escapes; decoded entities,
+escapes and smart punctuation carry their complete native lexeme bounds. Candidate groups
+containing decoded `@` retain owned bytes. The retained node's resulting source
+bounds and complete decoded buffer must agree before applying recognized partitions.
+No native buffer/cell pointer escapes its callback. One full identity check per buffer
+precedes offset-based partitions; END and parser completion clear owned maps. Grammar,
+native ownership and document bytes are unchanged. All C edits remain exactly reversible.
+
+Local validation passes **277 tests / 54 suites**, **38 Address Sanitizer tests / five
+suites**, eight arm64 test executables, the native arm64 app build and 652/652 pinned
+CommonMark examples, with complete captures and zero compiler warnings/errors.
+URL/email label ranges and their automatic theme tokens are exact across Unicode, all
+line endings, containers/tabs, decoded entities, escaped table text and recursive scopes.
+Protocol/explicit-link controls preserve existing native grammar. A stress fixture maps
+2048 emails after 8192 escaped pipes. Native TextKit checks prove complete source font
+spans and untouched neighboring text, source, selection, revision and undo.
+
+The final release comparison uses exact pre-change `f86d87f` with the identical audit
+harness. Ordinary samples are close. The link-heavy 1 MB case takes about 79 ms versus
+61 ms before, now including previously missing email source/style work. The cost and
+raw RSS/timings are retained in `PERFORMANCE_AUDIT.md` and
+`validation/automatic-link-source.json`; these do not establish native typing or M6
+acceptance. Hosted follow-up is recorded after code push and artifact verification.
+
+NUL projection remains open, as do direct desktop/real IME/VoiceOver, full native app
+performance, CSS/templates, remaining parity and safe legacy retirement. The Mac is
+still locked; its existing process and user documents/Open panel are preserved. The
+full modernization goal remains active and incomplete.
