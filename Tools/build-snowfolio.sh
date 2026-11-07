@@ -25,6 +25,7 @@ if xcodebuild -workspace "$repo_root/App/Snowfolio.xcworkspace" \
     echo "Native Mac app $action passed."
 else
     result=$?
+    sed -n '/error:/p; /Test Case.*failed/p' "$artifact_root/xcodebuild.log" >&2
     tail -60 "$artifact_root/xcodebuild.log" >&2
     exit "$result"
 fi

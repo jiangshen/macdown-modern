@@ -12,8 +12,11 @@ public final class SettingsWindowController: NSWindowController {
     let host = NSHostingController(
       rootView: SnowfolioSettingsView(
         preferences: preferences, navigation: navigation))
+    // fittingSize can still be zero before the first hosting layout. Measure
+    // SwiftUI explicitly so centering uses the full content size on a cold launch.
+    let contentSize = host.sizeThatFits(in: .zero)
     let window = NSWindow(
-      contentRect: NSRect(origin: .zero, size: host.view.fittingSize),
+      contentRect: NSRect(origin: .zero, size: contentSize),
       styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
       backing: .buffered, defer: false)
     window.contentViewController = host
@@ -23,6 +26,7 @@ public final class SettingsWindowController: NSWindowController {
     window.tabbingMode = .disallowed
     window.isReleasedWhenClosed = false
     window.contentMinSize = NSSize(width: 740, height: 573)
+    host.view.layoutSubtreeIfNeeded()
     window.center()
     window.setFrameAutosaveName("SnowfolioSettingsWindow")
     super.init(window: window)
@@ -33,6 +37,10 @@ public final class SettingsWindowController: NSWindowController {
 
   public override func showWindow(_ sender: Any?) {
     super.showWindow(sender)
+    if let window {
+      window.contentView?.layoutSubtreeIfNeeded()
+      window.setFrame(window.constrainFrameRect(window.frame, to: window.screen), display: false)
+    }
     window?.makeKeyAndOrderFront(sender)
     NSApp.activate()
   }

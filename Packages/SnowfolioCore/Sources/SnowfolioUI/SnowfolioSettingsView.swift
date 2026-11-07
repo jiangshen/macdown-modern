@@ -228,6 +228,7 @@ private struct SettingsPreferenceRow: View {
     case .editorFont:
       LabeledContent {
         TextField("Font name", text: $preferences.editorFontName)
+          .labelsHidden()
           .multilineTextAlignment(.trailing)
           .frame(maxWidth: 200)
           .accessibilityLabel("Editor font name")
