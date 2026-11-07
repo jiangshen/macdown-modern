@@ -1934,3 +1934,57 @@ C patch or Markdown grammar was added. Final local validation is 240 tests / 47 
 13 Address Sanitizer source-syntax tests / two suites, and a successful native arm64
 build-for-testing, with complete captures and no diagnostics. Other source-coordinate
 and full theme/product acceptance gates above remain open.
+
+
+### Hosted source-scope acceptance
+
+Both pushed checkpoints passed. Downloaded run
+[42376156626](https://github.com/jiangshen/snowfolio/actions/runs/42376156626), commit
+`349470c7a6c8d0c9b52d6811565a19f8c126fa89`, confirms 239 package tests / 47 suites,
+eight arm64 binaries, 652 CommonMark examples and eight native UI tests, with thirteen
+priority-inversion warnings. Run
+[42376569726](https://github.com/jiangshen/snowfolio/actions/runs/42376569726), commit
+`3e72ca6f017165d3df24c14f55d273996562680e`, confirms 240 tests / 47 suites, the same
+architecture/corpus/UI totals and twelve warnings. Runtime warning attribution remains
+open; these successful runs do not establish native performance acceptance.
+
+## Native theme surfaces and current-line foundation — 2026-11-07
+
+Page and caret colors now use reversible view state. Selected foreground/background and
+underline use the native temporary selection attributes; font/family/size remain ignored
+for selection as in the original adapter and the SDK's no-layout-change contract. A
+sparse replacement theme falls back to captured semantic defaults. Removing a theme or
+detaching restores original editor/scroll colors, draw flags and selection attributes.
+The scroll canvas paints page color once, including below a short document. Global page
+background is no longer copied behind every character, avoiding double-alpha glyph boxes.
+
+The original highlighter only stored `currentLineStyle`; no consumer was found in the
+repository. Native current-line presentation is an improvement rather than a claim of
+old runtime parity. A collapsed, non-composing caret activates one logical source line,
+including its soft wraps. Its full-width color band uses cached viewport line geometry;
+empty, blank and terminal LF/CRLF rows are covered. Nonempty offscreen ranges never
+request new layout merely for their background. Selected/marked text suppresses the band.
+A geometry-free path is used for caret motion within an unchanged line. Copied paragraphs
+support authored current-line foreground/font/family/traits after semantic source styles;
+the 512-entry attribute cache now distinguishes active and inactive line states.
+
+Native tests prove moving 18/20pt paragraph fonts, restored sparse/default/detached states,
+unchanged backing attributes/source/undo, Unicode/CRLF, six row-geometry cases, and retained
+programmatic Japanese composition. Native bitmap checks prove uniform translucent paper
+across margins/whitespace/row width and below short content, plus a consistent current-line
+band across its width. An initial pixel assertion incorrectly assumed literal RGB values
+after the host display/HDR profile conversion; the test now compares hue, contrast and
+uniformity within the same captured color profile. No production workaround was added for
+that fixture assumption. Changed-Swift formatting and unchanged parser provenance pass.
+All 245 package tests / 48 suites pass with complete diagnostic capture and no warnings
+or errors. Native arm64 app build-for-testing and eight arm64 test executables are
+verified; AppKit review confirmed weak ownership, reversible state, saved/restored
+drawing state and explicitly main-actor-isolated scroll restoration. Both package and
+native Swift 6 build paths report zero warnings/errors. Exact evidence is tracked in `validation/editor-themes.json`.
+
+The typography gate is still open: a 22pt native paragraph spike retained a 17pt extra
+insertion line from the 14pt editor base; empty/terminal insertion and caret metrics need
+resolution before theme selection/import is exposed. Catalog/persistence/validation UX,
+real visual/keyboard/VoiceOver/IME and native scrolling/large-document measurements, broad
+source-coordinate acceptance, custom CSS/templates and coupled legacy retirement remain
+required. No user-facing theme picker is exposed. The full modernization goal stays active.

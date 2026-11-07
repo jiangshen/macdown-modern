@@ -9,6 +9,7 @@ final class NativeEditorTheme {
   private struct Rule {
     let selector: String
     var attributes: [NSAttributedString.Key: Any] = [:]
+    var caretColor: NSColor?
     var size: EditorTheme.FontSize?
     var family: String?
     var traits: NSFontTraitMask = []
@@ -21,6 +22,9 @@ final class NativeEditorTheme {
           switch attribute.name {
           case "foreground-color": key = .foregroundColor
           case "background-color": key = .backgroundColor
+          case "caret-color":
+            caretColor = Self.color(value)
+            key = nil
           default: key = nil
           }
           if let key { attributes[key] = Self.color(value) }
@@ -59,10 +63,21 @@ final class NativeEditorTheme {
   }
 
   let baseAttributes: [NSAttributedString.Key: Any]
+  let backgroundColor: NSColor?
+  let caretColor: NSColor?
+  let selectionAttributes: [NSAttributedString.Key: Any]
+  let currentLineBackground: NSColor?
+  let hasCurrentLineStyle: Bool
+  let currentLineChangesGeometry: Bool
+  private let currentLine: Rule?
+  private struct Resolution: Hashable {
+    let tokens: [MarkdownSyntaxToken]
+    let currentLine: Bool
+  }
   private let rules: [Rule]
   private let base: NSFont
   private let zoom: Double
-  private var cache: [[MarkdownSyntaxToken]: [NSAttributedString.Key: Any]] = [:]
+  private var cache: [Resolution: [NSAttributedString.Key: Any]] = [:]
 
   init(_ theme: EditorTheme, font: NSFont, zoom: Double) {
     self.zoom = DocumentZoomController.normalizedScale(zoom)
@@ -73,20 +88,43 @@ final class NativeEditorTheme {
     for rule in compiled where rule.selector == "editor" {
       rule.apply(to: &attributes, base: font, zoom: self.zoom)
     }
+    backgroundColor = attributes.removeValue(forKey: .backgroundColor) as? NSColor
+    caretColor = compiled.last { $0.selector == "editor" }?.caretColor
+    let selection = compiled.last { $0.selector == "editor-selection" }
+    selectionAttributes =
+      selection?.attributes.filter { key, _ in
+        [.foregroundColor, .backgroundColor, .underlineStyle].contains(key)
+      } ?? [:]
+    var current = compiled.last { $0.selector == "editor-current-line" }
+    currentLineBackground = current?.attributes.removeValue(forKey: .backgroundColor) as? NSColor
+    hasCurrentLineStyle =
+      currentLineBackground != nil
+      || current.map {
+        !$0.attributes.isEmpty || $0.size != nil || $0.family != nil || !$0.traits.isEmpty
+      } ?? false
+    currentLineChangesGeometry =
+      current.map {
+        $0.size != nil || $0.family != nil || !$0.traits.isEmpty
+      } ?? false
+    currentLine = current
     baseAttributes = attributes
     base = attributes[.font] as? NSFont ?? font
     rules = compiled.filter { !$0.selector.hasPrefix("editor") }
   }
 
-  func attributes(for tokens: [MarkdownSyntaxToken]) -> [NSAttributedString.Key: Any] {
-    if let cached = cache[tokens] { return cached }
+  func attributes(for tokens: [MarkdownSyntaxToken], currentLine active: Bool = false)
+    -> [NSAttributedString.Key: Any]
+  {
+    let key = Resolution(tokens: tokens, currentLine: active)
+    if let cached = cache[key] { return cached }
     let selectors = Set(tokens.map(Self.selector))
     var attributes = baseAttributes
     // Preserve original global theme rule ordering when semantic scopes overlap.
     for rule in rules where selectors.contains(rule.selector) {
       rule.apply(to: &attributes, base: base, zoom: zoom)
     }
-    if cache.count < 512 { cache[tokens] = attributes }
+    if active { currentLine?.apply(to: &attributes, base: base, zoom: zoom) }
+    if cache.count < 512 { cache[key] = attributes }
     return attributes
   }
 

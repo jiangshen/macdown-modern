@@ -409,6 +409,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     }
 
     public func textViewDidChangeSelection(_ notification: Notification) {
+      highlighter.selectionChanged()
       guard !isSynchronizing, !isUpdatingView, let editor, !editor.hasMarkedText(),
         let selectionStorage
       else { return }

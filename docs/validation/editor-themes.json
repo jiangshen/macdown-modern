@@ -67,7 +67,7 @@
   },
   "remaining": [
     "Broad native source-coordinate acceptance, including lazy continuations, partial-tab indentation and extension callback contexts",
-    "Render per-element fonts/traits/decoration/current-line safely in TextKit 2",
+    "Finish native insertion/caret/extra-line typography and themed typing/scrolling acceptance",
     "Theme catalog/import and persistence/Settings",
     "Custom CSS and template compatibility",
     "Live visual/IME/undo acceptance",
@@ -116,7 +116,7 @@
     ],
     "remaining": [
       "Broad native source-coordinate acceptance beyond the verified source-prefix cases",
-      "Editor paper/caret/selection/current-line presentation and restoration",
+      "Native insertion/caret/extra-line typography and themed typing/scrolling acceptance",
       "Catalog/import/settings persistence",
       "Actual app visual/keyboard/VoiceOver/real IME acceptance",
       "Native large-document latency/memory measurements",
@@ -187,7 +187,7 @@
     "shippingUIConsumer": false,
     "remaining": [
       "Broad native coordinate acceptance including lazy continuations, partial tabs and callback subcontexts",
-      "Editor paper/caret/selection/current-line handling",
+      "Native insertion/caret/extra-line typography and themed typing/scrolling acceptance",
       "Catalog/import/settings persistence",
       "Real visual/keyboard/VoiceOver/IME/scrolling and measured large-document acceptance",
       "Custom CSS/templates and coupled legacy retirement"
@@ -195,7 +195,14 @@
     "hosted": {
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42376156626",
       "commit": "349470c7a6c8d0c9b52d6811565a19f8c126fa89",
-      "result": "pending; initial 239-test scope checkpoint"
+      "result": "passed",
+      "packageTests": 239,
+      "packageSuites": 47,
+      "arm64TestExecutables": 8,
+      "commonMarkExamples": 652,
+      "nativeUITests": 8,
+      "priorityInversionWarnings": 13,
+      "evidence": "Downloaded original core and native artifacts; exact checkpoint totals verified"
     },
     "evidence": {
       "fullPackage": "/private/tmp/snowfolio-scope-full-tests.json",
@@ -214,8 +221,64 @@
       "hosted": {
         "run": "https://github.com/jiangshen/snowfolio/actions/runs/42376569726",
         "commit": "3e72ca6f017165d3df24c14f55d273996562680e",
-        "result": "pending"
+        "result": "passed",
+        "packageTests": 240,
+        "packageSuites": 47,
+        "arm64TestExecutables": 8,
+        "commonMarkExamples": 652,
+        "nativeUITests": 8,
+        "priorityInversionWarnings": 12,
+        "evidence": "Downloaded original core and native artifacts; exact follow-up totals verified"
       }
+    }
+  },
+  "nativeSurfaceFoundation": {
+    "behavior": [
+      "View-only page/caret colors and native temporary selected-text foreground/background/underline; selection font/family/size remain ignored as in the original adapter",
+      "Paper paints once through the scroll canvas, including below a short document; global page color is removed from glyph attributes to prevent duplicate alpha rectangles",
+      "Theme removal, sparse-theme switching and detachment restore captured editor/scroll/default selection colors and draw flags",
+      "Current-line color band covers the whole logical line including wraps; collapse-only selection; marked text and nonempty/multiple selections suppress it",
+      "Current-line font/family/traits/foreground apply to copied nonempty native paragraphs after semantic scopes; no source/storage/undo mutation",
+      "Native cached viewport geometry covers blank rows, terminal LF/CRLF extra lines and an empty document; nonempty offscreen ranges request no new layout",
+      "Caret motion within the same unchanged logical line avoids rescanning and presentation invalidation; theme resolution remains capped at 512 entries across active/inactive line states"
+    ],
+    "legacyEvidence": "Dependency/peg-markdown-highlight/HGMarkdownHighlighter.m applied editor and selection colors but only assigned currentLineStyle; repository search found no renderer consuming that property. Current-line drawing is a native improvement.",
+    "localValidation": {
+      "packageTests": 245,
+      "packageSuites": 48,
+      "diagnostics": "no errors or warnings; complete axbuild capture",
+      "strictChangedSwiftFormatting": "passed",
+      "parserSourceProvenance": "verified unchanged",
+      "nativeBuildForTesting": "passed; complete axbuild capture, no warnings/errors",
+      "arm64TestExecutables": 8,
+      "nativeArm64App": "verified",
+      "appKitCodeReview": "completed; graphics state saved/restored, view ownership weak, scroll restoration explicitly main-actor isolated; package and native Swift 6 builds have zero warnings/errors"
+    },
+    "nativeTests": [
+      "Actual paragraph font changes from 18 to 20 points as caret changes lines, and restores when selecting text",
+      "Original backing attributes, UTF-8 CRLF/Unicode source, selected-text layout, and empty undo history stay unchanged by theme changes",
+      "Translucent page/caret/selection properties, first scalar precedence, missing-field fallback and detach restoration",
+      "Six empty/short/blank/terminal/wrapped source cases produce positive full-width native bands",
+      "Native bitmap pixels verify uniform translucent paper across margins, whitespace, row width and below the short editor; current-line band has consistent hue/contrast across row width",
+      "Pixel comparisons respect native display/HDR color profiles instead of assuming literal post-conversion RGB blend components",
+      "Programmatic Japanese composition retains native marked range, selection and text while changing page/caret/selection colors"
+    ],
+    "evidence": {
+      "fullPackage": "/private/tmp/snowfolio-theme-surfaces-full.json",
+      "geometryResearch": "/private/tmp/snowfolio-theme-surface-research.json",
+      "nativeBuild": "/private/tmp/snowfolio-theme-surfaces-native.json",
+      "architecture": "/private/tmp/snowfolio-theme-surfaces-architecture.json"
+    },
+    "shippingUIConsumer": false,
+    "remaining": [
+      "Resolve empty-document and terminal extra-line insertion/caret typography when theme global/current-line font differs from base font; native 22pt paragraph spike still produced a 17pt-height extra line from the 14pt base font",
+      "Catalog/import/settings persistence and validation/ignored-attribute feedback",
+      "Actual app visual/keyboard/VoiceOver/real IME, resize/scroll and measured large-document acceptance",
+      "Broader native source-coordinate acceptance",
+      "Custom CSS/templates and coupled legacy retirement"
+    ],
+    "hosted": {
+      "result": "pending"
     }
   }
 }

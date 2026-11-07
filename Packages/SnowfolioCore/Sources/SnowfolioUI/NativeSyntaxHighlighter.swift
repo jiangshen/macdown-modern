@@ -16,9 +16,14 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
   private var themeID: UUID?
   private var themePresentation: NativeEditorTheme?
   private var zoomScale = 1.0
+  private var surfaceAppearance: NativeEditorSurfaceAppearance?
+  private(set) var currentLineRange: NSRange?
+  private var currentLineCaret: Int?
+  private var currentLineRevision: UInt64?
 
   func attach(to editor: MarkdownTextView, document: MarkdownDocument) {
     self.editor = editor
+    surfaceAppearance = NativeEditorSurfaceAppearance(editor: editor)
     self.document = document
     editor.syntaxHighlighter = self
     if let content = editor.textLayoutManager?.textContentManager as? NSTextContentStorage {
@@ -55,6 +60,10 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     let changed =
       self.syntax?.id != syntax?.id || self.revision != revision || self.enabled != enabled
       || presentationChanged || self.document !== document
+    if self.document !== document {
+      currentLineRevision = nil
+      currentLineCaret = nil
+    }
     self.document = document
     self.syntax = syntax
     self.revision = revision
@@ -65,6 +74,7 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
       editor.font = font
       editor.viewportLayoutChanged?()
     }
+    if presentationChanged { surfaceAppearance?.apply(themePresentation) }
     if changed { invalidate() }
     if themeGeometryChanged && canRefreshGeometry { editor?.viewportLayoutChanged?() }
   }
@@ -75,6 +85,7 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     else {
       return
     }
+    _ = refreshCurrentLine()
     manager.invalidateRenderingAttributes(for: content.documentRange)
     // Refresh cached viewport fragments without forcing offscreen layout. Before
     // the first viewport exists, walk only fragments TextKit has already created.
@@ -130,12 +141,14 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     else { return nil }
     let paragraph = NSMutableAttributedString(
       attributedString: storage.attributedSubstring(from: range))
+    let activeLine = currentLineRange?.location == range.location
     paragraph.addAttributes(
-      presentation.baseAttributes, range: NSRange(location: 0, length: range.length))
+      presentation.attributes(for: [], currentLine: activeLine),
+      range: NSRange(location: 0, length: range.length))
     if enabled, let document, revision == document.revision, let syntax {
       for run in intersectingRuns(range, syntax: syntax) {
         let intersection = NSIntersectionRange(run.range, range)
-        var attributes = presentation.attributes(for: run.style.tokens)
+        var attributes = presentation.attributes(for: run.style.tokens, currentLine: activeLine)
         if run.style.underlined { attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue }
         if run.style.strikethrough {
           attributes[.strikethroughStyle] = NSUnderlineStyle.single.rawValue
@@ -150,6 +163,67 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
       }
     }
     return NSTextParagraph(attributedString: paragraph)
+  }
+
+  func selectionChanged() {
+    guard !refreshingPresentation, refreshCurrentLine() else { return }
+    let geometry = themePresentation?.currentLineChangesGeometry == true
+    if geometry { editor?.viewportPresentationWillChange?() }
+    invalidate()
+    if geometry { editor?.viewportLayoutChanged?() }
+  }
+
+  @discardableResult
+  private func refreshCurrentLine() -> Bool {
+    let previous = currentLineRange
+    guard themePresentation?.hasCurrentLineStyle == true, let editor, let document,
+      !editor.hasMarkedText(), !editor.isReceivingMarkedText,
+      editor.selectedRanges.count == 1
+    else {
+      currentLineRange = nil
+      currentLineCaret = nil
+      currentLineRevision = nil
+      return previous != nil
+    }
+    let selection = editor.selectedRange()
+    let length = editor.textStorage?.length ?? 0
+    guard selection.length == 0, selection.location <= length else {
+      currentLineRange = nil
+      currentLineCaret = nil
+      currentLineRevision = nil
+      return previous != nil
+    }
+    // Moving within an unchanged logical line needs no scanning or relayout.
+    if currentLineRevision == document.revision,
+      currentLineCaret == selection.location
+        || previous.map({ NSLocationInRange(selection.location, $0) }) == true
+    {
+      currentLineCaret = selection.location
+      return false
+    }
+    currentLineRange = (editor.string as NSString).lineRange(for: selection)
+    currentLineCaret = selection.location
+    currentLineRevision = document.revision
+    return previous != currentLineRange
+  }
+
+  func currentLineBackgroundRect() -> NSRect? {
+    guard themePresentation?.currentLineBackground != nil, let editor, let currentLineRange else {
+      return nil
+    }
+    return NativeEditorCurrentLine.backgroundRect(in: editor, line: currentLineRange)
+  }
+
+  func drawCurrentLineBackground(in dirtyRect: NSRect) {
+    guard let color = themePresentation?.currentLineBackground,
+      let frame = currentLineBackgroundRect()
+    else { return }
+    let visible = frame.intersection(dirtyRect)
+    guard !visible.isEmpty else { return }
+    NSGraphicsContext.saveGraphicsState()
+    defer { NSGraphicsContext.restoreGraphicsState() }
+    color.setFill()
+    NSBezierPath.fill(visible)
   }
 
   private func intersectingRuns(_ range: NSRange, syntax: MarkdownSyntax) -> ArraySlice<
@@ -171,6 +245,11 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
   }
 
   func detach() {
+    surfaceAppearance?.restore()
+    surfaceAppearance = nil
+    currentLineRange = nil
+    currentLineCaret = nil
+    currentLineRevision = nil
     if let content = editor?.textLayoutManager?.textContentManager as? NSTextContentStorage,
       content.delegate === self
     {

@@ -125,6 +125,16 @@ final class MarkdownTextView: NSTextView {
   var viewportPresentationWillChange: (@MainActor () -> Void)?
   var viewportInputBegan: (@MainActor () -> Void)?
 
+  override func draw(_ dirtyRect: NSRect) {
+    if !drawsBackground { syntaxHighlighter?.drawCurrentLineBackground(in: dirtyRect) }
+    super.draw(dirtyRect)
+  }
+
+  override func drawBackground(in rect: NSRect) {
+    super.drawBackground(in: rect)
+    if drawsBackground { syntaxHighlighter?.drawCurrentLineBackground(in: rect) }
+  }
+
   override func doCommand(by selector: Selector) {
     viewportInputBegan?()
     super.doCommand(by: selector)
