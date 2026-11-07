@@ -1,6 +1,20 @@
 # Snowfolio modernization plan
 
-Status: **Milestone 1 complete; Milestone 2 validation continues; Milestone 3 parser/preview implementation in progress. The application rewrite is not complete.**
+Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
+
+Current code checkpoint: `dda9e7b` preserves paragraph literals, link definitions and
+physical source bounds before tables. Local evidence verifies 270 package tests / 53
+suites, 32 Address Sanitizer tests / four suites, eight arm64 test executables, an arm64
+app build and 652 CommonMark examples. Downloaded hosted artifacts confirm those
+core totals and nine passing native UI tests; the upload retry and runtime warnings
+are recorded in [the checkpoint ledger](validation/table-paragraph-split.json).
+
+Next source-coordinate work is concrete: [automatic URL/www/email ranges](validation/autolink-source-characterization.json)
+and [native NUL replacement projection](validation/null-source-characterization.json)
+have reproduced failures. Neither is fixed or counted as passing. Direct desktop,
+real IME/VoiceOver, custom CSS/templates, remaining parity, complete native performance,
+release readiness and safe coupled legacy retirement remain required by the full plan.
+The chronological evidence below preserves prior checkpoints; it does not close these gates.
 
 ## Scope and source of truth
 
@@ -2273,3 +2287,57 @@ locked, so the existing process and user documents/Open panel are preserved.
 NUL/native replacement contexts, real IME/VoiceOver/visual interaction acceptance,
 full app performance, CSS/templates, remaining parity, release readiness and safe legacy
 retirement remain open. The full modernization goal remains active and incomplete.
+
+
+### Next replacement-coordinate characterization
+
+An isolated executable linked to exact commit `dda9e7b` reproduces the next NUL gate
+without changing production code. All six diagnostic fixtures have misplaced strong
+source ranges: ordinary paragraphs, lazy list continuations, quotes, headings, tables
+and a literal replacement character followed by two NULs. Native `S_parser_feed`
+replaces one NUL input byte with three UTF-8 replacement bytes before block parsing;
+current byte-identity maps reject that non-identity line. Syntax ranges can then move
+or disappear. This is explicitly **not fixed**, and is not counted among passing
+package tests. Exact expected/actual ranges and raw evidence are in
+`validation/null-source-characterization.json`.
+
+Next implementation should preserve one normalized-coordinate domain through native
+block/inline/container mapping, then project to physical source after all native
+postprocessing. Authored replacement characters and document bytes must remain intact.
+References, recursive scopes, tables, feed boundaries and actual native font placement
+need regression coverage, with ordinary-path overhead measured. Broader source and
+full modernization acceptance remain open.
+
+
+### Automatic-link source-range characterization
+
+The isolated diagnostic also reproduces ten incorrect or missing automatic-link ranges.
+Plain `https://` and `www.` links include the preceding byte; lazy/partial-tab/container
+and escaped-cell cases compound the wrong start. An email link has no source range.
+Inspection finds native `www_match` subtracting one from the current column, `url_match`
+using a buffer offset instead of a contextual line column, and email postprocessing
+creating source-less nodes from decoded/consolidated text. Rendering still recognizes
+the links; exact source highlighting is the incomplete requirement.
+
+These are **not fixed** or included in passing-test totals. Exact isolated expected/
+actual ranges are in `validation/autolink-source-characterization.json`. Correct the
+native URL/www starts and preserve recognized email provenance through native text
+transformations without another Markdown grammar. The NUL projection gate remains
+separate; do not infer complete source-coordinate acceptance from current green tests.
+
+
+### Hosted paragraph/table acceptance
+
+Run [42398967214](https://github.com/jiangshen/snowfolio/actions/runs/42398967214),
+code `dda9e7b76cb9390a9e8ae1509e522f340543d175`, passes both jobs. Downloaded
+artifacts verify **270 package tests / 53 suites**, eight arm64 executables,
+652/652 CommonMark examples and **nine native UI tests with zero failures**.
+The first native app/test step passed, but artifact creation failed with GitHub DNS
+`ENOTFOUND`. A failed-job retry, without a code change, passed and uploaded the exact
+native log/result bundle. Sixteen runtime priority-inversion warnings and two App
+Intents metadata notices are retained without inferring a performance cause or change.
+
+This closes this partition checkpoint's hosted gate, not the overall source-coordinate
+or modernization goal. The independently reproduced automatic-link and NUL cases
+above are next. Direct desktop/real IME/VoiceOver, full app performance, remaining
+feature parity, integration/releases and safe legacy retirement remain open.

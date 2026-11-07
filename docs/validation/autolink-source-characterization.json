@@ -1,0 +1,244 @@
+{
+  "milestone": "Next source-coordinate gate: native GFM automatic link ranges",
+  "date": "2026-11-07",
+  "status": "reproduced; not fixed",
+  "fullGoal": "active; incomplete",
+  "code": "dda9e7b76cb9390a9e8ae1509e522f340543d175",
+  "scope": "Isolated autolink coordinate diagnostic of exact committed parser/core; no production source mutation",
+  "cases": [
+    {
+      "actual": {
+        "end": 22,
+        "line": 1,
+        "start": 7
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 22,
+        "line": 1,
+        "start": 8
+      },
+      "expectedUTF16": {
+        "length": 15,
+        "location": 7
+      },
+      "html": "<p data-sourcepos=\"1:1-1:28\">before <a href=\"http://www.example.com\">www.example.com</a> after</p>\n",
+      "name": "plain-www",
+      "source": "before www.example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": -1,
+        "line": -1,
+        "start": -1
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 23,
+        "line": 1,
+        "start": 8
+      },
+      "expectedUTF16": {
+        "length": 16,
+        "location": 7
+      },
+      "html": "<p data-sourcepos=\"1:1-1:29\">before <a href=\"mailto:user@example.com\">user@example.com</a> after</p>\n",
+      "name": "plain-email",
+      "source": "before user@example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 26,
+        "line": 1,
+        "start": 7
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 26,
+        "line": 1,
+        "start": 8
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 7
+      },
+      "html": "<p data-sourcepos=\"1:1-1:32\">before <a href=\"https://example.com\">https://example.com</a> after</p>\n",
+      "name": "plain-url",
+      "source": "before https://example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 32,
+        "line": 1,
+        "start": 13
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 32,
+        "line": 1,
+        "start": 14
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 13
+      },
+      "html": "<p data-sourcepos=\"1:1-1:38\">before &amp; <a href=\"https://example.com\">https://example.com</a> after</p>\n",
+      "name": "entity-before-url",
+      "source": "before &amp; https://example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 29,
+        "line": 1,
+        "start": 10
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 29,
+        "line": 1,
+        "start": 11
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 10
+      },
+      "html": "<p data-sourcepos=\"1:1-1:35\">before * <a href=\"https://example.com\">https://example.com</a> after</p>\n",
+      "name": "escape-before-url",
+      "source": "before \\* https://example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 20,
+        "line": 2,
+        "start": 5
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 20,
+        "line": 2,
+        "start": 2
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 9
+      },
+      "html": "<ul data-sourcepos=\"1:1-2:26\">\n<li data-sourcepos=\"1:1-2:26\">first\n<a href=\"https://example.com\">https://example.com</a> after</li>\n</ul>\n",
+      "name": "partial-tab-url",
+      "source": "- first\n\thttps://example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 19,
+        "line": 2,
+        "start": 4
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 19,
+        "line": 2,
+        "start": 1
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 8
+      },
+      "html": "<ul data-sourcepos=\"1:1-2:25\">\n<li data-sourcepos=\"1:1-2:25\">first\n<a href=\"https://example.com\">https://example.com</a> after</li>\n</ul>\n",
+      "name": "lazy-list-url",
+      "source": "- first\nhttps://example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 19,
+        "line": 2,
+        "start": 4
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 19,
+        "line": 2,
+        "start": 1
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 8
+      },
+      "html": "<blockquote data-sourcepos=\"1:1-2:25\">\n<p data-sourcepos=\"1:3-2:25\">first\n<a href=\"https://example.com\">https://example.com</a> after</p>\n</blockquote>\n",
+      "name": "lazy-quote-url",
+      "source": "> first\nhttps://example.com after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 26,
+        "line": 3,
+        "start": 4
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 26,
+        "line": 3,
+        "start": 8
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 36
+      },
+      "html": "<table data-sourcepos=\"1:1-3:42\">\n<thead>\n<tr data-sourcepos=\"1:1-1:18\">\n<th data-sourcepos=\"1:2-1:9\">Header</th>\n<th data-sourcepos=\"1:11-1:17\">Other</th>\n</tr>\n</thead>\n<tbody>\n<tr data-sourcepos=\"3:1-3:42\">\n<td data-sourcepos=\"3:2-3:33\">a|b <a href=\"https://example.com\">https://example.com</a> after</td>\n<td data-sourcepos=\"3:35-3:41\">Value</td>\n</tr>\n</tbody>\n</table>\n",
+      "name": "escaped-table-url",
+      "source": "| Header | Other |\n|---|---|\n| a\\|b https://example.com after | Value |",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 29,
+        "line": 1,
+        "start": 10
+      },
+      "actualLinkUTF16": [],
+      "expected": {
+        "end": 27,
+        "line": 1,
+        "start": 9
+      },
+      "expectedUTF16": {
+        "length": 19,
+        "location": 8
+      },
+      "html": "<p data-sourcepos=\"1:1-1:35\">before\ufffd <a href=\"https://example.com\">https://example.com</a> after</p>\n",
+      "name": "null-before-url",
+      "source": "before\u0000 https://example.com after",
+      "sourceRangeMatches": false
+    }
+  ],
+  "results": {
+    "cases": 10,
+    "exactLinkSourceRanges": 0,
+    "incorrectOrMissingLinkSourceRanges": 10
+  },
+  "inspection": [
+    "www_match assigns start_column = current column - 1, including the preceding byte",
+    "url_match assigns start_column from a buffer offset rather than its line/context column",
+    "Email autolink postprocessing creates link/text/post nodes without source fields; decoded/consolidated text also requires provenance across literal transformations"
+  ],
+  "evidence": {
+    "raw": "/private/tmp/snowfolio-autolink-probe-expanded.json",
+    "rawSHA256": "9e8fb865b293bc3f59d4f0a194ef1143d21ab8ffcecfe3974c1f4e3435d62351",
+    "isolatedBuild": "/private/tmp/snowfolio-autolink-probe-expanded-build.json",
+    "harness": "/private/tmp/snowfolio-autolink-probe.swift",
+    "harnessSHA256": "e9f23bb822837395b6aa6faa3b99db392907bdde4b61ef0f71e4813d37c2b548",
+    "reproduction": "Archive the recorded commit; replace only Tools/PerformanceAudit/Sources/PerformanceAudit/PerformanceAudit.swift with the recorded standalone harness; build release arm64 and run PerformanceAudit without arguments."
+  },
+  "next": [
+    "Correct native recognized URL/www source starts before existing Swift container/tab/cell maps run",
+    "Preserve native-recognized email source provenance through text consolidation/decoding without a second Markdown grammar",
+    "Cover children, repeated links, entities/escapes, Unicode, multiline/nested scopes, references, footnotes and table escaping",
+    "Coordinate this work with the independently reproduced NUL replacement projection gate; do not infer complete source acceptance from the passing package suite"
+  ]
+}

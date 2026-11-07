@@ -438,13 +438,52 @@
     "commonMark": "/private/tmp/snowfolio-split-commonmark-final/commonmark.json"
   },
   "remaining": [
-    "NUL/native replacement and other non-identity contexts need source-coordinate characterization",
+    "Reproduced NUL/native replacement failures and incorrect/missing automatic URL/www/email ranges; see null-source-characterization.json and autolink-source-characterization.json",
     "Direct native desktop remains locked; existing running process predates rebuild and user documents/Open panel are preserved",
     "Real IME, VoiceOver, selection/resize/scroll acceptance",
     "Full native app typing/publication, memory growth and energy acceptance",
     "Custom CSS/templates, remaining parity, integration/release gates and safe coupled legacy retirement"
   ],
   "hosted": {
-    "status": "pending code push and exact artifact verification"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42398967214",
+    "commit": "dda9e7b76cb9390a9e8ae1509e522f340543d175",
+    "result": "passed both jobs; exact core and native artifacts downloaded and verified",
+    "nativeAttempt": 2,
+    "firstAttempt": {
+      "nativeAppTestStep": "passed",
+      "artifactUpload": "failed with Failed to CreateArtifact: Unable to make request: ENOTFOUND",
+      "log": "/private/tmp/snowfolio-split-hosted-attempt1.log",
+      "logSHA256": "c8fab470f7738f5bea32770632593e5734bb33dfbdb429f0d41f3af52089b482",
+      "action": "reran only failed native job; no code change required"
+    },
+    "packageTests": 270,
+    "packageSuites": 53,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "nativeUITests": 9,
+    "nativeUIFailures": 0,
+    "passedNativeMethods": [
+      "-[SnowfolioUITests.DocumentLifecycleTests testEditorThemePickerSearchImportAndUndo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testFencedCodePreferenceUpdatesCurrentPreview]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testIntrawordPreferenceRoundTrip]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testLivePreviewUpdatesAfterEditingAndUndo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testMultipleDocumentWindows]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testNewDocumentTypingUndoRedo]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testOpenExistingMarkdownAndSave]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testSettingsSearchHistoryAndWindowReopen]",
+      "-[SnowfolioUITests.DocumentLifecycleTests testUnderlinePreferenceAndNativeCommand]"
+    ],
+    "priorityInversionWarnings": 16,
+    "appIntentsMetadataWarnings": 2,
+    "performanceAttribution": "Existing runtime warnings remain an open attribution gate; counts do not establish a first-party cause or performance change.",
+    "coreArtifactDirectory": "/private/tmp/snowfolio-split-hosted-core",
+    "nativeArtifactDirectory": "/private/tmp/snowfolio-split-hosted-native",
+    "nativeResultBundle": "/private/tmp/snowfolio-split-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_18-10-20-+0000.xcresult",
+    "artifactSHA256": {
+      "/private/tmp/snowfolio-split-hosted-core/snowfolio-validation/swift-test.log": "194e29c118dfedc6ccb56042beb75f8374fe88e57d7058877f5949359e3acf2b",
+      "/private/tmp/snowfolio-split-hosted-core/snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "/private/tmp/snowfolio-split-hosted-core/snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "/private/tmp/snowfolio-split-hosted-native/xcodebuild.log": "bb353ea832f6b9c649575de00135077aace7d56807fa70bb4db4a3dd61531143"
+    }
   }
 }

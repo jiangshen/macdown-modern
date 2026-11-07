@@ -1,0 +1,181 @@
+{
+  "milestone": "Next source-coordinate gate: native NUL replacement characterization",
+  "date": "2026-11-07",
+  "fullGoal": "active; incomplete",
+  "status": "reproduced; not fixed",
+  "code": "dda9e7b76cb9390a9e8ae1509e522f340543d175",
+  "scope": "Isolated diagnostic of exact committed parser/core; no production source mutation",
+  "nativeEvidence": [
+    "S_parser_feed in blocks.c replaces one input NUL byte with UTF-8 EF BF BD before block parsing",
+    "Swift String input is valid UTF-8, but can contain U+0000; an authored U+FFFD must remain distinguishable",
+    "Current byte-identity maps reject the expanded native line, leaving source columns and syntax ranges shifted"
+  ],
+  "cases": [
+    {
+      "actual": {
+        "end": 20,
+        "line": 1,
+        "start": 11
+      },
+      "actualStrongUTF16": [
+        {
+          "length": 6,
+          "location": 10
+        }
+      ],
+      "expected": {
+        "end": 18,
+        "line": 1,
+        "start": 9
+      },
+      "expectedUTF16": {
+        "length": 6,
+        "location": 8
+      },
+      "html": "<p data-sourcepos=\"1:1-1:26\">before\ufffd <strong>\u4e2d\u6587</strong> after</p>\n",
+      "name": "paragraph",
+      "source": "before\u0000 **\u4e2d\u6587** after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 16,
+        "line": 2,
+        "start": 7
+      },
+      "actualStrongUTF16": [],
+      "expected": {
+        "end": 12,
+        "line": 2,
+        "start": 3
+      },
+      "expectedUTF16": {
+        "length": 6,
+        "location": 11
+      },
+      "html": "<ul data-sourcepos=\"1:1-2:20\">\n<li data-sourcepos=\"1:1-2:20\">before\n\ufffd <strong>\u4e2d\u6587</strong> after</li>\n</ul>\n",
+      "name": "lazy-list",
+      "source": "- before\n\u0000 **\u4e2d\u6587** after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 22,
+        "line": 1,
+        "start": 13
+      },
+      "actualStrongUTF16": [
+        {
+          "length": 6,
+          "location": 12
+        }
+      ],
+      "expected": {
+        "end": 20,
+        "line": 1,
+        "start": 11
+      },
+      "expectedUTF16": {
+        "length": 6,
+        "location": 10
+      },
+      "html": "<blockquote data-sourcepos=\"1:1-1:28\">\n<p data-sourcepos=\"1:3-1:28\">before\ufffd <strong>\u4e2d\u6587</strong> after</p>\n</blockquote>\n",
+      "name": "quote",
+      "source": "> before\u0000 **\u4e2d\u6587** after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 22,
+        "line": 1,
+        "start": 13
+      },
+      "actualStrongUTF16": [
+        {
+          "length": 6,
+          "location": 12
+        }
+      ],
+      "expected": {
+        "end": 20,
+        "line": 1,
+        "start": 11
+      },
+      "expectedUTF16": {
+        "length": 6,
+        "location": 10
+      },
+      "html": "<h1 id=\"before-\u4e2d\u6587-after\" data-sourcepos=\"1:1-1:28\"><span id=\"toc_0\" class=\"md-legacy-anchor\" aria-hidden=\"true\"></span>\nbefore\ufffd <strong>\u4e2d\u6587</strong> after\n</h1>\n",
+      "name": "heading",
+      "source": "# before\u0000 **\u4e2d\u6587** after",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 22,
+        "line": 3,
+        "start": 13
+      },
+      "actualStrongUTF16": [
+        {
+          "length": 6,
+          "location": 41
+        }
+      ],
+      "expected": {
+        "end": 20,
+        "line": 3,
+        "start": 11
+      },
+      "expectedUTF16": {
+        "length": 6,
+        "location": 39
+      },
+      "html": "<table data-sourcepos=\"1:1-3:38\">\n<thead>\n<tr data-sourcepos=\"1:1-1:18\">\n<th data-sourcepos=\"1:2-1:9\">Header</th>\n<th data-sourcepos=\"1:11-1:17\">Other</th>\n</tr>\n</thead>\n<tbody>\n<tr data-sourcepos=\"3:1-3:38\">\n<td data-sourcepos=\"3:2-3:29\">before\ufffd <strong>\u4e2d\u6587</strong> after</td>\n<td data-sourcepos=\"3:31-3:37\">Value</td>\n</tr>\n</tbody>\n</table>\n",
+      "name": "table",
+      "source": "| Header | Other |\n|---|---|\n| before\u0000 **\u4e2d\u6587** after | Value |",
+      "sourceRangeMatches": false
+    },
+    {
+      "actual": {
+        "end": 35,
+        "line": 1,
+        "start": 26
+      },
+      "actualStrongUTF16": [],
+      "expected": {
+        "end": 31,
+        "line": 1,
+        "start": 22
+      },
+      "expectedUTF16": {
+        "length": 6,
+        "location": 19
+      },
+      "html": "<p data-sourcepos=\"1:1-1:41\">literal \ufffd before\ufffd\ufffd <strong>\u4e2d\u6587</strong> after</p>\n",
+      "name": "replacement-distinction",
+      "source": "literal \ufffd before\u0000\u0000 **\u4e2d\u6587** after",
+      "sourceRangeMatches": false
+    }
+  ],
+  "results": {
+    "cases": 6,
+    "exactStrongSourceRanges": 0,
+    "failingStrongSourceRanges": 6
+  },
+  "evidence": {
+    "raw": "/private/tmp/snowfolio-nul-probe.json",
+    "rawSHA256": "a362f305d6251cd8ca29edd5b7c6126cadb48c366e2fe68134c9437595bc718f",
+    "isolatedBuild": "/private/tmp/snowfolio-nul-probe-build.json",
+    "isolatedSourceTree": "/private/tmp/snowfolio-nul-probe-tree-dda9e7b",
+    "harness": "/private/tmp/snowfolio-nul-probe.swift",
+    "harnessSHA256": "78ac20816a95e8c31486bfa78376eec30384b36cf6e8a1962a50ff3de76eebaf",
+    "reproduction": "Archive the recorded commit; replace only Tools/PerformanceAudit/Sources/PerformanceAudit/PerformanceAudit.swift with the recorded standalone harness; build release arm64 and run PerformanceAudit without arguments."
+  },
+  "next": [
+    "Keep all intermediate parser/source positions in one native normalized-byte domain while container, tab and cell maps run",
+    "Project native replacement coordinates back to physical source only after all native parsing/postprocessing, before exposing AST/HTML/syntax",
+    "Preserve actual document bytes and distinguish literal replacement characters from a replaced NUL",
+    "Cover block/inline boundaries, recursive dialects, references, footnotes, table escaping, parser feed boundaries and native TextKit font placement; measure ordinary-path overhead"
+  ]
+}
