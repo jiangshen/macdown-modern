@@ -338,6 +338,8 @@
       "Safe coupled legacy retirement"
     ],
     "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42383079017",
+      "commit": "38b2e1f7681c781cfb7cfed37686566ea16dd796",
       "result": "pending"
     }
   }
