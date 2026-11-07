@@ -1,6 +1,6 @@
 # Notebook document theme
 
-An original, Notion-inspired presentation for MacDown’s plain Markdown documents.
+An original, Notion-inspired presentation for Snowfolio’s plain Markdown documents.
 Reference: [Notion’s public page styling guidance](https://www.notion.com/help/customize-and-style-your-content), inspected 2026-11-06.
 The neutral page, readable hierarchy, restrained inline code, quote rules, task lists,
 light table grid, Default/Serif/Mono choices and bounded reading width inform this design.

@@ -192,7 +192,7 @@ Packages/**/.build/
 Packages/**/.swiftpm/
 
 # Generated native modernization project
-Modern/*.xcodeproj/
-Modern/*.xcworkspace/
-Modern/Derived/
-Modern/.tuist-cache/
+App/*.xcodeproj/
+App/*.xcworkspace/
+App/Derived/
+App/.tuist-cache/

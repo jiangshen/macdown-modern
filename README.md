@@ -1,42 +1,48 @@
-# MacDown
+# Snowfolio
 
-## Swift modernization
+A native Apple Silicon Markdown editor for macOS 27 and later, evolving from MacDown into an
+independent writing app. Plain Markdown files stay local and portable. Snowfolio keeps
+the glacial-blue layered app and document icons, readable notebook styling, and native
+Mac controls.
 
-The migration roadmap is in [docs/MODERNIZATION_PLAN.md](docs/MODERNIZATION_PLAN.md).
-Source ownership and legacy migration boundaries are in
-[docs/SOURCE_INVENTORY.md](docs/SOURCE_INVENTORY.md).
+The Swift app includes a TextKit 2 editor, native document tabs, live preview, syntax
+colors, callouts with an emoji picker, YAML properties, a table of contents, and shared
+HTML/PDF/print output. It is a development build: feature parity, accessibility,
+performance measurement and release readiness are still in progress. See the
+[modernization roadmap](docs/MODERNIZATION_PLAN.md) and
+[source inventory](docs/SOURCE_INVENTORY.md).
 
-The first milestone adds independently tested Swift document/editor foundations;
-they are not yet connected to the legacy application UI.
+## Build and test
 
-With Xcode 27 and Swift 6.4 on Apple Silicon:
+Use an Apple Silicon Mac with Xcode 27 / Swift 6.4 or later and Tuist (`brew install tuist`):
 
 ```sh
 bash Tools/validate-modernization.sh
+bash Tools/build-snowfolio.sh
 ```
 
-This builds/tests `Packages/MacDownCore` without CocoaPods and checks every generated
-test executable is arm64-only. Logs are saved to `Build/Modernization`. Set
-`DEVELOPER_DIR` if your Xcode is installed somewhere other than `/Applications/Xcode.app`.
+The native project is generated from `App/Project.swift` into
+`App/Snowfolio.xcworkspace`. The app is written to
+`Build/Snowfolio/DerivedData/Build/Products/Debug/Snowfolio.app`.
+The Swift package lives in `Packages/SnowfolioCore` and uses Swift Package Manager.
+The validation helper checks that all test executables are native arm64.
 
-The legacy application baseline currently fails before compilation because its generated
-CocoaPods configuration is absent and its macOS 10.8 deployment target is unsupported
-by Xcode 27. See the roadmap for the captured diagnostics and next integration steps.
+Use `bash Tools/build-snowfolio.sh --test` for the document lifecycle UI suite when
+Xcode UI automation is available. In the current environment the suite compiles, but
+execution times out while enabling automation; direct native checks and package tests
+are recorded separately in `docs/validation`.
 
-## Native app development build
+The original Objective-C application remains a migration reference until its essential
+features are replaced and verified. The new app builds independently of CocoaPods.
+Legacy source is progressively retired, with all required licenses preserved.
 
-With Xcode 27, Swift 6.4 and Tuist (`brew install tuist`):
+## Identity and attribution
 
-```sh
-bash Tools/build-modern-app.sh
-```
+Snowfolio is based on [MacDown](https://github.com/MacDownApp/macdown), created by
+Tzu-ping Chung and contributors, under the MIT License. Original copyright and
+third-party notices remain in `LICENSE` and the native app's bundled notices.
+The Snowfolio name does not change Markdown's standard file type or ownership.
 
-The generated workspace is `Modern/MacDownModern.xcworkspace`. The app is written to
-`Build/ModernApp/DerivedData/Build/Products/Debug/MacDownModern.app`.
-Use `bash Tools/build-modern-app.sh --test` to run the document lifecycle UI suite
-when Xcode UI automation is available.
-
-This is the migration's native document/editor build. Markdown preview, export,
-legacy preference migration and other parity items remain tracked in the roadmap.
-The layered app icon supports Default, Dark, Clear and Tinted system appearances;
-[view all six native renderings](docs/design/icon/Appearances.png).
+[Branding and compatibility details](docs/BRANDING.md) explain the rename and the stable
+macOS identity used to preserve app data. Older validation records retain the names and
+paths observed when those checks ran.

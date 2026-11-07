@@ -1,10 +1,10 @@
-# MacDown modernization plan
+# Snowfolio modernization plan
 
 Status: **Milestone 1 complete; Milestone 2 validation continues; Milestone 3 parser/preview implementation in progress. The application rewrite is not complete.**
 
 ## Scope and source of truth
 
-The checked-out `macdown-modern` repository, not another fork, defines legacy behavior.
+The checked-out Snowfolio repository (formerly `macdown-modern`) defines legacy behavior.
 Preserve its source and resources until replacements pass characterization and integration
 tests. All new application-owned code uses Swift 6 language mode and the installed Swift
 6.4 toolchain. Third-party C/JavaScript may remain behind explicit boundaries when needed.
@@ -19,8 +19,8 @@ goal, not just a cosmetic rename. The existing repository defines feature and fi
 compatibility requirements and attribution obligations; it does not dictate the final
 architecture, information layout, workflows, visual identity or product positioning.
 
-- Develop an original identity, product name and coherent writing experience. MacDown
-  remains only the working name until the user chooses a replacement.
+- Develop Snowfolio as an original, coherent native writing product. The user selected
+  **Snowfolio** on 2026-11-06, replacing the earlier MacDown working name.
 - Keep the liked current document/callout styling as a starting point. Evolve the
   glacial-blue layered icon and native Apple/Liquid Glass chrome into a consistent
   identity; a new name does not authorize discarding the current liked design.
@@ -39,13 +39,14 @@ architecture, information layout, workflows, visual identity or product position
   technical parity. Completion requires an original coherent product, not only a Swift
   translation of the old app.
 
-Current creative shortlist for the user: **Iceleaf** (preferred: glacial identity plus a
-page/leaf), **Snowfolio** (a document-oriented snowy identity), and **Glacelle** (a more
-abstract, elegant name with an icy association). These are proposals, not a selected
-brand or an availability determination. No bundle identifiers, default associations,
-repository identity or release feeds are renamed until a name is selected. Future
-rename work must migrate preferences/document registration and update artwork, Help,
-CLI/integrations and release metadata coherently.
+Selected identity: **Snowfolio**. The current native app, project/package/module names,
+build tools, repository and active documentation use this name. Preserve the liked
+glacial-blue layered app/document icons and the Markdown M↓ format mark. Preserve
+original MacDown attribution, license files, historical validation records and legacy
+code until its replacements reach parity. The internal macOS bundle and tabbing IDs
+remain stable compatibility keys for app data, native document history and restoration;
+they are not displayed as product branding. No default-app change or public release is
+implied by the rename. See `docs/BRANDING.md`.
 
 ## Baseline audit (2026-11-06)
 
@@ -164,7 +165,7 @@ host uses exactly the same byte-preserving document representation.
 - `Features/Preview/`: WKWebView (justified by existing HTML/CSS/math/diagram fidelity),
   restrictive navigation/resource policy and a versioned DOM patch protocol. Preserve
   position and focus; full initial navigation is acceptable, full per-key reload is not.
-- `Packages/MacDownCore`: independent `DocumentCore` and `EditorCore` initially;
+- `Packages/SnowfolioCore`: independent `DocumentCore` and `EditorCore` initially;
   add `MarkdownCore` and `RenderingCore` when real consumers and tests need them.
 - `DocumentCore`: bytes/encoding snapshots and eventually host-facing document values.
 - `EditorCore`: UTF-16-aware edit operations and legacy behavior characterization,
@@ -395,7 +396,7 @@ must never be presented as completion of the full application modernization.
 
 ## Milestone 2 progress — native document/editor adapter
 
-- Added `MacDownUI` as a separately testable native adapter target.
+- Added `SnowfolioUI` as a separately testable native adapter target.
 - `MarkdownDocument` conforms to the actual macOS 27 `Document` protocols with
   FileWrapper reader/writer adapters and immutable byte-preserving snapshots.
 - Main-actor observable source state; explicit programmatic undo/redo registration.
@@ -415,7 +416,7 @@ must never be presented as completion of the full application modernization.
 
 ## Added requirements: adaptive icon and zero legacy first-party code
 
-- Ship an original layered Liquid Glass app icon. `Modern/Resources/AppIcon.icon` is
+- Ship an original layered Liquid Glass app icon. `App/Resources/AppIcon.icon` is
   editable in Apple Icon Composer; its SVG layers are original vector artwork.
 - Verify Default, Dark, Clear Light/Dark, and Tinted Light/Dark using Apple's renderer.
   The six real renderings are in `docs/design/icon`, with `Appearances.png` as the sheet.
@@ -437,8 +438,8 @@ must never be presented as completion of the full application modernization.
 
 ## Native host integration evidence
 
-The generated `Modern/MacDownModern.xcworkspace` builds a real `.app` with the local
-Swift package. `Tools/build-modern-app.sh` reproduces generation/build and verifies
+The generated `App/Snowfolio.xcworkspace` builds a real `.app` with the local
+Swift package. `Tools/build-snowfolio.sh` reproduces generation/build and verifies
 arm64 output and compiled adaptive icon resources. The app, debug dylib and preview
 dylib were inspected as arm64. The full app is still an incremental migration build.
 
@@ -590,10 +591,10 @@ validated release step. Do not replace an unrelated application or change plain-
 file defaults. The user also requests upgraded Markdown document/file-type icons and
 macOS registration; keep those registrations distinct from default-app changes.
 
-Product name confirmed: **MacDown**. Keep the original glacial-blue icon
-style and M↓ Markdown mark. The user chose to keep **MacDown** for now. Use MacDown for visible branding and the app
-bundle; retain stable internal identifiers and preference migration history. Preserve
-all copyright and license notices.
+Product name confirmed: **Snowfolio** (superseding the earlier MacDown working name).
+Keep the glacial-blue icon style and M↓ Markdown format mark. Use Snowfolio for current
+visible branding and the app bundle; retain compatibility identifiers and preference
+migration history. Preserve all copyright and license notices.
 
 ## Markdown command engine and document icons
 
@@ -606,8 +607,8 @@ selection mapping. This engine is tested but **not yet wired into the native edi
 Format menu**; native undo/input/IME integration remains the next required editing step.
 Latest core validation: **63 tests across 13 suites**, seven arm64 executables, all passed.
 
-MacDown is the retained product name. The modern bundle is now `MacDown.app`, with
-`CFBundleName` and `CFBundleDisplayName` set to MacDown. Stable bundle identifiers and
+The current product name and bundle are **Snowfolio** / `Snowfolio.app`, with
+`CFBundleName` and `CFBundleDisplayName` set to Snowfolio. Stable bundle identifiers and
 preference migration remain intact. A separate glacial-blue document identity retains
 the M↓ mark without an app-shaped background around the page. Native `UTTypeIcons`
 references compiled background/badge icon sets, allowing macOS to supply its own folded
@@ -763,7 +764,7 @@ source-editor styling still remain; the overall modernization goal stays active.
 
 The user likes the current Notebook/callout design and asks to preserve its overall
 look. Notion remains a reference for readable document structure and emoji interaction,
-while MacDown must develop its own visual identity and follow Apple's current design
+while Snowfolio must develop its own visual identity and follow Apple's current design
 guidelines. Use native Liquid Glass in appropriate toolbars, controls and popovers;
 keep writing/reading surfaces quiet, opaque and legible. Preserve the established
 glacial-blue app identity and native Mac behavior rather than reproducing Notion's
@@ -776,7 +777,7 @@ picker now being completed and later workspace/UI work.
 ## Native callout emoji picker — 2026-11-06
 
 The requested picker and refined callout layout are implemented. After read-only visual
-inspection of the authorized Notion reference, MacDown now uses a larger icon gutter,
+inspection of the authorized Notion reference, Snowfolio now uses a larger icon gutter,
 quiet type-specific surfaces and a native transient NSPopover. Search, Unicode category
 selection, recents, callout suggestions, random choice and reset operate locally. The
 popover adopts native system appearance and disables presentation animation for Reduce
@@ -864,13 +865,13 @@ ranges, outline and source syntax remain unchanged; only the render tree receive
 trusted wrappers containing escaped Prism output. Unknown, unlabelled and over-limit
 blocks remain complete escaped code. Code inside callouts retains its original behavior.
 
-The new MacDown theme adapts to light/dark appearance and printing, with a contrast
+The Snowfolio theme adapts to light/dark appearance and printing, with a contrast
 fallback. All eight original built-in Prism themes are available: Prism, Coy, Dark,
 Funky, Okaidia, Solarized Light, Tomorrow and Twilight. Legacy theme names are matched
 case-insensitively; empty/default names and unknown-name fallback preserve the original
 Prism default behavior. Existing explicit `htmlSyntaxHighlighting` and theme preferences
 are migrated without replacing user choices. Theme changes update CSS in place and keep
-existing code nodes and reading anchors. New installs use the adaptive MacDown theme.
+existing code nodes and reading anchors. New installs use the adaptive Snowfolio theme.
 
 HTML export exposes independent “Include document styles” and “Include code highlighting”
 controls. Token markup and the selected local CSS ship in the exported HTML; no script

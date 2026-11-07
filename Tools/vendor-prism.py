@@ -13,14 +13,14 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = '1.30.0'
 URL = f'https://registry.npmjs.org/prismjs/-/prismjs-{VERSION}.tgz'
 INTEGRITY = 'DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw=='
-DEST = ROOT / 'Packages/MacDownCore/Sources/CodeHighlightCore/Resources'
+DEST = ROOT / 'Packages/SnowfolioCore/Sources/CodeHighlightCore/Resources'
 
 def main():
     archive = urllib.request.urlopen(URL, timeout=30).read()
     if base64.b64encode(hashlib.sha512(archive).digest()).decode() != INTEGRITY:
         raise ValueError('Prism archive checksum mismatch')
     DEST.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix='macdown-prism-') as folder:
+    with tempfile.TemporaryDirectory(prefix='snowfolio-prism-') as folder:
         folder = Path(folder)
         archive_path = folder / 'prism.tgz'
         archive_path.write_bytes(archive)

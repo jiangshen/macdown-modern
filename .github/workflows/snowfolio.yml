@@ -1,0 +1,41 @@
+name: Snowfolio native builds
+
+on:
+  push:
+    paths:
+      - 'Packages/SnowfolioCore/**'
+      - 'App/**'
+      - 'Tools/build-snowfolio.sh'
+      - 'Tools/validate-modernization.sh'
+      - '.github/workflows/snowfolio.yml'
+  pull_request:
+    paths:
+      - 'Packages/SnowfolioCore/**'
+      - 'App/**'
+      - 'Tools/build-snowfolio.sh'
+      - 'Tools/validate-modernization.sh'
+      - '.github/workflows/snowfolio.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  swift-foundations:
+    # Native arm64 macOS 27 / Xcode 27 hosted image. See actions/runner-images.
+    runs-on: xcode-27
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Build, test and verify Apple Silicon output
+        run: bash Tools/validate-modernization.sh "$RUNNER_TEMP/snowfolio-validation"
+
+  native-app:
+    runs-on: xcode-27
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install project generator
+        run: brew install tuist
+      - name: Build native app and run document UI tests
+        run: bash Tools/build-snowfolio.sh --test

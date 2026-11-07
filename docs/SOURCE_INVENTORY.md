@@ -100,11 +100,11 @@ Resource initialization JavaScript, Handlebars templates, AppleScript dictionary
 
 ## Modern parser ownership boundary
 
-`Packages/MacDownCore/Sources/MarkdownCore` contains first-party Swift orchestration and
+`Packages/SnowfolioCore/Sources/MarkdownCore` contains first-party Swift orchestration and
 owned AST values. Its pinned SPM dependency `swiftlang/swift-cmark` 0.9.0 provides the
 maintained third-party C CommonMark/GFM engine. Native pointers stay actor-confined;
 no vendored parser C is counted toward first-party Swift migration. The dependency's
-COPYING notice ships as `Modern/Resources/Licenses/swift-cmark.txt`.
+COPYING notice ships as `App/Resources/Licenses/swift-cmark.txt`.
 
 ## Progressive retirement ledger
 
@@ -125,7 +125,7 @@ subsystems and their build references only after their remaining parity gates pa
 
 ## Updated code-highlighting ownership boundary
 
-`Packages/MacDownCore/Sources/CodeHighlightCore` contains first-party Swift orchestration
+`Packages/SnowfolioCore/Sources/CodeHighlightCore` contains first-party Swift orchestration
 and a pinned Prism 1.30.0 third-party resource bundle. The bundle includes all upstream
 language components, the eight built-in themes, MIT notice, catalog and provenance.
 `Tools/vendor-prism.py` is development tooling; Node is not bundled or needed to run the
@@ -140,4 +140,4 @@ The modern parser uses the maintained CYaml event backend bundled with SPM Yams 
 property HTML; `MarkdownNavigation.swift` owns heading IDs and TOC decoration. Original
 YAML-framework/HTMLTabularize and Hoedown TOC code are no longer needed by the modern app,
 but their old-target consumers (including presumed filename logic) remain to migrate.
-Yams and libyaml notices are retained in `Modern/Resources/Licenses`.
+Yams and libyaml notices are retained in `App/Resources/Licenses`.

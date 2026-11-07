@@ -8,7 +8,7 @@ renderer="$xcode_app/Contents/Applications/Icon Composer.app/Contents/Executable
 output="${1:-$repo_root/Build/IconPreviews}"
 mkdir -p "$output"
 for rendition in Default Dark ClearLight ClearDark TintedLight TintedDark; do
-    args=("$repo_root/Modern/Resources/AppIcon.icon" --export-image
+    args=("$repo_root/App/Resources/AppIcon.icon" --export-image
           --output-file "$output/$rendition.png" --platform macOS --rendition "$rendition"
           --width 512 --height 512 --scale 1 --design-generation 27)
     if [[ "$rendition" = Tinted* ]]; then

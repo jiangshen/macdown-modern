@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
-package_path="$repo_root/Packages/MacDownCore"
+package_path="$repo_root/Packages/SnowfolioCore"
 artifact_root="${1:-$repo_root/Build/Modernization}"
 mkdir -p "$artifact_root"
 artifact_root="$(cd "$artifact_root" && pwd)"

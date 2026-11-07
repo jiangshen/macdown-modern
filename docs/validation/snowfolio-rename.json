@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-06",
+  "product": "Snowfolio",
+  "selectedByUser": true,
+  "application": "Build/Snowfolio/DerivedData/Build/Products/Debug/Snowfolio.app",
+  "version": "0.2.0",
+  "project": "App/Snowfolio.xcworkspace",
+  "scheme": "Snowfolio",
+  "package": "Packages/SnowfolioCore",
+  "uiModule": "SnowfolioUI",
+  "repository": "https://github.com/jiangshen/snowfolio",
+  "branch": "modernization/swift-foundations",
+  "checkout": {
+    "directory": "snowfolio",
+    "compatibilitySymlink": "macdown-modern"
+  },
+  "compatibility": {
+    "bundleIdentifier": "local.macdown.modern",
+    "tabbingIdentifier": "local.macdown.modern.documents",
+    "persistedPreferenceKeysChecked": 22,
+    "changedPreferenceKeys": [],
+    "originalAttributionPreserved": true,
+    "unchangedIconAndLicenseResources": 45,
+    "resourceComparisonBaseline": "5022bef"
+  },
+  "nativeUI": [
+    "Launched the renamed Snowfolio app from its new checkout",
+    "Observed Snowfolio menu and About Snowfolio / Hide Snowfolio / Quit Snowfolio",
+    "Observed Snowfolio Version 0.2.0 (1) and the existing glacial icon",
+    "Existing two-document native tab group, layout and source selection reopened across the rename"
+  ],
+  "registration": {
+    "registered": true,
+    "markdownHandlerVerified": true,
+    "defaultsUnchanged": true,
+    "defaultSetterCalled": false,
+    "previousDevelopmentBundle": "Unregistered and archived outside the checkout with a disabled extension"
+  },
+  "validation": {
+    "nativeBuild": "build-for-testing passed",
+    "testCount": 122,
+    "suiteCount": 24,
+    "arm64TestExecutables": 7,
+    "renamedAppAndUIFormatting": "passed",
+    "shellSyntax": "passed",
+    "vendorToolPythonSyntax": "passed"
+  },
+  "remaining": [
+    "Full modernization remains active",
+    "Physical Finder drag gesture acceptance and native OpenDocumentAction from an actual drop",
+    "Scroll restoration, remaining parity, accessibility, performance and production release gates",
+    "Signed release installation and default association remain gated on readiness"
+  ]
+}
