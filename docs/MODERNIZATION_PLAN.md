@@ -1387,3 +1387,23 @@ case still takes about one second warm and peaks near 979 MiB; cold highlighting
 significant first-render cost. These are required optimization follow-ups, not a pass
 for M6's UI typing, preview-publication, memory-growth or energy targets. The full
 Snowfolio modernization goal remains active and incomplete.
+
+
+## List selection seam — 2026-11-06
+
+The user's selected numbered-list screenshot was reproduced in the running reading
+preview; matching selection in the observed default-font native source editor did
+not show it. Preserve that distinction because the user identified the source editor.
+WebKit resolves system Highlight with alpha (0.8 in dark appearance on this host),
+so overlapping marker/text selection paint can create a rectangular shade seam.
+The shared document style now uses an opaque relative RGB version of that system
+color with system HighlightText, retaining user accent choice and list semantics.
+
+Native WebKit regressions in both appearances compare single/overlap painted pixels,
+assert opaque backgrounds and selected-text contrast >=4.5:1, and preserve selection
+text/list node identity through a style update. The same test fails with the original
+translucent Highlight and passes with the opaque color. Active-selection WebKit
+snapshots omit selection; they are not visual proof. Direct post-relaunch desktop
+inspection remains open because the Mac locked during verification. Record any
+separate source-editor reproduction before claiming that report fully closed.
+See `validation/list-selection.json`. The full modernization remains active.

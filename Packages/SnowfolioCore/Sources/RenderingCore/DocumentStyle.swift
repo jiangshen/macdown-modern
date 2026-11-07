@@ -46,6 +46,8 @@ public struct DocumentStyle: Hashable, Sendable {
       --document-width: 708px;
     }
     * { box-sizing: border-box; }
+    /* Opaque system highlight avoids overlapping marker/text selection seams in WebKit. */
+    ::selection { background-color: rgb(from Highlight r g b / 1); color: HighlightText; text-shadow: none; }
     html { background: var(--paper); }
     body {
       margin: 0; color: var(--ink); background: var(--paper);
