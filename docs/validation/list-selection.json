@@ -112,5 +112,30 @@
       "priorityInversionWarnings": 12,
       "performanceAttribution": "Existing measured native performance and warning attribution gate remains open"
     }
+  },
+  "shortScreenshotFollowup": {
+    "date": "2026-11-07",
+    "screenshotTime": "03:42:42 -0800; predates mixed-list fix commit c5cfb6c at 03:49:35",
+    "change": "Add exact First/Second/dfdfd short mixed-list fixture at 28px and explicitly verify the second numbered item shares the first item and bullet text edge; existing production correction retained.",
+    "localValidation": {
+      "tests": 5,
+      "suites": 2,
+      "result": "passed",
+      "warnings": 0,
+      "errors": 0,
+      "listParameterCases": 6,
+      "checks": [
+        "Light and dark appearances",
+        "Exact short list and long wrapped tight/loose lists",
+        "Numbered and bullet marker gap of .5em",
+        "All three text edges within one CSS pixel",
+        "Selected text and node identity preserved through font/size changes",
+        "Source styling preserves selection, storage and native undo"
+      ]
+    },
+    "evidence": "/private/tmp/snowfolio-reported-list-acceptance.json",
+    "desktopAcceptance": "Mac remains locked; no fresh desktop or pixel-level visual acceptance claimed. Existing prior direct acceptance is recorded separately.",
+    "productionCodeChanged": false,
+    "hosted": "Pending test-only branch push"
   }
 }

@@ -13,6 +13,15 @@ struct NativeSelectionRenderingTests {
     "Numbered list selection and hanging indentation survive style updates",
     arguments: [false, true], [false, true])
   func listSelection(dark: Bool, loose: Bool) async throws {
+    try await checkListSelection(dark: dark, loose: loose, wrapping: true)
+  }
+
+  @Test("Reported short mixed list shares a text edge at enlarged size", arguments: [false, true])
+  func reportedMixedList(dark: Bool) async throws {
+    try await checkListSelection(dark: dark, loose: false, wrapping: false)
+  }
+
+  private func checkListSelection(dark: Bool, loose: Bool, wrapping: Bool) async throws {
     _ = NSApplication.shared
     let coordinator = NativeMarkdownPreview.Coordinator()
     let web = WKWebView(
@@ -31,10 +40,14 @@ struct NativeSelectionRenderingTests {
       coordinator.resources.cancelAll()
       window.close()
     }
+    let start = wrapping ? 4 : 1
+    let bulletText =
+      wrapping ? "Bullet " + String(repeating: "wrapping bullet text ", count: 30) : "dfdfd"
     let source =
-      "4. First " + String(repeating: "wrapping paragraph text ", count: 30)
+      "\(start). First"
+      + (wrapping ? " " + String(repeating: "wrapping paragraph text ", count: 30) : "")
       + (loose ? "\n\n" : "\n")
-      + "5. Second\n\n- Bullet " + String(repeating: "wrapping bullet text ", count: 30)
+      + "\(start + 1). Second\n\n- " + bulletText
       + "\n  - Nested circle\n    - Nested square\n\n# Next section\n\n1. [x] Completed task"
     let parsed = try await MarkdownProcessor().render(source)
     let html =
@@ -44,7 +57,9 @@ struct NativeSelectionRenderingTests {
         <ul><li style="list-style-type:circle">Authored item</li></ul>
         <ul class="custom-list"><li>Custom list</li></ul>
         """
-    coordinator.update(web, html: html, directory: nil, remoteImages: false)
+    coordinator.update(
+      web, html: html, directory: nil, remoteImages: false,
+      style: .init(textSize: wrapping ? 16 : 28))
     var ready = false
     for _ in 0..<200 {
       if try await evaluate(
@@ -72,8 +87,9 @@ struct NativeSelectionRenderingTests {
       const baseline=selection.toString(); baselineStyle.remove(); return baseline;
       """, in: web)
     #expect(
-      selected.contains("First") && selected.contains("Second") && selected.contains("Bullet"))
-    try await expectListLayout(in: web)
+      selected.contains("First") && selected.contains("Second")
+        && selected.contains(bulletText.trimmingCharacters(in: .whitespacesAndNewlines)))
+    try await expectListLayout(in: web, start: start, wrapping: wrapping)
     coordinator.update(
       web, html: html, directory: nil, remoteImages: false,
       style: .init(font: .serif, textSize: 20))
@@ -91,7 +107,7 @@ struct NativeSelectionRenderingTests {
       try await evaluate(
         "return String(window.selectedFirst===document.querySelector('li') && window.selectedLast===document.querySelectorAll('li')[1]);",
         in: web) == "true")
-    try await expectListLayout(in: web)
+    try await expectListLayout(in: web, start: start, wrapping: wrapping)
   }
 
   private func evaluate(_ script: String, in web: WKWebView) async throws -> String {
@@ -103,7 +119,7 @@ struct NativeSelectionRenderingTests {
         as? String)
   }
 
-  private func expectListLayout(in web: WKWebView) async throws {
+  private func expectListLayout(in web: WKWebView, start: Int, wrapping: Bool) async throws {
     #expect(
       try await evaluate(
         """
@@ -111,6 +127,10 @@ struct NativeSelectionRenderingTests {
         const text=item.firstElementChild?.firstChild ?? item.firstChild;
         const range=document.createRange(); range.selectNodeContents(text);
         const lines=[...range.getClientRects()].filter(r=>r.width>1);
+        const second=list.children[1];
+        const secondText=second.querySelector('p')?.firstChild ?? second.firstChild;
+        const secondRange=document.createRange(); secondRange.selectNodeContents(secondText);
+        const secondLeft=secondRange.getBoundingClientRect().left;
         const marker=getComputedStyle(item,'::before');
         const task=document.querySelector('input[type=checkbox]').closest('li');
         const typed=document.querySelector('ol[type] > li');
@@ -124,17 +144,18 @@ struct NativeSelectionRenderingTests {
         const nativeItems=[...document.querySelectorAll('ul[style]>li,li[style],ul[class]>li')];
         const expectedGap=.5*parseFloat(getComputedStyle(item).fontSize);
         const gap=e=>parseFloat(getComputedStyle(e,'::before').right)-e.getBoundingClientRect().width;
-        return String(list.start===4 && list.children.length===2 &&
+        return String(list.start===\(start) && list.children.length===2 &&
           getComputedStyle(item).display==='list-item' &&
           marker.content!=='none' && marker.content!=='normal' &&
           getComputedStyle(bullet).listStyleType==='none' && bulletMarker.content==='"•"' &&
           before(circle)==='"◦"' && before(square)==='"▪"' &&
           Math.abs(gap(item)-expectedGap)<1 && Math.abs(gap(bullet)-expectedGap)<1 &&
           Math.abs(item.getBoundingClientRect().left-bullet.getBoundingClientRect().left)<1 &&
-          bulletLines.length>2 && bulletLines.every(r=>Math.abs(r.left-lines[0].left)<1) &&
+          (\(wrapping) ? bulletLines.length>2 : bulletLines.length===1) && bulletLines.every(r=>Math.abs(r.left-lines[0].left)<1) &&
           nativeItems.every(e=>['none','normal'].includes(before(e))) &&
-          lines.length>2 && lines.every(r=>Math.abs(r.left-lines[0].left)<1) &&
+          (\(wrapping) ? lines.length>2 : lines.length===1) && lines.every(r=>Math.abs(r.left-lines[0].left)<1) &&
           Math.abs(lines[0].left-item.getBoundingClientRect().left)<1 &&
+          Math.abs(secondLeft-lines[0].left)<1 &&
           ['none','normal'].includes(before(task)) && ['none','normal'].includes(before(typed)) &&
           getComputedStyle(typed).listStyleType==='lower-roman');
         """, in: web) == "true")

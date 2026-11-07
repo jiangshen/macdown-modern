@@ -2398,3 +2398,22 @@ remaining work is input-normalized source-line projection, not another Markdown
 grammar. Direct desktop/IME/VoiceOver, full native performance, CSS/templates, remaining
 parity, integration/releases and safe legacy retirement remain open. The full goal
 stays active and incomplete.
+
+
+## Reported short mixed-list acceptance — 2026-11-07
+
+The 03:42:42 screenshot predates the existing mixed-list correction in `c5cfb6c`
+(03:49:35). Production styling is unchanged in this follow-up. The native WebKit
+regression now also exercises the exact First/Second/dfdfd list at 28px, in light and
+dark appearances, before and after a serif/20px style change. Both numbered items and
+the bullet text must share their text edge within one CSS pixel, with a .5em marker
+gap. The wrapped tight/loose cases and authored/task/nested marker checks remain.
+
+Five targeted tests across two suites pass locally without warnings or errors,
+including all six list parameter cases and the three existing source presentation,
+selection/undo and stale/composition guards. Native copied text trims trailing
+whitespace, so the full long bullet expectation uses its trimmed text. This is a
+layout/selection regression, not a pixel-level screenshot assertion. Desktop access
+remains locked; no fresh visual acceptance or running-app refresh is claimed. See
+`validation/list-selection.json`. Native input normalization work remains uncommitted
+and separately gated; the full modernization objective stays active and incomplete.
