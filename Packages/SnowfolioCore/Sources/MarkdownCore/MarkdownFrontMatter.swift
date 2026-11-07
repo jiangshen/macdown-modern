@@ -1,10 +1,6 @@
 import CYaml
 import Foundation
 
-public enum MarkdownRenderNotice: String, Sendable {
-  case invalidFrontMatter, complexFrontMatter
-}
-
 /// Ordered, literal metadata. YAML aliases stay shared node references rather than
 /// expanding an untrusted graph into exponentially many Swift objects.
 public struct MarkdownFrontMatter: Sendable {

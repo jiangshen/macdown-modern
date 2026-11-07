@@ -121,7 +121,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
-| Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, literal YAML properties, heading links and TOC implemented; math/diagram rendering pending |
+| Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC and offline equations implemented; remaining MathJax compatibility and diagrams pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | Pending |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
@@ -233,6 +233,60 @@ selected third-party revisions with Package.resolved when their integration begi
 - Remove each first-party `.m`/`.h` only after corresponding consumers/tests migrate.
 - Gate: essential checklist complete, old tests ported, no first-party Objective-C
   compile sources in modern targets, no CocoaPods dependency in modern builds.
+
+#### Offline equations — implemented increment (2026-11-06)
+
+The current native app uses pinned **KaTeX 0.19.1** in an actor-confined JavaScriptCore
+context. First-party orchestration and parser extension code are Swift; the maintained
+third-party engine is an explicit JavaScript exception. Expressions enter as values,
+with no DOM, file/network/native bindings, trusted TeX commands disabled, bounded macro
+expansion/size/input/output and a bounded cache. Macro definitions are isolated between
+expressions. Unsupported/malformed or oversized expressions render escaped source and
+a preview notice, without dropping the source or failing the whole document.
+
+Supported syntax: `math` fenced blocks; same-line `$$…$$`; display `$$` delimiters on
+separate lines; display `\[…\]` and the original doubled `\\[…\\]` forms on separate
+lines; the original `\\(…\\)` inline syntax; and optional same-line `$…$`. Native cmark
+extension hooks protect TeX punctuation before Markdown inline processing and keep the
+single native parse/AST/source-position model. Stand-alone block delimiters are matched
+against future candidates before opening, preventing an unmatched opener from swallowing
+the rest of the document. Native parser code/URL/image/quote/list scopes remain in charge;
+UTF-8 ranges and source editor styling are preserved. Delimiter indexing avoids rescanning
+long unmatched-dollar paragraphs quadratically.
+
+**Render equations** and **Use single dollar signs for inline equations** migrate the
+historical `htmlMathJax` / `htmlMathJaxInlineDollar` keys, both off by default. These options
+are shared by live/manual preview and fresh HTML/PDF/print export snapshots. KaTeX generates
+HTML plus semantic MathML; page JavaScript remains disabled. All 20 original WOFF2 fonts
+are embedded into the stylesheet, including a full MIT distribution notice in exported
+HTML. No Node, CDN or runtime download is required. The app build verifies pinned code,
+stylesheet/license checksums and all 20 font declarations. `Tools/vendor-katex.py`
+reproduces the assets from the integrity-pinned npm release.
+
+Validation: **156 tests in 32 suites**, seven native arm64 test executables, native
+build-for-testing, strict changed-Swift formatting, shell/Python syntax and diff checks.
+Real WebKit checks load the embedded fonts, verify visible equation geometry and MathML,
+retain equation node identity across a patch, and take inspected light/dark snapshots.
+Native print-to-PDF yields a one-page document containing the equation and both surrounding
+checkpoints. Regression cases cover fractions, sums, integrals/matrices, malformed and
+malicious TeX, expansion loops, macro isolation, currency/code/link/image boundaries,
+CRLF/Unicode source positions, blank lines, quotes/lists, code preceding a display block,
+legacy delimiters, unmatched input, portable HTML and preference migration.
+
+The native test suites now share an asynchronous exclusive scope because NSApplication
+window/focus/printing state is process-wide. Per-suite `.serialized` alone allowed
+separate suites to interleave windows and produced scrolling timeouts. Tests still use
+condition-based waits and run without weakening assertions or increasing timeouts.
+
+**The math parity gate remains open.** Remaining work includes full MathJax-only extension
+compatibility, document-wide macro definitions/equation references/numbering, single-
+backslash inline delimiters, multiline inline math, and display delimiters mixed with
+body text across lines. KaTeX's supported TeX set is not identical to MathJax. Preserve
+this distinction and add the required compatibility behavior before retiring the old
+MathJax target/resources. Mermaid/Graphviz, custom themes/templates and the other
+modernization requirements also remain. Direct desktop/VoiceOver/real IME acceptance is
+still pending the existing Mac unlock request. No production installation or default
+handler change is claimed. See `docs/validation/offline-math.json`.
 
 ### M4 — Native workspace and design
 

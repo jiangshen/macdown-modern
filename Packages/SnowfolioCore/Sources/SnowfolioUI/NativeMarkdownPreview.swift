@@ -161,7 +161,8 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         loadedDirectory = directory
         expectsInitialNavigation = true
         navigation = view.loadHTMLString(
-          PreviewHTML.document(remoteImages: remoteImages, includeHighlighting: true, style: style),
+          PreviewHTML.document(
+            remoteImages: remoteImages, includeHighlighting: true, style: style, includeMath: true),
           baseURL: URL(string: "mdasset://document/"))
       } else {
         applyLatest(to: view)

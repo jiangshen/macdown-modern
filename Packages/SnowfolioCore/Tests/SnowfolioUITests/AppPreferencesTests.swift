@@ -6,6 +6,23 @@ import Testing
 @Suite("Application preferences")
 @MainActor
 struct AppPreferencesTests {
+  @Test("Math choices migrate independently and preserve explicit disabled values")
+  func mathPreferences() throws {
+    let domain = "MathPreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let preferences = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["htmlMathJax": true, "htmlMathJaxInlineDollar": true])
+    #expect(preferences.renderingOptions.math && preferences.renderingOptions.inlineDollarMath)
+    preferences.math = false
+    preferences.inlineDollarMath = false
+    let reopened = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["htmlMathJax": true, "htmlMathJaxInlineDollar": true])
+    #expect(!reopened.renderingOptions.math && !reopened.renderingOptions.inlineDollarMath)
+  }
+
   @Test("Scroll linking defaults on and preserves an explicit disabled choice")
   func scrollLinkPreference() throws {
     let domain = "ScrollPreferencesTests.\(UUID().uuidString)"

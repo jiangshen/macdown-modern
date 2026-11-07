@@ -40,7 +40,8 @@ public struct MarkdownExport: Sendable {
       document: PreviewHTML.document(
         body: fragment, remoteImages: remoteImages,
         title: title, includeStyles: includeStyles,
-        includeHighlighting: result.highlightedCodeBlocks > 0, style: style))
+        includeHighlighting: result.highlightedCodeBlocks > 0, style: style,
+        includeMath: result.mathExpressions > 0))
   }
 
   private static func embedAssets(in html: String, replacements: [String: String]) -> String {

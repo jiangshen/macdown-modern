@@ -7,7 +7,7 @@ Mac controls.
 
 The Swift app includes a TextKit 2 editor, native document tabs, linked scrolling,
 configurable pane order, per-document reading zoom, live preview, syntax colors, callouts with an emoji picker,
-YAML properties, a table of contents, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
+YAML properties, a table of contents, optional offline equations, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
 performance measurement and release readiness are still in progress. See the
 [modernization roadmap](docs/MODERNIZATION_PLAN.md) and
 [source inventory](docs/SOURCE_INVENTORY.md).
@@ -40,6 +40,17 @@ Reading zoom is in the View menu: **⌘⌥+** / **⌘⌥−** to magnify and **�
 actual size. It changes the source and preview together without changing document text
 or export typography. Each document remembers its own zoom. Editor settings can also
 scale the preview relative to the editor's configured font size.
+
+## Equations
+
+Enable **Render equations** in Markdown settings. Use a `math` code block or put `$$`
+on separate lines around multiline TeX. Same-line `$$…$$` and the original doubled
+`\\(…\\)` inline delimiters also work. Single `$…$` is a separate optional setting.
+
+Equations render offline in preview and HTML/PDF/print output. Exported HTML includes
+its fonts and distribution notice. Unsupported TeX remains visible as source. Full
+MathJax extension/macro/numbering compatibility and some mixed/multiline delimiter forms
+are still being migrated; see the roadmap for the exact remaining gates.
 
 ## Identity and attribution
 

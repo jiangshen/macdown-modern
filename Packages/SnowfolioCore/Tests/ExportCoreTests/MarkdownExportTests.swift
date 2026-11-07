@@ -6,6 +6,23 @@ import Testing
 
 @Suite("Portable Markdown export")
 struct MarkdownExportTests {
+  @Test("Math exports carry accessible equations and all fonts without executable scripts")
+  func mathExport() async throws {
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    let result = try await MarkdownExport.build(
+      source: "```math\n\\frac{1}{2}+\\sqrt{x}\n```", options: options,
+      title: "Offline math", directory: nil, includeStyles: false)
+    #expect(result.fragment.contains("<math"))
+    #expect(result.document.contains("id=\"math-style\""))
+    #expect(result.document.contains("data:font/woff2;base64,"))
+    #expect(result.document.contains("Permission is hereby granted"))
+    #expect(!result.document.contains("url(fonts/"))
+    #expect(!result.document.contains("<script"))
+    #expect(result.document.contains("script-src 'none'"))
+    #expect(!result.document.contains("id=\"document-style\""))
+  }
+
   @Test("HTML escapes the document title and respects styled versus plain output")
   func documentEnvelope() async throws {
     let styled = try await MarkdownExport.build(

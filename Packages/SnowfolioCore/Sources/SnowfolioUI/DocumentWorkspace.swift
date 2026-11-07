@@ -98,7 +98,10 @@ public struct DocumentWorkspace: View {
                 localized:
                   "This metadata block is too complex to display as properties. It is shown as Markdown."
               )
-              : String(localized: "Front matter is not valid YAML. It is shown as Markdown.")
+              : renderNotices.contains(.invalidFrontMatter)
+                ? String(localized: "Front matter is not valid YAML. It is shown as Markdown.")
+                : String(
+                  localized: "Some equations could not be rendered. Their TeX source is shown.")
           )
           .font(.caption).foregroundStyle(.secondary).padding(8)
         } else if largeFilePaused {

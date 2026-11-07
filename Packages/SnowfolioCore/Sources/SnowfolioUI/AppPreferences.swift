@@ -31,6 +31,8 @@ public final class AppPreferences {
   public var codeTheme: CodeHighlightTheme {
     didSet { defaults.set(codeTheme.rawValue, forKey: "htmlHighlightingThemeName") }
   }
+  public var math: Bool { didSet { save(math, "htmlMathJax") } }
+  public var inlineDollarMath: Bool { didSet { save(inlineDollarMath, "htmlMathJaxInlineDollar") } }
   public var alerts: Bool { didSet { save(alerts, "extensionAlerts") } }
   public var tables: Bool { didSet { save(tables, "extensionTables") } }
   public var strikethrough: Bool { didSet { save(strikethrough, "extensionStrikethough") } }
@@ -88,6 +90,8 @@ public final class AppPreferences {
     editorOnRight = boolean("editorOnRight", fallback: false)
     synchronizedScrolling = boolean("editorSyncScrolling", fallback: true)
     syntaxHighlighting = boolean("editorSyntaxHighlighting", fallback: true)
+    math = boolean("htmlMathJax", fallback: false)
+    inlineDollarMath = boolean("htmlMathJaxInlineDollar", fallback: false)
     alerts = boolean("extensionAlerts", fallback: true)
     tables = boolean("extensionTables", fallback: true)
     strikethrough = boolean("extensionStrikethough", fallback: true)
@@ -137,6 +141,8 @@ public final class AppPreferences {
     options.frontMatter = frontMatter
     options.tableOfContents = tableOfContents
     options.codeHighlighting = codeHighlighting
+    options.math = math
+    options.inlineDollarMath = inlineDollarMath
     options.alerts = alerts
     options.tables = tables
     options.strikethrough = strikethrough

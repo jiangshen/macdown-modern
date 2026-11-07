@@ -16,6 +16,7 @@ public enum MarkdownNodeKind: Equatable, Sendable {
   case document, frontMatter, heading, paragraph, text, codeBlock, inlineCode, link, image
   case emphasis, strong, strikethrough, list, listItem, blockquote, html
   case table, tableRow, tableCell, thematicBreak, softBreak, lineBreak
+  case math(display: Bool)
   case other(String)
 
   init(nativeName: String) {
@@ -83,6 +84,8 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var codeHighlighting = true
   public var frontMatter = true
   public var tableOfContents = true
+  public var math = false
+  public var inlineDollarMath = false
 
   public init() {}
 }
@@ -93,8 +96,13 @@ public struct RenderedMarkdown: Sendable {
   public let headings: [MarkdownHeading]
   public let syntax: MarkdownSyntax?
   public let highlightedCodeBlocks: Int
+  public let mathExpressions: Int
   public let frontMatter: MarkdownFrontMatter?
   public let notices: [MarkdownRenderNotice]
+}
+
+public enum MarkdownRenderNotice: String, Sendable {
+  case invalidFrontMatter, complexFrontMatter, unsupportedMath
 }
 
 public enum MarkdownRenderingError: Error, Sendable {

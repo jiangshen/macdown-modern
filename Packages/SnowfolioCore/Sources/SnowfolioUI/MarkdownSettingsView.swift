@@ -91,6 +91,16 @@ public struct MarkdownSettingsView: View {
             .accessibilityIdentifier("markdownTableOfContents")
           Toggle("Notes, tips and warnings", isOn: $preferences.alerts)
             .accessibilityIdentifier("markdownAlerts")
+          Toggle("Render equations", isOn: $preferences.math)
+            .accessibilityIdentifier("markdownMath")
+          Toggle(
+            "Use single dollar signs for inline equations", isOn: $preferences.inlineDollarMath
+          )
+          .disabled(!preferences.math).accessibilityIdentifier("markdownInlineMath")
+          Text(
+            "Use math code blocks or $$…$$ for display equations. Single $…$ is optional. Unsupported equations stay visible."
+          )
+          .font(.caption).foregroundStyle(.secondary)
           Toggle("Tables", isOn: $preferences.tables)
           Toggle("Task lists", isOn: $preferences.taskLists)
           Toggle("Strikethrough", isOn: $preferences.strikethrough)

@@ -1,5 +1,6 @@
 import CodeHighlightCore
 import Foundation
+import MathCore
 import cmark_gfm
 import cmark_gfm_extensions
 
@@ -11,6 +12,7 @@ public actor MarkdownProcessor {
   }()
 
   private var codeHighlighter: CodeHighlighter?
+  private var mathRenderer: MathRenderer?
 
   public init() {}
 
@@ -30,10 +32,15 @@ public actor MarkdownProcessor {
     if options.smartPunctuation { flags |= CMARK_OPT_SMART }
     if options.hardLineBreaks { flags |= CMARK_OPT_HARDBREAKS }
     if options.rawHTML { flags |= CMARK_OPT_UNSAFE }
+    let mathSyntax =
+      options.math
+      ? try MarkdownMath(source: parserSource, inlineDollars: options.inlineDollarMath) : nil
+    defer { withExtendedLifetime(mathSyntax) {} }
     guard let parser = cmark_parser_new(flags) else {
       throw MarkdownRenderingError.allocationFailure
     }
     defer { cmark_parser_free(parser) }
+    if let mathSyntax { cmark_parser_attach_syntax_extension(parser, mathSyntax.native) }
     let extensions = [
       ("table", options.tables), ("strikethrough", options.strikethrough),
       ("tasklist", options.taskLists), ("autolink", options.autolinks), ("tagfilter", true),
@@ -80,6 +87,7 @@ public actor MarkdownProcessor {
     }
     let sourceText = source as NSString
     var codeBlocks: [UnsafeMutablePointer<cmark_node>] = []
+    var mathNodes: [(UnsafeMutablePointer<cmark_node>, String, Bool, Bool)] = []
     var callouts: [(UnsafeMutablePointer<cmark_node>, CalloutMarker)] = []
     var transformedDestinations: [String: String] = [:]
     var identifiers: [UInt: Int] = [:]
@@ -92,7 +100,18 @@ public actor MarkdownProcessor {
       identifiers[UInt(bitPattern: node)] = id
       let parentID = cmark_node_parent(node).flatMap { identifiers[UInt(bitPattern: $0)] }
       let nativeName = String(cString: cmark_node_get_type_string(node))
-      let kind = MarkdownNodeKind(nativeName: nativeName)
+      var kind = MarkdownNodeKind(nativeName: nativeName)
+      if let token = mathSyntax?.token(for: node) {
+        kind = .math(display: token.display)
+        mathNodes.append((node, token.source, token.display, token.block))
+      } else if options.math, kind == .codeBlock,
+        let info = cmark_node_get_fence_info(node),
+        String(cString: info).trimmingCharacters(in: .whitespaces).lowercased() == "math",
+        let literal = cmark_node_get_literal(node)
+      {
+        kind = .math(display: true)
+        mathNodes.append((node, String(cString: literal), true, true))
+      }
       if let transformDestination, kind == .image || kind == .link,
         let destination = cmark_node_get_url(node)
       {
@@ -169,6 +188,28 @@ public actor MarkdownProcessor {
       let toc = try MarkdownNavigation.tableOfContents(headings)
       for node in tocNodes { try MarkdownNavigation.decorateTOC(node, html: toc) }
     }
+    var mathNotices = false
+    for (node, source, display, block) in mathNodes {
+      try Task.checkCancellation()
+      if mathRenderer == nil { mathRenderer = MathRenderer() }
+      guard let rendered = try mathRenderer?.render(source, display: display) else { continue }
+      mathNotices = mathNotices || rendered.issue != nil
+      guard
+        let replacement = cmark_node_new(block ? CMARK_NODE_CUSTOM_BLOCK : CMARK_NODE_CUSTOM_INLINE)
+      else { throw MarkdownRenderingError.allocationFailure }
+      let position =
+        "\(cmark_node_get_start_line(node)):\(cmark_node_get_start_column(node))-\(cmark_node_get_end_line(node)):\(cmark_node_get_end_column(node))"
+      let html =
+        "<span data-sourcepos=\"\(position)\" class=\"md-math\(display ? " md-math-display" : "")\">"
+        + rendered.html + "</span>"
+      guard cmark_node_set_on_enter(replacement, html) == 1,
+        cmark_node_replace(node, replacement) == 1
+      else {
+        cmark_node_free(replacement)
+        throw MarkdownRenderingError.invalidTreeTransformation
+      }
+      cmark_node_free(node)
+    }
     var highlightedCodeBlocks = 0
     for block in codeBlocks {
       try Task.checkCancellation()
@@ -206,7 +247,8 @@ public actor MarkdownProcessor {
     return RenderedMarkdown(
       html: (front?.metadata?.html ?? "") + String(cString: html), nodes: nodes, headings: headings,
       syntax: includeSyntax ? try MarkdownSyntax.build(source: source, nodes: nodes) : nil,
-      highlightedCodeBlocks: highlightedCodeBlocks, frontMatter: front?.metadata,
-      notices: front?.notice.map { [$0] } ?? [])
+      highlightedCodeBlocks: highlightedCodeBlocks, mathExpressions: mathNodes.count,
+      frontMatter: front?.metadata,
+      notices: (front?.notice.map { [$0] } ?? []) + (mathNotices ? [.unsupportedMath] : []))
   }
 }

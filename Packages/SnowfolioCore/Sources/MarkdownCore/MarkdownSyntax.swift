@@ -67,7 +67,7 @@ public struct MarkdownSyntax: Sendable {
       case .strong: style.bold = true
       case .emphasis: style.italic = true
       case .strikethrough: style.strikethrough = true
-      case .codeBlock, .inlineCode, .frontMatter: style.role = .code
+      case .codeBlock, .inlineCode, .frontMatter, .math: style.role = .code
       case .link, .image: style.role = .link
       case .blockquote: style.role = .quote
       case .html: style.role = (node.literal?.hasPrefix("<!--") == true) ? .comment : .code

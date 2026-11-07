@@ -1,10 +1,11 @@
 import Foundation
+import MathCore
 
 public enum PreviewHTML {
   public static func document(
     body: String = "", remoteImages: Bool = false,
     title: String = "", includeStyles: Bool = true, includeHighlighting: Bool = false,
-    style: DocumentStyle = .init()
+    style: DocumentStyle = .init(), includeMath: Bool = false
   ) -> String {
     let imageSources = remoteImages ? "mdasset: data: https:" : "mdasset: data:"
     return """
@@ -12,7 +13,7 @@ public enum PreviewHTML {
       <title>\(escapeText(title))</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-      \(includeStyles ? "<style id=\"document-style\">" + style.css + "</style>" : "")\(includeHighlighting ? "<style id=\"code-style\">" + style.codeCSS + "</style>" : "")</head><body><main id="preview-content">\(body)</main></body></html>
+      \(includeStyles ? "<style id=\"document-style\">" + style.css + "</style>" : "")\(includeHighlighting ? "<style id=\"code-style\">" + style.codeCSS + "</style>" : "")\(includeMath ? "<style id=\"math-style\">" + MathStyle.css + "</style>" : "")</head><body><main id="preview-content">\(body)</main></body></html>
       """
   }
 

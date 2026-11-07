@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-06",
+  "product": "Snowfolio",
+  "feature": "Offline equations in the native renderer and exports",
+  "engine": {
+    "name": "KaTeX",
+    "version": "0.19.1",
+    "gitCommit": "8000fbd4e29cca2c0cb1e88b745af3ed2f436b66",
+    "provenance": "Packages/SnowfolioCore/Sources/MathCore/Resources/KaTeX-Provenance.json",
+    "reproduction": "Tools/vendor-katex.py",
+    "license": "MIT; original notice in app/resources and embedded-font exports",
+    "firstPartyIntegration": "Swift; cmark native syntax hooks; actor-confined JavaScriptCore",
+    "thirdPartyException": "Pinned KaTeX JavaScript/CSS/fonts"
+  },
+  "sources": [
+    "https://katex.org/docs/api",
+    "https://katex.org/docs/security",
+    "https://katex.org/docs/supported",
+    "https://katex.org/versions",
+    "https://github.com/KaTeX/katex-fonts/blob/master/LICENSE"
+  ],
+  "supportedSyntax": [
+    "math fences",
+    "same-line double-dollar math",
+    "stand-alone multiline double-dollar delimiters",
+    "stand-alone display bracket delimiters, single and doubled backslashes",
+    "legacy doubled-backslash inline parentheses",
+    "optional same-line single dollars"
+  ],
+  "preferences": {
+    "enable": "htmlMathJax",
+    "inlineDollars": "htmlMathJaxInlineDollar",
+    "bothDefault": false,
+    "legacyTrueAndExplicitFalse": "verified"
+  },
+  "rendering": {
+    "output": "HTML plus MathML with TeX annotation",
+    "fonts": "20 original WOFF2 fonts embedded as data URLs",
+    "runtimeDownloads": false,
+    "nodeRuntime": false,
+    "documentJavaScript": false,
+    "trustCommands": false,
+    "maxExpand": 1000,
+    "maxSizeEm": 20,
+    "maxInputUTF16": 16384,
+    "maxRenderedExpressionBytes": 1048576,
+    "cacheEntries": 64,
+    "cacheBytes": 2097152,
+    "fallback": "Escaped original TeX plus a visible preview notice",
+    "exports": "Fresh source/options snapshots; fonts and original MIT notice included even without document styling"
+  },
+  "validation": {
+    "tests": 156,
+    "suites": 32,
+    "arm64TestExecutables": 7,
+    "nativeBuildForTesting": "passed",
+    "strictChangedSwiftFormatting": "passed",
+    "diffCheck": "passed",
+    "scriptSyntax": "passed",
+    "bundledResourceAndFontChecksums": "passed"
+  },
+  "nativeEvidence": [
+    "Real WKWebView loads bundled math fonts and lays out equations in both appearances",
+    "MathML plus hidden visual duplicate are present",
+    "Equation DOM identity survives content patching",
+    "Inspected /private/tmp/snowfolio-math-light.png and /private/tmp/snowfolio-math-dark.png",
+    "Native print-to-PDF produces a one-page document with equation and surrounding checkpoint text",
+    "Generated /private/tmp/snowfolio-math-export.pdf"
+  ],
+  "testIsolation": "Native suites share a nonblocking asynchronous exclusive scope for process-wide NSApplication window/focus/printing state; existing assertions/timeouts retained",
+  "remainingCompatibility": [
+    "Full MathJax-specific TeX/extensions",
+    "Document-wide macro definitions, equation references and numbering",
+    "Single-backslash inline parentheses",
+    "Multiline inline expressions",
+    "Display delimiters sharing body text across multiple lines"
+  ],
+  "remainingGoal": [
+    "Mermaid and Graphviz",
+    "Other dialects, custom styles/themes/templates and remaining editor parity",
+    "Desktop/VoiceOver/real IME acceptance pending existing unlock request",
+    "Productivity/macOS integrations, measured performance and production release gates"
+  ],
+  "legacyRemoval": "Not yet: remaining MathJax compatibility and original target consumers still need the old loader/listener/resources",
+  "productionInstalled": false,
+  "defaultHandlerChanged": false,
+  "fullGoal": "active"
+}

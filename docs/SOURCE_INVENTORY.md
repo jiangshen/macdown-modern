@@ -141,3 +141,18 @@ property HTML; `MarkdownNavigation.swift` owns heading IDs and TOC decoration. O
 YAML-framework/HTMLTabularize and Hoedown TOC code are no longer needed by the modern app,
 but their old-target consumers (including presumed filename logic) remain to migrate.
 Yams and libyaml notices are retained in `App/Resources/Licenses`.
+
+## Offline equation ownership boundary
+
+`MathCore` contains first-party Swift orchestration and KaTeX 0.19.1 third-party
+JavaScript/CSS/fonts, pinned by npm SHA-512 and per-file SHA-256 provenance.
+`MarkdownCore/MarkdownMath.swift` integrates equation delimiters into cmark using Swift
+callbacks; it is not another Markdown parser. TeX rendering stays in a separate confined
+JavaScriptCore context. App/script/export font licenses remain bundled, and exported
+font stylesheets carry the original MIT notice. `Tools/vendor-katex.py` is development
+asset-reproduction tooling; Node and a network connection are not app requirements.
+
+The native app no longer needs the old MathJax web loader/listener for its implemented
+equations, but the remaining MathJax-specific syntax, macro/numbering compatibility and
+old-target consumers prevent complete subsystem deletion yet. Keep the retirement gate
+in `MODERNIZATION_PLAN.md`; this increment does not claim full renderer parity.

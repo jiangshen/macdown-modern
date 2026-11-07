@@ -65,4 +65,18 @@ for name, expected in provenance['files'].items():
     if actual != expected:
         raise SystemExit('Bundled Prism checksum mismatch: ' + name)
 VERIFY_PRISM
+math_resources="$app/Contents/Resources/SnowfolioCore_MathCore.bundle/Contents/Resources"
+python3 - "$math_resources" <<'VERIFY_MATH'
+import hashlib
+import json
+from pathlib import Path
+import sys
+root = Path(sys.argv[1])
+provenance = json.loads((root / 'KaTeX-Provenance.json').read_text())
+for name, expected in provenance['files'].items():
+    if hashlib.sha256((root / name).read_bytes()).hexdigest() != expected:
+        raise SystemExit('Bundled math checksum mismatch: ' + name)
+if (root / 'KaTeX.css').read_text().count('data:font/woff2;base64,') != 20:
+    raise SystemExit('Bundled math fonts are missing')
+VERIFY_MATH
 echo "App: $app"
