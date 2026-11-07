@@ -1724,3 +1724,35 @@ Hosted and sanitizer evidence is tracked in `validation/intraword-formatting.jso
 Custom themes/templates, remaining editor/productivity/system features, document and
 accessibility acceptance, measured performance, release/install/default-handler gates
 and progressive coupled legacy retirement remain open. The full goal stays active.
+
+
+### Hosted word-formatting acceptance
+
+Run [42369063894](https://github.com/jiangshen/snowfolio/actions/runs/42369063894),
+code commit `5934a8464bb9ea5559eda10fa47f61cf0d0e82fa`, passed both jobs. Downloaded
+artifacts confirm 223 tests / 44 suites, eight arm64 executables, 652/652 CommonMark,
+and all eight native UI tests. The picker round trip and existing source repaint
+regression both pass. Fourteen priority-inversion warnings remain recorded without
+claiming a first-party cause; the native performance attribution gate stays open.
+
+## Mixed-list selection and alignment follow-up — 2026-11-07
+
+The user's new screenshot was reproduced in the actual reading preview on
+`editing-lists.md`: selecting from numbered items into a bullet exposes a small native
+WebKit marker rectangle. The previous correction covered only decimal markers.
+Numbers also had only a .15em gap before text, while bullets used native spacing.
+
+Ordinary unstyled numbered and bulleted lists now share a .5em marker-to-text gap,
+a common hanging text edge, and positioned generated markers. This removes the
+remaining native bullet marker selection seam while preserving semantic ol/ul/li,
+list start values, selection/copy text and wrapping. Native nested circle/square
+appearances are retained. Explicit type/style/class lists, individually styled items
+and task checkboxes keep their own marker behavior. Property lists are excluded.
+
+The existing native selection regression now selects across both kinds of list and
+checks light/dark, compact/loose paragraphs, wrapped text, marker spacing, shared text
+alignment, nested bullets, authored styles and node/selection identity through a
+font/size change. Direct desktop checks reproduced the seam before rebuilding and
+confirmed it gone afterward, with aligned First/Second/dfdfd text and a clearer number
+gap. The user's current source bytes and original tabs were preserved. Evidence and
+final hosted state are tracked in `validation/list-selection.json`.

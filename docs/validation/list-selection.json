@@ -69,5 +69,34 @@
     "commonMarkMismatches": 0,
     "nativeAppJob": "passed build and document UI test step; method-level acceptance scope remains in hosted-document-ui.json",
     "source": "Downloaded exact core log and CommonMark report; GitHub final job outcomes verified"
+  },
+  "mixedListFollowup": {
+    "date": "2026-11-07",
+    "reported": "Selection artifact around bullet and inconsistent numbered/bulleted marker spacing",
+    "surface": "Reading preview; reproduced directly in current app on user-edited editing-lists.md",
+    "cause": "Previous decimal-only correction left unordered lists using native WebKit marker painting; number gap was .15em",
+    "change": "Shared generated markers and .5em gap for ordinary unstyled numbered/bulleted lists; shared hanging text edge",
+    "preserved": [
+      "Semantic ol/ul/li",
+      "Native list starts and selection/copy text",
+      "Wrapped hanging indentation",
+      "Nested disc/circle/square appearance",
+      "Authored type/style/class lists and individually styled items",
+      "Task checkbox behavior",
+      "Excluded property-list styling"
+    ],
+    "automated": "Existing native selection test extended across mixed lists; all four light/dark and compact/loose parameter cases pass before/after serif20 update",
+    "live": "Before seam reproduced; final rebuilt app removes bullet rectangle; First/Second/dfdfd share text edge, number spacing improved; user source unchanged and tabs preserved",
+    "localValidation": {
+      "nativeBuildForTesting": "passed",
+      "packageTests": 192,
+      "packageSuites": 39,
+      "arm64TestExecutables": 8,
+      "changedSwiftStrictFormatting": "passed",
+      "firstPartyDiffCheck": "passed"
+    },
+    "hosted": {
+      "result": "pending"
+    }
   }
 }

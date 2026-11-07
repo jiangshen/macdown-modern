@@ -73,12 +73,18 @@ public struct DocumentStyle: Hashable, Sendable {
     a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
     ul,ol { padding-inline-start: 1.65em; margin: .4em 0; }
     li { padding-inline-start: .15em; margin: .2em 0; }
-    /* Keep list counters semantic while avoiding WebKit's native marker selection edge. */
-    ol:not([type]):not([style]) > li:not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox])) { position: relative; list-style-type: none; padding-inline-start: 0; margin-inline-start: .15em; }
-    ol:not([type]):not([style]) > li:not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox]))::before {
-      content: counter(list-item) "."; position: absolute;
-      inset-inline-end: calc(100% + .15em); text-align: end; font-variant-numeric: tabular-nums;
+    /* Share a hanging text edge and marker gap without WebKit's native marker selection seam. */
+    :is(ol,ul):not([type]):not([style]):not([class]) > li:not([style]):not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox])) {
+      position: relative; list-style-type: none; padding-inline-start: 0; margin-inline-start: .15em;
     }
+    :is(ol,ul):not([type]):not([style]):not([class]) > li:not([style]):not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox]))::before {
+      position: absolute; inset-inline-end: calc(100% + .5em);
+      text-align: end; font-variant-numeric: tabular-nums;
+    }
+    ol:not([type]):not([style]):not([class]) > li:not([style]):not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox]))::before { content: counter(list-item) "."; }
+    ul:not([type]):not([style]):not([class]) > li:not([style]):not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox]))::before { content: "•"; }
+    :is(ul,ol) ul:not([type]):not([style]):not([class]) > li:not([style]):not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox]))::before { content: "◦"; }
+    :is(ul,ol) :is(ul,ol) ul:not([type]):not([style]):not([class]) > li:not([style]):not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox]))::before { content: "▪"; }
     li > p { margin: .25em 0; } li > ul,li > ol { margin-block: .2em; }
     li:has(> input[type=checkbox]) { list-style: none; }
     input[type=checkbox] {

@@ -34,9 +34,16 @@ struct NativeSelectionRenderingTests {
     let source =
       "4. First " + String(repeating: "wrapping paragraph text ", count: 30)
       + (loose ? "\n\n" : "\n")
-      + "5. Second\n\n# Next section\n\n1. [x] Completed task"
+      + "5. Second\n\n- Bullet " + String(repeating: "wrapping bullet text ", count: 30)
+      + "\n  - Nested circle\n    - Nested square\n\n# Next section\n\n1. [x] Completed task"
     let parsed = try await MarkdownProcessor().render(source)
-    let html = parsed.html + "<ol type=\"i\"><li>Roman marker</li></ol>"
+    let html =
+      parsed.html + """
+        <ol type="i"><li>Roman marker</li></ol>
+        <ul style="list-style-type:square"><li>Authored square</li></ul>
+        <ul><li style="list-style-type:circle">Authored item</li></ul>
+        <ul class="custom-list"><li>Custom list</li></ul>
+        """
     coordinator.update(web, html: html, directory: nil, remoteImages: false)
     var ready = false
     for _ in 0..<200 {
@@ -53,17 +60,19 @@ struct NativeSelectionRenderingTests {
     let selected = try await evaluate(
       """
       const baselineStyle=document.createElement('style');
-      baselineStyle.textContent='ol>li{list-style-type:decimal!important}ol>li::before{content:none!important}';
+      baselineStyle.textContent='ol>li{list-style-type:decimal!important}ul>li{list-style-type:disc!important}:is(ol,ul)>li::before{content:none!important}';
       document.head.append(baselineStyle);
       const items=document.querySelector('ol').children, range=document.createRange();
       const first=items[0].querySelector('p')?.firstChild ?? items[0].firstChild;
-      const last=items[1].querySelector('p')?.firstChild ?? items[1].firstChild;
+      const bullet=document.querySelector('main > ul > li');
+      const last=bullet.querySelector('p')?.firstChild ?? bullet.firstChild;
       range.setStart(first,0); range.setEnd(last,last.length);
       const selection=window.getSelection(); selection.removeAllRanges(); selection.addRange(range);
       window.selectedFirst=items[0]; window.selectedLast=items[1];
       const baseline=selection.toString(); baselineStyle.remove(); return baseline;
       """, in: web)
-    #expect(selected.contains("First") && selected.contains("Second"))
+    #expect(
+      selected.contains("First") && selected.contains("Second") && selected.contains("Bullet"))
     try await expectListLayout(in: web)
     coordinator.update(
       web, html: html, directory: nil, remoteImages: false,
@@ -106,9 +115,24 @@ struct NativeSelectionRenderingTests {
         const task=document.querySelector('input[type=checkbox]').closest('li');
         const typed=document.querySelector('ol[type] > li');
         const before=e=>getComputedStyle(e,'::before').content;
+        const bullet=document.querySelector('main > ul > li');
+        const bulletText=bullet.querySelector('p')?.firstChild ?? bullet.firstChild;
+        const bulletRange=document.createRange(); bulletRange.selectNodeContents(bulletText);
+        const bulletLines=[...bulletRange.getClientRects()].filter(r=>r.width>1);
+        const bulletMarker=getComputedStyle(bullet,'::before');
+        const circle=bullet.querySelector('ul > li'), square=circle.querySelector('ul > li');
+        const nativeItems=[...document.querySelectorAll('ul[style]>li,li[style],ul[class]>li')];
+        const expectedGap=.5*parseFloat(getComputedStyle(item).fontSize);
+        const gap=e=>parseFloat(getComputedStyle(e,'::before').right)-e.getBoundingClientRect().width;
         return String(list.start===4 && list.children.length===2 &&
           getComputedStyle(item).display==='list-item' &&
           marker.content!=='none' && marker.content!=='normal' &&
+          getComputedStyle(bullet).listStyleType==='none' && bulletMarker.content==='"•"' &&
+          before(circle)==='"◦"' && before(square)==='"▪"' &&
+          Math.abs(gap(item)-expectedGap)<1 && Math.abs(gap(bullet)-expectedGap)<1 &&
+          Math.abs(item.getBoundingClientRect().left-bullet.getBoundingClientRect().left)<1 &&
+          bulletLines.length>2 && bulletLines.every(r=>Math.abs(r.left-lines[0].left)<1) &&
+          nativeItems.every(e=>['none','normal'].includes(before(e))) &&
           lines.length>2 && lines.every(r=>Math.abs(r.left-lines[0].left)<1) &&
           Math.abs(lines[0].left-item.getBoundingClientRect().left)<1 &&
           ['none','normal'].includes(before(task)) && ['none','normal'].includes(before(typed)) &&

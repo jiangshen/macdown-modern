@@ -81,7 +81,19 @@
     "existingUnderlineTest": "Launch explicitly forces standard policy"
   },
   "hostedCurrentRun": {
-    "result": "pending"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42369063894",
+    "commit": "5934a8464bb9ea5559eda10fa47f61cf0d0e82fa",
+    "result": "passed",
+    "jobs": [
+      "native-app",
+      "swift-foundations"
+    ],
+    "nativeUITests": 8,
+    "packageTests": 223,
+    "packageSuites": 44,
+    "arm64TestExecutables": 8,
+    "commonMarkExamples": 652,
+    "evidence": "Downloaded package/corpus artifacts and native xcodebuild log/result bundle; totals verified"
   },
   "remaining": [
     "Custom themes/templates",
@@ -92,5 +104,9 @@
   ],
   "productionInstalled": false,
   "defaultHandlerChanged": false,
-  "fullGoal": "active; incomplete"
+  "fullGoal": "active; incomplete",
+  "hostedDiagnostics": {
+    "priorityInversionWarnings": 14,
+    "status": "Passed; first-party attribution and measured native performance gate remain open"
+  }
 }
