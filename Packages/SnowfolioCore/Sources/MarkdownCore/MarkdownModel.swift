@@ -1,3 +1,4 @@
+import DiagramCore
 import Foundation
 
 /// CommonMark positions use one-based lines and UTF-8 byte columns.
@@ -17,6 +18,7 @@ public enum MarkdownNodeKind: Equatable, Sendable {
   case emphasis, strong, strikethrough, list, listItem, blockquote, html
   case table, tableRow, tableCell, thematicBreak, softBreak, lineBreak
   case math(display: Bool)
+  case diagram(DiagramKind)
   case other(String)
 
   init(nativeName: String) {
@@ -86,6 +88,8 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var tableOfContents = true
   public var math = false
   public var inlineDollarMath = false
+  public var mermaid = false
+  public var graphviz = false
 
   public init() {}
 }
@@ -97,12 +101,14 @@ public struct RenderedMarkdown: Sendable {
   public let syntax: MarkdownSyntax?
   public let highlightedCodeBlocks: Int
   public let mathExpressions: Int
+  public let diagrams: Int
+  public let diagramUsesMath: Bool
   public let frontMatter: MarkdownFrontMatter?
   public let notices: [MarkdownRenderNotice]
 }
 
 public enum MarkdownRenderNotice: String, Sendable {
-  case invalidFrontMatter, complexFrontMatter, unsupportedMath
+  case invalidFrontMatter, complexFrontMatter, unsupportedMath, unsupportedDiagram
 }
 
 public enum MarkdownRenderingError: Error, Sendable {

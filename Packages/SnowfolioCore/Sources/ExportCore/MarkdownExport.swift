@@ -1,5 +1,6 @@
 import Foundation
 import MarkdownCore
+import MathCore
 import RenderingCore
 import Synchronization
 
@@ -34,14 +35,19 @@ public struct MarkdownExport: Sendable {
     }
     try Task.checkCancellation()
     let replacements = assets.withLock { $0 }
-    let fragment = Self.embedAssets(in: result.html, replacements: replacements)
+    let body = Self.embedAssets(in: result.html, replacements: replacements)
+    // A copied fragment has no document head. Math needs its font/layout rules
+    // there too, otherwise its visual and MathML alternatives both become visible.
+    let fragment =
+      (result.mathExpressions > 0 || result.diagramUsesMath
+        ? "<style data-snowfolio-math=\"true\">" + MathStyle.css + "</style>" : "") + body
     return Self(
       fragment: fragment,
       document: PreviewHTML.document(
-        body: fragment, remoteImages: remoteImages,
+        body: body, remoteImages: remoteImages,
         title: title, includeStyles: includeStyles,
         includeHighlighting: result.highlightedCodeBlocks > 0, style: style,
-        includeMath: result.mathExpressions > 0))
+        includeMath: result.mathExpressions > 0 || result.diagramUsesMath))
   }
 
   private static func embedAssets(in html: String, replacements: [String: String]) -> String {

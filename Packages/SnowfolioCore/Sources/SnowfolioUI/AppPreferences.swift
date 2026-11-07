@@ -31,6 +31,8 @@ public final class AppPreferences {
   public var codeTheme: CodeHighlightTheme {
     didSet { defaults.set(codeTheme.rawValue, forKey: "htmlHighlightingThemeName") }
   }
+  public var mermaid: Bool { didSet { save(mermaid, "htmlMermaid") } }
+  public var graphviz: Bool { didSet { save(graphviz, "htmlGraphviz") } }
   public var math: Bool { didSet { save(math, "htmlMathJax") } }
   public var inlineDollarMath: Bool { didSet { save(inlineDollarMath, "htmlMathJaxInlineDollar") } }
   public var alerts: Bool { didSet { save(alerts, "extensionAlerts") } }
@@ -90,6 +92,8 @@ public final class AppPreferences {
     editorOnRight = boolean("editorOnRight", fallback: false)
     synchronizedScrolling = boolean("editorSyncScrolling", fallback: true)
     syntaxHighlighting = boolean("editorSyntaxHighlighting", fallback: true)
+    mermaid = boolean("htmlMermaid", fallback: false)
+    graphviz = boolean("htmlGraphviz", fallback: false)
     math = boolean("htmlMathJax", fallback: false)
     inlineDollarMath = boolean("htmlMathJaxInlineDollar", fallback: false)
     alerts = boolean("extensionAlerts", fallback: true)
@@ -141,6 +145,8 @@ public final class AppPreferences {
     options.frontMatter = frontMatter
     options.tableOfContents = tableOfContents
     options.codeHighlighting = codeHighlighting
+    options.mermaid = mermaid
+    options.graphviz = graphviz
     options.math = math
     options.inlineDollarMath = inlineDollarMath
     options.alerts = alerts

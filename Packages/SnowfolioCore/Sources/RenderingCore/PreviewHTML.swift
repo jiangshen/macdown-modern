@@ -55,6 +55,14 @@ public enum PreviewHTML {
       for (let index = 0; index < next.length; index++) {
         const wanted = next[index], existing = oldParent.childNodes[index];
         if (!existing) { oldParent.appendChild(wanted.cloneNode(true)); continue; }
+        if (wanted.nodeType===Node.ELEMENT_NODE && wanted.matches('div.md-diagram[data-diagram-key]')) {
+          if (existing.nodeType===Node.ELEMENT_NODE && existing.matches('div.md-diagram[data-diagram-key]') &&
+            existing.getAttribute('data-diagram-key')===wanted.getAttribute('data-diagram-key')) {
+            for (const attr of [...existing.attributes]) if (!wanted.hasAttribute(attr.name)) existing.removeAttribute(attr.name);
+            for (const attr of [...wanted.attributes]) existing.setAttribute(attr.name,attr.value);
+          } else {oldParent.replaceChild(wanted.cloneNode(true),existing);}
+          continue;
+        }
         if (existing.isEqualNode(wanted)) continue;
         if (existing.nodeType !== wanted.nodeType || existing.nodeName !== wanted.nodeName) {
           oldParent.replaceChild(wanted.cloneNode(true), existing); continue;
@@ -69,6 +77,12 @@ public enum PreviewHTML {
       while (oldParent.childNodes.length > next.length) oldParent.lastChild.remove();
     }
     sync(root, incoming);
+    for (const figure of root.querySelectorAll('div.md-diagram[data-diagram-key]')) {
+      const template=figure.querySelector(':scope > template[data-snowfolio-diagram]');
+      if (!template) continue;
+      const shadow=figure.shadowRoot ?? figure.attachShadow({mode:'open'});
+      shadow.replaceChildren(template.content.cloneNode(true)); template.remove();
+    }
     if (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);
     else window.scrollTo(0, previousY);
     globalThis.__snowfolioScroll?.invalidateGeometry();

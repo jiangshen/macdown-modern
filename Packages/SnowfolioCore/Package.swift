@@ -22,6 +22,7 @@ let package = Package(
     .target(name: "CodeHighlightCore", resources: [.process("Resources")]),
     .target(name: "EmojiCore", resources: [.process("Resources")]),
     .target(name: "MathCore", resources: [.process("Resources")]),
+    .target(name: "DiagramCore", dependencies: ["MathCore"], resources: [.process("Resources")]),
     .target(name: "RenderingCore", dependencies: ["CodeHighlightCore", "MathCore"]),
     .target(name: "ExportCore", dependencies: ["MarkdownCore", "RenderingCore"]),
     .target(name: "PreferencesCore"),
@@ -29,7 +30,7 @@ let package = Package(
     .target(
       name: "MarkdownCore",
       dependencies: [
-        "EmojiCore", "CodeHighlightCore", "MathCore",
+        "EmojiCore", "CodeHighlightCore", "MathCore", "DiagramCore",
         .product(name: "Yams", package: "Yams"),
         .product(name: "cmark-gfm", package: "swift-cmark"),
         .product(name: "cmark-gfm-extensions", package: "swift-cmark"),
@@ -40,6 +41,7 @@ let package = Package(
         "DocumentCore", "EditorCore", "MarkdownCore", "RenderingCore", "PreferencesCore",
         "ExportCore", "EmojiCore", "CodeHighlightCore",
       ]),
+    .testTarget(name: "DiagramCoreTests", dependencies: ["DiagramCore"]),
     .testTarget(name: "ExportCoreTests", dependencies: ["ExportCore", "MarkdownCore"]),
     .testTarget(name: "RenderingCoreTests", dependencies: ["RenderingCore"]),
     .testTarget(name: "PreferencesCoreTests", dependencies: ["PreferencesCore"]),
@@ -47,7 +49,8 @@ let package = Package(
       name: "MarkdownCoreTests", dependencies: ["MarkdownCore", "CodeHighlightCore", "MathCore"]),
     .testTarget(name: "DocumentCoreTests", dependencies: ["DocumentCore"]),
     .testTarget(name: "EditorCoreTests", dependencies: ["EditorCore"]),
-    .testTarget(name: "SnowfolioUITests", dependencies: ["SnowfolioUI", "DocumentCore"]),
+    .testTarget(
+      name: "SnowfolioUITests", dependencies: ["SnowfolioUI", "DocumentCore", "DiagramCore"]),
   ],
   swiftLanguageModes: [.v6]
 )

@@ -91,6 +91,10 @@ public struct MarkdownSettingsView: View {
             .accessibilityIdentifier("markdownTableOfContents")
           Toggle("Notes, tips and warnings", isOn: $preferences.alerts)
             .accessibilityIdentifier("markdownAlerts")
+          Toggle("Render Mermaid diagrams", isOn: $preferences.mermaid)
+            .accessibilityIdentifier("markdownMermaid")
+          Toggle("Render Graphviz diagrams", isOn: $preferences.graphviz)
+            .accessibilityIdentifier("markdownGraphviz")
           Toggle("Render equations", isOn: $preferences.math)
             .accessibilityIdentifier("markdownMath")
           Toggle(

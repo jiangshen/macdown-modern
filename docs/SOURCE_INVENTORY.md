@@ -156,3 +156,28 @@ The native app no longer needs the old MathJax web loader/listener for its imple
 equations, but the remaining MathJax-specific syntax, macro/numbering compatibility and
 old-target consumers prevent complete subsystem deletion yet. Keep the retirement gate
 in `MODERNIZATION_PLAN.md`; this increment does not claim full renderer parity.
+
+
+## Offline diagram ownership boundary
+
+`DiagramCore` owns the Swift queue, deadlines, cancellation, resource loading, SVG
+validation and preview/export variants. Only pinned third-party Mermaid 12.3.0 and
+Viz.js 3.31.0 execute in a confined, nonpersistent WebKit client world. Viz bundles
+Graphviz 16.1.0 as embedded WebAssembly; no native Intel executable, Node runtime,
+network fetch or document script is needed. The fixed worker page has no native bridge
+and rejects navigation/resource requests outside its app-owned initialization/data fonts.
+The preview receives validated SVG, with page JavaScript disabled.
+
+`Tools/vendor-diagrams.py` verifies npm integrity, source archives, distribution notices
+and per-file checksums. App and resource bundles retain Mermaid/Viz MIT notices,
+Graphviz EPL 2.0 plus its rbtree notice, Expat MIT and Emscripten MIT/NCSA notices, with
+corresponding source/build URLs. Native build validation verifies the actual packaged
+files and notices. These maintained third-party engines are ownership exceptions;
+first-party orchestration stays Swift. The small trusted DOM/CSS adapters are WebKit
+boundary code, not document-provided scripts.
+
+The native app no longer consumes the original Mermaid/Viz initialization loaders.
+Their legacy-target resource/build references remain coupled to the original renderer,
+which still supplies unmigrated templates, custom CSS, extensions and other behavior.
+No additional legacy subsystem is deleted at this partial gate; retire it after the
+remaining renderer and original-target consumers have been replaced and verified.

@@ -1157,3 +1157,55 @@ filenames/window titles, complete VoiceOver/keyboard/system appearance checks, m
 performance, the wider renderer/dialect/integration roadmap and progressive retirement
 remain open. No further legacy files are deleted here because the old target still
 consumes its renderer, metadata and title helpers. The full goal stays active.
+
+
+## Offline Mermaid and Graphviz — 2026-11-06
+
+The native renderer now recognizes optional `mermaid` fences and all six original
+Graphviz engines (`circo`, `dot`, `fdp`, `neato`, `osage`, `twopi`), plus `sfdp` and
+`patchwork`. `graphviz`, `gv` and `viz` alias `dot`. The independent `htmlMermaid` and
+`htmlGraphviz` choices migrate existing values, preserve explicit false and default off.
+Settings expose each choice. Source AST ranges and native syntax coloring remain intact;
+failed/oversized/unsafe/timed-out rendering keeps highlighted source and a preview notice.
+
+`DiagramCore` uses pinned Mermaid 12.3.0 and Viz.js 3.31.0 with Graphviz 16.1.0 embedded
+WebAssembly. A dedicated nonpersistent WKWebView runs bundled engines in the isolated
+client world, with page scripts disabled and no network/native bridge. Source is passed
+as an argument, not interpolated into code. Swift serializes jobs, bounds source/output
+and caches, and resets the worker on cancellation/deadline. New workers clear engine
+readiness so a failed process cannot reuse stale JavaScript state. Mermaid stays strict,
+with HTML labels disabled as in the original configuration; remote assets and executable
+callbacks are excluded. Graphviz supplies readable light/dark defaults and retains safe
+source-authored colors/attributes. Scripts, unsafe links/resources and unsafe SVG/CSS
+output are rejected or neutralized by the engine and validation boundary.
+
+Live preview diagrams use supported shadow hosts, separating CSS/IDs between repeated
+diagrams. Each appearance gets distinct identifiers. Unchanged diagram keys preserve
+actual SVG identity through preview patches. Portable exports use ordinary inline SVG
+with unique instance IDs and root-scoped engine styles, so pasting a fragment via
+`innerHTML` works without declarative-shadow parsing or runtime engines. Animation names
+are prefixed. Both HTML forms adapt to appearance; print/PDF use the light variant.
+Mermaid math labels reuse bundled KaTeX fonts. This also fixes ordinary equation clipboard
+fragments: font/layout CSS now accompanies math when no document head is available.
+
+Validation: **169 tests in 34 suites**, eight native arm64 test executables, native app
+build-for-testing, changed-file strict Swift formatting, script syntax and first-party diff checks.
+Vendored bundles/notices retain exact upstream whitespace and verified checksums.
+Native integration covers all nine engine choices, Unicode labels, flow/sequence/gantt
+and math labels, independent preference migration, source positions, disabled/fallback
+paths, caching, active cancellation with queued recovery, timeouts, unsafe links/SVG,
+repeated diagram isolation, both appearances, stable live SVG identity, portable and
+pasted fragments, equation clipboard fonts, and real native PDF labels/surrounding text.
+Both native appearance snapshots were visually inspected. Engine archives, resource
+hashes, licenses and corresponding source notices are reproduced/verified by tooling.
+See `validation/offline-diagrams.json` and `design/notebook/DiagramDemo.md`.
+
+This is a renderer increment, not complete migration parity. Mermaid plugins/icons,
+remote images, scripted interactions, every upstream diagram type and every historical
+syntax/version difference are not claimed verified. Direct desktop Settings/keyboard/
+VoiceOver/IME acceptance is still pending the existing unlock request; the Mac was
+observed locked, and hosted rendering tests do not establish those gates. XCUITest still
+only compiles in this environment. Large/adversarial performance, custom styles/templates,
+MathJax-only compatibility, remaining editor/integration/release work and progressive
+legacy retirement remain open. No production install, default-handler change or further
+legacy subsystem deletion occurs at this gate. The full Snowfolio goal remains active.

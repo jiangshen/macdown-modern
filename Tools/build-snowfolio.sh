@@ -79,4 +79,22 @@ for name, expected in provenance['files'].items():
 if (root / 'KaTeX.css').read_text().count('data:font/woff2;base64,') != 20:
     raise SystemExit('Bundled math fonts are missing')
 VERIFY_MATH
+diagram_resources="$app/Contents/Resources/SnowfolioCore_DiagramCore.bundle/Contents/Resources"
+python3 - "$diagram_resources" "$app/Contents/Resources" <<'VERIFY_DIAGRAMS'
+import hashlib
+import json
+from pathlib import Path
+import sys
+root = Path(sys.argv[1])
+notices = Path(sys.argv[2])
+provenance = json.loads((root / 'Diagram-Provenance.json').read_text())
+for name, expected in provenance['files'].items():
+    if hashlib.sha256((root / name).read_bytes()).hexdigest() != expected:
+        raise SystemExit('Bundled diagram checksum mismatch: ' + name)
+for name in ('Mermaid', 'Viz', 'Graphviz', 'Graphviz-rbtree', 'Expat', 'Emscripten'):
+    if (notices / (name + '-diagram.txt')).read_bytes() != (root / (name + '-LICENSE.txt')).read_bytes():
+        raise SystemExit('Bundled diagram distribution notice mismatch: ' + name)
+if (notices / 'Diagram-Sources.txt').read_bytes() != (root / 'Diagram-Sources.txt').read_bytes():
+    raise SystemExit('Bundled diagram source availability notice is missing')
+VERIFY_DIAGRAMS
 echo "App: $app"

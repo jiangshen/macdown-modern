@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-06",
+  "product": "Snowfolio",
+  "feature": "Offline Mermaid and Graphviz in preview and exports",
+  "engines": {
+    "Mermaid": "12.3.0",
+    "Viz.js": "3.31.0",
+    "Graphviz": "16.1.0",
+    "Expat": "2.8.5",
+    "Emscripten": "6.0.10"
+  },
+  "provenance": "Packages/SnowfolioCore/Sources/DiagramCore/Resources/Diagram-Provenance.json",
+  "reproduction": "Tools/vendor-diagrams.py",
+  "preferences": {
+    "mermaid": "htmlMermaid",
+    "graphviz": "htmlGraphviz",
+    "default": false,
+    "trueAndExplicitFalseMigration": "verified"
+  },
+  "boundaries": {
+    "documentJavaScript": false,
+    "nativeBridge": false,
+    "network": false,
+    "nodeRuntime": false,
+    "intelRuntime": false,
+    "inputBytes": 65536,
+    "svgBytesPerAppearance": 2097152,
+    "svgNodes": 20000,
+    "svgDepth": 128,
+    "deadlineSeconds": 15,
+    "cacheEntries": 32,
+    "cacheBytes": 8388608,
+    "fallback": "Complete code source with preview notice",
+    "mermaidSecurityLevel": "strict",
+    "mermaidHTMLLabels": false
+  },
+  "presentation": {
+    "preview": "Isolated shadow roots and per-appearance identifiers; unchanged SVG identity preserved",
+    "HTML": "Ordinary SVG with unique instance IDs and scoped engine styles",
+    "clipboard": "Same portable SVG; math fragments carry font/layout CSS",
+    "PDFAndPrint": "Light appearance"
+  },
+  "validation": {
+    "tests": 169,
+    "suites": 34,
+    "arm64TestExecutables": 8,
+    "nativeBuildForTesting": "passed",
+    "changedSwiftStrictFormatting": "passed",
+    "scriptSyntax": "passed",
+    "firstPartyDiffCheck": "passed; unmodified upstream bundles/notices retain original whitespace",
+    "packagedResourceAndNoticeChecksums": "passed"
+  },
+  "nativeEvidence": [
+    "All nine engine choices render Unicode labels in both appearances",
+    "Mermaid flow, sequence, gantt and math labels render offline",
+    "Invalid and oversized input, active cancellation plus queued recovery, caching and deadline checks",
+    "Diagram AST/source positions and syntax colors retain Unicode/CRLF coordinates",
+    "Native preview hydrates repeated diagrams and retains unchanged SVG identity",
+    "Inspected /private/tmp/snowfolio-diagrams-light.png and /private/tmp/snowfolio-diagrams-dark.png",
+    "Portable HTML and ordinary innerHTML-pasted fragments render without script elements/templates",
+    "Engine output and direct sanitizer tests reject or neutralize unsafe links/resources/SVG/CSS",
+    "Native print-to-PDF contains both diagram labels and surrounding document text",
+    "Generated /private/tmp/snowfolio-diagrams-export.pdf"
+  ],
+  "licenses": "Original Mermaid/Viz MIT; Graphviz EPL 2.0 and rbtree; Expat MIT; Emscripten MIT/NCSA; corresponding source/build URLs bundled",
+  "limits": [
+    "Every upstream Mermaid type and historical syntax/version difference not yet characterized",
+    "Plugins, remote assets and executable callbacks unsupported",
+    "SVG bounds are finite resource guards, not a measured adversarial performance guarantee",
+    "Clipboard destinations may filter SVG/styles; ordinary HTML insertion is covered",
+    "Direct desktop/VoiceOver/IME gates pending existing unlock request; hosted tests are separate",
+    "XCUITest execution blocked by existing automation setup timeout"
+  ],
+  "legacyRemoval": "Old-target consumers/custom-template/dialect parity still open; retain original renderer resources until verified replacement gates",
+  "productionInstalled": false,
+  "defaultHandlerChanged": false,
+  "fullGoal": "active; incomplete"
+}

@@ -1,0 +1,48 @@
+{
+  "packages": {
+    "mermaid": {
+      "version": "12.3.0",
+      "source": "https://registry.npmjs.org/mermaid/-/mermaid-12.3.0.tgz",
+      "archiveIntegrity": "sha512-4113TdXeLAsMruJ79OpFL5O8+LTFXhQqZ260rF3tgUmiNAtRm4Uume04I+65PRN6yZ69J4f8rVYWW8zRk65UYw=="
+    },
+    "viz": {
+      "version": "3.31.0",
+      "source": "https://registry.npmjs.org/@viz-js/viz/-/viz-3.31.0.tgz",
+      "archiveIntegrity": "sha512-r7zlQdRvcwvIpjHGgs+KNWHeE/P5/Dq7k8ZAKaMCbZqomxCBJV78gVuQYaHzFVca+kB0mX0fMW9UFevCOBG50A=="
+    }
+  },
+  "sourceArchives": {
+    "graphviz": {
+      "source": "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/16.1.0/graphviz-16.1.0.tar.gz",
+      "sha256": "beea483ab130f456c1c3905f4f2e40778a9c493c3d73ae8012367d552d71ca84"
+    },
+    "expat": {
+      "source": "https://github.com/libexpat/libexpat/releases/download/R_2_8_5/expat-2.8.5.tar.gz",
+      "sha256": "920dde485e15eda0cce8d2310b41d492c534e5e3d89ad407a0b4176dd2ff88fe"
+    }
+  },
+  "licenseSources": {
+    "viz": {
+      "source": "https://raw.githubusercontent.com/mdaines/viz-js/c8ce050d28eb0dc1ed1629ea32ab7f3dc117db0f/LICENSE",
+      "sha256": "f1fb91bf7cbcb42b2af56949e4fa909e1979d5b57c2826cabacdb4b631457720"
+    },
+    "emscripten": {
+      "source": "https://raw.githubusercontent.com/emscripten-core/emscripten/6.0.10/LICENSE",
+      "sha256": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86"
+    }
+  },
+  "runtime": "Bundled Mermaid; Viz.js with embedded WebAssembly Graphviz 16.1.0; no Node or downloads",
+  "bundleChanges": [],
+  "files": {
+    "Diagram-Sources.txt": "0d61b5b41da4945a43ce37711263301d00273953bb1b0badad127fa80e4b2a26",
+    "Emscripten-LICENSE.txt": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86",
+    "Expat-LICENSE.txt": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+    "Graphviz-LICENSE.txt": "0becf16567beb77fa252b7664631dd177c8f9a1889e48995b45379c7130e5303",
+    "Graphviz-rbtree-LICENSE.txt": "fcb423209a3a3909f41e629a4973eab3995ceb93136dd72485fb12ad3de29dfc",
+    "Mermaid-LICENSE.txt": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80",
+    "Mermaid.js": "336df803d87a38b70a01e736e666c8f7601d2ce42f5e47c8fafe5d721074b9a3",
+    "Viz-Build-Provenance.json": "1460f3745ba300377ba738fee8c3f7faf547455190e509490d110c4f69ee7379",
+    "Viz-LICENSE.txt": "f1fb91bf7cbcb42b2af56949e4fa909e1979d5b57c2826cabacdb4b631457720",
+    "Viz.js": "c9e0b310f9883910e01c66054b48b7ff4be3d8695141116635e72b0af152692e"
+  }
+}

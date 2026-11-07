@@ -14,6 +14,8 @@ struct MarkdownExportTests {
       source: "```math\n\\frac{1}{2}+\\sqrt{x}\n```", options: options,
       title: "Offline math", directory: nil, includeStyles: false)
     #expect(result.fragment.contains("<math"))
+    #expect(result.fragment.contains("data-snowfolio-math"))
+    #expect(result.fragment.contains("data:font/woff2;base64,"))
     #expect(result.document.contains("id=\"math-style\""))
     #expect(result.document.contains("data:font/woff2;base64,"))
     #expect(result.document.contains("Permission is hereby granted"))

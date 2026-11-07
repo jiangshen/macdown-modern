@@ -84,6 +84,15 @@ public final class MathRenderer {
 }
 
 public enum MathStyle {
+  public static let layoutCSS: String = {
+    guard let regex = try? NSRegularExpression(pattern: "@font-face\\s*\\{[^}]*\\}") else {
+      return css
+    }
+    return regex.stringByReplacingMatches(
+      in: css,
+      range: NSRange(location: 0, length: (css as NSString).length), withTemplate: "")
+  }()
+
   /// Includes the release's original WOFF2 fonts as data URLs for offline exports.
   public static let css: String = {
     guard let url = Bundle.module.url(forResource: "KaTeX", withExtension: "css"),

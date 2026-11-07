@@ -92,18 +92,8 @@ public struct DocumentWorkspace: View {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")
         } else if !renderNotices.isEmpty, parsedRevision == document.revision {
-          Text(
-            renderNotices.contains(.complexFrontMatter)
-              ? String(
-                localized:
-                  "This metadata block is too complex to display as properties. It is shown as Markdown."
-              )
-              : renderNotices.contains(.invalidFrontMatter)
-                ? String(localized: "Front matter is not valid YAML. It is shown as Markdown.")
-                : String(
-                  localized: "Some equations could not be rendered. Their TeX source is shown.")
-          )
-          .font(.caption).foregroundStyle(.secondary).padding(8)
+          Text(renderNoticeText)
+            .font(.caption).foregroundStyle(.secondary).padding(8)
         } else if largeFilePaused {
           HStack {
             Text("Live preview is paused for this large document.")
@@ -206,6 +196,23 @@ public struct DocumentWorkspace: View {
     .task(id: request) { await render(request) }
   }
 
+  private var renderNoticeText: String {
+    renderNotices.map { notice in
+      switch notice {
+      case .complexFrontMatter:
+        String(
+          localized:
+            "This metadata block is too complex to display as properties. It is shown as Markdown.")
+      case .invalidFrontMatter:
+        String(localized: "Front matter is not valid YAML. It is shown as Markdown.")
+      case .unsupportedMath:
+        String(localized: "Some equations could not be rendered. Their TeX source is shown.")
+      case .unsupportedDiagram:
+        String(localized: "Some diagrams could not render completely. Check their source.")
+      }
+    }.joined(separator: " ")
+  }
+
   private func openDroppedFiles(_ urls: [URL]) -> Bool {
     guard MarkdownFileDrop.accepts(urls) else { return false }
     let anchor = DocumentWindowAnchor(output.window)
@@ -236,7 +243,7 @@ public struct DocumentWorkspace: View {
       let revision = document.revision
       let result = try await processor.render(
         source, options: request.options, interactiveCallouts: true,
-        includeSyntax: request.syntaxHighlighting)
+        includeSyntax: request.syntaxHighlighting, diagramPresentation: .isolated)
       try Task.checkCancellation()
       guard revision == document.revision else {
         loading = false

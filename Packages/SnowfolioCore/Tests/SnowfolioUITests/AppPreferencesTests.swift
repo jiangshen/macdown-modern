@@ -6,6 +6,26 @@ import Testing
 @Suite("Application preferences")
 @MainActor
 struct AppPreferencesTests {
+  @Test("Diagram choices migrate independently and retain explicit disabled values")
+  func diagramPreferences() throws {
+    let domain = "DiagramPreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let preferences = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["htmlMermaid": true, "htmlGraphviz": false])
+    #expect(preferences.renderingOptions.mermaid && !preferences.renderingOptions.graphviz)
+    preferences.mermaid = false
+    preferences.graphviz = true
+    let reopened = AppPreferences(
+      defaults: defaults, domainName: domain,
+      legacyValues: ["htmlMermaid": true, "htmlGraphviz": false])
+    #expect(!reopened.renderingOptions.mermaid && reopened.renderingOptions.graphviz)
+    defaults.removePersistentDomain(forName: domain)
+    let fresh = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+    #expect(!fresh.mermaid && !fresh.graphviz)
+  }
+
   @Test("Math choices migrate independently and preserve explicit disabled values")
   func mathPreferences() throws {
     let domain = "MathPreferencesTests.\(UUID().uuidString)"

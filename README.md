@@ -7,7 +7,7 @@ Mac controls.
 
 The Swift app includes a TextKit 2 editor, native document tabs, linked scrolling,
 configurable pane order, per-document reading zoom, live preview, syntax colors, callouts with an emoji picker,
-YAML properties, a table of contents, optional offline equations, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
+YAML properties, a table of contents, optional offline equations and diagrams, and shared HTML/PDF/print output. It is a development build: feature parity, accessibility,
 performance measurement and release readiness are still in progress. See the
 [modernization roadmap](docs/MODERNIZATION_PLAN.md) and
 [source inventory](docs/SOURCE_INVENTORY.md).
@@ -51,6 +51,20 @@ Equations render offline in preview and HTML/PDF/print output. Exported HTML inc
 its fonts and distribution notice. Unsupported TeX remains visible as source. Full
 MathJax extension/macro/numbering compatibility and some mixed/multiline delimiter forms
 are still being migrated; see the roadmap for the exact remaining gates.
+
+## Diagrams
+
+Enable **Render Mermaid diagrams** and/or **Render Graphviz diagrams** in Markdown
+settings. Use a `mermaid` fence for flowcharts, sequence diagrams and other supported
+Mermaid syntax. Use `dot` (or `graphviz`, `gv`, `viz`), `circo`, `fdp`, `neato`, `osage`,
+`twopi`, `sfdp` or `patchwork` fences for the corresponding Graphviz layout.
+
+Both engines run offline. Preview diagrams adapt to light/dark appearance; standalone
+HTML and copied HTML fragments contain ordinary SVG, and PDF/print use the light
+variant. Invalid, oversized, unsafe or timed-out diagrams retain their source code with
+a preview notice. Diagram options default off and migrate existing MacDown preferences.
+Remote resources, callbacks and arbitrary JavaScript are unsupported. See the
+[diagram example](docs/design/notebook/DiagramDemo.md) and roadmap for remaining gates.
 
 ## Identity and attribution
 

@@ -1,4 +1,5 @@
 import CodeHighlightCore
+import DiagramCore
 import Foundation
 import MathCore
 import cmark_gfm
@@ -19,8 +20,9 @@ public actor MarkdownProcessor {
   public func render(
     _ source: String, options: MarkdownRenderingOptions = .init(),
     interactiveCallouts: Bool = false, includeSyntax: Bool = false,
+    diagramPresentation: DiagramPresentation = .portable,
     transformDestination: (@Sendable (MarkdownNodeKind, String) throws -> String)? = nil
-  ) throws
+  ) async throws
     -> RenderedMarkdown
   {
     try Task.checkCancellation()
@@ -87,6 +89,7 @@ public actor MarkdownProcessor {
     }
     let sourceText = source as NSString
     var codeBlocks: [UnsafeMutablePointer<cmark_node>] = []
+    var diagramNodes: [(UnsafeMutablePointer<cmark_node>, DiagramKind, String)] = []
     var mathNodes: [(UnsafeMutablePointer<cmark_node>, String, Bool, Bool)] = []
     var callouts: [(UnsafeMutablePointer<cmark_node>, CalloutMarker)] = []
     var transformedDestinations: [String: String] = [:]
@@ -111,6 +114,14 @@ public actor MarkdownProcessor {
       {
         kind = .math(display: true)
         mathNodes.append((node, String(cString: literal), true, true))
+      }
+      if kind == .codeBlock, let info = cmark_node_get_fence_info(node),
+        let diagram = DiagramKind.fence(String(cString: info)),
+        diagram.isMermaid ? options.mermaid : options.graphviz,
+        let literal = cmark_node_get_literal(node)
+      {
+        kind = .diagram(diagram)
+        diagramNodes.append((node, diagram, String(cString: literal)))
       }
       if let transformDestination, kind == .image || kind == .link,
         let destination = cmark_node_get_url(node)
@@ -210,6 +221,37 @@ public actor MarkdownProcessor {
       }
       cmark_node_free(node)
     }
+    var diagramNotices = false
+    var renderedDiagrams = 0
+    var diagramUsesMath = false
+    for (node, kind, source) in diagramNodes {
+      try Task.checkCancellation()
+      let result = try await DiagramRenderer.shared.render(source, kind: kind)
+      try Task.checkCancellation()
+      diagramNotices = diagramNotices || result.issue != nil || !result.isRendered
+      let position =
+        "\(cmark_node_get_start_line(node)):\(cmark_node_get_start_column(node))-\(cmark_node_get_end_line(node)):\(cmark_node_get_end_column(node))"
+      guard
+        let html = try await result.html(
+          position: position, key: RenderedDiagram.key(source: source, kind: kind),
+          presentation: diagramPresentation)
+      else {
+        if options.codeHighlighting { codeBlocks.append(node) }
+        continue
+      }
+      guard let replacement = cmark_node_new(CMARK_NODE_CUSTOM_BLOCK) else {
+        throw MarkdownRenderingError.allocationFailure
+      }
+      guard cmark_node_set_on_enter(replacement, html) == 1,
+        cmark_node_replace(node, replacement) == 1
+      else {
+        cmark_node_free(replacement)
+        throw MarkdownRenderingError.invalidTreeTransformation
+      }
+      cmark_node_free(node)
+      renderedDiagrams += 1
+      diagramUsesMath = diagramUsesMath || result.usesMath
+    }
     var highlightedCodeBlocks = 0
     for block in codeBlocks {
       try Task.checkCancellation()
@@ -248,7 +290,9 @@ public actor MarkdownProcessor {
       html: (front?.metadata?.html ?? "") + String(cString: html), nodes: nodes, headings: headings,
       syntax: includeSyntax ? try MarkdownSyntax.build(source: source, nodes: nodes) : nil,
       highlightedCodeBlocks: highlightedCodeBlocks, mathExpressions: mathNodes.count,
+      diagrams: renderedDiagrams, diagramUsesMath: diagramUsesMath,
       frontMatter: front?.metadata,
-      notices: (front?.notice.map { [$0] } ?? []) + (mathNotices ? [.unsupportedMath] : []))
+      notices: (front?.notice.map { [$0] } ?? []) + (mathNotices ? [.unsupportedMath] : [])
+        + (diagramNotices ? [.unsupportedDiagram] : []))
   }
 }
