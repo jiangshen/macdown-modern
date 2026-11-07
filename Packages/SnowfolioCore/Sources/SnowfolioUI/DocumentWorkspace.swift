@@ -199,6 +199,7 @@ public struct DocumentWorkspace: View {
     } message: {
       Text(droppedDocuments.failures.joined(separator: "\n"))
     }
+    .task { await preferences.readingStyles.loadIfNeeded() }
     .task(id: request) { await render(request) }
   }
 

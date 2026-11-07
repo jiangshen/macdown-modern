@@ -23,7 +23,9 @@ let package = Package(
     .target(name: "EmojiCore", resources: [.process("Resources")]),
     .target(name: "MathCore", resources: [.process("Resources")]),
     .target(name: "DiagramCore", dependencies: ["MathCore"], resources: [.process("Resources")]),
-    .target(name: "RenderingCore", dependencies: ["CodeHighlightCore", "MathCore"]),
+    .target(
+      name: "RenderingCore", dependencies: ["CodeHighlightCore", "MathCore"],
+      resources: [.copy("Resources/Styles")]),
     .target(name: "ExportCore", dependencies: ["MarkdownCore", "RenderingCore"]),
     .target(name: "PreferencesCore"),
     .target(name: "EditorCore", resources: [.copy("Resources/Themes")]),

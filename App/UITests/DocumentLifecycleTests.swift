@@ -9,7 +9,7 @@ final class DocumentLifecycleTests: XCTestCase {
     app.launchArguments = [
       "-ApplePersistenceIgnoreState", "YES", "-NSQuitAlwaysKeepsWindows", "NO",
       "-AppleWindowTabbingMode", "manual", "-preferDocumentTabs", "NO",
-      "-editorThemeSelection", "automatic",
+      "-editorThemeSelection", "automatic", "-readingStyleSelection", "snowfolio",
     ]
     app.launchArguments += arguments
     app.launch()
@@ -292,6 +292,77 @@ final class DocumentLifecycleTests: XCTestCase {
     image.name = "system-style-settings-editor"
     image.lifetime = .keepAlways
     add(image)
+  }
+
+  @MainActor
+  func testReadingStylePickerPreviewAndSourceUndo() {
+    let app = launch(arguments: ["-markdownManualRender", "NO"])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    let original = "# Reading style checkpoint\n\nPreserved source."
+    editor.typeText(original)
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Style undo checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    settings.outlines.firstMatch.staticTexts["Appearance"].firstMatch.click()
+    let picker = settings.popUpButtons["readingStyle"]
+    XCTAssertTrue(picker.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(picker.value as? String, "Snowfolio")
+    picker.click()
+    for title in [
+      "None", "Clearness", "Clearness Dark", "GitHub", "GitHub2", "Solarized (Light)",
+      "Solarized (Dark)",
+    ] {
+      XCTAssertTrue(app.menuItems[title].exists)
+    }
+    app.menuItems["Clearness Dark"].click()
+    let changed = NSPredicate { _, _ in
+      picker.value as? String == "Clearness Dark"
+        && !settings.popUpButtons["documentFont"].isEnabled
+    }
+    expectation(for: changed, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, "Style undo checkpoint")
+    let preview = app.webViews.firstMatch
+    XCTAssertTrue(preview.waitForExistence(timeout: 5))
+    let paper = NSPredicate { _, _ in
+      guard let bitmap = NSBitmapImageRep(data: preview.screenshot().pngRepresentation),
+        let color = bitmap.colorAt(x: bitmap.pixelsWide / 2, y: bitmap.pixelsHigh * 9 / 10)?
+          .usingColorSpace(.sRGB)
+      else { return false }
+      return abs(color.redComponent - 40.0 / 255) < 0.025
+        && abs(color.greenComponent - 42.0 / 255) < 0.025
+        && abs(color.blueComponent - 54.0 / 255) < 0.025
+    }
+    expectation(for: paper, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertEqual(picker.value as? String, "Clearness Dark")
+    picker.click()
+    app.menuItems["None"].click()
+    XCTAssertEqual(picker.value as? String, "None")
+    picker.click()
+    app.menuItems["Snowfolio"].click()
+    let restored = NSPredicate { _, _ in settings.popUpButtons["documentFont"].isEnabled }
+    expectation(for: restored, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "reading-style-picker-restored-to-snowfolio"
+    image.lifetime = .keepAlways
+    add(image)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, original)
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "Style undo checkpoint")
   }
 
   @MainActor

@@ -8,7 +8,10 @@ let package = Package(
   targets: [
     .executableTarget(
       name: "PerformanceAudit",
-      dependencies: [.product(name: "MarkdownCore", package: "SnowfolioCore")])
+      dependencies: [.product(name: "MarkdownCore", package: "SnowfolioCore")]),
+    .executableTarget(
+      name: "ReadingStyleAudit",
+      dependencies: [.product(name: "RenderingCore", package: "SnowfolioCore")]),
   ],
   swiftLanguageModes: [.v6]
 )

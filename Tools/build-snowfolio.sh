@@ -6,6 +6,7 @@ artifact_root="${SNOWFOLIO_APP_BUILD_DIR:-$repo_root/Build/Snowfolio}"
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
 python3 "$repo_root/Tools/verify-markdown-engine.py"
 python3 "$repo_root/Tools/verify-editor-themes.py"
+python3 "$repo_root/Tools/verify-reading-styles.py"
 if ! command -v tuist >/dev/null 2>&1; then
     echo "Install Tuist first: brew install tuist" >&2
     exit 1
@@ -55,6 +56,8 @@ for license in swift-cmark.txt CommonMark-cmark.txt Hoedown-inline.txt macdown.t
         exit 1
     fi
 done
+reading_styles="$app/Contents/Resources/SnowfolioCore_RenderingCore.bundle/Contents/Resources/Styles"
+python3 "$repo_root/Tools/verify-reading-styles.py" "$reading_styles"
 theme_resources="$app/Contents/Resources/SnowfolioCore_EditorCore.bundle/Contents/Resources/Themes"
 python3 "$repo_root/Tools/verify-editor-themes.py" "$theme_resources"
 highlight_resources="$app/Contents/Resources/SnowfolioCore_CodeHighlightCore.bundle/Contents/Resources"

@@ -1,0 +1,13 @@
+{
+  "source": "MacDown/Resources/Styles in the fork",
+  "license": "MacDown MIT notice retained in app resources and repository LICENSE",
+  "files": {
+    "Clearness Dark.css": "2a85f66c4ada7ac072f6dd8dea6c0475fe43486ffe0ee02d1b4aea2cbf1dbf4b",
+    "Clearness.css": "88fe43c01e68cd61d1c5cec30deefbd062ba03d118bc54af0f783bfdc7786220",
+    "GitHub.css": "673ad0add6f2ad0283f152bd0c4806fce92ac095a8c69331d71a6fb4835140a1",
+    "GitHub2.css": "62ed816fefa18599c6b8dd0b3d81143459e799e335f77b81ddc1650178ddcefd",
+    "Solarized (Dark).css": "bf4621dfa934e085ebf96d083d72dd026a77999a4a94306f8e55e9fa81ef8003",
+    "Solarized (Light).css": "59b7f94e154dcd17905b4916ebddb1497d5531ac203ca68fee4f003f0f7438c8"
+  },
+  "noticeSHA256": "0393bce44b5e1168f46ba205b927e79d3e06bb96e93b5bdccb19944bf2c81a4a"
+}

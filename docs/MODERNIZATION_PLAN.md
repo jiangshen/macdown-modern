@@ -2,17 +2,22 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current code checkpoint: `a11c4bc`, native input normalization source projection.
-Local evidence verifies 284 package tests / 55 suites, 29 Address Sanitizer tests /
-four suites, eight arm64 test executables, an arm64 app build and 652 CommonMark
-examples. Hosted artifacts verify the same package/corpus totals and nine passing
-native document UI tests. Exact evidence and render
-measurements are in [the checkpoint ledger](validation/input-source-projection.json).
+Current checkpoint: bundled reading-style foundation, based on `dd69d88`.
+Local evidence verifies **296 package tests / 60 suites**, eight Address Sanitizer
+tests / three suites, eight arm64 test executables and an arm64 app build with
+verified bundled styles/licenses. The exact short-list selection/alignment regression
+also passes in light/dark. Native Settings document UI acceptance is pending hosted
+execution. Evidence and bounded performance measurements are in
+[the reading-style ledger](validation/reading-styles.json).
 
-The previously reproduced native NUL replacement source-range gate is corrected
-locally and on the hosted runner; historical failures remain in the characterization
-ledger. Direct desktop,
-real IME/VoiceOver, custom CSS/templates, remaining parity, complete native performance,
+Notebook, None and six original bundled CSS presentations are implemented for preview
+and fresh HTML/PDF/print output. Custom/edited CSS, relative assets and template parity
+remain incomplete; [the characterization ledger](validation/css-template-characterization.json)
+records their required behavior. Existing Notebook design is preserved.
+
+Input-normalization source projection previously passed local/hosted acceptance;
+[its ledger](validation/input-source-projection.json) preserves exact evidence.
+Direct desktop, real IME/VoiceOver, remaining parity, complete native performance,
 release readiness and safe coupled legacy retirement remain required. The chronological
 evidence below preserves prior checkpoints; it does not close these gates.
 
@@ -134,7 +139,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
-| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography and all eight Prism code themes implemented; direct theme acceptance, CSS/templates and remaining layout preferences pending |
+| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography and all eight Prism code themes implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; direct theme acceptance, custom CSS/assets/templates and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |

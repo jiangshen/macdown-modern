@@ -2,6 +2,7 @@ import AppKit
 import DocumentCore
 import EditorCore
 import MarkdownCore
+import RenderingCore
 import SwiftUI
 import Testing
 import WebKit
@@ -576,6 +577,36 @@ struct NativeScrollTests {
     scrolling.flush()
     #expect(sourceData != nil)
     #expect(previewData != nil)
+
+    let styles = ReadingStyleRepository()
+    for entry in ReadingStyleEntry.all {
+      let style = DocumentStyle(presentation: try await styles.load(entry.id))
+      previewCoordinator.update(
+        preview, html: rendered.html, directory: nil, remoteImages: false, style: style, revision: 0
+      )
+      try await waitFor("style scroll context") {
+        previewCoordinator.isReadyForScrolling(revision: 0)
+      }
+      NotificationCenter.default.post(
+        name: NSScrollView.willStartLiveScrollNotification, object: scroll)
+      scroll.contentView.scroll(to: NSPoint(x: 0, y: 800))
+      scroll.reflectScrolledClipView(scroll.contentView)
+      NotificationCenter.default.post(
+        name: NSScrollView.didEndLiveScrollNotification, object: scroll)
+      try await waitFor("source drives selected reading style") {
+        try await evaluate("return String(window.scrollY>300 && window.scrollY<1800);", in: preview)
+          == "true"
+      }
+      let before = scroll.contentView.bounds.minY
+      _ = try await evaluate(
+        "window.dispatchEvent(new Event('wheel')); window.scrollTo(0,2500); return 'moved';",
+        in: preview)
+      try await waitFor("selected reading style drives source") {
+        abs(scroll.contentView.bounds.minY - before) > 100
+      }
+      #expect(editor.string == source && document.revision == 0)
+      #expect(editor.selectedRange() == NSRange(location: 2, length: 3) && !manager.canUndo)
+    }
 
     scrolling.configure(
       document: document, linked: false, mode: .split,

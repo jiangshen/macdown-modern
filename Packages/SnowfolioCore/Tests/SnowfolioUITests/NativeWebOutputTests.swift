@@ -4,6 +4,7 @@ import ExportCore
 import Foundation
 import MarkdownCore
 import PDFKit
+import RenderingCore
 import Testing
 
 @testable import SnowfolioUI
@@ -11,6 +12,42 @@ import Testing
 @Suite("Native paginated output", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeWebOutputTests {
+  @Test("Selected reading styles flow through native PDF and print preparation")
+  func readingStylesPDF() async throws {
+    _ = NSApplication.shared
+    let repository = ReadingStyleRepository()
+    for entry in ReadingStyleEntry.all {
+      let style = DocumentStyle(presentation: try await repository.load(entry.id))
+      let export = try await MarkdownExport.build(
+        source: "# Reading style checkpoint\n\nPreserved document text.", title: entry.title,
+        directory: nil, style: style)
+      let surface = NativeWebOutput()
+      defer { surface.close() }
+      try await surface.prepare(html: export.document)
+      let path = FileManager.default.temporaryDirectory.appendingPathComponent(
+        UUID().uuidString + ".pdf")
+      defer { try? FileManager.default.removeItem(at: path) }
+      let info = NativeWebOutput.printInfo(allPages: true)
+      info.paperSize = NSSize(width: 612, height: 792)
+      info.jobDisposition = .save
+      info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = path
+      let window = NSWindow(
+        contentRect: NSRect(x: 0, y: 0, width: 720, height: 900), styleMask: .titled,
+        backing: .buffered, defer: false)
+      window.isReleasedWhenClosed = false
+      defer { window.close() }
+      #expect(await surface.printDocument(info: info, for: window, showPanel: false))
+      let pdf = try #require(PDFDocument(url: path))
+      let text = try #require(pdf.string)
+      let heading =
+        entry.title.hasPrefix("Solarized") ? "READING STYLE CHECKPOINT" : "Reading style checkpoint"
+      #expect(
+        text.contains(heading) && text.contains("Preserved document text."),
+        "\(entry.title): \(text.debugDescription)")
+      #expect(pdf.pageCount == 1)
+    }
+  }
+
   @Test("Native PDF and print use the current fence parsing choice", arguments: [false, true])
   func fencePreferencePDF(enabled: Bool) async throws {
     _ = NSApplication.shared

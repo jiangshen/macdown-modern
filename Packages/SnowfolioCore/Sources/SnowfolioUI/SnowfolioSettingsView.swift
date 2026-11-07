@@ -194,7 +194,7 @@ private struct SettingsPreferenceRow: View {
 
   var body: some View {
     switch entry.control {
-    case .editorTheme, .importEditorTheme:
+    case .editorTheme, .importEditorTheme, .readingStyle:
       // Compound rows own distinct identifiers and labels on their controls.
       // A row-wide modifier would cascade to Import and Reload alike.
       control
@@ -204,6 +204,9 @@ private struct SettingsPreferenceRow: View {
         .accessibilityLabel(entry.title)
         .accessibilityHint(entry.detail)
         .disabled(entry.id == "markdownInlineMath" && !preferences.math)
+        .disabled(
+          ["documentFont", "documentTextSize", "documentFullWidth"].contains(entry.id)
+            && preferences.readingStyles.presentation != .notebook)
     }
   }
 
@@ -226,6 +229,8 @@ private struct SettingsPreferenceRow: View {
         caption
       }
       .pickerStyle(.menu)
+    case .readingStyle:
+      ReadingStylePicker(library: preferences.readingStyles)
     case .documentFont:
       Picker(selection: $preferences.documentFont) {
         Text("Default").tag(DocumentStyle.Font.standard)

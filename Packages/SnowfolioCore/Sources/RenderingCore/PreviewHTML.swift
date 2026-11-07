@@ -7,14 +7,24 @@ public enum PreviewHTML {
     title: String = "", includeStyles: Bool = true, includeHighlighting: Bool = false,
     style: DocumentStyle = .init(), includeMath: Bool = false
   ) -> String {
+    let content =
+      style.usesBodyRoot
+      ? "<body id=\"preview-content\">" + body + "</body>"
+      : "<body><main id=\"preview-content\">" + body + "</main></body>"
     let imageSources = remoteImages ? "mdasset: data: https:" : "mdasset: data:"
     return """
       <!doctype html><html><head><meta charset="utf-8">
       <title>\(escapeText(title))</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-      \(includeStyles ? "<style id=\"document-style\">" + style.css + "</style>" : "")\(includeHighlighting ? "<style id=\"code-style\">" + style.codeCSS + "</style>" : "")\(includeMath ? "<style id=\"math-style\">" + MathStyle.css + "</style>" : "")</head><body><main id="preview-content">\(body)</main></body></html>
+      \(includeStyles ? "<style id=\"document-style\">" + escapeStyle(style.css) + "</style>" : "")\(includeHighlighting ? "<style id=\"code-style\">" + style.codeCSS + "</style>" : "")\(includeMath ? "<style id=\"math-style\">" + MathStyle.css + "</style>" : "")</head>\(content)</html>
       """
+  }
+
+  /// CSS raw text must not terminate its HTML style element. CSS escapes preserve
+  /// authored less-than characters in strings without allowing HTML markup.
+  private static func escapeStyle(_ value: String) -> String {
+    value.replacingOccurrences(of: "<", with: "\\3c ")
   }
 
   private static func escapeText(_ value: String) -> String {
@@ -31,7 +41,39 @@ public enum PreviewHTML {
     if (!style) return false;
     const anchor = [...document.querySelectorAll('#preview-content [data-sourcepos]')].find(e => e.getBoundingClientRect().bottom > 0);
     const anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;
+    const root = document.getElementById('preview-content');
+    if (!root) return false;
+    const wantsBody = typeof bodyRoot === 'boolean' ? bodyRoot : root === document.body;
+    const changingRoot = wantsBody !== (root === document.body);
+    const selection = window.getSelection();
+    function boundary(node, offset) {
+      if (node === root) return {container: true, offset};
+      if (node === document.body && root.parentNode === node && node.childNodes.length === 1)
+        return {container: true, offset: offset === 0 ? 0 : root.childNodes.length};
+      return {node, offset};
+    }
+    const selected = changingRoot && selection && selection.rangeCount ? {
+      anchor: boundary(selection.anchorNode, selection.anchorOffset),
+      focus: boundary(selection.focusNode, selection.focusOffset)
+    } : null;
+    if (wantsBody && root !== document.body) {
+      while (root.firstChild) document.body.insertBefore(root.firstChild, root);
+      root.remove(); document.body.id = 'preview-content';
+    } else if (!wantsBody && root === document.body) {
+      document.body.removeAttribute('id');
+      const main = document.createElement('main'); main.id = 'preview-content';
+      while (document.body.firstChild) main.appendChild(document.body.firstChild);
+      document.body.appendChild(main);
+    }
     style.textContent = css;
+    const nextRoot = document.getElementById('preview-content');
+    const endpoint = point => point.container
+      ? {node: nextRoot, offset: Math.min(point.offset, nextRoot.childNodes.length)} : point;
+    if (selected) {
+      const a = endpoint(selected.anchor), f = endpoint(selected.focus);
+      if (a.node?.isConnected && f.node?.isConnected)
+        selection.setBaseAndExtent(a.node, a.offset, f.node, f.offset);
+    }
     const codeStyle = document.getElementById("code-style");
     if (codeStyle) codeStyle.textContent = codeCSS;
     if (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);

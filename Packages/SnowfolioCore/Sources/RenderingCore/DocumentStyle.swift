@@ -1,8 +1,15 @@
 import CodeHighlightCore
 
 /// Shared, portable document presentation for preview, HTML, PDF and printing.
-/// All CSS inputs are bounded values or closed enums; document text is never CSS.
+/// CSS is an immutable presentation snapshot; document text is never CSS.
 public struct DocumentStyle: Hashable, Sendable {
+  public enum Presentation: Hashable, Sendable {
+    case notebook, unstyled
+    case stylesheet(DocumentStylesheet)
+  }
+  public var presentation: Presentation
+  public var usesBodyRoot: Bool { presentation != .notebook }
+
   public enum Font: String, CaseIterable, Sendable {
     case standard, serif, monospaced
 
@@ -28,8 +35,9 @@ public struct DocumentStyle: Hashable, Sendable {
 
   public init(
     font: Font = .standard, textSize: Double = 16, fullWidth: Bool = false,
-    codeTheme: CodeHighlightTheme = .adaptive
+    codeTheme: CodeHighlightTheme = .adaptive, presentation: Presentation = .notebook
   ) {
+    self.presentation = presentation
     self.codeTheme = codeTheme
     self.font = font
     self.storedTextSize = textSize.isFinite ? min(28, max(12, textSize)) : 16
@@ -37,6 +45,14 @@ public struct DocumentStyle: Hashable, Sendable {
   }
 
   public var css: String {
+    switch presentation {
+    case .notebook: notebookCSS
+    case .unstyled: ""
+    case .stylesheet(let stylesheet): stylesheet.css
+    }
+  }
+
+  private var notebookCSS: String {
     """
     :root {
       color-scheme: light dark;

@@ -11,6 +11,7 @@ import RenderingCore
 public final class AppPreferences {
   @ObservationIgnored private let defaults: UserDefaults
   public let editorThemes: EditorThemeLibrary
+  public let readingStyles: ReadingStyleLibrary
 
   public var restoreDocumentsOnLaunch: Bool {
     didSet { save(restoreDocumentsOnLaunch, "NSQuitAlwaysKeepsWindows") }
@@ -76,7 +77,8 @@ public final class AppPreferences {
 
   public init(
     defaults: UserDefaults = .standard, domainName: String? = nil,
-    legacyValues: [String: Any]? = nil, editorThemeRepository: EditorThemeRepository = .standard
+    legacyValues: [String: Any]? = nil, editorThemeRepository: EditorThemeRepository = .standard,
+    readingStyleRepository: ReadingStyleRepository = .standard
   ) {
     self.defaults = defaults
     // App-scoped fallback only; explicit app, system and launch-argument choices win.
@@ -85,6 +87,11 @@ public final class AppPreferences {
     let legacy =
       legacyValues ?? defaults.persistentDomain(forName: "com.uranusjr.macdown")
       ?? defaults.persistentDomain(forName: "com.uranusjr.macdown-debug") ?? [:]
+    let previous = defaults.persistentDomain(forName: domain) ?? [:]
+    let savedReadingStyle = defaults.string(forKey: "readingStyleSelection")
+    // Existing Snowfolio profiles already use the liked notebook design. A first
+    // import from MacDown preserves its explicit style (or no-style) choice.
+    let preserveNotebook = previous[LegacyPreferencesMigration.markerKey] != nil
     LegacyPreferencesMigration.migrate(legacy, into: defaults, targetDomain: domain)
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
@@ -146,12 +153,29 @@ public final class AppPreferences {
     editorFontSize = min(72, max(8, (font?["size"] as? Double) ?? 14))
     editorFontName = (font?["name"] as? String) ?? "Menlo-Regular"
     editorThemes = EditorThemeLibrary(defaults: defaults, repository: editorThemeRepository)
+    let migratedStyle = defaults.string(forKey: "htmlStyleName")
+    let legacyReadingSelection =
+      migratedStyle.flatMap { name -> String? in
+        guard !name.isEmpty else { return nil }
+        return "legacy:" + (name.hasSuffix(".css") ? String(name.dropLast(4)) : name)
+      } ?? ReadingStyleEntry.unstyled.id
+    let hasLegacyReadingChoice = !legacy.isEmpty || previous["htmlStyleName"] != nil
+    let initialReadingStyle =
+      savedReadingStyle
+      ?? (preserveNotebook || !hasLegacyReadingChoice
+        ? ReadingStyleEntry.notebook.id : legacyReadingSelection)
+    readingStyles = ReadingStyleLibrary(
+      defaults: defaults, selection: initialReadingStyle, repository: readingStyleRepository)
+    if defaults.volatileDomain(forName: UserDefaults.argumentDomain)["readingStyleSelection"] == nil
+    {
+      defaults.set(initialReadingStyle, forKey: "readingStyleSelection")
+    }
   }
 
   public var documentStyle: DocumentStyle {
     DocumentStyle(
       font: documentFont, textSize: documentTextSize, fullWidth: documentFullWidth,
-      codeTheme: codeTheme)
+      codeTheme: codeTheme, presentation: readingStyles.presentation)
   }
 
   public var editorBehavior: EditorBehavior {

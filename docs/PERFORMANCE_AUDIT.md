@@ -264,3 +264,44 @@ These measurements exclude native app typing/layout, WebKit publication, file IO
 math/diagrams and exports; they do not establish p95, energy or full M6 acceptance.
 Raw samples, binary/harness hashes and limitations are recorded in
 `validation/input-source-projection.json`. The standalone harness also accepts `nul`.
+
+
+## Reading-style bridge and byte identity — 2026-11-07
+
+The separate development-only `ReadingStyleAudit` executable compares the exact
+`dd69d88` style-update script with the current script in a hidden 700×400 native
+WKWebView host. Nine fresh processes run sequentially, three per HTML size. Each
+process alternates version order and 16/18px Notebook typography, takes ten samples
+per version, discards its first sample and retains the median. The table reports
+the median of those three process medians. Selection remains checked throughout.
+No build or Instruments run overlaps the timing matrix.
+
+| Artificial HTML bytes | Before ms | After ms |
+| --- | ---: | ---: |
+| 100,000 | 6 | 6 |
+| 1,000,000 | 58 | 57 |
+| 10,000,000 | 621 | 615 |
+
+These values cover isolated-world JavaScript and forced CSS layout only. Observed
+`performance.now` resolution is one millisecond; the differences do not establish
+an improvement. They exclude root-transition cost, publication IPC, painting,
+parsing, real typing, app launch, memory retention and energy. Raw samples, fixture
+sizes, script/binary hashes and scope are in
+[reading-style-timing.json](validation/reading-style-timing.json).
+
+Exact CSS/HTML identity must compare UTF-8 bytes because Swift String equality
+normalizes Unicode equivalence. An initial collection comparison cost about
+2.213 ms per unchanged 1 MB string. The actual `UTF8Text` helper now borrows both
+contiguous buffers, returns immediately for shared storage and otherwise performs
+a bounded byte comparison, retaining a safe collection fallback for foreign storage.
+A separate Release arm64 external-library probe rotates 64 native strings and
+makes 1,000 calls per mode: stdlib shared-storage comparison totals 2,212.750 ms,
+helper shared-storage calls total 0.003458 ms, and helper independent-buffer calls
+total 30.884 ms. All 3,000 answers are checked. These are helper timings, not
+end-to-end typing latency or p95. Byte-boundary/foreign-storage regression tests
+and Address Sanitizer pass. Probe details are recorded in
+[reading-styles.json](validation/reading-styles.json).
+
+The original core benchmark source remains unchanged; this separate executable
+keeps WebKit style experiments out of its dispatch and workload logic. Full M6
+app performance and memory/energy acceptance remain open.

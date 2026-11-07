@@ -72,7 +72,8 @@ public enum PreviewScroll {
         if (!frame) frame=requestAnimationFrame(() => {frame=0; report(false);});
         clearTimeout(ended); ended=setTimeout(() => report(true),120);
       }, {passive:true});
-      const root = document.getElementById('preview-content');
+      // The body persists when reading styles add or remove the main wrapper.
+      const root = document.body;
       if (root) new ResizeObserver(() => {
         geometry=null;
         if (retainedPosition) scrollToPosition(retainedPosition.line,retainedPosition.atTop,retainedPosition.atBottom);

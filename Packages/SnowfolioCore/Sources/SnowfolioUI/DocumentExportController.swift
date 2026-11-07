@@ -18,7 +18,10 @@ public final class DocumentExportController {
 
   public init() {}
 
-  public var isAvailable: Bool { document != nil && preferences != nil && window != nil && !isBusy }
+  public var isAvailable: Bool {
+    document != nil && preferences != nil && window != nil && !isBusy
+      && preferences?.readingStyles.isReady == true && preferences?.readingStyles.isLoading == false
+  }
 
   public func exportHTML() { start(.html) }
   public func exportPDF() { start(.pdf) }
@@ -26,7 +29,9 @@ public final class DocumentExportController {
   public func copyHTML() { start(.clipboard) }
 
   func snapshot() -> DocumentExportSnapshot? {
-    guard let document, let preferences else { return nil }
+    guard let document, let preferences, preferences.readingStyles.isReady,
+      !preferences.readingStyles.isLoading
+    else { return nil }
     return DocumentExportSnapshot(
       source: document.text, options: preferences.renderingOptions,
       title: document.fileURL?.deletingPathExtension().lastPathComponent

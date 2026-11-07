@@ -1,0 +1,1266 @@
+{
+  "baselineCommit": "dd69d88",
+  "baselineScript": "const style = document.head.querySelector('#document-style');\nif (!style) return false;\nconst anchor = [...document.querySelectorAll('#preview-content [data-sourcepos]')].find(e => e.getBoundingClientRect().bottom > 0);\nconst anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;\nstyle.textContent = css;\nconst codeStyle = document.getElementById(\"code-style\");\nif (codeStyle) codeStyle.textContent = codeCSS;\nif (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);\nglobalThis.__snowfolioScroll?.invalidateGeometry();\nglobalThis.__snowfolioScroll?.markProgrammatic();\nreturn true;\n",
+  "baselineScriptSHA256": "277aa666f8fed4afe4680f6b83cb7f8a1c1fe252aea5b396d06531797849ad35",
+  "binarySHA256": "b9e073135cd46585dcc49137cb3b7146d1839487d5769de01c5790e3201e7096",
+  "method": "Nine fresh processes, three per size; before/after scripts alternate within each process while notebook typography alternates 16/18px. Ten samples per version; drop its first sample, then report median of three process warm medians. No overlapping builds or Instruments. Uses WebKit performance.now at its observed millisecond resolution; differences near that resolution are not performance improvements.",
+  "cases": [
+    {
+      "targetBytes": 100000,
+      "before": {
+        "processWarmMedianMilliseconds": [
+          6,
+          6,
+          6
+        ],
+        "medianWarmMilliseconds": 6
+      },
+      "after": {
+        "processWarmMedianMilliseconds": [
+          5,
+          6,
+          6
+        ],
+        "medianWarmMilliseconds": 6
+      }
+    },
+    {
+      "targetBytes": 1000000,
+      "before": {
+        "processWarmMedianMilliseconds": [
+          59,
+          58,
+          57
+        ],
+        "medianWarmMilliseconds": 58
+      },
+      "after": {
+        "processWarmMedianMilliseconds": [
+          59,
+          57,
+          57
+        ],
+        "medianWarmMilliseconds": 57
+      }
+    },
+    {
+      "targetBytes": 10000000,
+      "before": {
+        "processWarmMedianMilliseconds": [
+          626,
+          621,
+          620
+        ],
+        "medianWarmMilliseconds": 621
+      },
+      "after": {
+        "processWarmMedianMilliseconds": [
+          613,
+          615,
+          627
+        ],
+        "medianWarmMilliseconds": 615
+      }
+    }
+  ],
+  "processes": [
+    {
+      "targetBytes": 100000,
+      "process": 0,
+      "result": {
+        "fixtureHTMLBytes": 99960,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 9,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 7,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 100000
+      }
+    },
+    {
+      "targetBytes": 100000,
+      "process": 1,
+      "result": {
+        "fixtureHTMLBytes": 99960,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 9,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 100000
+      }
+    },
+    {
+      "targetBytes": 100000,
+      "process": 2,
+      "result": {
+        "fixtureHTMLBytes": 99960,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 9,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 5,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 6,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 100000
+      }
+    },
+    {
+      "targetBytes": 1000000,
+      "process": 0,
+      "result": {
+        "fixtureHTMLBytes": 999992,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 64,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 60,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 60,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 61,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 60,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 1000000
+      }
+    },
+    {
+      "targetBytes": 1000000,
+      "process": 1,
+      "result": {
+        "fixtureHTMLBytes": 999992,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 61,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 56,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 56,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 56,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 60,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 60,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 1000000
+      }
+    },
+    {
+      "targetBytes": 1000000,
+      "process": 2,
+      "result": {
+        "fixtureHTMLBytes": 999992,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 65,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 61,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 60,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 60,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 56,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 58,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 57,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 59,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 1000000
+      }
+    },
+    {
+      "targetBytes": 10000000,
+      "process": 0,
+      "result": {
+        "fixtureHTMLBytes": 9999920,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 623,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 625,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 597,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 613,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 626,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 1227,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 615,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 603,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 626,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 603,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 613,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 627,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 611,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 627,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 620,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 612,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 626,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 611,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 609,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 627,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 10000000
+      }
+    },
+    {
+      "targetBytes": 10000000,
+      "process": 1,
+      "result": {
+        "fixtureHTMLBytes": 9999920,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 634,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 605,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 614,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 626,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 609,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 1258,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 609,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 633,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 611,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 611,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 628,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 607,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 621,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 629,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 613,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 626,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 622,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 615,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 634,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 617,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 10000000
+      }
+    },
+    {
+      "targetBytes": 10000000,
+      "process": 2,
+      "result": {
+        "fixtureHTMLBytes": 9999920,
+        "iterationsPerVersion": 10,
+        "os": "Version 27.2 (Build 26B123)",
+        "records": [
+          {
+            "milliseconds": 627,
+            "pointSize": 18,
+            "round": 0,
+            "version": "before"
+          },
+          {
+            "milliseconds": 613,
+            "pointSize": 16,
+            "round": 0,
+            "version": "after"
+          },
+          {
+            "milliseconds": 627,
+            "pointSize": 18,
+            "round": 1,
+            "version": "after"
+          },
+          {
+            "milliseconds": 611,
+            "pointSize": 16,
+            "round": 1,
+            "version": "before"
+          },
+          {
+            "milliseconds": 631,
+            "pointSize": 18,
+            "round": 2,
+            "version": "before"
+          },
+          {
+            "milliseconds": 1236,
+            "pointSize": 16,
+            "round": 2,
+            "version": "after"
+          },
+          {
+            "milliseconds": 630,
+            "pointSize": 18,
+            "round": 3,
+            "version": "after"
+          },
+          {
+            "milliseconds": 622,
+            "pointSize": 16,
+            "round": 3,
+            "version": "before"
+          },
+          {
+            "milliseconds": 613,
+            "pointSize": 18,
+            "round": 4,
+            "version": "before"
+          },
+          {
+            "milliseconds": 634,
+            "pointSize": 16,
+            "round": 4,
+            "version": "after"
+          },
+          {
+            "milliseconds": 606,
+            "pointSize": 18,
+            "round": 5,
+            "version": "after"
+          },
+          {
+            "milliseconds": 613,
+            "pointSize": 16,
+            "round": 5,
+            "version": "before"
+          },
+          {
+            "milliseconds": 626,
+            "pointSize": 18,
+            "round": 6,
+            "version": "before"
+          },
+          {
+            "milliseconds": 615,
+            "pointSize": 16,
+            "round": 6,
+            "version": "after"
+          },
+          {
+            "milliseconds": 629,
+            "pointSize": 18,
+            "round": 7,
+            "version": "after"
+          },
+          {
+            "milliseconds": 621,
+            "pointSize": 16,
+            "round": 7,
+            "version": "before"
+          },
+          {
+            "milliseconds": 616,
+            "pointSize": 18,
+            "round": 8,
+            "version": "before"
+          },
+          {
+            "milliseconds": 626,
+            "pointSize": 16,
+            "round": 8,
+            "version": "after"
+          },
+          {
+            "milliseconds": 614,
+            "pointSize": 18,
+            "round": 9,
+            "version": "after"
+          },
+          {
+            "milliseconds": 620,
+            "pointSize": 16,
+            "round": 9,
+            "version": "before"
+          }
+        ],
+        "scope": "WebKit isolated-world script and forced CSS layout for native notebook typography changes; selection retained. Excludes app launch, parsing, typing, SwiftUI, publication IPC and compositor paint. Hidden fixed 700x400 native window; alternating version order, 16/18px font size.",
+        "targetBytes": 10000000
+      }
+    }
+  ],
+  "scope": "WebKit isolated-world style-update script and forced CSS layout; artificial HTML, hidden 700x400 native host; excludes typing, parsing, SwiftUI, IPC, painting, real app launch/retention/energy and new root-transition cost."
+}

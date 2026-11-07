@@ -9,6 +9,7 @@ artifact_root="$(cd "$artifact_root" && pwd)"
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
 python3 "$repo_root/Tools/verify-markdown-engine.py"
 python3 "$repo_root/Tools/verify-editor-themes.py"
+python3 "$repo_root/Tools/verify-reading-styles.py"
 
 if [ "$(uname -m)" != arm64 ]; then
     echo "Validation requires a native Apple Silicon terminal." >&2

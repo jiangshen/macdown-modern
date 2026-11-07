@@ -1,0 +1,87 @@
+{
+  "checkpoint": "Bundled reading-style foundation",
+  "date": "2026-11-07",
+  "baseCommit": "dd69d88",
+  "status": "locally verified; hosted acceptance pending; custom CSS/templates incomplete",
+  "fullGoal": "active; incomplete",
+  "characterization": "css-template-characterization.json",
+  "implementation": [
+    "Notebook remains the existing Snowfolio default; None and six byte-preserved original CSS choices are independent base presentations.",
+    "Native Settings picker, reload, persisted selection and explicit first-import legacy choice migration; existing Snowfolio profiles retain Notebook.",
+    "Repository actor reads and caches bundled CSS; immutable UTF-8 stylesheet snapshots freeze preview/export presentation.",
+    "Authored body selectors receive a direct-body root. Live root transitions move existing nodes and preserve forward/backward and element-endpoint selection and reading anchors.",
+    "Stable body ResizeObserver retains late source-geometry invalidation after wrapper transitions; bounded old-observer reproduction fails and corrected observer passes.",
+    "CSS raw-text boundaries cannot introduce HTML nodes; CSS and HTML publication use byte identity, preserving distinct Unicode selector sequences.",
+    "Fresh styled HTML/PDF/print use resolved sheets; code highlighting remains independently controlled; export waits for initial/pending style resolution.",
+    "Edited old stock styles are retained as unavailable selections, never silently replaced by stock CSS. Custom-file loading remains a separate required gate."
+  ],
+  "localValidation": {
+    "packageTests": 296,
+    "packageSuites": 60,
+    "failedTests": 0,
+    "warnings": 0,
+    "errors": 0,
+    "packageReport": "/private/tmp/snowfolio-reading-styles-final-full.json",
+    "nativeArm64TestExecutables": 8,
+    "nativeAppBuildForTesting": "passed including bundled style checksums/licenses",
+    "appLog": "/private/tmp/snowfolio-reading-styles-final-app.log",
+    "changedSwiftStrictFormatting": {
+      "result": "passed",
+      "files": 25
+    },
+    "firstPartyDiffCheck": "passed; byte-preserved original CSS whitespace excluded",
+    "asan": {
+      "tests": 8,
+      "suites": 3,
+      "result": "passed; no diagnostics",
+      "report": "/private/tmp/snowfolio-reading-styles-identity-asan.json"
+    },
+    "tests": [
+      "All eight reading presentations, original CSS computed-style direct-body baselines in light/dark",
+      "Selection, node identity and reading anchor survive all style transitions and whole-root selection",
+      "Late 3000px paragraph growth invalidates source geometry after wrapper removal",
+      "Both directions of linked scrolling across all eight styles preserve source, selection and undo",
+      "Styled/plain HTML and native PDF/print across all eight choices; independent highlighting",
+      "Legacy first-import/previous profile/None migration; launch overrides, persistence, failure retention and frozen export",
+      "CSS closing-style content remains CSS; canonically equivalent CSS and HTML identifiers update correctly",
+      "Exact reported First/Second/dfdfd short-list alignment in light/dark; tight/loose wrapped lists and source selection/undo regressions"
+    ],
+    "nativeDocumentUITest": "New Settings picker/rendered-paper/source undo test compiled; local desktop execution unavailable while locked; hosted test required"
+  },
+  "desktopAcceptance": "Mac locked; no fresh direct visual acceptance claimed. Screenshot 03:42:42 predates mixed-list production fix at 03:49:35; prior and short-fixture evidence in list-selection.json.",
+  "performance": {
+    "method": "Separate ReadingStyleAudit executable; existing core PerformanceAudit source unchanged. See reading-style-timing.json and PERFORMANCE_AUDIT.md.",
+    "nativeStyleUpdateMilliseconds": {
+      "100KB": {
+        "before": 6,
+        "after": 6
+      },
+      "1MB": {
+        "before": 58,
+        "after": 57
+      },
+      "10MB": {
+        "before": 621,
+        "after": 615
+      }
+    },
+    "interpretation": "Millisecond-resolution script/layout samples do not establish an improvement, typing p95 or app-level performance.",
+    "exactUTF8Comparison": {
+      "bytesPerString": 1000000,
+      "exactIndependentTotalMilliseconds": 30.884333,
+      "exactSharedTotalMilliseconds": 0.003458,
+      "iterations": 1000,
+      "poolSize": 64,
+      "scope": "Release arm64 external-library calls over rotating native strings; tests the actual UTF8Text.swift helper; not app typing latency or p95.",
+      "stdlibSharedTotalMilliseconds": 2212.749667,
+      "validComparisons": 3000
+    }
+  },
+  "remaining": [
+    "Custom CSS discovery/import/reload/reveal, edited legacy CSS and relative asset resolution",
+    "Default/custom template adapter and asset-option/export fidelity against characterization",
+    "Fresh user desktop, real IME/VoiceOver, document reliability and full app performance acceptance",
+    "M5 integrations, M6 release readiness and safe coupled retirement of legacy renderer/resources"
+  ],
+  "legacyRetirement": "No coupled original renderer/templates/styles removed at this checkpoint."
+}

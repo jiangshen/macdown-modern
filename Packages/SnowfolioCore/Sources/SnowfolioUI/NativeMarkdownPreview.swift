@@ -183,7 +183,10 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         applyStyle(to: view)
         return
       }
-      guard pendingHTML != appliedHTML else {
+      // HTML attributes and CSS identifiers distinguish canonically equivalent
+      // Unicode sequences. Compare the actual published bytes, not Swift text equality.
+      let sameHTML = appliedHTML.map { UTF8Text.equal($0, pendingHTML) } ?? false
+      guard !sameHTML else {
         if contentValid {
           appliedRevision = pendingRevision
           if abs(view.pageZoom - pendingZoom) > 0.0001, failedZoom != pendingZoom {
@@ -229,7 +232,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       let generation = generation
       applying = true
       view.callAsyncJavaScript(
-        PreviewHTML.updateStyle, arguments: ["css": sent.css, "codeCSS": sent.codeCSS], in: nil,
+        PreviewHTML.updateStyle,
+        arguments: ["css": sent.css, "codeCSS": sent.codeCSS, "bodyRoot": sent.usesBodyRoot],
+        in: nil,
         in: .defaultClient
       ) { [weak self, weak view] result in
         guard let self, let view, self.generation == generation else { return }

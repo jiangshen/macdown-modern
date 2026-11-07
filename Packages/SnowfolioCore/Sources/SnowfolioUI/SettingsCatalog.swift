@@ -72,7 +72,7 @@ struct SettingsEntry: Identifiable {
   enum Control {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy
-    case editorTheme, importEditorTheme
+    case editorTheme, importEditorTheme, readingStyle
   }
   let id: String
   let title: String
@@ -115,12 +115,17 @@ enum SettingsCatalog {
       pane: .appearance, title: "Reading",
       entries: [
         .init(
+          id: "readingStyle", title: "Document style",
+          detail: "Appearance for the preview and styled exports.",
+          keywords: "css stylesheet reading legacy", control: .readingStyle),
+        .init(
           id: "documentFont", title: "Font",
-          detail: "Typography for the preview and styled exports.", control: .documentFont),
+          detail: "Typography for the Snowfolio document style and its styled exports.",
+          control: .documentFont),
         .init(id: "documentTextSize", title: "Text size", control: .documentSize),
         .init(
           id: "documentFullWidth", title: "Full width",
-          detail: "Let the document fill the available reading width.",
+          detail: "Let the Snowfolio style fill the available reading width.",
           control: .toggle(\.documentFullWidth)),
       ]),
     .init(
