@@ -105,3 +105,20 @@ owned AST values. Its pinned SPM dependency `swiftlang/swift-cmark` 0.9.0 provid
 maintained third-party C CommonMark/GFM engine. Native pointers stay actor-confined;
 no vendored parser C is counted toward first-party Swift migration. The dependency's
 COPYING notice ships as `Modern/Resources/Licenses/swift-cmark.txt`.
+
+## Progressive retirement ledger
+
+The table above is the original migration baseline, not a claim that all listed code
+must remain. Each migration increment also checks for dead first-party implementation.
+Delete verified replacements and unused code, update references, preserve required
+resources/licenses, and keep the prior implementation in Git history.
+
+| Date | Removed | Evidence / remaining gate |
+| --- | --- | --- |
+| 2026-11-06 | `NSString.matchesForPattern:` declaration and implementation; `MPStringIsNewline` declaration and implementation (17 lines total) | Repository-wide symbol search found only their own declarations/definitions; no production, test, resource or build caller. No dynamic selector lookup was found. Other methods in these files still have callers and remain. |
+
+This is a small dead-code cleanup, not retirement of the old renderer or editor. The
+legacy project cannot currently provide a full runtime baseline because its old
+dependencies are absent (see `validation/legacy-baseline.json`). Existing source syntax
+colors do not yet replace custom theme/font or legacy dialect behavior. Delete those
+subsystems and their build references only after their remaining parity gates pass.

@@ -100,13 +100,6 @@ BOOL MPCharacterIsNewline(unichar character)
     return [newlines characterIsMember:character];
 }
 
-BOOL MPStringIsNewline(NSString *str)
-{
-    if (str.length != 1)
-        return NO;
-    return MPCharacterIsNewline([str characterAtIndex:0]);
-}
-
 NSString *MPStylePathForName(NSString *name)
 {
     if (!name)

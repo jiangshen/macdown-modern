@@ -27,7 +27,6 @@ NSString *(^MPFileNameHasExtensionProcessor(NSString *ext))(NSString *path);
 
 BOOL MPCharacterIsWhitespace(unichar character);
 BOOL MPCharacterIsNewline(unichar character);
-BOOL MPStringIsNewline(NSString *str);
 
 NSString *MPStylePathForName(NSString *name);
 NSString *MPThemePathForName(NSString *name);
