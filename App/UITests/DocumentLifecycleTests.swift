@@ -315,13 +315,14 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertTrue(picker.waitForExistence(timeout: 5), app.debugDescription)
     XCTAssertEqual(picker.value as? String, "Snowfolio")
     picker.click()
+    let styleMenu = app.menus.containing(.menuItem, identifier: "Clearness Dark").firstMatch
     for title in [
       "None", "Clearness", "Clearness Dark", "GitHub", "GitHub2", "Solarized (Light)",
       "Solarized (Dark)",
     ] {
-      XCTAssertTrue(app.menuItems[title].exists)
+      XCTAssertTrue(styleMenu.menuItems[title].exists)
     }
-    app.menuItems["Clearness Dark"].click()
+    styleMenu.menuItems["Clearness Dark"].click()
     let changed = NSPredicate { _, _ in
       picker.value as? String == "Clearness Dark"
         && !settings.popUpButtons["documentFont"].isEnabled
@@ -367,10 +368,10 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertTrue(settings.waitForExistence(timeout: 5))
     XCTAssertEqual(picker.value as? String, "Clearness Dark")
     picker.click()
-    app.menuItems["None"].click()
+    styleMenu.menuItems["None"].click()
     XCTAssertEqual(picker.value as? String, "None")
     picker.click()
-    app.menuItems["Snowfolio"].click()
+    styleMenu.menuItems["Snowfolio"].click()
     let restored = NSPredicate { _, _ in settings.popUpButtons["documentFont"].isEnabled }
     expectation(for: restored, evaluatedWith: nil)
     waitForExpectations(timeout: 8)

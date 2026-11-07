@@ -117,5 +117,19 @@
     },
     "priorityDiagnostics": 18,
     "evidence": "Downloaded exact package/corpus/architecture reports and native xcodebuild log/xcresult; initial failure retained."
+  },
+  "hostedSecondRun": {
+    "url": "https://github.com/jiangshen/snowfolio/actions/runs/42418542379",
+    "commit": "1f30f583d5a4f9cc8f4b91c405e929ad78e80fb7",
+    "result": "297 package tests / 60 suites and 652 CommonMark examples passed; native UI 9 passed and 1 failed in ambiguous menu lookup",
+    "passedNewChecks": [
+      "Rendered document text exists before and after style switch",
+      "Clearness Dark screenshot matches expected RGB through corrected sRGB sampler",
+      "Settings reopens with saved Clearness Dark selection",
+      "None style can be selected"
+    ],
+    "failure": "Snowfolio menu item matches both application menu bar and reading-style popup; test stops before restoring Notebook/undo assertions.",
+    "correction": "Scope menu-item queries to the menu containing Clearness Dark; retain all expected choices and assertions.",
+    "evidence": "Downloaded package/corpus/architecture artifacts; exact failed native log identifies duplicate menu-item query at line 373."
   }
 }
