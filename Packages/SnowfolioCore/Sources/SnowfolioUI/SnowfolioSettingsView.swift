@@ -58,7 +58,9 @@ struct SnowfolioSettingsView: View {
           ForEach(SettingsCatalog.search(navigation.query)) { result in
             Label {
               VStack(alignment: .leading, spacing: 2) {
-                Text(result.entry.title).fixedSize(horizontal: false, vertical: true)
+                Text(result.entry.title)
+                  .lineLimit(nil)
+                  .fixedSize(horizontal: false, vertical: true)
                 Text(result.pane.title).foregroundStyle(.secondary)
               }
             } icon: {
@@ -227,7 +229,7 @@ private struct SettingsPreferenceRow: View {
       .pickerStyle(.menu)
     case .editorFont:
       LabeledContent {
-        TextField("Font name", text: $preferences.editorFontName)
+        TextField("", text: $preferences.editorFontName)
           .labelsHidden()
           .multilineTextAlignment(.trailing)
           .frame(maxWidth: 200)

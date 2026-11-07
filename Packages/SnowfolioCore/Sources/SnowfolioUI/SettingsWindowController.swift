@@ -20,7 +20,7 @@ public final class SettingsWindowController: NSWindowController {
       styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
       backing: .buffered, defer: false)
     window.contentViewController = host
-    window.title = "Settings"
+    window.title = navigation.location.pane.title
     window.identifier = NSUserInterfaceItemIdentifier("snowfolioSettings")
     window.toolbarStyle = .unified
     window.tabbingMode = .disallowed
