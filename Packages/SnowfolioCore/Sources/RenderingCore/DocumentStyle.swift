@@ -46,8 +46,6 @@ public struct DocumentStyle: Hashable, Sendable {
       --document-width: 708px;
     }
     * { box-sizing: border-box; }
-    /* Opaque system highlight avoids overlapping marker/text selection seams in WebKit. */
-    ::selection { background-color: rgb(from Highlight r g b / 1); color: HighlightText; text-shadow: none; }
     html { background: var(--paper); }
     body {
       margin: 0; color: var(--ink); background: var(--paper);
@@ -75,6 +73,12 @@ public struct DocumentStyle: Hashable, Sendable {
     a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
     ul,ol { padding-inline-start: 1.65em; margin: .4em 0; }
     li { padding-inline-start: .15em; margin: .2em 0; }
+    /* Keep list counters semantic while avoiding WebKit's native marker selection edge. */
+    ol:not([type]):not([style]) > li:not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox])) { position: relative; list-style-type: none; padding-inline-start: 0; margin-inline-start: .15em; }
+    ol:not([type]):not([style]) > li:not(:has(> input[type=checkbox], > p:first-child > input[type=checkbox]))::before {
+      content: counter(list-item) "."; position: absolute;
+      inset-inline-end: calc(100% + .15em); text-align: end; font-variant-numeric: tabular-nums;
+    }
     li > p { margin: .25em 0; } li > ul,li > ol { margin-block: .2em; }
     li:has(> input[type=checkbox]) { list-style: none; }
     input[type=checkbox] {

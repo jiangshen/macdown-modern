@@ -1391,19 +1391,31 @@ Snowfolio modernization goal remains active and incomplete.
 
 ## List selection seam — 2026-11-06
 
-The user's selected numbered-list screenshot was reproduced in the running reading
-preview; matching selection in the observed default-font native source editor did
-not show it. Preserve that distinction because the user identified the source editor.
-WebKit resolves system Highlight with alpha (0.8 in dark appearance on this host),
-so overlapping marker/text selection paint can create a rectangular shade seam.
-The shared document style now uses an opaque relative RGB version of that system
-color with system HighlightText, retaining user accent choice and list semantics.
+The user's numbered-list edge was reproduced in the live reading preview. Matching
+selection in the observed default-font native source editor did not reproduce it;
+preserve that distinction because the user identified the source editor.
 
-Native WebKit regressions in both appearances compare single/overlap painted pixels,
-assert opaque backgrounds and selected-text contrast >=4.5:1, and preserve selection
-text/list node identity through a style update. The same test fails with the original
-translucent Highlight and passes with the opaque color. Active-selection WebKit
-snapshots omit selection; they are not visual proof. Direct post-relaunch desktop
-inspection remains open because the Mac locked during verification. Record any
-separate source-editor reproduction before claiming that report fully closed.
-See `validation/list-selection.json`. The full modernization remains active.
+A first opaque-highlight experiment passed a color-overlap test but did not remove
+the visible native-marker edge. It was withdrawn. The final correction uses positioned
+CSS list-item counters for ordinary decimal markers, retaining semantic ordered lists,
+automatic numbering and hanging indentation. It visibly removes the seam after relaunch.
+Normal system selection colors remain. Authored type/style attributes and ordered task
+checkboxes retain their original marker behavior; no document bytes/HTML list structure
+or browser security policy changes. Active-selection WebKit snapshots omit selection,
+so direct CUA observation supplies the visual check.
+
+Native WebKit tests in both appearances compare selection text with the native-marker
+baseline, preserve non-one starts, wrapping/list-item semantics and selected node identity
+through font/size updates, and check Roman-marker/task-checkbox exclusions. The earlier
+canvas test hit a VM readback exception; requesting CPU readback passed hosted run
+`42350551251`. That intermediate color test is replaced by final behavior/geometry checks;
+it is not used to claim the native-marker edge fixed. See `validation/list-selection.json`.
+The full modernization goal remains active and incomplete.
+
+
+Final direct desktop verification of the list fix also covers a multi-paragraph,
+wrapped list starting at 4, nested numbering starting at 7, list accessibility
+containers and task checkboxes. The internal padding was moved to the margin to
+avoid an unselected vertical strip beside loose paragraphs; the original text edge
+is preserved. Standard system selection colors remain. Automated cases cover both
+compact/loose forms in light/dark appearances. The original source bytes are unchanged.

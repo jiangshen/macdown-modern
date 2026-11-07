@@ -7,51 +7,31 @@
     "nativeSource": "Selected same two source lines; matching seam not reproduced in the observed default-font editor",
     "userIdentifiedSurface": "Markdown source editor; keep source acceptance open if the issue persists there"
   },
-  "cause": "WebKit resolves system Highlight as translucent (dark host: rgba(63,99,139,0.8)). Native marker and text selection paint overlapping rectangles; repeated translucent fills produce different shades.",
-  "change": "Use an opaque relative RGB version of the current system Highlight with system HighlightText. Preserve accent preference, semantic list markup, hanging indentation and native selection.",
+  "cause": "Visible edge is specific to WebKit native ordered-marker selection painting. Making the system highlight opaque did not remove it in the live app; that speculative correction was withdrawn.",
+  "change": "Render ordinary decimal markers with positioned CSS list-item counters, retaining semantic ol/li markup, implicit numbering, hanging indentation and the normal system selection color. Exclude task checkboxes and authored type/style list attributes.",
   "automatedValidation": {
     "nativeWebKitAppearances": [
       "light",
       "dark"
     ],
     "tests": [
-      "Resolved selection overlap and single-fill pixels match",
-      "Background alpha is 255 and selected-text contrast is at least 4.5:1",
-      "Selection text and list node identity survive a font/size style update"
+      "Selection text matches native-marker baseline",
+      "Ordered start value and semantic list-item display remain",
+      "Wrapped lines share the same hanging text edge",
+      "Selection and list node identity survive font/size changes",
+      "Ordered task checkboxes and Roman markers retain their original styling",
+      "No internal unselected padding strip before item text"
     ],
-    "preFix": "Replacing opaque color with original system Highlight makes overlap assertions fail",
-    "fixed": "Regression passes in both appearances"
-  },
-  "resolvedColors": {
-    "lightBackgroundRGBA": [
-      128,
-      188,
-      254,
-      255
-    ],
-    "lightTextRGBA": [
-      0,
-      0,
-      0,
-      255
-    ],
-    "darkBackgroundRGBA": [
-      63,
-      99,
-      139,
-      255
-    ],
-    "darkTextRGBA": [
-      255,
-      255,
-      255,
-      255
+    "fixed": "Both parameter cases pass",
+    "listForms": [
+      "compact",
+      "multi-paragraph"
     ]
   },
-  "directVisualAcceptance": "Pending relaunch/inspection; Mac locked during CUA verification. WebKit snapshots do not capture active selection and are not offered as visual proof.",
+  "directVisualAcceptance": "Relaunched the final build with ordinary system selection colors. Direct CUA inspection confirmed the native marker edge and the loose-paragraph padding strip are gone. Verified wrapped text, starts 4/5, nested 7/8, semantic accessibility list containers and task checkboxes in the live fixture. No source bytes edited.",
   "remaining": [
-    "Observe live list selection after relaunch",
-    "Confirm reported source-editor artifact is gone or obtain a new reproduction if distinct"
+    "Any distinct source-editor reproduction if still reported; matching observed native source selection did not reproduce the image",
+    "Full VoiceOver/IME, reliability and performance goals remain tracked separately"
   ],
   "goal": "active; incomplete",
   "validation": {
@@ -67,5 +47,15 @@
     "nativeApp": "passed",
     "packageJob": "failed in new regression: WebKit InvalidStateError on virtual runner; no skipped or weakened assertions",
     "followUp": "Request CPU readback canvas and include script-stage diagnostics; subsequent hosted confirmation required"
+  },
+  "diagnostics": {
+    "initialOpaqueAttempt": "Passed overlap-color test but did not fix the live edge; removed rather than presenting that test as visual acceptance",
+    "hostedReadbackIssue": "Initial canvas readback test failed on hosted VM. CPU readback request passed in run 42350551251. Final regression uses actual list selection/layout; no canvas readback or altered system highlight is required."
+  },
+  "hostedIntermediateRun": {
+    "URL": "https://github.com/jiangshen/snowfolio/actions/runs/42350551251",
+    "commit": "cdce8049db1041fa6cf77d31b50b4c54b23a754d",
+    "conclusion": "success",
+    "scope": "Intermediate opaque-color attempt; does not establish final marker correction"
   }
 }

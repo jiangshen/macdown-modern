@@ -9,8 +9,10 @@ import WebKit
 @Suite("Native list selection", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeSelectionRenderingTests {
-  @Test("List selection paints evenly and survives style updates", arguments: [false, true])
-  func listSelection(dark: Bool) async throws {
+  @Test(
+    "Numbered list selection and hanging indentation survive style updates",
+    arguments: [false, true], [false, true])
+  func listSelection(dark: Bool, loose: Bool) async throws {
     _ = NSApplication.shared
     let coordinator = NativeMarkdownPreview.Coordinator()
     let web = WKWebView(
@@ -29,13 +31,17 @@ struct NativeSelectionRenderingTests {
       coordinator.resources.cancelAll()
       window.close()
     }
-    let source = "1. First\n2. Second\n\n# Next section"
+    let source =
+      "4. First " + String(repeating: "wrapping paragraph text ", count: 30)
+      + (loose ? "\n\n" : "\n")
+      + "5. Second\n\n# Next section\n\n1. [x] Completed task"
     let parsed = try await MarkdownProcessor().render(source)
-    coordinator.update(web, html: parsed.html, directory: nil, remoteImages: false)
+    let html = parsed.html + "<ol type=\"i\"><li>Roman marker</li></ol>"
+    coordinator.update(web, html: html, directory: nil, remoteImages: false)
     var ready = false
     for _ in 0..<200 {
       if try await evaluate(
-        "return String(document.querySelectorAll('ol > li').length===2);", in: web)
+        "return String(document.querySelector('ol')?.children.length===2);", in: web)
         == "true"
       {
         ready = true
@@ -46,17 +52,21 @@ struct NativeSelectionRenderingTests {
     try #require(ready)
     let selected = try await evaluate(
       """
-      const items=document.querySelectorAll('ol > li'), range=document.createRange();
-      range.setStart(items[0].firstChild,0);
-      range.setEnd(items[1].firstChild,items[1].firstChild.length);
+      const baselineStyle=document.createElement('style');
+      baselineStyle.textContent='ol>li{list-style-type:decimal!important}ol>li::before{content:none!important}';
+      document.head.append(baselineStyle);
+      const items=document.querySelector('ol').children, range=document.createRange();
+      const first=items[0].querySelector('p')?.firstChild ?? items[0].firstChild;
+      const last=items[1].querySelector('p')?.firstChild ?? items[1].firstChild;
+      range.setStart(first,0); range.setEnd(last,last.length);
       const selection=window.getSelection(); selection.removeAllRanges(); selection.addRange(range);
       window.selectedFirst=items[0]; window.selectedLast=items[1];
-      return selection.toString();
+      const baseline=selection.toString(); baselineStyle.remove(); return baseline;
       """, in: web)
     #expect(selected.contains("First") && selected.contains("Second"))
-    try await expectEvenPainting(in: web)
+    try await expectListLayout(in: web)
     coordinator.update(
-      web, html: parsed.html, directory: nil, remoteImages: false,
+      web, html: html, directory: nil, remoteImages: false,
       style: .init(font: .serif, textSize: 20))
     ready = false
     for _ in 0..<200 {
@@ -72,7 +82,7 @@ struct NativeSelectionRenderingTests {
       try await evaluate(
         "return String(window.selectedFirst===document.querySelector('li') && window.selectedLast===document.querySelectorAll('li')[1]);",
         in: web) == "true")
-    try await expectEvenPainting(in: web)
+    try await expectListLayout(in: web)
   }
 
   private func evaluate(_ script: String, in web: WKWebView) async throws -> String {
@@ -84,25 +94,25 @@ struct NativeSelectionRenderingTests {
         as? String)
   }
 
-  private func expectEvenPainting(in web: WKWebView) async throws {
-    // A transparent system Highlight painted by both marker and text produces
-    // different overlap pixels. Test the resolved WebKit color, not CSS spelling.
+  private func expectListLayout(in web: WKWebView) async throws {
     #expect(
       try await evaluate(
         """
-        const style=getComputedStyle(document.querySelector('li'),'::selection');
-        const context=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
-        context.canvas.width=2; context.canvas.height=1;
-        context.fillStyle=getComputedStyle(document.body).backgroundColor; context.fillRect(0,0,2,1);
-        context.fillStyle=style.backgroundColor; context.fillRect(0,0,2,1); context.fillRect(1,0,1,1);
-        const single=[...context.getImageData(0,0,1,1).data], overlap=[...context.getImageData(1,0,1,1).data];
-        context.clearRect(0,0,2,1); context.fillRect(0,0,1,1);
-        const background=[...context.getImageData(0,0,1,1).data];
-        context.fillStyle=style.color; context.fillRect(0,0,1,1);
-        const text=[...context.getImageData(0,0,1,1).data];
-        function luminance(rgb) {const c=rgb.slice(0,3).map(n=>n/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2];}
-        const a=luminance(background),b=luminance(text),contrast=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
-        return String(JSON.stringify(single)===JSON.stringify(overlap) && background[3]===255 && contrast>=4.5);
+        const list=document.querySelector('ol'), item=list.firstElementChild;
+        const text=item.firstElementChild?.firstChild ?? item.firstChild;
+        const range=document.createRange(); range.selectNodeContents(text);
+        const lines=[...range.getClientRects()].filter(r=>r.width>1);
+        const marker=getComputedStyle(item,'::before');
+        const task=document.querySelector('input[type=checkbox]').closest('li');
+        const typed=document.querySelector('ol[type] > li');
+        const before=e=>getComputedStyle(e,'::before').content;
+        return String(list.start===4 && list.children.length===2 &&
+          getComputedStyle(item).display==='list-item' &&
+          marker.content!=='none' && marker.content!=='normal' &&
+          lines.length>2 && lines.every(r=>Math.abs(r.left-lines[0].left)<1) &&
+          Math.abs(lines[0].left-item.getBoundingClientRect().left)<1 &&
+          ['none','normal'].includes(before(task)) && ['none','normal'].includes(before(typed)) &&
+          getComputedStyle(typed).listStyleType==='lower-roman');
         """, in: web) == "true")
   }
 }
