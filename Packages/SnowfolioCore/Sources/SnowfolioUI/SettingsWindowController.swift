@@ -1,20 +1,42 @@
 import AppKit
 import SwiftUI
 
+enum SettingsWindowLayout {
+  // Shared with the SwiftUI form's measured minimum layout.
+  static let minimumContentSize = CGSize(width: 740, height: 573)
+  static let sidebarWidth: CGFloat = 232
+
+  static func constrainedFrame(_ frame: CGRect, to visibleFrame: CGRect) -> CGRect {
+    var result = frame
+    result.origin.x = max(visibleFrame.minX, min(frame.minX, visibleFrame.maxX - frame.width))
+    result.origin.y = min(visibleFrame.maxY - frame.height, max(frame.minY, visibleFrame.minY))
+    return result
+  }
+}
+
 /// A single retained native window; closing it preserves navigation and its saved frame.
 @MainActor
 public final class SettingsWindowController: NSWindowController {
   private let navigation: SettingsNavigation
 
-  public init(preferences: AppPreferences) {
+  public init(
+    preferences: AppPreferences,
+    frameAutosaveName: NSWindow.FrameAutosaveName? = "SnowfolioSettingsWindow"
+  ) {
     let navigation = SettingsNavigation()
     self.navigation = navigation
     let host = NSHostingController(
       rootView: SnowfolioSettingsView(
         preferences: preferences, navigation: navigation))
-    // fittingSize can still be zero before the first hosting layout. Measure
-    // SwiftUI explicitly so centering uses the full content size on a cold launch.
-    let contentSize = host.sizeThatFits(in: .zero)
+    // Hosting can report zero before its first layout. Its declared minimum is
+    // a lower bound even then, so centering never uses a zero-sized window.
+    let measuredSize = host.sizeThatFits(in: .zero)
+    let minimumSize = SettingsWindowLayout.minimumContentSize
+    let contentSize = CGSize(
+      width: max(minimumSize.width, measuredSize.width),
+      height: max(minimumSize.height, measuredSize.height))
+    // NSWindow owns sizing; a transient hosting measurement must not shrink it.
+    host.sizingOptions = []
     let window = NSWindow(
       contentRect: NSRect(origin: .zero, size: contentSize),
       styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
@@ -25,10 +47,11 @@ public final class SettingsWindowController: NSWindowController {
     window.toolbarStyle = .unified
     window.tabbingMode = .disallowed
     window.isReleasedWhenClosed = false
-    window.contentMinSize = NSSize(width: 740, height: 573)
+    window.contentMinSize = minimumSize
+    window.setContentSize(contentSize)
     host.view.layoutSubtreeIfNeeded()
     window.center()
-    window.setFrameAutosaveName("SnowfolioSettingsWindow")
+    if let frameAutosaveName { window.setFrameAutosaveName(frameAutosaveName) }
     super.init(window: window)
   }
 
@@ -39,7 +62,11 @@ public final class SettingsWindowController: NSWindowController {
     super.showWindow(sender)
     if let window {
       window.contentView?.layoutSubtreeIfNeeded()
-      window.setFrame(window.constrainFrameRect(window.frame, to: window.screen), display: false)
+      if let screen = window.screen {
+        window.setFrame(
+          SettingsWindowLayout.constrainedFrame(window.frame, to: screen.visibleFrame),
+          display: false)
+      }
     }
     window?.makeKeyAndOrderFront(sender)
     NSApp.activate()

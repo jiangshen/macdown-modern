@@ -21,8 +21,8 @@ struct SnowfolioSettingsView: View {
   var body: some View {
     NavigationSplitView(columnVisibility: .constant(.all)) {
       sidebar
-        .frame(width: 232)
-        .navigationSplitViewColumnWidth(232)
+        .frame(width: SettingsWindowLayout.sidebarWidth)
+        .navigationSplitViewColumnWidth(SettingsWindowLayout.sidebarWidth)
         .toolbar(removing: .sidebarToggle)
     } detail: {
       SettingsDetailPane(preferences: preferences, navigation: navigation)
@@ -45,7 +45,11 @@ struct SnowfolioSettingsView: View {
         }
     }
     .navigationSplitViewStyle(.balanced)
-    .frame(minWidth: 740, idealWidth: 740, minHeight: 573, idealHeight: 573)
+    .frame(
+      minWidth: SettingsWindowLayout.minimumContentSize.width,
+      idealWidth: SettingsWindowLayout.minimumContentSize.width,
+      minHeight: SettingsWindowLayout.minimumContentSize.height,
+      idealHeight: SettingsWindowLayout.minimumContentSize.height)
   }
 
   private var sidebar: some View {
