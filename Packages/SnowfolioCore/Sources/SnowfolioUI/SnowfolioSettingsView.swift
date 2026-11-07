@@ -1,5 +1,6 @@
 import AppKit
 import CodeHighlightCore
+import MarkdownCore
 import RenderingCore
 import SwiftUI
 
@@ -209,6 +210,15 @@ private struct SettingsPreferenceRow: View {
         )
       ) { caption }
       .toggleStyle(.switch)
+    case .emphasisPolicy:
+      Picker(selection: $preferences.emphasisPolicy) {
+        Text("Standard Markdown").tag(MarkdownEmphasisPolicy.standard)
+        Text("Allow").tag(MarkdownEmphasisPolicy.allowWithinWords)
+        Text("Avoid").tag(MarkdownEmphasisPolicy.avoidWithinWords)
+      } label: {
+        caption
+      }
+      .pickerStyle(.menu)
     case .documentFont:
       Picker(selection: $preferences.documentFont) {
         Text("Default").tag(DocumentStyle.Font.standard)

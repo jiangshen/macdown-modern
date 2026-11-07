@@ -44,6 +44,47 @@ struct NativeWebOutputTests {
     #expect(pdf.pageCount == 1)
   }
 
+  @Test(
+    "Native PDF and print use the selected word-formatting policy",
+    arguments: MarkdownEmphasisPolicy.allCases)
+  func intrawordPreferencePDF(policy: MarkdownEmphasisPolicy) async throws {
+    _ = NSApplication.shared
+    var options = MarkdownRenderingOptions()
+    options.emphasisPolicy = policy
+    let export = try await MarkdownExport.build(
+      source: "a_b_c and a*b*c", options: options, title: "Word formatting", directory: nil)
+    let surface = NativeWebOutput()
+    defer { surface.close() }
+    try await surface.prepare(html: export.document)
+    let path = FileManager.default.temporaryDirectory.appendingPathComponent(
+      UUID().uuidString + ".pdf")
+    defer { try? FileManager.default.removeItem(at: path) }
+    let info = NativeWebOutput.printInfo(allPages: true)
+    info.paperSize = NSSize(width: 612, height: 792)
+    info.jobDisposition = .save
+    info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = path
+    let window = NSWindow(
+      contentRect: NSRect(x: 0, y: 0, width: 720, height: 900),
+      styleMask: .titled, backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false
+    defer { window.close() }
+    #expect(await surface.printDocument(info: info, for: window, showPanel: false))
+    let pdf = try #require(PDFDocument(url: path))
+    let text = try #require(pdf.string)
+    switch policy {
+    case .standard:
+      #expect(text.contains("and abc"))
+      #expect(text.filter { $0 == "_" }.count == 2)
+    case .allowWithinWords: #expect(text.contains("abc and abc"))
+    case .avoidWithinWords:
+      #expect(text.contains("and a*b*c"))
+      #expect(text.filter { $0 == "_" }.count == 2)
+    }
+    // PDFKit can extract baseline underscores after the surrounding text.
+    #expect(text.filter { $0.isLetter } == "abcandabc")
+    #expect(pdf.pageCount == 1)
+  }
+
   @Test("Native PDF output paginates the full document, including text past the screen bounds")
   func paginatedPDF() async throws {
     _ = NSApplication.shared
@@ -119,6 +160,7 @@ struct NativeWebOutputTests {
     preferences.fencedCode = false
     preferences.underline = true
     preferences.quotedText = true
+    preferences.emphasisPolicy = .allowWithinWords
     preferences.documentFont = .serif
     preferences.documentTextSize = 20
     let document = MarkdownDocument(contents: TextFileContents(text: "Old text"))
@@ -133,11 +175,14 @@ struct NativeWebOutputTests {
     #expect(snapshot.options.underline && snapshot.options.quotedText)
     #expect(snapshot.style.font == .serif)
     #expect(snapshot.style.textSize == 20)
+    #expect(snapshot.options.emphasisPolicy == .allowWithinWords)
     preferences.documentTextSize = 12
     preferences.underline = false
     preferences.quotedText = false
+    preferences.emphasisPolicy = .avoidWithinWords
     #expect(snapshot.options.underline && snapshot.options.quotedText)
     #expect(snapshot.style.textSize == 20)
+    #expect(snapshot.options.emphasisPolicy == .allowWithinWords)
     document.acceptNativeEdit("Later text")
     #expect(snapshot.source == "Newest _text 中文_ and \"quotation\"")
     let export = try await MarkdownExport.build(

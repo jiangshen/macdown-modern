@@ -122,7 +122,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Notebook typography and all eight built-in Prism code themes implemented; custom source `.style`, CSS/templates and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
-| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text and fenced-code preferences implemented; independent intraword-emphasis preference remains |
+| Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Pending |
@@ -1683,3 +1683,44 @@ the paragraph presentation notification. The previously recorded live source-col
 refresh gate is closed for this reproduced Settings/undo sequence. Broader real IME,
 VoiceOver, native performance and release gates remain active; no full-goal completion
 or release-readiness claim follows from this increment.
+
+
+## Independent word-formatting choice — 2026-11-07
+
+The native Markdown settings now include **Formatting inside words** with Standard
+Markdown, Allow and Avoid. The first preserves native CommonMark/GFM behavior; the
+latter two restore both original `extensionIntraEmphasis` choices across stars,
+underscores, bold/triple emphasis, optional underline/highlight and strikethrough.
+The authoritative new `markdownEmphasisPolicy` string permits an explicit return to
+Standard without losing to an older Boolean on the next launch. Existing true and
+false choices migrate independently; fresh profiles default to Standard. Settings
+search reveals the menu and the catalog contains 41 entries.
+
+The existing Swift delimiter matcher owns only the selected compatibility grammar.
+Native child parsing retains references, footnotes and security filtering; no source
+rewriting or additional C patch is introduced. Its shared recursion/body/work caps
+still apply (32 levels, 65,536 body bytes, max(65,536, sourceBytes × 16) search work).
+The original Hoedown ISC notice remains bundled. The 276 original fixtures cover 69
+sources, both word policies and both underline choices. Ten explicit differences retain
+native fence grammar, unfinished link-label behavior and equivalent XHTML image tags;
+there are no skipped fixtures. The capture tool reproduces the fixture byte-for-byte.
+
+Local validation passes 223 package tests in 44 suites, eight arm64 executables and all
+652 CommonMark examples. Export checks cover styled/plain HTML, current options captured
+while preview rendering is manual, and native PDF/print in all three policies. PDFKit
+extracts baseline underscores after adjacent letters, so its checks preserve marker
+counts as well as all document letters. Deterministic malformed-input checks disable
+fences to isolate inline letter preservation from legitimate code-fence metadata.
+Large inline runs and oversized bodies remain visible with bounded fallback.
+
+Direct desktop checks observed Allow → Standard → Avoid → Allow changing both displayed
+source colors and preview without changing source. The original Allow value and the
+original two-tab workspace were restored; only the temporary check draft was discarded.
+The source/preview surfaces still extend flush to the window edges without inset gaps.
+Native UI automation includes a picker search/reveal and round-trip regression, and
+explicitly sets Standard in the existing underline test to avoid preference dependence.
+Hosted and sanitizer evidence is tracked in `validation/intraword-formatting.json`.
+
+Custom themes/templates, remaining editor/productivity/system features, document and
+accessibility acceptance, measured performance, release/install/default-handler gates
+and progressive coupled legacy retirement remain open. The full goal stays active.

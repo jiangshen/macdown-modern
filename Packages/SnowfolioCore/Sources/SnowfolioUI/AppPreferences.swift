@@ -43,6 +43,7 @@ public final class AppPreferences {
   public var footnotes: Bool { didSet { save(footnotes, "extensionFootnotes") } }
   public var fencedCode: Bool { didSet { save(fencedCode, "extensionFencedCode") } }
   public var highlight: Bool { didSet { save(highlight, "extensionHighlight") } }
+  public var emphasisPolicy: MarkdownEmphasisPolicy { didSet { saveEmphasisPolicy() } }
   public var underline: Bool { didSet { save(underline, "extensionUnderline") } }
   public var quotedText: Bool { didSet { save(quotedText, "extensionQuote") } }
   public var superscript: Bool { didSet { save(superscript, "extensionSuperscript") } }
@@ -110,6 +111,17 @@ public final class AppPreferences {
     fencedCode = boolean("extensionFencedCode", fallback: true)
     highlight = boolean("extensionHighlight", fallback: false)
     superscript = boolean("extensionSuperscript", fallback: false)
+    if let raw = defaults.string(forKey: "markdownEmphasisPolicy"),
+      let saved = MarkdownEmphasisPolicy(rawValue: raw)
+    {
+      emphasisPolicy = saved
+    } else if defaults.object(forKey: "extensionIntraEmphasis") != nil {
+      emphasisPolicy =
+        defaults.bool(forKey: "extensionIntraEmphasis")
+        ? .allowWithinWords : .avoidWithinWords
+    } else {
+      emphasisPolicy = .standard
+    }
     underline = boolean("extensionUnderline", fallback: false)
     quotedText = boolean("extensionQuote", fallback: false)
     smartPunctuation = boolean("extensionSmartyPants", fallback: false)
@@ -168,12 +180,20 @@ public final class AppPreferences {
     options.fencedCode = fencedCode
     options.highlight = highlight
     options.superscript = superscript
+    options.emphasisPolicy = emphasisPolicy
     options.underline = underline
     options.quotedText = quotedText
     options.smartPunctuation = smartPunctuation
     options.hardLineBreaks = hardLineBreaks
     options.rawHTML = rawHTML
     return options
+  }
+
+  private func saveEmphasisPolicy() {
+    defaults.set(emphasisPolicy.rawValue, forKey: "markdownEmphasisPolicy")
+    if emphasisPolicy != .standard {
+      defaults.set(emphasisPolicy == .allowWithinWords, forKey: "extensionIntraEmphasis")
+    }
   }
 
   private func save(_ value: Bool, _ key: String) { defaults.set(value, forKey: key) }

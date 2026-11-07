@@ -1,0 +1,1683 @@
+{
+  "engine": "Built with Hoedown 3.0.7.",
+  "source": "https://github.com/hoedown/hoedown/tree/3.0.7",
+  "fixtureSourceSHA256": "272b44b8e99e78be8cc455ad2b6e9a4e0e77bd446cb584d224ab47b70460f727",
+  "cases": [
+    {
+      "source": "So A*maz*ing",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>So A*maz*ing</p>\n"
+    },
+    {
+      "source": "So A*maz*ing",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>So A<em>maz</em>ing</p>\n"
+    },
+    {
+      "source": "So A*maz*ing",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>So A*maz*ing</p>\n"
+    },
+    {
+      "source": "So A*maz*ing",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>So A<em>maz</em>ing</p>\n"
+    },
+    {
+      "source": "a*b*c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a*b*c</p>\n"
+    },
+    {
+      "source": "a*b*c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<em>b</em>c</p>\n"
+    },
+    {
+      "source": "a*b*c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a*b*c</p>\n"
+    },
+    {
+      "source": "a*b*c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<em>b</em>c</p>\n"
+    },
+    {
+      "source": "a**b**c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a**b**c</p>\n"
+    },
+    {
+      "source": "a**b**c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong>b</strong>c</p>\n"
+    },
+    {
+      "source": "a**b**c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a**b**c</p>\n"
+    },
+    {
+      "source": "a**b**c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong>b</strong>c</p>\n"
+    },
+    {
+      "source": "a***b***c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a***b***c</p>\n"
+    },
+    {
+      "source": "a***b***c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong><em>b</em></strong>c</p>\n"
+    },
+    {
+      "source": "a***b***c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a***b***c</p>\n"
+    },
+    {
+      "source": "a***b***c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong><em>b</em></strong>c</p>\n"
+    },
+    {
+      "source": "a_b_c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a_b_c</p>\n"
+    },
+    {
+      "source": "a_b_c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<em>b</em>c</p>\n"
+    },
+    {
+      "source": "a_b_c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a_b_c</p>\n"
+    },
+    {
+      "source": "a_b_c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<u>b</u>c</p>\n"
+    },
+    {
+      "source": "a__b__c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a__b__c</p>\n"
+    },
+    {
+      "source": "a__b__c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong>b</strong>c</p>\n"
+    },
+    {
+      "source": "a__b__c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a__b__c</p>\n"
+    },
+    {
+      "source": "a__b__c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong>b</strong>c</p>\n"
+    },
+    {
+      "source": "a___b___c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a___b___c</p>\n"
+    },
+    {
+      "source": "a___b___c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong><em>b</em></strong>c</p>\n"
+    },
+    {
+      "source": "a___b___c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a___b___c</p>\n"
+    },
+    {
+      "source": "a___b___c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong><em>b</em></strong>c</p>\n"
+    },
+    {
+      "source": "file_name_with_underlines",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>file_name_with_underlines</p>\n"
+    },
+    {
+      "source": "file_name_with_underlines",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>file<em>name</em>with_underlines</p>\n"
+    },
+    {
+      "source": "file_name_with_underlines",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>file_name_with_underlines</p>\n"
+    },
+    {
+      "source": "file_name_with_underlines",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>file<u>name</u>with_underlines</p>\n"
+    },
+    {
+      "source": "a*b_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a*b_</p>\n"
+    },
+    {
+      "source": "a*b_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a*b_</p>\n"
+    },
+    {
+      "source": "a*b_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a*b_</p>\n"
+    },
+    {
+      "source": "a*b_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a*b_</p>\n"
+    },
+    {
+      "source": "*a*b",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>*a*b</p>\n"
+    },
+    {
+      "source": "*a*b",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>a</em>b</p>\n"
+    },
+    {
+      "source": "*a*b",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>*a*b</p>\n"
+    },
+    {
+      "source": "*a*b",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><em>a</em>b</p>\n"
+    },
+    {
+      "source": "a_b_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a_b_</p>\n"
+    },
+    {
+      "source": "a_b_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<em>b</em></p>\n"
+    },
+    {
+      "source": "a_b_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a_b_</p>\n"
+    },
+    {
+      "source": "a_b_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<u>b</u></p>\n"
+    },
+    {
+      "source": "_a_b",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>_a_b</p>\n"
+    },
+    {
+      "source": "_a_b",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>a</em>b</p>\n"
+    },
+    {
+      "source": "_a_b",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>_a_b</p>\n"
+    },
+    {
+      "source": "_a_b",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><u>a</u>b</p>\n"
+    },
+    {
+      "source": "a**b**",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a**b**</p>\n"
+    },
+    {
+      "source": "a**b**",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong>b</strong></p>\n"
+    },
+    {
+      "source": "a**b**",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a**b**</p>\n"
+    },
+    {
+      "source": "a**b**",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<strong>b</strong></p>\n"
+    },
+    {
+      "source": "**a**b",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>a</strong>b</p>\n"
+    },
+    {
+      "source": "**a**b",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>a</strong>b</p>\n"
+    },
+    {
+      "source": "**a**b",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>a</strong>b</p>\n"
+    },
+    {
+      "source": "**a**b",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>a</strong>b</p>\n"
+    },
+    {
+      "source": "*word*",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>word</em></p>\n"
+    },
+    {
+      "source": "*word*",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>word</em></p>\n"
+    },
+    {
+      "source": "*word*",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>word</em></p>\n"
+    },
+    {
+      "source": "*word*",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><em>word</em></p>\n"
+    },
+    {
+      "source": "__word__",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>word</strong></p>\n"
+    },
+    {
+      "source": "__word__",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>word</strong></p>\n"
+    },
+    {
+      "source": "__word__",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>word</strong></p>\n"
+    },
+    {
+      "source": "__word__",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>word</strong></p>\n"
+    },
+    {
+      "source": "***word***",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "***word***",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "***word***",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "***word***",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "___word___",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "___word___",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "___word___",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "___word___",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><strong><em>word</em></strong></p>\n"
+    },
+    {
+      "source": "****word****",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>****word****</p>\n"
+    },
+    {
+      "source": "****word****",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>*<strong><em>word</em></strong>*</p>\n"
+    },
+    {
+      "source": "****word****",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>****word****</p>\n"
+    },
+    {
+      "source": "****word****",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>*<strong><em>word</em></strong>*</p>\n"
+    },
+    {
+      "source": "____word____",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>____word____</p>\n"
+    },
+    {
+      "source": "____word____",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>_<strong><em>word</em></strong>_</p>\n"
+    },
+    {
+      "source": "____word____",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>____word____</p>\n"
+    },
+    {
+      "source": "____word____",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>_<strong><em>word</em></strong>_</p>\n"
+    },
+    {
+      "source": "*****word*****",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>*****word*****</p>\n"
+    },
+    {
+      "source": "*****word*****",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>**<strong><em>word</em></strong>**</p>\n"
+    },
+    {
+      "source": "*****word*****",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>*****word*****</p>\n"
+    },
+    {
+      "source": "*****word*****",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>**<strong><em>word</em></strong>**</p>\n"
+    },
+    {
+      "source": "_____word_____",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>_____word_____</p>\n"
+    },
+    {
+      "source": "_____word_____",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>__<strong><em>word</em></strong>__</p>\n"
+    },
+    {
+      "source": "_____word_____",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>_____word_____</p>\n"
+    },
+    {
+      "source": "_____word_____",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>__<strong><em>word</em></strong>__</p>\n"
+    },
+    {
+      "source": "a~~b~~c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a~~b~~c</p>\n"
+    },
+    {
+      "source": "a~~b~~c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<del>b</del>c</p>\n"
+    },
+    {
+      "source": "a~~b~~c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a~~b~~c</p>\n"
+    },
+    {
+      "source": "a~~b~~c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<del>b</del>c</p>\n"
+    },
+    {
+      "source": "a~b~c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a~b~c</p>\n"
+    },
+    {
+      "source": "a~b~c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a~b~c</p>\n"
+    },
+    {
+      "source": "a~b~c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a~b~c</p>\n"
+    },
+    {
+      "source": "a~b~c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a~b~c</p>\n"
+    },
+    {
+      "source": "a==b==c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a==b==c</p>\n"
+    },
+    {
+      "source": "a==b==c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<mark>b</mark>c</p>\n"
+    },
+    {
+      "source": "a==b==c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a==b==c</p>\n"
+    },
+    {
+      "source": "a==b==c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<mark>b</mark>c</p>\n"
+    },
+    {
+      "source": "~~word~~",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><del>word</del></p>\n"
+    },
+    {
+      "source": "~~word~~",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><del>word</del></p>\n"
+    },
+    {
+      "source": "~~word~~",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><del>word</del></p>\n"
+    },
+    {
+      "source": "~~word~~",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><del>word</del></p>\n"
+    },
+    {
+      "source": "==word==",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><mark>word</mark></p>\n"
+    },
+    {
+      "source": "==word==",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><mark>word</mark></p>\n"
+    },
+    {
+      "source": "==word==",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><mark>word</mark></p>\n"
+    },
+    {
+      "source": "==word==",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><mark>word</mark></p>\n"
+    },
+    {
+      "source": "~~~word~~~",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>~~~word~~~</p>\n",
+      "nativeHTML": "<pre><code class=\"language-word~~~\"></code></pre>\n",
+      "nativeBehaviorNote": "Native CommonMark recognizes this opening tilde fence before inline parsing; the intraword choice does not override block grammar."
+    },
+    {
+      "source": "~~~word~~~",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>~<del>word</del>~</p>\n",
+      "nativeHTML": "<pre><code class=\"language-word~~~\"></code></pre>\n",
+      "nativeBehaviorNote": "Native CommonMark recognizes this opening tilde fence before inline parsing; the intraword choice does not override block grammar."
+    },
+    {
+      "source": "~~~word~~~",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>~~~word~~~</p>\n",
+      "nativeHTML": "<pre><code class=\"language-word~~~\"></code></pre>\n",
+      "nativeBehaviorNote": "Native CommonMark recognizes this opening tilde fence before inline parsing; the intraword choice does not override block grammar."
+    },
+    {
+      "source": "~~~word~~~",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>~<del>word</del>~</p>\n",
+      "nativeHTML": "<pre><code class=\"language-word~~~\"></code></pre>\n",
+      "nativeBehaviorNote": "Native CommonMark recognizes this opening tilde fence before inline parsing; the intraword choice does not override block grammar."
+    },
+    {
+      "source": "===word===",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>===word===</p>\n"
+    },
+    {
+      "source": "===word===",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>=<mark>word</mark>=</p>\n"
+    },
+    {
+      "source": "===word===",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>===word===</p>\n"
+    },
+    {
+      "source": "===word===",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>=<mark>word</mark>=</p>\n"
+    },
+    {
+      "source": "plain **bold** and *italic*",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>plain <strong>bold</strong> and <em>italic</em></p>\n"
+    },
+    {
+      "source": "plain **bold** and *italic*",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>plain <strong>bold</strong> and <em>italic</em></p>\n"
+    },
+    {
+      "source": "plain **bold** and *italic*",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>plain <strong>bold</strong> and <em>italic</em></p>\n"
+    },
+    {
+      "source": "plain **bold** and *italic*",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>plain <strong>bold</strong> and <em>italic</em></p>\n"
+    },
+    {
+      "source": "(a*b*c)",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>(a*b*c)</p>\n"
+    },
+    {
+      "source": "(a*b*c)",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>(a<em>b</em>c)</p>\n"
+    },
+    {
+      "source": "(a*b*c)",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>(a*b*c)</p>\n"
+    },
+    {
+      "source": "(a*b*c)",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>(a<em>b</em>c)</p>\n"
+    },
+    {
+      "source": "(*word*)",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>(<em>word</em>)</p>\n"
+    },
+    {
+      "source": "(*word*)",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>(<em>word</em>)</p>\n"
+    },
+    {
+      "source": "(*word*)",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>(<em>word</em>)</p>\n"
+    },
+    {
+      "source": "(*word*)",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>(<em>word</em>)</p>\n"
+    },
+    {
+      "source": "!_word_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>!_word_</p>\n"
+    },
+    {
+      "source": "!_word_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>!<em>word</em></p>\n"
+    },
+    {
+      "source": "!_word_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>!_word_</p>\n"
+    },
+    {
+      "source": "!_word_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>!<u>word</u></p>\n"
+    },
+    {
+      "source": ".**word**",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>.**word**</p>\n"
+    },
+    {
+      "source": ".**word**",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>.<strong>word</strong></p>\n"
+    },
+    {
+      "source": ".**word**",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>.**word**</p>\n"
+    },
+    {
+      "source": ".**word**",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>.<strong>word</strong></p>\n"
+    },
+    {
+      "source": ">_word_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<blockquote>\n<p><em>word</em></p>\n</blockquote>\n"
+    },
+    {
+      "source": ">_word_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<blockquote>\n<p><em>word</em></p>\n</blockquote>\n"
+    },
+    {
+      "source": ">_word_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<blockquote>\n<p><u>word</u></p>\n</blockquote>\n"
+    },
+    {
+      "source": ">_word_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<blockquote>\n<p><u>word</u></p>\n</blockquote>\n"
+    },
+    {
+      "source": "中*文*中",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>中*文*中</p>\n"
+    },
+    {
+      "source": "中*文*中",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>中<em>文</em>中</p>\n"
+    },
+    {
+      "source": "中*文*中",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>中*文*中</p>\n"
+    },
+    {
+      "source": "中*文*中",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>中<em>文</em>中</p>\n"
+    },
+    {
+      "source": "*中文*中",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>中文</em>中</p>\n"
+    },
+    {
+      "source": "*中文*中",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>中文</em>中</p>\n"
+    },
+    {
+      "source": "*中文*中",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>中文</em>中</p>\n"
+    },
+    {
+      "source": "*中文*中",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><em>中文</em>中</p>\n"
+    },
+    {
+      "source": "foo_бар_baz",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>foo_бар_baz</p>\n"
+    },
+    {
+      "source": "foo_бар_baz",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>foo<em>бар</em>baz</p>\n"
+    },
+    {
+      "source": "foo_бар_baz",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>foo_бар_baz</p>\n"
+    },
+    {
+      "source": "foo_бар_baz",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>foo<u>бар</u>baz</p>\n"
+    },
+    {
+      "source": "_café_ and 👩‍💻",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>café</em> and 👩‍💻</p>\n"
+    },
+    {
+      "source": "_café_ and 👩‍💻",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>café</em> and 👩‍💻</p>\n"
+    },
+    {
+      "source": "_café_ and 👩‍💻",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><u>café</u> and 👩‍💻</p>\n"
+    },
+    {
+      "source": "_café_ and 👩‍💻",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><u>café</u> and 👩‍💻</p>\n"
+    },
+    {
+      "source": "_outer *inner* outer_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>outer <em>inner</em> outer</em></p>\n"
+    },
+    {
+      "source": "_outer *inner* outer_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>outer <em>inner</em> outer</em></p>\n"
+    },
+    {
+      "source": "_outer *inner* outer_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><u>outer <em>inner</em> outer</u></p>\n"
+    },
+    {
+      "source": "_outer *inner* outer_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><u>outer <em>inner</em> outer</u></p>\n"
+    },
+    {
+      "source": "**outer _inner_ outer**",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>outer <em>inner</em> outer</strong></p>\n"
+    },
+    {
+      "source": "**outer _inner_ outer**",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>outer <em>inner</em> outer</strong></p>\n"
+    },
+    {
+      "source": "**outer _inner_ outer**",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>outer <u>inner</u> outer</strong></p>\n"
+    },
+    {
+      "source": "**outer _inner_ outer**",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>outer <u>inner</u> outer</strong></p>\n"
+    },
+    {
+      "source": "==outer **bold** and _under_==",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><mark>outer <strong>bold</strong> and <em>under</em></mark></p>\n"
+    },
+    {
+      "source": "==outer **bold** and _under_==",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><mark>outer <strong>bold</strong> and <em>under</em></mark></p>\n"
+    },
+    {
+      "source": "==outer **bold** and _under_==",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><mark>outer <strong>bold</strong> and <u>under</u></mark></p>\n"
+    },
+    {
+      "source": "==outer **bold** and _under_==",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><mark>outer <strong>bold</strong> and <u>under</u></mark></p>\n"
+    },
+    {
+      "source": "~~outer **bold**~~",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><del>outer <strong>bold</strong></del></p>\n"
+    },
+    {
+      "source": "~~outer **bold**~~",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><del>outer <strong>bold</strong></del></p>\n"
+    },
+    {
+      "source": "~~outer **bold**~~",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><del>outer <strong>bold</strong></del></p>\n"
+    },
+    {
+      "source": "~~outer **bold**~~",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><del>outer <strong>bold</strong></del></p>\n"
+    },
+    {
+      "source": "_a _ b_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>_a _ b_</p>\n"
+    },
+    {
+      "source": "_a _ b_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>_a _ b_</p>\n"
+    },
+    {
+      "source": "_a _ b_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>_a _ b_</p>\n"
+    },
+    {
+      "source": "_a _ b_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>_a _ b_</p>\n"
+    },
+    {
+      "source": "_a_b_c_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>_a_b_c_</p>\n"
+    },
+    {
+      "source": "_a_b_c_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>a</em>b<em>c</em></p>\n"
+    },
+    {
+      "source": "_a_b_c_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>_a_b_c_</p>\n"
+    },
+    {
+      "source": "_a_b_c_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><u>a</u>b<u>c</u></p>\n"
+    },
+    {
+      "source": "*a * b*",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>*a * b*</p>\n"
+    },
+    {
+      "source": "*a * b*",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>*a * b*</p>\n"
+    },
+    {
+      "source": "*a * b*",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>*a * b*</p>\n"
+    },
+    {
+      "source": "*a * b*",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>*a * b*</p>\n"
+    },
+    {
+      "source": "**a * b**",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>a * b</strong></p>\n"
+    },
+    {
+      "source": "**a * b**",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>a * b</strong></p>\n"
+    },
+    {
+      "source": "**a * b**",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><strong>a * b</strong></p>\n"
+    },
+    {
+      "source": "**a * b**",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><strong>a * b</strong></p>\n"
+    },
+    {
+      "source": "\\*escaped* and *word*",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>*escaped* and <em>word</em></p>\n"
+    },
+    {
+      "source": "\\*escaped* and *word*",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>*escaped* and <em>word</em></p>\n"
+    },
+    {
+      "source": "\\*escaped* and *word*",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>*escaped* and <em>word</em></p>\n"
+    },
+    {
+      "source": "\\*escaped* and *word*",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>*escaped* and <em>word</em></p>\n"
+    },
+    {
+      "source": "\\_escaped_ and _word_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>_escaped_ and <em>word</em></p>\n"
+    },
+    {
+      "source": "\\_escaped_ and _word_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>_escaped_ and <em>word</em></p>\n"
+    },
+    {
+      "source": "\\_escaped_ and _word_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>_escaped_ and <u>word</u></p>\n"
+    },
+    {
+      "source": "\\_escaped_ and _word_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>_escaped_ and <u>word</u></p>\n"
+    },
+    {
+      "source": "`a*b*c` and _word_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><code>a*b*c</code> and <em>word</em></p>\n"
+    },
+    {
+      "source": "`a*b*c` and _word_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><code>a*b*c</code> and <em>word</em></p>\n"
+    },
+    {
+      "source": "`a*b*c` and _word_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><code>a*b*c</code> and <u>word</u></p>\n"
+    },
+    {
+      "source": "`a*b*c` and _word_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><code>a*b*c</code> and <u>word</u></p>\n"
+    },
+    {
+      "source": "*before `code* text` after*",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>before <code>code* text</code> after</em></p>\n"
+    },
+    {
+      "source": "*before `code* text` after*",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>before <code>code* text</code> after</em></p>\n"
+    },
+    {
+      "source": "*before `code* text` after*",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>before <code>code* text</code> after</em></p>\n"
+    },
+    {
+      "source": "*before `code* text` after*",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><em>before <code>code* text</code> after</em></p>\n"
+    },
+    {
+      "source": "_before ``code_ text`` after_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><em>before <code>code_ text</code> after</em></p>\n"
+    },
+    {
+      "source": "_before ``code_ text`` after_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><em>before <code>code_ text</code> after</em></p>\n"
+    },
+    {
+      "source": "_before ``code_ text`` after_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><u>before <code>code_ text</code> after</u></p>\n"
+    },
+    {
+      "source": "_before ``code_ text`` after_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><u>before <code>code_ text</code> after</u></p>\n"
+    },
+    {
+      "source": "==before `code==` after==",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><mark>before <code>code==</code> after</mark></p>\n"
+    },
+    {
+      "source": "==before `code==` after==",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><mark>before <code>code==</code> after</mark></p>\n"
+    },
+    {
+      "source": "==before `code==` after==",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><mark>before <code>code==</code> after</mark></p>\n"
+    },
+    {
+      "source": "==before `code==` after==",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><mark>before <code>code==</code> after</mark></p>\n"
+    },
+    {
+      "source": "[*label*](https://example.com)",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[*label*](https://example.com)",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[*label*](https://example.com)",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[*label*](https://example.com)",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[a*b*c](https://example.com)",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com\">a*b*c</a></p>\n"
+    },
+    {
+      "source": "[a*b*c](https://example.com)",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com\">a<em>b</em>c</a></p>\n"
+    },
+    {
+      "source": "[a*b*c](https://example.com)",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com\">a*b*c</a></p>\n"
+    },
+    {
+      "source": "[a*b*c](https://example.com)",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com\">a<em>b</em>c</a></p>\n"
+    },
+    {
+      "source": "a[__label__](https://example.com)c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a<a href=\"https://example.com\"><strong>label</strong></a>c</p>\n"
+    },
+    {
+      "source": "a[__label__](https://example.com)c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<a href=\"https://example.com\"><strong>label</strong></a>c</p>\n"
+    },
+    {
+      "source": "a[__label__](https://example.com)c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a<a href=\"https://example.com\"><strong>label</strong></a>c</p>\n"
+    },
+    {
+      "source": "a[__label__](https://example.com)c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<a href=\"https://example.com\"><strong>label</strong></a>c</p>\n"
+    },
+    {
+      "source": "[*label*][ref]\n\n[ref]: https://example.com",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[*label*][ref]\n\n[ref]: https://example.com",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[*label*][ref]\n\n[ref]: https://example.com",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[*label*][ref]\n\n[ref]: https://example.com",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com\"><em>label</em></a></p>\n"
+    },
+    {
+      "source": "[*unmatched*",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>[*unmatched*</p>\n",
+      "nativeHTML": "<p>[<em>unmatched</em></p>\n",
+      "nativeBehaviorNote": "Native link-label parsing preserves emphasis inside an unfinished bracketed label while retaining the unmatched bracket; Hoedown suppresses that span after the raw bracket byte."
+    },
+    {
+      "source": "[*unmatched*",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>[<em>unmatched</em></p>\n"
+    },
+    {
+      "source": "[*unmatched*",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>[*unmatched*</p>\n",
+      "nativeHTML": "<p>[<em>unmatched</em></p>\n",
+      "nativeBehaviorNote": "Native link-label parsing preserves emphasis inside an unfinished bracketed label while retaining the unmatched bracket; Hoedown suppresses that span after the raw bracket byte."
+    },
+    {
+      "source": "[*unmatched*",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>[<em>unmatched</em></p>\n"
+    },
+    {
+      "source": "![*alt* _text_](image.png)",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><img src=\"image.png\" alt=\"*alt* _text_\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"*alt* _text_\" /></p>\n",
+      "nativeBehaviorNote": "Native HTML emits the equivalent XHTML void image tag; the original literal image-description markers are preserved."
+    },
+    {
+      "source": "![*alt* _text_](image.png)",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><img src=\"image.png\" alt=\"*alt* _text_\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"*alt* _text_\" /></p>\n",
+      "nativeBehaviorNote": "Native HTML emits the equivalent XHTML void image tag; the original literal image-description markers are preserved."
+    },
+    {
+      "source": "![*alt* _text_](image.png)",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><img src=\"image.png\" alt=\"*alt* _text_\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"*alt* _text_\" /></p>\n",
+      "nativeBehaviorNote": "Native HTML emits the equivalent XHTML void image tag; the original literal image-description markers are preserved."
+    },
+    {
+      "source": "![*alt* _text_](image.png)",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><img src=\"image.png\" alt=\"*alt* _text_\"></p>\n",
+      "nativeHTML": "<p><img src=\"image.png\" alt=\"*alt* _text_\" /></p>\n",
+      "nativeBehaviorNote": "Native HTML emits the equivalent XHTML void image tag; the original literal image-description markers are preserved."
+    },
+    {
+      "source": "[url](https://example.com/a_b_c \"a*b*c\")",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com/a_b_c\" title=\"a*b*c\">url</a></p>\n"
+    },
+    {
+      "source": "[url](https://example.com/a_b_c \"a*b*c\")",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com/a_b_c\" title=\"a*b*c\">url</a></p>\n"
+    },
+    {
+      "source": "[url](https://example.com/a_b_c \"a*b*c\")",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><a href=\"https://example.com/a_b_c\" title=\"a*b*c\">url</a></p>\n"
+    },
+    {
+      "source": "[url](https://example.com/a_b_c \"a*b*c\")",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><a href=\"https://example.com/a_b_c\" title=\"a*b*c\">url</a></p>\n"
+    },
+    {
+      "source": "<span title=\"a_b_c\">a_b_c</span>",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p><span title=\"a_b_c\">a_b_c</span></p>\n"
+    },
+    {
+      "source": "<span title=\"a_b_c\">a_b_c</span>",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p><span title=\"a_b_c\">a<em>b</em>c</span></p>\n"
+    },
+    {
+      "source": "<span title=\"a_b_c\">a_b_c</span>",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p><span title=\"a_b_c\">a_b_c</span></p>\n"
+    },
+    {
+      "source": "<span title=\"a_b_c\">a_b_c</span>",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p><span title=\"a_b_c\">a<u>b</u>c</span></p>\n"
+    },
+    {
+      "source": "> *quoted*",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<blockquote>\n<p><em>quoted</em></p>\n</blockquote>\n"
+    },
+    {
+      "source": "> *quoted*",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<blockquote>\n<p><em>quoted</em></p>\n</blockquote>\n"
+    },
+    {
+      "source": "> *quoted*",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<blockquote>\n<p><em>quoted</em></p>\n</blockquote>\n"
+    },
+    {
+      "source": "> *quoted*",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<blockquote>\n<p><em>quoted</em></p>\n</blockquote>\n"
+    },
+    {
+      "source": "- _listed_",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<ul>\n<li><em>listed</em></li>\n</ul>\n"
+    },
+    {
+      "source": "- _listed_",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<ul>\n<li><em>listed</em></li>\n</ul>\n"
+    },
+    {
+      "source": "- _listed_",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<ul>\n<li><u>listed</u></li>\n</ul>\n"
+    },
+    {
+      "source": "- _listed_",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<ul>\n<li><u>listed</u></li>\n</ul>\n"
+    },
+    {
+      "source": "one\r\n_a_b_c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>one\n_a_b_c</p>\n"
+    },
+    {
+      "source": "one\r\n_a_b_c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>one\n<em>a</em>b_c</p>\n"
+    },
+    {
+      "source": "one\r\n_a_b_c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>one\n_a_b_c</p>\n"
+    },
+    {
+      "source": "one\r\n_a_b_c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>one\n<u>a</u>b_c</p>\n"
+    },
+    {
+      "source": "```text\na*b*c a_b_c\n```",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<pre><code class=\"language-text\">a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "```text\na*b*c a_b_c\n```",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<pre><code class=\"language-text\">a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "```text\na*b*c a_b_c\n```",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<pre><code class=\"language-text\">a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "```text\na*b*c a_b_c\n```",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<pre><code class=\"language-text\">a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "    a*b*c a_b_c\n",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<pre><code>a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "    a*b*c a_b_c\n",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<pre><code>a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "    a*b*c a_b_c\n",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<pre><code>a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "    a*b*c a_b_c\n",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<pre><code>a*b*c a_b_c\n</code></pre>\n"
+    },
+    {
+      "source": "*** leading***",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>*** leading***</p>\n"
+    },
+    {
+      "source": "*** leading***",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>*** leading***</p>\n"
+    },
+    {
+      "source": "*** leading***",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>*** leading***</p>\n"
+    },
+    {
+      "source": "*** leading***",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>*** leading***</p>\n"
+    },
+    {
+      "source": "_trailing _",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>_trailing _</p>\n"
+    },
+    {
+      "source": "_trailing _",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>_trailing _</p>\n"
+    },
+    {
+      "source": "_trailing _",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>_trailing _</p>\n"
+    },
+    {
+      "source": "_trailing _",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>_trailing _</p>\n"
+    },
+    {
+      "source": "a*b*c and a_b_c and a==b==c and a~~b~~c",
+      "underline": false,
+      "policy": "avoidWithinWords",
+      "html": "<p>a*b*c and a_b_c and a==b==c and a~~b~~c</p>\n"
+    },
+    {
+      "source": "a*b*c and a_b_c and a==b==c and a~~b~~c",
+      "underline": false,
+      "policy": "allowWithinWords",
+      "html": "<p>a<em>b</em>c and a<em>b</em>c and a<mark>b</mark>c and a<del>b</del>c</p>\n"
+    },
+    {
+      "source": "a*b*c and a_b_c and a==b==c and a~~b~~c",
+      "underline": true,
+      "policy": "avoidWithinWords",
+      "html": "<p>a*b*c and a_b_c and a==b==c and a~~b~~c</p>\n"
+    },
+    {
+      "source": "a*b*c and a_b_c and a==b==c and a~~b~~c",
+      "underline": true,
+      "policy": "allowWithinWords",
+      "html": "<p>a<em>b</em>c and a<u>b</u>c and a<mark>b</mark>c and a<del>b</del>c</p>\n"
+    }
+  ]
+}

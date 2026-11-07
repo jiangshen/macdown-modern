@@ -313,3 +313,17 @@ boundary separately from parser metadata and fresh offscreen drawings.
 The remaining independent intraword preference and custom themes/templates still share
 original-target renderer/editor/formatting callers. Underline/quote replacements alone
 do not make those coupled files unused; the zero-legacy-code retirement gate stays open.
+
+
+## Word-formatting policy ownership
+
+`MarkdownEmphasisPolicy` and the existing Swift delimiter matcher now replace the
+independent original intraword setting across every enabled emphasis marker family.
+The native app preserves both old Boolean choices and an explicit new Standard mode.
+There are no new native C changes or runtime Hoedown dependencies. The 276-case original
+fixture and its capture tool are development evidence; they do not ship an old parser.
+
+Custom themes/templates and remaining original-target callers still couple the old
+renderer/highlighter/formatting subsystem. Those files are not unused solely because
+word-formatting parity now passes. Preserve them and all licenses until their remaining
+replacements and acceptance checks make progressive Trash retirement safe.

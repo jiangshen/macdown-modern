@@ -1,0 +1,96 @@
+{
+  "milestone": "Independent word-formatting policy; full modernization remains active",
+  "date": "2026-11-07",
+  "preference": {
+    "key": "markdownEmphasisPolicy",
+    "legacyKey": "extensionIntraEmphasis",
+    "setting": "Formatting inside words",
+    "choices": [
+      "Standard Markdown",
+      "Allow",
+      "Avoid"
+    ],
+    "freshDefault": "standard",
+    "legacyTrue": "allowWithinWords",
+    "legacyFalse": "avoidWithinWords",
+    "explicitNewChoiceWins": true,
+    "catalogCount": 41
+  },
+  "implementation": {
+    "owner": "Swift MarkdownDelimiterExtensions",
+    "families": [
+      "emphasis",
+      "strong",
+      "triple",
+      "underline",
+      "highlight",
+      "strikethrough"
+    ],
+    "childGrammar": "native cmark with shared references",
+    "sourceRewriting": false,
+    "newNativePatches": false,
+    "notice": "Complete original Hoedown ISC retained and bundled",
+    "standard": "Native CommonMark/GFM plus independently enabled optional formats"
+  },
+  "originalCharacterization": {
+    "engine": "Hoedown 3.0.7",
+    "sources": 69,
+    "cases": 276,
+    "explicitNativeDifferences": 10,
+    "skips": 0,
+    "exactReproduction": "passed",
+    "differences": [
+      "CommonMark opening tilde fence: four combinations",
+      "Native unfinished link label retains emphasis: two underline choices",
+      "Equivalent XHTML image tag: four combinations; original raw alt markers preserved"
+    ]
+  },
+  "bounds": {
+    "recursion": 32,
+    "bodyBytes": 65536,
+    "searchWork": "max(65536, sourceBytes * 16)",
+    "adversarial": "100,000 inline stars, oversized body and 200 deterministic mixed-marker samples retain visible text; random inline cases disable fences to exclude legitimate metadata"
+  },
+  "localValidation": {
+    "packageTests": 223,
+    "packageSuites": 44,
+    "arm64TestExecutables": 8,
+    "coreCommonMarkExamples": 652,
+    "addressSanitizerTests": 27,
+    "addressSanitizerSuites": 5,
+    "nativeBuildForTesting": "passed",
+    "changedSwiftStrictFormatting": "passed",
+    "parserSourceAndNotices": "verified; no new C changes"
+  },
+  "outputCoverage": [
+    "All policies in styled/plain HTML",
+    "Snapshot retains captured policy after later preference changes with manual preview",
+    "Native PDF/print in all policies; PDFKit underscore extraction checked by marker count and preserved letters",
+    "Unicode/CRLF UTF-8 source and UTF-16 syntax offsets",
+    "Quote/underline/highlight/superscript/callout/math/reference/footnote composition",
+    "Unsafe HTML/destination and nested-link policy retained"
+  ],
+  "live": {
+    "observed": "Allow -> Standard Markdown -> Avoid -> Allow changed source colors and preview without editing source",
+    "restore": "Original Allow policy and original two-tab workspace restored; temporary draft discarded",
+    "surface": "Existing edge-to-edge editor/preview maintained"
+  },
+  "nativeUIRegression": {
+    "test": "testIntrawordPreferenceRoundTrip",
+    "coverage": "Search reveals picker; standard -> allow -> avoid -> standard with source unchanged",
+    "existingUnderlineTest": "Launch explicitly forces standard policy"
+  },
+  "hostedCurrentRun": {
+    "result": "pending"
+  },
+  "remaining": [
+    "Custom themes/templates",
+    "Remaining editor/productivity/system features",
+    "Document/accessibility and measured performance acceptance",
+    "Release/install/default-handler gates",
+    "Safe progressive coupled legacy retirement"
+  ],
+  "productionInstalled": false,
+  "defaultHandlerChanged": false,
+  "fullGoal": "active; incomplete"
+}

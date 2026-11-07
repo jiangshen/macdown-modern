@@ -71,7 +71,7 @@ final class SettingsNavigation {
 struct SettingsEntry: Identifiable {
   enum Control {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
-    case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker
+    case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy
   }
   let id: String
   let title: String
@@ -217,6 +217,11 @@ enum SettingsCatalog {
           id: "markdownAutolinks", title: "Automatic links", keywords: "url autolink",
           control: .toggle(\.autolinks)),
         .init(id: "markdownFootnotes", title: "Footnotes", control: .toggle(\.footnotes)),
+        .init(
+          id: "markdownIntraword", title: "Formatting inside words",
+          detail: "Choose whether markers can start within a word, as in word*emphasis*.",
+          keywords: "intra word intraword emphasis underscore bold highlight strikethrough",
+          control: .emphasisPolicy),
         .init(
           id: "markdownUnderline", title: "Underlines",
           detail: "Use _single underscores_ for underlined text.", control: .toggle(\.underline)),

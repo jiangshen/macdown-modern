@@ -50,6 +50,31 @@ struct MarkdownExportTests {
     #expect(enabled.document.contains("id=\"document-style\"") == styled)
   }
 
+  @Test(
+    "Styled and plain HTML preserve all three word-formatting policies", arguments: [false, true])
+  func intrawordPreference(styled: Bool) async throws {
+    let source = "a_b_c a*b*c a**b**c a==b==c a~~b~~c"
+    var options = MarkdownRenderingOptions()
+    options.highlight = true
+    for policy in MarkdownEmphasisPolicy.allCases {
+      options.emphasisPolicy = policy
+      let output = try await MarkdownExport.build(
+        source: source, options: options, title: "Word formatting", directory: nil,
+        includeStyles: styled)
+      switch policy {
+      case .standard:
+        #expect(output.fragment.contains("a_b_c a<em>b</em>c"))
+      case .allowWithinWords:
+        #expect(output.fragment.contains("a<em>b</em>c a<em>b</em>c a<strong>b</strong>c"))
+        #expect(output.fragment.contains("a<mark>b</mark>c a<del>b</del>c"))
+      case .avoidWithinWords:
+        #expect(output.fragment.contains(source))
+      }
+      #expect(output.document.contains("script-src 'none'"))
+      #expect(output.document.contains("id=\"document-style\"") == styled)
+    }
+  }
+
   @Test("Math exports carry accessible equations and all fonts without executable scripts")
   func mathExport() async throws {
     var options = MarkdownRenderingOptions()

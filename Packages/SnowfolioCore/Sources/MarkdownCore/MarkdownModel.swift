@@ -74,6 +74,12 @@ public struct MarkdownHeading: Identifiable, Equatable, Sendable {
   public let anchor: String
 }
 
+/// Standard preserves native CommonMark/GFM. The explicit word-formatting modes
+/// retain the original independent intraword preference across all emphasis markers.
+public enum MarkdownEmphasisPolicy: String, CaseIterable, Codable, Sendable {
+  case standard, allowWithinWords, avoidWithinWords
+}
+
 public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var tables = true
   public var strikethrough = true
@@ -83,6 +89,7 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var fencedCode = true
   public var highlight = false
   public var superscript = false
+  public var emphasisPolicy = MarkdownEmphasisPolicy.standard
   public var underline = false
   public var quotedText = false
   public var smartPunctuation = false

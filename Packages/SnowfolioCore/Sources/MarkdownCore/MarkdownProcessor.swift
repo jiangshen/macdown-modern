@@ -43,10 +43,11 @@ public actor MarkdownProcessor {
       ? try MarkdownInlineExtensions(highlight: options.highlight, superscript: options.superscript)
       : nil
     let delimiterSyntax =
-      options.underline || options.quotedText
+      options.underline || options.quotedText || options.emphasisPolicy != .standard
       ? try MarkdownDelimiterExtensions(
         sourceLength: parserSource.utf8.count, underline: options.underline,
-        quotedText: options.quotedText) : nil
+        quotedText: options.quotedText, emphasisPolicy: options.emphasisPolicy,
+        highlight: options.highlight, strikethrough: options.strikethrough) : nil
     defer { withExtendedLifetime((mathSyntax, inlineSyntax, delimiterSyntax)) {} }
     guard let parser = cmark_parser_new(flags) else {
       throw MarkdownRenderingError.allocationFailure

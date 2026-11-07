@@ -124,7 +124,9 @@ final class DocumentLifecycleTests: XCTestCase {
 
   @MainActor
   func testUnderlinePreferenceAndNativeCommand() async throws {
-    let app = launch(arguments: ["-extensionUnderline", "NO"])
+    let app = launch(arguments: [
+      "-extensionUnderline", "NO", "-markdownEmphasisPolicy", "standard",
+    ])
     defer { app.terminate() }
     let editor = newDocument(in: app)
     editor.click()
@@ -190,6 +192,51 @@ final class DocumentLifecycleTests: XCTestCase {
     app.typeKey(.escape, modifierFlags: [])
     let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
     image.name = "underline-setting-and-native-command"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
+  func testIntrawordPreferenceRoundTrip() {
+    let app = launch(arguments: [
+      "-extensionUnderline", "NO", "-markdownEmphasisPolicy", "standard",
+    ])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    editor.typeText("a_b_c")
+    let preview = app.webViews.firstMatch
+    XCTAssertTrue(preview.staticTexts["a_b_c"].firstMatch.waitForExistence(timeout: 8))
+    func select(_ choice: String) {
+      app.typeKey(",", modifierFlags: .command)
+      let settings = app.windows["snowfolioSettings"]
+      XCTAssertTrue(settings.waitForExistence(timeout: 5))
+      let search = settings.searchFields["settingsSearch"]
+      search.click()
+      app.typeKey("a", modifierFlags: .command)
+      search.typeText("intraword")
+      let result = settings.outlines.firstMatch.staticTexts["Formatting inside words"].firstMatch
+      XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+      result.click()
+      let picker = settings.popUpButtons["markdownIntraword"]
+      XCTAssertTrue(picker.waitForExistence(timeout: 5))
+      XCTAssertTrue(settings.frame.contains(picker.frame))
+      picker.click()
+      app.menuItems[choice].click()
+      app.typeKey("w", modifierFlags: .command)
+      XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    }
+    select("Allow")
+    XCTAssertTrue(preview.staticTexts["abc"].firstMatch.waitForExistence(timeout: 8))
+    XCTAssertEqual(editor.value as? String, "a_b_c")
+    select("Avoid")
+    XCTAssertTrue(preview.staticTexts["a_b_c"].firstMatch.waitForExistence(timeout: 8))
+    XCTAssertFalse(preview.staticTexts["abc"].firstMatch.exists)
+    select("Standard Markdown")
+    XCTAssertTrue(preview.staticTexts["a_b_c"].firstMatch.waitForExistence(timeout: 8))
+    XCTAssertEqual(editor.value as? String, "a_b_c")
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "intraword-setting-round-trip"
     image.lifetime = .keepAlways
     add(image)
   }

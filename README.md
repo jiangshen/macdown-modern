@@ -86,13 +86,23 @@ HTML exports and native PDF/print use the selected parsing option.
 ## Inline formatting
 
 Enable **Underlines** in Markdown settings to render `_text_` as underlined text,
-including the original intraword underscore behavior. **Format → Underline** (**⌘U**)
+including formatting inside words when the selected word policy allows it. **Format → Underline** (**⌘U**)
 wraps or unwraps a selection as one native undoable edit while this option is on.
 Double underscores remain bold, and stars still provide italic text. The option
 is off by default and preserves the original saved choice. Turning it off returns
-to standard CommonMark underscore emphasis. Preview and styled/plain HTML, PDF and
+to underscore emphasis under the selected word policy. Preview and styled/plain HTML, PDF and
 print share the same option. The compatibility matcher is Swift with bounded work;
 its span-search semantics retain the original Hoedown ISC notice.
+
+**Formatting inside words** offers **Standard Markdown**, **Allow**, and **Avoid**.
+Standard keeps CommonMark/GFM rules. Allow and Avoid preserve the original MacDown
+choices across italic, bold, underline, highlights, and strikethrough; for example,
+`a_b_c` renders as italic within the word only with Allow (or underline with Underlines
+also enabled). Both saved legacy choices migrate automatically; a fresh profile starts
+with Standard Markdown. Switching policies updates source syntax, preview, and exports
+without changing the Markdown text. Native code blocks, links, and image scopes remain
+in charge. See the [compatibility evidence](docs/validation/intraword-formatting.json)
+for intentional native grammar differences.
 
 Enable **Quoted text** to render `"text"` as a semantic quotation (`<q>`), preserving
 existing MacDown choices. The option defaults off and stays independent of smart

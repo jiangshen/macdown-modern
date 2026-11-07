@@ -1,4 +1,5 @@
 import Foundation
+import MarkdownCore
 import Testing
 
 @testable import SnowfolioUI
@@ -22,6 +23,34 @@ struct AppPreferencesTests {
       defaults: defaults, domainName: domain,
       legacyValues: ["extensionUnderline": true])
     #expect(!reopened.underline && !reopened.renderingOptions.underline)
+  }
+
+  @Test(
+    "Word formatting preserves both legacy choices and an explicit standard policy",
+    arguments: [false, true])
+  func intrawordPreference(legacy: Bool) throws {
+    let domain = "IntrawordPreferencesTests.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    #expect(
+      AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:]).emphasisPolicy
+        == .standard)
+    defaults.removePersistentDomain(forName: domain)
+    let migrated = AppPreferences(
+      defaults: defaults, domainName: domain, legacyValues: ["extensionIntraEmphasis": legacy])
+    let expected: MarkdownEmphasisPolicy = legacy ? .allowWithinWords : .avoidWithinWords
+    #expect(
+      migrated.emphasisPolicy == expected && migrated.renderingOptions.emphasisPolicy == expected)
+    migrated.emphasisPolicy = .standard
+    #expect(
+      AppPreferences(
+        defaults: defaults, domainName: domain,
+        legacyValues: ["extensionIntraEmphasis": !legacy]
+      ).emphasisPolicy == .standard)
+    migrated.emphasisPolicy = legacy ? .avoidWithinWords : .allowWithinWords
+    let reopened = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+    #expect(reopened.emphasisPolicy == migrated.emphasisPolicy)
+    #expect(defaults.bool(forKey: "extensionIntraEmphasis") == !legacy)
   }
 
   @Test("Quoted text defaults off and preserves migrated true and explicit disabled values")

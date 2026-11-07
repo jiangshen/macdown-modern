@@ -2,26 +2,37 @@ import Foundation
 import cmark_gfm
 
 /// Optional legacy delimiter grammar. Child Markdown is parsed by cmark; the
-/// compatibility matcher only owns underscore/quote delimiters and span bounds.
+/// compatibility matcher owns only the selected delimiter grammar and span bounds.
 /// Span-search semantics derive from Hoedown 3.0.7 (ISC; bundled Hoedown-inline.txt).
 final class MarkdownDelimiterExtensions {
   let native: UnsafeMutablePointer<cmark_syntax_extension>
   private let underline: Bool
   private let quotedText: Bool
+  private let emphasisPolicy: MarkdownEmphasisPolicy
+  private let highlight: Bool
+  private let strikethrough: Bool
   private var remainingWork: Int
   private var recursion = 0
   private(set) var limited = false
 
-  private enum Kind: Equatable { case underline, strong, triple, quotation }
+  private enum Kind: Equatable {
+    case emphasis, underline, strong, triple, quotation, highlight, strikethrough
+  }
   private struct Span {
     let body: Range<Int>
     let end: Int
     let kind: Kind
   }
 
-  init(sourceLength: Int, underline: Bool, quotedText: Bool) throws {
+  init(
+    sourceLength: Int, underline: Bool, quotedText: Bool,
+    emphasisPolicy: MarkdownEmphasisPolicy, highlight: Bool, strikethrough: Bool
+  ) throws {
     self.underline = underline
     self.quotedText = quotedText
+    self.emphasisPolicy = emphasisPolicy
+    self.highlight = highlight
+    self.strikethrough = strikethrough
     remainingWork = max(65_536, sourceLength * 16)
     guard let native = cmark_syntax_extension_new("snowfolio_delimiters") else {
       throw MarkdownRenderingError.allocationFailure
@@ -32,7 +43,7 @@ final class MarkdownDelimiterExtensions {
     // does not register a delimiter-stack override for native image/plain scopes.
     cmark_syntax_extension_set_match_inline_before_func(native) {
       ext, parser, _, character, inline in
-      guard character == 95 || character == 34, let ext, let parser, let inline,
+      guard [42, 95, 34, 61, 126].contains(character), let ext, let parser, let inline,
         let state = cmark_syntax_extension_get_private(ext)
       else { return nil }
       return Unmanaged<MarkdownDelimiterExtensions>.fromOpaque(state).takeUnretainedValue()
@@ -42,16 +53,28 @@ final class MarkdownDelimiterExtensions {
 
   func kind(for node: UnsafeMutablePointer<cmark_node>) -> MarkdownNodeKind? {
     guard cmark_node_get_syntax_extension(node) == native else { return nil }
-    if let entry = cmark_node_get_on_enter(node), String(cString: entry) == "<q>" {
-      return .quotation
+    guard let entry = cmark_node_get_on_enter(node) else { return nil }
+    switch String(cString: entry) {
+    case "<u>": return .underline
+    case "<q>": return .quotation
+    case "<mark>": return .highlight
+    case "<del>": return .strikethrough
+    default: return nil
     }
-    return .underline
   }
 
   private func match(
     _ parser: UnsafeMutablePointer<cmark_parser>, inline: OpaquePointer, marker: UInt8
   ) -> UnsafeMutablePointer<cmark_node>? {
-    guard marker == 95 ? underline : quotedText && !limited else { return nil }
+    let legacy = emphasisPolicy != .standard
+    switch marker {
+    case 34: guard quotedText && !limited else { return nil }
+    case 95: guard underline || legacy else { return nil }
+    case 42: guard legacy else { return nil }
+    case 61: guard legacy && highlight else { return nil }
+    case 126: guard legacy && strikethrough else { return nil }
+    default: return nil
+    }
     // Image descriptions retain literal source markers, as in the original app.
     let isImage = cmark_inline_parser_in_bracket(inline, 1) != 0
     guard let chunk = cmark_inline_parser_get_chunk(inline), let data = chunk.pointee.data
@@ -71,9 +94,11 @@ final class MarkdownDelimiterExtensions {
         span = findQuotation(bytes, opening: offset, run: run)
       }
     } else if !isImage, run <= 3, offset + run < bytes.count,
-      !space(bytes[offset + run]), recursion < 32
+      !space(bytes[offset + run]), recursion < 32,
+      marker == 42 || marker == 95 || run == 2,
+      openingAllowed(bytes, offset: offset, inline: inline)
     {
-      span = findSpan(bytes, body: offset + run, kind: run)
+      span = findSpan(bytes, body: offset + run, kind: run, marker: marker)
     }
     if recursion >= 32 { limited = true }
     guard let span, span.body.count <= 65_536 else {
@@ -81,8 +106,10 @@ final class MarkdownDelimiterExtensions {
       // Unmatched quotes remain native tokens, including optional smart punctuation.
       if marker == 34 { return nil }
       guard let text = cmark_node_new(CMARK_NODE_TEXT) else { return nil }
-      let literalCount = isImage || limited ? run : max(1, run - 3)
-      cmark_node_set_literal(text, String(repeating: "_", count: literalCount))
+      let literalCount =
+        isImage || limited ? run : max(1, run - (marker == 61 || marker == 126 ? 2 : 3))
+      cmark_node_set_literal(
+        text, String(repeating: String(UnicodeScalar(marker)), count: literalCount))
       text.pointee.start_line = line
       text.pointee.end_line = line
       text.pointee.start_column = column
@@ -90,13 +117,23 @@ final class MarkdownDelimiterExtensions {
       cmark_inline_parser_set_offset(inline, Int32(offset + literalCount))
       return text
     }
-    let isCustom = span.kind == .underline || span.kind == .quotation
-    let type = isCustom ? CMARK_NODE_CUSTOM_INLINE : CMARK_NODE_STRONG
+    let tag: String?
+    switch span.kind {
+    case .underline: tag = "u"
+    case .quotation: tag = "q"
+    case .highlight: tag = "mark"
+    case .strikethrough: tag = "del"
+    default: tag = nil
+    }
+    let type =
+      tag != nil
+      ? CMARK_NODE_CUSTOM_INLINE
+      : span.kind == .emphasis ? CMARK_NODE_EMPH : CMARK_NODE_STRONG
     guard let node = cmark_node_new(type) else { return nil }
-    if isCustom {
+    if let tag {
       cmark_node_set_syntax_extension(node, native)
-      cmark_node_set_on_enter(node, span.kind == .quotation ? "<q>" : "<u>")
-      cmark_node_set_on_exit(node, span.kind == .quotation ? "</q>" : "</u>")
+      cmark_node_set_on_enter(node, "<" + tag + ">")
+      cmark_node_set_on_exit(node, "</" + tag + ">")
     }
     var bodyNode = node
     if span.kind == .triple {
@@ -167,40 +204,65 @@ final class MarkdownDelimiterExtensions {
     return true
   }
 
+  /// Apply the original opening boundary only in the explicit Avoid mode.
+  private func openingAllowed(
+    _ bytes: UnsafeBufferPointer<UInt8>, offset: Int, inline: OpaquePointer
+  ) -> Bool {
+    guard emphasisPolicy == .avoidWithinWords, offset > 0 else { return true }
+    let previous = bytes[offset - 1]
+    // Native parsing retains the label's outer bracket; the original engine
+    // parsed its label as a separate inline container starting at offset zero.
+    if previous == 91, cmark_inline_parser_in_bracket(inline, 0) != 0 { return true }
+    return space(previous) || previous == 62 || previous == 40
+  }
+
+  private func asciiAlphanumeric(_ byte: UInt8) -> Bool {
+    (48...57).contains(byte) || (65...90).contains(byte) || (97...122).contains(byte)
+  }
+
   /// Retain the original one/two/three-marker choices, including fallback to a
   /// later marker in a long run. This is separate from standard CommonMark mode.
-  private func findSpan(_ bytes: UnsafeBufferPointer<UInt8>, body: Int, kind: Int) -> Span? {
+  private func findSpan(
+    _ bytes: UnsafeBufferPointer<UInt8>, body: Int, kind: Int, marker: UInt8
+  ) -> Span? {
     var cursor = body
-    if kind == 1, body + 1 < bytes.count, bytes[body] == 95, bytes[body + 1] == 95 {
+    if kind == 1, body + 1 < bytes.count, bytes[body] == marker, bytes[body + 1] == marker {
       cursor += 1
     }
-    while cursor < bytes.count, let found = nextMarker(bytes, from: cursor) {
+    while cursor < bytes.count, let found = nextMarker(bytes, from: cursor, marker: marker) {
       guard found > cursor else { return nil }
       cursor = found
       guard found > body else { return nil }
       let nonspace = !space(bytes[found - 1])
       if kind == 1, nonspace {
-        return Span(body: body..<found, end: found + 1, kind: .underline)
+        if emphasisPolicy == .avoidWithinWords, found + 1 < bytes.count,
+          asciiAlphanumeric(bytes[found + 1])
+        {
+          return nil
+        }
+        return Span(
+          body: body..<found, end: found + 1,
+          kind: marker == 95 && underline ? .underline : .emphasis)
       }
       if kind == 2 {
-        if found + 1 < bytes.count, bytes[found + 1] == 95, nonspace {
-          return Span(body: body..<found, end: found + 2, kind: .strong)
+        if found + 1 < bytes.count, bytes[found + 1] == marker, nonspace {
+          let spanKind: Kind = marker == 61 ? .highlight : marker == 126 ? .strikethrough : .strong
+          return Span(body: body..<found, end: found + 2, kind: spanKind)
         }
         cursor += 1
       } else if kind == 3, nonspace {
-        if found + 2 < bytes.count, bytes[found + 1] == 95, bytes[found + 2] == 95 {
+        if found + 2 < bytes.count, bytes[found + 1] == marker, bytes[found + 2] == marker {
           return Span(body: body..<found, end: found + 3, kind: .triple)
         }
-        return findSpan(
-          bytes, body: body - (found + 1 < bytes.count && bytes[found + 1] == 95 ? 2 : 1),
-          kind: found + 1 < bytes.count && bytes[found + 1] == 95 ? 1 : 2)
+        let double = found + 1 < bytes.count && bytes[found + 1] == marker
+        return findSpan(bytes, body: body - (double ? 2 : 1), kind: double ? 1 : 2, marker: marker)
       }
     }
     return nil
   }
 
   /// Skip escaped delimiters, code spans and link/reference constructs while
-  /// choosing a matching underscore. Actual child syntax and escaping stay native.
+  /// choosing a matching delimiter. Actual child syntax and escaping stay native.
   private func nextMarker(
     _ bytes: UnsafeBufferPointer<UInt8>, from start: Int, marker: UInt8 = 95
   ) -> Int? {
