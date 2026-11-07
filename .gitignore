@@ -196,3 +196,7 @@ App/*.xcodeproj/
 App/*.xcworkspace/
 App/Derived/
 App/.tuist-cache/
+
+# Development-only performance audit artifacts
+Tools/PerformanceAudit/.build/
+Tools/PerformanceAudit/.swiftpm/

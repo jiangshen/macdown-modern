@@ -1357,3 +1357,33 @@ features, measured performance, real input/accessibility and production release/
 default-handler work remain required. The original renderer still has coupled legacy
 target consumers; no additional legacy files are deleted here. The full Snowfolio goal
 remains active.
+
+
+## Hosted document evidence and project audit — 2026-11-06
+
+The exact retained results for commits `997baa4` and `715565c` now establish three
+and four passed native document UI methods, respectively, with zero failures/skips.
+The latter adds preview accessibility publication after editing and native Undo,
+including disappearance of stale checkpoint text. Both hosted package runs pass
+186 tests/37 suites and all 652 published CommonMark examples. The result bundles
+identify arm64 macOS 27.0.1 virtual machines. The latest screenshot confirms restored
+source/outline, but its preview pixels are blank; do not claim compositor/visual proof
+from accessibility existence alone. Direct desktop paint checks remain required.
+Five/seven priority-inversion warnings remain unattributed. Exact scope and evidence:
+`validation/hosted-document-ui.json` and `validation/commonmark-backports.json`.
+
+The user additionally requested a project-wide cleanup and performance audit, with
+confirmed obsolete/duplicate files moved to recoverable Trash. Ten old generated
+build/cache folders and the unused Xcode 10.1 Travis pipeline/uploader were retired.
+The verified native GitHub workflow replaces the obsolete build check. Localization
+resources/manual import, all licenses, icon-resolution assets and still-coupled legacy
+application code remain. The cleanup manifest preserves recovery paths. No user
+documents, current app build, current validation evidence or unrelated projects moved.
+
+A new development-only Release audit measures the actual core render/syntax pipeline
+at 100 KB, 1 MB and 10 MB across three workloads, with Instruments CPU sampling.
+See `PERFORMANCE_AUDIT.md` and `validation/performance-baseline.json`. The 10 MB mixed
+case still takes about one second warm and peaks near 979 MiB; cold highlighting adds
+significant first-render cost. These are required optimization follow-ups, not a pass
+for M6's UI typing, preview-publication, memory-growth or energy targets. The full
+Snowfolio modernization goal remains active and incomplete.

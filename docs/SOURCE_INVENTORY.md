@@ -224,3 +224,19 @@ reads stdin and prints the core engine HTML for corpus checks; it is not the app
 user-facing CLI and is not linked or bundled into Snowfolio. All first-party application
 logic remains Swift. The new corpus pass does not yet authorize deleting the coupled
 legacy renderer/editor/custom-template implementation.
+
+
+## Project cleanup and development audit ownership
+
+The obsolete `.travis.yml` (Xcode 10.1/CocoaPods) and its sole localization-upload
+helper `Tools/travis_push_transifex.py` are retired. The verified arm64 GitHub Actions
+workflow supplies native builds, package/spec checks and document UI tests. No
+localization resources or manual translation import tool are removed. The old Ruby/
+CocoaPods and release dependency graph remains until its original-target consumers
+are retired; this cleanup does not claim that graph has migrated.
+
+`Tools/PerformanceAudit` is a first-party Swift development executable measuring the
+actual MarkdownProcessor pipeline. It is not linked or bundled into Snowfolio and
+does not replace the future user-facing CLI. Generated builds remain outside tracked
+source. `validation/project-cleanup.json` records all recoverable Trash destinations;
+`PERFORMANCE_AUDIT.md` distinguishes core measurements from remaining app-level gates.

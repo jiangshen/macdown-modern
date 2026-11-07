@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-07T06:57:04Z",
+  "items": [
+    {
+      "allocatedBytes": 472223744,
+      "files": 6214,
+      "logicalBytes": 457112859,
+      "original": "/Users/caden/Dev/snowfolio/Build/ModernApp",
+      "trash": "/Users/caden/.Trash/ModernApp"
+    },
+    {
+      "allocatedBytes": 61440,
+      "files": 9,
+      "logicalBytes": 38044,
+      "original": "/Users/caden/Dev/snowfolio/Build/RenameBackup",
+      "trash": "/Users/caden/.Trash/RenameBackup"
+    },
+    {
+      "allocatedBytes": 559955968,
+      "files": 7053,
+      "logicalBytes": 541916925,
+      "original": "/Users/caden/Dev/snowfolio/Packages/SnowfolioCore/.build",
+      "trash": "/Users/caden/.Trash/.build"
+    },
+    {
+      "allocatedBytes": 86269952,
+      "files": 1577,
+      "logicalBytes": 82388747,
+      "original": "/private/tmp/macdown-core-build",
+      "trash": "/Users/caden/.Trash/macdown-core-build"
+    },
+    {
+      "allocatedBytes": 86306816,
+      "files": 1576,
+      "logicalBytes": 82464191,
+      "original": "/private/tmp/macdown-core-validation/build",
+      "trash": "/Users/caden/.Trash/build"
+    },
+    {
+      "allocatedBytes": 157863936,
+      "files": 2755,
+      "logicalBytes": 150742445,
+      "original": "/private/tmp/macdown-m2-validation/build",
+      "trash": "/Users/caden/.Trash/build 22-57-04-094"
+    },
+    {
+      "allocatedBytes": 457228288,
+      "files": 6252,
+      "logicalBytes": 441747230,
+      "original": "/private/tmp/macdown-editing-validation/build",
+      "trash": "/Users/caden/.Trash/build 22-57-04-183"
+    },
+    {
+      "allocatedBytes": 247078912,
+      "files": 4373,
+      "logicalBytes": 236450136,
+      "original": "/private/tmp/macdown-preview-validation/build",
+      "trash": "/Users/caden/.Trash/build 22-57-04-262"
+    },
+    {
+      "allocatedBytes": 269193216,
+      "files": 4614,
+      "logicalBytes": 257092452,
+      "original": "/private/tmp/macdown-export-validation/build",
+      "trash": "/Users/caden/.Trash/build 22-57-04-328"
+    },
+    {
+      "allocatedBytes": 324161536,
+      "files": 4432,
+      "logicalBytes": 313139424,
+      "original": "/private/tmp/macdown-callout-asan",
+      "trash": "/Users/caden/.Trash/macdown-callout-asan"
+    },
+    {
+      "allocatedBytes": 4096,
+      "files": 1,
+      "logicalBytes": 673,
+      "original": "/Users/caden/Dev/snowfolio/.travis.yml",
+      "reason": "Obsolete Xcode 10.1 Travis pipeline and its only localization-upload caller; native CI is verified on GitHub Actions. Original localization resources and manual import remain.",
+      "trash": "/Users/caden/.Trash/.travis.yml"
+    },
+    {
+      "allocatedBytes": 4096,
+      "files": 1,
+      "logicalBytes": 2475,
+      "original": "/Users/caden/Dev/snowfolio/Tools/travis_push_transifex.py",
+      "reason": "Obsolete Xcode 10.1 Travis pipeline and its only localization-upload caller; native CI is verified on GitHub Actions. Original localization resources and manual import remain.",
+      "trash": "/Users/caden/.Trash/travis_push_transifex.py"
+    }
+  ],
+  "method": "FileManager.trashItem; Trash was not emptied",
+  "product": "Snowfolio",
+  "scope": "Snowfolio checkout and explicitly identified agent-generated temporary builds; no unrelated projects or documents",
+  "totals": {
+    "files": 38857,
+    "logicalBytes": 2563095601,
+    "allocatedBytes": 2660352000
+  },
+  "trashEmptied": false,
+  "trackedRetirements": [
+    ".travis.yml",
+    "Tools/travis_push_transifex.py"
+  ],
+  "preserved": [
+    "Current Snowfolio build and running app",
+    "Source, tests, fixtures, historical validation records and current test reports",
+    "Original localization resources and manual import tool",
+    "Icon resolutions and all license/provenance notices",
+    "Legacy renderer/editor and coupled resources pending parity",
+    "Pinned dependency lockfiles and Git history"
+  ],
+  "duplicateAudit": {
+    "minimumBytes": 1024,
+    "groups": 28,
+    "redundantLogicalBytes": 692054,
+    "decisions": "Remaining identical tracked files are required icon-resolution entries, resource/license copies and legacy localization credits. Hash identity alone is not evidence of safe removal."
+  },
+  "validation": {
+    "packageTests": 186,
+    "suites": 37,
+    "nativeArm64TestExecutables": 8,
+    "nativeBuildForTesting": "passed",
+    "allRecordedTrashDestinationsVerified": true,
+    "originalCurrentBuildPreserved": true,
+    "strictAuditSwiftFormatting": "passed",
+    "firstPartyDiffCheck": "passed"
+  }
+}

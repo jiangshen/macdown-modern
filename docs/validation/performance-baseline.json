@@ -1,0 +1,341 @@
+{
+  "product": "Snowfolio",
+  "date": "2026-11-06",
+  "baselineCommit": "715565c34b5eadb1b9b891f0488784ebe8112c71",
+  "hardware": {
+    "model": "Mac16,10",
+    "chip": "Apple M4",
+    "memoryBytes": 17179869184
+  },
+  "build": "Swift 6.4.2; Release; arm64; default rendering options and includeSyntax=true",
+  "method": "Nine separate processes; each records first render and three complete rerenders after small edits. Fixture sizes are decimal bytes; checkpoint suffix adds a few bytes. RSS is whole-process peak through all four renders, not leaked memory. These are samples, not a p95 UI benchmark.",
+  "fixtures": [
+    {
+      "coldMilliseconds": 3.678084,
+      "fixtureBytes": 100000,
+      "htmlBytes": 135364,
+      "iterations": 3,
+      "nodes": 7355,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 15499264,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 2940,
+      "warmMaxMilliseconds": 3.564958,
+      "warmMedianMilliseconds": 3.330917,
+      "warmMilliseconds": [
+        3.330917,
+        3.564958,
+        3.126375
+      ],
+      "workload": "long-line"
+    },
+    {
+      "coldMilliseconds": 37.569792,
+      "fixtureBytes": 1000000,
+      "htmlBytes": 1353005,
+      "iterations": 3,
+      "nodes": 73530,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 68386816,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 29410,
+      "warmMaxMilliseconds": 36.580375,
+      "warmMedianMilliseconds": 36.116375,
+      "warmMilliseconds": [
+        36.580375,
+        36.116375,
+        35.480292
+      ],
+      "workload": "long-line"
+    },
+    {
+      "coldMilliseconds": 415.038791,
+      "fixtureBytes": 10000000,
+      "htmlBytes": 13529478,
+      "iterations": 3,
+      "nodes": 735295,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 642940928,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 294116,
+      "warmMaxMilliseconds": 471.082958,
+      "warmMedianMilliseconds": 443.513875,
+      "warmMilliseconds": [
+        443.513875,
+        471.082958,
+        442.046416
+      ],
+      "workload": "long-line"
+    },
+    {
+      "coldMilliseconds": 389.360083,
+      "fixtureBytes": 100000,
+      "htmlBytes": 501657,
+      "iterations": 3,
+      "nodes": 12446,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 51216384,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 3190,
+      "warmMaxMilliseconds": 9.361292,
+      "warmMedianMilliseconds": 9.112833,
+      "warmMilliseconds": [
+        9.361292,
+        8.538542,
+        9.112833
+      ],
+      "workload": "mixed"
+    },
+    {
+      "coldMilliseconds": 443.163375,
+      "fixtureBytes": 1000000,
+      "htmlBytes": 5122957,
+      "iterations": 3,
+      "nodes": 124571,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 147636224,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 31940,
+      "warmMaxMilliseconds": 100.95075,
+      "warmMedianMilliseconds": 97.591167,
+      "warmMilliseconds": [
+        100.95075,
+        97.591167,
+        93.32025
+      ],
+      "workload": "mixed"
+    },
+    {
+      "coldMilliseconds": 1518.168416,
+      "fixtureBytes": 10000000,
+      "htmlBytes": 52261343,
+      "iterations": 3,
+      "nodes": 1245977,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 1026916352,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 319480,
+      "warmMaxMilliseconds": 1190.414417,
+      "warmMedianMilliseconds": 1034.87925,
+      "warmMilliseconds": [
+        1190.414417,
+        1034.87925,
+        1025.03025
+      ],
+      "workload": "mixed"
+    },
+    {
+      "coldMilliseconds": 2.184958,
+      "fixtureBytes": 100000,
+      "htmlBytes": 141200,
+      "iterations": 3,
+      "nodes": 2227,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 12025856,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 0,
+      "warmMaxMilliseconds": 1.515875,
+      "warmMedianMilliseconds": 1.468292,
+      "warmMilliseconds": [
+        1.468292,
+        1.515875,
+        1.450125
+      ],
+      "workload": "prose"
+    },
+    {
+      "coldMilliseconds": 19.462667,
+      "fixtureBytes": 1000000,
+      "htmlBytes": 1433426,
+      "iterations": 3,
+      "nodes": 22227,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 39337984,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 0,
+      "warmMaxMilliseconds": 16.499541,
+      "warmMedianMilliseconds": 16.037792,
+      "warmMilliseconds": [
+        15.830542,
+        16.037792,
+        16.499541
+      ],
+      "workload": "prose"
+    },
+    {
+      "coldMilliseconds": 224.645667,
+      "fixtureBytes": 10000000,
+      "htmlBytes": 14555652,
+      "iterations": 3,
+      "nodes": 222227,
+      "os": "Version 27.2 (Build 26B123)",
+      "processPeakResidentBytes": 294141952,
+      "scope": "Release arm64 full MarkdownProcessor render with source syntax; excludes UI layout, WebKit publication, file IO, math and diagrams",
+      "syntaxRuns": 0,
+      "warmMaxMilliseconds": 175.430708,
+      "warmMedianMilliseconds": 171.796584,
+      "warmMilliseconds": [
+        175.430708,
+        171.796584,
+        165.984333
+      ],
+      "workload": "prose"
+    }
+  ],
+  "profile": {
+    "scope": "CPU-cycle weighted samples after first two seconds; launch-only native Release full-render workload; not wall-time percentages or UI responsiveness",
+    "samples": 47405,
+    "leaf": [
+      {
+        "function": "specialized __RawDictionaryStorage.find<A>(_:hashValue:)",
+        "percentCycles": 5.68
+      },
+      {
+        "function": "_platform_memmove",
+        "percentCycles": 4.34
+      },
+      {
+        "function": "cmark_iter_next",
+        "percentCycles": 3.7
+      },
+      {
+        "function": "specialized static Hasher._hash(seed:_:)",
+        "percentCycles": 3.4
+      },
+      {
+        "function": "_xzm_free_main",
+        "percentCycles": 3.38
+      },
+      {
+        "function": "_xzm_xzone_malloc_tiny",
+        "percentCycles": 3.29
+      },
+      {
+        "function": "specialized static MarkdownNodeKind.__derived_enum_equals(_:_:)",
+        "percentCycles": 2.39
+      },
+      {
+        "function": "MarkdownProcessor.render(_:options:interactiveCallouts:includeSyntax:diagramPresentation:transformDestination:)",
+        "percentCycles": 1.91
+      },
+      {
+        "function": "specialized _merge<A>(low:mid:high:buffer:by:)",
+        "percentCycles": 1.71
+      },
+      {
+        "function": "static MarkdownSyntax.build(source:nodes:)",
+        "percentCycles": 1.71
+      },
+      {
+        "function": "CFStringFindWithOptionsAndLocale",
+        "percentCycles": 1.68
+      },
+      {
+        "function": "_stringCompareWithSmolCheck(_:_:expecting:)",
+        "percentCycles": 1.61
+      },
+      {
+        "function": "validateUTF8(_:)",
+        "percentCycles": 1.57
+      },
+      {
+        "function": "_StringBreadcrumbs.init(_:)",
+        "percentCycles": 1.4
+      },
+      {
+        "function": "<deduplicated_symbol>",
+        "percentCycles": 1.38
+      },
+      {
+        "function": "__vfprintf",
+        "percentCycles": 1.28
+      }
+    ],
+    "inclusive": [
+      {
+        "function": "specialized static PerformanceAudit.main()",
+        "percentCycles": 99.99
+      },
+      {
+        "function": "specialized thunk for @escaping @convention(thin) @async () -> ()",
+        "percentCycles": 99.99
+      },
+      {
+        "function": "completeTaskAndRelease(swift::AsyncContext*, swift::SwiftError*)",
+        "percentCycles": 99.99
+      },
+      {
+        "function": "MarkdownProcessor.render(_:options:interactiveCallouts:includeSyntax:diagramPresentation:transformDestination:)",
+        "percentCycles": 93.28
+      },
+      {
+        "function": "static MarkdownSyntax.build(source:nodes:)",
+        "percentCycles": 15.64
+      },
+      {
+        "function": "cmark_parser_finish",
+        "percentCycles": 9.2
+      },
+      {
+        "function": "closure #1 in MarkdownProcessor.render(_:options:interactiveCallouts:includeSyntax:diagramPresentation:transformDestination:)",
+        "percentCycles": 8.55
+      },
+      {
+        "function": "specialized _ContiguousArrayBuffer.withUnsafeBufferPointer<A, B>(_:)",
+        "percentCycles": 8.55
+      },
+      {
+        "function": "specialized ContiguousArray.withUnsafeBufferPointer<A, B>(_:)",
+        "percentCycles": 8.55
+      },
+      {
+        "function": "S_parser_feed",
+        "percentCycles": 8.52
+      },
+      {
+        "function": "S_process_line",
+        "percentCycles": 7.31
+      },
+      {
+        "function": "static MarkdownNavigation.decorateHeading(_:heading:index:)",
+        "percentCycles": 7.04
+      },
+      {
+        "function": "StringProtocol.replacingOccurrences<A, B>(of:with:options:range:)",
+        "percentCycles": 6.87
+      },
+      {
+        "function": "specialized static MarkdownNavigation.decorateHeading(_:heading:index:)",
+        "percentCycles": 6.73
+      },
+      {
+        "function": "S_render_node",
+        "percentCycles": 6.15
+      },
+      {
+        "function": "specialized Dictionary.subscript.setter",
+        "percentCycles": 5.98
+      },
+      {
+        "function": "specialized Dictionary._Variant.setValue(_:forKey:)",
+        "percentCycles": 5.98
+      },
+      {
+        "function": "specialized _NativeDictionary.setValue(_:forKey:isUnique:)",
+        "percentCycles": 5.9
+      }
+    ],
+    "recordingSeconds": 15,
+    "workload": "mixed 10000000 20",
+    "trace": "/private/tmp/snowfolio-performance-mixed.trace",
+    "termination": "xctrace time limit deliberately stops its launched audit process; benchmark timings above were separate complete unprofiled runs"
+  },
+  "remaining": [
+    "Actual app launch/open, native typing p95, WebKit publication, scrolling, CPU/energy and resident-memory growth",
+    "Mixed 100 KB cold highlighting startup exceeds the 250 ms render target before UI publication",
+    "10 MB mixed document reaches approximately 979 MiB process peak and roughly one second warm full render",
+    "Incremental/background parsing and large-file resource budget",
+    "Hosted priority-inversion warning attribution"
+  ],
+  "goal": "active; incomplete"
+}

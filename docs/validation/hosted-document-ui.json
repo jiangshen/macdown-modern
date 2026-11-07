@@ -1,0 +1,53 @@
+{
+  "product": "Snowfolio",
+  "date": "2026-11-06",
+  "run": "https://github.com/jiangshen/snowfolio/actions/runs/42348067285",
+  "commit": "715565c34b5eadb1b9b891f0488784ebe8112c71",
+  "host": {
+    "architecture": "arm64",
+    "model": "Virtual Machine",
+    "macOS": "27.0.1"
+  },
+  "packageTests": 186,
+  "packageSuites": 37,
+  "commonMark": {
+    "examples": 652,
+    "mismatches": 0
+  },
+  "nativeUI": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "expectedFailures": 0,
+    "methods": [
+      "testMultipleDocumentWindows",
+      "testNewDocumentTypingUndoRedo",
+      "testOpenExistingMarkdownAndSave",
+      "testLivePreviewUpdatesAfterEditingAndUndo"
+    ],
+    "scope": [
+      "New document typing, replacement, undo and redo",
+      "Open Unicode BOM/CRLF fixture and save preserving BOM",
+      "Multiple separate windows with tab preferences disabled",
+      "Preview accessibility text publishes after replacement and returns after native undo; stale checkpoint disappears"
+    ]
+  },
+  "snapshotInspection": {
+    "attachment": "live-preview-after-native-undo",
+    "sourceCorrect": true,
+    "previewPaintVerified": false,
+    "observation": "Retained full-window screenshot shows correct restored source and outline, but preview content is blank. Accessibility assertions passed. Do not treat this as visual/compositor proof or an established product defect."
+  },
+  "runtimeWarnings": {
+    "count": 7,
+    "kind": "User-interactive thread waiting on Default/Utility QoS; cause not attributed",
+    "followUp": "M6 system-trace investigation; not measured typing latency"
+  },
+  "remaining": [
+    "Native tabs and complete session restoration acceptance",
+    "Autosave, Versions and external-edit conflicts",
+    "Settings, real IME, VoiceOver and full appearance/paint acceptance",
+    "Full performance and release readiness"
+  ],
+  "goal": "active; incomplete"
+}

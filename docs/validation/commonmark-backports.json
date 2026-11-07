@@ -33,7 +33,7 @@
   "CI": {
     "runner": "Official xcode-27 arm64 image",
     "workflow": ".github/workflows/snowfolio.yml",
-    "newCommonMarkStep": "configured; local identical command passes",
+    "newCommonMarkStep": "passed on hosted runs 42347417626 and 42348067285; downloaded exact reports show 652/652",
     "artifactRetentionDays": 7,
     "artifactAction": "actions/upload-artifact v7.0.2 / cf430e030ddbb5b0abf93d22962f4752f3646cd9",
     "priorHostedRun": {
@@ -42,7 +42,31 @@
       "conclusion": "success",
       "URL": "https://github.com/jiangshen/snowfolio/actions/runs/42346495525",
       "scope": "native-app xcodebuild test step and package tests; method-level bundles were not retained in that run"
-    }
+    },
+    "hostedRuns": [
+      {
+        "id": 42347417626,
+        "commit": "997baa43c8076406144530a7baa6ffb054f5f080",
+        "conclusion": "success",
+        "UI": {
+          "passed": 3,
+          "failed": 0,
+          "skipped": 0,
+          "runtimePriorityInversionWarnings": 5
+        }
+      },
+      {
+        "id": 42348067285,
+        "commit": "715565c34b5eadb1b9b891f0488784ebe8112c71",
+        "conclusion": "success",
+        "UI": {
+          "passed": 4,
+          "failed": 0,
+          "skipped": 0,
+          "runtimePriorityInversionWarnings": 7
+        }
+      }
+    ]
   },
   "evidence": [
     "/private/tmp/snowfolio-commonmark-validation/commonmark.json",
