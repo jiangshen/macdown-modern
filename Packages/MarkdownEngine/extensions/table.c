@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <cmark_ctype.h>
 
 #include <cmark-gfm-extension_api.h>
 #include <html.h>
@@ -25,6 +26,9 @@ cmark_node_type CMARK_NODE_TABLE, CMARK_NODE_TABLE_ROW,
 typedef struct {
   unsigned colspan, rowspan;
   int cell_index;
+  // Source-only metadata from the native normalization operations.
+  bufsize_t source_escape_count, source_trim, source_size;
+  bufsize_t *source_escapes;
 } node_cell_data;
 
 typedef struct {
@@ -50,11 +54,13 @@ typedef struct {
   bool is_header;
 } node_table_row;
 
+static void free_node_table_cell_data(cmark_mem *mem, void *data);
+
 static void free_table_cell(cmark_mem *mem, node_cell *cell) {
   cmark_strbuf_free((cmark_strbuf *)cell->buf);
   mem->free(cell->buf);
   if (cell->cell_data)
-    mem->free(cell->cell_data);
+    free_node_table_cell_data(mem, cell->cell_data);
 }
 
 static void free_row_cells(cmark_mem *mem, table_row *row) {
@@ -84,6 +90,8 @@ static void free_node_table_row(cmark_mem *mem, void *ptr) {
 }
 
 static void free_node_table_cell_data(cmark_mem *mem, void *data) {
+  if (data)
+    mem->free(((node_cell_data *)data)->source_escapes);
   mem->free(data);
 }
 
@@ -220,7 +228,8 @@ static int increment_cell_rowspan(cmark_node *node) {
   return 1;
 }
 
-static cmark_strbuf *unescape_pipes(cmark_mem *mem, unsigned char *string, bufsize_t len)
+static cmark_strbuf *unescape_pipes(cmark_mem *mem, unsigned char *string, bufsize_t len,
+                                   node_cell_data *source)
 {
   cmark_strbuf *res = (cmark_strbuf *)mem->calloc(1, sizeof(cmark_strbuf));
   bufsize_t r, w;
@@ -230,8 +239,16 @@ static cmark_strbuf *unescape_pipes(cmark_mem *mem, unsigned char *string, bufsi
   cmark_strbuf_putc(res, '\0');
 
   for (r = 0, w = 0; r < len; ++r) {
-    if (res->ptr[r] == '\\' && res->ptr[r + 1] == '|')
+    if (res->ptr[r] == '\\' && res->ptr[r + 1] == '|') {
+      if (source) {
+        const bufsize_t count = ++source->source_escape_count;
+        if ((count & (count - 1)) == 0)
+          source->source_escapes = (bufsize_t *)mem->realloc(
+              source->source_escapes, (size_t)2 * count * sizeof(bufsize_t));
+        source->source_escapes[count - 1] = w;
+      }
       r++;
+    }
 
     res->ptr[w++] = res->ptr[r];
   }
@@ -261,7 +278,7 @@ static node_cell* append_row_cell(cmark_mem *mem, table_row *row) {
 
 static table_row *row_from_string(cmark_syntax_extension *self,
                                   cmark_parser *parser, unsigned char *string,
-                                  int len) {
+                                  int len, bool source_positions) {
   // Parses a single table row. It has the following form:
   // `delim? table_cell (delim table_cell)* delim? newline`
   // Note that cells are allowed to be empty.
@@ -296,15 +313,25 @@ static table_row *row_from_string(cmark_syntax_extension *self,
       // We are guaranteed to have a cell, since (1) either we found some
       // content and cell_matched, or (2) we found an empty cell followed by a
       // pipe.
+      node_cell_data *cell_data = (node_cell_data *)parser->mem->calloc(1, sizeof(node_cell_data));
+      node_cell_data *source = (source_positions && (parser->options & CMARK_OPT_SOURCEPOS)) ? cell_data : NULL;
       cmark_strbuf *cell_buf = unescape_pipes(parser->mem, string + offset,
-          cell_matched);
+          cell_matched, source);
+      if (source) {
+        while (source->source_trim < cell_buf->size &&
+               cmark_isspace(cell_buf->ptr[source->source_trim]))
+          ++source->source_trim;
+      }
       cmark_strbuf_trim(cell_buf);
+      if (source)
+        source->source_size = cell_buf->size;
 
       node_cell *cell = append_row_cell(parser->mem, row);
       if (!cell) {
         int_overflow_abort = 1;
         cmark_strbuf_free(cell_buf);
         parser->mem->free(cell_buf);
+        free_node_table_cell_data(parser->mem, cell_data);
         break;
       }
       cell->buf = cell_buf;
@@ -319,7 +346,7 @@ static table_row *row_from_string(cmark_syntax_extension *self,
         --cell->start_offset;
         ++cell->internal_offset;
       }
-      cell->cell_data = (node_cell_data *)parser->mem->calloc(1, sizeof(node_cell_data));
+      cell->cell_data = cell_data;
 
       if (parser->options & CMARK_OPT_TABLE_SPANS) {
         // Check for a column-spanning cell
@@ -407,7 +434,7 @@ static void try_inserting_table_header_paragraph(cmark_parser *parser,
 
   paragraph = cmark_node_new_with_mem(CMARK_NODE_PARAGRAPH, parser->mem);
 
-  paragraph_content = unescape_pipes(parser->mem, parent_string, paragraph_offset);
+  paragraph_content = unescape_pipes(parser->mem, parent_string, paragraph_offset, NULL);
   cmark_strbuf_trim(paragraph_content);
   cmark_node_set_string_content(paragraph, (char *) paragraph_content->ptr);
   cmark_strbuf_free(paragraph_content);
@@ -440,7 +467,7 @@ static cmark_node *try_opening_table_header(cmark_syntax_extension *self,
   // Since scan_table_start was successful, we must have a delimiter row.
   delimiter_row = row_from_string(
     self, parser, input + cmark_parser_get_first_nonspace(parser),
-    len - cmark_parser_get_first_nonspace(parser));
+    len - cmark_parser_get_first_nonspace(parser), false);
   // assert may be optimized out, don't rely on it for security boundaries
   if (!delimiter_row) {
       return parent_container;
@@ -455,7 +482,7 @@ static cmark_node *try_opening_table_header(cmark_syntax_extension *self,
   // `row_from_string` bails out early if it does not find a row.
   parent_string = cmark_node_get_string_content(parent_container);
   header_row = row_from_string(self, parser, (unsigned char *)parent_string,
-                               (int)strlen(parent_string));
+                               (int)strlen(parent_string), true);
   if (!header_row || header_row->n_columns != delimiter_row->n_columns) {
     free_table_row(parser->mem, delimiter_row);
     free_table_row(parser->mem, header_row);
@@ -467,9 +494,9 @@ static cmark_node *try_opening_table_header(cmark_syntax_extension *self,
   if (cmark_arena_pop()) {
     delimiter_row = row_from_string(
         self, parser, input + cmark_parser_get_first_nonspace(parser),
-        len - cmark_parser_get_first_nonspace(parser));
+        len - cmark_parser_get_first_nonspace(parser), false);
     header_row = row_from_string(self, parser, (unsigned char *)parent_string,
-                                 (int)strlen(parent_string));
+                                 (int)strlen(parent_string), true);
     // row_from_string can return NULL, add additional check to ensure n_columns match
     if (!delimiter_row || !header_row || header_row->n_columns != delimiter_row->n_columns) {
         free_table_row(parser->mem, delimiter_row);
@@ -561,13 +588,16 @@ static cmark_node *try_opening_table_row(cmark_syntax_extension *self,
 
   table_row_block =
       cmark_parser_add_child(parser, parent_container, CMARK_NODE_TABLE_ROW,
-                             parent_container->start_column);
+                             cmark_parser_get_first_nonspace(parser) + 1);
   cmark_node_set_syntax_extension(table_row_block, self);
-  table_row_block->end_column = parent_container->end_column;
+  int source_end = len;
+  while (source_end > 0 && (input[source_end - 1] == '\n' || input[source_end - 1] == '\r'))
+    --source_end;
+  table_row_block->end_column = source_end;
   table_row_block->as.opaque = parser->mem->calloc(1, sizeof(node_table_row));
 
   row = row_from_string(self, parser, input + cmark_parser_get_first_nonspace(parser),
-      len - cmark_parser_get_first_nonspace(parser));
+      len - cmark_parser_get_first_nonspace(parser), true);
 
   if (!row) {
       // clean up the dangling node
@@ -611,9 +641,9 @@ static cmark_node *try_opening_table_row(cmark_syntax_extension *self,
     for (i = 0; i < row->n_columns && i < table_columns; ++i) {
       node_cell *cell = &row->cells[i];
       cmark_node *node = cmark_parser_add_child(parser, table_row_block,
-          CMARK_NODE_TABLE_CELL, parent_container->start_column + cell->start_offset);
+          CMARK_NODE_TABLE_CELL, table_row_block->start_column + cell->start_offset);
       node->internal_offset = cell->internal_offset;
-      node->end_column = parent_container->start_column + cell->end_offset;
+      node->end_column = table_row_block->start_column + cell->end_offset;
       node->as.opaque = cell->cell_data;
       cell->cell_data = NULL;
       cmark_node_set_string_content(node, (char *) cell->buf->ptr);
@@ -663,7 +693,7 @@ static int matches(cmark_syntax_extension *self, cmark_parser *parser,
     cmark_arena_push();
     table_row *new_row = row_from_string(
         self, parser, input + cmark_parser_get_first_nonspace(parser),
-        len - cmark_parser_get_first_nonspace(parser));
+        len - cmark_parser_get_first_nonspace(parser), false);
     if (new_row && new_row->n_columns)
       res = 1;
     free_table_row(parser->mem, new_row);
@@ -701,6 +731,7 @@ static int can_contain(cmark_syntax_extension *extension, cmark_node *node,
            child_type == CMARK_NODE_LINK || child_type == CMARK_NODE_IMAGE || child_type == CMARK_NODE_ATTRIBUTE ||
            child_type == CMARK_NODE_STRIKETHROUGH ||
            child_type == CMARK_NODE_HTML_INLINE ||
+           child_type == CMARK_NODE_CUSTOM_INLINE ||
            child_type == CMARK_NODE_FOOTNOTE_REFERENCE;
   }
   return false;
@@ -1128,6 +1159,38 @@ int cmark_gfm_extensions_set_table_row_is_header(cmark_node *node, int is_header
 
   ((node_table_row *)node->as.opaque)->is_header = (is_header != 0);
   return 1;
+}
+
+CMARK_GFM_EXPORT
+const int32_t *cmark_gfm_extensions_get_table_cell_source_escapes(cmark_node *node, int32_t *count, int32_t *trim) {
+  if (count) *count = 0;
+  if (trim) *trim = 0;
+  if (!node || node->type != CMARK_NODE_TABLE_CELL || !node->as.opaque)
+    return NULL;
+  const node_cell_data *source = (const node_cell_data *)node->as.opaque;
+  if (count) *count = source->source_escape_count;
+  if (trim) *trim = source->source_trim;
+  return source->source_escapes;
+}
+
+CMARK_GFM_EXPORT
+int32_t cmark_gfm_extensions_get_table_cell_source_offset(cmark_node *node, int32_t offset, bool end) {
+  if (!node || node->type != CMARK_NODE_TABLE_CELL || !node->as.opaque)
+    return -1;
+  node_cell_data *source = (node_cell_data *)node->as.opaque;
+  if (offset < 0 || offset >= source->source_size)
+    return -1;
+  const bufsize_t target = offset + source->source_trim;
+  bufsize_t low = 0, high = source->source_escape_count;
+  while (low < high) {
+    const bufsize_t middle = low + (high - low) / 2;
+    const bufsize_t removed = source->source_escapes[middle];
+    if (removed < target || (end && removed == target))
+      low = middle + 1;
+    else
+      high = middle;
+  }
+  return target + low;
 }
 
 CMARK_GFM_EXPORT

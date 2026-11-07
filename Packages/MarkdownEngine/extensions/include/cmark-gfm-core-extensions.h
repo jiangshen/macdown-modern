@@ -17,6 +17,23 @@ void cmark_gfm_core_extensions_ensure_registered(void);
 CMARK_GFM_EXPORT
 uint16_t cmark_gfm_extensions_get_table_columns(cmark_node *node);
 
+/** Local metadata API (not upstream). Map one byte of a native cell's trimmed
+ * normalized inline buffer to its original cell input byte offset. end selects
+ * the last contributing source byte instead of the first (e.g. an escaped pipe
+ * contributes both backslash and pipe). Returns -1 for unavailable/out-of-range
+ * metadata. Available with CMARK_OPT_SOURCEPOS; invalid after content mutation.
+ */
+CMARK_GFM_EXPORT
+int32_t cmark_gfm_extensions_get_table_cell_source_offset(cmark_node *node, int32_t offset, bool end);
+
+/** Local metadata API (not upstream). Borrow ascending pre-trim normalized
+ * offsets where native pipe escaping removed a source byte. The owning node
+ * retains storage; never free/mutate it or retain it past that node's lifetime.
+ * count and trim receive the event count and native leading-trim byte count.
+ */
+CMARK_GFM_EXPORT
+const int32_t *cmark_gfm_extensions_get_table_cell_source_escapes(cmark_node *node, int32_t *count, int32_t *trim);
+
 /** Sets the number of columns for the table, returning 1 on success and 0 on error.
  */
 CMARK_GFM_EXPORT

@@ -1,5 +1,6 @@
 import Foundation
 import cmark_gfm
+import cmark_gfm_extensions
 
 /// Maps native normalized inline buffers back to their physical source lines.
 /// Native parsing owns the grammar. We require byte identity before using a map;
@@ -10,14 +11,23 @@ final class MarkdownInlineSourceCoordinates {
     let delta: Int
     var expandedTabPrefix = 0
     var tab = 0
+    var cell: UnsafeMutablePointer<cmark_node>?
+    var cellOffset = 0
 
-    func physical(_ offset: Int) -> Int {
-      offset < expandedTabPrefix ? tab : delta + offset
+    func physical(_ offset: Int, end: Bool) -> Int? {
+      if let cell {
+        let physical = cmark_gfm_extensions_get_table_cell_source_offset(
+          cell, Int32(offset + cellOffset), end)
+        return physical >= 0 ? delta + Int(physical) : nil
+      }
+      return offset < expandedTabPrefix ? tab : delta + offset
     }
 
     func translated(by offset: Int) -> Self {
       Self(
-        delta: delta + offset, expandedTabPrefix: max(0, expandedTabPrefix - offset), tab: tab)
+        delta: cell == nil ? delta + offset : delta,
+        expandedTabPrefix: max(0, expandedTabPrefix - offset), tab: tab,
+        cell: cell, cellOffset: cellOffset + offset)
     }
   }
   private struct Context {
@@ -29,17 +39,17 @@ final class MarkdownInlineSourceCoordinates {
     let rows: [Row?]
     var changesPositions: Bool {
       rows.contains { row in
-        row.map { $0.delta != base || $0.expandedTabPrefix > 0 } ?? false
+        row.map { $0.cell != nil || $0.delta != base || $0.expandedTabPrefix > 0 } ?? false
       }
     }
 
-    func physical(line: Int, column: Int) -> Int? {
+    func physical(line: Int, column: Int, end: Bool = false) -> Int? {
       let row = line - self.line
       let offset = column - base - 1
       guard row >= 0, row < rows.count, offset >= 0, offset < lines[row].count,
         let mapping = rows[row]
       else { return nil }
-      return mapping.physical(offset) + 1
+      return mapping.physical(offset, end: end).map { $0 + 1 }
     }
   }
   // Native buffers are borrowed only within these balanced parse callbacks.
@@ -73,7 +83,7 @@ final class MarkdownInlineSourceCoordinates {
         node.pointee.start_column = Int32(column)
       }
       if let column = context.physical(
-        line: Int(node.pointee.end_line), column: Int(node.pointee.end_column))
+        line: Int(node.pointee.end_line), column: Int(node.pointee.end_column), end: true)
       {
         node.pointee.end_column = Int32(column)
       }
@@ -130,6 +140,10 @@ final class MarkdownInlineSourceCoordinates {
           }
         }
         rows.append(nil)
+      } else if index == 0,
+        cmark_gfm_extensions_get_table_cell_source_offset(parent, 0, false) >= 0
+      {
+        rows.append(tableRow(bytes, parent: parent))
       } else {
         rows.append(rootRow(bytes, line: line + index, seed: index == 0 ? base : nil))
       }
@@ -137,6 +151,44 @@ final class MarkdownInlineSourceCoordinates {
     return Context(
       identity: UInt(bitPattern: parent), line: line, base: base, input: input,
       lines: lines, rows: rows)
+  }
+
+  private func tableRow(
+    _ normalized: UnsafeBufferPointer<UInt8>, parent: UnsafeMutablePointer<cmark_node>
+  ) -> Row? {
+    let line = Int(parent.pointee.start_line)
+    let base = Int(parent.pointee.start_column - 1 + parent.pointee.internal_offset)
+    guard line > 0, line <= source.lines.count, base >= 0, !normalized.isEmpty else { return nil }
+    let physical = source.bytes[source.lines[line - 1]]
+    let first = Int(cmark_gfm_extensions_get_table_cell_source_offset(parent, 0, false))
+    let firstEnd = Int(cmark_gfm_extensions_get_table_cell_source_offset(parent, 0, true))
+    let last = Int(
+      cmark_gfm_extensions_get_table_cell_source_offset(
+        parent, Int32(normalized.count - 1), true))
+    // Trim-only cells remain a constant translation. Keep a borrowed native
+    // sparse map only when recognized escaping made the translation nonlinear.
+    if first == firstEnd, last - first == normalized.count - 1 {
+      guard first >= 0, base + first <= physical.count,
+        normalized.count <= physical.count - base - first,
+        normalized.elementsEqual(physical.dropFirst(base + first).prefix(normalized.count))
+      else { return nil }
+      return Row(delta: base + first)
+    }
+    var count: Int32 = 0
+    var trim: Int32 = 0
+    let events = cmark_gfm_extensions_get_table_cell_source_escapes(parent, &count, &trim)
+    let removed = UnsafeBufferPointer(start: events, count: Int(count))
+    var consumed = 0
+    for offset in normalized.indices {
+      if offset.isMultiple(of: 4096), Task.isCancelled { return nil }
+      let target = offset + Int(trim)
+      while consumed < removed.count, Int(removed[consumed]) <= target { consumed += 1 }
+      let mapped = base + target + consumed
+      guard mapped >= 0, mapped < physical.count,
+        normalized[offset] == physical[physical.startIndex + mapped]
+      else { return nil }
+    }
+    return Row(delta: base, cell: parent)
   }
 
   private func rootRow(_ normalized: UnsafeBufferPointer<UInt8>, line: Int, seed: Int?) -> Row? {

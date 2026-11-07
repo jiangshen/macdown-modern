@@ -261,12 +261,14 @@ struct NativeEditorThemeTests {
 
   @Test("Physical lazy-list and partial-tab ranges decorate only the authored bold span")
   func physicalSourceFonts() async throws {
-    let theme = try EditorTheme.parse("STRONG\nfont-size: 26px\nfont-style: bold\n")
+    let theme = try EditorTheme.parse(
+      "STRONG\nfont-size: 26px\nfont-style: bold\n\nCODE\nfont-size: 12px\n")
     let font = NSFont.monospacedSystemFont(ofSize: 14, weight: .regular)
     for source in [
       "- first\n**中文 😀** tail", "- first\r\n\t**中文 😀** tail",
       "> first\r**中文 😀** tail", ">\t**中文 😀** tail",
       "> before _start\n**中文 😀** end_ tail",
+      "| Header | Other |\n|---|---|\n| a\\|b **中文 😀** tail | `\\|` |",
     ] {
       var options = MarkdownRenderingOptions()
       options.underline = true
@@ -299,6 +301,13 @@ struct NativeEditorThemeTests {
       #expect(NSFontManager.shared.traits(of: actualFont).contains(.boldFontMask))
       let tail = try laidOut((source as NSString).range(of: "tail").location, in: editor).0
       #expect((tail[.font] as? NSFont)?.pointSize == 14)
+      let code = (source as NSString).range(of: "`\\|`")
+      if code.location != NSNotFound {
+        for offset in code.location..<NSMaxRange(code) {
+          let attributes = try laidOut(offset, in: editor).0
+          #expect((attributes[.font] as? NSFont)?.pointSize == 12)
+        }
+      }
       #expect(editor.string.utf8.elementsEqual(source.utf8) && document.revision == 0)
       #expect(editor.selectedRange() == selection && !undo.canUndo)
     }

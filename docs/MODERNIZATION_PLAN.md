@@ -2184,3 +2184,37 @@ a first-party cause. Direct desktop source-selection/real IME/VoiceOver and M6 r
 acceptance are still open, along with non-identity source transformations, custom
 CSS/templates, remaining feature parity and safe legacy retirement. The full goal is
 active and incomplete.
+
+
+## Escaped table coordinates and dialects — 2026-11-07
+
+Table-cell normalization now exposes native provenance for actual pipe unescaping and
+leading trim. Sparse events are recorded only for source-positioned owned rows and freed
+with their native cells. Swift validates normalized content against the physical line
+in one linear event walk, then maps inclusive start/end boundaries separately. A source
+`\|` contributes both the backslash and pipe, preserving full inline-code delimiters.
+Recursive extension contexts inherit that exact map. Body rows/cells use their own
+physical origin rather than the header's indentation. The native cell whitelist now
+admits the standard custom-inline node type, preserving supported Swift dialects in
+tables. Grammar recognition stays native; document bytes are unchanged.
+
+Local validation passes **266 tests / 53 suites**, **28 Address Sanitizer tests / four
+suites** without diagnostics, eight arm64 test executables, the native arm64 app build
+and 652/652 pinned CommonMark examples. Complete package/sanitizer/native captures have
+zero compiler warnings/errors. The 240-case table matrix covers line endings, container
+indentation, trim and escape counts. Real TextKit assertions cover Unicode strong text
+and every byte of escaped inline code/backticks without changing tail fonts, selection,
+source, revision or undo. Native patches remain exactly reversible to upstream hashes.
+
+The same-harness before/after performance comparison is in `PERFORMANCE_AUDIT.md`; dense
+escaped cells add measured work and metadata memory. This is not native app latency or
+M6 acceptance. Full evidence is in `validation/table-source-coordinates.json`. Hosted
+acceptance is recorded there after code push and artifact verification.
+
+The source-coordinate gate remains open. Inspection of headers split from preceding
+paragraph content flags missing paragraph source fields, inherited offsets and pipe
+unescaping; these need a reproducer and characterization next. NUL/native replacement
+contexts also remain. The user desktop is still locked; the existing app process and
+user documents/Open panel are preserved, so no fresh desktop selection confirmation is
+claimed. Real IME/VoiceOver, app performance, CSS/templates, remaining parity and safe
+legacy retirement remain open. The full modernization goal stays active.

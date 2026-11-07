@@ -122,3 +122,42 @@ sampled cycle shares overlap and are not wall-clock proportions. Full methodolog
 per-process medians/RSS, raw artifact paths and limitations are recorded in
 `validation/source-coordinates.json`. These measurements do not close native app typing,
 WebKit publication, energy, memory-growth or other M6 acceptance gates.
+
+
+## Table normalization provenance cost — 2026-11-07
+
+This comparison uses exact previous core/parser commit `0ee583b` and the corrected
+worktree with identical audit harness source. It includes three fresh processes per
+version/workload/size, one first render plus five warm full rerenders each, alternating
+version order. Timing processes run sequentially without builds or Instruments. The
+values are medians of three process warm medians, not UI latency or p95.
+
+| Workload | Bytes | Before ms | After ms |
+| --- | ---: | ---: | ---: |
+| prose | 100,000 | 1.83 | 2.13 |
+| prose | 1,000,000 | 16.47 | 16.84 |
+| prose | 10,000,000 | 176.83 | 180.54 |
+| mixed | 100,000 | 8.88 | 8.82 |
+| mixed | 1,000,000 | 94.51 | 94.73 |
+| mixed | 10,000,000 | 977.55 | 982.69 |
+| long-line | 100,000 | 3.32 | 3.27 |
+| long-line | 1,000,000 | 35.63 | 35.78 |
+| long-line | 10,000,000 | 416.16 | 411.97 |
+| escaped-cell | 100,000 | 0.90 | 1.23 |
+| escaped-cell | 1,000,000 | 9.05 | 12.37 |
+| escaped-cell | 10,000,000 | 92.09 | 125.82 |
+
+Ordinary workloads are close in these samples. The new `escaped-cell` workload puts
+repeated `a\|` sequences in one large GFM cell followed by strong text. Correct source
+coordinates add about 0.33 ms at 100 KB, 3.32 ms at 1 MB and 33.73 ms at 10 MB. The 10 MB
+escaped case records roughly 228 MB peak RSS after the change versus 148 MB before;
+sparse provenance has a cost on deliberately dense input. Peak RSS is a process high
+water mark, not a leak measurement. Metadata grows geometrically and validation walks
+the original native escape events linearly rather than searching each byte separately.
+
+These render-only samples exclude actual native typing/layout, WebKit publication,
+file I/O, math and diagrams. Ten MB full renders exceed the automatic-preview size
+guard. No application responsiveness, energy or memory-growth acceptance is inferred.
+Raw samples, process medians/RSS, methodology and checksum are retained in
+`validation/table-source-coordinates.json`. The audit CLI now accepts `escaped-cell`
+alongside `prose`, `mixed` and `long-line`. Full M6 remains open.

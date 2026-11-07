@@ -129,4 +129,119 @@ struct MarkdownSourceCoordinateTests {
     try expect(.emphasis, "*after*", source: source, parsed: parsed)
   }
 
+  @Test(
+    "Table-cell normalization preserves exact source ranges and code escape boundaries",
+    arguments: ["\n", "\r\n", "\r"])
+  func tableCells(_ newline: String) async throws {
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    for (headerPrefix, bodyPrefix) in [
+      ("", ""), ("> ", "> "), ("- ", "  "),
+      ("> ", "  > "), ("- ", "\t"),
+    ] {
+      for leading in ["", " ", "\t", " \t "] {
+        for escapes in [0, 1, 2, 8] {
+          let escaped = String(repeating: "a\\|", count: escapes)
+          let source = [
+            headerPrefix + "|" + leading + escaped + "**Header 😀** | Other |",
+            (headerPrefix == "- " ? "  " : headerPrefix) + "|---|---|",
+            bodyPrefix + "|" + leading + escaped
+              + "**Body 中文** *after* | `\\|` [left\\|right](https://e.invalid) |",
+          ].joined(separator: newline)
+          let parsed = try await MarkdownProcessor().render(
+            source, options: options, includeSyntax: true)
+          #expect(parsed.nodes.contains { $0.kind == .table }, "\(source.debugDescription)")
+          let rows = parsed.nodes.filter { $0.kind == .tableRow }.compactMap(\.range)
+          let physicalLines = source.components(separatedBy: newline)
+          let wantedRows = try [
+            expected(String(physicalLines[0].dropFirst(headerPrefix.count)), in: source),
+            expected(String(physicalLines[2].dropFirst(bodyPrefix.count)), in: source),
+          ]
+          #expect(rows == wantedRows, "\(source.debugDescription): \(rows)")
+          let strong = parsed.nodes.filter { $0.kind == .strong }.compactMap(\.range)
+          let wanted = try [
+            expected("**Header 😀**", in: source), expected("**Body 中文**", in: source),
+          ]
+          #expect(strong == wanted, "\(source.debugDescription): \(strong)")
+          try expect(.emphasis, "*after*", source: source, parsed: parsed)
+          let codeMarker = try expected("`\\|`", in: source)
+          let codeNode = try #require(parsed.nodes.first { $0.kind == .inlineCode })
+          #expect(
+            codeNode.range
+              == .init(
+                start: .init(line: codeMarker.start.line, column: codeMarker.start.column + 1),
+                end: .init(line: codeMarker.end.line, column: codeMarker.end.column - 1)),
+            "\(source.debugDescription): \(String(describing: codeNode.range))")
+          try expect(.link, "[left\\|right](https://e.invalid)", source: source, parsed: parsed)
+          #expect(parsed.nodes.first { $0.kind == .inlineCode }?.literal == "|")
+          let syntax = try #require(parsed.syntax)
+          let code = (source as NSString).range(of: "`\\|`")
+          for offset in code.location..<NSMaxRange(code) {
+            #expect(
+              syntax.runs.contains {
+                NSLocationInRange(offset, $0.range) && $0.style.tokens.contains(.inlineCode)
+              })
+          }
+          let bold = syntax.runs.filter { $0.style.tokens.contains(.strong) }.map(\.range)
+          #expect(
+            bold == [
+              (source as NSString).range(of: "**Header 😀**"),
+              (source as NSString).range(of: "**Body 中文**"),
+            ])
+          let plain = try await MarkdownProcessor().render(source, options: options)
+          #expect(plain.nodes == parsed.nodes && plain.html == parsed.html)
+        }
+      }
+    }
+  }
+
+  @Test("Table cells preserve Swift inline dialects and their nested source ranges")
+  func tableInlineDialects() async throws {
+    var options = MarkdownRenderingOptions()
+    options.underline = true
+    options.highlight = true
+    options.superscript = true
+    options.quotedText = true
+    options.codeHighlighting = false
+    options.math = true
+    options.inlineDollarMath = true
+    for policy in [MarkdownEmphasisPolicy.standard, .allowWithinWords] {
+      options.emphasisPolicy = policy
+      let source =
+        "| Header | Other |\n|---|---|\n| a\\|b _under **b\\|old**_ ==mark== x^up $x$ \"quoted\" | Value |"
+      let parsed = try await MarkdownProcessor().render(
+        source, options: options, includeSyntax: true)
+      for (kind, marker) in [
+        (MarkdownNodeKind.underline, "_under **b\\|old**_"), (.strong, "**b\\|old**"),
+        (.highlight, "==mark=="), (.superscript, "^up"), (.math(display: false), "$x$"),
+        (.quotation, "\"quoted\""),
+      ] { try expect(kind, marker, source: source, parsed: parsed) }
+      #expect(parsed.html.contains("<u>under <strong>b|old</strong></u>"))
+      #expect(parsed.html.contains("<mark>mark</mark>") && parsed.html.contains("<sup>up</sup>"))
+      #expect(parsed.html.contains("<q>quoted</q>"))
+    }
+  }
+
+  @Test("Sparse table provenance handles long escaped cells and discarded or missing cells")
+  func tableRecovery() async throws {
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    let dense =
+      "| Header | Other |\n|---|---|\n| " + String(repeating: "a\\|", count: 8192)
+      + "**target** | Value |"
+    let parsed = try await MarkdownProcessor().render(dense, options: options, includeSyntax: true)
+    try expect(.strong, "**target**", source: dense, parsed: parsed)
+    for prefix in [
+      "| a\\|b | c |\n|---|---|---|", "| a\\|b |\nnot a delimiter",
+      "| A | B |\n|---|---|\n| `\\|` |",
+      "| A | B |\n|---|---|\n| a\\|b | more | discarded\\|cell |",
+    ] {
+      let source = prefix + "\n\ncheckpoint **after**"
+      let parsed = try await MarkdownProcessor().render(
+        source, options: options, includeSyntax: true)
+      try expect(.strong, "**after**", source: source, parsed: parsed)
+      #expect(parsed.html.contains("checkpoint <strong>after</strong>"))
+    }
+  }
+
 }

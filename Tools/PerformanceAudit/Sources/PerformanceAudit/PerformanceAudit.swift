@@ -14,13 +14,14 @@ struct PerformanceAudit {
     let arguments = Array(CommandLine.arguments.dropFirst())
     guard arguments.count == 3, let bytes = Int(arguments[1]),
       (1_000...10_000_000).contains(bytes), let iterations = Int(arguments[2]),
-      (1...100).contains(iterations), ["prose", "mixed", "long-line"].contains(arguments[0])
+      (1...100).contains(iterations),
+      ["prose", "mixed", "long-line", "escaped-cell"].contains(arguments[0])
     else {
       throw NSError(
         domain: "PerformanceAudit", code: 1,
         userInfo: [
           NSLocalizedDescriptionKey:
-            "Usage: PerformanceAudit prose|mixed|long-line BYTES ITERATIONS"
+            "Usage: PerformanceAudit prose|mixed|long-line|escaped-cell BYTES ITERATIONS"
         ])
     }
     let workload = arguments[0]
@@ -48,12 +49,23 @@ struct PerformanceAudit {
         ```
 
         """ + "\n"
+    case "escaped-cell": unit = "a\\|"
     case "long-line": unit = "Unicode 中文 👩‍💻 **bold** and `code` in a long paragraph. "
     default: unit = "A calm paragraph of plain text for writing and reading, with Unicode 中文 👩‍💻.\n\n"
     }
     let unitBytes = unit.utf8.count
-    var source = String(repeating: unit, count: bytes / unitBytes)
-    source += String(repeating: "x", count: bytes - source.utf8.count)
+    var source: String
+    if workload == "escaped-cell" {
+      let header = "| Header | Other |\n|---|---|\n|"
+      let trailer = " **target** | value |\n"
+      let payload = bytes - header.utf8.count - trailer.utf8.count
+      source =
+        header + String(repeating: unit, count: payload / unitBytes)
+        + String(repeating: "x", count: payload % unitBytes) + trailer
+    } else {
+      source = String(repeating: unit, count: bytes / unitBytes)
+      source += String(repeating: "x", count: bytes - source.utf8.count)
+    }
     let processor = MarkdownProcessor()
     let clock = ContinuousClock()
     var timings: [Double] = []
