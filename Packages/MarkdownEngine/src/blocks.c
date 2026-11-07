@@ -314,6 +314,12 @@ static bool resolve_reference_link_definitions(
   return !is_blank(&b->content, 0);
 }
 
+bool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node *node) {
+  if (!parser || !node || S_type(node) != CMARK_NODE_PARAGRAPH)
+    return false;
+  return resolve_reference_link_definitions(parser, node);
+}
+
 static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {
   bufsize_t pos;
   cmark_node *item;

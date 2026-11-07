@@ -103,6 +103,11 @@
       "before": "  cmark_strbuf *node_content = &b->content;\n\n  switch (S_type(b)) {",
       "after": "  for (cmark_llist *entry = parser->syntax_extensions; entry; entry = entry->next) {\n    cmark_syntax_extension *extension = (cmark_syntax_extension *)entry->data;\n    if (extension->block_source_func)\n      extension->block_source_func(extension, b);\n  }\n\n  cmark_strbuf *node_content = &b->content;\n\n  switch (S_type(b)) {",
       "reason": "Notify read-only metadata observers before native transformations can discard or relocate finalized blocks; absent observers leave behavior unchanged"
+    },
+    {
+      "before": "static cmark_node *finalize(cmark_parser *parser, cmark_node *b) {",
+      "after": "bool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node *node) {\n  if (!parser || !node || S_type(node) != CMARK_NODE_PARAGRAPH)\n    return false;\n  return resolve_reference_link_definitions(parser, node);\n}\n\nstatic cmark_node *finalize(cmark_parser *parser, cmark_node *b) {",
+      "reason": "Reuse native reference resolution for paragraphs introduced by an extension split"
     }
   ],
   "src/include/syntax_extension.h": [
@@ -125,6 +130,11 @@
       "before": "  cmark_block_source_func         block_source_func;",
       "after": "  cmark_block_source_func         block_source_func;\n  cmark_inline_source_func        inline_source_func;",
       "reason": "Store an optional inline-context metadata observer"
+    },
+    {
+      "before": "  cmark_inline_source_func        inline_source_func;",
+      "after": "  cmark_inline_source_func        inline_source_func;\n  cmark_block_split_func          block_split_func;",
+      "reason": "Store an optional source-only native block-partition observer"
     }
   ],
   "src/syntax_extension.c": [
@@ -147,6 +157,11 @@
       "before": "void cmark_syntax_extension_set_postprocess_func(",
       "after": "void cmark_syntax_extension_set_inline_source_func(cmark_syntax_extension *extension,\n                                                   cmark_inline_source_func func) {\n  extension->inline_source_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func(",
       "reason": "Install the opt-in inline-context metadata observer"
+    },
+    {
+      "before": "void cmark_syntax_extension_set_postprocess_func",
+      "after": "void cmark_syntax_extension_set_block_split_func(cmark_syntax_extension *extension,\n                                                 cmark_block_split_func func) {\n  extension->block_split_func = func;\n}\n\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Configure optional source-only block-split observation"
     }
   ],
   "src/include/cmark-gfm-extension_api.h": [
@@ -184,6 +199,16 @@
       "before": "void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func);",
       "after": "void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extension,\n                                                  cmark_block_source_func func);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_inline_source_func(cmark_syntax_extension *extension,\n                                                   cmark_inline_source_func func);",
       "reason": "Declare the generic inline-context metadata observer setter"
+    },
+    {
+      "before": "typedef cmark_node *(*cmark_postprocess_func)",
+      "after": "/** Local metadata bridge (not upstream): a recognized leading portion of a\n * block has become prefix, and node now describes the suffix. During this\n * callback node->content still holds the complete original buffer; consumed\n * bytes belong to prefix. Prefix preserves the original source origin. Native\n * suffix/child columns are relative to that original column base, on rebased\n * lines. Observers may reconcile source positions only; they must not change\n * content, ownership, or grammar. All pointers are borrowed for the callback.\n */\ntypedef void (*cmark_block_split_func) (cmark_syntax_extension *extension,\n                                       cmark_node *node, cmark_node *prefix,\n                                       int32_t consumed);\n\ntypedef cmark_node *(*cmark_postprocess_func)",
+      "reason": "Observe native block partitioning without interpreting it as a reference-definition prefix"
+    },
+    {
+      "before": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "after": "CMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_block_split_func(cmark_syntax_extension *extension,\n                                                 cmark_block_split_func func);\n\n/** Local native helper (not upstream): resolve leading reference definitions in\n * an already bounded paragraph through the parser's ordinary grammar and source\n * callbacks. Returns whether nonblank content remains; caller retains ownership.\n */\nCMARK_GFM_EXPORT\nbool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node *node);\n\nCMARK_GFM_EXPORT\nvoid cmark_syntax_extension_set_postprocess_func",
+      "reason": "Expose the native paragraph resolver and a source-only block-split observer"
     }
   ],
   "src/html.c": [
@@ -337,6 +362,36 @@
       "before": "CMARK_GFM_EXPORT\nint32_t cmark_gfm_extensions_get_table_cell_source_offset",
       "after": "CMARK_GFM_EXPORT\nconst int32_t *cmark_gfm_extensions_get_table_cell_source_escapes(cmark_node *node, int32_t *count, int32_t *trim) {\n  if (count) *count = 0;\n  if (trim) *trim = 0;\n  if (!node || node->type != CMARK_NODE_TABLE_CELL || !node->as.opaque)\n    return NULL;\n  const node_cell_data *source = (const node_cell_data *)node->as.opaque;\n  if (count) *count = source->source_escape_count;\n  if (trim) *trim = source->source_trim;\n  return source->source_escapes;\n}\n\nCMARK_GFM_EXPORT\nint32_t cmark_gfm_extensions_get_table_cell_source_offset",
       "reason": "Expose read-only native normalization events for linear-time source validation"
+    },
+    {
+      "before": "static void try_inserting_table_header_paragraph(cmark_parser *parser,\n                                                 cmark_node *parent_container,\n                                                 unsigned char *parent_string,\n                                                 int paragraph_offset) {\n  cmark_node *paragraph;\n  cmark_strbuf *paragraph_content;\n\n  paragraph = cmark_node_new_with_mem(CMARK_NODE_PARAGRAPH, parser->mem);\n\n  paragraph_content = unescape_pipes(parser->mem, parent_string, paragraph_offset, NULL);\n  cmark_strbuf_trim(paragraph_content);\n  cmark_node_set_string_content(paragraph, (char *) paragraph_content->ptr);\n  cmark_strbuf_free(paragraph_content);\n  parser->mem->free(paragraph_content);\n\n  if (!cmark_node_insert_before(parent_container, paragraph)) {\n    parser->mem->free(paragraph);\n  }\n}\n",
+      "after": "static cmark_node *try_inserting_table_header_paragraph(cmark_parser *parser,\n                                                 cmark_node *parent_container,\n                                                 const unsigned char *parent_string,\n                                                 int paragraph_offset) {\n  cmark_node *paragraph = cmark_node_new_with_mem(CMARK_NODE_PARAGRAPH, parser->mem);\n  // This is ordinary paragraph content, not table-cell input. Preserve escapes\n  // and let the normal inline parser interpret the exact native buffer.\n  cmark_strbuf_set(&paragraph->content, parent_string, paragraph_offset);\n  paragraph->start_line = parent_container->start_line;\n  paragraph->start_column = parent_container->start_column;\n  paragraph->internal_offset = parent_container->internal_offset;\n  int line = paragraph->start_line;\n  int line_start = 0;\n  int last_end = 0;\n  int last_start = 0;\n  for (int offset = 0; offset < paragraph_offset; ++offset) {\n    if (parent_string[offset] == '\\n' || parent_string[offset] == '\\r') {\n      last_start = line_start;\n      last_end = offset;\n      if (parent_string[offset] == '\\r' && offset + 1 < paragraph_offset &&\n          parent_string[offset + 1] == '\\n')\n        ++offset;\n      line_start = offset + 1;\n      ++line;\n    }\n  }\n  paragraph->end_line = line - 1;\n  paragraph->end_column = paragraph->start_column + last_end - last_start - 1;\n  if (!cmark_node_insert_before(parent_container, paragraph)) {\n    cmark_node_free(paragraph);\n    return NULL;\n  }\n  parent_container->start_line = line;\n  return paragraph;\n}\n",
+      "reason": "Preserve exact paragraph content and native source bounds when a table partitions its leading paragraph"
+    },
+    {
+      "before": "  if (header_row->paragraph_offset) {\n    try_inserting_table_header_paragraph(parser, parent_container, (unsigned char *)parent_string,\n                                         header_row->paragraph_offset);\n  }",
+      "after": "  cmark_node *prefix = NULL;\n  if (header_row->paragraph_offset) {\n    prefix = try_inserting_table_header_paragraph(parser, parent_container,\n        (const unsigned char *)parent_string, header_row->paragraph_offset);\n  }",
+      "reason": "Retain the bounded prefix only through native source reconciliation and reference resolution"
+    },
+    {
+      "before": "  table_header->end_column = parent_container->start_column + (int)strlen(parent_string) - 2;",
+      "after": "  table_header->end_column = parent_container->start_column +\n      (int)strlen(parent_string + header_row->paragraph_offset) - 2;",
+      "reason": "Header row bounds cover only the recognized header line rather than preceding paragraph bytes"
+    },
+    {
+      "before": "CMARK_NODE_TABLE_CELL, parent_container->start_column + cell->start_offset);",
+      "after": "CMARK_NODE_TABLE_CELL, parent_container->start_column + cell->start_offset - header_row->paragraph_offset);",
+      "reason": "Header cell starts are relative to their own recognized row"
+    },
+    {
+      "before": "    header_cell->end_column = parent_container->start_column + cell->end_offset;",
+      "after": "    header_cell->end_column = parent_container->start_column + cell->end_offset - header_row->paragraph_offset;",
+      "reason": "Header cell ends are relative to their own recognized row"
+    },
+    {
+      "before": "  incr_table_row_count(parent_container, i);\n\n  cmark_parser_advance_offset(",
+      "after": "  if (prefix) {\n    for (cmark_llist *entry = parser->syntax_extensions; entry; entry = entry->next) {\n      cmark_syntax_extension *extension = (cmark_syntax_extension *)entry->data;\n      if (extension->block_split_func)\n        extension->block_split_func(extension, parent_container, prefix, header_row->paragraph_offset);\n    }\n    if (!cmark_parser_resolve_reference_definitions(parser, prefix) &&\n        !(parser->options & CMARK_OPT_PRESERVE_WHITESPACE))\n      cmark_node_free(prefix);\n    cmark_strbuf_drop(&parent_container->content, header_row->paragraph_offset);\n  }\n\n  incr_table_row_count(parent_container, i);\n\n  cmark_parser_advance_offset(",
+      "reason": "Reconcile split source bounds before retaining only header content; preserve ordinary native reference definitions"
     }
   ],
   "extensions/include/cmark-gfm-core-extensions.h": [

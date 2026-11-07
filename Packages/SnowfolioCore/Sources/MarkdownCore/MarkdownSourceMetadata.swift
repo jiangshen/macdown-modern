@@ -35,6 +35,14 @@ final class MarkdownSourceMetadata {
       Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
         .inlineCoordinates.observe(parent, entering: entering != 0)
     }
+    cmark_syntax_extension_set_block_split_func(native) {
+      extensionPointer, node, prefix, consumed in
+      guard let extensionPointer, let node, let prefix,
+        let pointer = cmark_syntax_extension_get_private(extensionPointer)
+      else { return }
+      Unmanaged<MarkdownSourceMetadata>.fromOpaque(pointer).takeUnretainedValue()
+        .inlineCoordinates.split(node, prefix: prefix, consumed: Int(consumed))
+    }
     if collectDefinitions {
       cmark_syntax_extension_set_block_source_func(native) { extensionPointer, node in
         guard let extensionPointer, let node,

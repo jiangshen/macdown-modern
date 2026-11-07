@@ -244,4 +244,173 @@ struct MarkdownSourceCoordinateTests {
     }
   }
 
+  @Test(
+    "A table split from a preceding paragraph preserves literals and exact block and inline ranges",
+    arguments: ["\n", "\r\n", "\r"])
+  func tableParagraphSplit(_ newline: String) async throws {
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    for (prefix, headerPrefix, bodyPrefix) in [
+      ("", "", ""), ("  ", " ", "   "), ("> ", "  > ", "> "),
+      ("- ", "  ", "\t"), ("> - ", ">   ", ">   "),
+    ] {
+      let paragraph = "before **lead 😀** `a\\|b`"
+      let header = "| a\\|b **Header 中文** | Other |"
+      let body = "| **Body** | Value |"
+      let source = [
+        prefix + paragraph, headerPrefix + header,
+        headerPrefix + "|---|---|", bodyPrefix + body,
+      ].joined(separator: newline)
+      let parsed = try await MarkdownProcessor().render(
+        source, options: options, includeSyntax: true)
+      try expect(.paragraph, paragraph, source: source, parsed: parsed)
+      for marker in ["**lead 😀**", "**Header 中文**", "**Body**"] {
+        let wanted = try expected(marker, in: source)
+        #expect(
+          parsed.nodes.contains { $0.kind == .strong && $0.range == wanted },
+          "\(source.debugDescription): \(marker), \(parsed.nodes)")
+      }
+      let table = try #require(parsed.nodes.first { $0.kind == .table })
+      let headerRange = try expected(header, in: source)
+      let bodyRange = try expected(body, in: source)
+      #expect(
+        table.range?.start == headerRange.start && table.range?.end == bodyRange.end,
+        "\(source.debugDescription): \(String(describing: table.range))")
+      #expect(parsed.nodes.first { $0.kind == .tableRow }?.range == headerRange)
+      #expect(
+        parsed.html.contains("<code>a\\|b</code>"), "\(source.debugDescription): \(parsed.html)")
+      let plain = try await MarkdownProcessor().render(source, options: options)
+      #expect(plain.nodes == parsed.nodes && plain.html == parsed.html)
+    }
+  }
+
+  @Test(
+    "Split paragraphs retain multiline ranges and ordinary native reference definitions",
+    arguments: ["\n", "\r\n", "\r"])
+  func tableSplitReferences(_ newline: String) async throws {
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    for (prefix, continuation, headerPrefix) in [
+      ("", "", ""), ("  ", " ", "   "), ("> ", "> ", "  > "),
+      ("- ", "  ", "\t"), ("> - ", ">   ", ">   "),
+    ] {
+      for leadingPipe in ["", "| "] {
+        let definition = "[target]: /value \"Title\""
+        let first = "paragraph **before** [target] &amp; `a\\|b`"
+        let second = "more **middle**"
+        let header = leadingPipe + "a\\|b **Header 中文** | Other |"
+        let body = "| **Body** | Value |"
+        let source = [
+          prefix + definition, continuation + first, continuation + second,
+          headerPrefix + header, headerPrefix + "|---|---|", continuation + body,
+        ]
+        .joined(separator: newline)
+        let parsed = try await MarkdownProcessor().render(
+          source, options: options, includeSyntax: true)
+        let paragraph = try #require(parsed.nodes.first { $0.kind == .paragraph })
+        #expect(
+          paragraph.range
+            == .init(
+              start: try expected(first, in: source).start,
+              end: try expected(second, in: source).end), "\(source.debugDescription)")
+        for marker in ["**before**", "**middle**", "**Header 中文**", "**Body**"] {
+          let wanted = try expected(marker, in: source)
+          #expect(
+            parsed.nodes.contains { $0.kind == .strong && $0.range == wanted },
+            "\(source.debugDescription): \(marker)")
+        }
+        try expect(.tableRow, header, source: source, parsed: parsed)
+        #expect(parsed.nodes.first { $0.kind == .link }?.destination == "/value")
+        #expect(
+          parsed.html.contains("title=\"Title\"") && parsed.html.contains("<code>a\\|b</code>"))
+        let syntax = try #require(parsed.syntax)
+        let text = source as NSString
+        #expect(
+          syntax.runs.contains {
+            NSLocationInRange(text.range(of: definition).location, $0.range)
+              && $0.style.tokens.contains(.referenceDefinition)
+          })
+        for marker in ["paragraph", "more", "Header"] {
+          #expect(
+            !syntax.runs.contains {
+              NSLocationInRange(text.range(of: marker).location, $0.range)
+                && $0.style.tokens.contains(.referenceDefinition)
+            }, "\(source.debugDescription): \(marker)")
+        }
+        let plain = try await MarkdownProcessor().render(source, options: options)
+        #expect(plain.nodes == parsed.nodes && plain.html == parsed.html)
+      }
+    }
+  }
+
+  @Test(
+    "Definition-only table prefixes resolve and disappear without consuming table scopes",
+    arguments: ["\n", "\r\n", "\r"])
+  func tableDefinitionOnly(_ newline: String) async throws {
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    for (prefix, continuation) in [("", ""), ("> ", "> "), ("- ", "  ")] {
+      let source = [
+        prefix + "[target]: /value", continuation + "| [target] **Header** | Other |",
+        continuation + "|---|---|", continuation + "| **Body** | Value |",
+      ].joined(separator: newline)
+      let parsed = try await MarkdownProcessor().render(
+        source, options: options, includeSyntax: true)
+      #expect(!parsed.nodes.contains { $0.kind == .paragraph })
+      #expect(parsed.nodes.first { $0.kind == .link }?.destination == "/value")
+      try expect(.strong, "**Header**", source: source, parsed: parsed)
+      #expect(parsed.nodes.first { $0.kind == .table }?.range?.start.line == 2)
+      #expect(!parsed.html.contains("[target]:"))
+      let syntax = try #require(parsed.syntax)
+      let header = (source as NSString).range(of: "Header").location
+      #expect(
+        syntax.runs.contains {
+          NSLocationInRange(header, $0.range) && $0.style.tokens.contains(.strong)
+            && !$0.style.tokens.contains(.referenceDefinition)
+        })
+      let plain = try await MarkdownProcessor().render(source, options: options)
+      #expect(plain.nodes == parsed.nodes && plain.html == parsed.html)
+    }
+  }
+
+  @Test(
+    "Split tables inside footnotes keep note ancestry and following ordinary source scopes",
+    arguments: ["\n", "\r\n", "\r"])
+  func tableSplitFootnote(_ newline: String) async throws {
+    var options = MarkdownRenderingOptions()
+    options.codeHighlighting = false
+    options.footnotes = true
+    let source = [
+      "[^a]: [target]: /value", "    before **lead** `a\\|b`",
+      "    | [target] **Header** | Other |", "    |---|---|", "    | **Body** | Value |",
+      "", "note[^a] and **after**",
+    ].joined(separator: newline)
+    let parsed = try await MarkdownProcessor().render(source, options: options, includeSyntax: true)
+    for marker in ["**lead**", "**Header**", "**Body**", "**after**"] {
+      let wanted = try expected(marker, in: source)
+      #expect(
+        parsed.nodes.contains { $0.kind == .strong && $0.range == wanted },
+        "\(source.debugDescription): \(marker)")
+    }
+    #expect(parsed.nodes.first { $0.kind == .link }?.destination == "/value")
+    #expect(parsed.html.contains("<code>a\\|b</code>"))
+    let syntax = try #require(parsed.syntax)
+    let text = source as NSString
+    for marker in ["lead", "Header", "Body"] {
+      #expect(
+        syntax.runs.contains {
+          NSLocationInRange(text.range(of: marker).location, $0.range)
+            && $0.style.tokens.contains(.note) && $0.style.tokens.contains(.strong)
+            && !$0.style.tokens.contains(.referenceDefinition)
+        })
+    }
+    let after = text.range(of: "after").location
+    #expect(
+      syntax.runs.contains {
+        NSLocationInRange(after, $0.range) && $0.style.tokens == [.strong]
+      })
+    let plain = try await MarkdownProcessor().render(source, options: options)
+    #expect(plain.nodes == parsed.nodes && plain.html == parsed.html)
+  }
+
 }

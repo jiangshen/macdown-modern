@@ -269,6 +269,7 @@ struct NativeEditorThemeTests {
       "> first\r**中文 😀** tail", ">\t**中文 😀** tail",
       "> before _start\n**中文 😀** end_ tail",
       "| Header | Other |\n|---|---|\n| a\\|b **中文 😀** tail | `\\|` |",
+      "before `a\\|b` tail\n| a\\|b **中文 😀** | Other |\n|---|---|\n| more | `\\|` |",
     ] {
       var options = MarkdownRenderingOptions()
       options.underline = true

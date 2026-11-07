@@ -101,11 +101,67 @@ final class MarkdownInlineSourceCoordinates {
     }
   }
 
-  private func context(_ parent: UnsafeMutablePointer<cmark_node>) -> Context {
+  /// A native split still exposes the complete original content. The prefix
+  /// carries its old source origin; suffix children already have rebased lines.
+  /// Reconcile only coordinates, while the native parser owns both buffers.
+  func split(
+    _ node: UnsafeMutablePointer<cmark_node>, prefix: UnsafeMutablePointer<cmark_node>,
+    consumed: Int
+  ) {
+    guard contexts.isEmpty, consumed > 0, consumed <= Int(node.pointee.content.size),
+      consumed == Int(prefix.pointee.content.size),
+      node.pointee.start_line == prefix.pointee.end_line + 1,
+      prefix.pointee.end_line > 0, prefix.pointee.end_line <= source.lines.count,
+      let input = node.pointee.content.ptr,
+      input[consumed - 1] == 10 || input[consumed - 1] == 13
+    else { return }
+    // Native recognition proves a complete-line partition. Its bounded prefix
+    // ends at that physical line's end; only the suffix needs a fragment map.
+    prefix.pointee.end_column = Int32(source.lines[Int(prefix.pointee.end_line) - 1].count)
+    let mapping = context(node, skipping: consumed)
+    func reconcile(_ child: UnsafeMutablePointer<cmark_node>, end: Bool = true) {
+      let line = Int(child.pointee.start_line)
+      let column = Int(child.pointee.start_column)
+      let internalColumn = mapping.physical(
+        line: line, column: column + Int(child.pointee.internal_offset))
+      if let physical = mapping.physical(line: line, column: column) {
+        child.pointee.start_column = Int32(physical)
+        if let internalColumn, internalColumn >= physical {
+          child.pointee.internal_offset = Int32(internalColumn - physical)
+        }
+      }
+      if end,
+        let physical = mapping.physical(
+          line: Int(child.pointee.end_line), column: Int(child.pointee.end_column), end: true)
+      {
+        child.pointee.end_column = Int32(physical)
+      }
+    }
+    reconcile(node, end: false)  // The open suffix gets its final end from native finalization.
+    var current = node.pointee.first_child
+    while let child = current {
+      if Task.isCancelled { return }
+      reconcile(child)
+      if let descendant = child.pointee.first_child {
+        current = descendant
+      } else {
+        var cursor = child
+        while cursor.pointee.next == nil, let ancestor = cursor.pointee.parent, ancestor != node {
+          cursor = ancestor
+        }
+        current = cursor.pointee.next
+      }
+    }
+  }
+
+  private func context(
+    _ parent: UnsafeMutablePointer<cmark_node>, skipping: Int = 0
+  ) -> Context {
     let content = parent.pointee.content
-    let input = UnsafeBufferPointer(start: content.ptr, count: Int(content.size))
+    let input = UnsafeBufferPointer(
+      start: content.ptr.map { $0.advanced(by: skipping) }, count: Int(content.size) - skipping)
     let lines: [Range<Int>]
-    if contexts.isEmpty, parent.pointee.start_line == parent.pointee.end_line {
+    if skipping == 0, contexts.isEmpty, parent.pointee.start_line == parent.pointee.end_line {
       // Native finalized line bounds prove this is a single source line. Avoid
       // rescanning its bytes solely to rediscover the terminal line ending.
       var end = input.count

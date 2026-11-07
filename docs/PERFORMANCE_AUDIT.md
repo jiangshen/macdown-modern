@@ -161,3 +161,37 @@ guard. No application responsiveness, energy or memory-growth acceptance is infe
 Raw samples, process medians/RSS, methodology and checksum are retained in
 `validation/table-source-coordinates.json`. The audit CLI now accepts `escaped-cell`
 alongside `prose`, `mixed` and `long-line`. Full M6 remains open.
+
+
+## Paragraph/table partition cost — 2026-11-07
+
+The `table-prefix` workload is one large Unicode paragraph ending in escaped inline
+code and strong text, followed immediately by a table. The previous implementation
+omitted that paragraph's source ranges/styles and changed its literal backslash. This
+comparison measures the complete corrected render, including the newly accurate work.
+
+Both release arm64 versions use identical updated audit harness source; the previous
+core/parser is exact commit `1c53ba3`. Three fresh processes per case/version perform
+one first render and five warm full rerenders. Version order alternates; no builds or
+Instruments overlap. Values are medians of process warm medians, not app latency/p95.
+
+| Workload | Bytes | Before ms | After ms |
+| --- | ---: | ---: | ---: |
+| mixed | 100,000 | 8.87 | 8.83 |
+| mixed | 1,000,000 | 93.47 | 95.56 |
+| mixed | 10,000,000 | 990.43 | 982.50 |
+| table-prefix | 100,000 | 0.60 | 0.98 |
+| table-prefix | 1,000,000 | 5.63 | 9.95 |
+| table-prefix | 10,000,000 | 57.54 | 100.74 |
+
+Correct paragraph source metadata adds about 0.37 ms at 100 KB, 4.32 ms at 1 MB and
+43.21 ms at 10 MB in these samples. An initial implementation also mapped the complete
+prefix during the split; native recognition already proves its full-line endpoint, so
+the final split callback maps only the suffix. The initial and final raw matrices are
+retained for review. Ordinary mixed samples are close; no speedup is inferred.
+
+Peak RSS varies across process samples and cannot establish leaks or memory-growth
+acceptance. These render-only measurements exclude native input/layout, WebKit
+publication, file I/O, math and diagrams. Ten MB renders exceed the automatic-preview
+guard. Full M6 remains open. Methodology, raw checksums, per-process timings and RSS
+are in `validation/table-paragraph-split.json`.

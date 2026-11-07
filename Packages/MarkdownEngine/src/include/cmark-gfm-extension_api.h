@@ -278,6 +278,18 @@ typedef void (*cmark_inline_source_func) (cmark_syntax_extension *extension,
                                          cmark_node *parent,
                                          int entering);
 
+/** Local metadata bridge (not upstream): a recognized leading portion of a
+ * block has become prefix, and node now describes the suffix. During this
+ * callback node->content still holds the complete original buffer; consumed
+ * bytes belong to prefix. Prefix preserves the original source origin. Native
+ * suffix/child columns are relative to that original column base, on rebased
+ * lines. Observers may reconcile source positions only; they must not change
+ * content, ownership, or grammar. All pointers are borrowed for the callback.
+ */
+typedef void (*cmark_block_split_func) (cmark_syntax_extension *extension,
+                                       cmark_node *node, cmark_node *prefix,
+                                       int32_t consumed);
+
 typedef cmark_node *(*cmark_postprocess_func) (cmark_syntax_extension *extension,
                                                cmark_parser *parser,
                                                cmark_node *root);
@@ -441,6 +453,17 @@ void cmark_syntax_extension_set_block_source_func(cmark_syntax_extension *extens
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_inline_source_func(cmark_syntax_extension *extension,
                                                    cmark_inline_source_func func);
+
+CMARK_GFM_EXPORT
+void cmark_syntax_extension_set_block_split_func(cmark_syntax_extension *extension,
+                                                 cmark_block_split_func func);
+
+/** Local native helper (not upstream): resolve leading reference definitions in
+ * an already bounded paragraph through the parser's ordinary grammar and source
+ * callbacks. Returns whether nonblank content remains; caller retains ownership.
+ */
+CMARK_GFM_EXPORT
+bool cmark_parser_resolve_reference_definitions(cmark_parser *parser, cmark_node *node);
 
 CMARK_GFM_EXPORT
 void cmark_syntax_extension_set_postprocess_func(cmark_syntax_extension *extension,

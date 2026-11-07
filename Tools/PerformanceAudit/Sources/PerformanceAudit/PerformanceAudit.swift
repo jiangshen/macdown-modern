@@ -15,13 +15,13 @@ struct PerformanceAudit {
     guard arguments.count == 3, let bytes = Int(arguments[1]),
       (1_000...10_000_000).contains(bytes), let iterations = Int(arguments[2]),
       (1...100).contains(iterations),
-      ["prose", "mixed", "long-line", "escaped-cell"].contains(arguments[0])
+      ["prose", "mixed", "long-line", "escaped-cell", "table-prefix"].contains(arguments[0])
     else {
       throw NSError(
         domain: "PerformanceAudit", code: 1,
         userInfo: [
           NSLocalizedDescriptionKey:
-            "Usage: PerformanceAudit prose|mixed|long-line|escaped-cell BYTES ITERATIONS"
+            "Usage: PerformanceAudit prose|mixed|long-line|escaped-cell|table-prefix BYTES ITERATIONS"
         ])
     }
     let workload = arguments[0]
@@ -62,6 +62,13 @@ struct PerformanceAudit {
       source =
         header + String(repeating: unit, count: payload / unitBytes)
         + String(repeating: "x", count: payload % unitBytes) + trailer
+    } else if workload == "table-prefix" {
+      let trailer = " `a\\|b` **tail**\n| **Header** | Other |\n|---|---|\n| Body | Value |\n"
+      let prefix = "A long Unicode 中文 paragraph before a table. "
+      let payload = bytes - trailer.utf8.count
+      source =
+        String(repeating: prefix, count: payload / prefix.utf8.count)
+        + String(repeating: "x", count: payload % prefix.utf8.count) + trailer
     } else {
       source = String(repeating: unit, count: bytes / unitBytes)
       source += String(repeating: "x", count: bytes - source.utf8.count)

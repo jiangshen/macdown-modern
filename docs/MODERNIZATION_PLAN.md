@@ -2236,3 +2236,40 @@ Direct user-desktop acceptance remains pending while the Mac is locked, and the
 existing running process predates the latest rebuild. The source-coordinate gates
 above, real IME/VoiceOver, full native performance, remaining parity and safe legacy
 retirement remain required. The full modernization goal remains active and incomplete.
+
+
+## Paragraph/table partition and reference preservation — 2026-11-07
+
+A new reproducer confirms that a table without a blank separator could leave its
+preceding paragraph without source fields, shift header coordinates, remove a literal
+backslash inside ordinary code, and bypass native reference resolution. The native
+split now preserves the exact paragraph buffer, bounds its source span, and makes header
+rows/cells relative to their own line. An optional generic split observer lets Swift
+reconcile physical suffix coordinates while buffers are borrowed. It is separate from
+reference-definition observation. The existing native paragraph resolver handles leading
+definitions and removes definition-only prefixes through native ownership rules. No
+document bytes or Markdown grammar are rewritten by Swift.
+
+The split observer uses the native complete-line boundary for the prefix end and maps
+only suffix fragments; an initial full-prefix pass was redundant. All native edits
+remain exactly reversible to the recorded upstream hashes. Source callback lifetimes,
+reference-only prefix teardown, container/internal offsets and unchanged document/undo
+state were reviewed. No coupled legacy application code is removed at this checkpoint.
+
+Local validation passes **270 tests / 53 suites**, **32 Address Sanitizer tests / four
+suites**, eight arm64 test executables, the native arm64 app build and all 652 pinned
+CommonMark examples. Complete final captures have zero compiler warnings/errors.
+57 new cases cover line endings, Unicode, varying containers, optional leading pipes,
+multi-line paragraphs, reference-only prefixes and footnote ancestry; actual TextKit
+font assertions include a header after a paragraph. Plain/syntax outputs agree.
+
+The same-harness render comparison is recorded in `PERFORMANCE_AUDIT.md` and
+`validation/table-paragraph-split.json`. The corrected 1 MB paragraph/table case takes
+about 10 ms versus 5.6 ms before, which omitted the prefix's source ranges/styles.
+These are core-render timings, not native typing or M6 acceptance. Hosted results are
+recorded after code push and artifact verification. Direct desktop access is still
+locked, so the existing process and user documents/Open panel are preserved.
+
+NUL/native replacement contexts, real IME/VoiceOver/visual interaction acceptance,
+full app performance, CSS/templates, remaining parity, release readiness and safe legacy
+retirement remain open. The full modernization goal remains active and incomplete.

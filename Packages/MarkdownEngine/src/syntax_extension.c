@@ -143,6 +143,11 @@ void cmark_syntax_extension_set_inline_source_func(cmark_syntax_extension *exten
   extension->inline_source_func = func;
 }
 
+void cmark_syntax_extension_set_block_split_func(cmark_syntax_extension *extension,
+                                                 cmark_block_split_func func) {
+  extension->block_split_func = func;
+}
+
 void cmark_syntax_extension_set_postprocess_func(cmark_syntax_extension *extension,
                                                  cmark_postprocess_func func) {
   extension->postprocess_func = func;
