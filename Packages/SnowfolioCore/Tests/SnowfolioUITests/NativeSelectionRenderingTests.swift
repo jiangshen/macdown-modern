@@ -31,6 +31,7 @@ struct NativeSelectionRenderingTests {
     web.navigationDelegate = coordinator
     let window = NSWindow(
       contentRect: web.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = web
     window.orderFront(nil)

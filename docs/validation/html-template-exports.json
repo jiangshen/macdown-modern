@@ -1,0 +1,65 @@
+{
+  "milestone": "Swift HTML template and export compatibility",
+  "date": "2026-11-07",
+  "fullGoal": "active; incomplete",
+  "implementation": [
+    "Byte-preserved bundled Default.handlebars and MIT attribution; source and packaged verifier checks bytes, provenance and notice.",
+    "Bounded Swift value/each compatibility program, explicit unsupported grammar/encoding/limits/cancellation, no Handlebars runtime in native app.",
+    "Shared typed title/CSS/body/resource policy boundaries; policy injected into audited literal template before context; four compiled root/policy combinations.",
+    "Saved htmlTemplateName migration, immutable fresh-source export snapshots, explicit unavailable-template error and Settings recovery; copy fragment independent of document template.",
+    "Independent document-style and code-highlighting include/omit choices; offline equations/diagrams/code remain script-free."
+  ],
+  "originalCallSites": {
+    "preview": "MPRenderer.m render uses MPAssetFullLink internally",
+    "export": "MPRenderer.m HTMLForExportWithStyles:highlighting: chooses Embedded/None; MPDocument.m exportHtml: accessory has two independent booleans",
+    "template": "MPGetHTML loads the bundle/Templates resource once from htmlTemplateName; only Default is bundled",
+    "correction": "Internal asset helper enum does not imply a user-facing linked HTML-export option."
+  },
+  "local": {
+    "full": {
+      "tests": 318,
+      "suites": 67,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 32639,
+      "report": "/private/tmp/snowfolio-html-template-corrected-full.json",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-068E4EBB-8E1C-4C94-AA9A-EFA330991538/build.log",
+      "reportSHA256": "244b211703bc39b3f69084f9bad261e2bb60085eeb99909de096cc007ce26c2d",
+      "logSHA256": "def0eadfe247190dd9889d28a42fe72488648bfb07549049437f657137ed6820"
+    },
+    "addressSanitizer": {
+      "tests": 11,
+      "suites": 4,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 11767,
+      "report": "/private/tmp/snowfolio-html-template-asan.json",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-9D7C2C7E-9B61-40AC-841F-E043DB69AA02/build.log",
+      "reportSHA256": "ba2000eb5e9401efc8c153de4d40caf5367e414b5ec97bfdaf81de887aaf23e4",
+      "logSHA256": "d51d053d9cea23d82a904852007e0cc097d588b65801e423c5c3a62f72d61e35"
+    },
+    "nativeAppBuild": "arm64 build-for-testing passed, including template/parser/style/license resource checks",
+    "appLog": "/private/tmp/snowfolio-html-template-app.log",
+    "architecture": "eight arm64 test executables verified; /private/tmp/snowfolio-html-template-arm64.txt",
+    "strictFormatting": "34 changed/new Swift files passed",
+    "diffCheck": "passed"
+  },
+  "testHostCorrection": {
+    "initialRun": "/private/tmp/snowfolio-html-template-full.json",
+    "initialOutcome": "Diagram timeouts; interrupted the specific own axbuild process after capturing evidence. This run is not acceptance.",
+    "stackSample": "/private/tmp/snowfolio-template-full-test-sample.txt",
+    "sampleSHA256": "a4623104a39f043b251d9438556e554115cd3ba5178d44f2d41714527cf3b05d",
+    "observed": "Dispatch thread soft limit 64 reached in all 640 samples; 64 NSAnimation _runBlocking workers. Main thread remains in its run loop; WebKit process-assertion acquisition is queued.",
+    "change": "Set animationBehavior .none in 49 native fixture windows; preserve all existing behavioral assertions and product window animation settings.",
+    "result": "Complete rerun passes all 318 tests / 67 suites, including native diagram engine variants/lifecycle."
+  },
+  "hosted": {
+    "status": "pending; new save-panel and recovery UI tests require hosted execution"
+  },
+  "remaining": [
+    "Fresh user-desktop glyph/selection and import/export acceptance; Mac locked at latest CUA check",
+    "Real IME/VoiceOver, autosave/Versions/conflict and remaining renderer/dialect gates",
+    "Separate user-provided asset license sidecars",
+    "M5 integrations, full native app performance/energy/memory, releases and safe coupled legacy retirement"
+  ]
+}

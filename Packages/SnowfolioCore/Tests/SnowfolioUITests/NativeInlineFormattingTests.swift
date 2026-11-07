@@ -44,6 +44,7 @@ struct NativeInlineFormattingTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 700, height: 400),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = scroll
     window.orderFront(nil)
@@ -106,6 +107,7 @@ struct NativeInlineFormattingTests {
     web.navigationDelegate = coordinator
     let window = NSWindow(
       contentRect: web.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = web
     window.orderFront(nil)
@@ -187,6 +189,7 @@ struct NativeInlineFormattingTests {
     info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = path
     let window = NSWindow(
       contentRect: surface.view.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     #expect(await surface.printDocument(info: info, for: window, showPanel: false))
     let pdf = try #require(PDFDocument(url: path))
     let text = try #require(pdf.string)

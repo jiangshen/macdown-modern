@@ -159,6 +159,7 @@ struct MarkdownCommandIntegrationTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 500, height: 300),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentView = scroll
     #expect(window.makeFirstResponder(view))
     #expect(controller.canPerform)
@@ -210,6 +211,7 @@ struct MarkdownCommandIntegrationTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 900, height: 600),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentViewController = controller
     window.orderFront(nil)
     defer {

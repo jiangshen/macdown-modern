@@ -72,7 +72,7 @@ struct SettingsEntry: Identifiable {
   enum Control {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy
-    case editorTheme, importEditorTheme, readingStyle, importReadingStyle
+    case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate
   }
   let id: String
   let title: String
@@ -132,6 +132,14 @@ enum SettingsCatalog {
           id: "documentFullWidth", title: "Full width",
           detail: "Let the Snowfolio style fill the available reading width.",
           control: .toggle(\.documentFullWidth)),
+      ]),
+    .init(
+      pane: .appearance, title: "Export",
+      entries: [
+        .init(
+          id: "htmlTemplate", title: "HTML template",
+          detail: "Document structure for HTML exports.", keywords: "default recovery",
+          control: .htmlTemplate)
       ]),
     .init(
       pane: .appearance, title: "Code Blocks",

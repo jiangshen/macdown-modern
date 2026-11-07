@@ -33,6 +33,9 @@ public final class AppPreferences {
   public var codeTheme: CodeHighlightTheme {
     didSet { defaults.set(codeTheme.rawValue, forKey: "htmlHighlightingThemeName") }
   }
+  public var htmlTemplateName: String {
+    didSet { defaults.set(htmlTemplateName, forKey: "htmlTemplateName") }
+  }
   public var mermaid: Bool { didSet { save(mermaid, "htmlMermaid") } }
   public var graphviz: Bool { didSet { save(graphviz, "htmlGraphviz") } }
   public var math: Bool { didSet { save(math, "htmlMathJax") } }
@@ -102,6 +105,7 @@ public final class AppPreferences {
     tableOfContents = boolean("htmlRendersTOC", fallback: true)
     codeHighlighting = boolean("htmlSyntaxHighlighting", fallback: true)
     codeTheme = .legacyName(defaults.string(forKey: "htmlHighlightingThemeName"))
+    htmlTemplateName = defaults.string(forKey: "htmlTemplateName") ?? HTMLExportTemplate.defaultName
     previewFollowsEditorFont = boolean("previewZoomRelativeToBaseFontSize", fallback: false)
     editorOnRight = boolean("editorOnRight", fallback: false)
     synchronizedScrolling = boolean("editorSyncScrolling", fallback: true)

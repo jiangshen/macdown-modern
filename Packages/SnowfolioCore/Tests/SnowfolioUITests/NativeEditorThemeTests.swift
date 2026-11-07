@@ -52,6 +52,7 @@ struct NativeEditorThemeTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 700, height: 500),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = scroll
     window.orderFront(nil)
@@ -148,6 +149,7 @@ struct NativeEditorThemeTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 700, height: 500),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = scroll
     window.orderFront(nil)
@@ -185,6 +187,7 @@ struct NativeEditorThemeTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 700, height: 500),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = scroll
     window.orderFront(nil)

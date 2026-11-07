@@ -382,3 +382,22 @@ imports cannot use a new unrestricted document resource root.
 The original renderer, Handlebars and their original-target build/resources remain
 coupled to template and remaining asset-option behavior. This checkpoint does not
 retire those dependencies or claim full CSS/template/visual/release acceptance.
+
+
+## Swift HTML template ownership boundary
+
+`RenderingCore` now owns the bounded Swift context program for the observed Default
+Handlebars grammar, a byte-preserved bundled template/provenance, and shared typed
+preview/export parts. `ExportCore` uses the program for fresh standalone documents.
+`SnowfolioUI` captures migrated template names in immutable export snapshots and
+provides explicit unavailable-name recovery. No Handlebars runtime or page scripts
+enter the native app. The Default template and MacDown MIT notice are verified in
+source and packaged resources; the retained original is a characterization baseline.
+
+Call-site review of `MPRenderer.render`, `HTMLForExportWithStyles:highlighting:` and
+`MPDocument.exportHtml:` corrects the previously inferred linked-export gate:
+full links are internal preview assembly, while the HTML export accessory offers
+independent include/omit styles and highlighting, embedding included resources.
+User-provided asset license sidecars, remaining renderer parity and original-target
+callers remain open. The old renderer/asset/dependency graph is still coupled and is
+not retired by this template checkpoint. See `HTML_TEMPLATES.md` and its evidence ledger.

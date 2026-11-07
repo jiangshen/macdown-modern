@@ -2,6 +2,9 @@ import Testing
 
 /// NSApplication's windows, focus and print services are process-wide. Different
 /// native suites must not change them simultaneously across suspension points.
+/// Fixture windows also set animationBehavior = .none: window transition timing
+/// is outside these assertions, and suspended desktop animations can exhaust
+/// dispatch workers before unrelated WebKit callbacks get scheduled.
 struct NativeUIExclusive: SuiteTrait, TestScoping {
   var isRecursive: Bool { false }
 

@@ -48,6 +48,7 @@ struct NativeSyntaxHighlighterTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 700, height: 500), styleMask: .titled,
       backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentView = scroll
     window.orderFront(nil)
     defer { window.orderOut(nil) }
@@ -108,6 +109,7 @@ struct NativeSyntaxHighlighterTests {
     let window = UndoWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1100, height: 600),
       styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     let undo = window.manager
     undo.groupsByEvent = false
@@ -187,6 +189,7 @@ struct NativeSyntaxHighlighterTests {
     let settings = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 740, height: 573),
       styleMask: .titled, backing: .buffered, defer: false)
+    settings.animationBehavior = .none
     settings.isReleasedWhenClosed = false
     settings.makeKeyAndOrderFront(nil)
     defer { settings.close() }
@@ -230,6 +233,7 @@ struct NativeSyntaxHighlighterTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 700, height: 500), styleMask: .titled,
       backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentView = scroll
     window.orderFront(nil)
     defer { window.orderOut(nil) }

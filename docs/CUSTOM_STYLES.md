@@ -40,8 +40,13 @@ resource references per sheet and bounded parser complexity. The folder chooser 
 up to 512 entries and 32 levels. Unsupported syntax, missing resources and limits are
 reported instead of silently replacing an edited style with a bundled style.
 
-This implementation supplies frozen styles and embedded local assets. Complete
-legacy linked/omitted asset export modes, separate user-provided license sidecars,
-template compatibility, fresh desktop/accessibility acceptance and full app performance
-remain in the modernization plan. App-owned third-party parser, bundled style and
-font notices remain preserved and verified by the build.
+This implementation supplies frozen styles and embedded local assets. HTML export
+has independent document-style and code-highlighting choices. The original renderer
+used fully linked assets internally for its preview; its export panel exposed the two
+include/omit choices, with included resources embedded. A separate linked-export mode
+was not an exposed original feature. See [HTML_TEMPLATES.md](HTML_TEMPLATES.md) for
+template compatibility and saved-name recovery.
+
+Separate user-provided license sidecars, fresh desktop/accessibility acceptance and
+full app performance remain in the modernization plan. App-owned third-party parser,
+bundled style and font notices remain preserved and verified by the build.

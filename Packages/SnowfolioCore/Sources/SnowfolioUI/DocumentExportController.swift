@@ -37,7 +37,8 @@ public final class DocumentExportController {
       title: document.fileURL?.deletingPathExtension().lastPathComponent
         ?? String(localized: "Untitled"),
       directory: document.fileURL?.deletingLastPathComponent(),
-      remoteImages: preferences.remoteImages, style: preferences.documentStyle)
+      remoteImages: preferences.remoteImages, style: preferences.documentStyle,
+      templateName: preferences.htmlTemplateName)
   }
 
   private func start(_ action: Action) {
@@ -51,7 +52,12 @@ public final class DocumentExportController {
       }
       do {
         try await perform(action, snapshot: snapshot, window: window)
-      } catch is CancellationError {} catch {
+      } catch is CancellationError {} catch HTMLExportTemplate.Failure.unavailable {
+        errorMessage = String(
+          localized:
+            "The saved HTML template is unavailable. Choose Use Default in Settings → Appearance → HTML template, then try again."
+        )
+      } catch {
         errorMessage = String(
           localized:
             "The document could not be exported. Check any local images and the destination folder, then try again."
@@ -63,6 +69,9 @@ public final class DocumentExportController {
   private func perform(_ action: Action, snapshot: DocumentExportSnapshot, window: NSWindow)
     async throws
   {
+    if action != .clipboard, snapshot.templateName != HTMLExportTemplate.defaultName {
+      throw HTMLExportTemplate.Failure.unavailable
+    }
     var destination: URL?
     var styled = true
     var options = snapshot.options
@@ -97,7 +106,8 @@ public final class DocumentExportController {
       source: snapshot.source, options: options,
       title: snapshot.title, directory: snapshot.directory, includeStyles: styled,
       remoteImages: snapshot.remoteImages, embedLocalImages: action != .clipboard,
-      style: snapshot.style)
+      style: snapshot.style,
+      templateName: action == .clipboard ? HTMLExportTemplate.defaultName : snapshot.templateName)
     switch action {
     case .clipboard:
       NSPasteboard.general.clearContents()
@@ -147,6 +157,7 @@ struct DocumentExportSnapshot: Sendable {
   let directory: URL?
   let remoteImages: Bool
   let style: DocumentStyle
+  let templateName: String
 }
 
 extension FocusedValues {

@@ -7,32 +7,17 @@ public enum PreviewHTML {
     title: String = "", includeStyles: Bool = true, includeHighlighting: Bool = false,
     style: DocumentStyle = .init(), includeMath: Bool = false
   ) -> String {
-    let content =
-      style.usesBodyRoot
-      ? "<body id=\"preview-content\">" + body + "</body>"
-      : "<body><main id=\"preview-content\">" + body + "</main></body>"
-    let imageSources = remoteImages ? "mdasset: data: https:" : "mdasset: data:"
+    let parts = HTMLDocumentParts(
+      body: body, title: title, style: style,
+      includeStyles: includeStyles, includeHighlighting: includeHighlighting,
+      includeMath: includeMath, remoteImages: remoteImages)
     return """
       <!doctype html><html><head><meta charset="utf-8">
-      <title>\(escapeText(title))</title>
+      \(parts.titleTag)
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src \(imageSources); style-src 'unsafe-inline' mdasset: data:; font-src mdasset: data:; script-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-      \(includeStyles ? "<style id=\"document-style\">" + escapeStyle(style.css) + "</style>" : "")\(includeHighlighting ? "<style id=\"code-style\">" + style.codeCSS + "</style>" : "")\(includeMath ? "<style id=\"math-style\">" + MathStyle.css + "</style>" : "")</head>\(content)</html>
+      \(parts.policy)
+      \(parts.styleTags.joined())</head><body\(parts.bodyAttributes)>\(parts.body)</body></html>
       """
-  }
-
-  /// CSS raw text must not terminate its HTML style element. CSS escapes preserve
-  /// authored less-than characters in strings without allowing HTML markup.
-  private static func escapeStyle(_ value: String) -> String {
-    value.replacingOccurrences(of: "<", with: "\\3c ")
-  }
-
-  private static func escapeText(_ value: String) -> String {
-    value.replacingOccurrences(of: "&", with: "&amp;")
-      .replacingOccurrences(of: "<", with: "&lt;")
-      .replacingOccurrences(of: ">", with: "&gt;")
-      .replacingOccurrences(of: "\"", with: "&quot;")
-      .replacingOccurrences(of: "'", with: "&#39;")
   }
 
   /// Presentation updates never replace the document or its content nodes.

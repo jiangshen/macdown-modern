@@ -49,6 +49,7 @@ struct NativeMarkdownPreviewTests {
     view.navigationDelegate = coordinator
     let window = NSWindow(
       contentRect: view.frame, styleMask: [.titled], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentView = view
     window.orderFront(nil)
     defer {
@@ -169,6 +170,7 @@ struct NativeMarkdownPreviewTests {
     view.navigationDelegate = coordinator
     let window = NSWindow(
       contentRect: view.frame, styleMask: [.titled], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentView = view
     window.orderFront(nil)
     defer {
@@ -255,6 +257,7 @@ struct NativeMarkdownPreviewTests {
     view.navigationDelegate = coordinator
     let window = NSWindow(
       contentRect: view.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentView = view
     window.orderFront(nil)
     defer {
@@ -368,6 +371,7 @@ struct NativeMarkdownPreviewTests {
     view.navigationDelegate = coordinator
     let window = NSWindow(
       contentRect: view.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.contentView = view
     window.orderFront(nil)
     defer {

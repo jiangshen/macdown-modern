@@ -40,6 +40,7 @@ struct NativeZoomTests {
     let window = ZoomTestWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1200, height: 600),
       styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentViewController = content
     window.setContentSize(NSSize(width: 1200, height: 600))

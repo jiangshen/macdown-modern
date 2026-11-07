@@ -154,6 +154,7 @@ struct NativeScrollTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1000, height: 500),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentViewController = controller
     window.setContentSize(NSSize(width: 1000, height: 500))
@@ -189,6 +190,7 @@ struct NativeScrollTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1100, height: 600),
       styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentViewController = host
     window.setContentSize(NSSize(width: 1100, height: 600))
@@ -262,6 +264,7 @@ struct NativeScrollTests {
       let window = NSWindow(
         contentRect: NSRect(x: 0, y: 0, width: 1000, height: 600),
         styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+      window.animationBehavior = .none
       window.isReleasedWhenClosed = false
       window.appearance = appearance
       window.contentViewController = host
@@ -516,6 +519,7 @@ struct NativeScrollTests {
     let sourceWindow = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 600, height: 400),
       styleMask: .titled, backing: .buffered, defer: false)
+    sourceWindow.animationBehavior = .none
     sourceWindow.isReleasedWhenClosed = false
     sourceWindow.contentView = scroll
     sourceWindow.orderFront(nil)
@@ -534,6 +538,7 @@ struct NativeScrollTests {
     preview.navigationDelegate = previewCoordinator
     let previewWindow = NSWindow(
       contentRect: preview.frame, styleMask: .titled, backing: .buffered, defer: false)
+    previewWindow.animationBehavior = .none
     previewWindow.isReleasedWhenClosed = false
     previewWindow.contentView = preview
     previewWindow.orderFront(nil)

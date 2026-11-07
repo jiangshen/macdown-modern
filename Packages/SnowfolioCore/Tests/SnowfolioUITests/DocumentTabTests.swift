@@ -27,7 +27,9 @@ struct DocumentTabTests {
     let firstEditor = try #require(firstScroll.documentView as? NSTextView)
     let secondEditor = try #require(secondScroll.documentView as? NSTextView)
     let firstWindow = NSWindow()
+    firstWindow.animationBehavior = .none
     let secondWindow = NSWindow()
+    secondWindow.animationBehavior = .none
     firstWindow.isReleasedWhenClosed = false
     secondWindow.isReleasedWhenClosed = false
     defer {
@@ -69,9 +71,13 @@ struct DocumentTabTests {
   func explicitTabPlacement() throws {
     _ = NSApplication.shared
     let anchor = NSWindow()
+    anchor.animationBehavior = .none
     let existing = NSWindow()
+    existing.animationBehavior = .none
     let created = NSWindow()
+    created.animationBehavior = .none
     let utility = NSWindow()
+    utility.animationBehavior = .none
     for window in [anchor, existing, created, utility] { window.isReleasedWhenClosed = false }
     defer { for window in [created, existing, utility, anchor] { window.close() } }
     for window in [anchor, existing, created] {
@@ -97,7 +103,9 @@ struct DocumentTabTests {
   func closingAnchorCancelsPlacement() {
     _ = NSApplication.shared
     let anchor = NSWindow()
+    anchor.animationBehavior = .none
     let created = NSWindow()
+    created.animationBehavior = .none
     anchor.isReleasedWhenClosed = false
     created.isReleasedWhenClosed = false
     defer { created.close() }

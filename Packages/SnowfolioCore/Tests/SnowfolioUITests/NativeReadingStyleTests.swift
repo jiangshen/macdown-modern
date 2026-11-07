@@ -46,6 +46,7 @@ struct NativeReadingStyleTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1100, height: 600),
       styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentViewController = host
     window.setContentSize(NSSize(width: 1100, height: 600))
@@ -105,6 +106,7 @@ struct NativeReadingStyleTests {
     web.navigationDelegate = coordinator
     let window = NSWindow(
       contentRect: web.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = web
     window.orderFront(nil)

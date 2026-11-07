@@ -194,7 +194,7 @@ private struct SettingsPreferenceRow: View {
 
   var body: some View {
     switch entry.control {
-    case .editorTheme, .importEditorTheme, .readingStyle, .importReadingStyle:
+    case .editorTheme, .importEditorTheme, .readingStyle, .importReadingStyle, .htmlTemplate:
       // Compound rows own distinct identifiers and labels on their controls.
       // A row-wide modifier would cascade to Import and Reload alike.
       control
@@ -229,6 +229,23 @@ private struct SettingsPreferenceRow: View {
         caption
       }
       .pickerStyle(.menu)
+    case .htmlTemplate:
+      LabeledContent {
+        if preferences.htmlTemplateName == HTMLExportTemplate.defaultName {
+          Text("Default").foregroundStyle(.secondary).accessibilityIdentifier("htmlTemplateStatus")
+        } else {
+          VStack(alignment: .trailing, spacing: 6) {
+            Text("Unavailable: \(preferences.htmlTemplateName)")
+              .foregroundStyle(.secondary).lineLimit(2)
+              .accessibilityIdentifier("htmlTemplateStatus")
+            Button("Use Default") { preferences.htmlTemplateName = HTMLExportTemplate.defaultName }
+              .accessibilityIdentifier("resetHTMLTemplate")
+              .accessibilityHint("Use the bundled HTML template for exports.")
+          }
+        }
+      } label: {
+        caption
+      }
     case .readingStyle:
       ReadingStylePicker(library: preferences.readingStyles)
     case .importReadingStyle:

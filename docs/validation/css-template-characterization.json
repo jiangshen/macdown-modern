@@ -2,7 +2,7 @@
   "milestone": "CSS and template parity characterization",
   "date": "2026-11-07",
   "code": "a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9",
-  "status": "confirmed implementation gap; no CSS/template support claimed",
+  "status": "Historical source characterization at a11c4bc; CSS implementation now recorded in custom-reading-styles.json and template implementation in html-template-exports.json. Full goal remains incomplete.",
   "fullGoal": "active; incomplete",
   "legacyStyles": [
     {
@@ -145,5 +145,14 @@
     "Relative asset/encoding/size/symlink/remote-policy fixtures",
     "Desktop Settings/import/export and accessibility acceptance"
   ],
-  "notes": "This records source-based behavior and gaps, not a new product implementation or runtime acceptance. No user files or preferences were changed."
+  "notes": "This records source-based behavior and gaps, not a new product implementation or runtime acceptance. No user files or preferences were changed.",
+  "assetCallSiteCorrection": {
+    "source": [
+      "MacDown/Code/Document/MPRenderer.m:647",
+      "MacDown/Code/Document/MPRenderer.m:660",
+      "MacDown/Code/Document/MPDocument.m:1250"
+    ],
+    "finding": "MPAssetFullLink is used for internal preview assembly. HTMLForExportWithStyles:highlighting: chooses embedded/omitted assets, and the export accessory exposes only independent styles/highlighting booleans. No user-facing linked-export mode was found in these authoritative call sites.",
+    "consequence": "Preserve the actual include/omit controls and portable resources; do not infer an extra export feature from an internal asset enum."
+  }
 }

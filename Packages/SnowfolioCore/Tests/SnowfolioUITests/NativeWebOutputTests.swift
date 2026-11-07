@@ -34,6 +34,7 @@ struct NativeWebOutputTests {
       let window = NSWindow(
         contentRect: NSRect(x: 0, y: 0, width: 720, height: 900), styleMask: .titled,
         backing: .buffered, defer: false)
+      window.animationBehavior = .none
       window.isReleasedWhenClosed = false
       defer { window.close() }
       #expect(await surface.printDocument(info: info, for: window, showPanel: false))
@@ -70,6 +71,7 @@ struct NativeWebOutputTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 720, height: 900),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     defer { window.close() }
     #expect(await surface.printDocument(info: info, for: window, showPanel: false))
@@ -103,6 +105,7 @@ struct NativeWebOutputTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 720, height: 900),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     defer { window.close() }
     #expect(await surface.printDocument(info: info, for: window, showPanel: false))
@@ -145,6 +148,7 @@ struct NativeWebOutputTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 720, height: 900),
       styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
     #expect(await surface.printDocument(info: info, for: window, showPanel: false))
     let pdf = try #require(PDFDocument(url: path))
     #expect(pdf.pageCount >= 3)

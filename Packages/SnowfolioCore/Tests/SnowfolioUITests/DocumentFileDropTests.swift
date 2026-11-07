@@ -129,8 +129,11 @@ struct DocumentFileDropTests {
   func newWindowPlacement() {
     _ = NSApplication.shared
     let source = NSWindow()
+    source.animationBehavior = .none
     let existing = NSWindow()
+    existing.animationBehavior = .none
     let created = NSWindow()
+    created.animationBehavior = .none
     let url = URL(fileURLWithPath: "/tmp/one.md")
     for window in [source, existing, created] {
       window.isReleasedWhenClosed = false

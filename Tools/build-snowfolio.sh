@@ -8,6 +8,7 @@ python3 "$repo_root/Tools/verify-markdown-engine.py"
 python3 "$repo_root/Tools/verify-editor-themes.py"
 python3 "$repo_root/Tools/verify-reading-styles.py"
 python3 "$repo_root/Tools/verify-css-parser.py"
+python3 "$repo_root/Tools/verify-html-template.py"
 if ! command -v tuist >/dev/null 2>&1; then
     echo "Install Tuist first: brew install tuist" >&2
     exit 1
@@ -59,6 +60,7 @@ for license in swift-cmark.txt CommonMark-cmark.txt Hoedown-inline.txt macdown.t
 done
 reading_styles="$app/Contents/Resources/SnowfolioCore_RenderingCore.bundle/Contents/Resources/Styles"
 python3 "$repo_root/Tools/verify-reading-styles.py" "$reading_styles"
+python3 "$repo_root/Tools/verify-html-template.py" "$app/Contents/Resources/SnowfolioCore_RenderingCore.bundle/Contents/Resources/Templates"
 python3 "$repo_root/Tools/verify-css-parser.py" "$app/Contents/Resources/SnowfolioCore_RenderingCore.bundle/Contents/Resources/CSS"
 if ! cmp -s "$repo_root/App/Resources/Licenses/CSSParser.txt" "$app/Contents/Resources/CSSParser.txt"; then
     echo "Bundled CSS parser notice differs from source." >&2

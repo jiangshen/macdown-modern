@@ -49,7 +49,7 @@ struct SettingsTests {
     #expect(result.location == .init(pane: .editor, itemID: "synchronizedScrolling"))
     let entries = SettingsCatalog.sections.flatMap(\.entries)
     #expect(Set(entries.map(\.id)).count == entries.count)
-    #expect(entries.count == 45)
+    #expect(entries.count == 46)
   }
 
   @Test("Settings switches persist through the existing preference model")

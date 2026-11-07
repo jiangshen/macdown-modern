@@ -13,7 +13,8 @@ public struct MarkdownExport: Sendable {
   public static func build(
     source: String, options: MarkdownRenderingOptions = .init(),
     title: String, directory: URL?, includeStyles: Bool = true,
-    remoteImages: Bool = false, embedLocalImages: Bool = true, style: DocumentStyle = .init()
+    remoteImages: Bool = false, embedLocalImages: Bool = true, style: DocumentStyle = .init(),
+    templateName: String = HTMLExportTemplate.defaultName
   ) async throws -> Self {
     let assets = Mutex<[String: String]>([:])
     let result = try await MarkdownProcessor().render(source, options: options) {
@@ -43,11 +44,11 @@ public struct MarkdownExport: Sendable {
         ? "<style data-snowfolio-math=\"true\">" + MathStyle.css + "</style>" : "") + body
     return Self(
       fragment: fragment,
-      document: PreviewHTML.document(
-        body: body, remoteImages: remoteImages,
-        title: title, includeStyles: includeStyles,
-        includeHighlighting: result.highlightedCodeBlocks > 0, style: style,
-        includeMath: result.mathExpressions > 0 || result.diagramUsesMath))
+      document: try HTMLExportTemplate.document(
+        body: body, title: title, style: style, includeStyles: includeStyles,
+        includeHighlighting: result.highlightedCodeBlocks > 0,
+        includeMath: result.mathExpressions > 0 || result.diagramUsesMath,
+        remoteImages: remoteImages, templateName: templateName))
   }
 
   private static func embedAssets(in html: String, replacements: [String: String]) -> String {

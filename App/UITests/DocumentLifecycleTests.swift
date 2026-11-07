@@ -550,6 +550,126 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testHTMLTemplateRecoveryPreservesSourceUndo() {
+    let app = launch(arguments: ["-htmlTemplateName", "Unavailable legacy template"])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    editor.typeText("Original source")
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Template recovery checkpoint")
+    app.typeKey("e", modifierFlags: [.command, .shift])
+    let alert = app.dialogs["Couldn’t Export"].firstMatch
+    let explanation = app.staticTexts.matching(
+      NSPredicate(format: "label CONTAINS %@", "The saved HTML template is unavailable")
+    ).firstMatch
+    XCTAssertTrue(explanation.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertFalse(app.checkBoxes["exportDocumentStyles"].exists)
+    if alert.exists { alert.buttons["OK"].click() } else { app.buttons["OK"].firstMatch.click() }
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("HTML template")
+    let result = settings.outlines.firstMatch.staticTexts["HTML template"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let reset = settings.buttons["resetHTMLTemplate"]
+    XCTAssertTrue(reset.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(settings.buttons.matching(identifier: "resetHTMLTemplate").count, 1)
+    reset.click()
+    XCTAssertTrue(reset.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(settings.staticTexts["htmlTemplateStatus"].label, "Default")
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "html-template-recovered-default"
+    image.lifetime = .keepAlways
+    add(image)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, "Template recovery checkpoint")
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "Original source")
+  }
+
+  @MainActor
+  func testHTMLExportOptionsUseFreshManualPreviewSource() throws {
+    let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let app = launch(arguments: [
+      "-markdownManualRender", "YES", "-htmlTemplateName", "Default", "-htmlSyntaxHighlighting",
+      "YES",
+    ])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    editor.typeText("Old preview checkpoint")
+    app.typeKey("r", modifierFlags: .command)
+    let preview = app.webViews.firstMatch
+    let old = preview.staticTexts["Old preview checkpoint"].firstMatch
+    XCTAssertTrue(old.waitForExistence(timeout: 8), app.debugDescription)
+    app.typeKey("a", modifierFlags: .command)
+    let source = "# Fresh export checkpoint\n\n```swift\nlet value = 42\n```"
+    editor.typeText(source)
+    XCTAssertEqual(editor.value as? String, source)
+    XCTAssertTrue(old.exists)
+    for styled in [false, true] {
+      for highlighted in [false, true] {
+        let folder = root.appendingPathComponent("\(styled)-\(highlighted)")
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        app.typeKey("e", modifierFlags: [.command, .shift])
+        let styles = app.checkBoxes["exportDocumentStyles"]
+        let code = app.checkBoxes["exportCodeHighlighting"]
+        XCTAssertTrue(styles.waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssertTrue(code.exists)
+        XCTAssertEqual(styles.value as? Int, 1)
+        XCTAssertEqual(code.value as? Int, 1)
+        if !styled { styles.click() }
+        if !highlighted { code.click() }
+        XCTAssertEqual(styles.value as? Int, styled ? 1 : 0)
+        XCTAssertEqual(code.value as? Int, highlighted ? 1 : 0)
+        app.typeKey("g", modifierFlags: [.command, .shift])
+        let path = app.textFields["PathTextField"].firstMatch
+        XCTAssertTrue(path.waitForExistence(timeout: 5), app.debugDescription)
+        path.click()
+        app.typeKey("a", modifierFlags: .command)
+        path.typeText(folder.path + "\n")
+        let save = app.buttons["OKButton"].firstMatch
+        XCTAssertTrue(save.waitForExistence(timeout: 5), app.debugDescription)
+        save.click()
+        let finished = NSPredicate { _, _ in
+          let files =
+            (try? FileManager.default.contentsOfDirectory(
+              at: folder, includingPropertiesForKeys: nil)) ?? []
+          return files.filter { $0.pathExtension == "html" }.count == 1 && !styles.exists
+        }
+        expectation(for: finished, evaluatedWith: nil)
+        waitForExpectations(timeout: 10)
+        let files = try FileManager.default.contentsOfDirectory(
+          at: folder, includingPropertiesForKeys: nil
+        )
+        .filter { $0.pathExtension == "html" }
+        XCTAssertEqual(files.count, 1)
+        let html = try String(contentsOf: XCTUnwrap(files.first), encoding: .utf8)
+        XCTAssertTrue(html.hasPrefix("<!DOCTYPE html>"))
+        XCTAssertTrue(html.contains("Fresh export checkpoint"))
+        XCTAssertFalse(html.contains("Old preview checkpoint"))
+        XCTAssertEqual(html.contains("id=\"document-style\""), styled)
+        XCTAssertEqual(html.contains("id=\"code-style\""), highlighted)
+        XCTAssertEqual(html.contains("token keyword"), highlighted)
+        XCTAssertFalse(html.contains("<script"))
+        XCTAssertEqual(editor.value as? String, source)
+        XCTAssertTrue(old.exists)
+      }
+    }
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "Old preview checkpoint")
+  }
+
+  @MainActor
   func testOpenExistingMarkdownAndSave() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

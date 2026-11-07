@@ -44,6 +44,7 @@ struct NativePaneOrderTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1100, height: 600),
       styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentViewController = host
     window.setContentSize(NSSize(width: 1100, height: 600))
@@ -100,6 +101,7 @@ struct NativePaneOrderTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1000, height: 600),
       styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentViewController = controller
     window.setContentSize(NSSize(width: 1000, height: 600))

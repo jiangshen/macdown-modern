@@ -1,0 +1,8 @@
+{
+  "source": "MacDown/Resources/Templates/Default.handlebars",
+  "files": {
+    "Default.handlebars": "fa33e43e8758b1488552793ce57c93f3d3dbb34bd31e4a879a73751fec04b235"
+  },
+  "notice": "../Styles/MacDown-LICENSE.txt",
+  "noticeSHA256": "0393bce44b5e1168f46ba205b927e79d3e06bb96e93b5bdccb19944bf2c81a4a"
+}
