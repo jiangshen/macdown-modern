@@ -11,7 +11,7 @@
   "latestAppBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
   "latestAppBuildAllocatedBytes": 518193152,
   "appConsolidation": "Newest locally verified app build moved unchanged from isolated scroll-past-end build to canonical Build/Snowfolio; older generated app builds removed after process inventory found no running app/compiler.",
-  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_12-50-21-+0000.xcresult",
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_13-15-53-+0000.xcresult",
   "retainedRawResultBundleCount": 1,
   "historicalCompactEvidence": "/private/tmp/snowfolio-validation-history",
   "historicalCompactEvidenceAllocatedBytes": 17764352,
@@ -300,5 +300,13 @@
       "/private/tmp/snowfolio-validation-history/direct-url-console"
     ],
     "action": "Retained summaries and text/console; removed both exported system archives and replaced raw bundles in the same current location. Native adapter diagnostic build remains actively needed in the reused Build/DocumentHostProbe location."
+  },
+  "checkpointCycle": {
+    "dateUTC": "2026-11-08T13:45:54.598698+00:00",
+    "latestRawRun": 42484042685,
+    "rawResultsRetained": 1,
+    "retiredRawRun": 42482081493,
+    "compactConsole": "/private/tmp/snowfolio-validation-history/native-foundation-console",
+    "action": "Replaced superseded raw bundle after compact capture; removed exported native diagnostic system archive; current core logs replaced with verified 23016f1 artifacts. Existing app/core/diagnostic build locations reused."
   }
 }

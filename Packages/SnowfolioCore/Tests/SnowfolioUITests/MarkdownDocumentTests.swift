@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 
 @testable import SnowfolioUI
 
-@Suite("macOS 27 document adapter")
+@Suite("macOS 27 document adapter", .serialized, NativeUIExclusive())
 @MainActor
 struct MarkdownDocumentTests {
   @Test(

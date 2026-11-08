@@ -112,6 +112,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     coordinator.editor = editor
     coordinator.highlighter.attach(to: editor, document: document)
     editor.delegate = coordinator
+    document.attachSourceEditor(editor)
     scrollView.documentView = editor
     return scrollView
   }
@@ -120,6 +121,12 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     context.coordinator.isUpdatingView = true
     defer { context.coordinator.isUpdatingView = false }
     context.coordinator.selectionStorage = selectionStorage
+    if context.coordinator.document !== document,
+      let editor = scrollView.documentView as? NSTextView
+    {
+      context.coordinator.document.detachSourceEditor(editor)
+      document.attachSourceEditor(editor)
+    }
     context.coordinator.document = document
     context.coordinator.undoManager = hostUndoManager ?? undoManager
     context.coordinator.behavior = behavior
@@ -202,6 +209,9 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   }
 
   public static func dismantleNSView(_ scrollView: NSScrollView, coordinator: Coordinator) {
+    if let editor = scrollView.documentView as? NSTextView {
+      coordinator.document.detachSourceEditor(editor)
+    }
     if let editor = scrollView.documentView as? MarkdownTextView {
       coordinator.scrolling?.detachSource(editor)
     }

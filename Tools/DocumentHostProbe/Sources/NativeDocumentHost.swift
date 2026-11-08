@@ -75,6 +75,9 @@
       text.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
       text.string = sourceText
       text.delegate = self
+      #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+        attachSourceEditor(text)
+      #endif
       text.setAccessibilityIdentifier("stockDocumentEditor")
       text.setAccessibilityLabel("Document host comparison text")
       scroll.documentView = text

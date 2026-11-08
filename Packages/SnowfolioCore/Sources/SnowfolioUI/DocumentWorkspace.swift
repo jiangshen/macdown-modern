@@ -1,9 +1,54 @@
 import MarkdownCore
 import SwiftUI
 
+/// The SwiftUI document host retains the existing per-scene storage keys.
 public struct DocumentWorkspace: View {
   public let document: MarkdownDocument
   public let preferences: AppPreferences
+  private let initialZoom: DocumentZoomController?
+  @SceneStorage("sourceViewport") private var sourceViewport: Data?
+  @SceneStorage("previewViewport") private var previewViewport: Data?
+  @SceneStorage("editorSelection") private var editorSelection: Data?
+  @SceneStorage("workspaceZoomPercent") private var zoomPercent = 100
+  @SceneStorage("workspaceMode") private var mode = WorkspaceMode.split
+
+  public init(
+    document: MarkdownDocument, preferences: AppPreferences, zoom: DocumentZoomController? = nil
+  ) {
+    self.document = document
+    self.preferences = preferences
+    initialZoom = zoom
+  }
+
+  public var body: some View {
+    DocumentWorkspaceContent(
+      document: document, preferences: preferences, zoom: initialZoom,
+      sourceViewport: $sourceViewport, previewViewport: $previewViewport,
+      editorSelection: $editorSelection, zoomPercent: $zoomPercent, mode: $mode)
+  }
+}
+
+/// The same workspace accepts window-owned bindings when hosted by AppKit.
+struct NativeDocumentWorkspace: View {
+  let document: MarkdownDocument
+  let preferences: AppPreferences
+  @Bindable var state: DocumentWorkspaceState
+  let openFile: @MainActor (URL) async throws -> Void
+
+  var body: some View {
+    DocumentWorkspaceContent(
+      document: document, preferences: preferences,
+      sourceViewport: $state.sourceViewport, previewViewport: $state.previewViewport,
+      editorSelection: $state.editorSelection, zoomPercent: $state.zoomPercent, mode: $state.mode,
+      nativeOpenFile: openFile)
+  }
+}
+
+/// Rendering, editor ownership, chrome and interaction stay shared across both hosts.
+private struct DocumentWorkspaceContent: View {
+  let document: MarkdownDocument
+  let preferences: AppPreferences
+  let nativeOpenFile: (@MainActor (URL) async throws -> Void)?
   @Environment(\.openDocument) private var openDocument
   @Environment(\.scenePhase) private var scenePhase
   @State private var scrolling = DocumentScrollCoordinator()
@@ -20,11 +65,11 @@ public struct DocumentWorkspace: View {
   @State private var previewLoadRevision: UInt64?
   @State private var previewOptions: MarkdownRenderingOptions?
   @State private var renderedRevision: UInt64?
-  @SceneStorage("sourceViewport") private var sourceViewport: Data?
-  @SceneStorage("previewViewport") private var previewViewport: Data?
-  @SceneStorage("editorSelection") private var editorSelection: Data?
-  @SceneStorage("workspaceZoomPercent") private var zoomPercent = 100
-  @SceneStorage("workspaceMode") private var mode = WorkspaceMode.split
+  @Binding var sourceViewport: Data?
+  @Binding var previewViewport: Data?
+  @Binding var editorSelection: Data?
+  @Binding var zoomPercent: Int
+  @Binding var mode: WorkspaceMode
   @State private var manualRefresh = 0
   @State private var lastRequestedRefresh = 0
   @State private var loading = false
@@ -33,11 +78,20 @@ public struct DocumentWorkspace: View {
   @State private var previewError: String?
   @State private var largeFilePaused = false
 
-  public init(
-    document: MarkdownDocument, preferences: AppPreferences, zoom: DocumentZoomController? = nil
+  init(
+    document: MarkdownDocument, preferences: AppPreferences, zoom: DocumentZoomController? = nil,
+    sourceViewport: Binding<Data?>, previewViewport: Binding<Data?>,
+    editorSelection: Binding<Data?>, zoomPercent: Binding<Int>, mode: Binding<WorkspaceMode>,
+    nativeOpenFile: (@MainActor (URL) async throws -> Void)? = nil
   ) {
     self.document = document
     self.preferences = preferences
+    self.nativeOpenFile = nativeOpenFile
+    _sourceViewport = sourceViewport
+    _previewViewport = previewViewport
+    _editorSelection = editorSelection
+    _zoomPercent = zoomPercent
+    _mode = mode
     _zoom = State(initialValue: zoom ?? DocumentZoomController())
   }
 
@@ -50,7 +104,7 @@ public struct DocumentWorkspace: View {
       manual: preferences.manualRendering)
   }
 
-  public var body: some View {
+  var body: some View {
     NavigationSplitView {
       VStack(spacing: 8) {
         List {
@@ -234,7 +288,11 @@ public struct DocumentWorkspace: View {
     let anchor = DocumentWindowAnchor(output.window)
     Task { @MainActor in
       await droppedDocuments.open(urls, from: anchor) { url in
-        try await openDocument(at: url)
+        if let nativeOpenFile {
+          try await nativeOpenFile(url)
+        } else {
+          try await openDocument(at: url)
+        }
       }
     }
     return true

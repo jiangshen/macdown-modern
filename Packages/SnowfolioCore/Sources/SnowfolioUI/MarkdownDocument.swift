@@ -1,3 +1,4 @@
+import AppKit
 import DocumentCore
 import Foundation
 import Observation
@@ -29,6 +30,18 @@ public final class MarkdownDocument: SwiftUI.Document {
     selectionRequest = EditorSelectionRequest(offset: offset)
   }
   @ObservationIgnored private var baseline: TextFileContents
+  @ObservationIgnored private let sourceEditors = NSHashTable<NSTextView>.weakObjects()
+
+  func attachSourceEditor(_ editor: NSTextView) { sourceEditors.add(editor) }
+  func detachSourceEditor(_ editor: NSTextView) { sourceEditors.remove(editor) }
+
+  /// AppKit requires a typing checkpoint when saving, so later coalesced edits
+  /// register with the native document's dirty-state and Undo machinery again.
+  func prepareSourceEditorsForSave() {
+    for editor in sourceEditors.allObjects where !editor.hasMarkedText() {
+      editor.breakUndoCoalescing()
+    }
+  }
 
   public init(
     contents: TextFileContents = TextFileContents(),
@@ -70,6 +83,7 @@ public final class MarkdownDocument: SwiftUI.Document {
   }
 
   public func snapshot(contentType: UTType) async throws -> sending TextFileContents {
+    prepareSourceEditorsForSave()
     #if DEBUG
       if DocumentLifecycleTrace.enabled {
         DocumentLifecycleTrace.note(

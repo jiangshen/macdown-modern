@@ -319,8 +319,8 @@
       }
     }
   },
-  "retentionNote": "One latest direct-URL control raw result remains. Prior stock and periodic results are retired after summary/text/console capture. Exported system archives are removed immediately; active native diagnostic build reuses Build/DocumentHostProbe.",
-  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_12-50-21-+0000.xcresult",
+  "retentionNote": "One latest native adapter raw result retained; direct URL result retired after compact capture. Native diagnostic system archive removed after console capture. Current core logs replaced after exact 357/76,652,8arm64 verification. One app/core and one active diagnostic build location are reused.",
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_13-15-53-+0000.xcresult",
   "latestFullCheckpoint": {
     "commit": "83ee16168e451546b3cc0adb9ebb2b6ff70fb0df",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42480380793",
@@ -328,9 +328,9 @@
     "log": "/private/tmp/snowfolio-canonical-full-native-failed.log"
   },
   "latestCoreCheckpoint": {
-    "commit": "8fd6cdbc91feed2933b349908b1b1bbb770a9f6e",
-    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42482058466",
-    "packageTests": 355,
+    "commit": "23016f1cb7c1753883c2b85e89d1b4126a03329f",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42484023567",
+    "packageTests": 357,
     "suites": 76,
     "commonmarkPassed": 652,
     "commonmarkTotal": 652,
@@ -464,7 +464,65 @@
     "appBuildReport": "/private/tmp/snowfolio-native-foundation-app-build-report.json",
     "control": "Native diagnostic variant subclasses the real shared adapter in the same TextKit 2 control. Six methods compile, including active UTF-16 typing that first autosaves a partial word then verifies later characters reach disk.",
     "controlBuildReport": "/private/tmp/snowfolio-production-native-probe-final-build-report.json",
-    "runtime": "Pending document-host-probe-native dispatch.",
+    "runtime": {
+      "commit": "23016f1cb7c1753883c2b85e89d1b4126a03329f",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42484042685",
+      "executed": 6,
+      "passed": 3,
+      "failed": 3,
+      "skipped": 0,
+      "passes": [
+        "Coordinated external reload after autosave in canonical temporary folder",
+        "Same coordinated reload in ordinary user folder",
+        "Saved-edit Undo/deactivation exact persistence"
+      ],
+      "failures": [
+        "Both original uncoordinated reload controls",
+        "Continuing a word after an automatic save does not persist final bytes while active"
+      ],
+      "trace": "The native typing test writes 45 UTF-16 units at revision 16, then receives revisions 17/18/19 up to 48 units with no further write. Both coordinated successes have real revert and second-read traces.",
+      "summary": "/private/tmp/snowfolio-native-foundation-hosted-summary.json",
+      "attachments": "/private/tmp/snowfolio-native-foundation-hosted-text",
+      "console": "/private/tmp/snowfolio-validation-history/native-foundation-console"
+    },
     "scopeLimit": "Storage foundation only. Full workspace hosting, file URL updates, menus, scene state/restoration, native editor integration, conflicts/Versions and app-level parity are still required before switching the default app host."
+  },
+  "nativeSaveCheckpoint": {
+    "reason": "Apple explicitly requires NSTextView.breakUndoCoalescing when saving to preserve unsaved-change tracking. Both native and SwiftUI snapshots were missing that editor checkpoint.",
+    "appleReferences": [
+      "https://developer.apple.com/documentation/appkit/nstextview/breakundocoalescing()",
+      "https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/DocBasedAppProgrammingGuideForOSX/ManagingLifecycle/ManagingLifecycle.html"
+    ],
+    "implementation": "Models weakly register source editors. Snapshot/data saves end native typing coalescing for attached non-composing editors before serialization; rebind/dismantle detaches editors. No source/selection rewrite, Undo-history clearing, custom writer/watcher or manual dirty-count changes.",
+    "periodicPolicy": "Renew the native 2-second interval in the default app only together with the documented save checkpoint. This combined implementation still requires focused and full runtime validation.",
+    "newBehavioralChecks": [
+      "Native typing before/after a save retains separate Undo/Redo history for both host paths",
+      "Saving leaves marked-text composition and selection intact",
+      "Runtime staged UTF-16 autosave now also verifies two Undo operations, two Redo operations and exact disk bytes while foreground"
+    ],
+    "local": {
+      "fullTests": 362,
+      "suites": 77,
+      "errors": 0,
+      "warnings": 0,
+      "report": "/private/tmp/snowfolio-save-checkpoint-full-tests-report.json",
+      "focusedTests": 19,
+      "focusedSuites": 3,
+      "focusedReport": "/private/tmp/snowfolio-save-checkpoint-focused-tests-report.json",
+      "appBuildReport": "/private/tmp/snowfolio-save-checkpoint-app-build-report.json",
+      "nativeControlBuildReport": "/private/tmp/snowfolio-save-checkpoint-native-probe-build-report.json"
+    },
+    "testIsolation": "First local full attempt was interrupted after repeated diagram-worker timeout issues. The document suite now constructs NSDocument and lacked the shared NativeUIExclusive gate; apply the existing gate and serialization. A fresh full run passes every test, including all diagram cases. No production timeout was extended.",
+    "runtime": "Pending focused lifecycle and native control runs; original encoding/reload/restoration waits and source assertions remain unchanged."
+  },
+  "workspaceHostBoundary": {
+    "implementation": "Keep the public DocumentWorkspace wrapper and existing SceneStorage keys. Extract the same content view with bindings for source/preview viewport, selection, layout and zoom. NativeDocumentWorkspace accepts window-owned observable state and an explicit native file-opening action.",
+    "restoration": "Versioned UI-only snapshot; failed/unsupported decode preserves current state; retired layout values fall back to split. Source bytes and Undo are excluded.",
+    "checks": [
+      "Independent windows restore layout, zoom, selection and both viewports",
+      "Invalid/unsupported snapshot preserves live window state",
+      "Unknown layout retains remaining valid state"
+    ],
+    "status": "All current package tests pass, including existing native workspace layout/zoom/scroll/style tests. Native window composition, menus and actual restoration integration remain pending."
   }
 }

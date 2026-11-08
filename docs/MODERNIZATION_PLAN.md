@@ -18,13 +18,13 @@ range and fractional persistence. Scroll-past-end retains the original boolean k
 and explicit false values. Geometry waits for composition. The30-minute native job
 envelope leaves artifact time; individual waits/assertions remain unchanged.
 
-Latest local native document foundation passes **357 package tests / 76 suites**.
-The app builds for testing with 25 native methods; the adapter control builds with
-six methods, both without compiler warnings. Current hosted `8fd6cdb` core artifacts
-verify 355 tests / 76 suites, 652 CommonMark examples and eight arm64 executables.
-The preceding `83ee161` full native run executes 24 methods with 21 passes and the
-same three lifecycle failures. Parser optimization measurements and compatibility
-limits remain in [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
+Latest local save-checkpoint/workspace-boundary implementation passes **362 package
+tests / 77 suites**. The app (25 native methods) and native adapter control (six methods)
+build without compiler errors/warnings. Hosted `23016f1` core artifacts verify 357 tests
+/ 76 suites, 652 CommonMark examples and eight arm64 executables. The preceding
+`83ee161` full native run executes 24 methods with 21 passes and three lifecycle
+failures. Parser measurements remain in
+[markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 
 M2 remains incomplete. A standalone native NSDocument/TextKit2 control at1faedfd
 [run42479210488](https://github.com/jiangshen/snowfolio/actions/runs/42479210488)
@@ -39,14 +39,20 @@ register a presenter but fail coordinated reloads in both canonical locations wi
 a second read/apply. Each passes saved-edit Undo/deactivation. AppKit's matched
 coordinated success now justifies starting the planned Swift NSDocument fallback.
 
-The 2-second native interval experiment (`8fd6cdb`, run `42482075675`) passes active
-single-character save/Undo and the original restoration gate, but regresses both
-encoding fixtures before external reload: it writes during typing and misses the final
-two characters. Remove that policy from the default SwiftUI app. Keep the original
-assertions and merge guard. A shared NativeMarkdownDocument storage foundation now
-uses the existing byte-preserving codec and live model. Its control deliberately
-continues a word after a real autosave checkpoint. Full workspace/menus/state integration
-and runtime acceptance remain pending. See [document-lifecycle.json](validation/document-lifecycle.json).
+The native adapter control (`23016f1`, run `42484042685`) passes both coordinated
+reloads with actual native revert/second-read traces, plus saved-edit Undo/deactivation.
+Both uncoordinated reloads and late typing after an autosave checkpoint fail. Its
+45-unit checkpoint writes, followed by 48-unit model content without another write,
+reproduce the missing final-save issue independently of SwiftUI.
+
+Apple documents that NSTextView typing coalescing must end when saving. Both host
+snapshot boundaries now checkpoint attached source editors, without rewriting text,
+clearing Undo or disturbing marked text. The combined checkpoint/2-second policy needs
+fresh runtime acceptance; the interval-only implementation remains rejected. Original
+encoding/reload/restoration gates remain unchanged. Shared workspace content now accepts
+scene-owned or native window-owned UI bindings, preserving current SceneStorage keys
+and appearance. Full native composition/menus/restoration remain pending. See
+[document-lifecycle.json](validation/document-lifecycle.json).
 
 The light/default-font source-selection screenshot at the preceding accepted checkpoint
 has a continuous highlight without a marker seam. User-desktop dark selection remains
@@ -3097,3 +3103,41 @@ This is a storage foundation, not full native-host migration acceptance. Preserv
 liked workspace and all features while connecting file URL metadata, native editor,
 menus, tabs, window/UI restoration, conflicts/Versions and exports. Only the latest
 useful raw result remains; system archives were removed after compact console capture.
+
+
+## Native typing checkpoints and shared workspace state — 2026-11-08
+
+Native adapter run `42484042685` at `23016f1` executes six methods: both coordinated
+canonical-location reloads and saved-edit Undo/deactivation pass. Both uncoordinated
+controls and continued typing across an active autosave checkpoint fail. Native read,
+revert and model/write metadata are captured. The staged typing test writes 45 UTF-16
+units, receives further edits up to 48 units, then never writes again.
+
+Apple's [text-view documentation](https://developer.apple.com/documentation/appkit/nstextview/breakundocoalescing())
+explicitly requires a typing checkpoint when saving to preserve unsaved-change tracking.
+The [document subclass example](https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/DocBasedAppProgrammingGuideForOSX/ManagingLifecycle/ManagingLifecycle.html)
+uses it in data serialization. Attach editors weakly to the shared model and checkpoint
+non-composing editors in SwiftUI snapshot and NSDocument data callbacks. Rebinding and
+view dismantling detach editors. Preserve source, selection, Undo history and the
+existing merge guard; add no custom writer/watcher or dirty-count policy. Renew the
+2-second native periodic policy together with this fix, subject to runtime gates.
+
+New native editor tests verify separate saved/continued typing Undo/Redo for both
+host paths and unchanged marked text/selection during a save. The runtime staged test
+now verifies disk bytes after both Undo operations and both Redo operations. Keep
+original encoding/reload/restoration assertions and waits unchanged.
+
+The public SwiftUI workspace retains all SceneStorage keys. Its content is shared
+through bindings, while a native wrapper accepts per-window observable UI state and
+an explicit native Open action. Versioned restoration captures layout, zoom, selection
+and source/preview viewports. Invalid state leaves the live window unchanged; retired
+layout values recover to split. Actual native window composition, file metadata, menus,
+scene replacement and restoration integration remain required.
+
+All 362 package tests / 77 suites pass without warnings. An initial local run was
+interrupted after diagram-worker timeouts; the now-native document suite was missing
+the common UI-exclusion gate. Add that gate and serialization; a fresh full run passes
+all diagram cases and current native workspace tests without relaxing timeouts. App
+and six-method adapter control builds pass without warnings. Runtime acceptance of
+checkpointed saves and the full modernization remain open. Keep one current raw result
+and compact summaries/console; remove exported system archives after capture.

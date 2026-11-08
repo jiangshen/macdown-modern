@@ -19,6 +19,15 @@ open class NativeMarkdownDocument: NSDocument {
     return model
   }
 
+  /// Hosts with a custom source view attach it here before editing begins.
+  public func attachSourceEditor(_ editor: NSTextView) {
+    markdownDocument.attachSourceEditor(editor)
+  }
+
+  public func detachSourceEditor(_ editor: NSTextView) {
+    loadedModel?.detachSourceEditor(editor)
+  }
+
   nonisolated open override func read(from data: Data, ofType typeName: String) throws {
     let snapshot = try TextFileContents(decoding: data)
     loadedContents.withLock { $0 = snapshot }
@@ -28,6 +37,7 @@ open class NativeMarkdownDocument: NSDocument {
   }
 
   open override func data(ofType typeName: String) throws -> Data {
+    loadedModel?.prepareSourceEditorsForSave()
     let snapshot = loadedModel?.fileContents ?? loadedContents.withLock { $0 }
     #if DEBUG
       DocumentLifecycleTrace.note("native write utf16=\(snapshot.text.utf16.count)")

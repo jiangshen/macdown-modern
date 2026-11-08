@@ -189,6 +189,19 @@ final class DocumentHostProbeTests: XCTestCase {
       expectBytes(expected, at: file, timeout: 8)
       XCTAssertEqual(app.state, .runningForeground)
       XCTAssertEqual(try Data(contentsOf: file), expected)
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(editor.value as? String, original + "Autosave checkpo")
+      expectBytes(checkpoint, at: file, timeout: 8)
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(editor.value as? String, original)
+      expectBytes(
+        bom + (try XCTUnwrap(original.data(using: .utf16LittleEndian))), at: file, timeout: 8)
+      app.typeKey("z", modifierFlags: [.command, .shift])
+      XCTAssertEqual(editor.value as? String, original + "Autosave checkpo")
+      app.typeKey("z", modifierFlags: [.command, .shift])
+      XCTAssertEqual(editor.value as? String, edited)
+      expectBytes(expected, at: file, timeout: 8)
+      XCTAssertEqual(app.state, .runningForeground)
     }
   #endif
 

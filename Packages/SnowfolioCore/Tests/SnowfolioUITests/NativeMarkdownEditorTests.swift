@@ -44,6 +44,62 @@ struct NativeMarkdownEditorTests {
     #expect(document.text == "hello 中文")
   }
 
+  @Test(
+    "Saving separates later typing without losing native Undo or source", arguments: [false, true])
+  func typingAcrossSave(nativeHost: Bool) async throws {
+    let native = nativeHost ? NativeMarkdownDocument() : nil
+    let document = native?.markdownDocument ?? MarkdownDocument()
+    let manager = UndoManager()
+    manager.groupsByEvent = false
+    let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+    coordinator.undoManager = manager
+    let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
+    let editor = try #require(scroll.documentView as? NSTextView)
+    manager.beginUndoGrouping()
+    editor.insertText("checkpo", replacementRange: NSRange(location: 0, length: 0))
+    manager.endUndoGrouping()
+    let selection = editor.selectedRange()
+    if let native {
+      #expect(try native.data(ofType: "public.plain-text") == Data("checkpo".utf8))
+    } else {
+      #expect(
+        try await document.snapshot(contentType: .plainText).encoded() == Data("checkpo".utf8))
+    }
+    #expect(editor.string == "checkpo")
+    #expect(editor.selectedRange() == selection)
+    manager.beginUndoGrouping()
+    editor.insertText("int", replacementRange: editor.selectedRange())
+    manager.endUndoGrouping()
+    #expect(document.text == "checkpoint")
+    manager.undo()
+    #expect(document.text == "checkpo")
+    manager.undo()
+    #expect(document.text == "")
+    manager.redo()
+    #expect(document.text == "checkpo")
+    manager.redo()
+    #expect(document.text == "checkpoint")
+  }
+
+  @Test("A save checkpoint does not end marked-text composition or move its selection")
+  func saveDuringComposition() async throws {
+    let document = MarkdownDocument()
+    let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+    let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
+    let editor = try #require(scroll.documentView as? NSTextView)
+    editor.setMarkedText(
+      "にほん", selectedRange: NSRange(location: 2, length: 0),
+      replacementRange: NSRange(location: 0, length: 0))
+    #expect(editor.hasMarkedText())
+    let text = editor.string
+    let selection = editor.selectedRange()
+    _ = try await document.snapshot(contentType: .plainText)
+    #expect(editor.hasMarkedText())
+    #expect(editor.string == text)
+    #expect(editor.selectedRange() == selection)
+    editor.unmarkText()
+  }
+
   @Test("Document reflection preserves selection and does not replace marked text")
   func compositionAndSelection() throws {
     let document = MarkdownDocument(contents: TextFileContents(text: "abcdef"))
