@@ -480,3 +480,14 @@ Local350/75 and31 sanitizer tests pass, with20 app UI methods compiled. Exact ho
 acceptance and remaining original consumers still prevent coupled target retirement.
 See validation/editor-scroll-past-end.json for source hashes, withdrawn frame prototypes,
 font/spacing and native-reference evidence.
+
+
+## Smart Home navigation ownership
+
+The optional editorSmartHome behavior now routes the native Command-Left selector
+through a Swift adapter and the already-characterized UTF-16 whitespace lookup.
+Public native insertion geometry prevents soft-wrapped-row jumps. This is selection
+navigation only, with source/history/composition preserved. Exact354-test local
+acceptance and hosted/desktop gates are in validation/editor-smart-home.json. The
+original MPDocument/NSString/preferences consumers remain coupled to other unmigrated
+features; no original file or license is removed at this partial gate.

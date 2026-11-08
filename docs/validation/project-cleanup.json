@@ -368,6 +368,14 @@
       "verificationBeforeCleaning": "350/75,31 sanitizer tests/seven suites,8 arm64 package test executables and arm64 app/20 compiled UI methods; exact source state and retained logs in /private/tmp/snowfolio-scroll-past-end-state.json",
       "recoverability": "Regenerate from retained isolated source with standard package/app build commands. Empty Tuist root marker is needed only for this worktree generator.",
       "reason": "Hosted artifact extraction failed with no space left; capacity recovered through standard cache maintenance, partial download retained in Trash."
+    },
+    {
+      "date": "2026-11-08",
+      "path": "/private/tmp/snowfolio-theme-scope-asan",
+      "method": "swift package --scratch-path <exact isolated ASAN cache> clean",
+      "reason": "Completed sanitizer results and raw logs are retained; reclaim only regenerable isolated build output before current native evidence download. No current app/user data/source/Trash change.",
+      "log": "/private/tmp/snowfolio-document-lifecycle-asan-cache-clean.log",
+      "result": "passed; available filesystem capacity observed291MiB before and1.0GiB after, not a precise physical-recovery measurement"
     }
   ]
 }

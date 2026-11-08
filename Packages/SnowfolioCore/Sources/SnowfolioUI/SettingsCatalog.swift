@@ -211,6 +211,10 @@ enum SettingsCatalog {
       pane: .editor, title: "Typing",
       entries: [
         .init(
+          id: "editorSmartHome", title: "Smart line start",
+          detail: "Command-Left stops after indentation before moving to the line edge.",
+          keywords: "home keyboard navigation whitespace", control: .toggle(\.smartHome)),
+        .init(
           id: "editorConvertTabs", title: "Use spaces for tabs", keywords: "indent indentation",
           control: .toggle(\.convertTabs)),
         .init(

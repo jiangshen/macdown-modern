@@ -354,6 +354,9 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       else {
         return false
       }
+      if commandSelector == #selector(NSResponder.moveToLeftEndOfLine(_:)) {
+        return behavior.smartHome && NativeEditorSmartHome.move(in: textView)
+      }
       let input: MarkdownInput
       switch commandSelector {
       case #selector(NSResponder.insertNewline(_:)): input = .newline

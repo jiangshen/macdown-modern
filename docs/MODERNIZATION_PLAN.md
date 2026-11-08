@@ -13,7 +13,7 @@ row geometry supplies only the scroll extent required; existing blank tails/nati
 space are retained. Source/selection/history and simulated composition remain covered.
 See [editor-scroll-past-end.json](validation/editor-scroll-past-end.json).
 
-Settings has55 unique entries. Source line spacing retains its0...100 native-point
+The accepted checkpoint has55 Settings entries; the following Smart Home increment has56. Source line spacing retains its0...100 native-point
 range and fractional persistence. Scroll-past-end retains the original boolean key
 and explicit false values. Geometry waits for composition. The30-minute native job
 envelope leaves artifact time; individual waits/assertions remain unchanged.
@@ -2793,3 +2793,25 @@ screenshot is inspected. Exact artifact checksums and33 remaining runtime-priori
 warnings are recorded in validation/editor-scroll-past-end.json; no attribution or
 full-performance acceptance is inferred. User-desktop selection, real IME/VoiceOver,
 modern caret paint, full lifecycle and remaining modernization requirements stay open.
+
+
+## Native Smart Home migration — 2026-11-07
+
+Restored optional editorSmartHome with its original false default, explicit import
+and persistence. Settings → Editor → Typing → Smart line start is searchable.
+Command-Left first stops after indentation and then follows the native line edge;
+wrapped rows, disabled preference, marked text and selection-extension commands keep
+native handling. Existing UTF-16 whitespace lookup and public insertion rectangles
+avoid glyph APIs/TextKit1 fallback or source rewriting.
+
+A controlled removal of only the new delegate branch fails the native regression for
+both Menlo/Helvetica28 (offset10 versus expected14). Restored code passes354 package
+tests/76 suites and the arm64 app build, with21 UI methods compiled. Native source,
+revision and preexisting history survive; tab/NBSP, Unicode/CRLF, wrapped-row and
+simulated-composition cases pass. The initial nested test Fixture needed its own
+@MainActor annotation; assertions were retained. Strict formatting passes.
+
+Exact evidence is in validation/editor-smart-home.json. Hosted/user-desktop/real
+IME/VoiceOver acceptance remains open; no coupled original file is retired. Remaining
+typing/statistics, full document lifecycle, renderer/M5 and measured M6/release gates
+still apply. The full goal remains active and incomplete.

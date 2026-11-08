@@ -72,6 +72,7 @@ public final class AppPreferences {
   public var rawHTML: Bool { didSet { save(rawHTML, "previewRenderRawHTML") } }
   public var remoteImages: Bool { didSet { save(remoteImages, "previewLoadRemoteImages") } }
   public var manualRendering: Bool { didSet { save(manualRendering, "markdownManualRender") } }
+  public var smartHome: Bool { didSet { save(smartHome, "editorSmartHome") } }
   public var convertTabs: Bool { didSet { save(convertTabs, "editorConvertTabs") } }
   public var continueBlocks: Bool { didSet { save(continueBlocks, "editorInsertPrefixInBlock") } }
   public var incrementLists: Bool {
@@ -170,6 +171,7 @@ public final class AppPreferences {
     rawHTML = boolean("previewRenderRawHTML", fallback: false)
     remoteImages = boolean("previewLoadRemoteImages", fallback: false)
     manualRendering = boolean("markdownManualRender", fallback: false)
+    smartHome = boolean("editorSmartHome", fallback: false)
     convertTabs = boolean("editorConvertTabs", fallback: false)
     continueBlocks = boolean("editorInsertPrefixInBlock", fallback: true)
     incrementLists = boolean("editorAutoIncrementNumberedLists", fallback: true)
@@ -213,6 +215,7 @@ public final class AppPreferences {
 
   public var editorBehavior: EditorBehavior {
     var behavior = EditorBehavior()
+    behavior.smartHome = smartHome
     behavior.convertTabs = convertTabs
     behavior.continueBlocks = continueBlocks
     behavior.incrementLists = incrementLists

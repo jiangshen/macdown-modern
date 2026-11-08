@@ -2,6 +2,7 @@ import Foundation
 
 public struct EditorBehavior: Equatable, Sendable {
   public var convertTabs = false
+  public var smartHome = false
   public var continueBlocks = true
   public var incrementLists = true
   public var pairDelimiters = false

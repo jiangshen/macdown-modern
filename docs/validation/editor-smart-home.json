@@ -1,0 +1,96 @@
+{
+  "checkpoint": "Native optional Smart Home migrated; local full suite and app build passed; hosted pending",
+  "base": "bab0626",
+  "goal": "active; incomplete",
+  "original": {
+    "preference": "editorSmartHome",
+    "default": false,
+    "source": "MacDown/Code/Document/MPDocument.m:803",
+    "behavior": "moveToLeftEndOfLine stops at the first non-whitespace character before the cursor only on the same wrapped row. A second press delegates to the native line edge. Selection-extension commands are not intercepted."
+  },
+  "implementation": [
+    "Preserve original boolean key, explicit-false migration and reopen. Native searchable Smart line start switch;56 Settings entries.",
+    "Use existing characterized UTF-16 Foundation whitespace lookup and public native insertion rectangles; no Markdown parsing, regex or source rewriting.",
+    "Only the existing moveToLeftEndOfLine command is customized. Disabled preference, wrapped-row changes, composition and multiple selections stay on the native path.",
+    "Change only native selection/reveal; no source, document revision, undo action, font or TextKit1 fallback."
+  ],
+  "validation": {
+    "packageTests": 354,
+    "packageSuites": 76,
+    "full": {
+      "path": "/private/tmp/snowfolio-smart-home-full.json",
+      "sha256": "01ea26d74b67b4d0993a981b3da3a7546869954e5c875415b05d91b2c1883d08"
+    },
+    "fullLog": {
+      "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-CDF0A221-101E-42A4-9438-65E3903E2DDB/build.log",
+      "sha256": "ae2987b2351db8812b344891469be49bc7dd7ebb104a6bb0d12b171d358c3fcb"
+    },
+    "focused": {
+      "path": "/private/tmp/snowfolio-smart-home-focused-retry.json",
+      "sha256": "a335be10be8358f3085473e8611a0f53702be2c35c44f4c5c919c4dc1757ea82"
+    },
+    "controlledBefore": {
+      "path": "/private/tmp/snowfolio-smart-home-before.json",
+      "sha256": "6d823076ff5031edcf8aa56c34f872d2ce22eff83a57e3d68c5356682e9ff6ee"
+    },
+    "controlledBeforeResult": "Temporarily bypassing only the new delegate branch reproduces the failure in both Menlo and Helvetica: native offset10 instead of first-text offset14. Final implementation restored before full suite/app build.",
+    "checks": [
+      "Actual native doCommand dispatch; two-step behavior in Menlo/Helvetica28",
+      "CRLF, Unicode and tab/NBSP indentation",
+      "Wrapped-row and disabled preference compared with native movement",
+      "Source/revision and existing Undo/Redo preserved",
+      "Marked-text and selection-extension commands remain native",
+      "Explicit true import and false reopen; search and all catalog switch persistence"
+    ],
+    "nativeAppBuildForTesting": "passed;21 UI methods compile",
+    "nativeAppLog": {
+      "path": "/private/tmp/snowfolio-smart-home-app-build.log",
+      "sha256": "399bd5ac3350cf9f925b913fe598862f7a07370e7e587fe91026e00990d6a161"
+    },
+    "strictChangedSwiftFormatting": "passed",
+    "diffCheck": "passed",
+    "compilerCorrections": "Initial nested test Fixture omitted its own @MainActor annotation; corrected without production changes or relaxed assertions.",
+    "initialCompilerReport": {
+      "path": "/private/tmp/snowfolio-smart-home-focused.json",
+      "sha256": "e01e95980a67e7916c7b20c99be7e2a28b675f5f0d74d4d22133e2d87441e404"
+    },
+    "sdkGrounding": "Installed Xcode27.2 NSResponder.h declares moveToLeftEndOfLine frommacOS10.6; NSTextInputClient.h declares firstRectForCharacterRange. Compiler confirms Swift imports. sdk-api catalog did not index these inherited protocol methods."
+  },
+  "sourceManifest": [
+    {
+      "path": "Packages/SnowfolioCore/Sources/EditorCore/MarkdownEditing.swift",
+      "sha256": "c048574e9c8c7a45ff80c9a15324329abf91d368d6efec635c43e29a4bd99f69"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/AppPreferences.swift",
+      "sha256": "32d7f18e43cf79134a372c24da72156ff82edc752b7f7d955c4a14a17c3dee48"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/SettingsCatalog.swift",
+      "sha256": "b615be508ffded587c363b91a1676b7b4286f726492c3ceb1abf4c80137ea217"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownEditor.swift",
+      "sha256": "377749ee8b8e0cbbd7c2ce69b87ddc41eb5b2e0cb93e84f8b8a52a533d988e19"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorSmartHome.swift",
+      "sha256": "2900073ac9211d50f988dec9206e535c43fd90c557967992cf64305eca3acbe4"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/SettingsTests.swift",
+      "sha256": "93699f05baa551c155bc9720e5bf6288f920fea95d8dde01ea92d6110e8d0819"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorSmartHomeTests.swift",
+      "sha256": "3a16236719e0436bd9ca2a3899cd84b6915de5078b48db1c326ea375e871b8a2"
+    }
+  ],
+  "hosted": {
+    "status": "pending"
+  },
+  "remaining": [
+    "Actual keyboard-only/user-desktop/VoiceOver acceptance remains open. Simulated composition is not a real IME session.",
+    "Original editor/NSString/preferences consumers remain coupled and are not retired by this increment. Full document reliability, typing/statistics, renderer/M5/M6/release gates remain open."
+  ]
+}
