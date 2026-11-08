@@ -3141,3 +3141,38 @@ all diagram cases and current native workspace tests without relaxing timeouts. 
 and six-method adapter control builds pass without warnings. Runtime acceptance of
 checkpointed saves and the full modernization remain open. Keep one current raw result
 and compact summaries/console; remove exported system archives after capture.
+
+
+## Full native workspace window and checkpoint verdict — 2026-11-08
+
+At `0d1ca1d`, native adapter run `42486621415` executes six methods: both
+coordinated reloads, staged encoded typing across autosave with two Undo/Redo steps,
+and saved-edit Undo/deactivation pass. Both uncoordinated reloads still fail. Full
+SwiftUI run `42486596518` executes 25 methods, 23 pass; both final encoding autosaves
+fail before replacement. The final revision is never snapshotted. Focused lifecycle
+run `42486627208` hits the job envelope and is not acceptance. Revert the default
+SwiftUI two-second interval; keep it in the native diagnostic with save checkpoints.
+
+The shared native document now constructs the same editor/preview/toolbar workspace
+inside a real NSWindowController. Pass the native Undo manager explicitly to the
+source editor because the SDK's SwiftUI undoManager environment is read-only.
+File location observes native URL changes and reads current location immediately;
+Save As metadata never edits source. Secure document restoration callbacks carry
+only versioned workspace UI state. Menus, actual restoration and full host switching
+remain unfinished. Do not replace the default SwiftUI application prematurely.
+
+A real window integration test caught zero native minimum size after attachment.
+Keep NSHostingController sizingOptions.minSize propagation so the window maintains
+the minimum from SwiftUI layout. The source editor and WKWebView exist together;
+native document/controller/Undo identity, typing, Undo, byte preservation, minimum
+size and secure restoration callback checks pass. All 365 package tests / 78 suites
+pass with zero warnings. Default arm64 app build/resource/license checks pass with
+the existing AppIntents metadata-extraction warning. The seven-method full-workspace
+diagnostic builds without warnings in the reusable app cache.
+
+Direct CUA inspection timed out without a snapshot; no visual acceptance is claimed.
+Preserve its running diagnostic app/cache. The new hosted diagnostic adds real preview
+updates, native Undo and a screenshot to the six existing reliability methods.
+Execution and screenshot inspection are next. Compact minimal-control findings are
+retained; its downloaded raw result and exported system diagnostics were cleared.
+One current full-app raw failure remains until the full-workspace successor arrives.

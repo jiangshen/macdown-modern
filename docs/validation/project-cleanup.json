@@ -360,6 +360,16 @@
       ],
       "trashEmptied": false,
       "scope": "Only completed agent-owned worktree; source edit verified byte-identical to 6d911da before moving. No current app/source/test result or user document moved."
+    },
+    {
+      "date": "2026-11-08T23:33:23.970772+00:00",
+      "scope": "Completed minimal native checkpoint raw download and exported system diagnostics",
+      "original": "/private/tmp/snowfolio-native-checkpoint-incoming",
+      "allocatedBytesRemoved": 81526784,
+      "method": "Verify compact summary/text/console and process ownership, then remove obsolete generated artifacts",
+      "retained": "One raw full-app failure, compact evidence, running diagnostic and reusable app/core cache",
+      "trashEmptied": false,
+      "userDocumentsChanged": false
     }
   ],
   "lastUpdated": "2026-11-08T11:21:22.729861+00:00",

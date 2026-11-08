@@ -1,10 +1,8 @@
-import AppKit
 import SnowfolioUI
 import SwiftUI
 
 @main
 struct SnowfolioApp: App {
-  @NSApplicationDelegateAdaptor(SnowfolioApplicationDelegate.self) private var applicationDelegate
   @State private var preferences = AppPreferences()
 
   var body: some Scene {
@@ -23,15 +21,5 @@ struct SnowfolioApp: App {
       DocumentExportCommands()
       MarkdownFormatCommands()
     }
-  }
-}
-
-/// Apply native document policy after SwiftUI installs its document controller.
-@MainActor
-final class SnowfolioApplicationDelegate: NSObject, NSApplicationDelegate {
-  func applicationDidFinishLaunching(_ notification: Notification) {
-    // Model snapshots checkpoint native typing before serialization, so edits
-    // after an autosave register as a fresh native Undo/dirty-state operation.
-    NSDocumentController.shared.autosavingDelay = 2
   }
 }

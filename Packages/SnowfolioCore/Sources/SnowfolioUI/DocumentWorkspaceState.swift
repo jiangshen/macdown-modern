@@ -5,11 +5,12 @@ import Observation
 @MainActor
 @Observable
 final class DocumentWorkspaceState {
-  var sourceViewport: Data?
-  var previewViewport: Data?
-  var editorSelection: Data?
-  var zoomPercent = 100
-  var mode = WorkspaceMode.split
+  @ObservationIgnored var didChange: (@MainActor () -> Void)?
+  var sourceViewport: Data? { didSet { if oldValue != sourceViewport { didChange?() } } }
+  var previewViewport: Data? { didSet { if oldValue != previewViewport { didChange?() } } }
+  var editorSelection: Data? { didSet { if oldValue != editorSelection { didChange?() } } }
+  var zoomPercent = 100 { didSet { if oldValue != zoomPercent { didChange?() } } }
+  var mode = WorkspaceMode.split { didSet { if oldValue != mode { didChange?() } } }
 
   init() {}
 

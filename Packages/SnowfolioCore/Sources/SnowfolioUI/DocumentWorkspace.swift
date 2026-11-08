@@ -33,6 +33,7 @@ struct NativeDocumentWorkspace: View {
   let document: MarkdownDocument
   let preferences: AppPreferences
   @Bindable var state: DocumentWorkspaceState
+  var hostUndoManager: UndoManager? = nil
   let openFile: @MainActor (URL) async throws -> Void
 
   var body: some View {
@@ -40,7 +41,7 @@ struct NativeDocumentWorkspace: View {
       document: document, preferences: preferences,
       sourceViewport: $state.sourceViewport, previewViewport: $state.previewViewport,
       editorSelection: $state.editorSelection, zoomPercent: $state.zoomPercent, mode: $state.mode,
-      nativeOpenFile: openFile)
+      nativeOpenFile: openFile, hostUndoManager: hostUndoManager)
   }
 }
 
@@ -49,6 +50,7 @@ private struct DocumentWorkspaceContent: View {
   let document: MarkdownDocument
   let preferences: AppPreferences
   let nativeOpenFile: (@MainActor (URL) async throws -> Void)?
+  let hostUndoManager: UndoManager?
   @Environment(\.openDocument) private var openDocument
   @Environment(\.scenePhase) private var scenePhase
   @State private var scrolling = DocumentScrollCoordinator()
@@ -82,11 +84,13 @@ private struct DocumentWorkspaceContent: View {
     document: MarkdownDocument, preferences: AppPreferences, zoom: DocumentZoomController? = nil,
     sourceViewport: Binding<Data?>, previewViewport: Binding<Data?>,
     editorSelection: Binding<Data?>, zoomPercent: Binding<Int>, mode: Binding<WorkspaceMode>,
-    nativeOpenFile: (@MainActor (URL) async throws -> Void)? = nil
+    nativeOpenFile: (@MainActor (URL) async throws -> Void)? = nil,
+    hostUndoManager: UndoManager? = nil
   ) {
     self.document = document
     self.preferences = preferences
     self.nativeOpenFile = nativeOpenFile
+    self.hostUndoManager = hostUndoManager
     _sourceViewport = sourceViewport
     _previewViewport = previewViewport
     _editorSelection = editorSelection
@@ -140,7 +144,8 @@ private struct DocumentWorkspaceContent: View {
           html: previewHTML, syntax: sourceSyntax, syntaxRevision: parsedRevision,
           revision: renderedRevision, callouts: callouts, mode: mode,
           previewError: $previewError, openDroppedFiles: openDroppedFiles,
-          editorSelection: $editorSelection, scrolling: scrolling, zoomScale: zoom.scale,
+          editorSelection: $editorSelection, hostUndoManager: hostUndoManager,
+          scrolling: scrolling, zoomScale: zoom.scale,
           sourceViewportStorage: $sourceViewport, previewViewportStorage: $previewViewport)
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(

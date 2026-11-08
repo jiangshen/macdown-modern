@@ -2,21 +2,60 @@ import AppKit
 import DocumentCore
 import Synchronization
 
-/// Native document ownership for the AppKit host migration. Window composition is
-/// supplied by the app; this type owns coordinated loading, saving and byte format.
+/// Native document ownership with the same SwiftUI workspace. NSDocument owns
+/// coordination, saving, Versions and window restoration; the model owns source.
 @objc(SnowfolioNativeDocument)
 @MainActor
 open class NativeMarkdownDocument: NSDocument {
   private nonisolated let loadedContents = Mutex(TextFileContents())
   private var loadedModel: MarkdownDocument?
+  let workspaceState = DocumentWorkspaceState()
+  private static let workspaceStateKey = "snowfolioWorkspaceState"
+
+  // NSDocument's URL remains thread-safe. UI observation crosses to the main
+  // actor asynchronously and reads the current URL, rather than a stale capture.
+  nonisolated open override var fileURL: URL? {
+    get { super.fileURL }
+    set {
+      super.fileURL = newValue
+      Task { @MainActor [weak self] in
+        self?.loadedModel?.nativeFileLocationChanged()
+      }
+    }
+  }
 
   open override class var autosavesInPlace: Bool { true }
 
   public var markdownDocument: MarkdownDocument {
     if let loadedModel { return loadedModel }
-    let model = MarkdownDocument(contents: loadedContents.withLock { $0 })
+    let model = MarkdownDocument()
+    model.acceptNativeLoad(loadedContents.withLock { $0 })
+    model.attachNativeFileDocument(self)
     loadedModel = model
     return model
+  }
+
+  open override func makeWindowControllers() {
+    addWindowController(
+      NativeDocumentWindowController(
+        document: self, preferences: NativeDocumentPreferences.shared, state: workspaceState))
+    workspaceState.didChange = { [weak self] in self?.invalidateRestorableState() }
+  }
+
+  open override func encodeRestorableState(with coder: NSCoder) {
+    super.encodeRestorableState(with: coder)
+    if let data = try? workspaceState.encoded() {
+      coder.encode(data, forKey: Self.workspaceStateKey)
+    }
+  }
+
+  open override func restoreState(with coder: NSCoder) {
+    super.restoreState(with: coder)
+    if coder.containsValue(forKey: Self.workspaceStateKey),
+      let data = coder.decodeObject(of: NSData.self, forKey: Self.workspaceStateKey) as Data?
+    {
+      workspaceState.restore(from: data)
+    }
   }
 
   /// Hosts with a custom source view attach it here before editing begins.

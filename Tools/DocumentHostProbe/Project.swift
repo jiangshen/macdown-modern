@@ -1,14 +1,17 @@
 import ProjectDescription
 
 let probeKind = Environment.documentHostProbeKind.getString(default: "swiftui")
-let productionNativeProbe = probeKind == "native"
+let fullWorkspaceProbe = probeKind == "native-workspace"
+let productionNativeProbe = probeKind == "native" || fullWorkspaceProbe
 let appKitProbe = probeKind == "appkit" || productionNativeProbe
-let probeCompilationConditions =
+let baseProbeCompilationConditions =
   productionNativeProbe
   ? "$(inherited) APPKIT_DOCUMENT_HOST_PROBE PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE"
   : appKitProbe
     ? "$(inherited) APPKIT_DOCUMENT_HOST_PROBE"
     : probeKind == "swiftui-url" ? "$(inherited) DIRECT_URL_DOCUMENT_HOST_PROBE" : "$(inherited)"
+let probeCompilationConditions =
+  baseProbeCompilationConditions + (fullWorkspaceProbe ? " FULL_WORKSPACE_DOCUMENT_HOST_PROBE" : "")
 var probeDocumentType: [String: Plist.Value] = [
   "CFBundleTypeName": "Probe text", "CFBundleTypeRole": "Editor",
   "LSHandlerRank": "Alternate",

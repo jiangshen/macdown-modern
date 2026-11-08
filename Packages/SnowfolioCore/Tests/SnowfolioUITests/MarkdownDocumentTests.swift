@@ -49,6 +49,27 @@ struct MarkdownDocumentTests {
     #expect(document.markdownDocument === model)
   }
 
+  @Test("Native file location follows Save As and clearing immediately without changing source")
+  func nativeFileLocation() throws {
+    let document = NativeMarkdownDocument()
+    let original = Data("# File location\r\n".utf8)
+    try document.read(from: original, ofType: "public.plain-text")
+    let first = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+      .appendingPathComponent("first.md")
+    document.fileURL = first
+    let model = document.markdownDocument
+    #expect(model.fileURL == first)
+    #expect(model.loadRevision == 1)
+    let revision = model.revision
+    let second = first.deletingLastPathComponent().appendingPathComponent("second.md")
+    document.fileURL = second
+    #expect(model.fileURL == second)
+    document.fileURL = nil
+    #expect(model.fileURL == nil)
+    #expect(model.revision == revision)
+    #expect(try document.data(ofType: "public.plain-text") == original)
+  }
+
   @Test("An AppKit read error leaves the last valid snapshot available")
   func nativeFailedReadPreservesSnapshot() throws {
     let bytes = Data([0xEF, 0xBB, 0xBF]) + Data("before\r\n".utf8)

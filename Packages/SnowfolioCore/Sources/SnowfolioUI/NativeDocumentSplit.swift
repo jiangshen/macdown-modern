@@ -18,6 +18,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   @Binding var previewError: String?
   var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
   @Binding var editorSelection: Data?
+  var hostUndoManager: UndoManager? = nil
   var scrolling: DocumentScrollCoordinator? = nil
   var zoomScale: Double = 1
   var sourceViewportStorage: Binding<Data?> = .constant(nil)
@@ -47,7 +48,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
 
   private var editorSurface: EditorSurface {
     EditorSurface(
-      document: document, preferences: preferences, commands: editing, undoManager: undoManager,
+      document: document, preferences: preferences, commands: editing,
+      undoManager: hostUndoManager ?? undoManager,
       syntax: syntax, syntaxRevision: syntaxRevision, openDroppedFiles: openDroppedFiles,
       editorSelection: $editorSelection, scrolling: scrolling, zoomScale: zoomScale)
   }

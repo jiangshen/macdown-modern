@@ -56,36 +56,41 @@
     }
 
     override func makeWindowControllers() {
-      let window = NSWindow(
-        contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
-        styleMask: [.titled, .closable, .miniaturizable, .resizable],
-        backing: .buffered, defer: false)
-      let scroll = NSScrollView(frame: window.contentLayoutRect)
-      scroll.hasVerticalScroller = true
-      scroll.autohidesScrollers = true
-      scroll.autoresizingMask = [.width, .height]
-      let text = NSTextView(usingTextLayoutManager: true)
-      text.frame = scroll.contentView.bounds
-      text.isRichText = false
-      text.allowsUndo = true
-      text.isVerticallyResizable = true
-      text.isHorizontallyResizable = false
-      text.autoresizingMask = [.width]
-      text.textContainer?.widthTracksTextView = true
-      text.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
-      text.string = sourceText
-      text.delegate = self
-      #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
-        attachSourceEditor(text)
+      #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
+        super.makeWindowControllers()
+      #else
+        let window = NSWindow(
+          contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
+          styleMask: [.titled, .closable, .miniaturizable, .resizable],
+          backing: .buffered, defer: false)
+        let scroll = NSScrollView(frame: window.contentLayoutRect)
+        scroll.hasVerticalScroller = true
+        scroll.autohidesScrollers = true
+        scroll.autoresizingMask = [.width, .height]
+        let text = NSTextView(usingTextLayoutManager: true)
+        text.frame = scroll.contentView.bounds
+        text.isRichText = false
+        text.allowsUndo = true
+        text.isVerticallyResizable = true
+        text.isHorizontallyResizable = false
+        text.autoresizingMask = [.width]
+        text.textContainer?.widthTracksTextView = true
+        text.textContainer?.containerSize = NSSize(
+          width: 0, height: CGFloat.greatestFiniteMagnitude)
+        text.string = sourceText
+        text.delegate = self
+        #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+          attachSourceEditor(text)
+        #endif
+        text.setAccessibilityIdentifier("stockDocumentEditor")
+        text.setAccessibilityLabel("Document host comparison text")
+        scroll.documentView = text
+        window.contentView = scroll
+        editor = text
+        addWindowController(NSWindowController(window: window))
+        window.center()
+        window.makeFirstResponder(text)
       #endif
-      text.setAccessibilityIdentifier("stockDocumentEditor")
-      text.setAccessibilityLabel("Document host comparison text")
-      scroll.documentView = text
-      window.contentView = scroll
-      editor = text
-      addWindowController(NSWindowController(window: window))
-      window.center()
-      window.makeFirstResponder(text)
       let registered = NSFileCoordinator.filePresenters.contains { ($0 as AnyObject) === self }
       NSLog("NativeDocumentProbe presenter registered=%d", registered)
     }

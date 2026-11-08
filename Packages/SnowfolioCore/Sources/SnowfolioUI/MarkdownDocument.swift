@@ -24,7 +24,22 @@ public final class MarkdownDocument: SwiftUI.Document {
   public private(set) var loadRevision: UInt64 = 0
   public private(set) var selectionRequest: EditorSelectionRequest?
   private let configuration: URLDocumentConfiguration?
-  public var fileURL: URL? { configuration?.fileURL }
+  @ObservationIgnored private weak var nativeFileDocument: NSDocument?
+  private var nativeLocationRevision: UInt64 = 0
+  public var fileURL: URL? {
+    if let configuration { return configuration.fileURL }
+    // Observe invalidation, but read the host's current URL even before its
+    // main-actor notification arrives (for example immediately after Save As).
+    _ = nativeLocationRevision
+    return nativeFileDocument?.fileURL
+  }
+
+  func attachNativeFileDocument(_ document: NSDocument) {
+    nativeFileDocument = document
+    nativeFileLocationChanged()
+  }
+
+  func nativeFileLocationChanged() { nativeLocationRevision &+= 1 }
 
   public func navigate(toUTF16Offset offset: Int) {
     selectionRequest = EditorSelectionRequest(offset: offset)
@@ -38,7 +53,15 @@ public final class MarkdownDocument: SwiftUI.Document {
   /// AppKit requires a typing checkpoint when saving, so later coalesced edits
   /// register with the native document's dirty-state and Undo machinery again.
   func prepareSourceEditorsForSave() {
-    for editor in sourceEditors.allObjects where !editor.hasMarkedText() {
+    let editors = sourceEditors.allObjects
+    #if DEBUG
+      if DocumentLifecycleTrace.enabled {
+        DocumentLifecycleTrace.note(
+          "save checkpoint editors=\(editors.count) coalescing=\(editors.filter { $0.isCoalescingUndo }.count) marked=\(editors.filter { $0.hasMarkedText() }.count)"
+        )
+      }
+    #endif
+    for editor in editors where !editor.hasMarkedText() {
       editor.breakUndoCoalescing()
     }
   }

@@ -13,6 +13,12 @@ final class DocumentHostProbeTests: XCTestCase {
     #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
       app.launchEnvironment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] = "1"
     #endif
+    #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
+      app.launchArguments += [
+        "-editorOnRight", "NO", "-markdownManualRender", "NO", "-readingStyleSelection",
+        "snowfolio",
+      ]
+    #endif
     app.launch()
     return app
   }
@@ -31,7 +37,11 @@ final class DocumentHostProbeTests: XCTestCase {
     let button = app.buttons["OKButton"].firstMatch
     XCTAssertTrue(button.waitForExistence(timeout: 5))
     button.click()
-    let editor = app.textViews["stockDocumentEditor"].firstMatch
+    #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
+      let editor = app.textViews["markdownSourceEditor"].firstMatch
+    #else
+      let editor = app.textViews["stockDocumentEditor"].firstMatch
+    #endif
     XCTAssertTrue(editor.waitForExistence(timeout: 8), app.debugDescription)
     return editor
   }
@@ -202,6 +212,45 @@ final class DocumentHostProbeTests: XCTestCase {
       XCTAssertEqual(editor.value as? String, edited)
       expectBytes(expected, at: file, timeout: 8)
       XCTAssertEqual(app.state, .runningForeground)
+    }
+  #endif
+
+  #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
+    @MainActor
+    func testNativeWorkspacePreviewAndUndo() throws {
+      let file = try fixture()
+      defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
+      let original = "# Workspace preview\n\nShared preview checkpoint.\n\n"
+      try Data(original.utf8).write(to: file)
+      let app = launch()
+      defer { app.terminate() }
+      let editor = open(file, in: app)
+      XCTAssertEqual(editor.value as? String, original)
+      let preview = app.webViews.firstMatch
+      XCTAssertTrue(preview.waitForExistence(timeout: 8), app.debugDescription)
+      let body = preview.staticTexts["Shared preview checkpoint."].firstMatch
+      XCTAssertTrue(body.waitForExistence(timeout: 8), app.debugDescription)
+      XCTAssertTrue(app.toolbars.firstMatch.exists)
+      XCTAssertTrue(app.buttons["Render"].firstMatch.exists)
+      XCTAssertGreaterThan(editor.frame.width, 0)
+      XCTAssertGreaterThan(preview.frame.width, 0)
+      XCTAssertLessThan(editor.frame.minX, preview.frame.minX)
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      editor.typeText("X")
+      XCTAssertEqual(editor.value as? String, original + "X")
+      let marker = preview.staticTexts["X"].firstMatch
+      XCTAssertTrue(marker.waitForExistence(timeout: 8), app.debugDescription)
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(editor.value as? String, original)
+      let reverted = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in !marker.exists }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [reverted], timeout: 8), .completed)
+      XCTAssertTrue(body.exists)
+      let screenshot = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+      screenshot.name = "native-document-full-workspace-preview"
+      screenshot.lifetime = .keepAlways
+      add(screenshot)
     }
   #endif
 
