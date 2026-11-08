@@ -1,7 +1,7 @@
 {
   "checkpoint": "Native editor margins/width, stable reading anchor and canonical named-font caret metrics",
   "date": "2026-11-07",
-  "status": "Implemented; final main-checkout package/native layout/font/ASAN/app-build acceptance passed; hosted Settings UI pending",
+  "status": "Local layout/font/ASAN/app build passed; first hosted package resize check failed; diagnostic follow-up required; native UI execution still running",
   "fullGoal": "active; incomplete",
   "originalEvidence": [
     {
@@ -160,15 +160,29 @@
       "standaloneProbe": "/private/tmp/snowfolio-font-conversion-diagnostic.txt: clean standalone named/converted metrics and rendering modes match; that probe alone does not reproduce the native caret issue.",
       "descriptorAssumption": "/private/tmp/snowfolio-font-canonical-face.json: corrected carets pass but a newly added assertion that the resolved font must serialize its matching-language hint fails. The installed CoreText header defines the key as input for fallback selection, not a retained output field; remove that speculative metadata assertion and keep all original/new caret/source assertions. The production constructor still receives valid hints.",
       "apiEvidence": "Installed macOS SDK CoreText CTFontDescriptor.h, kCTFontDescriptorLanguageAttribute: language identifier selects a fallback list."
+    },
+    "hostedResizeFollowup": {
+      "localFocused": "/private/tmp/snowfolio-editor-column-resize-diagnostic.json",
+      "localFull": "/private/tmp/snowfolio-editor-column-resize-full-diagnostic.json",
+      "localResult": "Focused native layout and full 340 tests /73 suites pass. Final diagnostic string also records editor min/max sizes; final focused 3 tests /1 suite recompiles and passes. No layout workaround, changed assertions or increased timeout.",
+      "scope": "Diagnostic-only test change. The prior source manifest and original local acceptance remain attached to dd6fb58.",
+      "localFinalFocused": "/private/tmp/snowfolio-editor-column-resize-final-diagnostic.json"
     }
   },
   "hosted": {
-    "status": "Running exact pushed implementation; inspect this same run through completion.",
+    "status": "Package failed at nativeGeometry resize 480; app UI job still running. No overall acceptance claimed.",
     "expectedNativeMethods": 18,
     "commit": "dd6fb581be5a90c201b98c6de0e321aa045a7ae5",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42442182528",
     "expectedPackageTests": 340,
-    "expectedPackageSuites": 73
+    "expectedPackageSuites": 73,
+    "packageFailure": {
+      "path": "/private/tmp/snowfolio-editor-column-hosted-core/snowfolio-validation/swift-test.log",
+      "sha256": "41aa04dffac5efef3e135feb54dc1161b19c20106ff18739ac1f14d5ddd8e7dc",
+      "case": "NativeEditorLayoutTests.nativeGeometry",
+      "stage": "resize 480.0",
+      "outcome": "Timed out without geometry facts; no production cause established. Existing expectations/time limit unchanged; add failure-only window/host/scroll/editor/container metrics."
+    }
   },
   "remaining": [
     "Fresh desktop source-selection/glyph, keyboard/VoiceOver and real Chinese/Japanese IME acceptance remain open; latest CUA observation locked.",

@@ -103,13 +103,22 @@ struct NativeEditorLayoutTests {
     let changed = document.text
     let revision = document.revision
     let selection = editor.selectedRange()
+    func scrollFrame(_ editor: MarkdownTextView) -> String {
+      guard let scroll = editor.enclosingScrollView else { return "none" }
+      return "\(scroll.frame), clip=\(scroll.contentView.bounds)"
+    }
     for width in [480.0, 1200, 720] {
       window.setContentSize(NSSize(width: width, height: 600))
-      try await waitFor("resize \(width)") {
-        let expected = min(600, editor.bounds.width - 40)
-        return abs(editor.bounds.width - width) < 20
-          && abs(editor.textContainer!.containerSize.width - expected) < 1
-      }
+      try await waitFor(
+        "resize \(width)",
+        diagnostic: {
+          "window=\(window.frame), min=\(window.minSize), contentMin=\(window.contentMinSize), host=\(host.view.frame), fitting=\(host.view.fittingSize), scroll=\(scrollFrame(editor)), editor=\(editor.frame), bounds=\(editor.bounds), editorMin=\(editor.minSize), editorMax=\(editor.maxSize), inset=\(editor.textContainerInset), container=\(String(describing: editor.textContainer?.containerSize))"
+        },
+        {
+          let expected = min(600, editor.bounds.width - 40)
+          return abs(editor.bounds.width - width) < 20
+            && abs(editor.textContainer!.containerSize.width - expected) < 1
+        })
       #expect(editor.textContainer!.containerSize.width <= 600)
       #expect(
         abs(

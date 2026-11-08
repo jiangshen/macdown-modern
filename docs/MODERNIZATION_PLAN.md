@@ -9,7 +9,10 @@ Native resizing, source/selection/undo, deferred composition geometry and readin
 paragraph preservation pass with linked scrolling off/on. Four searchable Settings
 controls preserve the original keys; 53 catalog entries remain unique. The app's new
 Settings test compiles among 18 native UI methods. Exact implementation `dd6fb58`
-is running in [hosted validation 42442182528](https://github.com/jiangshen/snowfolio/actions/runs/42442182528); acceptance is pending.
+ran in [hosted validation 42442182528](https://github.com/jiangshen/snowfolio/actions/runs/42442182528).
+Its package resize check failed at 480 points; native app UI is still running.
+Local focused and full 340-test runs pass. Failure-only geometry diagnostics are being
+added; no cause or hosted acceptance is claimed.
 See [editor-column-layout.json](validation/editor-column-layout.json) and
 [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md). Line spacing, scroll-past-end and other
 original editing/layout preferences remain open.
