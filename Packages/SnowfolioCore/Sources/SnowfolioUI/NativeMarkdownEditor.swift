@@ -72,7 +72,9 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   }
 
   static func makeScrollView(document: MarkdownDocument, coordinator: Coordinator) -> NSScrollView {
-    let scrollView = NSScrollView()
+    let scrollView = MarkdownEditorScrollView()
+    scrollView.contentView = MarkdownEditorClipView()
+    scrollView.backgroundColor = .textBackgroundColor
     scrollView.identifier = NSUserInterfaceItemIdentifier("markdownSourceScroll")
     scrollView.hasVerticalScroller = true
     scrollView.autohidesScrollers = true

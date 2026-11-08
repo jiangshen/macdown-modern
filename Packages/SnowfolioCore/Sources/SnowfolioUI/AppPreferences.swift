@@ -20,6 +20,7 @@ public final class AppPreferences {
       defaults.set(editorLayout.widthLimited, forKey: "editorWidthLimited")
       defaults.set(editorLayout.maximumWidth, forKey: "editorMaximumWidth")
       defaults.set(editorLayout.lineSpacing, forKey: "editorLineSpacing")
+      defaults.set(editorLayout.scrollsPastEnd, forKey: "editorScrollsPastEnd")
     }
   }
 
@@ -122,7 +123,8 @@ public final class AppPreferences {
       widthLimited: boolean("editorWidthLimited", fallback: false),
       maximumWidth: (defaults.object(forKey: "editorMaximumWidth") as? NSNumber)?.doubleValue
         ?? 1000,
-      lineSpacing: (defaults.object(forKey: "editorLineSpacing") as? NSNumber)?.doubleValue ?? 0)
+      lineSpacing: (defaults.object(forKey: "editorLineSpacing") as? NSNumber)?.doubleValue ?? 0,
+      scrollsPastEnd: boolean("editorScrollsPastEnd", fallback: false))
     restoreDocumentsOnLaunch = boolean("NSQuitAlwaysKeepsWindows", fallback: true)
     preferDocumentTabs = boolean("preferDocumentTabs", fallback: true)
     frontMatter = boolean("htmlDetectFrontMatter", fallback: true)

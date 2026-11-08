@@ -1,0 +1,193 @@
+{
+  "checkpoint": "Prepared isolated native scroll-past-end; not integrated or hosted-accepted",
+  "base": "422da99f488d8607f614fbdccef0f00a28e38793",
+  "worktree": "/private/tmp/snowfolio-scroll-past-end",
+  "localBranch": "modernization/scroll-past-end",
+  "goal": "active; incomplete",
+  "original": {
+    "key": "editorScrollsPastEnd",
+    "default": false,
+    "source": "MacDown/Code/View/MPEditorView.m",
+    "sha256": "b8fb408a47495900428ca867eef916bbd7bdcc00168eb35d0711acb9b1002628",
+    "behavior": "Original custom TextKit1 frame extension discounts trailing whitespace; native Swift replacement preserves the feature through public clip-view scroll extents."
+  },
+  "implementation": [
+    "Finite layout preference preserves original boolean key and explicit false import/reopen. Native searchable switch;55 Settings entries.",
+    "Public NSClipView.documentRect supplies a minimum document extent without changing source or fighting TextKit2 private frame updates; original scroll insets and automatic adjustment restore on disable.",
+    "Native text segments at the last visible grapheme/end account for existing blank tails. No Markdown parser/source rewriting. Cache source scans by document/revision/load/UTF16 length and geometry by width/inset/font/spacing/usage bounds.",
+    "Full window resize and persistent/overlay scrollbars retain last-row reach and native column width. Source/attributes/selection/revision/undo and TextKit2 stay intact.",
+    "Marked Chinese/Japanese text defers preference effects. Linked/unlinked reading anchors survive toggling. Scroll coordinator reads native constrained maximum including insets.",
+    "Native source paper also fills its scroll view. Normal zero/default feature path retains native clip behavior."
+  ],
+  "local": {
+    "full": {
+      "report": "/private/tmp/snowfolio-scroll-past-end-clip-final-full.json",
+      "reportSHA256": "c262d84e0cd745806adf0924c5ed4716afb04506eb48c8b3a7dcc49a1be28918",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-834805EA-1691-4E3F-A9AE-1A523C83B60E/build.log",
+      "logSHA256": "b0b7c0bdce50f387f1cdddc4e876e057f3bf3cdfde8f24de84466dbe4912006d",
+      "status": "succeeded",
+      "durationMs": 47194,
+      "tests": 350,
+      "suites": 75,
+      "diagnostics": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      }
+    },
+    "addressSanitizer": {
+      "report": "/private/tmp/snowfolio-scroll-past-end-clip-asan.json",
+      "reportSHA256": "3a1ce322ecdaef6f1785856edda4fbd63ca2f0cd9d2b0b298feb1b45c9736a4e",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-0E7FD1AA-63B5-40E3-8909-8E5410877147/build.log",
+      "logSHA256": "cb2bf3ab5ecd65e088b1ee34229906d9605152215a5454ea0d84c8a20e9689d3",
+      "status": "succeeded",
+      "durationMs": 35667,
+      "tests": 31,
+      "suites": 7,
+      "diagnostics": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      }
+    },
+    "focused": {
+      "report": "/private/tmp/snowfolio-scroll-past-end-clip-extent.json",
+      "reportSHA256": "f4091b68d6072877acc859f5c114b57ae2031f0005bade69a0c34ce0353cd360",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-84C22870-D436-4C4F-9247-430599F54F03/build.log",
+      "logSHA256": "68e968878fedfc65e85d637d953f7cd9d9592c5b4995430e3c0ba3b4437643a2",
+      "status": "succeeded",
+      "durationMs": 19021,
+      "tests": 24,
+      "suites": 5,
+      "diagnostics": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      }
+    },
+    "architecture": {
+      "path": "/private/tmp/snowfolio-scroll-past-end-arm64.json",
+      "sha256": "edd092a8582492e24e4cc141e7054cf7fed0a7a4379c3b5ac98392ea17b35fa6",
+      "executables": 8,
+      "scope": "Verified before regenerable build output was cleaned."
+    },
+    "appBuild": {
+      "log": "/private/tmp/snowfolio-scroll-past-end-app-build-root-marker.log",
+      "sha256": "399bd5ac3350cf9f925b913fe598862f7a07370e7e587fe91026e00990d6a161",
+      "result": "Passed build-for-testing, arm64 and resource/license verification before cleaning output.20 native UI methods compiled, not executed."
+    },
+    "formatting": {
+      "swiftFiles": 11,
+      "strict": "passed",
+      "diffCheck": "passed"
+    }
+  },
+  "nativeAppUI": "New20th method searches the switch, toggles it, checks a single replacement Undo/Redo and Settings reopen, then restores false. Literal source line-spacing fixture remains the corrected version from422da99. Not yet hosted-executed.",
+  "investigation": [
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-initial.json",
+      "sha256": "139e42fb7711381c353fec003596495ee55febf08964b7fb0242952157dfd3c6"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-layout-order.json",
+      "sha256": "02ea7999689e31a99000751798e26752c5b4591a664eabde156fdfe9accaf63d"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-native-minimum.json",
+      "sha256": "5a08d3b4e04e44418c803ba04be0316c7b4191abac3c759c2b24d01e3935df48"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-native-fit.json",
+      "sha256": "a25f9f78cb31e98e30d6154eb291291546c0839927aafe6139a4f8dfbf432cf3"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-viewport-floor.json",
+      "sha256": "cdc1dfe39d8563fad6ad823967565221216cb317029a250597feff7233750c57"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-behavior.json",
+      "sha256": "fcfd94c7a90f196792bb1a9ff233ed383a31db985c4b5978781a838b854786bc"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-resize.json",
+      "sha256": "b9aacecdccf91c9ef4b5dcfdd2069a4bc783b1543ebff0dc68f0f5a0efab9cf9"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-past-end-frame-property.json",
+      "sha256": "d8c7cc439385b27b4c483271e526c83bbe4e03cef590580b88bfa1d85bfa00c1"
+    }
+  ],
+  "investigationNotes": [
+    "Initial offscreen firstRect approach and fixture layout order failed to supply long-document space; use targeted native text segments and laid-out fixture geometry.",
+    "Native text view minSize/frame setter constraints passed initial sizing but failed on resize because AppKit updates short-document frames internally. Both new frame height overrides were withdrawn; final clip-view document extent passes resize.",
+    "The first composition test incorrectly expected marked attributes to remain after unmarking; assert they remain during preedit, and preserve text across the native unmark operation.",
+    "Tuist does not treat a worktree .git file as a root directory. An empty local Tuist directory is the isolated-only root marker; no product/build-script change was made."
+  ],
+  "sourceManifest": [
+    {
+      "path": "App/UITests/DocumentLifecycleTests.swift",
+      "sha256": "5ca4d2ce55149226764e38f06d09755e5bb23b5a57464b995322fc2f134f7ccf"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/EditorCore/EditorLayoutPreferences.swift",
+      "sha256": "df94bcdddecd34001444c3541f92b9854f632bb6a48ebb5230396f386dd6e5cd"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/AppPreferences.swift",
+      "sha256": "8c2339c7de1c7c227f08c76e5d608ac5e8ed9062d5326da85b5faad33fcc92cf"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentScrollCoordinator.swift",
+      "sha256": "3688c7ecc2bdd687af40678913fc381a86dab504e86bfafcbad7b2f9e3f1362a"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift",
+      "sha256": "2caa4f08a64d1ef7b647dcac64b3140fb68afad94ec4383a432e814c6c0067bc"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownEditor.swift",
+      "sha256": "0e1b1396a5e3c7f45e38004431ff619c9683969e8681d96a9a6d747f3a00765d"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/SettingsCatalog.swift",
+      "sha256": "7746e8cf036024cb10cf45c21cd75046de6740dbb17296ae32e1cdbee366e7ab"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorLayoutTests.swift",
+      "sha256": "0c171b9b65b57c92352ce978e1f74da2c7bf3e86df3d8ca3a14fdc0dd3a75dbd"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/SettingsTests.swift",
+      "sha256": "0710cf4d74d3cada883744e5b00a1a6dd5e1aac3c29d45c3750d5ee1aaa55972"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorScrollPastEnd.swift",
+      "sha256": "92c70bdc0fa05199846c8c9aa7110298c7c0c6d8b32d435b0f78cdfb8e9f1206"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorScrollPastEndTests.swift",
+      "sha256": "47490d9ce665b78a00fb3d5ef4ba70e984852b1ab8a82aed25952d87d9cae49f"
+    }
+  ],
+  "pending": [
+    "Add font/zoom/line-spacing extremes, including large final-row glyph metrics, before adoption. Current formula has not been characterized for all those combinations.",
+    "Exact hosted350/75,652 examples,eight arm64 executables and all20 UI methods, with screenshot inspection.",
+    "Fresh user-desktop source selection/glyphs, real IME/VoiceOver and modern caret paint reference. The full document lifecycle, remaining renderer/typing/statistics/M5/M6/release gates stay open.",
+    "No original target/file retirement. Coupled original consumers still need migration.",
+    "Do not reapply withdrawn frame prototypes or interpret passing firstRect metrics as modern caret paint proof."
+  ],
+  "maintenance": {
+    "generatedOutputCleaned": true,
+    "logs": [
+      "/private/tmp/snowfolio-scroll-past-end-generated-build-clean.log",
+      "/private/tmp/snowfolio-scroll-past-end-package-cache-clean.log"
+    ],
+    "reason": "Disk-full hosted screenshot extraction; only regenerable isolated Xcode/SwiftPM output cleaned after results and architecture were recorded. Source and raw evidence retained."
+  }
+}

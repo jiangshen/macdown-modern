@@ -119,6 +119,16 @@ final class MarkdownTextView: NSTextView {
   // The native snapshot may lag the reference model while a file loads.
   private(set) weak var sourceDocument: MarkdownDocument?
   private(set) var sourceRevision: UInt64?
+  private var pastEnd: NativeEditorScrollPastEnd?
+  var scrollPastEndMinimumHeight: CGFloat? { pastEnd?.minimumHeight }
+
+  func refreshScrollPastEnd() {
+    if pastEnd == nil, layoutPreferences?.scrollsPastEnd == true {
+      pastEnd = NativeEditorScrollPastEnd(editor: self)
+    }
+    pastEnd?.refresh()
+  }
+
   private var insertionMetricsFont: NSFont?
   private var insertionMetricsHeight: CGFloat = 0
 
@@ -205,6 +215,7 @@ final class MarkdownTextView: NSTextView {
   override func layout() {
     applyEditorGeometry()
     super.layout()
+    refreshScrollPastEnd()
     viewportLayoutChanged?()
   }
 

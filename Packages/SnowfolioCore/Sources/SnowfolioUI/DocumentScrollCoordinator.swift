@@ -255,6 +255,12 @@ public final class DocumentScrollCoordinator: NSObject {
     return result
   }
 
+  private func maximumScroll(in clip: NSClipView) -> CGFloat {
+    var proposed = clip.bounds
+    proposed.origin.y = clip.documentRect.maxY + clip.contentInsets.bottom + proposed.height
+    return max(0, clip.constrainBoundsRect(proposed).minY)
+  }
+
   func captureSource() -> SourceReadingPosition? {
     guard let document, let editor, let clip, editor.sourceDocument === document,
       editor.sourceRevision == document.revision, editor.window?.isVisible == true,
@@ -262,7 +268,7 @@ public final class DocumentScrollCoordinator: NSObject {
       clip.bounds.height > 0
     else { return nil }
     let visible = editor.visibleRect
-    let maximum = max(0, editor.bounds.height - clip.bounds.height)
+    let maximum = maximumScroll(in: clip)
     let offset = normalizedOffset(
       editor.characterIndexForInsertion(
         at: NSPoint(x: editor.textContainerInset.width + 1, y: visible.minY + 1)), in: editor)
@@ -297,7 +303,7 @@ public final class DocumentScrollCoordinator: NSObject {
     let offset = normalizedOffset(reading.offset, in: editor)
     let rect = caretRect(at: offset, in: editor)
     guard reading.atTop || reading.atBottom || rect != nil else { return false }
-    let maximum = max(0, editor.bounds.height - clip.bounds.height)
+    let maximum = maximumScroll(in: clip)
     let lineY = rect.map { $0.minY + reading.fraction * $0.height } ?? 0
     let y = reading.atTop ? 0 : reading.atBottom ? maximum : lineY
     clip.scroll(to: NSPoint(x: clip.bounds.minX, y: min(maximum, max(0, y))))

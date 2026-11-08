@@ -13,6 +13,7 @@ final class DocumentLifecycleTests: XCTestCase {
       "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
       "-editorHorizontalInset", "24", "-editorVerticalInset", "24",
       "-editorWidthLimited", "NO", "-editorMaximumWidth", "1000", "-editorLineSpacing", "0",
+      "-editorScrollsPastEnd", "NO",
     ]
     app.launchArguments += arguments
     app.launch()
@@ -721,6 +722,54 @@ final class DocumentLifecycleTests: XCTestCase {
     app.typeKey("a", modifierFlags: .command)
     path.typeText(directory.path + "\n")
     XCTAssertTrue(app.buttons["OKButton"].firstMatch.waitForExistence(timeout: 5))
+  }
+
+  @MainActor
+  func testEditorScrollPastEndPreservesSourceAndHistory() {
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    let original = "Original scrolling source"
+    let replacement = "Scroll space history checkpoint"
+    editor.click()
+    editor.typeText(original)
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText(replacement)
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("scroll past the end")
+    let result = settings.outlines.firstMatch.staticTexts["Scroll past the end"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let toggle = settings.switches["editorScrollsPastEnd"]
+    XCTAssertTrue(toggle.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(settings.switches.matching(identifier: "editorScrollsPastEnd").count, 1)
+    XCTAssertEqual(toggle.value as? Int ?? Int(toggle.value as? String ?? ""), 0)
+    toggle.click()
+    XCTAssertEqual(toggle.value as? Int ?? Int(toggle.value as? String ?? ""), 1)
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "editor-scroll-past-end-settings"
+    image.lifetime = .keepAlways
+    add(image)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, replacement)
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, original)
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, replacement)
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertEqual(toggle.value as? Int ?? Int(toggle.value as? String ?? ""), 1)
+    toggle.click()
+    XCTAssertEqual(toggle.value as? Int ?? Int(toggle.value as? String ?? ""), 0)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, replacement)
   }
 
   @MainActor

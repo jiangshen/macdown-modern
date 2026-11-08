@@ -183,6 +183,10 @@ enum SettingsCatalog {
       pane: .editor, title: "Layout",
       entries: [
         .init(
+          id: "editorScrollsPastEnd", title: "Scroll past the end",
+          detail: "Move the last line toward the top of the editor.", keywords: "bottom final line",
+          control: .toggle(\.editorLayout.scrollsPastEnd)),
+        .init(
           id: "editorLineSpacing", title: "Line spacing",
           detail: "Additional space between source lines.", keywords: "leading paragraph lines",
           control: .editorMetric(\.editorLayout.lineSpacing, 0...100, 1)),

@@ -11,6 +11,7 @@ public struct EditorLayoutPreferences: Equatable, Sendable {
   public var lineSpacing: Double {
     didSet { lineSpacing = Self.bounded(lineSpacing, 0...100, fallback: 0) }
   }
+  public var scrollsPastEnd: Bool
   public var widthLimited: Bool
   public var maximumWidth: Double {
     didSet { maximumWidth = Self.bounded(maximumWidth, 300...10_000, fallback: 1000) }
@@ -18,11 +19,13 @@ public struct EditorLayoutPreferences: Equatable, Sendable {
 
   public init(
     horizontalInset: Double = 24, verticalInset: Double = 24,
-    widthLimited: Bool = false, maximumWidth: Double = 1000, lineSpacing: Double = 0
+    widthLimited: Bool = false, maximumWidth: Double = 1000, lineSpacing: Double = 0,
+    scrollsPastEnd: Bool = false
   ) {
     self.horizontalInset = Self.bounded(horizontalInset, 0...35, fallback: 24)
     self.verticalInset = Self.bounded(verticalInset, 0...35, fallback: 24)
     self.lineSpacing = Self.bounded(lineSpacing, 0...100, fallback: 0)
+    self.scrollsPastEnd = scrollsPastEnd
     self.widthLimited = widthLimited
     self.maximumWidth = Self.bounded(maximumWidth, 300...10_000, fallback: 1000)
   }

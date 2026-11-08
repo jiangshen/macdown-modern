@@ -228,6 +228,16 @@ struct NativeEditorLayoutTests {
       "line spacing reading paragraph",
       diagnostic: { "before=\(anchor), now=\(paragraphOffset()), y=\(editor.visibleRect.minY)" },
       { paragraphOffset() == anchor })
+    for enabled in [true, false] {
+      preferences.editorLayout.scrollsPastEnd = enabled
+      try await waitFor("scroll-past-end preference") {
+        guard let scroll = editor.enclosingScrollView else { return false }
+        return enabled
+          ? scroll.contentView.contentInsets.bottom > 100
+          : scroll.contentView.contentInsets.bottom < 10
+      }
+      try await waitFor("scroll-past-end reading paragraph") { paragraphOffset() == anchor }
+    }
     #expect(editor.selectedRange() == selected)
     #expect(document.text == source && document.revision == 0)
     #expect(find(host.view) === editor && editor.textLayoutManager != nil)
