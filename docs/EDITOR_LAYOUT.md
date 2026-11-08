@@ -61,6 +61,6 @@ keep it off. Turning it off restores native insets and scroll bounds.
 The source, selection and native history stay intact. Composition defers changed
 preferences. Native resize tests cover overlay/persistent scrollbars, Menlo/Helvetica,
 4...216-point resolved fonts, zoom50...300% and spacing0/3/100. Current native geometry
-is the reference when TextKit updates usage bounds during scrolling. Exact local
-350-test acceptance and remaining hosted/desktop gates are in
+is the reference when TextKit updates usage bounds during scrolling. Exact local and hosted
+350-test/20-native-UI-method acceptance and remaining desktop gates are in
 [editor-scroll-past-end.json](validation/editor-scroll-past-end.json).

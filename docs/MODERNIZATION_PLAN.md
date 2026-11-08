@@ -2,43 +2,37 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current work awaiting hosted acceptance: scroll-past-end is integrated from the isolated
-reviewed source. Local350 package tests /75 suites,31 sanitizer tests /seven suites,
-eight arm64 test executables and the arm64 app build pass;20 UI methods compile. The
-last visible native row is the scroll target, with existing blank tails discounted.
-Source/selection/history, native resize and simulated composition remain covered.
+Current accepted checkpoint: native scroll-past-end and the preceding column,
+line-spacing, typography and scroll-handoff work. Exact implementation `4ee7721`
+passes [hosted validation 42458398130](https://github.com/jiangshen/snowfolio/actions/runs/42458398130):
+**350 package tests /75 suites, 652 CommonMark examples, eight arm64 test executables
+and all 20 native UI methods**, with zero failures or skips. Exact logs/result bundle
+are downloaded and the new Settings screenshot is inspected. Local31 sanitizer tests
+/seven suites and96 typography/source/scroller combinations pass. Last visible native
+row geometry supplies only the scroll extent required; existing blank tails/native
+space are retained. Source/selection/history and simulated composition remain covered.
 See [editor-scroll-past-end.json](validation/editor-scroll-past-end.json).
 
-Current accepted checkpoint: native source line spacing, terminal insertion **API**
-metrics and ordering of source/preview scroll gestures. Exact implementation `422da99`
-passes [hosted validation 42453343180](https://github.com/jiangshen/snowfolio/actions/runs/42453343180):
-**347 package tests /74 suites, 652 CommonMark examples, eight arm64 test executables
-and all 19 native UI methods**. Raw downloaded artifacts and all three new screenshots
-are inspected. Local acceptance also passes 28 sanitizer tests /six suites and the
-arm64 app build. The earlier margins/column/named-font work remains covered.
+Settings has55 unique entries. Source line spacing retains its0...100 native-point
+range and fractional persistence. Scroll-past-end retains the original boolean key
+and explicit false values. Geometry waits for composition. The30-minute native job
+envelope leaves artifact time; individual waits/assertions remain unchanged.
 
-Settings has 54 unique entries. Line spacing preserves editorLineSpacing, explicit
-imported values, zero and fractional persistence within 0...100 native points. Fresh
-Snowfolio remains at zero. Paragraph presentation and native writing defaults preserve
-source, selection and history; geometry waits for composition. Input sequences reject
-stale queued pane movements and late reports; the regression checks both directions.
+New work awaiting execution: the autosave/clean-external-reload encoding fixture in
+`6d911da`, [run42459610152](https://github.com/jiangshen/snowfolio/actions/runs/42459610152).
+All21 native UI methods compile. The fixture checks exact UTF-16LE BOM/CRLF/Unicode
+autosave before Save, outside replacement with UTF-8 BOM/LF, clean reload, Undo/Redo
+and Save. No runtime acceptance is claimed yet. See
+[document-lifecycle.json](validation/document-lifecycle.json).
 
-The new UI case verifies a single native replacement edit through 12.5-point settings,
-Undo/Redo, reopen and reset. Two earlier fixture errors are preserved: automatic list
-continuation changed literal input, then one Undo correctly removed a terminal newline.
-The fixture now uses the established single replacement pattern. The job envelope is
-30 minutes after the prior 19-method run reached its 20-minute cap; individual waits
-and assertions are unchanged. Exact evidence is in [editor-line-spacing.json](validation/editor-line-spacing.json).
-
-The light/default-font source-selection screenshot has a continuous highlight without
-a marker seam. User-desktop dark selection remains unverified while the Mac is locked.
-The terminal caret screenshot paints a 29-pixel bar; public/native-reference API metrics
-pass, but actual modern indicator paint equivalence is still open. The locked-desktop
-reference fixture could not display a native indicator. Hosted preview glyph painting
-also remains open; no runner cause is claimed. The final log retains 28 priority
-runtime warnings and two AppIntents metadata warnings without proven attribution.
-See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md) for behavior. Scroll-past-end and remaining
-original editing preferences still need acceptance before coupled legacy retirement.
+The light/default-font source-selection screenshot at the preceding accepted checkpoint
+has a continuous highlight without a marker seam. User-desktop dark selection remains
+unverified while the Mac is locked. Actual modern caret paint/native-reference
+equivalence and hosted preview glyph painting remain open; API metrics alone are not
+paint evidence. The new log retains33 runtime priority warnings without proven
+attribution. Real IME/VoiceOver, complete lifecycle, remaining typing/statistics/renderer
+parity, M5 and measured M6/release readiness remain required. No coupled original target
+is retired. See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md) for behavior.
 
 The preceding asset-folder implementation `d3f5da2` passed exact hosted acceptance:
 334 package tests, 652 CommonMark examples and all 17 native UI methods, including
@@ -2789,3 +2783,13 @@ Runtime acceptance is pending; compilation is not evidence that autosave/reload 
 No production lifecycle behavior changed. Exact source/build evidence and remaining
 conflict/Versions/restoration/IME/VoiceOver gates are in validation/document-lifecycle.json.
 The full modernization remains active and incomplete.
+
+
+### Scroll-past-end exact hosted acceptance
+
+Run42458398130 at4ee7721 passes350 tests/75 suites,652 examples,eight arm64 test
+executables and all20 native UI methods without failures/skips. The new Settings
+screenshot is inspected. Exact artifact checksums and33 remaining runtime-priority
+warnings are recorded in validation/editor-scroll-past-end.json; no attribution or
+full-performance acceptance is inferred. User-desktop selection, real IME/VoiceOver,
+modern caret paint, full lifecycle and remaining modernization requirements stay open.

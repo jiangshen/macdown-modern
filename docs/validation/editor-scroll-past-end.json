@@ -1,5 +1,5 @@
 {
-  "checkpoint": "Integrated native scroll-past-end; local acceptance passes, exact hosted acceptance pending",
+  "checkpoint": "Integrated native scroll-past-end; exact local and hosted acceptance passed",
   "base": "422da99f488d8607f614fbdccef0f00a28e38793",
   "worktree": "/private/tmp/snowfolio-scroll-past-end",
   "localBranch": "modernization/scroll-past-end",
@@ -197,7 +197,6 @@
     }
   ],
   "pending": [
-    "Exact hosted350/75,652 examples,eight arm64 executables and all20 UI methods, with screenshot inspection.",
     "Fresh user-desktop source selection/glyphs, real IME/VoiceOver and modern caret paint reference. The full document lifecycle, remaining renderer/typing/statistics/M5/M6/release gates stay open.",
     "No original target/file retirement. Coupled original consumers still need migration.",
     "Do not reapply withdrawn frame prototypes or interpret passing firstRect metrics as modern caret paint proof."
@@ -333,6 +332,50 @@
     "sourceHashVerification": "All11 reviewed Swift files match after adoption. No test repeat needed for identical source; native app composition rebuilt from main checkout."
   },
   "hosted": {
-    "status": "pending source push; follow the exact run for the resulting head"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42458398130",
+    "commit": "4ee7721bbf10b2243f25de985a4993949da0b057",
+    "result": "passed both jobs",
+    "packageTests": 350,
+    "packageSuites": 75,
+    "commonMarkExamples": 652,
+    "commonMarkFailures": 0,
+    "arm64TestExecutables": 8,
+    "nativeUITests": 20,
+    "nativeUIFailures": 0,
+    "nativeUISkips": 0,
+    "nativeTestSeconds": 863.093,
+    "runtimePriorityWarnings": 33,
+    "scope": "Exact logs/result bundle downloaded; all20 methods and source/core counts verified. New native Settings search/switch screenshot inspected. User desktop acceptance remains separate.",
+    "screenshot": {
+      "path": "/private/tmp/snowfolio-scroll-past-end-hosted-attachments/834F5741-3332-4EF8-ACA4-4AB28017016C.png",
+      "sha256": "31b07d21e7d43f7f4f8593101dcf3e2cd70e70eddc802c38a9d92fbbeaa78ea0",
+      "inspection": "Native Settings has searchable Scroll past the end switch enabled within Layout; no clipped control or label."
+    },
+    "evidence": [
+      {
+        "path": "/private/tmp/snowfolio-scroll-past-end-hosted-core/snowfolio-validation/swift-test.log",
+        "sha256": "5fccc91844b93451e87c7f1abb56b06c169e40086e067e0bb05d44554f4c04c0"
+      },
+      {
+        "path": "/private/tmp/snowfolio-scroll-past-end-hosted-core/snowfolio-validation/architecture.txt",
+        "sha256": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35"
+      },
+      {
+        "path": "/private/tmp/snowfolio-scroll-past-end-hosted-core/snowfolio-commonmark/commonmark.json",
+        "sha256": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885"
+      },
+      {
+        "path": "/private/tmp/snowfolio-scroll-past-end-hosted-summary.json",
+        "sha256": "44bd295a61cef96b4f90741bb187468ed6c7025f1598e8bd6f4e14d542317cdb"
+      },
+      {
+        "path": "/private/tmp/snowfolio-scroll-past-end-hosted-native/xcodebuild.log",
+        "sha256": "9b767e8eb1f6972d201df65090e93cca96721d34c87f6945839c70162ea7d06c"
+      },
+      {
+        "path": "/private/tmp/snowfolio-scroll-past-end-hosted-attachments/834F5741-3332-4EF8-ACA4-4AB28017016C.png",
+        "sha256": "31b07d21e7d43f7f4f8593101dcf3e2cd70e70eddc802c38a9d92fbbeaa78ea0"
+      }
+    ]
   }
 }
