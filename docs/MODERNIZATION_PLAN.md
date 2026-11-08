@@ -8,7 +8,8 @@ Sanitizer tests / four suites**, eight arm64 test executables and an arm64 app b
 Native resizing, source/selection/undo, deferred composition geometry and reading
 paragraph preservation pass with linked scrolling off/on. Four searchable Settings
 controls preserve the original keys; 53 catalog entries remain unique. The app's new
-Settings test compiles among 18 native UI methods; hosted execution is pending.
+Settings test compiles among 18 native UI methods. Exact implementation `dd6fb58`
+is running in [hosted validation 42442182528](https://github.com/jiangshen/snowfolio/actions/runs/42442182528); acceptance is pending.
 See [editor-column-layout.json](validation/editor-column-layout.json) and
 [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md). Line spacing, scroll-past-end and other
 original editing/layout preferences remain open.

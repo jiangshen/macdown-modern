@@ -163,8 +163,12 @@
     }
   },
   "hosted": {
-    "status": "Pending exact pushed code; new native Settings method now also verifies direct numeric entry and persistence.",
-    "expectedNativeMethods": 18
+    "status": "Running exact pushed implementation; inspect this same run through completion.",
+    "expectedNativeMethods": 18,
+    "commit": "dd6fb581be5a90c201b98c6de0e321aa045a7ae5",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42442182528",
+    "expectedPackageTests": 340,
+    "expectedPackageSuites": 73
   },
   "remaining": [
     "Fresh desktop source-selection/glyph, keyboard/VoiceOver and real Chinese/Japanese IME acceptance remain open; latest CUA observation locked.",
