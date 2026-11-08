@@ -346,3 +346,22 @@ were moved to Trash: 2,153 files, 141,866,410 logical bytes and 149,331,968 allo
 bytes. Their recovery markers and destinations were verified. Trash was not emptied;
 this removes duplicate active scratch files and does not claim recovered disk space.
 Exact recovery paths are appended in `validation/project-cleanup.json`.
+
+
+## Code-presentation validation and artifact cleanup — 2026-11-07
+
+The final contrast-corrected checkpoint passes 329 package tests / 70 suites, 652
+CommonMark examples and 15 native app UI tests. Twenty-six priority diagnostics and
+two AppIntents metadata notices remain unattributed. One existing native caret metric
+case differed intermittently from its native reference; unchanged focused cases and
+the final complete suite pass. Failure diagnostics now include font/typing attributes;
+production font code and assertions are unchanged. A preview-led zoom timeout in an
+earlier concurrent local run also has no proven cause. These are preserved in
+`validation/code-block-presentation.json`; full app latency/energy/memory acceptance
+and desktop painting/IME/VoiceOver remain open.
+
+Four superseded agent-generated template download folders were moved to native Trash
+with original/destination marker verification: 4,344 files, 290,155,859 logical bytes
+and 305,160,192 allocated bytes. Current raw evidence, builds/source and compact prior
+reports/screenshots remain. Trash was not emptied, so no disk-space recovery is claimed.
+Recovery paths are recorded in `validation/project-cleanup.json`.

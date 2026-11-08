@@ -221,7 +221,62 @@
       "scope": "Three exact superseded agent-generated custom-CSS validation/attachment directories; originals and recovery marker hashes verified.",
       "currentBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
       "currentEvidence": "/private/tmp/snowfolio-html-template-accepted-hosted-native"
+    },
+    {
+      "date": "2026-11-08T01:34:19Z",
+      "items": [
+        {
+          "allocatedBytes": 155926528,
+          "files": 2264,
+          "logicalBytes": 148117641,
+          "marker": "xcodebuild.log",
+          "markerSHA256": "8d4edd27378d6fb2ab2cbe29e489b82ef170aa50479e56cf2454fd917a00a006",
+          "original": "/private/tmp/snowfolio-html-template-hosted-native",
+          "reason": "Superseded template validation bundle; expanded code-presentation checkpoint covers all previous methods plus code controls and no-style export. Compact reports/screenshots remain; raw bundle is recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-html-template-hosted-native"
+        },
+        {
+          "allocatedBytes": 148955136,
+          "files": 2070,
+          "logicalBytes": 141792009,
+          "marker": "xcodebuild.log",
+          "markerSHA256": "1cc4a60f067f7c00b86d92170410570cf397c5bf1c31f755f7a12b7539956575",
+          "original": "/private/tmp/snowfolio-html-template-accepted-hosted-native",
+          "reason": "Superseded template validation bundle; expanded code-presentation checkpoint covers all previous methods plus code controls and no-style export. Compact reports/screenshots remain; raw bundle is recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-html-template-accepted-hosted-native"
+        },
+        {
+          "allocatedBytes": 139264,
+          "files": 5,
+          "logicalBytes": 122825,
+          "marker": "snowfolio-validation/swift-test.log",
+          "markerSHA256": "8e91d676eceb33008b13baad59a8dcc3da45d5c323895683ff3978d5c988fd41",
+          "original": "/private/tmp/snowfolio-html-template-hosted-core",
+          "reason": "Superseded template validation bundle; expanded code-presentation checkpoint covers all previous methods plus code controls and no-style export. Compact reports/screenshots remain; raw bundle is recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-html-template-hosted-core"
+        },
+        {
+          "allocatedBytes": 139264,
+          "files": 5,
+          "logicalBytes": 123384,
+          "marker": "snowfolio-validation/swift-test.log",
+          "markerSHA256": "5c8b4bd684de2b1ff154da9863535e04d85f8625c3c151a092b6d7c56c21cac2",
+          "original": "/private/tmp/snowfolio-html-template-accepted-hosted-core",
+          "reason": "Superseded template validation bundle; expanded code-presentation checkpoint covers all previous methods plus code controls and no-style export. Compact reports/screenshots remain; raw bundle is recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-html-template-accepted-hosted-core"
+        }
+      ],
+      "totals": {
+        "files": 4344,
+        "logicalBytes": 290155859,
+        "allocatedBytes": 305160192
+      },
+      "method": "FileManager.trashItem",
+      "trashEmptied": false,
+      "scope": "Four exact superseded agent-generated template validation downloads only; recovery markers verified. Current raw results, compact historical screenshots/reports, source, builds and user documents retained.",
+      "currentBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+      "currentEvidence": "/private/tmp/snowfolio-code-presentation-hosted-native"
     }
   ],
-  "lastUpdated": "2026-11-08T00:25:13Z"
+  "lastUpdated": "2026-11-08T01:34:19Z"
 }

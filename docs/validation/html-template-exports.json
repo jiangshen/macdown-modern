@@ -112,10 +112,20 @@
     "Fresh user-desktop glyph/selection and import/export acceptance; Mac locked at latest CUA check",
     "Real IME/VoiceOver, autosave/Versions/conflict and remaining renderer/dialect gates",
     "Separate user-provided asset license sidecars",
-    "M5 integrations, full native app performance/energy/memory, releases and safe coupled legacy retirement",
-    "HTML save-panel initial style checkbox for None: align with original nil htmlStyleName defaulting off; current four-option UI test covers Notebook."
+    "M5 integrations, full native app performance/energy/memory, releases and safe coupled legacy retirement"
   ],
   "productionCodeCheckpoint": "5e84728daacb004aebef4c2aeff5442e99fff094",
   "acceptedCode": "e571b4a6a99fd8e79d0363e32815ba25e87db7cf",
-  "status": "implemented; local and hosted package/native export acceptance passed; full modernization incomplete"
+  "status": "implemented; local and hosted package/native export acceptance passed; full modernization incomplete",
+  "noneStyleDefaultFollowup": {
+    "code": "105709896ad72ce9c95fc979024e93d2fac64a3f",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42433495480",
+    "result": "Resolved: native save-panel initial styles-off/code-on and independent toggle/cancel pass; see code-block-presentation.json."
+  },
+  "rawArtifactRecovery": {
+    "/private/tmp/snowfolio-html-template-hosted-native": "/Users/caden/.Trash/snowfolio-html-template-hosted-native",
+    "/private/tmp/snowfolio-html-template-accepted-hosted-native": "/Users/caden/.Trash/snowfolio-html-template-accepted-hosted-native",
+    "/private/tmp/snowfolio-html-template-hosted-core": "/Users/caden/.Trash/snowfolio-html-template-hosted-core",
+    "/private/tmp/snowfolio-html-template-accepted-hosted-core": "/Users/caden/.Trash/snowfolio-html-template-accepted-hosted-core"
+  }
 }

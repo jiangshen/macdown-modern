@@ -8,7 +8,8 @@ tests / three suites**, eight arm64 test executables and an arm64 app build. All
 pinned grammars retain exact native WebKit code/selection text with numbers; wrapped
 line geometry, all reading styles/code themes, custom labels and PDF preparation pass.
 Forward/backward selections survive unchanged-code presentation transitions. Hosted
-Settings and None-style save-panel UI execution is pending. Exact evidence and limits
+Settings and None-style save-panel UI execution passed on the exact corrected commit:
+15 native UI tests, 329 package tests and 652 CommonMark examples. Exact evidence and limits
 are in [code-block-presentation.json](validation/code-block-presentation.json), with use
 in [CODE_BLOCKS.md](CODE_BLOCKS.md).
 
@@ -26,7 +27,7 @@ fully linked assets served the original preview internally; the HTML export UI e
 independent include/omit choices for document styles and code highlighting, with included
 resources embedded. Separate user-provided license sidecars, remaining renderer parity
 and safe coupled legacy retirement stay open. The HTML accessory now starts without document styles for None; its new native UI
-case is awaiting hosted confirmation. Unsaved-document default asset folders still need
+case passes in the final hosted run. Unsaved-document default asset folders still need
 an explicit grant-backed migration workflow (`htmlDefaultDirectoryUrl`). The [original characterization ledger](validation/css-template-characterization.json)
 preserves source evidence and the call-site correction.
 
@@ -2506,3 +2507,29 @@ behavior. `validation/css-template-characterization.json` records exact source/a
 current gaps and required runtime/export/resource evidence. Restore these capabilities
 while retaining the liked Snowfolio notebook style as the default. Coupled legacy
 renderer/template/resource retirement remains gated on verified consumer parity.
+
+
+## Code-block presentation hosted acceptance — 2026-11-07
+
+Run [42433495480](https://github.com/jiangshen/snowfolio/actions/runs/42433495480),
+code `105709896ad72ce9c95fc979024e93d2fac64a3f`, passed both jobs. Exact downloaded
+evidence verifies 329 package tests / 70 suites, 652/652 CommonMark examples, eight
+arm64 test executables and 15 native document UI tests with zero failures. Custom
+code label/number Settings and None-style initial HTML export options pass with source
+and explicit native history assertions retained. All six mixed-list cases pass,
+including the reported First/Second/dfdfd layout. No additional list styling changed.
+
+The Settings and export screenshots paint the expected controls. The reading preview
+is blank in the code fixture screenshot despite its successful accessibility lookup;
+the cause remains unproven. This does not close glyph/number/selection visual acceptance.
+A fresh direct CUA check still finds the Mac locked. Existing intermittent native caret
+and preview-led zoom diagnostics remain recorded without weakened assertions. The
+26 runtime priority diagnostics and two AppIntents metadata notices still need attribution.
+Full document reliability, real IME/VoiceOver, remaining parity, productivity integrations,
+native performance, releases and safe coupled legacy retirement remain open. Exact
+results, limitations and hashes are in `validation/code-block-presentation.json`.
+
+Four superseded agent-generated template downloads were moved to Trash after retaining
+the expanded current raw evidence: 4,344 files / 290,155,859 logical bytes. Recovery
+markers and destinations were verified; Trash was not emptied. Compact prior screenshots
+and reports remain. See `validation/project-cleanup.json` for exact recovery paths.

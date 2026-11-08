@@ -1,7 +1,7 @@
 {
   "checkpoint": "Swift code-block line numbers, labels and None-style export default",
   "date": "2026-11-07",
-  "status": "implemented; local package/native fixture/build acceptance passed; hosted UI pending",
+  "status": "implemented; local and exact-head hosted package/native behavioral acceptance passed; fresh desktop visual acceptance remains open",
   "fullGoal": "active; incomplete",
   "originalEvidence": [
     {
@@ -101,10 +101,47 @@
     }
   },
   "hosted": {
-    "status": "Waiting for exact final contrast commit; original feature run retained separately",
+    "status": "passed both jobs; exact downloaded package/corpus/architecture/native logs and three screenshots inspected",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42433495480",
+    "code": "105709896ad72ce9c95fc979024e93d2fac64a3f",
+    "packageTests": 329,
+    "packageSuites": 70,
+    "commonMarkExamples": 652,
+    "commonMarkFailures": 0,
+    "arm64TestExecutables": 8,
+    "nativeUITests": 15,
+    "nativeUIFailures": 0,
+    "codeSettingsTest": "passed in 48.919 seconds; Custom label and numbers persist, label has accessibility text, source and deliberate redo/undo history retained",
+    "noneStyleExportTest": "passed in 18.225 seconds; None initializes document styles off and code highlighting on; independent toggle/cancel preserve source",
+    "priorityDiagnostics": 26,
+    "appIntentsMetadataNotices": 2,
+    "diagnosticScope": "Runtime priority-warning attribution and full app memory/energy/performance remain open; no first-party cause established.",
+    "rawCore": "/private/tmp/snowfolio-code-presentation-hosted-core",
+    "rawNative": "/private/tmp/snowfolio-code-presentation-hosted-native",
+    "workflowLog": "/private/tmp/snowfolio-code-presentation-hosted.log",
+    "visualInspection": {
+      "settings": "Show code line numbers enabled and Custom code label visible in native grouped Settings.",
+      "export": "Save panel visibly starts Include document styles off and Include code highlighting on.",
+      "preview": "Source glyphs and selected source paint, but reading preview is blank in numbered-code-and-custom-label screenshot despite successful accessibility lookup. Cause unproven. This does not establish preview glyph/number visual acceptance.",
+      "desktop": "Direct CUA recheck remains locked; no fresh source-editor or preview pixel acceptance."
+    },
     "initialRun": "https://github.com/jiangshen/snowfolio/actions/runs/42432393352",
     "initialCode": "e062ba0b76798c231a3276e642a15aac0f64b8d0",
-    "note": "Initial package job passed; final contrast update requires fresh native/head validation."
+    "initialOutcome": "Both jobs passed; superseded by exact final contrast run.",
+    "artifactSHA256": {
+      "/private/tmp/snowfolio-code-presentation-hosted-core/snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "/private/tmp/snowfolio-code-presentation-hosted-core/snowfolio-commonmark/build.log": "4cdeea1578cafafc8dd7afc206ba7c4e79cfaf19edbc6bab2a7b0b5f6ed31ed2",
+      "/private/tmp/snowfolio-code-presentation-hosted-core/snowfolio-validation/swift-test.log": "800a253cf7221ecd8985c23c5636e7ffdc0bb4aacb786d7ea76ee489ba2b25d0",
+      "/private/tmp/snowfolio-code-presentation-hosted-core/snowfolio-validation/toolchain.txt": "04630ab8fa201f57c63c59730e638135e32584a97e16e004a417eb8ed283dc83",
+      "/private/tmp/snowfolio-code-presentation-hosted-core/snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "/private/tmp/snowfolio-code-presentation-hosted-native/xcodebuild.log": "5b681d583b7633beb4e131d50555a75c12c98c682f7237ac8065c7e50c387c7d",
+      "/private/tmp/snowfolio-code-presentation-hosted.log": "6d76a307671c01673777d16dfd01049d57a4c9ae8dba88f6991f76142e94a118",
+      "/private/tmp/snowfolio-code-presentation-ui-attachments/B751C039-FC0E-4E79-9BAB-5AFB4243EEFF.png": "264a58a671c3ba01fb7eb718085ad54813ac9a3e583665202340bd3a2743a218",
+      "/private/tmp/snowfolio-code-presentation-ui-attachments/manifest.json": "fdd172d5df9e0b913f7a4e8b748e6c61ab32054af8e599b0049037224b2d445a",
+      "/private/tmp/snowfolio-code-presentation-ui-attachments/7CB701AA-2044-4001-BE0A-BD716C1E28DC.png": "2b672f6b3c74f24aea8cac9d2337fa62c8658070334ce4d122806097ad4a9384",
+      "/private/tmp/snowfolio-code-presentation-export-ui-attachments/manifest.json": "ddecdfe0e3220448dcd40cb829d9cc21811c4b6add3041a4018d56af714f1fd1",
+      "/private/tmp/snowfolio-code-presentation-export-ui-attachments/B423F7B3-14E5-4467-A88C-D357C92D320B.png": "9f5412ceba3990e301fa01f95e2008d8933968493532fccdb8b5937a7cdac6de"
+    }
   },
   "remaining": [
     "Fresh user-desktop visual glyph/selection acceptance remains pending; latest direct CUA observation was locked.",

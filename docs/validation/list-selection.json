@@ -162,5 +162,14 @@
     "broaderChecks": "297 package tests / 60 suites, 652 CommonMark examples and 10 native document UI tests pass; exact evidence in reading-styles.json.",
     "desktop": "Mac locked; no fresh direct source-editor or preview pixel acceptance claimed.",
     "goal": "active; incomplete"
+  },
+  "codePresentationRecheck": {
+    "date": "2026-11-07",
+    "code": "105709896ad72ce9c95fc979024e93d2fac64a3f",
+    "hostedRun": "https://github.com/jiangshen/snowfolio/actions/runs/42433495480",
+    "result": "All six list parameter cases pass: First/Second/dfdfd at 28px in light/dark and wrapped tight/loose lists before/after style changes; no additional list production change.",
+    "broaderChecks": "329 package tests / 70 suites, 652 CommonMark examples, 15 native document UI tests; exact raw evidence and hashes in code-block-presentation.json.",
+    "desktop": "Mac locked at fresh CUA check; source-editor-specific reproduction and user-desktop pixel acceptance remain open.",
+    "goal": "active; incomplete"
   }
 }
