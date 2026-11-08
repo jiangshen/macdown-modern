@@ -5,6 +5,7 @@ import RenderingCore
 import Synchronization
 
 public struct MarkdownExport: Sendable {
+  public enum Failure: Error, Equatable, Sendable { case assetFolderUnavailable }
   public let fragment: String
   public let document: String
 
@@ -13,17 +14,20 @@ public struct MarkdownExport: Sendable {
   public static func build(
     source: String, options: MarkdownRenderingOptions = .init(),
     title: String, directory: URL?, includeStyles: Bool = true,
-    remoteImages: Bool = false, embedLocalImages: Bool = true, style: DocumentStyle = .init(),
+    remoteImages: Bool = false, embedLocalImages: Bool = true,
+    localImagesUnavailable: Bool = false, style: DocumentStyle = .init(),
     templateName: String = HTMLExportTemplate.defaultName
   ) async throws -> Self {
     let assets = Mutex<[String: String]>([:])
     let result = try await MarkdownProcessor().render(source, options: options) {
       kind, destination in
-      guard embedLocalImages, kind == .image, let directory,
+      guard embedLocalImages, kind == .image,
         let base = URL(string: "mdasset://document/"),
         let url = URL(string: destination, relativeTo: base)?.absoluteURL,
         url.scheme == "mdasset", url.host == "document"
       else { return destination }
+      if localImagesUnavailable { throw Failure.assetFolderUnavailable }
+      guard let directory else { return destination }
       let resource = try LocalPreviewResource.read(url, relativeTo: directory)
       // Keep the native engine's normal raw HTML and dangerous-URL filtering.
       // A generated marker lets us embed SVG/HEIC too, which cmark's data-URL whitelist

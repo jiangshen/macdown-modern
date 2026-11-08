@@ -7,6 +7,7 @@ import WebKit
 public struct NativeMarkdownPreview: NSViewRepresentable {
   public let html: String
   public let directory: URL?
+  public let assetAccess: DocumentAssetAccess?
   public let remoteImages: Bool
   public let style: DocumentStyle
   public let revision: UInt64?
@@ -18,7 +19,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
 
   public init(
     html: String, directory: URL?, remoteImages: Bool = false, style: DocumentStyle = .init(),
-    revision: UInt64? = nil,
+    assetAccess: DocumentAssetAccess? = nil, revision: UInt64? = nil,
     callouts: CalloutEditorController? = nil,
     openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
     scrolling: DocumentScrollCoordinator? = nil, zoomScale: Double = 1,
@@ -26,6 +27,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   ) {
     self.html = html
     self.directory = directory
+    self.assetAccess = assetAccess
     self.remoteImages = remoteImages
     self.style = style
     self.revision = revision
@@ -74,7 +76,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     coordinator.callouts = callouts
     coordinator.update(
       view, html: html, directory: directory, remoteImages: remoteImages, style: style,
-      revision: revision, zoomScale: zoomScale)
+      revision: revision, zoomScale: zoomScale, assetAccess: assetAccess)
     return view
   }
 
@@ -89,7 +91,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     context.coordinator.callouts = callouts
     context.coordinator.update(
       view, html: html, directory: directory, remoteImages: remoteImages, style: style,
-      revision: revision, zoomScale: zoomScale)
+      revision: revision, zoomScale: zoomScale, assetAccess: assetAccess)
   }
 
   public static func dismantleNSView(_ view: WKWebView, coordinator: Coordinator) {
@@ -100,6 +102,8 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     view.stopLoading()
     view.navigationDelegate = nil
     coordinator.resources.cancelAll()
+    coordinator.resources.access = nil
+    coordinator.resources.directory = nil
     coordinator.callouts?.close()
   }
 
@@ -130,10 +134,12 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     private var appliedHTML: String?
     private var loadedRemoteImages: Bool?
     private var loadedDirectory: URL?
+    private var loadedAssetAccessID: UUID?
 
     func update(
       _ view: WKWebView, html: String, directory: URL?, remoteImages: Bool,
-      style: DocumentStyle = .init(), revision: UInt64? = nil, zoomScale: Double = 1
+      style: DocumentStyle = .init(), revision: UInt64? = nil, zoomScale: Double = 1,
+      assetAccess: DocumentAssetAccess? = nil
     ) {
       scrollView = view
       pendingHTML = html
@@ -142,7 +148,10 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       pendingZoom = zoomScale.isFinite ? min(16, max(0.25, zoomScale)) : 1
       if failedZoom != pendingZoom { failedZoom = nil }
       resources.directory = directory
-      if loadedRemoteImages != remoteImages || loadedDirectory != directory {
+      resources.access = assetAccess
+      if loadedRemoteImages != remoteImages || loadedDirectory != directory
+        || loadedAssetAccessID != assetAccess?.id
+      {
         scrolling?.previewWillReload()
         ready = false
         scrollContextRevision = nil
@@ -159,11 +168,13 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         appliedStyle = style
         loadedRemoteImages = remoteImages
         loadedDirectory = directory
+        loadedAssetAccessID = assetAccess?.id
+        resources.beginNavigation()
         expectsInitialNavigation = true
         navigation = view.loadHTMLString(
           PreviewHTML.document(
             remoteImages: remoteImages, includeHighlighting: true, style: style, includeMath: true),
-          baseURL: URL(string: "mdasset://document/"))
+          baseURL: resources.baseURL)
       } else {
         applyLatest(to: view)
       }
@@ -451,9 +462,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         // More than one app-owned load can be awaiting policy while a document's
         // directory/CSP changes. Keep the gate open until the current navigation
         // finishes; consuming it in the first callback can cancel the replacement.
-        // Only the two exact skeleton URLs are allowed, never arbitrary assets.
+        // Only the current exact skeleton URL (or about:blank) is allowed, never arbitrary assets.
         let skeletonURL =
-          url.absoluteString == "about:blank" || url.absoluteString == "mdasset://document/"
+          url.absoluteString == "about:blank" || url == resources.baseURL
         let initial =
           expectsInitialNavigation && navigationAction.navigationType == .other && skeletonURL
         decisionHandler(initial ? .allow : .cancel)
@@ -465,16 +476,38 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
 @MainActor
 final class LocalResourceHandler: NSObject, WKURLSchemeHandler {
   var directory: URL?
+  var access: DocumentAssetAccess?
+  private var resourceHost = "document"
+  var baseURL: URL { URL(string: "mdasset://" + resourceHost + "/")! }
+
+  func beginNavigation() {
+    // A relative name can mean different bytes in another folder. Distinct origins
+    // prevent WebKit's decoded-image cache from reusing the previous grant's image.
+    resourceHost = "document-" + UUID().uuidString.lowercased()
+  }
+
   private var tasks: [ObjectIdentifier: Task<Void, Never>] = [:]
 
   func webView(_ webView: WKWebView, start urlSchemeTask: any WKURLSchemeTask) {
     let key = ObjectIdentifier(urlSchemeTask)
-    guard let directory, let url = urlSchemeTask.request.url else {
+    guard let directory, let request = urlSchemeTask.request.url,
+      request.scheme == "mdasset", request.host == resourceHost,
+      var components = URLComponents(url: request, resolvingAgainstBaseURL: false)
+    else {
       urlSchemeTask.didFailWithError(LocalPreviewResourceError.forbiddenURL)
       return
     }
+    components.host = "document"
+    guard let url = components.url else {
+      urlSchemeTask.didFailWithError(LocalPreviewResourceError.forbiddenURL)
+      return
+    }
+    let access = access
     tasks[key] = Task { [weak self] in
-      defer { self?.tasks[key] = nil }
+      defer {
+        withExtendedLifetime(access) {}
+        self?.tasks[key] = nil
+      }
       do {
         let resource = try await LocalPreviewResource.load(url, relativeTo: directory)
         try Task.checkCancellation()

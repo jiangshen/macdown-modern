@@ -200,6 +200,7 @@ public struct DocumentWorkspace: View {
       Text(droppedDocuments.failures.joined(separator: "\n"))
     }
     .task { await preferences.readingStyles.loadIfNeeded() }
+    .task { await preferences.assetFolder.loadIfNeeded() }
     .task(id: request) { await render(request) }
   }
 

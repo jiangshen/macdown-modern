@@ -73,7 +73,7 @@ struct SettingsEntry: Identifiable {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy,
       codeBlockAccessory
-    case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate
+    case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate, assetFolder
   }
   let id: String
   let title: String
@@ -296,6 +296,10 @@ enum SettingsCatalog {
     .init(
       pane: .privacy, title: "Document Content",
       entries: [
+        .init(
+          id: "unsavedAssetFolder", title: "Unsaved document assets",
+          detail: "Choose a folder for relative images and files before saving a document.",
+          keywords: "default path directory local preview export", control: .assetFolder),
         .init(
           id: "previewRawHTML", title: "Show HTML in Markdown",
           detail: "Scripts and embedded frames stay disabled in the preview.",

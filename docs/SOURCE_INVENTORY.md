@@ -419,3 +419,17 @@ native app; numbers/labels are generated before preview/export. The original tar
 still owns unmigrated renderer/preferences/integration behavior, including the default
 asset directory for unsaved documents, so this checkpoint does not retire its coupled
 renderer/asset/dependency graph. See `CODE_BLOCKS.md` and its validation ledger.
+
+
+## Swift unsaved asset-folder ownership boundary
+
+`SnowfolioUI.DocumentAssetFolder` now owns the original htmlDefaultDirectoryUrl migration
+as an inactive chooser suggestion, read-only bookmark persistence/recovery and balanced
+access lifetime. Preview requests and export snapshots retain their own access. Saved
+files keep their containing-directory rule. `ExportCore` reports a typed recoverable
+error only when a missing remembered grant is needed for relative Markdown images. `LocalResourceHandler` uses distinct
+per-navigation origins and translates only the current one into the existing bounded
+resource reader; parser/source logic is unchanged. Native editor undo notifications
+respect a newer model-owned source revision. See `DOCUMENT_ASSETS.md` and
+`validation/unsaved-asset-folder.json`. Other original consumers and preference/parity
+gates still prevent coupled MPDocument/renderer/preferences target retirement.

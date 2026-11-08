@@ -12,6 +12,7 @@ public final class AppPreferences {
   @ObservationIgnored private let defaults: UserDefaults
   public let editorThemes: EditorThemeLibrary
   public let readingStyles: ReadingStyleLibrary
+  public let assetFolder: DocumentAssetFolder
 
   public var restoreDocumentsOnLaunch: Bool {
     didSet { save(restoreDocumentsOnLaunch, "NSQuitAlwaysKeepsWindows") }
@@ -100,6 +101,7 @@ public final class AppPreferences {
     // import from MacDown preserves its explicit style (or no-style) choice.
     let preserveNotebook = previous[LegacyPreferencesMigration.markerKey] != nil
     LegacyPreferencesMigration.migrate(legacy, into: defaults, targetDomain: domain)
+    assetFolder = DocumentAssetFolder(defaults: defaults)
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }

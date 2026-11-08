@@ -1,0 +1,129 @@
+{
+  "checkpoint": "Grant-backed default asset folder for unsaved documents, fresh resource origins and model-undo revision protection",
+  "date": "2026-11-07",
+  "status": "Implemented; local package/native workspace/ASAN acceptance passed; hosted native chooser/Save As tests pending",
+  "fullGoal": "active; incomplete",
+  "originalEvidence": [
+    {
+      "path": "MacDown/Code/Document/MPDocument.m",
+      "sha256": "f43f793c319f27f090c5a45a09636ff908a418d215ab521881b64101f8bd9bd0"
+    },
+    {
+      "path": "MacDown/Code/Preferences/MPPreferences.m",
+      "sha256": "1724574caba513eec335b1d0b4601a7c5cc8cb044ba3caf7c2e05fb563b30333"
+    },
+    {
+      "path": "MacDown/Localization/Base.lproj/MPHtmlPreferencesViewController.xib",
+      "sha256": "1f5142cc9761cde091bb0a03ba5d2b2702249c3a1d17ed438a05411c3dd71fdc"
+    }
+  ],
+  "originalBehavior": {
+    "unsaved": "MPDocument.m:1068 chooses htmlDefaultDirectoryUrl only without fileURL. Original default is Home and Settings has an editable folder path control.",
+    "saved": "Saved document URL supersedes that fallback.",
+    "storage": "PAPreferences 0.5 uses UserDefaults URLForKey/setURL. The migrated URL is decoded through that same Foundation accessor.",
+    "dependencySource": "https://github.com/dhennessy/PAPreferences/blob/0.5/PAPreferences/PAPreferences.m",
+    "dependencySourceSHA256": "0e8a5aaf30b324cc8dc8a74ebbf20d6513d93042104c77c635bf65c4e6aeba13"
+  },
+  "implementation": [
+    "Native searchable Privacy & Security row: Choose Folder, Clear and recoverable Retry/status. Catalog now has 49 unique entries. Native folder chooser cancel preserves choice.",
+    "Legacy htmlDefaultDirectoryUrl is a suggested folder only; explicit folder selection creates a read-only security-scoped bookmark. No implicit Home fallback or widened resource reader.",
+    "Bookmark restore/create/validation execute away from the main actor. Restore avoids automatic UI/volume mounting, renews stale data, and retains damaged/unavailable saved choices for explicit recovery.",
+    "A balanced immutable scope object is retained by the current preview, individual async resource requests and frozen export snapshots. Clearing Settings cannot revoke an in-flight export read.",
+    "The same directory resolution routes preview, HTML, PDF and print. Saved documents select their own containing directory. No document source/revision/undo mutation for folder changes.",
+    "Each preview reload has a fresh mdasset origin, validated against the active request namespace before mapping into the existing bounded/symlink-safe local reader. This prevents stale same-name images across root changes.",
+    "Model-owned undo/redo may update the document before SwiftUI synchronizes NSTextView. The editor undo observer now rejects its older buffer when the synchronized source revision is stale.",
+    "If a remembered folder cannot restore, exports needing relative Markdown images fail with an explicit folder-recovery message. Plain text, remote images and copied fragments do not require that folder. Frozen snapshots preserve unavailable/available state."
+  ],
+  "local": {
+    "full": {
+      "tests": 334,
+      "suites": 71,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 43705,
+      "report": "/private/tmp/snowfolio-asset-folder-reviewed-full.json",
+      "reportSHA256": "df210a85f1fd999ff42fa3732cdbe7ed72e171e16327669fa1b6693dc71b7eab",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-F14B8B13-58A9-4B78-857A-1387C678EAD5/build.log",
+      "logSHA256": "1d1ed8b073057744ef6c972564501d4c9fc1965ded5d4c45b76fec49cec90afa"
+    },
+    "addressSanitizer": {
+      "tests": 10,
+      "suites": 2,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 10264,
+      "report": "/private/tmp/snowfolio-asset-folder-final-asan.json",
+      "reportSHA256": "1197728fb7aa450e5aabcf0d99ddea197a668b03cbb037120b2a6e38e621ae41",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-36242CB7-AC4A-4D50-8922-6E17DF3ADF83/build.log",
+      "logSHA256": "8f65a5c84bb7ee87d0a44d599ee13af3445f306062dbe57d66747355ba9165db"
+    },
+    "focused": {
+      "tests": 21,
+      "suites": 5,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 8878,
+      "report": "/private/tmp/snowfolio-asset-folder-undo-corrected.json",
+      "reportSHA256": "1e0734c5a37df09fc09e00d6be1e5ca0264574a7992380723644e9166a7a4b32",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-F70665AC-9891-41A6-97C2-EDC9B615CA0C/build.log",
+      "logSHA256": "7d0a7d5f0b208104602d2030092d5fb3d1684d69c4c9e13d38adf171b13d2d1a"
+    },
+    "nativeBuildForTesting": "passed including 17 compiled UI test methods and all resource/license verifiers",
+    "architecture": "Eight test executables and app are arm64; /private/tmp/snowfolio-asset-folder-arm64.txt",
+    "strictFormatting": "14 changed/new Swift files passed",
+    "diffCheck": "passed",
+    "initialFullBeforeExportRecovery": {
+      "tests": 333,
+      "suites": 71,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 42714,
+      "report": "/private/tmp/snowfolio-asset-folder-full.json",
+      "reportSHA256": "9aead48049a7aeb64fb603623e6908bf27ce35b388a9e1cc4d2b1e6c1f45a1c9",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-D8CF7EA1-BAFF-43AD-993B-C61D7B0D02D6/build.log",
+      "logSHA256": "0d3e3d60024d1a590d1e40e83b539228ba091541d4a54c2a4c6486628c8b2d29"
+    },
+    "appLog": "/private/tmp/snowfolio-asset-folder-reviewed-app-xcodebuild.log",
+    "appLogSHA256": "56ec73584fa0d11918c2e06db95b3ab4c3179cab3b381b6d9f5faddcd025be1c",
+    "architectureSHA256": "e91dc531b0823c50d1aca6346bc35e66fa72d52e326422c8b6cc4aa173bce20c",
+    "scrollFollowup": {
+      "tests": 8,
+      "suites": 2,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 5204,
+      "report": "/private/tmp/snowfolio-asset-folder-zoom-followup.json",
+      "reportSHA256": "5b225c3da678afee7b40d2aaa22ba9f9d959752a58878ffbbbb266c329338ba2",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-A580A0B7-BB41-48C5-8AFA-4DFC483969D5/build.log",
+      "logSHA256": "bf0bee648a9ab98627fb07a54e6a964539e5fe99b4248695f28d22233e8deba8"
+    }
+  },
+  "nativePackageCoverage": [
+    "Actual prior URLForKey storage migrates as an inactive suggestion; clearing suppresses future suggestion without deleting the old URL preference.",
+    "Bookmark round trip, read-only creation, remote/file/missing-folder rejection, prior choice retention, corrupt saved data/recovery and explicit clear.",
+    "Frozen manual export still embeds original image after default changes/clear; its scope releases after the snapshot; saved-file routing ignores the default folder.",
+    "Existing hosted workspace changes missing\u2192loaded\u2192missing\u2192loaded\u2192missing images while keeping NSTextView/WKWebView identity, source, selected range, revision and native undo manager.",
+    "Both model-owned undo/redo and existing native editor/zoom undo regressions pass after revision guard.",
+    "Unavailable remembered grant disables snapshots during restore, then rejects relative-image embedding with a typed error. Plain/remote content and fragment copying still work; Clear restores ordinary unconfigured behavior."
+  ],
+  "diagnostics": {
+    "initial": "/private/tmp/snowfolio-asset-folder-focused.json: saved-folder expectation compared URL directory spelling instead of the path; corrected test. Native image transition failed.",
+    "cacheReproduction": "/private/tmp/snowfolio-asset-folder-staged.json: after selecting a different empty root, DOM image.complete=true and naturalWidth=1 retained from previous root. Fresh namespace correction makes all five transitions pass.",
+    "undoReproduction": "/private/tmp/snowfolio-asset-folder-native-history.json: explicit model undo briefly restores source then undo notification overwrites it with stale native source. Production revision guard fixes; assertion retained.",
+    "fixtureCompile": "UndoManager environment is get-only in installed SDK; use a native test-window UndoManager override, as existing zoom fixtures do. Failed compile reports retained in /private/tmp/snowfolio-asset-folder-reviewed-focused.json and /private/tmp/snowfolio-asset-folder-explicit-history.json.",
+    "scrollTimeout": {
+      "report": "/private/tmp/snowfolio-asset-folder-final-full.json",
+      "finding": "Existing NativeZoomTests.workspace timed out at preview-led source in one full run. Unchanged focused case and final full suite pass. Cause unproven; no production scrolling code, assertion or timeout changed."
+    }
+  },
+  "hosted": {
+    "status": "Pending exact pushed code; two new UI methods cover chooser/cancel/search/status/history and real untitled Save\u2192relative-image HTML export from saved folder.",
+    "expectedNativeMethods": 17
+  },
+  "remaining": [
+    "Fresh desktop glyph/selection inspection, real IME/VoiceOver, complete document lifecycle and accessibility acceptance remain open; latest direct CUA check is locked.",
+    "Native chooser and actual Save As/export app UI acceptance await hosted execution; package saved-file route test alone does not establish this.",
+    "Current native app is not sandboxed; release entitlement/signing and sandbox distribution validation remain in M6.",
+    "Separate user asset license sidecars, other original layout/editor/renderer/math preferences, M5 integrations, full app performance/energy/memory, releases and safe coupled legacy retirement remain open."
+  ]
+}

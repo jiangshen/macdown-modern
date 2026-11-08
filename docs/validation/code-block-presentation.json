@@ -146,7 +146,7 @@
   "remaining": [
     "Fresh user-desktop visual glyph/selection acceptance remains pending; latest direct CUA observation was locked.",
     "Real IME/VoiceOver, document reliability and full native performance/energy/memory acceptance remain open.",
-    "htmlDefaultDirectoryUrl fallback for unsaved documents needs a modern explicit folder grant and migration workflow; MPDocument.m renderToWeb currently uses that original preference.",
+    "Unsaved asset-folder implementation now has grant-backed migration and local acceptance; native chooser/Save As acceptance is tracked in unsaved-asset-folder.json.",
     "Other original layout/editor preferences, renderer/math parity, user asset license sidecars, M5 integrations, releases and coupled original-target retirement remain open."
   ],
   "languageTitles": {

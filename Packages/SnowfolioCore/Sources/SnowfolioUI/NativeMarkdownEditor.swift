@@ -430,6 +430,13 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
 
     @objc private func undoStateChanged(_ notification: Notification) {
       guard !isSynchronizing, let editor else { return }
+      // A model-owned undo can publish before SwiftUI updates NSTextView. Its
+      // older buffer must not overwrite the just-restored document snapshot.
+      if let native = editor as? MarkdownTextView,
+        native.sourceDocument === document, native.sourceRevision != document.revision
+      {
+        return
+      }
       let revision = document.revision
       document.acceptNativeEdit(editor.string)
       (editor as? MarkdownTextView)?.markSourceSynchronized(with: document)

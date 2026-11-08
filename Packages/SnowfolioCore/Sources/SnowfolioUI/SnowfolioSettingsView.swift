@@ -194,7 +194,8 @@ private struct SettingsPreferenceRow: View {
 
   var body: some View {
     switch entry.control {
-    case .editorTheme, .importEditorTheme, .readingStyle, .importReadingStyle, .htmlTemplate:
+    case .editorTheme, .importEditorTheme, .readingStyle, .importReadingStyle, .htmlTemplate,
+      .assetFolder:
       // Compound rows own distinct identifiers and labels on their controls.
       // A row-wide modifier would cascade to Import and Reload alike.
       control
@@ -246,6 +247,8 @@ private struct SettingsPreferenceRow: View {
       } label: {
         caption
       }
+    case .assetFolder:
+      DocumentAssetFolderControl(folder: preferences.assetFolder)
     case .readingStyle:
       ReadingStylePicker(library: preferences.readingStyles)
     case .importReadingStyle:

@@ -21,6 +21,8 @@ public final class DocumentExportController {
   public var isAvailable: Bool {
     document != nil && preferences != nil && window != nil && !isBusy
       && preferences?.readingStyles.isReady == true && preferences?.readingStyles.isLoading == false
+      && (document?.fileURL != nil
+        || (preferences?.assetFolder.isReady == true && preferences?.assetFolder.isLoading == false))
   }
 
   public func exportHTML() { start(.html) }
@@ -32,11 +34,17 @@ public final class DocumentExportController {
     guard let document, let preferences, preferences.readingStyles.isReady,
       !preferences.readingStyles.isLoading
     else { return nil }
+    guard
+      document.fileURL != nil
+        || (preferences.assetFolder.isReady && !preferences.assetFolder.isLoading)
+    else { return nil }
+    let location = preferences.assetFolder.location(for: document.fileURL)
     return DocumentExportSnapshot(
       source: document.text, options: preferences.renderingOptions,
       title: document.fileURL?.deletingPathExtension().lastPathComponent
         ?? String(localized: "Untitled"),
-      directory: document.fileURL?.deletingLastPathComponent(),
+      directory: location.directory, assetAccess: location.access,
+      localImagesUnavailable: document.fileURL == nil && preferences.assetFolder.isUnavailable,
       remoteImages: preferences.remoteImages, style: preferences.documentStyle,
       templateName: preferences.htmlTemplateName)
   }
@@ -52,7 +60,12 @@ public final class DocumentExportController {
       }
       do {
         try await perform(action, snapshot: snapshot, window: window)
-      } catch is CancellationError {} catch HTMLExportTemplate.Failure.unavailable {
+      } catch is CancellationError {} catch MarkdownExport.Failure.assetFolderUnavailable {
+        errorMessage = String(
+          localized:
+            "The asset folder for this unsaved document is unavailable. Reconnect it or choose another folder in Settings → Privacy & Security."
+        )
+      } catch HTMLExportTemplate.Failure.unavailable {
         errorMessage = String(
           localized:
             "The saved HTML template is unavailable. Choose Use Default in Settings → Appearance → HTML template, then try again."
@@ -69,6 +82,7 @@ public final class DocumentExportController {
   private func perform(_ action: Action, snapshot: DocumentExportSnapshot, window: NSWindow)
     async throws
   {
+    defer { withExtendedLifetime(snapshot.assetAccess) {} }
     if action != .clipboard, snapshot.templateName != HTMLExportTemplate.defaultName {
       throw HTMLExportTemplate.Failure.unavailable
     }
@@ -106,6 +120,7 @@ public final class DocumentExportController {
       source: snapshot.source, options: options,
       title: snapshot.title, directory: snapshot.directory, includeStyles: styled,
       remoteImages: snapshot.remoteImages, embedLocalImages: action != .clipboard,
+      localImagesUnavailable: snapshot.localImagesUnavailable,
       style: snapshot.style,
       templateName: action == .clipboard ? HTMLExportTemplate.defaultName : snapshot.templateName)
     switch action {
@@ -155,6 +170,8 @@ struct DocumentExportSnapshot: Sendable {
   let options: MarkdownRenderingOptions
   let title: String
   let directory: URL?
+  let assetAccess: DocumentAssetAccess?
+  let localImagesUnavailable: Bool
   let remoteImages: Bool
   let style: DocumentStyle
   let templateName: String

@@ -551,6 +551,177 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testUnsavedAssetFolderChooserCancelAndHistory() throws {
+    let root = FileManager.default.temporaryDirectory.appending(
+      path: "Snowfolio Asset Checkpoint " + UUID().uuidString)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    editor.typeText("Original source")
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Asset folder checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("unsaved assets")
+    let result = settings.outlines.firstMatch.staticTexts["Unsaved document assets"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let choose = settings.buttons["chooseUnsavedAssetFolder"]
+    XCTAssertTrue(choose.waitForExistence(timeout: 5))
+    XCTAssertEqual(settings.buttons.matching(identifier: "chooseUnsavedAssetFolder").count, 1)
+    choose.click()
+    app.typeKey("g", modifierFlags: [.command, .shift])
+    let path = app.textFields["PathTextField"].firstMatch
+    XCTAssertTrue(path.waitForExistence(timeout: 5), app.debugDescription)
+    path.click()
+    app.typeKey("a", modifierFlags: .command)
+    path.typeText(root.path + "\n")
+    let open = app.buttons["OKButton"].firstMatch
+    XCTAssertTrue(open.waitForExistence(timeout: 5))
+    open.click()
+    let status = settings.staticTexts["unsavedAssetFolderStatus"]
+    let selected = NSPredicate { _, _ in
+      status.label == root.path || status.value as? String == root.path
+    }
+    expectation(for: selected, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    choose.click()
+    XCTAssertTrue(app.buttons["OKButton"].firstMatch.waitForExistence(timeout: 5))
+    app.typeKey(XCUIKeyboardKey.escape.rawValue, modifierFlags: [])
+    XCTAssertTrue(selected.evaluate(with: nil))
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "unsaved-asset-folder-settings"
+    image.lifetime = .keepAlways
+    add(image)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, "Asset folder checkpoint")
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "Original source")
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "Asset folder checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertTrue(selected.evaluate(with: nil))
+    settings.buttons["clearUnsavedAssetFolder"].click()
+    let cleared = NSPredicate { _, _ in
+      status.label == "No folder selected" || status.value as? String == "No folder selected"
+    }
+    expectation(for: cleared, evaluatedWith: nil)
+    waitForExpectations(timeout: 5)
+    XCTAssertEqual(editor.value as? String, "Asset folder checkpoint")
+  }
+
+  @MainActor
+  func testSavingUntitledUsesSavedFolderForRelativeImageExport() throws {
+    let root = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+    let unsaved = root.appending(path: "Unsaved assets")
+    let saved = root.appending(path: "Saved document")
+    let exported = root.appending(path: "Export")
+    for folder in [unsaved, saved, exported] {
+      try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+    }
+    defer { try? FileManager.default.removeItem(at: root) }
+    let first = try XCTUnwrap(
+      Data(
+        base64Encoded:
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aN1cAAAAASUVORK5CYII="
+      ))
+    try first.write(to: unsaved.appending(path: "ice.png"))
+    let bitmap = try XCTUnwrap(
+      NSBitmapImageRep(
+        bitmapDataPlanes: nil, pixelsWide: 2, pixelsHigh: 1, bitsPerSample: 8, samplesPerPixel: 4,
+        hasAlpha: true, isPlanar: false, colorSpaceName: .deviceRGB, bytesPerRow: 8,
+        bitsPerPixel: 32))
+    bitmap.setColor(.systemBlue, atX: 0, y: 0)
+    bitmap.setColor(.systemTeal, atX: 1, y: 0)
+    let second = try XCTUnwrap(bitmap.representation(using: .png, properties: [:]))
+    try second.write(to: saved.appending(path: "ice.png"))
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    let source = "![Ice](ice.png)"
+    editor.click()
+    editor.typeText(source)
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("unsaved assets")
+    let result = settings.outlines.firstMatch.staticTexts["Unsaved document assets"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5))
+    result.click()
+    settings.buttons["chooseUnsavedAssetFolder"].click()
+    choosePanelDirectory(unsaved, in: app)
+    app.buttons["OKButton"].firstMatch.click()
+    let status = settings.staticTexts["unsavedAssetFolderStatus"]
+    expectation(
+      for: NSPredicate { _, _ in
+        status.label == unsaved.path || status.value as? String == unsaved.path
+      }, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    app.typeKey("s", modifierFlags: .command)
+    XCTAssertTrue(app.buttons["OKButton"].firstMatch.waitForExistence(timeout: 5))
+    choosePanelDirectory(saved, in: app)
+    let name = app.textFields.firstMatch
+    name.click()
+    app.typeKey("a", modifierFlags: .command)
+    name.typeText("Saved.md")
+    app.buttons["OKButton"].firstMatch.click()
+    let file = saved.appending(path: "Saved.md")
+    expectation(
+      for: NSPredicate { _, _ in
+        (try? Data(contentsOf: file)) == Data(source.utf8)
+      }, evaluatedWith: nil)
+    waitForExpectations(timeout: 10)
+    app.typeKey("e", modifierFlags: [.command, .shift])
+    let styles = app.checkBoxes["exportDocumentStyles"]
+    XCTAssertTrue(styles.waitForExistence(timeout: 5))
+    choosePanelDirectory(exported, in: app)
+    app.buttons["OKButton"].firstMatch.click()
+    expectation(
+      for: NSPredicate { _, _ in
+        let files =
+          (try? FileManager.default.contentsOfDirectory(
+            at: exported, includingPropertiesForKeys: nil)) ?? []
+        return files.contains { $0.pathExtension == "html" } && !styles.exists
+      }, evaluatedWith: nil)
+    waitForExpectations(timeout: 10)
+    let htmlFile = try XCTUnwrap(
+      FileManager.default.contentsOfDirectory(at: exported, includingPropertiesForKeys: nil).first {
+        $0.pathExtension == "html"
+      })
+    let html = try String(contentsOf: htmlFile, encoding: .utf8)
+    XCTAssertTrue(html.contains("data:image/png;base64," + second.base64EncodedString()))
+    XCTAssertFalse(html.contains("data:image/png;base64," + first.base64EncodedString()))
+    XCTAssertEqual(editor.value as? String, source)
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    settings.buttons["clearUnsavedAssetFolder"].click()
+  }
+
+  @MainActor
+  private func choosePanelDirectory(_ directory: URL, in app: XCUIApplication) {
+    app.typeKey("g", modifierFlags: [.command, .shift])
+    let path = app.textFields["PathTextField"].firstMatch
+    XCTAssertTrue(path.waitForExistence(timeout: 5), app.debugDescription)
+    path.click()
+    app.typeKey("a", modifierFlags: .command)
+    path.typeText(directory.path + "\n")
+    XCTAssertTrue(app.buttons["OKButton"].firstMatch.waitForExistence(timeout: 5))
+  }
+
+  @MainActor
   func testCodePresentationSettingsRetainSourceAndHistory() {
     let app = launch(arguments: [
       "-markdownManualRender", "NO", "-htmlSyntaxHighlighting", "NO",

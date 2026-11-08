@@ -2,21 +2,21 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current worktree checkpoint: Swift code-block presentation and the None-style export
-default. Local evidence verifies **329 package tests / 70 suites**, **11 Address Sanitizer
-tests / three suites**, eight arm64 test executables and an arm64 app build. All 292
-pinned grammars retain exact native WebKit code/selection text with numbers; wrapped
-line geometry, all reading styles/code themes, custom labels and PDF preparation pass.
-Forward/backward selections survive unchanged-code presentation transitions. Hosted
-Settings and None-style save-panel UI execution passed on the exact corrected commit:
-15 native UI tests, 329 package tests and 652 CommonMark examples. Exact evidence and limits
-are in [code-block-presentation.json](validation/code-block-presentation.json), with use
-in [CODE_BLOCKS.md](CODE_BLOCKS.md).
+Current worktree checkpoint: grant-backed assets for unsaved documents, fresh preview
+resource origins and a stale native buffer guard for model-owned undo. Local evidence
+verifies **334 package tests / 71 suites**, **ten Address Sanitizer tests / two suites**,
+eight arm64 test executables and an arm64 native app build. The actual native workspace
+passes five missing/loaded image transitions and retains source, selection, views and
+undo. Two new app UI methods cover folder chooser/cancel/history and an actual untitled
+save followed by image export from the saved file's folder; hosted execution is pending.
+See [unsaved-asset-folder.json](validation/unsaved-asset-folder.json) and
+[DOCUMENT_ASSETS.md](DOCUMENT_ASSETS.md).
 
-The preceding hosted template checkpoint `e571b4a` passed 318 package tests, 652
-CommonMark examples and 13 native app UI tests; its original failure diagnosis and
-final evidence remain in [html-template-exports.json](validation/html-template-exports.json).
-Earlier CSS acceptance remains in [custom-reading-styles.json](validation/custom-reading-styles.json).
+The preceding exact code-presentation checkpoint `1057098` passed 329 package tests,
+652 CommonMark examples and 15 native app UI tests. Its contrast, visual-capture limits
+and diagnostics remain in [code-block-presentation.json](validation/code-block-presentation.json).
+Template/CSS evidence remains in [html-template-exports.json](validation/html-template-exports.json)
+and [custom-reading-styles.json](validation/custom-reading-styles.json).
 
 The existing notebook design remains the default. None, six original styles, edited
 MacDown CSS, local CSS and imported copies remain selectable. CSS/image/font imports
@@ -27,8 +27,8 @@ fully linked assets served the original preview internally; the HTML export UI e
 independent include/omit choices for document styles and code highlighting, with included
 resources embedded. Separate user-provided license sidecars, remaining renderer parity
 and safe coupled legacy retirement stay open. The HTML accessory now starts without document styles for None; its new native UI
-case passes in the final hosted run. Unsaved-document default asset folders still need
-an explicit grant-backed migration workflow (`htmlDefaultDirectoryUrl`). The [original characterization ledger](validation/css-template-characterization.json)
+case passes in the final hosted run. Unsaved-document default asset folders now have
+an explicit grant-backed migration workflow (`htmlDefaultDirectoryUrl`), with hosted chooser/Save As acceptance pending. The [original characterization ledger](validation/css-template-characterization.json)
 preserves source evidence and the call-site correction.
 
 Fresh user-desktop visual acceptance, captured WebKit glyph painting, real IME/VoiceOver,
@@ -2533,3 +2533,44 @@ Four superseded agent-generated template downloads were moved to Trash after ret
 the expanded current raw evidence: 4,344 files / 290,155,859 logical bytes. Recovery
 markers and destinations were verified; Trash was not emptied. Compact prior screenshots
 and reports remain. See `validation/project-cleanup.json` for exact recovery paths.
+
+
+## Unsaved-document asset folder and native undo — 2026-11-07
+
+The original default-directory preference is now available as an explicit native folder
+choice in Privacy & Security. The migrated URL is a suggestion until confirmed; fresh
+profiles have no implicit Home resource grant. Read-only bookmarks restore off the main
+actor, renew when stale, retain unavailable choices for recovery and balance scope
+lifetimes across preview requests and frozen export operations. Saved documents resolve
+relative files from their own folder. The existing bounded local reader is unchanged.
+
+The native workspace regression exposed stale same-name images after switching to an
+empty folder: the DOM still reported complete/naturalWidth=1 from the prior root. A
+fresh resource origin per reload now separates those cache entries and validates the
+current namespace before routing to the local reader. Five image transitions pass with
+unchanged native view identity, source/selection/revision and undo.
+
+The same regression exposed a model-undo race: its new document snapshot could be
+overwritten by the undo observer's older NSTextView buffer before SwiftUI synchronized.
+A source-revision guard preserves the model snapshot. Explicit native-window history
+now verifies model undo/redo alongside the existing native editing/zoom regressions.
+No source or history assertions were removed. Initial reports are retained in the
+new validation ledger, including a test URL-spelling correction and a get-only
+UndoManager environment compile diagnostic.
+
+Local acceptance passes 334 tests / 71 suites, ten sanitizer tests / two suites and
+21 focused tests / five suites without warnings/errors; native build and 14 changed
+Swift files' strict formatting pass. App UI tests for chooser/cancel/status/history
+and real untitled Save→saved-folder image export are compiled but await hosted execution.
+Fresh desktop/IME/VoiceOver, full document reliability, remaining parity, integrations,
+performance/releases and safe coupled legacy retirement stay open. No additional
+original renderer/preferences code is retired by this independently verified slice.
+
+
+The final unavailable-folder recovery path rejects only exports that actually need
+relative Markdown images. Plain/remote content and copied fragments remain usable.
+The final local suite passes 334 tests / 71 suites and ten ASAN tests / two suites;
+17 app UI methods compile. One full run timed out in unchanged preview-led source
+scrolling; the unchanged focused case and final full suite pass. Its cause is unproven;
+scrolling assertions/timeouts and production scrolling code remain unchanged. Exact
+reports and the final arm64/build hashes are in `validation/unsaved-asset-folder.json`.

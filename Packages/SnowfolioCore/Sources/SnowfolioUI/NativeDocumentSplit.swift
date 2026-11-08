@@ -53,8 +53,9 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   }
 
   private var previewSurface: PreviewSurface {
-    PreviewSurface(
-      html: html, directory: document.fileURL?.deletingLastPathComponent(),
+    let location = preferences.assetFolder.location(for: document.fileURL)
+    return PreviewSurface(
+      html: html, directory: location.directory, assetAccess: location.access,
       remoteImages: preferences.remoteImages, style: preferences.documentStyle, revision: revision,
       callouts: callouts, openDroppedFiles: openDroppedFiles, scrolling: scrolling,
       zoomScale: DocumentZoomController.previewScale(
@@ -187,6 +188,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   struct PreviewSurface: View {
     let html: String
     let directory: URL?
+    var assetAccess: DocumentAssetAccess? = nil
     let remoteImages: Bool
     var style: DocumentStyle = .init()
     var revision: UInt64? = nil
@@ -198,6 +200,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     var body: some View {
       NativeMarkdownPreview(
         html: html, directory: directory, remoteImages: remoteImages, style: style,
+        assetAccess: assetAccess,
         revision: revision, callouts: callouts, openDroppedFiles: openDroppedFiles,
         scrolling: scrolling, zoomScale: zoomScale
       ) {
