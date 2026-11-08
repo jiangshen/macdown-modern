@@ -1,7 +1,7 @@
 {
   "checkpoint": "Native editor margins/width, stable reading anchor and canonical named-font caret metrics",
   "date": "2026-11-07",
-  "status": "Persistent-scroller width defect reproduced and corrected locally; 340 tests, 18 ASAN tests and arm64 app build pass; exact final hosted acceptance running",
+  "status": "Accepted exact hosted implementation b223268: 340 package tests /73 suites, 652 CommonMark examples, 8 arm64 test executables and 18 native UI methods pass. Local ASAN 18/four suites passes. Desktop source-selection/IME/VoiceOver and full goal remain open.",
   "fullGoal": "active; incomplete",
   "originalEvidence": [
     {
@@ -210,11 +210,11 @@
     }
   },
   "remaining": [
-    "Fresh desktop source-selection/glyph, keyboard/VoiceOver and real Chinese/Japanese IME acceptance remain open; latest CUA observation locked.",
-    "Native Settings UI execution and screenshot acceptance await hosted run.",
+    "Fresh user-desktop source-selection/glyph, keyboard/VoiceOver and real Chinese/Japanese IME acceptance remain open; latest CUA observation locked.",
     "Line spacing, scrolling past end, other original typing preferences/statistics and safe coupled legacy retirement remain open.",
     "Full autosave/Versions/external-change reliability, remaining renderer parity, M5 integrations and measured M6 performance/energy/memory/releases remain open.",
-    "The controlled system-font/named-face caret mismatch is corrected locally; fresh real IME/desktop typography acceptance remains open."
+    "31 priority diagnostics and two AppIntents metadata notices in final native log; runtime cause and M6 attribution remain unproven.",
+    "One earlier preview-led zoom timeout remains unproven; final focused/local/hosted checks pass, failure diagnostics retained without weakened assertions."
   ],
   "sourceSHA256": {
     "Packages/SnowfolioCore/Sources/EditorCore/EditorLayoutPreferences.swift": "acf10ee58d8150f2651cb8355f3a2b876754538506ac5b3546a36e1a2fa7eacb",
@@ -346,9 +346,11 @@
       "strictFormatting": "Both changed Swift files pass; git diff --check passes."
     },
     "hosted": {
-      "status": "Running production scroller correction; native UI test still contains the separately corrected switch type assertion. Superseding exact validation required.",
+      "status": "Accepted in final combined run; overlay and persistent-scroller native cases pass.",
       "commit": "7cf4b717c3ff043725a49f7e0f3f22892f13a919",
-      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42443281771"
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42443281771",
+      "finalCommit": "b22326822025b9fcaab6508f32138bbb1f2661d9",
+      "finalRun": "https://github.com/jiangshen/snowfolio/actions/runs/42443442151"
     },
     "sourceSHA256": {
       "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift": "bde29dc2396346a104ea998a07313b5788694e3da8989ddd6c352645bfda5b47",
@@ -361,12 +363,12 @@
     "sourceSHA256": "f057df658e285fecef07e0ceff1ed7879f2458f381f897fbea4f9e08de18c7fe",
     "appBuildReport": "/private/tmp/snowfolio-editor-column-switch-type-app-build.json",
     "appBuildReportSHA256": "dc7ec1962fcc97dfdf51c11f1122fc984d2d8d31536382706d831f86e55cb1c7",
-    "hostedStatus": "Running exact combined correction in 42443442151; numeric/persistence/history UI acceptance pending."
+    "hostedStatus": "Accepted in final combined run: all 18 UI methods pass, including 450-point entry, reopen, disable and native source/history checks."
   },
   "finalHosted": {
     "commit": "b22326822025b9fcaab6508f32138bbb1f2661d9",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42443442151",
-    "status": "Running; follow this exact combined correction through completion.",
+    "status": "Passed both jobs; exact downloaded package/corpus/architecture and native test logs/result bundle inspected.",
     "expectedPackageTests": 340,
     "expectedPackageSuites": 73,
     "expectedNativeMethods": 18,
@@ -398,6 +400,69 @@
       "Packages/SnowfolioCore/Tests/SnowfolioUITests/SettingsTests.swift": "e7a9f82de787804f3154c4f5162fa1a59106f66178af5a6ca65bd75764624b06",
       "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorTheme.swift": "5c5402e1dfa158f1473657f7d97369776c7d3da43f8f31d55902c7c07fa6799e",
       "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorInsertionFontTests.swift": "33ccfc86e75b8b362ce42392bd6c6f58d41ed29ce18b92f0905cbb0a265f6fc1"
-    }
+    },
+    "core": {
+      "commit": "b22326822025b9fcaab6508f32138bbb1f2661d9",
+      "tests": 340,
+      "suites": 73,
+      "arm64TestExecutables": 8,
+      "commonmark": {
+        "spec": "CommonMark 0.31.2",
+        "source": "https://spec.commonmark.org/0.31.2/spec.json",
+        "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+        "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+        "total": 652,
+        "passed": 652,
+        "failed": 0,
+        "failures": []
+      },
+      "sourceGeometryModes": "overlay and persistent passed",
+      "glyphScope": "No user-desktop source-selection visual acceptance",
+      "files": {
+        "snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+        "snowfolio-commonmark/build.log": "fbc37f3e96f31d9630f66226864ceb14337c3d7afad96b508c70e0d032e5bcda",
+        "snowfolio-validation/swift-test.log": "d54c78f81746dc3d66c4023f77d6fdaca1d0692e15c82924af52adcc587f3e7d",
+        "snowfolio-validation/toolchain.txt": "04630ab8fa201f57c63c59730e638135e32584a97e16e004a417eb8ed283dc83",
+        "snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35"
+      }
+    },
+    "native": {
+      "tests": 18,
+      "failures": 0,
+      "methods": [
+        "testCodePresentationSettingsRetainSourceAndHistory",
+        "testEditorColumnSettingsPreserveSourceAndHistory",
+        "testEditorThemePickerSearchImportAndUndo",
+        "testFencedCodePreferenceUpdatesCurrentPreview",
+        "testHTMLExportOptionsUseFreshManualPreviewSource",
+        "testHTMLTemplateRecoveryPreservesSourceUndo",
+        "testImportReadingStyleFolderAndSourceUndo",
+        "testIntrawordPreferenceRoundTrip",
+        "testLivePreviewUpdatesAfterEditingAndUndo",
+        "testMultipleDocumentWindows",
+        "testNewDocumentTypingUndoRedo",
+        "testNoStyleHTMLExportStartsWithoutDocumentStyles",
+        "testOpenExistingMarkdownAndSave",
+        "testReadingStylePickerPreviewAndSourceUndo",
+        "testSavingUntitledUsesSavedFolderForRelativeImageExport",
+        "testSettingsSearchHistoryAndWindowReopen",
+        "testUnderlinePreferenceAndNativeCommand",
+        "testUnsavedAssetFolderChooserCancelAndHistory"
+      ],
+      "newSettingsDurationSeconds": 42.14,
+      "priorityDiagnostics": 31,
+      "otherWarnings": [
+        "2026-11-08 03:38:58.525 appintentsmetadataprocessor[13613:40800] warning: Metadata extraction skipped, no AppIntents.framework dependency found",
+        "2026-11-08 03:39:01.603 appintentsmetadataprocessor[13954:41599] warning: Metadata extraction skipped, no AppIntents.framework dependency found"
+      ],
+      "log": "/private/tmp/snowfolio-editor-column-final-hosted-native/xcodebuild.log",
+      "logSHA256": "e7af08868b6675818dc52bfc1524f930feab0174300e1a160ba06a28db56241d",
+      "resultBundle": "/private/tmp/snowfolio-editor-column-final-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_03-37-22-+0000.xcresult"
+    },
+    "screenshot": "/private/tmp/snowfolio-editor-column-final-ui-attachments/A893BF48-247F-4F34-B22A-D4B9AB16A84A.png",
+    "screenshotSHA256": "b3e8fd7a9e16db4f4f4c35e397e7a64b6a4b72c1211a7ec47d2310b470722a22",
+    "visualScope": "Native Settings controls/path/450-point value paint correctly, without clipped controls. This screenshot does not establish fresh source-selection or preview glyph acceptance.",
+    "sourceManifestVerified": true,
+    "settingsAcceptance": "Unique native search result; initially disabled width field, enabling switch, direct 450-point entry, reopen persistence, switch-off disables field; exact source and explicit undo/redo preserved. All 17 earlier UI methods retained and passed."
   }
 }

@@ -2,32 +2,30 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current worktree checkpoint: native editor margins, a centered maximum writing
-column and named-face caret metrics. Local acceptance passes **340 package tests / 73 suites**, **18 Address
-Sanitizer tests / four suites**, eight arm64 test executables and an arm64 app build.
-Native resizing, source/selection/undo, deferred composition geometry and reading
-paragraph preservation pass with linked scrolling off/on. Four searchable Settings
-controls preserve the original keys; 53 catalog entries remain unique. The app's new
-Settings test compiles among 18 native UI methods. Exact implementation `dd6fb58`
-ran in [hosted validation 42442182528](https://github.com/jiangshen/snowfolio/actions/runs/42442182528).
-Its package resize check failed at 480 points; native app UI is still running.
-The diagnostic follow-up [42442707167](https://github.com/jiangshen/snowfolio/actions/runs/42442707167)
-reproduced a persistent scrollbar narrowing the native editor to 463 points while its
-column remained at 440 instead of 423. The same controlled local reproduction fails
-with persistent scrollbars. Updating the column immediately after the width change
-passes both scrollbar modes, all 340 package tests and the app build. Exact final
-hosted acceptance remains pending. The first native UI run completed 18 methods with
-one failing switch-value assertion (numeric accessibility value cast as String);
-the launch helper stops at the first failure, so 450-point entry/persistence and
-source/history assertions were not reached. A prior summary incorrectly said they
-continued; raw native logs establish the remaining acceptance scope.
-The test now normalizes numeric/string values while requiring the same enabled state.
-The corrected native test builds. Exact combined correction `b223268` is running in
-[42443442151](https://github.com/jiangshen/snowfolio/actions/runs/42443442151);
-full hosted acceptance remains pending.
-See [editor-column-layout.json](validation/editor-column-layout.json) and
-[EDITOR_LAYOUT.md](EDITOR_LAYOUT.md). Line spacing, scroll-past-end and other
-original editing/layout preferences remain open.
+Current accepted checkpoint: native editor margins, a centered maximum writing
+column, stable reading anchors and named-face caret metrics. Exact implementation
+`b223268` passed [hosted validation 42443442151](https://github.com/jiangshen/snowfolio/actions/runs/42443442151):
+**340 package tests /73 suites, 652 CommonMark examples, eight arm64 test executables
+and all 18 native UI methods**. Raw downloaded logs/result bundles and the native
+Settings screenshot are inspected. Local acceptance also passes 18 Address Sanitizer
+tests /four suites and an arm64 app build.
+
+A persistent scrollbar could narrow the native editor to 463 points while leaving
+its writing column at 440 instead of 423. Both the hosted diagnostic and a controlled
+local reproduction establish this defect. The existing column geometry now updates
+immediately after native width changes; both overlay/persistent scroller cases pass
+without changed source/selection/undo assertions. Reading paragraphs survive column
+reflow with linked scrolling off/on; composition defers geometry changes.
+
+Four searchable Settings controls preserve the original keys; 53 catalog entries
+remain unique. The native UI test verifies enabling/disabling the width field,
+typing 450 points, reopen persistence, exact source and explicit undo/redo. Its
+switch-value assertion now handles numeric/string accessibility values consistently
+with existing tests. Earlier failed/cancelled runs and corrected reporting scope
+remain in [editor-column-layout.json](validation/editor-column-layout.json).
+See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md) for behavior. Line spacing, scroll-past-end
+and other original editing/layout preferences remain open. Final native logs retain
+31 priority diagnostics and two AppIntents notices; no runtime cause is claimed.
 
 The preceding asset-folder implementation `d3f5da2` passed exact hosted acceptance:
 334 package tests, 652 CommonMark examples and all 17 native UI methods, including

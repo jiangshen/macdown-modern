@@ -171,5 +171,13 @@
     "broaderChecks": "329 package tests / 70 suites, 652 CommonMark examples, 15 native document UI tests; exact raw evidence and hashes in code-block-presentation.json.",
     "desktop": "Mac locked at fresh CUA check; source-editor-specific reproduction and user-desktop pixel acceptance remain open.",
     "goal": "active; incomplete"
+  },
+  "editorColumnRecheck": {
+    "code": "b22326822025b9fcaab6508f32138bbb1f2661d9",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42443442151",
+    "result": "Six preview list parameter cases pass, including exact First/Second/dfdfd at 28px in light/dark and wrapped tight/loose selection/layout cases. Existing mixed-list production fix retained.",
+    "broaderChecks": "340 package tests /73 suites, 652 CommonMark examples, 8 arm64 test executables and all 18 native UI methods pass; editor-column-layout.json contains exact evidence.",
+    "desktop": "Latest CUA observation locked; native source-editor-specific artifact and fresh desktop visual acceptance remain open.",
+    "goal": "active; incomplete"
   }
 }

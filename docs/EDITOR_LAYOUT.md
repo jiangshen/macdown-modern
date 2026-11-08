@@ -17,7 +17,8 @@ Line spacing and scrolling past the end remain separate migration work.
 
 Exact local evidence, initial fixture corrections and the reproduced reading-anchor
 fix are in [editor-column-layout.json](validation/editor-column-layout.json). The
-new app Settings UI test is compiled; hosted execution remains pending.
+app Settings UI test passes in exact hosted run 42443442151: direct 450-point entry,
+reopen persistence, enable/disable and unchanged source/history.
 
 Named theme fonts use their own native metrics, including empty and terminal-line
 carets. Valid fallback-language hints are passed to the native font constructor. A
@@ -27,4 +28,5 @@ language hints; it does not replace real IME and desktop acceptance.
 Persistent scrollbars can consume editor width during a native layout pass. The
 column recalculates immediately after that width change; both overlay and persistent
 scrollbar fixtures exercise resize, source/history and composition preservation.
-The exact hosted follow-up remains required before accepting this correction.
+The exact hosted follow-up passes both modes; source-selection visual acceptance
+on the user’s desktop remains open.

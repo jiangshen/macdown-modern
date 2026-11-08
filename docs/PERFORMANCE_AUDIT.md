@@ -417,4 +417,7 @@ geometry function now runs immediately after width changes; height-only changes
 remain outside this path. Setting needsLayout alone did not schedule another pass.
 Focused scrolling/zoom and all 340 package tests pass locally. This is a correctness
 fix; no runtime performance improvement or source-selection visual acceptance is claimed.
-See validation/editor-column-layout.json for exact before/after logs and pending hosted acceptance.
+Exact hosted run 42443442151 passes 340 package tests, 652 CommonMark examples and
+all 18 native UI methods. Its raw log retains 31 priority diagnostics and two
+AppIntents metadata notices; runtime attribution remains open.
+See validation/editor-column-layout.json for exact before/after logs and source hashes.
