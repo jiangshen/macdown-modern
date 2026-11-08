@@ -140,6 +140,91 @@
       "sha256": "dd71a9dddc1fbd49ef053153a4c3c54ee24b42b129728ba2d40f2837815c938d"
     },
     "modelTestCount": 7,
-    "next": "Focused document-lifecycle dispatch covers both reload controls plus Cancel/restore; full push/PR/default gates remain unchanged. Runtime acceptance pending."
+    "next": "Focused document-lifecycle dispatch covers both reload controls plus Cancel/restore; full push/PR/default gates remain unchanged. Runtime acceptance pending.",
+    "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42463062550",
+      "commit": "f618952b574b0b57c3775435ce6a054696a2de89",
+      "result": "4 selected methods executed; Cancel-close passed, both reloads and post-Undo persistence failed",
+      "cancelClose": "passed65.156s; native sheet screenshot inspected, cancellation preserves source, subsequent editing and native Undo",
+      "externalIOSeconds": {
+        "uncoordinated": 0.006943125,
+        "coordinated": 0.317300333
+      },
+      "reload": "Both writes complete within the8s bound and retain external bytes. Both unchanged8s editor reload checks fail; coordinated case still logs app-main-run-loop busy and totals230.858s. No additional conversion/apply trace is recorded.",
+      "restoration": "Normal Quit, saved-file restore, source, focus, EOF insertion and Undo assertions pass again. Waiting8s for post-Undo original disk bytes still fails; persistence/model/autosave scheduling needs diagnosis.",
+      "evidence": [
+        {
+          "path": "/private/tmp/snowfolio-responsive-lifecycle-focused-native/xcodebuild.log",
+          "sha256": "5a66099cffb7ed5caccd5b04a729a3062a8fbac8baad1eb2008f6153e684d942"
+        },
+        {
+          "path": "/private/tmp/snowfolio-responsive-lifecycle-focused-text/manifest.json",
+          "sha256": "4a0f15ad57475d93c7217e81fa757b4de1b89a9a8920ae8daa66ea4d04e68a6b"
+        },
+        {
+          "path": "/private/tmp/snowfolio-responsive-lifecycle-close-attachments/CA2565C7-F5C4-4FA2-98B3-CD9F4871610A.png",
+          "sha256": "46ec21413bd2c273e1dd0da9c39bdb8bb4ec6c0460af594484648e5ce4827f1a"
+        }
+      ],
+      "diagnosticsDirectory": "/private/tmp/snowfolio-responsive-lifecycle-focused-diagnostics"
+    }
+  },
+  "coreCheckpoint": {
+    "commit": "f618952b574b0b57c3775435ce6a054696a2de89",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42463049403",
+    "result": "core artifacts downloaded and verified;354 tests/76 suites,652 CommonMark examples,eight arm64 executables",
+    "evidence": [
+      {
+        "path": "/private/tmp/snowfolio-responsive-lifecycle-hosted-core/snowfolio-validation/swift-test.log",
+        "sha256": "cb3969a51dcbf86ec2a65eadedcb03fbc6a9fbf2d7afe1c2eddd6937e4ffb5b7"
+      },
+      {
+        "path": "/private/tmp/snowfolio-responsive-lifecycle-hosted-core/snowfolio-validation/architecture.txt",
+        "sha256": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35"
+      },
+      {
+        "path": "/private/tmp/snowfolio-responsive-lifecycle-hosted-core/snowfolio-commonmark/commonmark.json",
+        "sha256": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885"
+      }
+    ],
+    "native": "full24-method job still live at last poll; focused4-method failures remain open"
+  },
+  "undoDiagnosticPreparation": {
+    "scope": [
+      "Opt-in Debug snapshot/native-edit/Undo metadata compares model/native UTF-16 lengths and render revisions without source/URL logging.",
+      "Remove native document-controller lookup from apply diagnostics to avoid perturbing host initialization/reentrancy; record file-wrapper entry before regular-data validation.",
+      "If the original8s Undo persistence check fails, collect a diagnostic explicit Save comparison, then still fail the original automatic-persistence assertion. No acceptance shortcut or longer original wait."
+    ],
+    "buildForTesting": "passed;24 methods compile; no Swift compiler warning",
+    "buildLog": {
+      "path": "/private/tmp/snowfolio-restored-undo-metadata-xcodebuild-clean.log",
+      "sha256": "c2e9198863a4ebf0d8adaf4a13846442f29ff2da64969171bc990de841803e4b"
+    },
+    "source": [
+      {
+        "path": "App/UITests/DocumentLifecycleTests.swift",
+        "sha256": "ec0c3e12f716dfefb13d05af0535635c58a3d3ba5293c8826fdd109e35923d3b"
+      },
+      {
+        "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownDocument.swift",
+        "sha256": "1f4e833e1ae628219baa0fc10e0778091e4d07bf265b9d6bf7008721ac2364d8"
+      },
+      {
+        "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownEditor.swift",
+        "sha256": "fef463d59fe3d35a3b9e26befcfbde768f5bcd0dc1f452fe502fbe5ae2377b9c"
+      }
+    ],
+    "formatting": "passed",
+    "compilationCorrections": "Fixed optional revision formatting in Debug trace; removed unused native-host lookup. Neither change alters document behavior/assertions.",
+    "next": "Focused document-restoration dispatch; examine actual model synchronization and explicit-save outcome before changing autosave expectations or host policy. Native reload still needs a minimal stock-host comparison if conversion/apply remains absent."
+  },
+  "fullDiagnosticCheckpoint": {
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42461258299",
+    "commit": "abe61e9d032563beab0b9eb49601459647dff722",
+    "result": "24 native methods executed;20 prior methods pass,4 new fixture/lifecycle methods fail. Failures match focused evidence; no full acceptance.",
+    "log": {
+      "path": "/private/tmp/snowfolio-document-lifecycle-full-diagnostics-failed.log",
+      "sha256": "2653a8be9ff2576ad036119166b8b10c4d05f80a4f6e32e508c0c430526346db"
+    }
   }
 }

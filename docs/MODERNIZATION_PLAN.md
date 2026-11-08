@@ -2880,3 +2880,30 @@ methods compile; corrected runtime acceptance is pending. If reload callbacks re
 absent, next compare a minimal stock host; do not infer a merge-policy or framework
 cause. Exact evidence is in document-lifecycle.json. Full M2 and modernization remain
 active/incomplete.
+
+
+## Cancel-close accepted; reload/Undo persistence remain open — 2026-11-08
+
+Exactf618952/run42463062550 executes the four selected lifecycle methods. The scoped
+native Cancel-close case passes: sheet screenshot inspected, source retained, editing
+and Undo continue. External writers complete in0.00694s uncoordinated and0.3173s
+coordinated, retaining external bytes, but both8s source reload checks still fail.
+The coordinated app still reports main-run-loop stalls; moving fixture I/O off main
+did not resolve that host symptom. Conversion/apply logs do not recur. Existing
+merge policy has not been changed or proven responsible.
+
+Normal Quit/document/focus/EOF insertion and Undo checks pass again, but the8s
+post-Undo disk check still fails. New Debug-only metadata compares native/model
+lengths, revisions, snapshot requests and native-edit acceptance. If automatic disk
+persistence fails, a diagnostic explicit Save records whether the model can produce
+original bytes; the original automatic assertion still fails. No timeout or acceptance
+shortcut is introduced. Native document-controller lookup is removed from diagnostics
+to avoid perturbing host initialization/reentrancy. All24 methods compile without
+Swift warnings; one unchanged AppIntents metadata notice remains.
+
+The exact f618952 core artifact passes354 tests/76 suites,652 examples and eight
+arm64 executables. Its full native job remains pending at last observation. Earlier
+abe61e9 full run executes24 methods with20 prior passes/four new failures. A focused
+restoration diagnostic and, if needed, a minimal stock document-host comparison are
+next; dirty conflicts/Versions and remaining M2/IME/VoiceOver/M3/M5/M6 remain open.
+The complete evidence and remaining gates are in validation/document-lifecycle.json.

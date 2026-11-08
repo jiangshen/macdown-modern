@@ -1,5 +1,5 @@
-import AppKit
 import DocumentCore
+import Foundation
 import Observation
 import SwiftUI
 import UniformTypeIdentifiers
@@ -43,6 +43,11 @@ public final class MarkdownDocument: SwiftUI.Document {
     -> sending FileWrapperDocumentReader<TextFileContents>
   {
     FileWrapperDocumentReader(configuration) { wrapper in
+      #if DEBUG
+        if DocumentLifecycleTrace.enabled {
+          DocumentLifecycleTrace.note("convert file wrapper regular=\(wrapper.isRegularFile)")
+        }
+      #endif
       guard let data = wrapper.regularFileContents else {
         throw CocoaError(.fileReadCorruptFile)
       }
@@ -65,7 +70,13 @@ public final class MarkdownDocument: SwiftUI.Document {
   }
 
   public func snapshot(contentType: UTType) async throws -> sending TextFileContents {
-    baseline.replacingText(with: text)
+    #if DEBUG
+      if DocumentLifecycleTrace.enabled {
+        DocumentLifecycleTrace.note(
+          "snapshot revision=\(revision) utf16=\(text.utf16.count) load=\(loadRevision)")
+      }
+    #endif
+    return baseline.replacingText(with: text)
   }
 
   public func apply(
@@ -74,11 +85,8 @@ public final class MarkdownDocument: SwiftUI.Document {
   ) async throws {
     #if DEBUG
       if DocumentLifecycleTrace.enabled {
-        let native = configuration?.fileURL.flatMap {
-          NSDocumentController.shared.document(for: $0)
-        }
         DocumentLifecycleTrace.note(
-          "apply revision=\(revision) previous=\(previous != nil) previousMatches=\(previous.map { text.utf8.elementsEqual($0.text.utf8) } ?? false) incomingMatches=\(text.utf8.elementsEqual(snapshot.text.utf8)) nativeHost=\(native != nil) nativeEdited=\(native?.isDocumentEdited.description ?? "unavailable")"
+          "apply revision=\(revision) previous=\(previous != nil) previousMatches=\(previous.map { text.utf8.elementsEqual($0.text.utf8) } ?? false) incomingMatches=\(text.utf8.elementsEqual(snapshot.text.utf8))"
         )
       }
     #endif
@@ -113,6 +121,11 @@ public final class MarkdownDocument: SwiftUI.Document {
     guard !replacement.utf8.elementsEqual(text.utf8) else { return }
     text = replacement
     revision &+= 1
+    #if DEBUG
+      if DocumentLifecycleTrace.enabled {
+        DocumentLifecycleTrace.note("accept native revision=\(revision) utf16=\(text.utf16.count)")
+      }
+    #endif
   }
 }
 
@@ -123,7 +136,7 @@ public struct EditorSelectionRequest: Equatable {
 
 #if DEBUG
   /// Opt-in lifecycle diagnostics contain only operation/state metadata, never text or URLs.
-  private enum DocumentLifecycleTrace {
+  enum DocumentLifecycleTrace {
     static let enabled =
       ProcessInfo.processInfo.environment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] == "1"
     static func note(_ message: String) {

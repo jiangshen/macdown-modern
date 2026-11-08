@@ -226,9 +226,10 @@ final class DocumentLifecycleTests: XCTestCase {
       "# Restoration 中文 👩‍💻\n\n" + String(repeating: "Reading and writing checkpoint.\n", count: 40)
     let bytes = Data(source.utf8)
     try bytes.write(to: file)
-    let app = launch(arguments: [
-      "-ApplePersistenceIgnoreState", "NO", "-NSQuitAlwaysKeepsWindows", "YES",
-    ])
+    let app = launch(
+      arguments: [
+        "-ApplePersistenceIgnoreState", "NO", "-NSQuitAlwaysKeepsWindows", "YES",
+      ], environment: ["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE": "1"])
     defer { app.terminate() }
     let editor = openDocument(file, in: app)
     XCTAssertEqual(editor.value as? String, source)
@@ -251,9 +252,26 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertEqual(restored.value as? String, source + "Restored insertion checkpoint")
     app.typeKey("z", modifierFlags: .command)
     XCTAssertEqual(restored.value as? String, source)
-    let undoAutosaved = NSPredicate { _, _ in (try? Data(contentsOf: file)) == bytes }
-    expectation(for: undoAutosaved, evaluatedWith: nil)
-    waitForExpectations(timeout: 8)
+    let undoAutosaved = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == bytes }, object: nil)
+    let automaticResult = XCTWaiter().wait(for: [undoAutosaved], timeout: 8)
+    if automaticResult != .completed {
+      // Diagnose model state versus autosave scheduling; this does not satisfy the original assertion.
+      app.typeKey("s", modifierFlags: .command)
+      let explicitlySaved = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == bytes }, object: nil)
+      let explicitResult = XCTWaiter().wait(for: [explicitlySaved], timeout: 8)
+      let observation = XCTAttachment(
+        string:
+          "Undo autosave outcome: \(automaticResult.rawValue); diagnostic explicit Save outcome: \(explicitResult.rawValue); native text matches original: \(restored.value as? String == source); disk matches original: \((try? Data(contentsOf: file)) == bytes)."
+      )
+      observation.name = "restored-undo-save-comparison"
+      observation.lifetime = .keepAlways
+      add(observation)
+    }
+    XCTAssertEqual(
+      automaticResult, .completed,
+      "Diagnostic Save must not replace automatic Undo persistence acceptance")
     XCTAssertEqual(try Data(contentsOf: file), bytes)
     let image = XCTAttachment(screenshot: window.screenshot())
     image.name = "native-graceful-document-restoration"
