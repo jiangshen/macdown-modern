@@ -29,5 +29,14 @@
   ],
   "trackedFileCountAtAuditStart": 1057,
   "trackedLogicalBytesAtAuditStart": 27235420,
-  "standingUserPreference": "Keep temporary items while needed; clear obsolete copies when the investigation or verification finishes. Recorded in AGENTS.md."
+  "standingUserPreference": "Keep temporary items while needed; clear obsolete copies when the investigation or verification finishes. Recorded in AGENTS.md.",
+  "followupRetention": {
+    "report": "storage-retention.json",
+    "temporaryAllocatedBytesAfter": 672817152,
+    "checkoutAllocatedBytesAfter": 598372352,
+    "currentAppBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+    "historicalRawBundlesRemoved": 34,
+    "retainedRawBundleCount": 1,
+    "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
+  }
 }

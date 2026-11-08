@@ -2935,3 +2935,23 @@ matches that digest and the extracted tool reports4.214.1. The temporary archive
 is removed at step exit; framework layout is retained. Workflow YAML/shell syntax
 passes. Runtime Undo and external-reload issues remain open; this infrastructure
 repair does not establish native acceptance.
+
+
+## Keep latest useful artifacts only — 2026-11-08
+
+The user explicitly requested removal of obsolete generated results, including older
+raw evidence.34 historical xcresult bundles were reduced to compact summaries/text
+and screenshots (~17MB). Redundant exported system logs, duplicate zip downloads,
+obsolete dependency/compiler caches and older generated app builds were cleared.
+The newest locally verified app was moved unchanged to Build/Snowfolio; one raw
+Undo diagnostic result remains. Task-owned temporary allocations fell from8.31GB
+to0.673GB. Dirty source worktrees, user documents, current source and Trash remain
+preserved. The itemized retention map is validation/storage-retention.json.
+
+CI installation now succeeds. The focused Undo trace proves native/model state
+agrees after Undo and diagnostic explicit Save writes original bytes; the original
+8s automatic assertion still fails. The standalone stock host runs all three controls
+but fails; its documented onChange model Undo only removes one character. Exact
+reload result locations still need collection before any host-policy conclusion.
+Full runs42474226792 and42474634394 remain live at this observation. Full lifecycle,
+remaining parity and modernization are incomplete.

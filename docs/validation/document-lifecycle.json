@@ -232,7 +232,11 @@
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42474240390",
       "commit": "47bfd9142d9b3e40e68a2a7f5bee5a08205a2ae8",
       "result": "Native restoration method executed68.682s; original automatic Undo persistence assertion failed. Metadata/explicit-save attachment collection pending.",
-      "failureLog": "/private/tmp/snowfolio-current-undo-failed.log"
+      "failureLog": "/private/tmp/snowfolio-current-undo-failed.log",
+      "explicitSave": "passed; original native source/model both1304 UTF-16 code units at revision29 after Undo; explicit Save writes original bytes. Original automatic8s assertion still fails.",
+      "modelFinding": "Undo notification has synchronizing=false, sourceRevision29/modelRevision29, nativeUTF161304/modelUTF161304. Existing revision guard does not skip this synchronization. No production host/autosave change is justified by this trace alone.",
+      "compactConsole": "/private/tmp/snowfolio-validation-history/snowfolio-current-undo-diagnostics/6192088b8dc6-StandardOutputAndStandardError-local.macdown.modern.txt",
+      "comparisonAttachment": "/private/tmp/snowfolio-current-undo-text/36A6661D-CAF5-4804-832D-D4FCD251E1D9.txt"
     }
   },
   "fullDiagnosticCheckpoint": {
@@ -258,6 +262,14 @@
       "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "e44687e77a0db8afffb66e02beaeb2b4bed13337833ece740989900ef075ed92",
       "Tools/DocumentHostProbe/Sources/DocumentHostProbeApp.swift": "b7b20724b000276b80075f11dd1aaeb7edcf294b2ef7fb9968ebc8c1f4225e8a"
     },
-    "runtime": "pending; comparison does not establish Snowfolio acceptance"
-  }
+    "runtime": "pending; comparison does not establish Snowfolio acceptance",
+    "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42474650350",
+      "commit": "12a356cc3d71aaf825d5e5f24c6eadb5d098605b",
+      "result": "Three selected control methods execute and fail. Undo only removes final character in the documented onChange sample, so its full-string grouping assumption is unsuitable; exact reload failure locations pending compact result collection.",
+      "failureLog": "/private/tmp/snowfolio-stock-host-failed.log",
+      "SnowfolioAcceptance": "none; independent control results do not fix or accept production lifecycle."
+    }
+  },
+  "retentionNote": "Obsolete raw bundles and redundant exported system logs removed under user request; console/summary/screenshot history and retirement mapping are in storage-retention.json. Current raw Undo result retained."
 }

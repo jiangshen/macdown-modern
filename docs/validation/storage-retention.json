@@ -1,0 +1,275 @@
+{
+  "dateUTC": "2026-11-08T11:21:22.729861+00:00",
+  "request": "Retain only the latest useful app build/raw result, remove obsolete generated results, and save this preference across future work.",
+  "taskTemporaryAllocatedBytesBefore": 8309907456,
+  "taskTemporaryAllocatedBytesAfter": 672817152,
+  "oldRawResultBundleCountRemoved": 34,
+  "oldRawResultAllocatedBytesRemoved": 4049256448,
+  "generatedDiagnosticsArchivesAndCachesAllocatedBytesRemoved": 2274664448,
+  "oldBuildAllocatedBytesRemoved": 1619001344,
+  "method": "Specific task-owned generated outputs removed under explicit user authorization; SwiftPM reset used for inspected dependency caches. No Trash emptied.",
+  "latestAppBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+  "latestAppBuildAllocatedBytes": 518193152,
+  "appConsolidation": "Newest locally verified app build moved unchanged from isolated scroll-past-end build to canonical Build/Snowfolio; older generated app builds removed after process inventory found no running app/compiler.",
+  "latestRawResult": "/private/tmp/snowfolio-current-undo-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_11-06-49-+0000.xcresult",
+  "retainedRawResultBundleCount": 1,
+  "historicalCompactEvidence": "/private/tmp/snowfolio-validation-history",
+  "historicalCompactEvidenceAllocatedBytes": 17764352,
+  "remainingScope": "Current raw result, one core dependency cache, compact findings/screenshots/performance records and task-owned source/reference snapshots. Dirty worktrees and source preserved.",
+  "standingPreference": "Latest useful generated build/result by default; retire obsolete copies after each check; keep compact evidence and necessary active comparisons.",
+  "capacityObservation": "df reports34GiB available after cleanup. Allocated byte reductions are not a promise of identical physical APFS recovery.",
+  "items": [
+    {
+      "original": "/private/tmp/snowfolio-line-spacing-initial-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_05-31-08-+0000.xcresult",
+      "allocatedBytesBefore": 164270080,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-line-spacing-initial-hosted-native-f3dbf62c1222",
+      "summarySHA256": "b5923899f329f63fc6e066c17ac2a6180f872299530926e50a969bf9ebef310a",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-line-spacing-accepted-hosted-native-complete/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_06-06-44-+0000.xcresult",
+      "allocatedBytesBefore": 163205120,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-line-spacing-accepted-hosted-native-complete-3136c1bc587b",
+      "summarySHA256": "5a95e29bef501e59805d6c0b4dd940036ea5b77e6f92d5f422cd86da11bd24d9",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-editor-column-initial-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_03-19-21-+0000.xcresult",
+      "allocatedBytesBefore": 157630464,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-editor-column-initial-hosted-native-e7017cd5b995",
+      "summarySHA256": "53d898d2c8dc2ced77bb330153621fc0c9f34b4b0896c255e600fd1ed7d7c27c",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-asset-folder-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_01-59-19-+0000.xcresult",
+      "allocatedBytesBefore": 156459008,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-asset-folder-hosted-native-53e709ca1951",
+      "summarySHA256": "3c1b7e21b876fc19fd8de1c7a2db829b1544b718d80fcc5700c720db535a2aaa",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-editor-column-final-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_03-37-22-+0000.xcresult",
+      "allocatedBytesBefore": 156336128,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-editor-column-final-hosted-native-a94c2defae3d",
+      "summarySHA256": "68a696615f2673f7e52e0ab986b8c2c3cf350ceaad2dbc7df01b6e213bff423f",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-theme-controls-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_15-33-38-+0000.xcresult",
+      "allocatedBytesBefore": 146710528,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-theme-controls-hosted-native-2edda9ce2f72",
+      "summarySHA256": "e06b48821eff93280af238360eb7c49c46d5ff879b31893b293f7a6b13fe65c5",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-reported-list-hosted-native/snowfolio-native-9c98b3c1bd2aa61cfa0d36420c34777400a2fa2e/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_19-42-36-+0000.xcresult",
+      "allocatedBytesBefore": 143581184,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-reported-list-hosted-native-a9d6114abbd2",
+      "summarySHA256": "b0edd490dbf8aa257b9346cf56ac23296961aa24fe3a2b3238343378f5d4811e",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-split-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_18-10-20-+0000.xcresult",
+      "allocatedBytesBefore": 142221312,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-split-hosted-native-0f502269e713",
+      "summarySHA256": "eed21189da8e9597fb8ac330bd730dd20ca2feaf9dc44e45c68226c82fd56052",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-theme-scopes-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_13-16-59-+0000.xcresult",
+      "allocatedBytesBefore": 141336576,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-theme-scopes-hosted-native-3f9353334b96",
+      "summarySHA256": "0d8a25530fa70f92e6c7c355389b83822b9a9ec1e86c535f5addf5e73d242061",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-theme-final-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_15-55-25-+0000.xcresult",
+      "allocatedBytesBefore": 140324864,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-theme-final-hosted-native-6956670ddf00",
+      "summarySHA256": "a38a039e7d228922b3be8861b09c68298b77d2d1954de29dcf76788264b6a7c9",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-native-theme-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_12-38-12-+0000.xcresult",
+      "allocatedBytesBefore": 140296192,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-native-theme-hosted-native-01c9f2ff13b5",
+      "summarySHA256": "2d9badb9f327ef68e4c3fe198856ab5e5720247addff8de288f5e03e90829639",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-theme-surfaces-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_13-57-01-+0000.xcresult",
+      "allocatedBytesBefore": 139980800,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-theme-surfaces-hosted-native-9a3afe3eba9f",
+      "summarySHA256": "e309fb89a307c370138a4da70e05ed58631d03e552d05e12fab1a626e54970c9",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-table-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_17-28-40-+0000.xcresult",
+      "allocatedBytesBefore": 138764288,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-table-hosted-native-d7288b87c917",
+      "summarySHA256": "c9209076d5d3f7d2de673ac3fb590365d6ac18ebeb732e1d7e5b9c1d98ae3daf",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-quote-repaint-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_11-02-54-+0000.xcresult",
+      "allocatedBytesBefore": 138452992,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-quote-repaint-hosted-native-462f74a47cde",
+      "summarySHA256": "7b99927cd02ae3ed56b38e14a94fb806b867f2635946a62c58c3efb100f439e2",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-mixed-list-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_11-50-25-+0000.xcresult",
+      "allocatedBytesBefore": 137379840,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-mixed-list-hosted-native-2ccbee149edf",
+      "summarySHA256": "dc29493f19a4716e915c00f143dca5a5fcf85b31969833efe5bfdbb4515657cf",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-ci-42348067285/snowfolio-native-715565c34b5eadb1b9b891f0488784ebe8112c71/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_06-41-27-+0000.xcresult",
+      "allocatedBytesBefore": 132341760,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-ci-42348067285-6d55f0d7e6c3",
+      "summarySHA256": "2e734e2a225c2c8c99547823ecb3d3a84367dc97cb32feaca28813422254f3b7",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-intraword-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_11-39-33-+0000.xcresult",
+      "allocatedBytesBefore": 131657728,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-intraword-hosted-native-d9716c6eeeb2",
+      "summarySHA256": "e6a2a88b75ea7df8ac1c47d8b079c8c95901edff0fb373862432e01b7bb7b5fb",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-fence-ci-artifacts/snowfolio-native-08c962e0e6a5c9def128aba57c375f8a04e5a63d/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_08-00-16-+0000.xcresult",
+      "allocatedBytesBefore": 131100672,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-fence-ci-artifacts-31dbf0b5d353",
+      "summarySHA256": "afb24c369fd8dabb0dd235d8a8d05ce4ec65ebee107c4ff08bed51dd905fd61c",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-document-lifecycle-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_07-38-53-+0000.xcresult",
+      "allocatedBytesBefore": 109084672,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-document-lifecycle-hosted-native-4050993e7a2a",
+      "summarySHA256": "4f363c1dd6eedb2f5f565dab7cba90e55da742478722eff3d5cd4c5f868a0d04",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-scroll-past-end-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_07-21-12-+0000.xcresult",
+      "allocatedBytesBefore": 107769856,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-scroll-past-end-hosted-native-b1b3989b97e2",
+      "summarySHA256": "44bd295a61cef96b4f90741bb187468ed6c7025f1598e8bd6f4e14d542317cdb",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-line-spacing-followup-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_05-44-59-+0000.xcresult",
+      "allocatedBytesBefore": 106291200,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-line-spacing-followup-hosted-native-9769c24899c7",
+      "summarySHA256": "421bdb3cee8c1622300ae9f5c5af1712463a12049075c2ee0c2bf5fad538eb83",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-theme-catalog-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_15-23-50-+0000.xcresult",
+      "allocatedBytesBefore": 86155264,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-theme-catalog-hosted-native-b94574c0fdfc",
+      "summarySHA256": "1fa150feba18ea934c6be8506bc58541d49078bbb8e34dc40c19fc879962539f",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-source-columns-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_16-40-24-+0000.xcresult",
+      "allocatedBytesBefore": 84676608,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-source-columns-hosted-native-8e17e6a0d174",
+      "summarySHA256": "18bffaf5d71a61f5ce8ce1de6da4c12ab3986aa12c427560a4e6d69cfa09e46d",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-responsive-lifecycle-focused-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_08-29-06-+0000.xcresult",
+      "allocatedBytesBefore": 84688896,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-responsive-lifecycle-focused-native-f9b642313f36",
+      "summarySHA256": "f9e6b212f3f933cf407c086482bb137a80fc25a325e37c82cb7a1be2523367d6",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-input-hosted-native/snowfolio-native-a11c4bc71a1789b92f1b0a92b094ff4ce58b64d9/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_20-02-58-+0000.xcresult",
+      "allocatedBytesBefore": 84447232,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-input-hosted-native-6d776fed5706",
+      "summarySHA256": "71b5ab35ef71b5bf92089f44119438fe92c0fae471e4643aa1b5912b33cc1500",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-autolink-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_19-17-40-+0000.xcresult",
+      "allocatedBytesBefore": 84410368,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-autolink-hosted-native-3a5348d99e62",
+      "summarySHA256": "e97c349821cee30390386672c5d48e3e1326024b8817e2307b23535f2fbba302",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-empty-prefix-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_13-22-17-+0000.xcresult",
+      "allocatedBytesBefore": 83369984,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-empty-prefix-hosted-native-995842a2b604",
+      "summarySHA256": "3be152f992ca9ce1d75f718f4118bdb2748150a8d475b6d9b33db6dcf8786ebd",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-insertion-hosted/snowfolio-native-38b2e1f7681c781cfb7cfed37686566ea16dd796/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_14-46-09-+0000.xcresult",
+      "allocatedBytesBefore": 82268160,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-insertion-hosted-724a7582b61b",
+      "summarySHA256": "b00618182c18ddec06eb90a9734b9c4311187d34aa2ac5d40af18804896f2ba1",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-editor-theme-reader-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_12-09-27-+0000.xcresult",
+      "allocatedBytesBefore": 81391616,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-editor-theme-reader-hosted-native-24810c5edf32",
+      "summarySHA256": "ef86be103e70e6779fe18bcce4372531ac958cc2653ff8ad752820e12636cc18",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-underline-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_10-06-53-+0000.xcresult",
+      "allocatedBytesBefore": 80375808,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-underline-hosted-native-16ed8f26bafe",
+      "summarySHA256": "e3b74a1f98ec0db91674a552c18b037608682e1073c606f0084bc3839aeb9e0f",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-settings-ci-first-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_08-37-21-+0000.xcresult",
+      "allocatedBytesBefore": 78397440,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-settings-ci-first-native-aae352dcac20",
+      "summarySHA256": "bfa3e0a8b0423c56e205e8f9880287caa8eb540cc01eb8aa4b0fc28b40e0d74a",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-document-reload-focused-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_08-04-08-+0000.xcresult",
+      "allocatedBytesBefore": 77922304,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-document-reload-focused-native-8d5b4a48401e",
+      "summarySHA256": "eedd65210dd416cf0e0d7618ecde63e5d9e0512c701d726adfb5f556491a16da",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/snowfolio-ci-42347417626/snowfolio-native-997baa43c8076406144530a7baa6ffb054f5f080/DerivedData/Logs/Test/Test-Snowfolio-2026.11.07_06-32-23-+0000.xcresult",
+      "allocatedBytesBefore": 72794112,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/snowfolio-ci-42347417626-7ebcb50020ab",
+      "summarySHA256": "ff9069c3809946f7482e021c9ca571b799cecfe631ddbe3bf2ca2bc2ccd1e5c0",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    },
+    {
+      "original": "/private/tmp/macdown-modern-lifecycle-1.xcresult",
+      "allocatedBytesBefore": 143163392,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/macdown-modern-lifecycle-1.xcresult-6dda0ec5fd46",
+      "summarySHA256": "a8024164627d023ea0136a6a3cdf39056f1d4a212da3431d5edd29ddd696728d",
+      "action": "removed obsolete generated raw result; compact evidence preserved"
+    }
+  ],
+  "details": [
+    {
+      "path": "/private/tmp/snowfolio-retired-generated.json",
+      "sha256": "5f061ff7a30a30e4b680f5cecd41634040fc19003983853203e53f3eb14dee92"
+    },
+    {
+      "path": "/private/tmp/snowfolio-retired-builds.json",
+      "sha256": "95051799c7c0ba5d500f76e811f48b831c77dc5a65169fe33e45f747d487a7b8"
+    },
+    {
+      "path": "/private/tmp/snowfolio-retired-extra-caches.json",
+      "sha256": "de2cbea82cd03619097500ec627a967a79fe21340b6eb0522e967221c3d68bc3"
+    }
+  ]
+}

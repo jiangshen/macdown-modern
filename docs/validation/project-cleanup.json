@@ -362,7 +362,7 @@
       "scope": "Only completed agent-owned worktree; source edit verified byte-identical to 6d911da before moving. No current app/source/test result or user document moved."
     }
   ],
-  "lastUpdated": "2026-11-08T06:38:32.079367+00:00",
+  "lastUpdated": "2026-11-08T11:21:22.729861+00:00",
   "generatedBuildMaintenance": [
     {
       "date": "2026-11-08T06:38:32.079367+00:00",
@@ -423,6 +423,17 @@
       "trashEmptied": false,
       "report": "storage-footprint.json",
       "reason": "User reported storage loss; measured task temporary files at16.6GB and cleared only inspected, rebuildable SwiftPM caches."
+    },
+    {
+      "date": "2026-11-08T11:21:22.729861+00:00",
+      "method": "Specific task-owned generated outputs removed under explicit user authorization; SwiftPM reset used for inspected dependency caches. No Trash emptied.",
+      "report": "storage-retention.json",
+      "oldRawResultBundlesRemoved": 34,
+      "taskTemporaryAllocatedBytesBefore": 8309907456,
+      "taskTemporaryAllocatedBytesAfter": 672817152,
+      "latestRawResultBundleCount": 1,
+      "sourceAndDirtyWorktreesPreserved": true,
+      "trashEmptied": false
     }
   ]
 }

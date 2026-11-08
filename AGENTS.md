@@ -8,6 +8,7 @@ The user explicitly wants temporary items kept only while needed, then cleared w
 
 - Reuse one current core build cache and one current app build location for routine work. Preserve any app bundle the user is running or relying on.
 - Isolated before/after, sanitizer, or reproduction builds are allowed while an investigation needs them. Once results are captured and that check is finished, clean their regenerable build output rather than leaving another permanent cache.
+- Keep only the latest useful raw test result by default; remove older generated results once their compact findings are captured. Do not accumulate historical result bundles or exported system logs just in case.
 - Retain compact logs, measurements, relevant screenshots, and source/version references. Keep large recordings, exported system logs, and duplicate downloads only while they support an unresolved issue or a necessary reference. Retire them once that need ends.
 - Before finishing a verification cycle, review the temporary artifacts it created and clear obsolete copies. Check ownership and active processes before cleaning; never broadly clear `/tmp`, shared development caches, or another project's files.
 - Use standard build-tool cleanup for regenerable caches. Follow the user's Trash preference for retired project files; do not empty Trash or remove chat history as part of routine project cleanup.
