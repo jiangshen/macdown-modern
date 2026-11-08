@@ -50,6 +50,9 @@
     var body: some View {
       TextEditor(text: $document.text)
         .accessibilityIdentifier("stockDocumentEditor")
+        .onAppear {
+          NSLog("StockDocumentProbe presenters=%ld", NSFileCoordinator.filePresenters.count)
+        }
         .onChange(of: document.text) { previous, _ in
           // Matches Apple's migration example, including its manual model undo.
           undoManager?.registerUndo(withTarget: document) { document in

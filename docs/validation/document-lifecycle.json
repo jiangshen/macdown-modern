@@ -301,7 +301,22 @@
       "nativeTracing": "Log public NSDocument presentedItemDidChange/revert and registration metadata; no source/path logging.",
       "fixtureCleanup": "App termination is deferred before Open, so an opening assertion failure still terminates its own app.",
       "compile": "AppKit build-for-testing passed; five native methods compile, zero compiler errors/warnings. Shell syntax/Swift strict formatting pending final check.",
-      "runtime": "Pending hosted control; production host, conflict guard and acceptance waits unchanged."
+      "runtime": "Pending hosted control; production host, conflict guard and acceptance waits unchanged.",
+      "hosted": {
+        "run": "https://github.com/jiangshen/snowfolio/actions/runs/42479210488",
+        "commit": "1faedfd7cb045e582843fbae0c994ad4896c35e3",
+        "result": "Five methods executed; three pass: coordinated reload after autosave in canonical temporary and ordinary user folders, plus saved-edit Undo/deactivation persistence. Both uncoordinated reload methods fail.",
+        "writerSeconds": [
+          0.4339908749998358,
+          0.42156408333335094
+        ],
+        "nativeObservation": "Presenter registered=1; coordinated external replacement produces presentedItemDidChange, main-actor revert and second read54bytes. Both8s reload outcomes complete; external bytes retained. Uncoordinated cases show notifications but no subsequent revert/read.",
+        "summary": "/private/tmp/snowfolio-host-location-summary.json",
+        "observations": "/private/tmp/snowfolio-host-location-text",
+        "console": "/private/tmp/snowfolio-validation-history/host-location-console/StandardOutputAndStandardError-local.snowfolio.document-host-probe.txt",
+        "raw": "/private/tmp/snowfolio-current-native-result",
+        "interpretation": "Temporary-vs-home location is not the failure cause for coordinated canonical URLs in this native control. Compare SwiftUI/production with the same canonical paths; do not claim a SwiftUI defect or change merge policy without that evidence."
+      }
     }
   },
   "retentionNote": "Only latest useful raw control result retained. Superseded raw Undo bundle removed after preserving its summary/console/comparison; stock system-log export removed after compact console capture. Historical retirement mapping in storage-retention.json; app build remains canonical Build/Snowfolio.",
@@ -317,5 +332,15 @@
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42474634394",
     "result": "Downloaded and counted354 tests/76 suites,652/652CommonMark examples,8arm64 executables.",
     "directory": "/private/tmp/snowfolio-current-core-result"
+  },
+  "canonicalProductionFollowup": {
+    "changes": [
+      "Only external-write production fixtures resolve their temporary parent symlinks before creation/open/write; retain exact encoding/content, separate writer completion and original8s source reload assertions.",
+      "Stock SwiftUI probe omits NSDocumentClass completely; it no longer emits an empty native-class value. AppKit retains its explicit class.",
+      "Debug Undo metadata includes the native controller autosavingDelay. After the original active8s persistence failure, diagnose native deactivation/35s automatic save before explicit Save; the original active assertion still fails and no production save policy changes."
+    ],
+    "build": "Both five-method SwiftUI control and24-method Snowfolio build-for-testing pass without compiler errors/warnings.",
+    "formatting": "Strict formatting and diff check pass.",
+    "runtime": "Pending matched stock-coordination and production lifecycle dispatches."
   }
 }

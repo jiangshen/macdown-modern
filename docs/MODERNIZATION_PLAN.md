@@ -18,21 +18,26 @@ range and fractional persistence. Scroll-past-end retains the original boolean k
 and explicit false values. Geometry waits for composition. The30-minute native job
 envelope leaves artifact time; individual waits/assertions remain unchanged.
 
-Current local Smart Home implementation `280e6a3` passes354 tests/76 suites and the
-arm64 app build, with21 UI methods compiled; exact [hosted run42460295371](https://github.com/jiangshen/snowfolio/actions/runs/42460295371)
-passes its core/corpus gate; its native job fails only the existing clean external-reload check. Smart line start preserves the original preference and native
-wrapped-row/composition behavior. Follow-up close-cancellation and graceful-restoration
-fixtures now compile (23 UI methods total); their execution is not yet accepted.
+Latest local parser integration `f552c24` passes **355 package tests/76 suites** and
+arm64 app build-for-testing, with24 native UI methods compiled. Paired render/parent
+optimization measurements and compatibility limits are recorded in
+[markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
+The full native47bfd91/12a356c runs complete24 methods with21 passes and the same
+three lifecycle failures: uncoordinated/coordinated external reload and the original
+active8s Undo disk assertion. Latest f552c24/1faedfd full hosted runs remain pending.
 
-Document lifecycle currently fails acceptance: exact `6d911da`
-[run42459610152](https://github.com/jiangshen/snowfolio/actions/runs/42459610152)
-passes exact UTF-16LE BOM/CRLF/Unicode autosave before Save (observed1.285s after
-deactivation request), but the clean uncoordinated external-reload check times out at
-its unchanged8-second wait. Other20 native UI methods and the core job pass. The failure
-video retains old source with no visible conflict prompt; cause is not yet established.
-A separate coordinated-write comparison and opt-in Debug metadata trace now compile
-(24 methods total). No overwrite/conflict guard is weakened. See
-[document-lifecycle.json](validation/document-lifecycle.json).
+M2 remains incomplete. A standalone native NSDocument/TextKit2 control at1faedfd
+[run42479210488](https://github.com/jiangshen/snowfolio/actions/runs/42479210488)
+passes coordinated reload after autosave in both canonical temporary and ordinary
+user folders, plus saved-edit Undo/deactivation autosave; both uncoordinated reloads
+fail. Registration/notification/revert/second-read traces confirm the native path.
+Only the latest useful raw control result is retained, with compact older evidence.
+
+The next production fixture uses identical canonical paths; exact8s reload assertions
+remain. A separate diagnostic compares deactivation-triggered autosave after the
+original active8s Undo failure, without replacing that assertion. Both stock and
+production fixtures compile without warnings. No production merge guard or native
+save policy is weakened. See [document-lifecycle.json](validation/document-lifecycle.json).
 
 The light/default-font source-selection screenshot at the preceding accepted checkpoint
 has a continuous highlight without a marker seam. User-desktop dark selection remains

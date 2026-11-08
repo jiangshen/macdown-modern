@@ -67,7 +67,8 @@ final class DocumentLifecycleTests: XCTestCase {
 
   @MainActor
   private func checkAutosaveAndExternalReload(coordinated: Bool) throws {
-    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    let directory = FileManager.default.temporaryDirectory.resolvingSymlinksInPath()
+      .appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     defer { try? FileManager.default.removeItem(at: directory) }
     let file = directory.appendingPathComponent("lifecycle-encoding.md")
@@ -178,7 +179,7 @@ final class DocumentLifecycleTests: XCTestCase {
     let result = XCTWaiter().wait(for: [complete], timeout: 8)
     let observation = XCTAttachment(
       string:
-        "Coordinated writer: \(coordinated); completion: \(result.rawValue); elapsed: \(ProcessInfo.processInfo.systemUptime - began) seconds."
+        "Coordinated writer: \(coordinated); completion: \(result.rawValue); elapsed: \(ProcessInfo.processInfo.systemUptime - began) seconds; canonical path: \(file.path == file.resolvingSymlinksInPath().path)."
     )
     observation.name = "external-writer-completion"
     observation.lifetime = .keepAlways
@@ -256,6 +257,21 @@ final class DocumentLifecycleTests: XCTestCase {
       predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == bytes }, object: nil)
     let automaticResult = XCTWaiter().wait(for: [undoAutosaved], timeout: 8)
     if automaticResult != .completed {
+      // Compare the same native deactivation trigger used by the encoding test.
+      // This is diagnostic only: the original active8s assertion still fails below.
+      let finder = XCUIApplication(bundleIdentifier: "com.apple.finder")
+      finder.activate()
+      let inactiveSaved = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == bytes }, object: nil)
+      let inactiveResult = XCTWaiter().wait(for: [inactiveSaved], timeout: 35)
+      let inactiveObservation = XCTAttachment(
+        string:
+          "Active Undo autosave outcome: \(automaticResult.rawValue); deactivation-triggered automatic outcome: \(inactiveResult.rawValue); disk matches original: \((try? Data(contentsOf: file)) == bytes)."
+      )
+      inactiveObservation.name = "restored-undo-deactivation-comparison"
+      inactiveObservation.lifetime = .keepAlways
+      add(inactiveObservation)
+      app.activate()
       // Diagnose model state versus autosave scheduling; this does not satisfy the original assertion.
       app.typeKey("s", modifierFlags: .command)
       let explicitlySaved = XCTNSPredicateExpectation(

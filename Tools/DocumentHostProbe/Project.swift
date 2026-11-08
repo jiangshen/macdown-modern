@@ -1,6 +1,12 @@
 import ProjectDescription
 
 let appKitProbe = Environment.documentHostProbeKind.getString(default: "swiftui") == "appkit"
+var probeDocumentType: [String: Plist.Value] = [
+  "CFBundleTypeName": "Probe text", "CFBundleTypeRole": "Editor",
+  "LSHandlerRank": "Alternate",
+  "LSItemContentTypes": .array([.string("public.plain-text")]),
+]
+if appKitProbe { probeDocumentType["NSDocumentClass"] = "ProbeNativeDocument" }
 
 // Diagnostic only: this standalone app does not depend on or ship with Snowfolio.
 let project = Project(
@@ -19,12 +25,7 @@ let project = Project(
       infoPlist: .extendingDefault(with: [
         "NSPrincipalClass": "NSApplication",
         "CFBundleDocumentTypes": .array([
-          .dictionary([
-            "CFBundleTypeName": "Probe text", "CFBundleTypeRole": "Editor",
-            "NSDocumentClass": appKitProbe ? "ProbeNativeDocument" : "",
-            "LSHandlerRank": "Alternate",
-            "LSItemContentTypes": .array([.string("public.plain-text")]),
-          ])
+          .dictionary(probeDocumentType)
         ]),
       ]),
       sources: ["Sources/**"]

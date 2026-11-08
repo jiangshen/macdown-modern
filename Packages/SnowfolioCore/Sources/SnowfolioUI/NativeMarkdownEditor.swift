@@ -443,7 +443,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
         if DocumentLifecycleTrace.enabled, let editor {
           let native = editor as? MarkdownTextView
           DocumentLifecycleTrace.note(
-            "undo event synchronizing=\(isSynchronizing) sourceRevision=\(native?.sourceRevision?.description ?? "none") modelRevision=\(document.revision) nativeUTF16=\(editor.string.utf16.count) modelUTF16=\(document.text.utf16.count)"
+            "undo event synchronizing=\(isSynchronizing) sourceRevision=\(native?.sourceRevision?.description ?? "none") modelRevision=\(document.revision) nativeUTF16=\(editor.string.utf16.count) modelUTF16=\(document.text.utf16.count) autosavingDelay=\(NSDocumentController.shared.autosavingDelay)"
           )
         }
       #endif
