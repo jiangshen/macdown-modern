@@ -440,3 +440,21 @@ Native app build-for-testing passes; 19 UI methods compile. Exact hosted executi
 new screenshots and runtime warning attribution remain pending. Earlier scroll/caret
 failures and corrected fixture readiness are retained in validation/editor-line-spacing.json.
 Full M6 measurements and fresh source-selection/real IME/VoiceOver stay open.
+
+
+### Exact hosted line-spacing follow-up
+
+422da99/run42453343180 passes 347 package tests /74 suites, 652 CommonMark examples
+and all 19 native UI methods. Twenty-eight priority runtime warnings and two AppIntents
+metadata warnings remain unattributed; changes in warning counts between runs do not
+establish a performance improvement. The source selection image is continuous in
+light/default-font presentation. Actual modern caret paint/native-reference and dark
+desktop checks remain open even though native rectangle metrics pass.
+
+A screenshot download hit a full volume. Standard clean actions removed only
+regenerable output from the isolated agent-created Xcode/SwiftPM build folders, after
+architecture and passing results were recorded. Source, raw result bundles, logs and
+recovery records remain. The partial download moved to native Trash; Trash was not
+emptied and no space recovery is attributed to that move. Details are in
+validation/project-cleanup.json. This is capacity maintenance, not an app performance
+measurement or a claim that the Mac's general storage audit is complete.

@@ -2,7 +2,7 @@
   "checkpoint": "Native source line spacing, terminal caret geometry and two-way scroll input handoff",
   "date": "2026-11-07",
   "fullGoal": "active; incomplete",
-  "status": "Local verification passed; exact hosted execution and screenshots pending.",
+  "status": "Exact hosted implementation 422da99 passes both jobs: 347 package tests /74 suites, 652 CommonMark examples, eight arm64 test executables and all 19 app UI methods. Settings and light/default-font source selection inspected. Dark user-desktop selection and modern caret paint/native-reference comparison remain open.",
   "originalBehavior": {
     "key": "editorLineSpacing",
     "range": "0...100 native points, fractional supported",
@@ -234,7 +234,8 @@
     "Fresh CUA check found user Mac locked. No user-desktop source-selection/glyph or real IME/VoiceOver visual acceptance claimed.",
     "The 03:42 list screenshot predates the mixed-list preview correction; six preview list regressions remain in the suite. Source-editor-specific artifact is not declared fixed by caret work.",
     "ASAN and test durations are correctness evidence, not measured typing latency, leak, memory or energy improvement.",
-    "Scroll-past-end, remaining original typing/statistics/preferences parity, full document lifecycle, renderer parity, M5 and M6/release acceptance remain open. Coupled original targets are retained."
+    "Scroll-past-end, remaining original typing/statistics/preferences parity, full document lifecycle, renderer parity, M5 and M6/release acceptance remain open. Coupled original targets are retained.",
+    "Hosted source-selection image confirms only light/default-font presentation. Actual modern caret paint/native-reference equivalence and dark user-desktop reproduction remain open; 19 green UI methods do not close these visual gates."
   ],
   "hostedInitial": {
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42451040567",
@@ -309,8 +310,33 @@
     "hosted": {
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42451908380",
       "commit": "2e3f6f2cd541c759fb6f0ebb7b89d0d5c103c885",
-      "status": "Cancelled at 20-minute job limit; saved log shows new case failed because one native undo correctly removed only the terminal newline. Exact raw results are being downloaded.",
-      "failureLog": "/private/tmp/snowfolio-line-spacing-followup-cancelled.log"
+      "status": "18 passed /1 failed: native Undo removed only the terminal newline. Job cancelled at the 20-minute envelope during result handling; raw bundle and summary retained.",
+      "failureLog": "/private/tmp/snowfolio-line-spacing-followup-cancelled.log",
+      "nativeAudit": {
+        "run": "https://github.com/jiangshen/snowfolio/actions/runs/42451908380",
+        "commit": "2e3f6f2cd541c759fb6f0ebb7b89d0d5c103c885",
+        "jobConclusion": "cancelled at 20-minute envelope",
+        "testResult": "Failed",
+        "passedTests": 18,
+        "failedTests": 1,
+        "skippedTests": 0,
+        "failures": [
+          {
+            "failureText": "XCTAssertEqual failed: (\"Optional(\"1. First\\n2. Second\\n\\n- dfdfd\")\") is not equal to (\"Optional(\"Original spacing source\")\")",
+            "targetName": "SnowfolioUITests",
+            "testIdentifier": 3,
+            "testIdentifierString": "DocumentLifecycleTests/testEditorLineSpacingPreservesSourceAndHistory()",
+            "testIdentifierURL": "test://com.apple.xcode/Snowfolio/SnowfolioUITests/DocumentLifecycleTests/testEditorLineSpacingPreservesSourceAndHistory",
+            "testName": "testEditorLineSpacingPreservesSourceAndHistory()"
+          }
+        ],
+        "runtimeWarnings": 33,
+        "appIntentsMetadataWarnings": 2,
+        "appIntentsInformationalNotices": 12,
+        "log": "/private/tmp/snowfolio-line-spacing-followup-hosted-native/xcodebuild.log",
+        "logSHA256": "538dd2ec70e9b2f8770202d56ab0f850cd5cf3483be75214dc7ccb983a71e819",
+        "resultBundle": "/private/tmp/snowfolio-line-spacing-followup-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_05-44-59-+0000.xcresult"
+      }
     }
   },
   "singleEditFixtureFollowup": {
@@ -319,6 +345,109 @@
     "appBuildStatus": "passed",
     "strictLint": "passed",
     "workflowEnvelope": "Native job 20 to 30 minutes because the prior 19-method run finished tests near its 20-minute job cap and was cancelled during result handling. Per-test waits and assertions unchanged.",
-    "hosted": "pending"
+    "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42453343180",
+      "commit": "422da99f488d8607f614fbdccef0f00a28e38793",
+      "result": "passed both jobs; exact raw artifacts verified"
+    }
+  },
+  "acceptedHosted": {
+    "core": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42453343180",
+      "commit": "422da99f488d8607f614fbdccef0f00a28e38793",
+      "tests": 347,
+      "suites": 74,
+      "commonMarkExamples": 652,
+      "commonMarkFailures": 0,
+      "arm64Executables": 8,
+      "listParameterCases": 6,
+      "files": [
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-accepted-hosted-core/snowfolio-commonmark/commonmark.json",
+          "sha256": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-accepted-hosted-core/snowfolio-commonmark/build.log",
+          "sha256": "7eb5223e1589877c8352a9dfdc56725b5cb3ff4d98b50db816f0e1b4e7bfcda5"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-accepted-hosted-core/snowfolio-validation/swift-test.log",
+          "sha256": "3924fdff6a70eb1d2ed884cad7e134b2289460acd0202d2bc9fe6b9d6f4fb448"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-accepted-hosted-core/snowfolio-validation/toolchain.txt",
+          "sha256": "04630ab8fa201f57c63c59730e638135e32584a97e16e004a417eb8ed283dc83"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-accepted-hosted-core/snowfolio-validation/architecture.txt",
+          "sha256": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35"
+        }
+      ]
+    },
+    "native": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42453343180",
+      "commit": "422da99f488d8607f614fbdccef0f00a28e38793",
+      "result": "Passed",
+      "passedTests": 19,
+      "failedTests": 0,
+      "skippedTests": 0,
+      "methods": [
+        "testCodePresentationSettingsRetainSourceAndHistory",
+        "testEditorColumnSettingsPreserveSourceAndHistory",
+        "testEditorLineSpacingPreservesSourceAndHistory",
+        "testEditorThemePickerSearchImportAndUndo",
+        "testFencedCodePreferenceUpdatesCurrentPreview",
+        "testHTMLExportOptionsUseFreshManualPreviewSource",
+        "testHTMLTemplateRecoveryPreservesSourceUndo",
+        "testImportReadingStyleFolderAndSourceUndo",
+        "testIntrawordPreferenceRoundTrip",
+        "testLivePreviewUpdatesAfterEditingAndUndo",
+        "testMultipleDocumentWindows",
+        "testNewDocumentTypingUndoRedo",
+        "testNoStyleHTMLExportStartsWithoutDocumentStyles",
+        "testOpenExistingMarkdownAndSave",
+        "testReadingStylePickerPreviewAndSourceUndo",
+        "testSavingUntitledUsesSavedFolderForRelativeImageExport",
+        "testSettingsSearchHistoryAndWindowReopen",
+        "testUnderlinePreferenceAndNativeCommand",
+        "testUnsavedAssetFolderChooserCancelAndHistory"
+      ],
+      "priorityRuntimeWarnings": 28,
+      "appIntentsMetadataWarnings": 2,
+      "appIntentsInformationalNotices": 12,
+      "log": "/private/tmp/snowfolio-line-spacing-accepted-hosted-native-complete/xcodebuild.log",
+      "logSHA256": "1aa248bf762f582b25e11a9417a1c368e00875fe86dd2e080adcd1ff8f217a4c",
+      "resultBundle": "/private/tmp/snowfolio-line-spacing-accepted-hosted-native-complete/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_06-06-44-+0000.xcresult",
+      "summary": "/private/tmp/snowfolio-line-spacing-accepted-hosted-summary.json"
+    },
+    "screenshots": [
+      {
+        "kind": "settings",
+        "path": "/private/tmp/snowfolio-line-spacing-accepted-ui-attachments/84E0954A-78E5-4D56-8BFF-38DF003C9D8E.png",
+        "sha256": "3859cc6f2c91e117fce80d0913e2eae55feb1f66422a52060fe52a050623fbfe"
+      },
+      {
+        "kind": "sourceSelection",
+        "path": "/private/tmp/snowfolio-line-spacing-accepted-ui-attachments/F9083281-44AC-48A0-857B-83D2BC1C632F.png",
+        "sha256": "b5ef738b1c3fe88ec2e8ea56675633e1d316789eb02114b55fa27d839908d86f"
+      },
+      {
+        "kind": "terminalCaret",
+        "path": "/private/tmp/snowfolio-line-spacing-accepted-ui-attachments/86D6D11E-93E8-44B0-AA0C-CBF02DC55B98.png",
+        "sha256": "c4100c14572b7b540229e72fe84c0753e33228701dfaee374134e9d69c96af5e"
+      }
+    ],
+    "inspection": [
+      "Settings shows the searchable native 12.5-point field, stepper and unchanged System Settings-style layout.",
+      "Light/default Menlo 14 source screenshot has a continuous selection across the exact numbered/blank/bullet source without a marker rectangle seam. Raw Markdown marker widths remain literal; this is not a dark user-desktop reproduction.",
+      "Terminal caret screenshot is retained. Blue bar measures x238...239, y177...205 (29 pixels). Public firstRect/native-reference API metrics pass, but these do not prove modern indicator paint equivalence.",
+      "A standard native TextKit 2 reference fixture reports 16-point firstRect at spacing0/12.5; app inactive under the locked desktop, no native indicator view created. Its actual paint comparison remains unverified, not classified as a defect or accepted fix.",
+      "Preview area in hosted source screenshots is blank; prior preview glyph paint gate remains open and no runner/platform cause is claimed."
+    ],
+    "paintReference": {
+      "script": "/private/tmp/snowfolio-native-caret-reference.swift",
+      "log": "/private/tmp/snowfolio-native-caret-reference.log",
+      "logSHA256": "119885c7f47564a0dce8f5cab3200a090d7a0ff97cb376af5db6eab77d0e81c6"
+    }
   }
 }

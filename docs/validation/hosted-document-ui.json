@@ -49,5 +49,61 @@
     "Settings, real IME, VoiceOver and full appearance/paint acceptance",
     "Full performance and release readiness"
   ],
-  "goal": "active; incomplete"
+  "goal": "active; incomplete",
+  "lineSpacingFollowup": {
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42453343180",
+    "commit": "422da99f488d8607f614fbdccef0f00a28e38793",
+    "packageTests": 347,
+    "packageSuites": 74,
+    "commonMarkExamples": 652,
+    "arm64Executables": 8,
+    "nativeUI": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "methods": [
+        "testCodePresentationSettingsRetainSourceAndHistory",
+        "testEditorColumnSettingsPreserveSourceAndHistory",
+        "testEditorLineSpacingPreservesSourceAndHistory",
+        "testEditorThemePickerSearchImportAndUndo",
+        "testFencedCodePreferenceUpdatesCurrentPreview",
+        "testHTMLExportOptionsUseFreshManualPreviewSource",
+        "testHTMLTemplateRecoveryPreservesSourceUndo",
+        "testImportReadingStyleFolderAndSourceUndo",
+        "testIntrawordPreferenceRoundTrip",
+        "testLivePreviewUpdatesAfterEditingAndUndo",
+        "testMultipleDocumentWindows",
+        "testNewDocumentTypingUndoRedo",
+        "testNoStyleHTMLExportStartsWithoutDocumentStyles",
+        "testOpenExistingMarkdownAndSave",
+        "testReadingStylePickerPreviewAndSourceUndo",
+        "testSavingUntitledUsesSavedFolderForRelativeImageExport",
+        "testSettingsSearchHistoryAndWindowReopen",
+        "testUnderlinePreferenceAndNativeCommand",
+        "testUnsavedAssetFolderChooserCancelAndHistory"
+      ]
+    },
+    "screenshots": [
+      {
+        "kind": "settings",
+        "path": "/private/tmp/snowfolio-line-spacing-accepted-ui-attachments/84E0954A-78E5-4D56-8BFF-38DF003C9D8E.png",
+        "sha256": "3859cc6f2c91e117fce80d0913e2eae55feb1f66422a52060fe52a050623fbfe"
+      },
+      {
+        "kind": "sourceSelection",
+        "path": "/private/tmp/snowfolio-line-spacing-accepted-ui-attachments/F9083281-44AC-48A0-857B-83D2BC1C632F.png",
+        "sha256": "b5ef738b1c3fe88ec2e8ea56675633e1d316789eb02114b55fa27d839908d86f"
+      },
+      {
+        "kind": "terminalCaret",
+        "path": "/private/tmp/snowfolio-line-spacing-accepted-ui-attachments/86D6D11E-93E8-44B0-AA0C-CBF02DC55B98.png",
+        "sha256": "c4100c14572b7b540229e72fe84c0753e33228701dfaee374134e9d69c96af5e"
+      }
+    ],
+    "scope": "Line spacing direct fractional entry, single native replacement Undo/Redo, exact mixed-list source selection, terminal caret attachment, reopen and reset; all prior18 retained. Actual modern caret paint/reference and dark user-desktop source selection remain open.",
+    "runtimeWarnings": 28,
+    "appIntentsMetadataWarnings": 2,
+    "ledger": "editor-line-spacing.json",
+    "goal": "active; incomplete"
+  }
 }

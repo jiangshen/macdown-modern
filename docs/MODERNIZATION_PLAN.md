@@ -2,30 +2,36 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted checkpoint: native editor margins, a centered maximum writing
-column, stable reading anchors and named-face caret metrics. Exact implementation
-`b223268` passed [hosted validation 42443442151](https://github.com/jiangshen/snowfolio/actions/runs/42443442151):
-**340 package tests /73 suites, 652 CommonMark examples, eight arm64 test executables
-and all 18 native UI methods**. Raw downloaded logs/result bundles and the native
-Settings screenshot are inspected. Local acceptance also passes 18 Address Sanitizer
-tests /four suites and an arm64 app build.
+Current accepted checkpoint: native source line spacing, terminal insertion **API**
+metrics and ordering of source/preview scroll gestures. Exact implementation `422da99`
+passes [hosted validation 42453343180](https://github.com/jiangshen/snowfolio/actions/runs/42453343180):
+**347 package tests /74 suites, 652 CommonMark examples, eight arm64 test executables
+and all 19 native UI methods**. Raw downloaded artifacts and all three new screenshots
+are inspected. Local acceptance also passes 28 sanitizer tests /six suites and the
+arm64 app build. The earlier margins/column/named-font work remains covered.
 
-A persistent scrollbar could narrow the native editor to 463 points while leaving
-its writing column at 440 instead of 423. Both the hosted diagnostic and a controlled
-local reproduction establish this defect. The existing column geometry now updates
-immediately after native width changes; both overlay/persistent scroller cases pass
-without changed source/selection/undo assertions. Reading paragraphs survive column
-reflow with linked scrolling off/on; composition defers geometry changes.
+Settings has 54 unique entries. Line spacing preserves editorLineSpacing, explicit
+imported values, zero and fractional persistence within 0...100 native points. Fresh
+Snowfolio remains at zero. Paragraph presentation and native writing defaults preserve
+source, selection and history; geometry waits for composition. Input sequences reject
+stale queued pane movements and late reports; the regression checks both directions.
 
-Four searchable Settings controls preserve the original keys; 53 catalog entries
-remain unique. The native UI test verifies enabling/disabling the width field,
-typing 450 points, reopen persistence, exact source and explicit undo/redo. Its
-switch-value assertion now handles numeric/string accessibility values consistently
-with existing tests. Earlier failed/cancelled runs and corrected reporting scope
-remain in [editor-column-layout.json](validation/editor-column-layout.json).
-See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md) for behavior. Line spacing, scroll-past-end
-and other original editing/layout preferences remain open. Final native logs retain
-31 priority diagnostics and two AppIntents notices; no runtime cause is claimed.
+The new UI case verifies a single native replacement edit through 12.5-point settings,
+Undo/Redo, reopen and reset. Two earlier fixture errors are preserved: automatic list
+continuation changed literal input, then one Undo correctly removed a terminal newline.
+The fixture now uses the established single replacement pattern. The job envelope is
+30 minutes after the prior 19-method run reached its 20-minute cap; individual waits
+and assertions are unchanged. Exact evidence is in [editor-line-spacing.json](validation/editor-line-spacing.json).
+
+The light/default-font source-selection screenshot has a continuous highlight without
+a marker seam. User-desktop dark selection remains unverified while the Mac is locked.
+The terminal caret screenshot paints a 29-pixel bar; public/native-reference API metrics
+pass, but actual modern indicator paint equivalence is still open. The locked-desktop
+reference fixture could not display a native indicator. Hosted preview glyph painting
+also remains open; no runner cause is claimed. The final log retains 28 priority
+runtime warnings and two AppIntents metadata warnings without proven attribution.
+See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md) for behavior. Scroll-past-end and remaining
+original editing preferences still need acceptance before coupled legacy retirement.
 
 The preceding asset-folder implementation `d3f5da2` passed exact hosted acceptance:
 334 package tests, 652 CommonMark examples and all 17 native UI methods, including
@@ -2719,3 +2725,21 @@ a separate visual acceptance gate; this caret correction does not claim to fix i
 Real IME/VoiceOver, scroll-past-end, remaining typing/statistics/preferences and renderer
 parity, full document lifecycle, M5 and measured M6/release readiness remain open.
 The overall modernization goal stays active; coupled original targets stay retained.
+
+
+### Line-spacing hosted acceptance and next isolated work
+
+Exact 422da99/run42453343180 acceptance passes 347/74, 652 examples, eight arm64 test
+executables and all 19 native UI methods. Settings and continuous light/default-font
+source selection are inspected. Actual modern caret paint, dark user-desktop source
+selection, real IME/VoiceOver, full lifecycle and M5/M6/release gates remain open. The
+retained failed fixture runs and their corrected setup are in the line-spacing ledger.
+
+Scroll-past-end is prepared separately in /private/tmp/snowfolio-scroll-past-end,
+based on 422da99 (local branch modernization/scroll-past-end, commit ce4e9bb),
+and is not integrated or published. Its public clip-view document extent avoids
+AppKit's resize cancellation of short-document scroll space. Local 350 tests /75
+suites, 31 sanitizer tests /seven suites and an arm64 build with 20 compiled UI methods
+pass. Font/zoom/spacing extremes and exact hosted UI acceptance remain next gates.
+The complete source/checkpoint state is in /private/tmp/snowfolio-scroll-past-end-state.json.
+No original target is retired by this preparation.

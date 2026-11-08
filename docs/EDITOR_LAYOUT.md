@@ -43,5 +43,8 @@ Queued preview/source scroll input now carries ordering context so an older move
 report cannot take control from a newer gesture. The controlled native regression
 checks both directions. Local full suite and sanitizer results, failures retained
 during investigation, exact sources and remaining visual gates are recorded in
-[editor-line-spacing.json](validation/editor-line-spacing.json). Hosted acceptance
-and fresh user-desktop source-selection/IME/VoiceOver remain pending.
+[editor-line-spacing.json](validation/editor-line-spacing.json). Exact hosted run 42453343180 passes 347 package tests, 652 CommonMark examples and
+all 19 app UI methods. Settings and the continuous light/default-font source selection
+are inspected. Dark user-desktop selection, real IME/VoiceOver and actual modern caret
+paint/native-reference equivalence remain open. Public caret API metrics are covered;
+they do not establish rendered-indicator equivalence.

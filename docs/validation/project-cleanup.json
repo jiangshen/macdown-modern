@@ -327,7 +327,47 @@
       "method": "FileManager.trashItem",
       "trashEmptied": false,
       "scope": "One unused agent-created layout-fragment prototype; public view correction replaced the experiment. Original source, active build, user documents and verified recovery retained."
+    },
+    {
+      "date": "2026-11-08T06:38:32.079367+00:00",
+      "items": [
+        {
+          "files": 56,
+          "logicalBytes": 31577704,
+          "original": "/private/tmp/snowfolio-line-spacing-accepted-hosted-native",
+          "reason": "Incomplete agent-generated hosted test download after disk-full extraction; verified complete replacement and 19-pass summary retained.",
+          "replacement": "/private/tmp/snowfolio-line-spacing-accepted-hosted-native-complete",
+          "trash": "/Users/caden/.Trash/snowfolio-line-spacing-accepted-hosted-native",
+          "trashEmptied": false
+        }
+      ],
+      "method": "FileManager.trashItem",
+      "trashEmptied": false,
+      "scope": "One exact incomplete agent-generated download; complete accepted hosted evidence retained. No disk space recovery attributed to Trash."
     }
   ],
-  "lastUpdated": "2026-11-08T05:29:45.982326+00:00"
+  "lastUpdated": "2026-11-08T06:38:32.079367+00:00",
+  "generatedBuildMaintenance": [
+    {
+      "date": "2026-11-08T06:38:32.079367+00:00",
+      "scope": "Only regenerable build output of isolated agent-owned scroll-past-end checkout and scratch; no user source/documents or validation logs removed.",
+      "commands": [
+        "xcodebuild clean with isolated Build/Snowfolio/DerivedData",
+        "swift package clean with isolated /private/tmp/snowfolio-scroll-past-end-validation/build"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/snowfolio-scroll-past-end-generated-build-clean.log",
+          "sha256": "272a3fbac37577ea3549edcff6d217f8ca77250785c9ffe9d68a09ace80b5859"
+        },
+        {
+          "path": "/private/tmp/snowfolio-scroll-past-end-package-cache-clean.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "verificationBeforeCleaning": "350/75,31 sanitizer tests/seven suites,8 arm64 package test executables and arm64 app/20 compiled UI methods; exact source state and retained logs in /private/tmp/snowfolio-scroll-past-end-state.json",
+      "recoverability": "Regenerate from retained isolated source with standard package/app build commands. Empty Tuist root marker is needed only for this worktree generator.",
+      "reason": "Hosted artifact extraction failed with no space left; capacity recovered through standard cache maintenance, partial download retained in Trash."
+    }
+  ]
 }

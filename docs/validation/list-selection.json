@@ -179,5 +179,21 @@
     "broaderChecks": "340 package tests /73 suites, 652 CommonMark examples, 8 arm64 test executables and all 18 native UI methods pass; editor-column-layout.json contains exact evidence.",
     "desktop": "Latest CUA observation locked; native source-editor-specific artifact and fresh desktop visual acceptance remain open.",
     "goal": "active; incomplete"
+  },
+  "lineSpacingRecheck": {
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42453343180",
+    "commit": "422da99f488d8607f614fbdccef0f00a28e38793",
+    "listParameterCases": 6,
+    "result": "All six light/dark exact-short/wrapped tight/loose preview list cases pass; existing marker correction retained.",
+    "nativeSourceScreenshot": {
+      "kind": "sourceSelection",
+      "path": "/private/tmp/snowfolio-line-spacing-accepted-ui-attachments/F9083281-44AC-48A0-857B-83D2BC1C632F.png",
+      "sha256": "b5ef738b1c3fe88ec2e8ea56675633e1d316789eb02114b55fa27d839908d86f"
+    },
+    "sourceInspection": "Continuous light/default Menlo14 source selection at12.5 spacing; no marker rectangle seam. Literal raw Markdown prefix widths remain. User dark appearance/source-specific reproduction remains open.",
+    "additionalMarkerProductionChange": false,
+    "caretPaint": "Native-reference API metrics pass; actual modern indicator paint/reference remains open.",
+    "broaderChecks": "347/74,652 CommonMark,eight arm64 executables,19 native UI methods pass.",
+    "goal": "active; incomplete"
   }
 }
