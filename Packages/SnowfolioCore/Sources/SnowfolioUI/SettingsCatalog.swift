@@ -71,6 +71,7 @@ final class SettingsNavigation {
 struct SettingsEntry: Identifiable {
   enum Control {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
+    case editorMetric(ReferenceWritableKeyPath<AppPreferences, Double>, ClosedRange<Double>, Double)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy,
       codeBlockAccessory
     case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate, assetFolder
@@ -177,6 +178,26 @@ enum SettingsCatalog {
         .init(
           id: "importEditorTheme", title: "Custom themes", detail: "Import a .style file.",
           keywords: "style import theme", control: .importEditorTheme),
+      ]),
+    .init(
+      pane: .editor, title: "Layout",
+      entries: [
+        .init(
+          id: "editorHorizontalInset", title: "Side margins",
+          detail: "Minimum space beside the source text.", keywords: "padding horizontal inset",
+          control: .editorMetric(\.editorLayout.horizontalInset, 0...35, 1)),
+        .init(
+          id: "editorVerticalInset", title: "Top and bottom margins",
+          keywords: "padding vertical inset",
+          control: .editorMetric(\.editorLayout.verticalInset, 0...35, 1)),
+        .init(
+          id: "editorWidthLimited", title: "Limit editor width",
+          detail: "Keep the writing column centered in wider windows.",
+          control: .toggle(\.editorLayout.widthLimited)),
+        .init(
+          id: "editorMaximumWidth", title: "Maximum column width",
+          keywords: "writing measure width",
+          control: .editorMetric(\.editorLayout.maximumWidth, 300...10_000, 50)),
       ]),
     .init(
       pane: .editor, title: "Typing",

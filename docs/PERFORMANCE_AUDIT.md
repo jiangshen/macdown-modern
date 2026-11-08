@@ -381,3 +381,30 @@ verification: 2,127 files, 144,627,380 logical bytes and 151,990,272 allocated b
 Current raw evidence and compact historical screenshots/reports remain. Trash was not
 emptied, so this does not claim disk-space recovery. Exact recovery paths are recorded
 in `validation/project-cleanup.json`.
+
+
+## Source-column layout and reading-anchor correctness — 2026-11-07
+
+Layout derives bounded native-point geometry without inspecting document contents.
+The native text container updates only when its geometry changes. Full native
+regression passes 339 package tests / 73 suites in 45.704 seconds including build;
+17 sanitizer tests / four suites pass. These totals cover different workloads than
+prior runs and do not establish an app latency or memory/energy improvement.
+
+A linked/unlinked workspace regression reproduced a paragraph shift when a column
+widened. Keeping the original source-character anchor instead of adopting an earlier
+wrapped-line start fixes that reproduction. An existing preview-led source zoom
+timeout occurred in one full run; focused and final complete runs pass. Cause remains
+unproven. Failure diagnostics now retain native driver/anchor state and DOM scroll
+facts without changing assertions/timeouts. Exact evidence and limitations are in
+`validation/editor-column-layout.json`; full M6 measurements remain open.
+
+
+The final main-checkout run reproduced the earlier typography mismatch. A language-tagged
+system-font base converted to a named Helvetica face yields a 22-point caret versus
+a 26-point native reference; named Menlo bases pass. Native face-descriptor construction
+with a forwarded valid fallback-language hint corrects the controlled case. The final
+complete run passes 340 tests / 73 suites in 44.626 seconds, and 18 ASAN tests / four
+suites pass in 23.841 seconds, including build. These are correctness/test timings,
+not app latency or energy measurements. The earlier preview-led source timeout remains
+unproven; real IME, desktop typography and full M6 acceptance remain open.

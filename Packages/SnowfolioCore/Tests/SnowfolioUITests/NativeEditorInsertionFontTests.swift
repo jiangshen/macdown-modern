@@ -1,4 +1,5 @@
 import AppKit
+import CoreText
 import DocumentCore
 import EditorCore
 import Testing
@@ -68,7 +69,7 @@ struct NativeEditorInsertionFontTests {
           var facts = ""
           if actual.height <= 0 || abs(actual.height - expected.height) >= 0.1 {
             facts =
-              " actual descriptor: \(actualFont.fontDescriptor.fontAttributes); reference descriptor: \(String(describing: reference.font?.fontDescriptor.fontAttributes)); actual typing: \(editor.typingAttributes); reference typing: \(reference.typingAttributes)"
+              " actual descriptor: \(actualFont.fontDescriptor.fontAttributes); reference descriptor: \(String(describing: reference.font?.fontDescriptor.fontAttributes)); actual typing: \(editor.typingAttributes); reference typing: \(reference.typingAttributes); actual metrics: \(actualFont.ascender), \(actualFont.descender), \(actualFont.leading); reference metrics: \(String(describing: reference.font.map { [$0.ascender, $0.descender, $0.leading] })); actual leading policy: \(String(describing: editor.textLayoutManager?.usesFontLeading)); reference leading policy: \(String(describing: reference.textLayoutManager?.usesFontLeading)); actual paragraph: \(String(describing: editor.defaultParagraphStyle)); reference paragraph: \(String(describing: reference.defaultParagraphStyle))"
           }
           #expect(
             actual.height > 0 && abs(actual.height - expected.height) < 0.1,
@@ -78,6 +79,40 @@ struct NativeEditorInsertionFontTests {
           #expect(document.revision == 0)
         }
       }
+    }
+  }
+
+  @Test(
+    "Explicit theme faces match native carets when the base font carries a language",
+    arguments: ["", "en", "ja", "zh-Hans"], [false, true])
+  func languageTaggedBase(_ language: String, system: Bool) throws {
+    let languageKey = NSFontDescriptor.AttributeName(
+      rawValue: kCTFontDescriptorLanguageAttribute as String)
+    let native =
+      system
+      ? NSFont.monospacedSystemFont(ofSize: 14, weight: .regular)
+      : try #require(NSFont(name: "Menlo-Regular", size: 14))
+    let base = try #require(
+      NSFont(descriptor: native.fontDescriptor.addingAttributes([languageKey: language]), size: 14))
+    let expectedFont = try #require(NSFont(name: "Helvetica", size: 22))
+    for source in ["", "Tail\n"] {
+      let (document, coordinator, editor, window) = try host(source, font: base)
+      let (_, _, reference, referenceWindow) = try host(source, font: expectedFont)
+      defer {
+        window.close()
+        referenceWindow.close()
+      }
+      coordinator.highlighter.update(
+        syntax: nil, revision: nil, enabled: true, font: base, document: document,
+        theme: try EditorTheme.parse("editor\nfont-family: Helvetica\nfont-size: 22px\n"))
+      let actual = try caret(editor)
+      let expected = try caret(reference)
+      #expect(editor.font?.fontName == "Helvetica" && editor.font?.pointSize == 22)
+      #expect(
+        abs(actual.height - expected.height) < 0.1,
+        "language=\(language.debugDescription), system=\(system), source=\(source.debugDescription), actual=\(actual.height), expected=\(expected.height), actual font=\(String(describing: editor.font?.fontDescriptor.fontAttributes)), reference=\(String(describing: reference.font?.fontDescriptor.fontAttributes))"
+      )
+      #expect(document.text == source && document.revision == 0)
     }
   }
 

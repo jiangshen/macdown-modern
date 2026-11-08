@@ -1,4 +1,5 @@
 import AppKit
+import CoreText
 import EditorCore
 import MarkdownCore
 
@@ -47,6 +48,23 @@ final class NativeEditorTheme {
         blue: Double(value.blue) / 255, alpha: Double(value.alpha) / 255)
     }
 
+    private static func namedFace(_ name: String, replacing font: NSFont) -> NSFont? {
+      // System-font conversion can give a named face different caret metrics.
+      // Start from that face's native descriptor and pass its matching language hint.
+      guard let face = NSFont(name: name, size: font.pointSize) else {
+        return NSFontManager.shared.convert(font, toFace: name)
+      }
+      let key = NSFontDescriptor.AttributeName(
+        rawValue: kCTFontDescriptorLanguageAttribute as String)
+      guard let language = font.fontDescriptor.fontAttributes[key] as? String, !language.isEmpty
+      else {
+        return face
+      }
+      return NSFont(
+        descriptor: face.fontDescriptor.addingAttributes([key: language]), size: face.pointSize)
+        ?? face
+    }
+
     func apply(to attributes: inout [NSAttributedString.Key: Any], base: NSFont, zoom: Double) {
       var font = attributes[.font] as? NSFont ?? base
       let manager = NSFontManager.shared
@@ -55,7 +73,7 @@ final class NativeEditorTheme {
           size.relative ? base.pointSize + Double(size.points) * zoom : Double(size.points) * zoom
         font = manager.convert(font, toSize: max(4 * zoom, min(8192, points)))
       }
-      if let family { font = manager.convert(font, toFace: family) ?? font }
+      if let family { font = Self.namedFace(family, replacing: font) ?? font }
       if !traits.isEmpty { font = manager.convert(font, toHaveTrait: traits) }
       attributes.merge(self.attributes) { _, new in new }
       attributes[.font] = font

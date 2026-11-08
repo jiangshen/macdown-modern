@@ -2,22 +2,24 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current worktree checkpoint: grant-backed assets for unsaved documents, fresh preview
-resource origins and a stale native buffer guard for model-owned undo. Local evidence
-verifies **334 package tests / 71 suites**, **ten Address Sanitizer tests / two suites**,
-eight arm64 test executables and an arm64 native app build. The actual native workspace
-passes five missing/loaded image transitions and retains source, selection, views and
-undo. Two new app UI methods cover folder chooser/cancel/history and an actual untitled
-save followed by image export from the saved file's folder; hosted execution passed
-all 17 native UI methods, 334 package tests and 652 CommonMark examples.
-See [unsaved-asset-folder.json](validation/unsaved-asset-folder.json) and
-[DOCUMENT_ASSETS.md](DOCUMENT_ASSETS.md).
+Current worktree checkpoint: native editor margins, a centered maximum writing
+column and named-face caret metrics. Local acceptance passes **340 package tests / 73 suites**, **18 Address
+Sanitizer tests / four suites**, eight arm64 test executables and an arm64 app build.
+Native resizing, source/selection/undo, deferred composition geometry and reading
+paragraph preservation pass with linked scrolling off/on. Four searchable Settings
+controls preserve the original keys; 53 catalog entries remain unique. The app's new
+Settings test compiles among 18 native UI methods; hosted execution is pending.
+See [editor-column-layout.json](validation/editor-column-layout.json) and
+[EDITOR_LAYOUT.md](EDITOR_LAYOUT.md). Line spacing, scroll-past-end and other
+original editing/layout preferences remain open.
 
-The preceding exact code-presentation checkpoint `1057098` passed 329 package tests,
-652 CommonMark examples and 15 native app UI tests. Its contrast, visual-capture limits
-and diagnostics remain in [code-block-presentation.json](validation/code-block-presentation.json).
-Template/CSS evidence remains in [html-template-exports.json](validation/html-template-exports.json)
-and [custom-reading-styles.json](validation/custom-reading-styles.json).
+The preceding asset-folder implementation `d3f5da2` passed exact hosted acceptance:
+334 package tests, 652 CommonMark examples and all 17 native UI methods, including
+actual untitled Save→saved-folder image export. Raw evidence and scope remain in
+[unsaved-asset-folder.json](validation/unsaved-asset-folder.json). Code-presentation
+and template/CSS evidence remain in [code-block-presentation.json](validation/code-block-presentation.json),
+[html-template-exports.json](validation/html-template-exports.json) and
+[custom-reading-styles.json](validation/custom-reading-styles.json).
 
 The existing notebook design remains the default. None, six original styles, edited
 MacDown CSS, local CSS and imported copies remain selectable. CSS/image/font imports
@@ -2609,3 +2611,66 @@ and reports, and user documents remain; see `validation/project-cleanup.json`.
 The next editor margin/width work is isolated in `/private/tmp/snowfolio-editor-layout`
 on `modernization/editor-layout`. It is not part of this accepted source checkpoint.
 Line spacing and scroll-past-end characterization remain separate parity work.
+
+
+## Native editor margins, width and stable reading position — 2026-11-07
+
+Four original preference keys now drive native source layout and searchable Settings:
+side margins, top/bottom margins, a width-limit switch and maximum column width. Fresh
+Snowfolio profiles retain 24-point margins; imports retain their supported original
+values. The centered column enforces its requested maximum, correcting the original
+45% heuristic's overrun. Geometry uses native points and does not rewrite source,
+selection, storage syntax or undo. Pending layout waits for composition to finish.
+
+Actual 480/720/1200-point resizing, Unicode/native formatting undo and simulated marked
+text pass. A complete workspace regression initially reproduced a reading paragraph
+shift at offsets 4775→4407 when widening the column, with linked scrolling both off
+and on. Preserve the original source-character anchor across reflow, recognize
+different offsets occupying the same new visual row, and adopt a new anchor only
+at a clamped edge. The new regression and existing scroll/zoom cases pass.
+
+The final full suite passes 340 tests / 73 suites without warnings/errors. Eighteen
+ASAN tests / four suites, eight arm64 test executables, the arm64 app build, 15 changed
+Swift files' strict formatting and the final eight-test formatted fixture follow-up
+pass. The app compiles 18 UI methods; the new case verifies searchable margin/width
+controls, maximum-width enablement, Settings reopen and source/native undo retention, including direct 450-point entry and Settings reopen.
+Hosted execution and its screenshot remain pending.
+
+Initial fixture failures came from NSHostingController's one-point preferred size
+and simulated composition without an explicit undo group. Set the fixture's window
+size after attaching its host and give composition a group. Speculative sizing/resize
+hooks were withdrawn; no source/history/geometry assertions were removed. One full
+run also timed out in the existing preview-led source zoom check; focused and final
+complete runs pass, with failure-only native/DOM diagnostics added. Its cause remains
+unproven, and its timeout/assertions remain unchanged. Exact reports and source hashes
+are in `validation/editor-column-layout.json`.
+
+The isolated implementation was adopted from `modernization/editor-layout`; source
+hashes were checked when adopting the isolated layout implementation; the final manifest now covers 15 reviewed Swift files. Its checkout and test/build evidence remain
+in `/private/tmp/snowfolio-editor-layout` while native Settings acceptance is pending.
+Line spacing, scroll-past-end, original typing preferences/statistics, real desktop
+selection/glyph/IME/VoiceOver, complete document reliability, remaining renderer parity,
+M5 and measured M6/release acceptance remain required. Coupled original targets are
+not retired by this independently verified layout slice.
+
+
+### Reproduced native named-face caret correction
+
+The final main-checkout run exposed the earlier caret-height mismatch with full font
+descriptors. A controlled new case makes it repeatable: converting a language-tagged
+system font to Helvetica produces a 22-point caret where a native editor using that
+named face produces 26 points. Named Menlo bases pass. Resolve an explicit face from
+its native descriptor and pass a valid fallback-language hint to that constructor.
+This fixes all eight controlled mismatches, while preserving original carets across
+empty/Tail/LF/CRLF, zoom, theme/current-line rules, font traits, typing/paste history
+and source/revision assertions. CoreText's language key is input for fallback choice;
+the resolved font need not serialize the hint, so a speculative metadata-retention
+assertion was corrected without weakening any caret/source assertion.
+
+Final exact main-checkout acceptance passes 340 package tests / 73 suites, 18 ASAN
+tests / four suites, 13 focused typography/layout tests / three suites, eight arm64
+test executables and the arm64 app build with 18 compiled UI methods. Fifteen changed
+Swift files pass strict formatting. Exact before/after evidence, SDK semantics and
+source hashes are in `validation/editor-column-layout.json`. Native Settings
+interaction/screenshot execution, real IME/VoiceOver/desktop selection/glyph checks
+and the full remaining modernization objective are still open.

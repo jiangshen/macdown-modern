@@ -174,7 +174,8 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     var body: some View {
       NativeMarkdownEditor(
         document: document, fontName: preferences.editorFontName,
-        fontSize: preferences.editorFontSize, behavior: preferences.editorBehavior,
+        fontSize: preferences.editorFontSize, layout: preferences.editorLayout,
+        behavior: preferences.editorBehavior,
         strikethroughEnabled: preferences.strikethrough, commands: commands,
         hostUndoManager: undoManager, syntax: syntax, syntaxRevision: syntaxRevision,
         syntaxHighlighting: preferences.syntaxHighlighting, selectionStorage: $editorSelection,

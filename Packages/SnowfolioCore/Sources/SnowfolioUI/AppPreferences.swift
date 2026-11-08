@@ -13,6 +13,14 @@ public final class AppPreferences {
   public let editorThemes: EditorThemeLibrary
   public let readingStyles: ReadingStyleLibrary
   public let assetFolder: DocumentAssetFolder
+  public var editorLayout: EditorLayoutPreferences {
+    didSet {
+      defaults.set(editorLayout.horizontalInset, forKey: "editorHorizontalInset")
+      defaults.set(editorLayout.verticalInset, forKey: "editorVerticalInset")
+      defaults.set(editorLayout.widthLimited, forKey: "editorWidthLimited")
+      defaults.set(editorLayout.maximumWidth, forKey: "editorMaximumWidth")
+    }
+  }
 
   public var restoreDocumentsOnLaunch: Bool {
     didSet { save(restoreDocumentsOnLaunch, "NSQuitAlwaysKeepsWindows") }
@@ -105,6 +113,14 @@ public final class AppPreferences {
     func boolean(_ key: String, fallback: Bool) -> Bool {
       defaults.object(forKey: key) == nil ? fallback : defaults.bool(forKey: key)
     }
+    editorLayout = EditorLayoutPreferences(
+      horizontalInset: (defaults.object(forKey: "editorHorizontalInset") as? NSNumber)?.doubleValue
+        ?? 24,
+      verticalInset: (defaults.object(forKey: "editorVerticalInset") as? NSNumber)?.doubleValue
+        ?? 24,
+      widthLimited: boolean("editorWidthLimited", fallback: false),
+      maximumWidth: (defaults.object(forKey: "editorMaximumWidth") as? NSNumber)?.doubleValue
+        ?? 1000)
     restoreDocumentsOnLaunch = boolean("NSQuitAlwaysKeepsWindows", fallback: true)
     preferDocumentTabs = boolean("preferDocumentTabs", fallback: true)
     frontMatter = boolean("htmlDetectFrontMatter", fallback: true)

@@ -116,7 +116,29 @@ struct NativeZoomTests {
     _ = try await evaluate(
       "window.dispatchEvent(new Event('wheel')); window.scrollTo(0,2200); window.dispatchEvent(new Event('scroll')); return 'moved';",
       in: web)
-    try await waitFor("preview-led source") { topParagraph() != anchor }
+    do {
+      try await waitFor("preview-led source") { topParagraph() != anchor }
+    } catch {
+      let state = try? await evaluate(
+        "return JSON.stringify({y:scrollY,height:document.body.scrollHeight,viewport:innerHeight,position:globalThis.__snowfolioScroll?.position()});",
+        in: web)
+      let fields = Set([
+        "linked", "mode", "applyingSource", "liveSourceScroll", "sourceWasUsed", "previewWasUsed",
+        "sourceReading", "presentationAnchor", "previewReading", "driver", "needsAlignment",
+        "pendingPreview", "sendingPreview", "previewEpoch",
+      ])
+      let native =
+        nativePreview.scrolling.map { coordinator in
+          Mirror(reflecting: coordinator).children.compactMap { child -> String? in
+            guard let label = child.label, fields.contains(label) else { return nil }
+            return label + "=" + String(describing: child.value)
+          }.joined(separator: "; ")
+        } ?? "no scroll coordinator"
+      Issue.record(
+        "Preview-led scroll timeout: anchor=\(anchor), actual=\(topParagraph()), pageZoom=\(web.pageZoom), web=\(state ?? "unavailable"), native=\(native)"
+      )
+      throw error
+    }
     let previewLine = try #require(
       Double(
         try await evaluate(

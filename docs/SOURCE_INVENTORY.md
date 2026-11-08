@@ -433,3 +433,24 @@ resource reader; parser/source logic is unchanged. Native editor undo notificati
 respect a newer model-owned source revision. See `DOCUMENT_ASSETS.md` and
 `validation/unsaved-asset-folder.json`. Other original consumers and preference/parity
 gates still prevent coupled MPDocument/renderer/preferences target retirement.
+
+
+## Swift editor column ownership boundary
+
+`EditorCore.EditorLayoutPreferences` owns bounded native-point margins and column
+geometry. `SnowfolioUI` preserves the four original preference keys and applies the
+geometry to the existing native text container without source/storage rewriting.
+`DocumentScrollCoordinator` preserves its source-character anchor across reflow and
+compares visual rows without adopting shifted wrapped-line starts. Native controls
+remain in the shared Settings catalog. Source/undo/selection/marked-text, linked and
+unlinked reading anchors are covered; exact scope is in `validation/editor-column-layout.json`.
+Original line spacing, scroll-past-end and other consumers still block retirement of
+the coupled MPDocument/editor/preferences target.
+
+
+Explicit native theme faces now start from the named font's own descriptor and pass
+valid fallback-language hints to the native constructor. This corrects reproducible
+caret metrics inherited by system-font face conversion. The original size/trait and
+unavailable-face behavior, source/native history and original typography assertions
+remain covered. The controlled before/after case and final 340-test evidence are
+recorded in `validation/editor-column-layout.json`; real desktop/IME acceptance stays open.

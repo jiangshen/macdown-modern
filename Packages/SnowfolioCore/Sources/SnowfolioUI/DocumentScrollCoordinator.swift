@@ -200,9 +200,11 @@ public final class DocumentScrollCoordinator: NSObject {
         let actual = self.captureSource(), !self.sameReadingLine(actual, anchor)
       {
         if self.moveSource(to: anchor) {
-          // Wrapping/clamping can change the exact start of the visual line.
-          // Retain its actual new anchor rather than repeatedly chasing the old one.
-          self.presentationAnchor = self.sourceReading
+          // Reflow changes where a visual line starts, but the original source
+          // character remains the reading target. Only adopt a clamped edge.
+          if let actual = self.sourceReading, actual.atTop || actual.atBottom {
+            self.presentationAnchor = actual
+          }
         }
       }
       if self.presentationAnchor == nil, !self.sourceWasUsed, self.restoredSource,
@@ -326,7 +328,13 @@ public final class DocumentScrollCoordinator: NSObject {
   {
     if second.atTop { return first.atTop }
     if second.atBottom { return first.atBottom }
-    return first.offset == second.offset && abs(first.fraction - second.fraction) < 0.1
+    guard abs(first.fraction - second.fraction) < 0.1 else { return false }
+    if first.offset == second.offset { return true }
+    guard let editor, let actual = caretRect(at: first.offset, in: editor),
+      let target = caretRect(at: second.offset, in: editor)
+    else { return false }
+    // Different UTF-16 offsets can occupy the same wrapped line after reflow.
+    return abs(actual.minY - target.minY) < 1
   }
 
   private var hasLoadedSource: Bool {

@@ -11,6 +11,8 @@ final class DocumentLifecycleTests: XCTestCase {
       "-AppleWindowTabbingMode", "manual", "-preferDocumentTabs", "NO",
       "-editorThemeSelection", "automatic", "-readingStyleSelection", "snowfolio",
       "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
+      "-editorHorizontalInset", "24", "-editorVerticalInset", "24",
+      "-editorWidthLimited", "NO", "-editorMaximumWidth", "1000",
     ]
     app.launchArguments += arguments
     app.launch()
@@ -722,10 +724,65 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testEditorColumnSettingsPreserveSourceAndHistory() {
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    editor.typeText("Original column source")
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Column layout checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("maximum column")
+    let result = settings.outlines.firstMatch.staticTexts["Maximum column width"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let maximum = settings.textFields["editorMaximumWidth"]
+    XCTAssertTrue(maximum.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertFalse(maximum.isEnabled)
+    let limit = settings.switches["editorWidthLimited"]
+    XCTAssertTrue(limit.exists)
+    limit.click()
+    XCTAssertTrue(maximum.isEnabled)
+    XCTAssertEqual(limit.value as? String, "1")
+    maximum.click()
+    app.typeKey("a", modifierFlags: .command)
+    maximum.typeText("450")
+    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: [])
+    XCTAssertEqual(maximum.value as? String, "450")
+    XCTAssertTrue(settings.textFields["editorHorizontalInset"].exists)
+    XCTAssertTrue(settings.textFields["editorVerticalInset"].exists)
+    let image = XCTAttachment(screenshot: settings.screenshot())
+    image.name = "editor-column-settings"
+    image.lifetime = .keepAlways
+    add(image)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, "Column layout checkpoint")
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "Original column source")
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "Column layout checkpoint")
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertTrue(maximum.isEnabled)
+    XCTAssertEqual(maximum.value as? String, "450")
+    limit.click()
+    XCTAssertFalse(maximum.isEnabled)
+  }
+
+  @MainActor
   func testCodePresentationSettingsRetainSourceAndHistory() {
     let app = launch(arguments: [
       "-markdownManualRender", "NO", "-htmlSyntaxHighlighting", "NO",
       "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
+      "-editorHorizontalInset", "24", "-editorVerticalInset", "24",
+      "-editorWidthLimited", "NO", "-editorMaximumWidth", "1000",
     ])
     defer { app.terminate() }
     let editor = newDocument(in: app)
@@ -786,6 +843,8 @@ final class DocumentLifecycleTests: XCTestCase {
     let app = launch(arguments: [
       "-htmlTemplateName", "Default", "-htmlSyntaxHighlighting", "YES",
       "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
+      "-editorHorizontalInset", "24", "-editorVerticalInset", "24",
+      "-editorWidthLimited", "NO", "-editorMaximumWidth", "1000",
     ])
     defer { app.terminate() }
     let editor = newDocument(in: app)

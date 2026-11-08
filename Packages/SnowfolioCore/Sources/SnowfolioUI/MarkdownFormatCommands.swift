@@ -113,6 +113,9 @@ public struct MarkdownFormatCommands: Commands {
 @MainActor
 final class MarkdownTextView: NSTextView {
   let fileDrop = MarkdownFileDropHandler()
+  var layoutPreferences: EditorLayoutPreferences? {
+    didSet { if layoutPreferences != oldValue { needsLayout = true } }
+  }
   // The native snapshot may lag the reference model while a file loads.
   private(set) weak var sourceDocument: MarkdownDocument?
   private(set) var sourceRevision: UInt64?
@@ -150,8 +153,26 @@ final class MarkdownTextView: NSTextView {
     super.mouseDown(with: event)
   }
   override func layout() {
+    applyEditorGeometry()
     super.layout()
     viewportLayoutChanged?()
+  }
+
+  private func applyEditorGeometry() {
+    guard !hasMarkedText(), !isReceivingMarkedText, let layoutPreferences,
+      let container = textContainer
+    else { return }
+    let geometry = layoutPreferences.geometry(viewWidth: bounds.width)
+    let inset = NSSize(width: geometry.horizontalInset, height: geometry.verticalInset)
+    guard
+      textContainerInset != inset || container.widthTracksTextView
+        || container.containerSize.width != geometry.columnWidth
+    else { return }
+    viewportPresentationWillChange?()
+    container.widthTracksTextView = false
+    textContainerInset = inset
+    container.containerSize = NSSize(
+      width: geometry.columnWidth, height: CGFloat.greatestFiniteMagnitude)
   }
 
   override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
@@ -200,6 +221,7 @@ final class MarkdownTextView: NSTextView {
     isReceivingMarkedText = true
     defer {
       isReceivingMarkedText = false
+      needsLayout = true
       commandController?.compositionChanged(hasMarkedText())
       syntaxHighlighter?.compositionChanged()
     }
@@ -209,6 +231,7 @@ final class MarkdownTextView: NSTextView {
 
   override func unmarkText() {
     super.unmarkText()
+    needsLayout = true
     syntaxHighlighter?.compositionChanged()
     commandController?.compositionChanged(hasMarkedText())
   }

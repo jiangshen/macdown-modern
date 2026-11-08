@@ -9,6 +9,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
   public let document: MarkdownDocument
   public var fontName: String
   public var fontSize: Double
+  public var layout: EditorLayoutPreferences
   public var zoomScale: Double
   public var behavior: EditorBehavior
   public var strikethroughEnabled: Bool
@@ -25,6 +26,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
 
   public init(
     document: MarkdownDocument, fontName: String = "Menlo-Regular", fontSize: Double = 14,
+    layout: EditorLayoutPreferences = .init(),
     behavior: EditorBehavior = .init(), strikethroughEnabled: Bool = true,
     commands: EditorCommandController? = nil, hostUndoManager: UndoManager? = nil,
     syntax: MarkdownSyntax? = nil, syntaxRevision: UInt64? = nil, syntaxHighlighting: Bool = true,
@@ -35,6 +37,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     self.document = document
     self.fontName = fontName
     self.fontSize = fontSize
+    self.layout = layout
     self.zoomScale = zoomScale
     self.behavior = behavior
     self.strikethroughEnabled = strikethroughEnabled
@@ -59,6 +62,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     commands?.coordinator = context.coordinator
     context.coordinator.selectionStorage = selectionStorage
     let view = Self.makeScrollView(document: document, coordinator: context.coordinator)
+    (view.documentView as? MarkdownTextView)?.layoutPreferences = layout
     (view.documentView as? MarkdownTextView)?.fileDrop.openFiles = openDroppedFiles
     view.documentView?.registerForDraggedTypes([.fileURL])
     context.coordinator.restoreSelectionIfNeeded()
@@ -136,6 +140,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     context.coordinator.restoreSelectionIfNeeded()
     (scrollView.documentView as? MarkdownTextView)?.fileDrop.openFiles = openDroppedFiles
     guard let editor = scrollView.documentView as? NSTextView else { return }
+    (editor as? MarkdownTextView)?.layoutPreferences = layout
     if let window = editor.window, window.firstResponder === window,
       !editor.isHiddenOrHasHiddenAncestor
     {

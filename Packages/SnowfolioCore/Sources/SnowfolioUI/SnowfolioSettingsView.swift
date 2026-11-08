@@ -194,7 +194,8 @@ private struct SettingsPreferenceRow: View {
 
   var body: some View {
     switch entry.control {
-    case .editorTheme, .importEditorTheme, .readingStyle, .importReadingStyle, .htmlTemplate,
+    case .editorMetric, .editorTheme, .importEditorTheme, .readingStyle, .importReadingStyle,
+      .htmlTemplate,
       .assetFolder:
       // Compound rows own distinct identifiers and labels on their controls.
       // A row-wide modifier would cascade to Import and Reload alike.
@@ -205,6 +206,7 @@ private struct SettingsPreferenceRow: View {
         .accessibilityLabel(entry.title)
         .accessibilityHint(entry.detail)
         .disabled(entry.id == "markdownInlineMath" && !preferences.math)
+        .disabled(entry.id == "editorMaximumWidth" && !preferences.editorLayout.widthLimited)
         .disabled(
           ["documentFont", "documentTextSize", "documentFullWidth"].contains(entry.id)
             && preferences.readingStyles.presentation != .notebook)
@@ -213,6 +215,26 @@ private struct SettingsPreferenceRow: View {
 
   @ViewBuilder private var control: some View {
     switch entry.control {
+    case .editorMetric(let keyPath, let limits, let step):
+      let value = Binding(
+        get: { preferences[keyPath: keyPath] },
+        set: { preferences[keyPath: keyPath] = $0 })
+      LabeledContent {
+        HStack(spacing: 6) {
+          TextField("", value: value, format: .number.grouping(.never))
+            .textFieldStyle(.roundedBorder)
+            .multilineTextAlignment(.trailing).frame(width: 70)
+            .accessibilityIdentifier(entry.id).accessibilityLabel(entry.title)
+            .accessibilityHint("Value in points")
+          Text("pt").foregroundStyle(.secondary).accessibilityHidden(true)
+          Stepper("", value: value, in: limits, step: step)
+            .labelsHidden().fixedSize().accessibilityLabel(entry.title)
+            .accessibilityIdentifier(entry.id + "Stepper")
+        }
+      } label: {
+        caption
+      }
+      .disabled(entry.id == "editorMaximumWidth" && !preferences.editorLayout.widthLimited)
     case .toggle(let keyPath):
       Toggle(
         isOn: Binding(

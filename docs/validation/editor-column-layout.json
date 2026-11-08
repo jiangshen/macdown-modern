@@ -1,0 +1,199 @@
+{
+  "checkpoint": "Native editor margins/width, stable reading anchor and canonical named-font caret metrics",
+  "date": "2026-11-07",
+  "status": "Implemented; final main-checkout package/native layout/font/ASAN/app-build acceptance passed; hosted Settings UI pending",
+  "fullGoal": "active; incomplete",
+  "originalEvidence": [
+    {
+      "path": "MacDown/Code/Document/MPDocument.m",
+      "sha256": "f43f793c319f27f090c5a45a09636ff908a418d215ab521881b64101f8bd9bd0"
+    },
+    {
+      "path": "MacDown/Code/Preferences/MPPreferences.m",
+      "sha256": "1724574caba513eec335b1d0b4601a7c5cc8cb044ba3caf7c2e05fb563b30333"
+    },
+    {
+      "path": "MacDown/Localization/Base.lproj/MPEditorPreferencesViewController.xib",
+      "sha256": "4e4287fd7b8de9525ada8c306b128843b060f061659c408f263bbbbcf372b7cc"
+    }
+  ],
+  "originalBehavior": {
+    "keys": [
+      "editorHorizontalInset",
+      "editorVerticalInset",
+      "editorWidthLimited",
+      "editorMaximumWidth"
+    ],
+    "ranges": "Original margins 0...35 points, maximum width 300...10000 points; original width default 1000. MacDown stored fresh margins 15/30; Snowfolio currently uses 24/24.",
+    "geometry": "MPDocument.adjustEditorInsets uses 45% of excess width as a symmetric inset. The resulting column can exceed the selected maximum.",
+    "remaining": [
+      "editorLineSpacing (0...100, original fresh default 3)",
+      "editorScrollsPastEnd",
+      "Other native editing/typing preferences and statistics remain separately tracked."
+    ]
+  },
+  "implementation": [
+    "Bounded finite value type in EditorCore; preserve original keys and supported ranges. Fresh Snowfolio profiles retain existing 24/24 spacing; imported choices remain active. Column dimensions use native points independently of text zoom.",
+    "True maximum text-container width and centered column; narrow panes retain their minimum margins and do not overflow. This corrects the original approximate limit.",
+    "Native source layout updates the existing text container during layout. No source bytes, storage syntax, selection or undo actions are rewritten. Composition defers changed geometry until completion.",
+    "Four native searchable Settings rows, including a maximum-width control enabled by Limit editor width. Catalog has 53 unique entries.",
+    "Keep the original source reading character across column/font reflow, compare current visual-line geometry for equivalent positions, and adopt a new anchor only at a clamped edge. This prevents drift when wrapped line starts move.",
+    "Direct numeric point entry accompanies each stepper, retaining the complete original supported range. The app UI test types 450 points and verifies it after Settings reopens.",
+    "Explicit named theme faces resolve from the native face descriptor rather than inheriting system-font conversion metrics. Valid fallback-language hints are passed into the descriptor constructor; size, traits and unavailable-face fallback behavior remain covered."
+  ],
+  "local": {
+    "full": {
+      "tests": 340,
+      "suites": 73,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 44626,
+      "report": "/private/tmp/snowfolio-editor-layout-font-final-full.json",
+      "reportSHA256": "612ad0f51d2b3c51c338afe598733ebcdbba76f93a1e64e1cd10d92dc12d3df4",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-68A8CC10-BF8F-4438-B32F-A41ED3FBA1DD/build.log",
+      "logSHA256": "cc470dd6bb84fd977ff8606eee3bfbf3b97a6855fd31acf512abdb938537cf21"
+    },
+    "addressSanitizer": {
+      "tests": 18,
+      "suites": 4,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 23841,
+      "report": "/private/tmp/snowfolio-editor-layout-font-final-asan.json",
+      "reportSHA256": "f6b65fd0f6dab220f9135778d2134b636a81c1ef83fd92c8aa285fd99d8022e8",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-49F2F317-BCBF-4019-8E58-4962734CA863/build.log",
+      "logSHA256": "22d8b2d06832b3ffd5192f51e4fa181dd22abae7255ae056542ebf139fc2826d"
+    },
+    "focusedScrolling": {
+      "tests": 15,
+      "suites": 3,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 13559,
+      "report": "/private/tmp/snowfolio-editor-layout-semantic-anchor.json",
+      "reportSHA256": "71e4ac0c62892b377e0c7ead2499e23d58e3396500fd4db2703960a3faa31b3e",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-1E2E0DA4-1C00-42DE-9498-486904C2F935/build.log",
+      "logSHA256": "3505a7c1538d7c9cd8709fe8960d049ddaadb49da41b1cf71f4088bb0efef118"
+    },
+    "nativeAppBuildForTesting": "passed, including 18 compiled native UI methods and resource/license verification",
+    "appLog": "/private/tmp/snowfolio-editor-layout-app-xcodebuild.log",
+    "appLogSHA256": "ca192fac84c634b33b135b0474902eab4fde7fb6a186e6327c5c6f96151c6be8",
+    "architecture": "/private/tmp/snowfolio-editor-layout-final-arm64.txt",
+    "architectureSHA256": "e91dc531b0823c50d1aca6346bc35e66fa72d52e326422c8b6cc4aa173bce20c",
+    "strictFormatting": "15 changed/new Swift files passed",
+    "diffCheck": "passed",
+    "formattedFollowup": {
+      "tests": 8,
+      "suites": 3,
+      "warnings": 0,
+      "errors": 0,
+      "report": "/private/tmp/snowfolio-editor-layout-formatted-focused.json",
+      "reportSHA256": "e27b4a87b08ae3776bc9ccc67de14429c0366436eddd06a32dc8436b685d378c",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-A8FE8350-54C8-478E-B2FC-090389C1B378/build.log",
+      "logSHA256": "9a6ae4d32fc3d94c2e34869d19dfa99bccbe0d4ab825f43562fcab7740d4d732"
+    },
+    "numericSettingsFollowup": {
+      "tests": 8,
+      "suites": 3,
+      "warnings": 0,
+      "errors": 0,
+      "report": "/private/tmp/snowfolio-editor-layout-numeric-settings.json",
+      "reportSHA256": "125c645f46530457fcc08f89542cab5d1341067fe952b10b3252014142fa1f43",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-2DD4B985-9C3D-4217-B5B0-88A3A50B9885/build.log",
+      "logSHA256": "64f61a50a3704e3338651ea9998592d98a547f2d6161e729fb8d266bcd909062"
+    },
+    "mainAppLog": "/private/tmp/snowfolio-editor-layout-font-xcodebuild.log",
+    "mainAppLogSHA256": "6151438aa3992cd4fe5860fe7d8318051a444cc6b1d683eb90bc88c8e06ae49d",
+    "beforeCaretCorrectionFull": {
+      "tests": 339,
+      "suites": 73,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 45704,
+      "report": "/private/tmp/snowfolio-editor-layout-diagnostic-full.json",
+      "reportSHA256": "12e506a3d70937cc3e9f90ddb2752f12df3cfefd3b76cd612eb55725dae03763",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-6FB8CD42-C529-4DC1-8BDC-EF32BBAF64EE/build.log",
+      "logSHA256": "20116c2313b4180cca431f7a208a05a1741a28eb43afa6b80c28907c47fea538"
+    },
+    "beforeCaretCorrectionASAN": {
+      "tests": 17,
+      "suites": 4,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 36871,
+      "report": "/private/tmp/snowfolio-editor-layout-asan.json",
+      "reportSHA256": "276dec252809636239246beec3d91897431a1823834c24467bf31a701b902aaf",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-D56EF28F-3AEE-4A7D-84D3-950C7DA725B5/build.log",
+      "logSHA256": "e8146b8ec1ed89c3ec040cb3b2078080eca05d4aaa7dc483600a016104ec409c"
+    },
+    "fontFollowup": {
+      "tests": 13,
+      "suites": 3,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 7050,
+      "report": "/private/tmp/snowfolio-font-canonical-reviewed.json",
+      "reportSHA256": "b1cd91582c3633428209e2daa25523aa5475fd7b5b2cdef202e04e5fd9ac6759",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-15000805-3E5F-4E8B-9876-C007365BA8DB/build.log",
+      "logSHA256": "8f8d9909b9f106f0df0cbef6fdd6482c83812032e38eadd222ba36507fcb046c"
+    }
+  },
+  "coverage": [
+    "Margin/width import and persistence, fresh defaults, explicit false, searches and unique catalog IDs.",
+    "Nonfinite/damaged inputs and tiny viewports yield finite nonnegative column geometry; strict cap and centered/narrow layouts.",
+    "Actual native 480/720/1200 point resize, UTF-16 Unicode selection, NSTextView identity, source/revision, native formatting undo/redo and simulated marked text deferred/committed without loss.",
+    "Complete workspace retains the same source paragraph through narrow/full column reflow with linked scrolling both off and on. Existing scroll/zoom/restoration cases remain.",
+    "Language-tagged named/system base fonts across empty/en/ja/zh-Hans, empty and terminal-line source. Existing empty/Tail/LF/CRLF carets at 0.5/1/2 zoom and source/native typing/paste history tests pass. No original caret/source assertions weakened."
+  ],
+  "diagnostics": {
+    "initialFixture": "/private/tmp/snowfolio-editor-layout-initial-diagnostic.json observed a one-point initial host width. Explicitly set window content size after attaching NSHostingController, consistent with existing workspace fixtures. No speculative sizeThatFits/resize hooks remain.",
+    "fixtureUndo": "/private/tmp/snowfolio-editor-layout-sized-host.json records AppKit requiring an undo group while simulating marked text with groupsByEvent disabled. Give simulated composition an explicit group; native history assertions remain.",
+    "readingAnchorBefore": "/private/tmp/snowfolio-editor-layout-reading-anchor.json reproduced both linked cases drifting from source paragraph offset 4775 to 4407 after widening. Preserve original source-character anchor through reflow; focused and final full suite pass.",
+    "zoomTimeout": "/private/tmp/snowfolio-editor-layout-full.json timed out in the existing preview-led source zoom check. Focused scroll/zoom and final full run pass. Cause unproven; added native/DOM facts on failure without changing scrolling behavior, timeout or assertions.",
+    "worktreeBuild": "Tuist did not recognize the worktree .git file as its root marker. A temporary empty Tuist directory in the isolated checkout resolves root discovery; no product/build-script workaround is introduced.",
+    "caretMetrics": {
+      "fullBefore": "/private/tmp/snowfolio-editor-layout-final-main-full.json",
+      "controlledBefore": "/private/tmp/snowfolio-font-language-system.json",
+      "controlledOutcome": "Eight mismatches: language-tagged system bases converted to Helvetica produce 22-point carets versus 26-point native reference carets; named Menlo bases pass. This reproduces the prior full-run signature.",
+      "correction": "Start from the requested native named face and pass valid fallback-language hints to its descriptor constructor. All original and new height/source/history cases and final full suite pass.",
+      "initialNarrowProbe": "/private/tmp/snowfolio-font-language-before.json covers only a named Menlo base and passes; broadening to system bases supplied the reproduction.",
+      "standaloneProbe": "/private/tmp/snowfolio-font-conversion-diagnostic.txt: clean standalone named/converted metrics and rendering modes match; that probe alone does not reproduce the native caret issue.",
+      "descriptorAssumption": "/private/tmp/snowfolio-font-canonical-face.json: corrected carets pass but a newly added assertion that the resolved font must serialize its matching-language hint fails. The installed CoreText header defines the key as input for fallback selection, not a retained output field; remove that speculative metadata assertion and keep all original/new caret/source assertions. The production constructor still receives valid hints.",
+      "apiEvidence": "Installed macOS SDK CoreText CTFontDescriptor.h, kCTFontDescriptorLanguageAttribute: language identifier selects a fallback list."
+    }
+  },
+  "hosted": {
+    "status": "Pending exact pushed code; new native Settings method now also verifies direct numeric entry and persistence.",
+    "expectedNativeMethods": 18
+  },
+  "remaining": [
+    "Fresh desktop source-selection/glyph, keyboard/VoiceOver and real Chinese/Japanese IME acceptance remain open; latest CUA observation locked.",
+    "Native Settings UI execution and screenshot acceptance await hosted run.",
+    "Line spacing, scrolling past end, other original typing preferences/statistics and safe coupled legacy retirement remain open.",
+    "Full autosave/Versions/external-change reliability, remaining renderer parity, M5 integrations and measured M6 performance/energy/memory/releases remain open.",
+    "The controlled system-font/named-face caret mismatch is corrected locally; fresh real IME/desktop typography acceptance remains open."
+  ],
+  "sourceSHA256": {
+    "Packages/SnowfolioCore/Sources/EditorCore/EditorLayoutPreferences.swift": "acf10ee58d8150f2651cb8355f3a2b876754538506ac5b3546a36e1a2fa7eacb",
+    "Packages/SnowfolioCore/Tests/EditorCoreTests/EditorLayoutPreferencesTests.swift": "05ab920988d04dca592e66e863604caed6fa1cf4661642bf85ca2ea9ae9a86f4",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorLayoutTests.swift": "5c9df9843fe68749ce2c16e380a5608478d810d7acc339171b8ec3feefb5536d",
+    "App/UITests/DocumentLifecycleTests.swift": "45165c3dc61e8765acdb605f8fe62d6c711c921fa2ad89d2582becb0525fcfd2",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/AppPreferences.swift": "088bd9626cc7594404c0f49fadf72d355e8626e073fc4b74ba2c3acfb6f35afb",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentScrollCoordinator.swift": "4a600147cc852bed41feae370ff245cdd8052f1be0c8c9de9016344a436e0880",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift": "115c6648d43e6db2b0ef47a88db63e0a8013da79c97fa7e1ef2b2ad38ec35934",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeDocumentSplit.swift": "799282c164c63795e9eba13d4320847a6e001cc8f63a719ac1870ec043be03c1",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownEditor.swift": "2a76f97dc44d19875ff07fa403c3d3dbc2ca3f99997f5d71bdf9b5d1b300bba7",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/SettingsCatalog.swift": "3908f14401ba2ba6abf1be103635f92c105c566efdeea69fcf4ed8ab3b30cfd0",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/SnowfolioSettingsView.swift": "6dae0f47a7f8915b958fd84d72eeffcd0d69cff239c5d6a6e9db902f5205b116",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeZoomTests.swift": "4b8de49f31c0dade077cfb72e89fe8b3858b6f55637f3e5efa0abd98d5f58f24",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/SettingsTests.swift": "e7a9f82de787804f3154c4f5162fa1a59106f66178af5a6ca65bd75764624b06",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorTheme.swift": "5c5402e1dfa158f1473657f7d97369776c7d3da43f8f31d55902c7c07fa6799e",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorInsertionFontTests.swift": "33ccfc86e75b8b362ce42392bd6c6f58d41ed29ce18b92f0905cbb0a265f6fc1"
+  },
+  "acceptedBase": {
+    "code": "d3f5da23c5fc13f9ab1f0be67d784f52998483c7",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42436504932",
+    "packageTests": 334,
+    "nativeUITests": 17
+  }
+}

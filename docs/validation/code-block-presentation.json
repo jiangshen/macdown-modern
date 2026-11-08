@@ -97,7 +97,8 @@
     "caretMetricsFollowup": {
       "initialReport": "/private/tmp/snowfolio-code-presentation-contrast-full.json",
       "isolatedReport": "/private/tmp/snowfolio-code-contrast-font-followup.json",
-      "finding": "An existing caret metric case intermittently differed from its native reference in a full local run. Unchanged focused cases and final full run pass. Added font/typing-attribute facts on failure only; no assertion or production font code changed. Cause unproven; final runtime/IME/typography acceptance remains open."
+      "finding": "An existing caret metric case intermittently differed from its native reference in a full local run. Unchanged focused cases and final full run pass. Added font/typing-attribute facts on failure only; no assertion or production font code changed. Cause unproven; final runtime/IME/typography acceptance remains open.",
+      "resolvedFollowup": "The matching caret signature now has a controlled system-font/language reproduction and native face correction in editor-column-layout.json; final local acceptance passes. Real desktop/IME remains open."
     }
   },
   "hosted": {
