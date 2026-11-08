@@ -584,7 +584,10 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertEqual(settings.buttons.matching(identifier: "resetHTMLTemplate").count, 1)
     reset.click()
     XCTAssertTrue(reset.waitForNonExistence(timeout: 5))
-    XCTAssertEqual(settings.staticTexts["htmlTemplateStatus"].label, "Default")
+    let status = settings.staticTexts.matching(identifier: "htmlTemplateStatus").matching(
+      NSPredicate(format: "label == %@ OR value == %@", "Default", "Default")
+    ).firstMatch
+    XCTAssertTrue(status.waitForExistence(timeout: 5), app.debugDescription)
     let image = XCTAttachment(screenshot: settings.screenshot())
     image.name = "html-template-recovered-default"
     image.lifetime = .keepAlways
