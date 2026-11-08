@@ -24,6 +24,7 @@ on:
           - document-reload
           - document-lifecycle
           - document-restoration
+          - document-host-probe
 
 permissions:
   contents: read
@@ -88,7 +89,9 @@ jobs:
         env:
           SNOWFOLIO_TEST_SCOPE: ${{ inputs.native_test_scope || 'all' }}
         run: |
-          if [ "$SNOWFOLIO_TEST_SCOPE" = document-reload ]; then
+          if [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe ]; then
+            bash Tools/probe-document-host.sh
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = document-reload ]; then
             bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave
@@ -111,5 +114,7 @@ jobs:
           name: snowfolio-native-${{ github.sha }}
           retention-days: 7
           path: |
+            Build/DocumentHostProbe/*.log
+            Build/DocumentHostProbe/DerivedData/Logs/Test/*.xcresult
             Build/Snowfolio/*.log
             Build/Snowfolio/DerivedData/Logs/Test/*.xcresult

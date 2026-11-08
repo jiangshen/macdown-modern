@@ -225,7 +225,14 @@
       "result": "Native tests did not execute: Homebrew moving Tuist 4.215.0 release download repeatedly returned HTTP 504. Focused run attempts 1 and 2 were terminal installation failures.",
       "repair": "Pin official Tuist 4.214.1 asset 691940861; download via official GitHub release API, verify SHA-256 before extraction/execution, retain adjacent frameworks, remove archive on step exit.",
       "sha256": "c9fb90582126d30380e9348da2c84d9c4ab08d59cded454f6bd8ef60bd93c759",
-      "localVerification": "Official metadata digest matches downloaded archive; extracted binary reports 4.214.1; workflow YAML and shell syntax parse; no new native acceptance claimed."
+      "localVerification": "Official metadata digest matches downloaded archive; extracted binary reports 4.214.1; workflow YAML and shell syntax parse; no new native acceptance claimed.",
+      "hostedRepair": "Confirmed successful tool installation in both run42474226792 and focused run42474240390 at47bfd9142d9b3e40e68a2a7f5bee5a08205a2ae8."
+    },
+    "focusedMetadataRun": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42474240390",
+      "commit": "47bfd9142d9b3e40e68a2a7f5bee5a08205a2ae8",
+      "result": "Native restoration method executed68.682s; original automatic Undo persistence assertion failed. Metadata/explicit-save attachment collection pending.",
+      "failureLog": "/private/tmp/snowfolio-current-undo-failed.log"
     }
   },
   "fullDiagnosticCheckpoint": {
@@ -236,5 +243,21 @@
       "path": "/private/tmp/snowfolio-document-lifecycle-full-diagnostics-failed.log",
       "sha256": "2653a8be9ff2576ad036119166b8b10c4d05f80a4f6e32e508c0c430526346db"
     }
+  },
+  "stockHostComparison": {
+    "scope": "Test-only standalone macOS27 Document/FileWrapper/TextEditor app with documented manual onChange Undo registration. No Snowfolio model/editor/merge logic or third-party dependencies; separate bundle ID; no production target changes.",
+    "checks": [
+      "Clean uncoordinated atomic external reload before editing.",
+      "Clean external reload after native autosave.",
+      "Immediate Undo restores saved UTF-8 bytes."
+    ],
+    "buildForTesting": "passed; zero compiler errors/warnings; three UI methods compile",
+    "buildReport": "/private/tmp/snowfolio-stock-host-build.json",
+    "sourceFiles": {
+      "Tools/DocumentHostProbe/Project.swift": "1fbf7638becc37ed5a1263c639031ab9e59d860113a1881cf1cb1cb8a0307c09",
+      "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "e44687e77a0db8afffb66e02beaeb2b4bed13337833ece740989900ef075ed92",
+      "Tools/DocumentHostProbe/Sources/DocumentHostProbeApp.swift": "b7b20724b000276b80075f11dd1aaeb7edcf294b2ef7fb9968ebc8c1f4225e8a"
+    },
+    "runtime": "pending; comparison does not establish Snowfolio acceptance"
   }
 }
