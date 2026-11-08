@@ -1,7 +1,7 @@
 {
   "checkpoint": "Native editor margins/width, stable reading anchor and canonical named-font caret metrics",
   "date": "2026-11-07",
-  "status": "Local layout/font/ASAN/app build passed; first hosted package resize check failed; diagnostic follow-up required; native UI execution still running",
+  "status": "Persistent-scroller column-width defect reproduced and corrected locally; 340 tests and app build pass; ASAN and exact final hosted acceptance pending",
   "fullGoal": "active; incomplete",
   "originalEvidence": [
     {
@@ -169,10 +169,12 @@
       "localFinalFocused": "/private/tmp/snowfolio-editor-column-resize-final-diagnostic.json",
       "commit": "6f2ad0b4c5a81958634bcc4542f1ab93edd097b0",
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42442707167",
-      "status": "Running; follow exact diagnostic source through completion.",
+      "status": "Package failed with exact width facts; native UI job still running.",
       "sourceSHA256": "e203c8e9dcf55536b6b64eb9e1ad7938caa6fd83d7791a9037566aa533314f8f",
       "fullReportSHA256": "c163db0a0f2c6520c4a84ab28ca6859ced4b99606ee31ae581d476ed543994af",
-      "finalFocusedReportSHA256": "82b36b2c76797d9a4c800202c0257e0619a5e3603de756c26ad528804572f6fe"
+      "finalFocusedReportSHA256": "82b36b2c76797d9a4c800202c0257e0619a5e3603de756c26ad528804572f6fe",
+      "hostedLog": "/private/tmp/snowfolio-editor-column-diagnostic-hosted-core/snowfolio-validation/swift-test.log",
+      "hostedLogSHA256": "22603dfd2f39018cd6f579c6c235712d3a55b5b8f8c6bcacefdd752581659c1e"
     }
   },
   "hosted": {
@@ -219,5 +221,89 @@
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42436504932",
     "packageTests": 334,
     "nativeUITests": 17
+  },
+  "scrollerWidthCorrection": {
+    "cause": "At a 480-point window, a persistent vertical scroller narrows the editor from 480 to 463 points during layout; the column remains at 440 instead of 423. Hosted diagnostic and controlled local persistent-scroller fixture report identical geometry.",
+    "controlledBefore": "/private/tmp/snowfolio-editor-column-scroller-matrix.json",
+    "firstAttempt": "/private/tmp/snowfolio-editor-column-scroller-fix-focused.json: marking needsLayout in setFrameSize is insufficient. A temporary call trace confirms the 463-point frame change occurs inside an existing pass; the flag produces no subsequent layout.",
+    "callTrace": "/private/tmp/snowfolio-editor-column-width-hook-diagnostic.json; temporary SF-frame/SF-layout prints removed from final source.",
+    "correction": "Update existing container geometry immediately after a native width change, using the same bounded geometry/composition guard. No forced recursive layout, async task, source edits, selection changes or altered timeout/assertions.",
+    "coverage": "Original native geometry test now runs with explicit overlay and persistent scrollbar modes; existing narrow/wide resizing, margin changes, Unicode selection/source/revision, editor identity, undo/redo and deferred composition assertions remain.",
+    "local": {
+      "focused": {
+        "report": "/private/tmp/snowfolio-editor-column-scroller-final-focused.json",
+        "reportSHA256": "745cbcfc0ac5a289ae62a7cde0f6cbc8544acdf7d61b7da2bf7ab4c9024717cf",
+        "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-CE77EAAF-3C69-4B73-B826-BABDB0273DE3/build.log",
+        "logSHA256": "8d00e9d10b24d492960bbbbf1a92bfe96028b64fe9c9d4e4737be4563cdcfbb6",
+        "command": {
+          "durationMs": 13317,
+          "exitCode": 0,
+          "interruptionSignal": null,
+          "kind": "swift-test",
+          "signal": null,
+          "status": "succeeded"
+        },
+        "counts": {
+          "errors": 0,
+          "failedTests": 0,
+          "notes": 0,
+          "remarks": 0,
+          "warnings": 0
+        },
+        "tests": 15,
+        "suites": 3
+      },
+      "full": {
+        "report": "/private/tmp/snowfolio-editor-column-scroller-final-full.json",
+        "reportSHA256": "c207abf3e360882e5f23e9c896d9c66da208bffba32c1c7dc86ad7422948258b",
+        "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-39D6603E-2AE4-41B0-95B9-A47498F8FB96/build.log",
+        "logSHA256": "a5b4af22231d318c0660f31aaa27cff842da4b47bb16929c3afac75359202500",
+        "command": {
+          "durationMs": 45223,
+          "exitCode": 0,
+          "interruptionSignal": null,
+          "kind": "swift-test",
+          "signal": null,
+          "status": "succeeded"
+        },
+        "counts": {
+          "errors": 0,
+          "failedTests": 0,
+          "notes": 0,
+          "remarks": 0,
+          "warnings": 0
+        },
+        "tests": 340,
+        "suites": 73
+      },
+      "appBuildForTesting": {
+        "report": "/private/tmp/snowfolio-editor-column-scroller-app-build.json",
+        "reportSHA256": "fae05d723ad6e40e6048502458e572437abb382bfc664a2d81a5e66a4fa49df5",
+        "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-E54AC064-1B18-4F30-B722-9935D708E494/build.log",
+        "logSHA256": "c4403c11ba9f4d9cec79de96ce3882ef74a8a027617c7836f68e4ede101bbe93",
+        "command": {
+          "durationMs": 6825,
+          "exitCode": 0,
+          "interruptionSignal": null,
+          "kind": "xcodebuild",
+          "signal": null,
+          "status": "succeeded"
+        },
+        "counts": {
+          "errors": 0,
+          "failedTests": 0,
+          "notes": 4,
+          "remarks": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "hosted": {
+      "status": "Pending exact final source push."
+    },
+    "sourceSHA256": {
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift": "bde29dc2396346a104ea998a07313b5788694e3da8989ddd6c352645bfda5b47",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorLayoutTests.swift": "b7ba5a9de0b8e5e6e17241b2fa63a971eeeb1eee7a95a16900436a55b4f5a62a"
+    }
   }
 }

@@ -23,3 +23,8 @@ Named theme fonts use their own native metrics, including empty and terminal-lin
 carets. Valid fallback-language hints are passed to the native font constructor. A
 regression covers named/system font bases with English, Japanese, Chinese and empty
 language hints; it does not replace real IME and desktop acceptance.
+
+Persistent scrollbars can consume editor width during a native layout pass. The
+column recalculates immediately after that width change; both overlay and persistent
+scrollbar fixtures exercise resize, source/history and composition preservation.
+The exact hosted follow-up remains required before accepting this correction.

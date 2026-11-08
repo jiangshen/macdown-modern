@@ -408,3 +408,13 @@ complete run passes 340 tests / 73 suites in 44.626 seconds, and 18 ASAN tests /
 suites pass in 23.841 seconds, including build. These are correctness/test timings,
 not app latency or energy measurements. The earlier preview-led source timeout remains
 unproven; real IME, desktop typography and full M6 acceptance remain open.
+
+### Persistent scrollbar column correction
+
+The hosted column-layout diagnostics and an explicit persistent-scrollbar fixture
+reproduce a stale 440-point column in a 463-point native editor. The existing
+geometry function now runs immediately after width changes; height-only changes
+remain outside this path. Setting needsLayout alone did not schedule another pass.
+Focused scrolling/zoom and all 340 package tests pass locally. This is a correctness
+fix; no runtime performance improvement or source-selection visual acceptance is claimed.
+See validation/editor-column-layout.json for exact before/after logs and pending hosted acceptance.

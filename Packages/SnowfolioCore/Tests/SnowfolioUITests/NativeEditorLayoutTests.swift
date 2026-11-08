@@ -49,9 +49,10 @@ struct NativeEditorLayoutTests {
   }
 
   @Test(
-    "Resizing and changing margins retains native source, selection and undo; composition defers geometry"
+    "Resizing and changing margins retains native source, selection and undo; composition defers geometry",
+    arguments: [false, true]
   )
-  func nativeGeometry() async throws {
+  func nativeGeometry(legacyScroller: Bool) async throws {
     _ = NSApplication.shared
     let domain = "NativeEditorLayoutTests." + UUID().uuidString
     let defaults = try #require(UserDefaults(suiteName: domain))
@@ -94,6 +95,7 @@ struct NativeEditorLayoutTests {
       { find(host.view)?.textContainer?.containerSize.width == 600 }
     )
     let editor = try #require(find(host.view))
+    editor.enclosingScrollView?.scrollerStyle = legacyScroller ? .legacy : .overlay
     #expect(editor.textLayoutManager != nil && editor.undoManager === undo)
     #expect(abs(editor.textContainerOrigin.x + 300 - editor.bounds.midX) < 1)
     #expect(editor.textContainerInset.height == 30)

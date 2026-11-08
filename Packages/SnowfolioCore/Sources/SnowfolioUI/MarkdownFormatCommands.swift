@@ -152,6 +152,15 @@ final class MarkdownTextView: NSTextView {
     viewportInputBegan?()
     super.mouseDown(with: event)
   }
+  override func setFrameSize(_ newSize: NSSize) {
+    let widthChanged = frame.width != newSize.width
+    super.setFrameSize(newSize)
+    // A persistent scroller can shrink the clip view during an existing layout.
+    // Update the column immediately; another needsLayout flag can be consumed by
+    // that same pass without laying out the newly narrowed text view.
+    if widthChanged { applyEditorGeometry() }
+  }
+
   override func layout() {
     applyEditorGeometry()
     super.layout()

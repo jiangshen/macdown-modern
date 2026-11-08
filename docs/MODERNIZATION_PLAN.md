@@ -11,8 +11,12 @@ controls preserve the original keys; 53 catalog entries remain unique. The app's
 Settings test compiles among 18 native UI methods. Exact implementation `dd6fb58`
 ran in [hosted validation 42442182528](https://github.com/jiangshen/snowfolio/actions/runs/42442182528).
 Its package resize check failed at 480 points; native app UI is still running.
-Local focused and full 340-test runs pass. Failure-only geometry diagnostics are being
-added; no cause or hosted acceptance is claimed.
+The diagnostic follow-up [42442707167](https://github.com/jiangshen/snowfolio/actions/runs/42442707167)
+reproduced a persistent scrollbar narrowing the native editor to 463 points while its
+column remained at 440 instead of 423. The same controlled local reproduction fails
+with persistent scrollbars. Updating the column immediately after the width change
+passes both scrollbar modes, all 340 package tests and the app build. Exact final
+hosted acceptance remains pending; prior native UI jobs continue unchanged.
 See [editor-column-layout.json](validation/editor-column-layout.json) and
 [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md). Line spacing, scroll-past-end and other
 original editing/layout preferences remain open.
