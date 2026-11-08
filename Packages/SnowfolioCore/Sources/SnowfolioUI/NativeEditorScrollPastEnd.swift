@@ -47,8 +47,7 @@ final class NativeEditorScrollPastEnd {
   private var sourceKey: SourceKey?
   private var lastVisible: NSRange?
   private var geometryKey: GeometryKey?
-  private var contentHeight: CGFloat = 0
-  private var trailingHeight: CGFloat = 0
+  private var lastRowTop: CGFloat?
 
   init(editor: MarkdownTextView) { self.editor = editor }
 
@@ -87,25 +86,29 @@ final class NativeEditorScrollPastEnd {
       font: editor.font, spacing: editor.syntaxHighlighter?.appliedLineSpacing,
       usage: manager.usageBoundsForTextContainer)
     if geometryKey != geometry {
-      contentHeight = 0
-      trailingHeight = 0
+      lastRowTop = nil
       if let lastVisible {
-        let end = NSRange(location: key.length, length: 0)
-        guard let last = rectangle(lastVisible, in: editor),
-          let terminal = rectangle(end, in: editor)
-        else { return }
-        contentHeight = terminal.maxY + editor.textContainerInset.height
-        trailingHeight = max(0, terminal.maxY - last.maxY)
+        guard let last = rectangle(lastVisible, in: editor) else { return }
+        lastRowTop = last.minY
       }
       geometryKey = GeometryKey(
         source: key, width: geometry.width, inset: geometry.inset, font: geometry.font,
         spacing: geometry.spacing,
         usage: manager.usageBoundsForTextContainer)
     }
-    let extra = max(
-      0,
-      min(container.contentView.bounds.height, contentHeight)
-        - trailingHeight - 2 * editor.textContainerInset.height)
+    guard let lastRowTop else {
+      restore()
+      return
+    }
+    let base = originalInsets == nil ? container.contentView.contentInsets : effectiveBaseInsets
+    let viewportHeight = container.contentView.bounds.height
+    let minimum = max(0, viewportHeight - base.top - base.bottom)
+    let normalMaximum = max(
+      -base.top, max(editor.frame.maxY, editor.frame.minY + minimum) - viewportHeight + base.bottom)
+    let target =
+      lastRowTop + editor.frame.minY - editor.bounds.minY
+      - editor.textContainerInset.height - base.top
+    let extra = max(0, target - normalMaximum)
     guard extra > 0 else {
       restore()
       return
@@ -116,9 +119,7 @@ final class NativeEditorScrollPastEnd {
       originalAutomatic = container.automaticallyAdjustsContentInsets
     }
     let previousMinimum = minimumHeight
-    minimumHeight = max(
-      0,
-      container.contentView.bounds.height - effectiveBaseInsets.top - effectiveBaseInsets.bottom)
+    minimumHeight = minimum
     var desired = effectiveBaseInsets
     desired.bottom += extra
     let insetsChanged = !equal(container.contentInsets, desired)
