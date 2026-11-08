@@ -166,7 +166,13 @@
       "localFull": "/private/tmp/snowfolio-editor-column-resize-full-diagnostic.json",
       "localResult": "Focused native layout and full 340 tests /73 suites pass. Final diagnostic string also records editor min/max sizes; final focused 3 tests /1 suite recompiles and passes. No layout workaround, changed assertions or increased timeout.",
       "scope": "Diagnostic-only test change. The prior source manifest and original local acceptance remain attached to dd6fb58.",
-      "localFinalFocused": "/private/tmp/snowfolio-editor-column-resize-final-diagnostic.json"
+      "localFinalFocused": "/private/tmp/snowfolio-editor-column-resize-final-diagnostic.json",
+      "commit": "6f2ad0b4c5a81958634bcc4542f1ab93edd097b0",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42442707167",
+      "status": "Running; follow exact diagnostic source through completion.",
+      "sourceSHA256": "e203c8e9dcf55536b6b64eb9e1ad7938caa6fd83d7791a9037566aa533314f8f",
+      "fullReportSHA256": "c163db0a0f2c6520c4a84ab28ca6859ced4b99606ee31ae581d476ed543994af",
+      "finalFocusedReportSHA256": "82b36b2c76797d9a4c800202c0257e0619a5e3603de756c26ad528804572f6fe"
     }
   },
   "hosted": {
