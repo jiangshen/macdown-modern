@@ -33,6 +33,93 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  private func openDocument(_ file: URL, in app: XCUIApplication) -> XCUIElement {
+    app.typeKey("o", modifierFlags: .command)
+    let panel = app.descendants(matching: .any)["open-panel"].firstMatch
+    XCTAssertTrue(panel.waitForExistence(timeout: 5))
+    app.typeKey("g", modifierFlags: [.command, .shift])
+    let path = app.textFields["PathTextField"].firstMatch
+    XCTAssertTrue(path.waitForExistence(timeout: 5))
+    path.click()
+    app.typeKey("a", modifierFlags: .command)
+    path.typeText(file.path + "\n")
+    let open = app.buttons["OKButton"].firstMatch
+    XCTAssertTrue(open.waitForExistence(timeout: 5))
+    open.click()
+    let editor = app.textViews["markdownSourceEditor"].firstMatch
+    XCTAssertTrue(editor.waitForExistence(timeout: 8))
+    return editor
+  }
+
+  @MainActor
+  func testAutosavePreservesEncodingAndReloadsCleanExternalChange() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let file = directory.appendingPathComponent("lifecycle-encoding.md")
+    let original = "# Native lifecycle\r\n中文 👩‍💻 e\u{301}\r\n"
+    let utf16BOM = Data([0xFF, 0xFE])
+    try (utf16BOM + XCTUnwrap(original.data(using: .utf16LittleEndian))).write(to: file)
+    let app = launch()
+    defer { app.terminate() }
+    let editor = openDocument(file, in: app)
+    XCTAssertEqual(editor.value as? String, original)
+    editor.click()
+    app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+    editor.typeText("Autosave checkpoint")
+    let edited = original + "Autosave checkpoint"
+    XCTAssertEqual(editor.value as? String, edited)
+    let expectedAutosave = utf16BOM + (try XCTUnwrap(edited.data(using: .utf16LittleEndian)))
+    let began = ProcessInfo.processInfo.systemUptime
+    let finder = XCUIApplication(bundleIdentifier: "com.apple.finder")
+    finder.activate()
+    // No Save command precedes this byte-exact assertion: the native host must autosave.
+    let autosaved = NSPredicate { _, _ in (try? Data(contentsOf: file)) == expectedAutosave }
+    expectation(for: autosaved, evaluatedWith: nil)
+    waitForExpectations(timeout: 35)
+    XCTAssertEqual(try Data(contentsOf: file), expectedAutosave)
+    let metrics = XCTAttachment(
+      string:
+        "Native inactive autosave observed after \(ProcessInfo.processInfo.systemUptime - began) seconds; UTF-16LE BOM, CRLF, combining text and emoji preserved."
+    )
+    metrics.name = "native-autosave-encoding"
+    metrics.lifetime = .keepAlways
+    add(metrics)
+    app.activate()
+    app.typeKey("s", modifierFlags: .command)
+    finder.activate()
+    let external = "# External snapshot\n中文 👩‍💻 e\u{301}\n"
+    let utf8BOM = Data([0xEF, 0xBB, 0xBF])
+    let externalBytes = utf8BOM + Data(external.utf8)
+    try externalBytes.write(to: file, options: .atomic)
+    app.activate()
+    let reloaded = NSPredicate { _, _ in editor.value as? String == external }
+    expectation(for: reloaded, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    XCTAssertEqual(editor.value as? String, external)
+    XCTAssertEqual(try Data(contentsOf: file), externalBytes)
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "native-clean-external-reload"
+    image.lifetime = .keepAlways
+    add(image)
+    editor.click()
+    app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+    editor.typeText("After external reload")
+    let final = external + "After external reload"
+    XCTAssertEqual(editor.value as? String, final)
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, external)
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, final)
+    app.typeKey("s", modifierFlags: .command)
+    let expectedFinal = utf8BOM + Data(final.utf8)
+    let saved = NSPredicate { _, _ in (try? Data(contentsOf: file)) == expectedFinal }
+    expectation(for: saved, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
+    XCTAssertEqual(try Data(contentsOf: file), expectedFinal)
+  }
+
+  @MainActor
   func testNewDocumentTypingUndoRedo() {
     let app = launch()
     defer { app.terminate() }
@@ -1145,20 +1232,7 @@ final class DocumentLifecycleTests: XCTestCase {
     try original.write(to: file)
     let app = launch()
     defer { app.terminate() }
-    app.typeKey("o", modifierFlags: .command)
-    let panel = app.descendants(matching: .any)["open-panel"].firstMatch
-    XCTAssertTrue(panel.waitForExistence(timeout: 5))
-    app.typeKey("g", modifierFlags: [.command, .shift])
-    let pathField = app.textFields["PathTextField"].firstMatch
-    XCTAssertTrue(pathField.waitForExistence(timeout: 5))
-    pathField.click()
-    app.typeKey("a", modifierFlags: .command)
-    pathField.typeText(file.path + "\n")
-    let open = app.buttons["OKButton"].firstMatch
-    XCTAssertTrue(open.waitForExistence(timeout: 5))
-    open.click()
-    let editor = app.textViews["markdownSourceEditor"].firstMatch
-    XCTAssertTrue(editor.waitForExistence(timeout: 8))
+    let editor = openDocument(file, in: app)
     XCTAssertEqual(editor.value as? String, "# 中文 👩‍💻\r\n")
     editor.click()
     app.typeKey("a", modifierFlags: .command)

@@ -2775,3 +2775,17 @@ Exact hosted acceptance is pending. Source and evidence are in the scroll-past-e
 ledger. Dark desktop selection, modern caret paint, real IME/VoiceOver, full document
 lifecycle, remaining renderer/typing/statistics/M5 and measured M6/release gates remain
 open. This does not retire the coupled original editor/preferences target.
+
+
+## Automated native document lifecycle preparation — 2026-11-07
+
+Added a native UI fixture for autosave before any Save command, byte-exact UTF-16LE
+BOM/CRLF/Unicode preservation, clean external reload to UTF-8 BOM/LF, and subsequent
+Undo/Redo/Save in the new encoding. Its external writes affect only its own temporary
+fixture. The established Open-panel helper is shared with the existing open/save case.
+
+The main-checkout build-for-testing and strict formatting pass;21 UI methods compile.
+Runtime acceptance is pending; compilation is not evidence that autosave/reload works.
+No production lifecycle behavior changed. Exact source/build evidence and remaining
+conflict/Versions/restoration/IME/VoiceOver gates are in validation/document-lifecycle.json.
+The full modernization remains active and incomplete.

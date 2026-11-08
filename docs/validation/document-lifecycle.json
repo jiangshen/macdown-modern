@@ -1,0 +1,30 @@
+{
+  "checkpoint": "Automated native autosave and clean external-reload fixture; compiled, execution pending",
+  "base": "4ee7721bbf10b2243f25de985a4993949da0b057",
+  "goal": "active; incomplete",
+  "fixture": "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+  "checks": [
+    "Open UTF-16LE BOM source with CRLF, Chinese, non-BMP emoji and decomposed combining text through the native Open panel.",
+    "Append a single-line edit and verify exact encoded disk bytes after app deactivation before sending any Save command; attach measured observation time.",
+    "After explicit Save and deactivation, atomically replace only the test-owned file with UTF-8 BOM/LF source. Verify native clean reload and that external disk bytes remain intact.",
+    "Append another single-line edit after reload, verify native Undo/Redo, Save and the new UTF-8 BOM encoding."
+  ],
+  "local": {
+    "buildForTesting": "passed",
+    "compiledNativeUIMethods": 21,
+    "sourceSHA256": "fca3ba8cf3ac1957fdad6f54290df7de0b93fbc9c5fbfeda6def08a4de2c5131",
+    "buildLog": "/private/tmp/snowfolio-scroll-past-end/Build/Snowfolio/xcodebuild.log",
+    "buildLogSHA256": "f98b0291e14b3541918065a66d8e0d8e2d92714dcd54eb7256f742228a9f18ac",
+    "strictSwiftFormatting": "passed",
+    "diffCheck": "passed",
+    "diagnostics": "No Swift compiler error/warning; existing AppIntents metadata-extraction notice because no AppIntents framework dependency."
+  },
+  "hosted": {
+    "status": "pending; no runtime acceptance claimed"
+  },
+  "pending": [
+    "Execute the new native lifecycle method and inspect exact results.",
+    "Dirty external-conflict UI, Versions, graceful quit/relaunch restoration, real IME/VoiceOver and the rest of M2 remain open.",
+    "No production lifecycle change or legacy-file retirement is justified by fixture compilation."
+  ]
+}
