@@ -169,7 +169,7 @@
       "localFinalFocused": "/private/tmp/snowfolio-editor-column-resize-final-diagnostic.json",
       "commit": "6f2ad0b4c5a81958634bcc4542f1ab93edd097b0",
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42442707167",
-      "status": "Package failed with exact width facts; native UI job still running.",
+      "status": "Package failed with exact width facts; native UI job retains original switch-type assertion.",
       "sourceSHA256": "e203c8e9dcf55536b6b64eb9e1ad7938caa6fd83d7791a9037566aa533314f8f",
       "fullReportSHA256": "c163db0a0f2c6520c4a84ab28ca6859ced4b99606ee31ae581d476ed543994af",
       "finalFocusedReportSHA256": "82b36b2c76797d9a4c800202c0257e0619a5e3603de756c26ad528804572f6fe",
@@ -178,7 +178,7 @@
     }
   },
   "hosted": {
-    "status": "Package failed at nativeGeometry resize 480; app UI job still running. No overall acceptance claimed.",
+    "status": "Completed: package resize failure and one UI assertion failure; no checkpoint acceptance. Exact corrective work recorded below.",
     "expectedNativeMethods": 18,
     "commit": "dd6fb581be5a90c201b98c6de0e321aa045a7ae5",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42442182528",
@@ -190,6 +190,16 @@
       "case": "NativeEditorLayoutTests.nativeGeometry",
       "stage": "resize 480.0",
       "outcome": "Timed out without geometry facts; no production cause established. Existing expectations/time limit unchanged; add failure-only window/host/scroll/editor/container metrics."
+    },
+    "nativeUI": {
+      "tests": 18,
+      "failures": 1,
+      "case": "testEditorColumnSettingsPreserveSourceAndHistory",
+      "line": 751,
+      "message": "XCTAssertEqual failed: nil is not equal to Optional(\"1\"); switch value was cast only to String. Existing earlier tests normalize numeric/string switch values.",
+      "scope": "All remaining assertions continued: enabled/disabled numeric field, 450-point entry and persistence, source and undo/redo. Final corrective UI run remains required.",
+      "failedWorkflowLog": "/private/tmp/snowfolio-editor-column-initial-hosted-failed.log",
+      "failedWorkflowLogSHA256": "c828fd2ebb107ad0f25c1339fc782ae5b7866ea122af78ab0a9d38990b620622"
     }
   },
   "remaining": [
@@ -329,7 +339,7 @@
       "strictFormatting": "Both changed Swift files pass; git diff --check passes."
     },
     "hosted": {
-      "status": "Running exact final correction; acceptance pending.",
+      "status": "Running production scroller correction; native UI test still contains the separately corrected switch type assertion. Superseding exact validation required.",
       "commit": "7cf4b717c3ff043725a49f7e0f3f22892f13a919",
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42443281771"
     },
@@ -337,5 +347,13 @@
       "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift": "bde29dc2396346a104ea998a07313b5788694e3da8989ddd6c352645bfda5b47",
       "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorLayoutTests.swift": "b7ba5a9de0b8e5e6e17241b2fa63a971eeeb1eee7a95a16900436a55b4f5a62a"
     }
+  },
+  "nativeSwitchValueCorrection": {
+    "change": "Normalize Int/String accessibility switch values, as existing tests do, and continue requiring value 1. Keep all enable/disable, typed numeric value 450, persistence, source and explicit undo/redo assertions.",
+    "productionChanged": false,
+    "sourceSHA256": "f057df658e285fecef07e0ceff1ed7879f2458f381f897fbea4f9e08de18c7fe",
+    "appBuildReport": "/private/tmp/snowfolio-editor-column-switch-type-app-build.json",
+    "appBuildReportSHA256": "dc7ec1962fcc97dfdf51c11f1122fc984d2d8d31536382706d831f86e55cb1c7",
+    "hostedStatus": "Pending exact source push."
   }
 }

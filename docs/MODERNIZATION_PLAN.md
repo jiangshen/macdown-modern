@@ -16,7 +16,11 @@ reproduced a persistent scrollbar narrowing the native editor to 463 points whil
 column remained at 440 instead of 423. The same controlled local reproduction fails
 with persistent scrollbars. Updating the column immediately after the width change
 passes both scrollbar modes, all 340 package tests and the app build. Exact final
-hosted acceptance remains pending; prior native UI jobs continue unchanged.
+hosted acceptance remains pending. The first native UI run completed 18 methods with
+one failing switch-value assertion (numeric accessibility value cast as String);
+450-point entry/persistence and source/history assertions continued without failure.
+The test now normalizes numeric/string values while requiring the same enabled state.
+The corrected native test builds; exact corrective hosted acceptance remains pending.
 See [editor-column-layout.json](validation/editor-column-layout.json) and
 [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md). Line spacing, scroll-past-end and other
 original editing/layout preferences remain open.
