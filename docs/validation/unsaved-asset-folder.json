@@ -117,8 +117,10 @@
     }
   },
   "hosted": {
-    "status": "Pending exact pushed code; two new UI methods cover chooser/cancel/search/status/history and real untitled Save\u2192relative-image HTML export from saved folder.",
-    "expectedNativeMethods": 17
+    "status": "Queued for exact pushed implementation; do not infer UI acceptance until terminal results and raw artifacts are inspected.",
+    "expectedNativeMethods": 17,
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42436504932",
+    "code": "d3f5da23c5fc13f9ab1f0be67d784f52998483c7"
   },
   "remaining": [
     "Fresh desktop glyph/selection inspection, real IME/VoiceOver, complete document lifecycle and accessibility acceptance remain open; latest direct CUA check is locked.",

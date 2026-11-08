@@ -2574,3 +2574,9 @@ The final local suite passes 334 tests / 71 suites and ten ASAN tests / two suit
 scrolling; the unchanged focused case and final full suite pass. Its cause is unproven;
 scrolling assertions/timeouts and production scrolling code remain unchanged. Exact
 reports and the final arm64/build hashes are in `validation/unsaved-asset-folder.json`.
+
+
+Hosted follow-up for code `d3f5da23c5fc13f9ab1f0be67d784f52998483c7` is queued in
+[run 42436504932](https://github.com/jiangshen/snowfolio/actions/runs/42436504932).
+Poll this same run through completion and inspect its raw evidence; its 17 native UI
+methods are not accepted merely because they compile. The full goal remains active.
