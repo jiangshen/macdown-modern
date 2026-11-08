@@ -18,15 +18,13 @@ range and fractional persistence. Scroll-past-end retains the original boolean k
 and explicit false values. Geometry waits for composition. The30-minute native job
 envelope leaves artifact time; individual waits/assertions remain unchanged.
 
-Latest local parser integration `f552c24` passes **355 package tests/76 suites** and
-arm64 app build-for-testing, with24 native UI methods compiled. Paired render/parent
-optimization measurements and compatibility limits are recorded in
-[markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
-The full native47bfd91/12a356c runs complete24 methods with21 passes and the same
-three lifecycle failures: uncoordinated/coordinated external reload and the original
-active8s Undo disk assertion. Full `f552c24` / `1faedfd` hosted runs also execute 24 methods with the same 21 passes
-and three failures. Current `83ee161` core artifacts verify 355 tests / 76 suites,
-652 examples and eight arm64 executables.
+Latest local native document foundation passes **357 package tests / 76 suites**.
+The app builds for testing with 25 native methods; the adapter control builds with
+six methods, both without compiler warnings. Current hosted `8fd6cdb` core artifacts
+verify 355 tests / 76 suites, 652 CommonMark examples and eight arm64 executables.
+The preceding `83ee161` full native run executes 24 methods with 21 passes and the
+same three lifecycle failures. Parser optimization measurements and compatibility
+limits remain in [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 
 M2 remains incomplete. A standalone native NSDocument/TextKit2 control at1faedfd
 [run42479210488](https://github.com/jiangshen/snowfolio/actions/runs/42479210488)
@@ -36,19 +34,19 @@ fail. Registration/notification/revert/second-read traces confirm the native pat
 Only the latest useful raw control result is retained, with compact older evidence.
 
 Production `83ee161` / run `42480609986` still fails both reloads with canonical paths.
-The corrected minimal SwiftUI control / run `42480604498` registers one file presenter
-but fails coordinated reloads in both locations, plus both uncoordinated cases,
-without a second read/apply. Its saved-edit Undo/deactivation check passes.
-AppKit's matched coordinated success supports a diagnostic direct URL reader/writer
-comparison before changing the production host; no merge guard is weakened.
+Both minimal SwiftUI variants (FileWrapper `42480604498`, direct URL `42482081493`)
+register a presenter but fail coordinated reloads in both canonical locations without
+a second read/apply. Each passes saved-edit Undo/deactivation. AppKit's matched
+coordinated success now justifies starting the planned Swift NSDocument fallback.
 
-Production Undo is byte-correct and automatically persists on deactivation. Its
-native periodic `autosavingDelay` is 0 (disabled). A native 2-second periodic policy
-is configured only after application launch, preserving the original active 8-second
-assertion. A new check requires edited bytes before Undo and original bytes afterward,
-both while foreground. Arm64 app (25 methods) and diagnostic (5 methods) builds pass
-without warnings; runtime acceptance is pending. See
-[document-lifecycle.json](validation/document-lifecycle.json).
+The 2-second native interval experiment (`8fd6cdb`, run `42482075675`) passes active
+single-character save/Undo and the original restoration gate, but regresses both
+encoding fixtures before external reload: it writes during typing and misses the final
+two characters. Remove that policy from the default SwiftUI app. Keep the original
+assertions and merge guard. A shared NativeMarkdownDocument storage foundation now
+uses the existing byte-preserving codec and live model. Its control deliberately
+continues a word after a real autosave checkpoint. Full workspace/menus/state integration
+and runtime acceptance remain pending. See [document-lifecycle.json](validation/document-lifecycle.json).
 
 The light/default-font source-selection screenshot at the preceding accepted checkpoint
 has a continuous highlight without a marker seam. User-desktop dark selection remains
@@ -3070,3 +3068,32 @@ Current `83ee161` core evidence independently verifies 355 package tests / 76 su
 native runs complete 24 methods with 21 passes and three known lifecycle failures.
 Result, console and attachment references are retained compactly; only the latest
 stock-control raw result remains.
+
+
+## Native document fallback foundation; rejected interval-only fix — 2026-11-08
+
+The completed direct URL SwiftUI control at `8fd6cdb` / `42482081493` executes five
+methods: saved-edit Undo/deactivation passes; all four reloads fail. Direct read/apply
+still occur only once per process despite a registered presenter. FileWrapper choice
+alone is not the cause. Together with AppKit's matched coordinated success, this supports
+the planned native NSDocument fallback rather than another production watcher stack.
+
+The same commit's 2-second interval experiment executes five production methods:
+active single-character persistence, Cancel-close and original restoration pass, while
+both encoding autosave fixtures fail before replacement. Each saves revision 18 / 50
+UTF-16 units during typing and never requests the final revision 19 / 52-unit snapshot.
+Revert the interval-only default change; keep its behavioral fixture and unchanged gates.
+
+A shared NativeMarkdownDocument now implements native read/data/revert using the
+existing codec and live model. Decode errors leave the last valid loaded snapshot.
+Nonisolated reads use Mutex-protected immutable contents; saves capture the main-actor
+model. The native host owns coordination, Undo, Versions, conflicts and error handling.
+The SwiftUI merge guard is unchanged. All 357 package tests / 76 suites pass without
+warnings, including two native byte/error tests. The default app and six-method adapter
+control compile without warnings. The control continues a partially saved word to
+exercise late edits after an actual checkpoint. Runtime acceptance is pending.
+
+This is a storage foundation, not full native-host migration acceptance. Preserve the
+liked workspace and all features while connecting file URL metadata, native editor,
+menus, tabs, window/UI restoration, conflicts/Versions and exports. Only the latest
+useful raw result remains; system archives were removed after compact console capture.

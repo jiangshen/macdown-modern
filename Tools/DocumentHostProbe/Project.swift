@@ -1,11 +1,14 @@
 import ProjectDescription
 
 let probeKind = Environment.documentHostProbeKind.getString(default: "swiftui")
-let appKitProbe = probeKind == "appkit"
+let productionNativeProbe = probeKind == "native"
+let appKitProbe = probeKind == "appkit" || productionNativeProbe
 let probeCompilationConditions =
-  appKitProbe
-  ? "$(inherited) APPKIT_DOCUMENT_HOST_PROBE"
-  : probeKind == "swiftui-url" ? "$(inherited) DIRECT_URL_DOCUMENT_HOST_PROBE" : "$(inherited)"
+  productionNativeProbe
+  ? "$(inherited) APPKIT_DOCUMENT_HOST_PROBE PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE"
+  : appKitProbe
+    ? "$(inherited) APPKIT_DOCUMENT_HOST_PROBE"
+    : probeKind == "swiftui-url" ? "$(inherited) DIRECT_URL_DOCUMENT_HOST_PROBE" : "$(inherited)"
 var probeDocumentType: [String: Plist.Value] = [
   "CFBundleTypeName": "Probe text", "CFBundleTypeRole": "Editor",
   "LSHandlerRank": "Alternate",
@@ -13,9 +16,11 @@ var probeDocumentType: [String: Plist.Value] = [
 ]
 if appKitProbe { probeDocumentType["NSDocumentClass"] = "ProbeNativeDocument" }
 
-// Diagnostic only: this standalone app does not depend on or ship with Snowfolio.
+// Diagnostic only: minimal variants are independent; native links the shared adapter.
+// This standalone app never ships with Snowfolio.
 let project = Project(
   name: "DocumentHostProbe",
+  packages: productionNativeProbe ? [.local(path: "../../Packages/SnowfolioCore")] : [],
   settings: .settings(base: [
     "SWIFT_VERSION": "6.0", "SWIFT_STRICT_CONCURRENCY": "complete",
     "ARCHS": "arm64", "ONLY_ACTIVE_ARCH": "YES",
@@ -32,7 +37,8 @@ let project = Project(
           .dictionary(probeDocumentType)
         ]),
       ]),
-      sources: ["Sources/**"]
+      sources: ["Sources/**"],
+      dependencies: productionNativeProbe ? [.package(product: "SnowfolioUI")] : []
     ),
     .target(
       name: "DocumentHostProbeUITests", destinations: .macOS, product: .uiTests,

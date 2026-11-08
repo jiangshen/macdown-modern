@@ -1,10 +1,8 @@
-import AppKit
 import SnowfolioUI
 import SwiftUI
 
 @main
 struct SnowfolioApp: App {
-  @NSApplicationDelegateAdaptor(SnowfolioApplicationDelegate.self) private var applicationDelegate
   @State private var preferences = AppPreferences()
 
   var body: some Scene {
@@ -23,14 +21,5 @@ struct SnowfolioApp: App {
       DocumentExportCommands()
       MarkdownFormatCommands()
     }
-  }
-}
-
-/// Configure the native document controller after SwiftUI has installed its host.
-@MainActor
-final class SnowfolioApplicationDelegate: NSObject, NSApplicationDelegate {
-  func applicationDidFinishLaunching(_ notification: Notification) {
-    // Keep active-window edits and Undo on disk without a custom save timer or writer.
-    NSDocumentController.shared.autosavingDelay = 2
   }
 }

@@ -2,27 +2,46 @@
   import AppKit
   import Synchronization
 
-  /// Independent control using only public native document/undo/file-presenter behavior.
+  #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+    import SnowfolioUI
+    typealias ProbeDocumentBase = NativeMarkdownDocument
+  #else
+    typealias ProbeDocumentBase = NSDocument
+  #endif
+
+  /// The same native editor hosts either the independent control or the shared adapter.
   @objc(ProbeNativeDocument)
   @MainActor
-  final class ProbeNativeDocument: NSDocument, NSTextViewDelegate {
-    private nonisolated let source = Mutex("")
+  final class ProbeNativeDocument: ProbeDocumentBase, NSTextViewDelegate {
     private weak var editor: NSTextView?
 
-    override class var autosavesInPlace: Bool { true }
+    #if !PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+      private nonisolated let source = Mutex("")
 
-    nonisolated override func read(from data: Data, ofType typeName: String) throws {
-      guard let text = String(data: data, encoding: .utf8) else {
-        throw CocoaError(.fileReadCorruptFile)
+      override class var autosavesInPlace: Bool { true }
+
+      nonisolated override func read(from data: Data, ofType typeName: String) throws {
+        guard let text = String(data: data, encoding: .utf8) else {
+          throw CocoaError(.fileReadCorruptFile)
+        }
+        NSLog("NativeDocumentProbe read bytes=%ld", data.count)
+        source.withLock { $0 = text }
       }
-      NSLog("NativeDocumentProbe read bytes=%ld", data.count)
-      source.withLock { $0 = text }
-    }
 
-    override func data(ofType typeName: String) throws -> Data {
-      let snapshot = source.withLock { $0 }
-      NSLog("NativeDocumentProbe write utf16=%ld", snapshot.utf16.count)
-      return Data(snapshot.utf8)
+      override func data(ofType typeName: String) throws -> Data {
+        let snapshot = source.withLock { $0 }
+        NSLog("NativeDocumentProbe write utf16=%ld", snapshot.utf16.count)
+        return Data(snapshot.utf8)
+      }
+
+    #endif
+
+    private var sourceText: String {
+      #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+        markdownDocument.text
+      #else
+        source.withLock { $0 }
+      #endif
     }
 
     nonisolated override func presentedItemDidChange() {
@@ -33,7 +52,7 @@
     override func revert(toContentsOf url: URL, ofType typeName: String) throws {
       NSLog("NativeDocumentProbe revert")
       try super.revert(toContentsOf: url, ofType: typeName)
-      editor?.string = source.withLock { $0 }
+      editor?.string = sourceText
     }
 
     override func makeWindowControllers() {
@@ -54,7 +73,7 @@
       text.autoresizingMask = [.width]
       text.textContainer?.widthTracksTextView = true
       text.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
-      text.string = source.withLock { $0 }
+      text.string = sourceText
       text.delegate = self
       text.setAccessibilityIdentifier("stockDocumentEditor")
       text.setAccessibilityLabel("Document host comparison text")
@@ -73,7 +92,11 @@
     func textDidChange(_ notification: Notification) {
       guard let editor else { return }
       let text = editor.string
-      source.withLock { $0 = text }
+      #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+        markdownDocument.acceptNativeEdit(text)
+      #else
+        source.withLock { $0 = text }
+      #endif
       NSLog("NativeDocumentProbe native edit utf16=%ld", text.utf16.count)
     }
   }
@@ -90,7 +113,11 @@
     }
 
     func applicationWillFinishLaunching(_ notification: Notification) {
-      _ = NSDocumentController.shared
+      #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+        NSDocumentController.shared.autosavingDelay = 2
+      #else
+        _ = NSDocumentController.shared
+      #endif
       let main = NSMenu()
       func menu(_ title: String) -> NSMenu {
         let root = NSMenuItem()

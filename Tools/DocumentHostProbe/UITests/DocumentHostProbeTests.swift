@@ -10,6 +10,9 @@ final class DocumentHostProbeTests: XCTestCase {
     app.launchArguments = [
       "-ApplePersistenceIgnoreState", "YES", "-NSQuitAlwaysKeepsWindows", "NO",
     ]
+    #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+      app.launchEnvironment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] = "1"
+    #endif
     app.launch()
     return app
   }
@@ -157,6 +160,37 @@ final class DocumentHostProbeTests: XCTestCase {
     XCTAssertEqual(editor.value as? String, external)
     XCTAssertEqual(try Data(contentsOf: file), bytes)
   }
+
+  #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
+    @MainActor
+    func testNativeEncodedTypingAutosavesFinalBytesWhileActive() throws {
+      let file = try fixture()
+      defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
+      let original = "# Native bytes\r\n中文 👩‍💻 e\u{301}\r\n"
+      let bom = Data([0xFF, 0xFE])
+      try (bom + XCTUnwrap(original.data(using: .utf16LittleEndian))).write(to: file)
+      let app = launch()
+      defer { app.terminate() }
+      let editor = open(file, in: app)
+      XCTAssertEqual(editor.value as? String, original)
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      // Continue the same word after an automatic save. This makes the test
+      // exercise edits after a typing checkpoint even on a fast native editor.
+      editor.typeText("Autosave checkpo")
+      let checkpoint =
+        bom + (try XCTUnwrap((original + "Autosave checkpo").data(using: .utf16LittleEndian)))
+      expectBytes(checkpoint, at: file, timeout: 8)
+      XCTAssertEqual(app.state, .runningForeground)
+      editor.typeText("int")
+      let edited = original + "Autosave checkpoint"
+      XCTAssertEqual(editor.value as? String, edited)
+      let expected = bom + (try XCTUnwrap(edited.data(using: .utf16LittleEndian)))
+      expectBytes(expected, at: file, timeout: 8)
+      XCTAssertEqual(app.state, .runningForeground)
+      XCTAssertEqual(try Data(contentsOf: file), expected)
+    }
+  #endif
 
   @MainActor
   func testUndoRestoresSavedBytes() throws {

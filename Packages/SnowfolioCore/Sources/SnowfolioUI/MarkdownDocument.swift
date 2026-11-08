@@ -76,8 +76,11 @@ public final class MarkdownDocument: SwiftUI.Document {
           "snapshot revision=\(revision) utf16=\(text.utf16.count) load=\(loadRevision)")
       }
     #endif
-    return baseline.replacingText(with: text)
+    return fileContents
   }
+
+  /// Shared byte-preserving snapshot for either native document host.
+  var fileContents: TextFileContents { baseline.replacingText(with: text) }
 
   public func apply(
     snapshot: sending TextFileContents,
@@ -98,6 +101,12 @@ public final class MarkdownDocument: SwiftUI.Document {
       // Three-way text merging is intentionally not attempted by this adapter.
       throw DocumentMergeError.conflictingExternalChange
     }
+    acceptNativeLoad(snapshot)
+  }
+
+  /// NSDocument invokes this only after its own coordinated read/revert succeeds.
+  /// The SwiftUI adapter keeps its existing merge guard above.
+  func acceptNativeLoad(_ snapshot: TextFileContents) {
     baseline = snapshot
     text = snapshot.text
     revision &+= 1

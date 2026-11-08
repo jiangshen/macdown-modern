@@ -26,6 +26,7 @@ on:
           - document-restoration
           - document-host-probe
           - document-host-probe-url
+          - document-host-probe-native
           - document-host-probe-appkit
 
 permissions:
@@ -93,6 +94,8 @@ jobs:
         run: |
           if [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe-appkit ]; then
             SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND=appkit bash Tools/probe-document-host.sh
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe-native ]; then
+            SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND=native bash Tools/probe-document-host.sh
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe-url ]; then
             SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND=swiftui-url bash Tools/probe-document-host.sh
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe ]; then

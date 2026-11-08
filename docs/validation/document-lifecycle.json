@@ -319,17 +319,17 @@
       }
     }
   },
-  "retentionNote": "Only latest useful stock canonical control raw result retained. Production/AppKit results retired after preserving summaries, exact text observations and console; exported diagnostic system archives removed immediately. Reused one app/core/diagnostic build location.",
-  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_12-31-07-+0000.xcresult",
+  "retentionNote": "One latest direct-URL control raw result remains. Prior stock and periodic results are retired after summary/text/console capture. Exported system archives are removed immediately; active native diagnostic build reuses Build/DocumentHostProbe.",
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_12-50-21-+0000.xcresult",
   "latestFullCheckpoint": {
-    "commit": "1faedfd7cb045e582843fbae0c994ad4896c35e3",
-    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42479145384",
-    "result": "All24 native methods execute:21pass,3known lifecycle failures;1459.758s, no job timeout. Parser-optimization f552c24 run42479012858 also completes24 methods with the same21passes/3failures in1342.290s.",
-    "log": "/private/tmp/snowfolio-host-matched-full-native-failed.log"
-  },
-  "latestCoreCheckpoint": {
     "commit": "83ee16168e451546b3cc0adb9ebb2b6ff70fb0df",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42480380793",
+    "result": "All 24 native methods execute: 21 pass, the two reloads and original active Undo persistence fail. Total 1361.882 seconds; no job timeout.",
+    "log": "/private/tmp/snowfolio-canonical-full-native-failed.log"
+  },
+  "latestCoreCheckpoint": {
+    "commit": "8fd6cdbc91feed2933b349908b1b1bbb770a9f6e",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42482058466",
     "packageTests": 355,
     "suites": 76,
     "commonmarkPassed": 652,
@@ -393,13 +393,31 @@
     "console": "/private/tmp/snowfolio-validation-history/stock-canonical-console"
   },
   "nativePeriodicAutosaveFollowup": {
-    "policy": "Set native NSDocumentController.autosavingDelay to2seconds in applicationDidFinishLaunching, after SwiftUI installs its host. No custom save timer/writer/observer and no model/merge guard changes.",
+    "policy": "Experiment at 8fd6cdb: native 2-second periodic autosave after launch. Reverted from the default SwiftUI app after sustained-typing regression; retained only in the native host control pending its own acceptance.",
     "reason": "Default0disables periodic autosave according to Apple; production trace confirms0and correct automatic rollback on deactivation.",
     "source": "https://developer.apple.com/documentation/appkit/nsdocumentcontroller/autosavingdelay",
     "newBehavioralCheck": "testActiveAutosaveAndSavedEditUndoPreserveBytes requires active-window edited UTF16LE/BOM/CRLF/Unicode bytes before Undo, then exact original bytes within8s while still foreground. Original restoration8s gate unchanged.",
     "build": "Arm64 build-for-testing passes with0compiler errors/warnings;25native methods compile.",
     "buildReport": "/private/tmp/snowfolio-periodic-autosave-build-report.json",
-    "runtime": "Pending new focused run."
+    "runtime": {
+      "commit": "8fd6cdbc91feed2933b349908b1b1bbb770a9f6e",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42482075675",
+      "executed": 5,
+      "passed": 3,
+      "failed": 2,
+      "skipped": 0,
+      "passes": [
+        "Active single-character edit/Undo byte persistence",
+        "Cancel unsaved close",
+        "Original graceful restoration and active 8-second Undo persistence"
+      ],
+      "failures": "Both encoding fixtures fail their unchanged 35-second autosave assertion before external replacement. They do not establish new reload verdicts.",
+      "trace": "Both encoding cases request/write revision 18 at 50 UTF-16 units during typing. The final model reaches revision 19 / 52 units but no later snapshot/write occurs. The trace demonstrates a missing final write; exact failed on-disk bytes were not separately attached.",
+      "interpretation": "A short native interval alone cannot be accepted for the SwiftUI host. Coalesced typing and dirty-state scheduling need the native host comparison; no unsupported framework-frame attribution.",
+      "summary": "/private/tmp/snowfolio-periodic-lifecycle-summary.json",
+      "attachments": "/private/tmp/snowfolio-periodic-lifecycle-text",
+      "console": "/private/tmp/snowfolio-validation-history/periodic-lifecycle-console"
+    }
   },
   "directURLControlFollowup": {
     "scope": "Diagnostic-only swiftui-url manifest variant; same five methods and canonical fixtures, same8s reload waits. Standard DocumentReader/DocumentWriter access framework-provided URLs without another presenter or coordination layer. No production I/O change.",
@@ -410,6 +428,43 @@
     ],
     "build": "Five-method directURLcontrol build-for-testing passes with0compiler errors/warnings.",
     "buildReport": "/private/tmp/snowfolio-direct-url-probe-build-report.json",
-    "runtime": "Pending document-host-probe-url dispatch."
+    "runtime": {
+      "commit": "8fd6cdbc91feed2933b349908b1b1bbb770a9f6e",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42482081493",
+      "executed": 5,
+      "passed": 1,
+      "failed": 4,
+      "skipped": 0,
+      "passes": [
+        "Saved-edit Undo/deactivation persistence"
+      ],
+      "failures": "Both coordinated canonical-location reloads and both uncoordinated controls fail.",
+      "trace": "Each process has one direct reader call, one apply and one registered presenter; no second read/apply after external replacement.",
+      "summary": "/private/tmp/snowfolio-direct-url-summary.json",
+      "attachments": "/private/tmp/snowfolio-direct-url-text",
+      "console": "/private/tmp/snowfolio-validation-history/direct-url-console"
+    },
+    "decision": "Direct URL access reproduces the FileWrapper-host failures; proceed with the planned Swift NSDocument fallback foundation. Do not add a parallel watcher/autosave stack or relax the SwiftUI merge guard."
+  },
+  "nativeDocumentFoundation": {
+    "implementation": "Shared NativeMarkdownDocument (Swift NSDocument) owns native read/data/revert, using immutable TextFileContents under Mutex for nonisolated reads. Saves encode the live main-actor model. Native NSDocument retains coordination, error/conflict, Undo and Versions ownership.",
+    "modelBoundary": "Extract the existing snapshot/apply assignments into internal helpers. The public SwiftUI apply merge guard remains intact; native apply follows a successful native revert.",
+    "packageValidation": {
+      "tests": 357,
+      "suites": 76,
+      "errors": 0,
+      "warnings": 0,
+      "newChecks": [
+        "Native saves retain UTF-16LE BOM/CRLF/Unicode while encoding current edits",
+        "Rejected native decoding retains the last valid byte snapshot"
+      ],
+      "report": "/private/tmp/snowfolio-native-document-foundation-tests-report.json"
+    },
+    "appBuild": "Existing SwiftUI app builds for testing with 25 compiled methods and no compiler errors/warnings; regressing periodic delegate removed.",
+    "appBuildReport": "/private/tmp/snowfolio-native-foundation-app-build-report.json",
+    "control": "Native diagnostic variant subclasses the real shared adapter in the same TextKit 2 control. Six methods compile, including active UTF-16 typing that first autosaves a partial word then verifies later characters reach disk.",
+    "controlBuildReport": "/private/tmp/snowfolio-production-native-probe-final-build-report.json",
+    "runtime": "Pending document-host-probe-native dispatch.",
+    "scopeLimit": "Storage foundation only. Full workspace hosting, file URL updates, menus, scene state/restoration, native editor integration, conflicts/Versions and app-level parity are still required before switching the default app host."
   }
 }
