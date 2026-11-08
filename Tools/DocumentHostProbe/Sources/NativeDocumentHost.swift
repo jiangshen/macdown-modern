@@ -25,7 +25,13 @@
       return Data(snapshot.utf8)
     }
 
+    nonisolated override func presentedItemDidChange() {
+      NSLog("NativeDocumentProbe presented item changed")
+      super.presentedItemDidChange()
+    }
+
     override func revert(toContentsOf url: URL, ofType typeName: String) throws {
+      NSLog("NativeDocumentProbe revert")
       try super.revert(toContentsOf: url, ofType: typeName)
       editor?.string = source.withLock { $0 }
     }
@@ -58,6 +64,8 @@
       addWindowController(NSWindowController(window: window))
       window.center()
       window.makeFirstResponder(text)
+      let registered = NSFileCoordinator.filePresenters.contains { ($0 as AnyObject) === self }
+      NSLog("NativeDocumentProbe presenter registered=%d", registered)
     }
 
     func undoManager(for view: NSTextView) -> UndoManager? { undoManager }

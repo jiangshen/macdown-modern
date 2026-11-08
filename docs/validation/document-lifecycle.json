@@ -289,11 +289,19 @@
         "AppKitRun": "https://github.com/jiangshen/snowfolio/actions/runs/42476058972",
         "AppKitResult": "Three methods execute; both uncoordinated clean reload checks fail; saved-edit Undo/deactivation autosave passes. No native host migration justified yet.",
         "SwiftUIRun": "https://github.com/jiangshen/snowfolio/actions/runs/42476061016",
-        "SwiftUIResult": "Terminal failure; compact failed log captured. Exact result inspection remains required before any attribution.",
+        "SwiftUIResult": "Three revised methods execute: saved-edit Undo/deactivation autosave passes; unedited uncoordinated reload fails; after-autosave case fails in Open helper at line27 before reload (fixture-opening issue, no after-autosave verdict).",
         "AppKitFailureLog": "/private/tmp/snowfolio-native-host-control-failed.log",
         "SwiftUIFailureLog": "/private/tmp/snowfolio-stock-host-revised-failed.log",
         "next": "Inspect current control console and compare coordinated/canonical user-document location. Both independent hosts failing uncoordinated reload requires investigating notification/fixture conditions before blaming SwiftUI or migrating production."
       }
+    },
+    "locationControls": {
+      "scope": "Add separately named coordinated atomic-replacement controls in canonical temporary and ordinary home-folder paths. Original uncoordinated controls and8s reload wait remain; paths resolve symlinks. Test-only UUID files clean after each case; script removes only empty parent with rmdir.",
+      "testCount": 5,
+      "nativeTracing": "Log public NSDocument presentedItemDidChange/revert and registration metadata; no source/path logging.",
+      "fixtureCleanup": "App termination is deferred before Open, so an opening assertion failure still terminates its own app.",
+      "compile": "AppKit build-for-testing passed; five native methods compile, zero compiler errors/warnings. Shell syntax/Swift strict formatting pending final check.",
+      "runtime": "Pending hosted control; production host, conflict guard and acceptance waits unchanged."
     }
   },
   "retentionNote": "Only latest useful raw control result retained. Superseded raw Undo bundle removed after preserving its summary/console/comparison; stock system-log export removed after compact console capture. Historical retirement mapping in storage-retention.json; app build remains canonical Build/Snowfolio.",

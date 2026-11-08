@@ -4,6 +4,9 @@ repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 artifact_root="$repo_root/Build/DocumentHostProbe"
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 mkdir -p "$artifact_root"
+probe_fixture_parent="$HOME/Snowfolio Document Host Fixtures"
+# rmdir is atomic and only removes the test-owned parent if it is empty.
+trap 'rmdir "$probe_fixture_parent" 2>/dev/null || true' EXIT
 export TUIST_DOCUMENT_HOST_PROBE_KIND="${SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND:-swiftui}"
 tuist generate --no-open --path "$repo_root/Tools/DocumentHostProbe" > "$artifact_root/generate.log" 2>&1
 action="${1:-test}"

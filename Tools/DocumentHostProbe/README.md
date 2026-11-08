@@ -16,6 +16,10 @@ The checks use only UUID-owned temporary UTF-8 text files. They compare clean
 external replacement before/after autosave and Undo persistence after an edited
 checkpoint has actually autosaved. The Undo edit is one character so the sample's
 per-character model Undo registration and native typing coalescing are comparable.
+The new controls compare coordinated atomic replacement in canonical temporary
+and ordinary home-folder paths. Each UUID-owned fixture directory is deleted;
+no user documents are modified. The old uncoordinated cases remain. Native
+presenter-change/revert callbacks are traced without file paths or source text.
 Autosave checks use deactivation plus35s; clean external reload uses8s. These
 controls do not establish Snowfolio acceptance, encoding/dirty-conflict parity,
 or restoration. Existing production acceptance assertions are unchanged.

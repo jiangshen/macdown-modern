@@ -434,6 +434,17 @@
       "latestRawResultBundleCount": 1,
       "sourceAndDirtyWorktreesPreserved": true,
       "trashEmptied": false
+    },
+    {
+      "date": "2026-11-08T12:12:23.782429+00:00",
+      "scope": "Only completed task-owned parser comparison scratch: downloaded candidate source/archive, dylibs, copied baseline/optimized executables, resource symlinks and synthetic inputs.",
+      "original": "/private/tmp/snowfolio-engine-comparison",
+      "allocatedBytesRemoved": 7245824,
+      "method": "Remove obsolete generated comparison artifacts after all compact evidence hashes verify.",
+      "retained": "Versioned audit tools/report; compact timing/corpus/dialect reports; current canonical app build and one reusable core cache.",
+      "evidence": "markdown-engine-comparison.json",
+      "trashEmptied": false,
+      "userDocumentsChanged": false
     }
   ]
 }

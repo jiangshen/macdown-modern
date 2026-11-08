@@ -4,13 +4,18 @@ import XCTest
 
 final class DocumentHostProbeTests: XCTestCase {
   @MainActor
-  private func open(_ file: URL) -> (XCUIApplication, XCUIElement) {
+  private func launch() -> XCUIApplication {
     continueAfterFailure = false
     let app = XCUIApplication()
     app.launchArguments = [
       "-ApplePersistenceIgnoreState", "YES", "-NSQuitAlwaysKeepsWindows", "NO",
     ]
     app.launch()
+    return app
+  }
+
+  @MainActor
+  private func open(_ file: URL, in app: XCUIApplication) -> XCUIElement {
     app.typeKey("o", modifierFlags: .command)
     XCTAssertTrue(
       app.descendants(matching: .any)["open-panel"].firstMatch.waitForExistence(timeout: 5))
@@ -24,13 +29,18 @@ final class DocumentHostProbeTests: XCTestCase {
     XCTAssertTrue(button.waitForExistence(timeout: 5))
     button.click()
     let editor = app.textViews["stockDocumentEditor"].firstMatch
-    XCTAssertTrue(editor.waitForExistence(timeout: 8))
-    return (app, editor)
+    XCTAssertTrue(editor.waitForExistence(timeout: 8), app.debugDescription)
+    return editor
   }
 
   @MainActor
-  private func fixture() throws -> URL {
-    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+  private func fixture(inUserFolder: Bool = false) throws -> URL {
+    let parent =
+      inUserFolder
+      ? FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
+        "Snowfolio Document Host Fixtures", isDirectory: true)
+      : FileManager.default.temporaryDirectory
+    let directory = parent.resolvingSymlinksInPath().appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     let file = directory.appendingPathComponent("stock-document.txt")
     try Data("Stock host 中文 👩‍💻\n".utf8).write(to: file)
@@ -49,17 +59,40 @@ final class DocumentHostProbeTests: XCTestCase {
   }
 
   @MainActor
-  private func replaceExternally(_ data: Data, at file: URL) throws {
+  private func replaceExternally(_ data: Data, at file: URL, coordinated: Bool) throws {
     let state = WriteState()
     let completed = XCTestExpectation(description: "Stock probe external write")
     let queue = OperationQueue()
     queue.maxConcurrentOperationCount = 1
+    let began = ProcessInfo.processInfo.systemUptime
     queue.addOperation {
-      let result = Result<Void, Error> { try data.write(to: file, options: .atomic) }
+      let result = Result<Void, Error> {
+        if coordinated {
+          var coordinationError: NSError?
+          var writeError: Error?
+          NSFileCoordinator().coordinate(
+            writingItemAt: file, options: .forReplacing, error: &coordinationError
+          ) { destination in
+            do { try data.write(to: destination, options: .atomic) } catch { writeError = error }
+          }
+          if let coordinationError { throw coordinationError }
+          if let writeError { throw writeError }
+        } else {
+          try data.write(to: file, options: .atomic)
+        }
+      }
       state.result.withLock { $0 = result }
       completed.fulfill()
     }
-    XCTAssertEqual(XCTWaiter().wait(for: [completed], timeout: 8), .completed)
+    let outcome = XCTWaiter().wait(for: [completed], timeout: 8)
+    let observation = XCTAttachment(
+      string:
+        "coordinated=\(coordinated); writer=\(outcome.rawValue); elapsed=\(ProcessInfo.processInfo.systemUptime - began); canonicalPath=\(file.path == file.resolvingSymlinksInPath().path)"
+    )
+    observation.name = "stock-external-writer"
+    observation.lifetime = .keepAlways
+    add(observation)
+    XCTAssertEqual(outcome, .completed)
     try XCTUnwrap(state.result.withLock { $0 }).get()
   }
 
@@ -74,12 +107,25 @@ final class DocumentHostProbeTests: XCTestCase {
   }
 
   @MainActor
-  private func checkReload(afterAutosave: Bool) throws {
-    let file = try fixture()
+  func testCleanCoordinatedReloadAfterAutosaveInTemporaryFolder() throws {
+    try checkReload(afterAutosave: true, coordinated: true)
+  }
+
+  @MainActor
+  func testCleanCoordinatedReloadAfterAutosaveInUserFolder() throws {
+    try checkReload(afterAutosave: true, coordinated: true, inUserFolder: true)
+  }
+
+  @MainActor
+  private func checkReload(
+    afterAutosave: Bool, coordinated: Bool = false, inUserFolder: Bool = false
+  ) throws {
+    let file = try fixture(inUserFolder: inUserFolder)
     defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
     let original = try String(contentsOf: file, encoding: .utf8)
-    let (app, editor) = open(file)
+    let app = launch()
     defer { app.terminate() }
+    let editor = open(file, in: app)
     XCTAssertEqual(editor.value as? String, original)
     let finder = XCUIApplication(bundleIdentifier: "com.apple.finder")
     if afterAutosave {
@@ -95,14 +141,14 @@ final class DocumentHostProbeTests: XCTestCase {
     finder.activate()
     let external = "Externally replaced stock document 中文 👩‍💻\n"
     let bytes = Data(external.utf8)
-    try replaceExternally(bytes, at: file)
+    try replaceExternally(bytes, at: file, coordinated: coordinated)
     app.activate()
     let reloaded = XCTNSPredicateExpectation(
       predicate: NSPredicate { _, _ in editor.value as? String == external }, object: nil)
     let outcome = XCTWaiter().wait(for: [reloaded], timeout: 8)
     let observation = XCTAttachment(
       string:
-        "afterAutosave=\(afterAutosave); reload=\(outcome.rawValue); externalBytesRetained=\((try? Data(contentsOf: file)) == bytes)\n"
+        "afterAutosave=\(afterAutosave); coordinated=\(coordinated); userFolder=\(inUserFolder); reload=\(outcome.rawValue); externalBytesRetained=\((try? Data(contentsOf: file)) == bytes)\n"
         + app.debugDescription)
     observation.name = "stock-document-reload"
     observation.lifetime = .keepAlways
@@ -117,8 +163,9 @@ final class DocumentHostProbeTests: XCTestCase {
     let file = try fixture()
     defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
     let original = try String(contentsOf: file, encoding: .utf8)
-    let (app, editor) = open(file)
+    let app = launch()
     defer { app.terminate() }
+    let editor = open(file, in: app)
     XCTAssertEqual(editor.value as? String, original)
     editor.click()
     app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
