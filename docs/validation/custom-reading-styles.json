@@ -104,5 +104,10 @@
       "nativeLog": "2f21954197f410d559ba438333af09d89d3ef00abc547deb9da3a793f98aa92e",
       "settingsImage": "7f7a926842295be50f2b2a8a9612ac1f2ccbdfce45b5ac4e08d52e02bea7314a"
     }
+  },
+  "laterScopeCorrection": {
+    "ledger": "html-template-exports.json",
+    "finding": "Original MPAssetFullLink is internal preview assembly; the original HTML export UI exposes independent embedded/omitted document-style/highlighting choices. Default template migration and native export-panel acceptance now pass. User asset sidecars and broad desktop/performance/retirement gates remain open.",
+    "rawEvidenceRecovery": "Superseded local raw custom-CSS folders moved to Trash; exact original/destination/marker hashes in project-cleanup.json. Compact local reports and hosted run remain recorded."
   }
 }

@@ -322,3 +322,27 @@ paths, marker hashes, reasons and verified destinations are appended to
 [project-cleanup.json](validation/project-cleanup.json). This is artifact housekeeping;
 full app performance, energy, memory retention and priority-warning attribution remain
 open.
+
+
+## Native test-host animation correction and template cleanup — 2026-11-07
+
+The initial full template regression run timed out in the unchanged native diagram
+workers. A one-second sample of that exact test helper reached the dispatch soft
+limit of 64 in all 640 samples: 64 AppKit `NSAnimation _runBlocking` workers were
+waiting while the main thread stayed in its run loop. The run was interrupted after
+capturing the evidence. Setting `animationBehavior = .none` in 49 fixture windows
+preserves the behavioral assertions and leaves application window behavior unchanged.
+The complete rerun passed 318 tests / 67 suites in 32.639 seconds including build;
+11 template sanitizer tests / four suites also passed. These observations concern
+test-host reliability, not end-to-end app typing or painting performance.
+
+The final hosted checkpoint passed the same package totals, 652 CommonMark examples,
+and 13 native app UI tests. It still records 24 priority diagnostics and two AppIntents
+metadata notices; attribution and full M6 memory/energy/latency gates remain open.
+See `validation/html-template-exports.json` for exact scope, samples and raw hashes.
+
+After the expanded checkpoint passed, three superseded custom-CSS validation folders
+were moved to Trash: 2,153 files, 141,866,410 logical bytes and 149,331,968 allocated
+bytes. Their recovery markers and destinations were verified. Trash was not emptied;
+this removes duplicate active scratch files and does not claim recovered disk space.
+Exact recovery paths are appended in `validation/project-cleanup.json`.

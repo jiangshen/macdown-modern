@@ -54,29 +54,68 @@
     "result": "Complete rerun passes all 318 tests / 67 suites, including native diagram engine variants/lifecycle."
   },
   "hosted": {
-    "status": "Initial run failed two new UI test assumptions; corrected queries and deliberate native history checkpoint need hosted confirmation.",
-    "initialRun": "https://github.com/jiangshen/snowfolio/actions/runs/42427210442",
-    "code": "5e84728daacb004aebef4c2aeff5442e99fff094",
-    "package": {
-      "tests": 318,
-      "suites": 67,
-      "commonMark": 652,
-      "commonMarkFailures": 0,
-      "arm64TestExecutables": 8,
-      "result": "passed; exact downloaded core evidence verified"
+    "status": "passed both jobs; exact downloaded artifacts, resource-verifier output and Settings screenshot inspected",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42428327410",
+    "code": "e571b4a6a99fd8e79d0363e32815ba25e87db7cf",
+    "packageTests": 318,
+    "packageSuites": 67,
+    "commonMarkExamples": 652,
+    "commonMarkFailures": 0,
+    "arm64TestExecutables": 8,
+    "nativeUITests": 13,
+    "nativeUIFailures": 0,
+    "newExportPanelTest": "passed in 116.756 seconds; four files verified for independent style/highlighting options, fresh manual-preview source, inert script policy, unchanged source and deliberate native redo/undo history",
+    "newRecoveryTest": "passed in 49.709 seconds; actual alert message, Settings search, unique Use Default control, recovered Default status, source preservation and native undo",
+    "priorityDiagnostics": 24,
+    "appIntentsMetadataNotices": 2,
+    "diagnosticScope": "Priority-warning attribution and full native app performance remain open.",
+    "rawCore": "/private/tmp/snowfolio-html-template-accepted-hosted-core",
+    "rawNative": "/private/tmp/snowfolio-html-template-accepted-hosted-native",
+    "workflowLog": "/private/tmp/snowfolio-html-template-accepted-hosted.log",
+    "settingsScreenshot": "/private/tmp/snowfolio-html-template-accepted-ui-attachments/511168F2-5730-4C1C-B521-D2DFF71B362D.png",
+    "initialRun": {
+      "status": "Initial failure diagnosed and corrected; superseded by final accepted run.",
+      "initialRun": "https://github.com/jiangshen/snowfolio/actions/runs/42427210442",
+      "code": "5e84728daacb004aebef4c2aeff5442e99fff094",
+      "package": {
+        "tests": 318,
+        "suites": 67,
+        "commonMark": 652,
+        "commonMarkFailures": 0,
+        "arm64TestExecutables": 8,
+        "result": "passed; exact downloaded core evidence verified"
+      },
+      "native": "13 tests executed; 11 passed, two new methods failed. All four file export combinations completed successfully before the final history assertion failed.",
+      "failures": [
+        "Multiline simulated typing creates native history groups. Establish one explicit replacement step and verify redo/undo survives all exports.",
+        "Alert is present as Sheet labeled alert; message is StaticText.value. Match label or value and scope OK to the actual sheet. Error implementation remains unchanged."
+      ],
+      "rawArtifacts": "/private/tmp/snowfolio-html-template-hosted-native",
+      "sourceEvidence": "Downloaded original xcodebuild.log and xcresult; no skipped or removed assertions.",
+      "priorityDiagnostics": 24,
+      "appIntentsMetadataNotices": 2
     },
-    "native": "13 tests executed; 11 passed, two new methods failed. All four file export combinations completed successfully before the final history assertion failed.",
-    "failures": [
-      "Multiline simulated typing creates native history groups. Establish one explicit replacement step and verify redo/undo survives all exports.",
-      "Alert is present as Sheet labeled alert; message is StaticText.value. Match label or value and scope OK to the actual sheet. Error implementation remains unchanged."
-    ],
-    "rawArtifacts": "/private/tmp/snowfolio-html-template-hosted-native",
-    "sourceEvidence": "Downloaded original xcodebuild.log and xcresult; no skipped or removed assertions."
+    "supersededRun": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42428278223",
+      "outcome": "cancelled after final native label/value query correction was pushed; not acceptance"
+    },
+    "artifactSHA256": {
+      "/private/tmp/snowfolio-html-template-accepted-hosted-core/snowfolio-validation/swift-test.log": "5c8b4bd684de2b1ff154da9863535e04d85f8625c3c151a092b6d7c56c21cac2",
+      "/private/tmp/snowfolio-html-template-accepted-hosted-core/snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "/private/tmp/snowfolio-html-template-accepted-hosted-core/snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "/private/tmp/snowfolio-html-template-accepted-hosted-native/xcodebuild.log": "1cc4a60f067f7c00b86d92170410570cf397c5bf1c31f755f7a12b7539956575",
+      "/private/tmp/snowfolio-html-template-accepted-hosted.log": "522ca48149da459e2f4ff5b96371fc0c8f34dcd5626166ccc8b2411634fea0cf",
+      "/private/tmp/snowfolio-html-template-accepted-ui-attachments/511168F2-5730-4C1C-B521-D2DFF71B362D.png": "080381f9f62cf4164d187dba86450370b6ee9e46bd4e6b5af9bee2dd25d390aa"
+    }
   },
   "remaining": [
     "Fresh user-desktop glyph/selection and import/export acceptance; Mac locked at latest CUA check",
     "Real IME/VoiceOver, autosave/Versions/conflict and remaining renderer/dialect gates",
     "Separate user-provided asset license sidecars",
-    "M5 integrations, full native app performance/energy/memory, releases and safe coupled legacy retirement"
-  ]
+    "M5 integrations, full native app performance/energy/memory, releases and safe coupled legacy retirement",
+    "HTML save-panel initial style checkbox for None: align with original nil htmlStyleName defaulting off; current four-option UI test covers Notebook."
+  ],
+  "productionCodeCheckpoint": "5e84728daacb004aebef4c2aeff5442e99fff094",
+  "acceptedCode": "e571b4a6a99fd8e79d0363e32815ba25e87db7cf",
+  "status": "implemented; local and hosted package/native export acceptance passed; full modernization incomplete"
 }

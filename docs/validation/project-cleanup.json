@@ -176,7 +176,52 @@
         "logicalBytes": 424496368,
         "allocatedBytes": 447733760
       }
+    },
+    {
+      "date": "2026-11-08T00:25:13Z",
+      "items": [
+        {
+          "allocatedBytes": 131072,
+          "files": 5,
+          "logicalBytes": 116189,
+          "marker": "snowfolio-validation/swift-test.log",
+          "markerSHA256": "5b390d479d0f248f88e2ac0e9d26666d96bb44dcdf4dffea619c9340c16cd1af",
+          "original": "/private/tmp/snowfolio-custom-css-hosted-core",
+          "reason": "Superseded accepted custom-CSS validation download/attachments; current template run retains the expanded native/package evidence. Historical raw files remain recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-custom-css-hosted-core"
+        },
+        {
+          "allocatedBytes": 149110784,
+          "files": 2146,
+          "logicalBytes": 141667480,
+          "marker": "xcodebuild.log",
+          "markerSHA256": "2f21954197f410d559ba438333af09d89d3ef00abc547deb9da3a793f98aa92e",
+          "original": "/private/tmp/snowfolio-custom-css-hosted-native",
+          "reason": "Superseded accepted custom-CSS validation download/attachments; current template run retains the expanded native/package evidence. Historical raw files remain recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-custom-css-hosted-native"
+        },
+        {
+          "allocatedBytes": 90112,
+          "files": 2,
+          "logicalBytes": 82741,
+          "marker": "manifest.json",
+          "markerSHA256": "79f47a483c2d081d6f389444c0baa74ef7a898d75ae1560f012cad89fa9cf05c",
+          "original": "/private/tmp/snowfolio-custom-css-ui-attachments",
+          "reason": "Superseded accepted custom-CSS validation download/attachments; current template run retains the expanded native/package evidence. Historical raw files remain recoverable in Trash.",
+          "trash": "/Users/caden/.Trash/snowfolio-custom-css-ui-attachments"
+        }
+      ],
+      "totals": {
+        "files": 2153,
+        "logicalBytes": 141866410,
+        "allocatedBytes": 149331968
+      },
+      "method": "FileManager.trashItem",
+      "trashEmptied": false,
+      "scope": "Three exact superseded agent-generated custom-CSS validation/attachment directories; originals and recovery marker hashes verified.",
+      "currentBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+      "currentEvidence": "/private/tmp/snowfolio-html-template-accepted-hosted-native"
     }
   ],
-  "lastUpdated": "2026-11-07T23:23:44Z"
+  "lastUpdated": "2026-11-08T00:25:13Z"
 }
