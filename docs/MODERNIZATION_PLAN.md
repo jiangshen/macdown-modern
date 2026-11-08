@@ -2688,3 +2688,34 @@ Swift files pass strict formatting. Exact before/after evidence, SDK semantics a
 source hashes are in `validation/editor-column-layout.json`. Native Settings
 interaction/screenshot execution, real IME/VoiceOver/desktop selection/glyph checks
 and the full remaining modernization objective are still open.
+
+
+## Native source line spacing and scroll handoff — 2026-11-07
+
+Migrated the original editorLineSpacing key/range into bounded native-point settings
+with fractional entry and explicit-zero persistence. Existing source/backing metadata,
+selection, view identity and native history stay intact; spacing is paragraph
+presentation plus native typing defaults. Composition defers changed geometry.
+Terminal empty-line caret correction uses public view rectangles, cached native-font
+metrics and the native bottom edge, retaining TextKit 2. The unused layout-fragment
+experiment was withdrawn and moved reversibly to Trash.
+
+The existing preview-led source timeout led to a deterministic same-turn IPC race.
+Immediate preview input notification and preview/source input sequences reject stale
+queued native moves and late scroll reports. The new regression checks preview
+retention, actual source movement, then native PageDown taking control again.
+An initial predicate wrongly accepted a nonzero insertion offset at the top viewport;
+the corrected readiness gate requires actual scrolling before the second gesture.
+No handoff assertion or timeout was relaxed.
+
+Local final full suite passes 347 tests /74 suites; 28 sanitizer tests /six suites,
+eight arm64 test executables, arm64 app build and strict formatting of 16 Swift files
+pass. The app compiles 19 UI methods, including direct 12.5-point entry, reopen,
+source/native history retention and mixed-list selection/terminal-caret screenshots.
+Exact hosted execution and screenshots remain pending. See validation/editor-line-spacing.json.
+
+Fresh CUA check found the Mac locked. The reported source-selection artifact remains
+a separate visual acceptance gate; this caret correction does not claim to fix it.
+Real IME/VoiceOver, scroll-past-end, remaining typing/statistics/preferences and renderer
+parity, full document lifecycle, M5 and measured M6/release readiness remain open.
+The overall modernization goal stays active; coupled original targets stay retained.

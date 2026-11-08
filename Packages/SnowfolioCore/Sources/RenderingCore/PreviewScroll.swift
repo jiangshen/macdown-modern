@@ -7,6 +7,7 @@ public enum PreviewScroll {
     (() => {
       if (globalThis.__snowfolioScroll) return;
       let inputEpoch = 0;
+      let sourceInputEpoch = 0;
       let token = '', revision = '', targetY = null, frame = 0, ended = 0, geometry = null, retainedPosition = null;
       function blocks() {
         if (geometry) return geometry;
@@ -36,7 +37,11 @@ public enum PreviewScroll {
         if (!token || !revision) return;
         const programmatic = targetY !== null && Math.abs(window.scrollY-targetY) < 2;
         if (settled) targetY = null;
-        window.webkit.messageHandlers.snowfolioScroll.postMessage({token, revision, position:position(), programmatic, settled});
+        window.webkit.messageHandlers.snowfolioScroll.postMessage({kind:'scroll', token, revision, inputEpoch, sourceInputEpoch, position:position(), programmatic, settled});
+      }
+      function scheduleReport() {
+        if (!frame) frame=requestAnimationFrame(() => {frame=0; report(false);});
+        clearTimeout(ended); ended=setTimeout(() => report(true),120);
       }
       function markProgrammatic() { targetY = window.scrollY; }
       function scrollToPosition(line, atTop, atBottom) {
@@ -65,12 +70,16 @@ public enum PreviewScroll {
         return true;
       }
       for (const type of ['wheel','pointerdown','touchstart','keydown']) {
-        window.addEventListener(type, () => {inputEpoch++; retainedPosition=null; targetY=null;}, {passive:true,capture:true});
+        window.addEventListener(type, () => {
+          inputEpoch++; retainedPosition=null; targetY=null;
+          // Cancel queued native alignment before the frame-throttled scroll report.
+          if (token && revision) window.webkit.messageHandlers.snowfolioScroll.postMessage({kind:'input', token, revision, inputEpoch, sourceInputEpoch, programmatic:false, settled:false});
+          scheduleReport();
+        }, {passive:true,capture:true});
       }
       window.addEventListener('scroll', () => {
         if (targetY === null || Math.abs(window.scrollY-targetY) >= 2) retainedPosition=null;
-        if (!frame) frame=requestAnimationFrame(() => {frame=0; report(false);});
-        clearTimeout(ended); ended=setTimeout(() => report(true),120);
+        scheduleReport();
       }, {passive:true});
       // The body persists when reading styles add or remove the main wrapper.
       const root = document.body;
@@ -83,6 +92,12 @@ public enum PreviewScroll {
         invalidateGeometry() {geometry=null;},
         activate(nextToken,nextRevision) {if (revision!==nextRevision || token!==nextToken) retainedPosition=null; token=nextToken; revision=nextRevision; geometry=null; markProgrammatic();},
         get inputEpoch() {return inputEpoch;},
+        get sourceInputEpoch() {return sourceInputEpoch;},
+        moveFromNative(expectedToken,expectedRevision,expectedInputEpoch,nextSourceInputEpoch,line,atTop,atBottom) {
+          if (token!==expectedToken || revision!==expectedRevision || inputEpoch!==expectedInputEpoch || nextSourceInputEpoch<sourceInputEpoch) return false;
+          sourceInputEpoch=nextSourceInputEpoch;
+          return scrollToPosition(line,atTop,atBottom);
+        },
         position, scrollToPosition, markProgrammatic
       };
     })();
@@ -90,12 +105,12 @@ public enum PreviewScroll {
 
   public static let activate = """
     const state = globalThis.__snowfolioScroll;
-    if (!state) return false;
+    if (!state) return null;
     state.activate(token, revision);
-    return true;
+    return {inputEpoch:state.inputEpoch, sourceInputEpoch:state.sourceInputEpoch, position:state.position()};
     """
 
   public static let move = """
-    return globalThis.__snowfolioScroll?.scrollToPosition(line, atTop, atBottom) ?? false;
+    return globalThis.__snowfolioScroll?.moveFromNative(token, revision, inputEpoch, sourceInputEpoch, line, atTop, atBottom) ?? false;
     """
 }

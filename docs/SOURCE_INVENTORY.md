@@ -454,3 +454,15 @@ caret metrics inherited by system-font face conversion. The original size/trait 
 unavailable-face behavior, source/native history and original typography assertions
 remain covered. The controlled before/after case and final 340-test evidence are
 recorded in `validation/editor-column-layout.json`; real desktop/IME acceptance stays open.
+
+
+## Swift source line-spacing ownership boundary
+
+EditorCore owns finite editorLineSpacing values; SnowfolioUI retains the original
+key and applies disposable paragraph spacing with reversible native writing defaults.
+Public text-view insertion rectangles correct the terminal empty-line metric without
+attaching TextKit 1 or calling private selectors. RenderingCore and SnowfolioUI share
+generation/revision and two-pane input ordering for scroll handoff. Source and undo
+remain outside these presentation boundaries. Original scroll-past-end and remaining
+consumers still prevent coupled editor/preferences target retirement. Exact tests,
+sources, withdrawn prototype recovery and visual limits are in validation/editor-line-spacing.json.

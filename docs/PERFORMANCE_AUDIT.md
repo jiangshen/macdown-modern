@@ -421,3 +421,22 @@ Exact hosted run 42443442151 passes 340 package tests, 652 CommonMark examples a
 all 18 native UI methods. Its raw log retains 31 priority diagnostics and two
 AppIntents metadata notices; runtime attribution remains open.
 See validation/editor-column-layout.json for exact before/after logs and source hashes.
+
+
+## Line spacing and scroll input correctness — 2026-11-07
+
+The default zero-spacing editor avoids paragraph copies unless earlier typing metadata
+requires normalization. Preference refresh invalidates cached presentation without
+explicitly laying out offscreen text. Terminal insertion metrics are cached per font.
+Input reporting sends a small immediate gesture message and retains frame-coalesced
+position updates. Sequence checks prevent an older queued movement or report from
+overwriting newer pane input. These are bounded correctness changes, not a measured
+latency/energy improvement.
+
+Final local suite passes 347 tests /74 suites in 49.145 seconds including build;
+28 sanitizer tests /six suites pass in 26.322 seconds including build. Sanitizer
+acceptance does not establish leak or whole-app memory/performance acceptance.
+Native app build-for-testing passes; 19 UI methods compile. Exact hosted execution,
+new screenshots and runtime warning attribution remain pending. Earlier scroll/caret
+failures and corrected fixture readiness are retained in validation/editor-line-spacing.json.
+Full M6 measurements and fresh source-selection/real IME/VoiceOver stay open.

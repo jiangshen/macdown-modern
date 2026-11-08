@@ -1,0 +1,239 @@
+{
+  "checkpoint": "Native source line spacing, terminal caret geometry and two-way scroll input handoff",
+  "date": "2026-11-07",
+  "fullGoal": "active; incomplete",
+  "status": "Local verification passed; exact hosted execution and screenshots pending.",
+  "originalBehavior": {
+    "key": "editorLineSpacing",
+    "range": "0...100 native points, fractional supported",
+    "originalFreshDefault": 3,
+    "snowfolioFreshDefault": 0,
+    "migration": "Explicit original saved values import; explicit zero survives reopen.",
+    "sources": [
+      {
+        "path": "MacDown/Code/Document/MPDocument.m",
+        "sha256": "f43f793c319f27f090c5a45a09636ff908a418d215ab521881b64101f8bd9bd0"
+      },
+      {
+        "path": "MacDown/Code/Preferences/MPPreferences.m",
+        "sha256": "1724574caba513eec335b1d0b4601a7c5cc8cb044ba3caf7c2e05fb563b30333"
+      },
+      {
+        "path": "MacDown/Localization/Base.lproj/MPEditorPreferencesViewController.xib",
+        "sha256": "4e4287fd7b8de9525ada8c306b128843b060f061659c408f263bbbbcf372b7cc"
+      }
+    ]
+  },
+  "implementation": [
+    "Finite bounded native-point preference and one searchable native numeric field/stepper; 54 unique Settings entries.",
+    "Spacing uses disposable paragraph copies and reversible native default/typing styles. Existing backing attributes, view identity, source, revision, selection and history are preserved.",
+    "Zero-spacing default retains the original native paragraph path unless backing metadata carries older nonzero spacing. No explicit offscreen layout is forced by the preference refresh.",
+    "Defer spacing and typing geometry while marked text is active/being received; simulated Japanese and Chinese preedit attributes and model source remain unchanged.",
+    "Public NSTextView rectangle overrides correct only the empty terminal insertion at managed nonzero spacing, using cached native font line height and the native bottom edge. No private selector or attached TextKit 1 manager.",
+    "Preview input is reported before its coalesced scroll report. Native moves carry generation, revision and preview/source input sequences; stale queued moves and late reports cannot reclaim newer input. Zoom completion respects newer source gestures."
+  ],
+  "tests": [
+    "Original-key migration, explicit zero/fractional reopen, search and finite bounds.",
+    "Native row distances, wrapped/cached offscreen paragraphs, themed and unthemed paths at zoom 0.5/1/2.",
+    "Native-reference terminal caret height AND local X/Y across empty/Tail/LF/CRLF, spacing 3/100 and zoom 0.5/1/2; reset/undo and TextKit 2 remain intact.",
+    "Simulated Japanese/Chinese composition defers spacing while preserving preedit attributes and document revision.",
+    "One main-actor turn queues preview input followed by a stale native movement; preview stays at 2200 and source follows, then native PageDown takes control. No timeout increase.",
+    "19 compiled app UI methods; new test types 12.5 in Settings, checks persistence, exact mixed-list source and native undo/redo, restores zero; screenshot attachments for settings, source selection and terminal caret."
+  ],
+  "local": {
+    "full": {
+      "report": "/private/tmp/snowfolio-line-spacing-scroll-final-full.json",
+      "reportSHA256": "a37ebf13971f3c2cbcee28a34298b7a6091b531a4ad0b5e8034a3e2a2cd6c8a6",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-D7E74401-86A8-47A3-97FF-D439891F4FC5/build.log",
+      "logSHA256": "6fc21f1f8a4123f5d1ec6d75726750f224748b724a9cca1d29d9b6e5e15d6313",
+      "status": "succeeded",
+      "durationMs": 49145,
+      "diagnostics": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "tests": 347,
+      "suites": 74
+    },
+    "addressSanitizer": {
+      "report": "/private/tmp/snowfolio-line-spacing-scroll-asan.json",
+      "reportSHA256": "cb1f7fc004ef4cac94ce66db43d18225ec15149ab3dbdb1862b8fc05867e92ac",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-1641D0FB-674D-44CB-B2E7-01174D5CAB9F/build.log",
+      "logSHA256": "17a342992861abe99a7dc475061408cd22796f94a7f235158f0f62f0d0ab298b",
+      "status": "succeeded",
+      "durationMs": 26322,
+      "diagnostics": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "tests": 28,
+      "suites": 6
+    },
+    "focused": {
+      "report": "/private/tmp/snowfolio-scroll-handoff-ready-focused.json",
+      "reportSHA256": "0231702b57647603d05efbaecb2769d3b4673e3f02c4bb1dcbd47d07b5b25f01",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-4639A474-A791-409C-A621-C9C7ED309154/build.log",
+      "logSHA256": "553c79619a27a821c84b7ee29f5d552673dc5d8eb48f762b0c9b400e7a92885e",
+      "status": "succeeded",
+      "durationMs": 14901,
+      "diagnostics": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "tests": 21,
+      "suites": 4
+    },
+    "appBuildForTesting": {
+      "report": "/private/tmp/snowfolio-line-spacing-scroll-app-build.json",
+      "reportSHA256": "4d025f78b33e8156bdba0156d68adf8d067c09969f94c608cda7b5dfce65773a",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-AEA99026-4FBB-4ABD-A6A0-01F44244B184/build.log",
+      "logSHA256": "51a9cb52b2b34f5877b6160f6ec917d401a940a831183463038dc544e76f8aac",
+      "status": "succeeded",
+      "durationMs": 7516,
+      "diagnostics": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 4,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "tests": 0,
+      "suites": 0
+    },
+    "architecture": {
+      "report": "/private/tmp/snowfolio-line-spacing-arm64.json",
+      "sha256": "ea8d385cec7883862d7b0df5d136ae123e7a1632713f55fb95ad6ef7c5591c6f",
+      "packageExecutables": 8,
+      "app": "arm64"
+    },
+    "formatting": {
+      "report": "/private/tmp/snowfolio-line-spacing-format.json",
+      "swiftFiles": 16,
+      "strictLint": "passed",
+      "diffCheck": "passed"
+    },
+    "formattedScrollFollowup": {
+      "status": "succeeded",
+      "report": "/private/tmp/snowfolio-scroll-handoff-formatted.json",
+      "sha256": "735e423d8d9caae82a8389f220cdb7a940cb2ed309a789537da27e5336b6a872",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-64CB1FCC-BFD8-4EB8-9CF9-91F0B1A5487D/build.log",
+      "logSHA256": "9a44278b159a383f503ff8adf9be8a34387cafd897730afdff7763f657cd9522"
+    },
+    "packagedAppVerification": {
+      "result": "passed build-for-testing and resource/license/arm64 verification",
+      "log": "/private/tmp/snowfolio-line-spacing-packaged-build.log",
+      "sha256": "faa6558644d0ce5cee2a0ae561577d3745cdabde436983dbf77477f818e45267",
+      "xcodebuildLog": "/Users/caden/Dev/snowfolio/Build/Snowfolio/xcodebuild.log",
+      "xcodebuildLogSHA256": "957726ab4c27dff929a2dd2f0f1a0431ce88210379c9654ac6090a380c9aeed4"
+    }
+  },
+  "investigation": [
+    {
+      "report": "/private/tmp/snowfolio-line-spacing-complete-full.json",
+      "sha256": "237508d8540d0a68d17f25dfdfa8b98e905073165602e1aacb9a8e8e410c38eb"
+    },
+    {
+      "report": "/private/tmp/snowfolio-preview-input-race-before.json",
+      "sha256": "1d5756ccf8bd47b00f7865e103e6b874a2ac04d6cb576665e058173decd36b9e"
+    },
+    {
+      "report": "/private/tmp/snowfolio-preview-input-race-corrected-focused.json",
+      "sha256": "85e05f1b199bac95341d94bce202e438cd96982b74db90b4aaf6c0187041ca6f"
+    },
+    {
+      "report": "/private/tmp/snowfolio-preview-input-race-handoff-focused.json",
+      "sha256": "f9505ac1509fb23829be114695a05a74a610b3e43a40bc993606fbbe42aac8b0"
+    },
+    {
+      "report": "/private/tmp/snowfolio-scroll-handoff-diagnostic.json",
+      "sha256": "64abc2f410f268083fc369d7f9a718b2cd4b46c99dcef9cc7b6d5bc2267eb5de"
+    }
+  ],
+  "investigationNotes": [
+    "Earlier full run reproduced the existing preview-led source zoom timeout. Controlled same-turn IPC regression then failed preview retention before the input-sequence correction.",
+    "Initial second-stage handoff predicate accepted a nonzero native insertion offset while the source viewport was still at top. Failure state was retained. Require the source to have actually left top before issuing the next source gesture; original handoff assertions/timeouts remain.",
+    "Top-edge terminal caret adjustment disagreed with native reference by exactly the requested spacing. Bottom-edge correction passes both dimensions and position.",
+    "Experimental custom layout fragments/backing edits were withdrawn. Only public view geometry correction remains; unused prototype is recoverable in Trash, recorded in project-cleanup.json."
+  ],
+  "sourceManifest": [
+    {
+      "path": "App/UITests/DocumentLifecycleTests.swift",
+      "sha256": "f86b05d6db1738a7c4ed58086dc82ce96230f7ac54f43ad91082eb4900e7e98a"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/EditorCore/EditorLayoutPreferences.swift",
+      "sha256": "79593b1ab38a9f4a62789dc0f2984cee34cd15750e25d2a3fb78679cb4111528"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/RenderingCore/PreviewScroll.swift",
+      "sha256": "89622402f5686225a80c05c346cfcdd9c8ee1136ffdbfc617713d69287ec5a07"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/AppPreferences.swift",
+      "sha256": "8b418750c6d23ad4edc37f7e81d38a45d06329d75ce7f49f4353e45a5883ee68"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentScrollCoordinator.swift",
+      "sha256": "ec5a8fed9abfcdf1136a18734f15588e8ec079bb20c478adc3e8a661f36c44be"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift",
+      "sha256": "df3308bcac0ecf1c2e623e16c20ccc72c34cbdd346776173b2f90f1c904f077a"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownEditor.swift",
+      "sha256": "8b2747a85536251d9265564a9ec405b6abc447d9e2a36c8c3591ece666ac7fc1"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownPreview.swift",
+      "sha256": "ccc06156d9401bdb70c6655a939fca87c6c512df7d8c85d2e0894d8d713bea2c"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeSyntaxHighlighter.swift",
+      "sha256": "6545d55845e84ce7fd716ad77e3d4c154bc60f1afe293a8c53d49a41585f982e"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/SettingsCatalog.swift",
+      "sha256": "dc42ee2b7f1579460bcb8758ac722a4b2d2aacb0869e0cd53064af70edf74b7f"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/EditorCoreTests/EditorLayoutPreferencesTests.swift",
+      "sha256": "b126ba1b5616372a8982d4bf8b75596f1d5f4614b05b21fe6d1bb5bdd8d88f5a"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorLayoutTests.swift",
+      "sha256": "edaafb4e85ddcf251a77e00fcc1f91552e32f7b8e80425da8e9b2c407859c487"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeScrollTests.swift",
+      "sha256": "a3873a94e8c73a4f28954af0146d032f6e5f4e54fccdae3b9a70eb7526e7d6e9"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/SettingsTests.swift",
+      "sha256": "6531e382b264c8215814fc7b192ce177bcc2474ef4fcbcdb607a1b3f0ad759c5"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorLineSpacing.swift",
+      "sha256": "46af1367dec1f8a998742adf56e8bc2d2a582dabdc548e2632cbebd390e8194a"
+    },
+    {
+      "path": "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorLineSpacingTests.swift",
+      "sha256": "7c1012a7fb179132fd38c9f9936520cc219cbd4abceb3f33c8c605c0a353fbb9"
+    }
+  ],
+  "limits": [
+    "Fresh CUA check found user Mac locked. No user-desktop source-selection/glyph or real IME/VoiceOver visual acceptance claimed.",
+    "The 03:42 list screenshot predates the mixed-list preview correction; six preview list regressions remain in the suite. Source-editor-specific artifact is not declared fixed by caret work.",
+    "ASAN and test durations are correctness evidence, not measured typing latency, leak, memory or energy improvement.",
+    "Scroll-past-end, remaining original typing/statistics/preferences parity, full document lifecycle, renderer parity, M5 and M6/release acceptance remain open. Coupled original targets are retained."
+  ]
+}

@@ -21,14 +21,17 @@ struct NativeScrollTests {
       as? String ?? ""
   }
 
-  private func waitFor(_ stage: String = #function, _ predicate: () async throws -> Bool)
+  private func waitFor(
+    _ stage: String = #function, diagnostic: () async throws -> String = { "" },
+    _ predicate: () async throws -> Bool
+  )
     async throws
   {
     for _ in 0..<160 {
       if try await predicate() { return }
       try await Task.sleep(for: .milliseconds(25))
     }
-    throw TestError.timeout(stage)
+    throw TestError.timeout(stage + (try await diagnostic()))
   }
 
   @MainActor
@@ -108,6 +111,65 @@ struct NativeScrollTests {
       sourceWindow.close()
       previewWindow.close()
     }
+  }
+
+  @Test("Preview input supersedes a queued source move before its next animation frame")
+  func queuedSourceMoveAfterPreviewInput() async throws {
+    let source = (1...150).map {
+      "Paragraph \($0) with **styled** Unicode 中文 😀 and a sentence that wraps in the editor.\n\n"
+    }.joined()
+    let fixture = try Fixture(source: source, linked: true)
+    defer { fixture.close() }
+    try await fixture.loadPreview()
+    try await waitFor("scroll context") {
+      fixture.previewCoordinator.isReadyForScrolling(revision: 0)
+    }
+    fixture.sourceWindow.makeFirstResponder(fixture.editor)
+    fixture.scrolling.sourceEditedOrNavigated()
+    let selection = fixture.editor.selectedRange()
+    @MainActor final class Completion {
+      var inputFinished = false
+      var moveFinished = false
+      var error: (any Error)?
+    }
+    let completion = Completion()
+    // Queue both IPC calls in one main-actor turn. The native move captures its
+    // context before the WebKit input message can be delivered back to AppKit.
+    fixture.preview.callAsyncJavaScript(
+      "window.dispatchEvent(new Event('wheel')); window.scrollTo(0,2200); window.dispatchEvent(new Event('scroll')); return true;",
+      arguments: [:], in: nil, in: .defaultClient
+    ) { result in
+      if case .failure(let error) = result { completion.error = error }
+      completion.inputFinished = true
+    }
+    fixture.previewCoordinator.moveForScrolling(
+      to: MarkdownScrollPosition(line: 240, atTop: false, atBottom: false)
+    ) { completion.moveFinished = true }
+    try await waitFor("queued callbacks") { completion.inputFinished && completion.moveFinished }
+    if let error = completion.error { throw error }
+    try await waitFor("preview retains input and moves source") {
+      let y = Double(try await evaluate("return String(scrollY);", in: fixture.preview)) ?? -1
+      guard let reading = fixture.scrolling.captureSource() else { return false }
+      return abs(y - 2200) < 1 && !reading.atTop && reading.offset > 0
+    }
+    let previewSource = try #require(fixture.scrolling.captureSource())
+    fixture.editor.doCommand(by: #selector(NSResponder.scrollPageDown(_:)))
+    try await waitFor(
+      "a later source gesture takes control",
+      diagnostic: {
+        let web = try await evaluate(
+          "return JSON.stringify({y:scrollY, input:globalThis.__snowfolioScroll?.inputEpoch,sourceInput:globalThis.__snowfolioScroll?.sourceInputEpoch,position:globalThis.__snowfolioScroll?.position()});",
+          in: fixture.preview)
+        return
+          " before=\(previewSource), web=\(web), source=\(String(describing: fixture.scrolling.captureSource()))"
+      },
+      {
+        let y = Double(try await evaluate("return String(scrollY);", in: fixture.preview)) ?? -1
+        return y > 2300 && (fixture.scrolling.captureSource()?.offset ?? 0) > previewSource.offset
+      })
+    #expect(fixture.editor.string == source && fixture.document.text == source)
+    #expect(fixture.document.revision == 0 && !fixture.undo.canUndo)
+    #expect(fixture.editor.selectedRange() == selection)
   }
 
   @Test("Native keyboard paging drives linked preview scrolling without editing or selecting")

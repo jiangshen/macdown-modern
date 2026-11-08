@@ -153,7 +153,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     context.coordinator.highlighter.update(
       syntax: syntax, revision: syntaxRevision,
       enabled: syntaxHighlighting, font: font, document: document, theme: theme,
-      zoomScale: zoomScale)
+      zoomScale: zoomScale, lineSpacing: layout.lineSpacing)
     if let request = document.selectionRequest,
       request.id != context.coordinator.selectionID, !editor.hasMarkedText()
     {

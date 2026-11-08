@@ -13,7 +13,7 @@ heuristic's approximate limit. These settings never rewrite document source.
 Layout changes preserve selection, native undo and the source paragraph being read.
 Changed geometry waits until marked text commits. Automated native composition cases
 are covered; real Chinese/Japanese IME and desktop visual acceptance remain required.
-Line spacing and scrolling past the end remain separate migration work.
+Scrolling past the end remains separate migration work.
 
 Exact local evidence, initial fixture corrections and the reproduced reading-anchor
 fix are in [editor-column-layout.json](validation/editor-column-layout.json). The
@@ -30,3 +30,18 @@ column recalculates immediately after that width change; both overlay and persis
 scrollbar fixtures exercise resize, source/history and composition preservation.
 The exact hosted follow-up passes both modes; source-selection visual acceptance
 on the user’s desktop remains open.
+
+## Line spacing
+
+Settings → Editor → Layout → Line spacing accepts 0...100 native points, including
+fractional values. Explicit MacDown editorLineSpacing values import; fresh Snowfolio
+profiles retain zero. Spacing changes preserve source, selection and native history,
+and wait until composition completes. Wrapped/cached paragraphs and empty terminal
+carets are checked against native metrics across themes and zoom.
+
+Queued preview/source scroll input now carries ordering context so an older move or
+report cannot take control from a newer gesture. The controlled native regression
+checks both directions. Local full suite and sanitizer results, failures retained
+during investigation, exact sources and remaining visual gates are recorded in
+[editor-line-spacing.json](validation/editor-line-spacing.json). Hosted acceptance
+and fresh user-desktop source-selection/IME/VoiceOver remain pending.

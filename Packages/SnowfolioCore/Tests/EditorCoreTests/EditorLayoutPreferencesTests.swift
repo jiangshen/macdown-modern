@@ -32,4 +32,17 @@ struct EditorLayoutPreferencesTests {
     #expect(geometry.columnWidth.isFinite && geometry.columnWidth >= 1)
     #expect(geometry.horizontalInset.isFinite && geometry.horizontalInset >= 0)
   }
+  @Test("Line spacing retains finite fractional points and the original 0...100 range")
+  func lineSpacing() {
+    #expect(EditorLayoutPreferences(lineSpacing: 12.5).lineSpacing == 12.5)
+    #expect(EditorLayoutPreferences(lineSpacing: .nan).lineSpacing == 0)
+    #expect(EditorLayoutPreferences(lineSpacing: .infinity).lineSpacing == 0)
+    var preferences = EditorLayoutPreferences(lineSpacing: 200)
+    #expect(preferences.lineSpacing == 100)
+    preferences.lineSpacing = -2
+    #expect(preferences.lineSpacing == 0)
+    preferences.lineSpacing = 3
+    #expect(preferences.lineSpacing == 3)
+  }
+
 }

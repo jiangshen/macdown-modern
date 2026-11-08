@@ -183,6 +183,10 @@ enum SettingsCatalog {
       pane: .editor, title: "Layout",
       entries: [
         .init(
+          id: "editorLineSpacing", title: "Line spacing",
+          detail: "Additional space between source lines.", keywords: "leading paragraph lines",
+          control: .editorMetric(\.editorLayout.lineSpacing, 0...100, 1)),
+        .init(
           id: "editorHorizontalInset", title: "Side margins",
           detail: "Minimum space beside the source text.", keywords: "padding horizontal inset",
           control: .editorMetric(\.editorLayout.horizontalInset, 0...35, 1)),

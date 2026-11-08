@@ -20,6 +20,8 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
   private var themeID: UUID?
   private var themePresentation: NativeEditorTheme?
   private var zoomScale = 1.0
+  private var paragraphSpacing: NativeEditorLineSpacing?
+  var appliedLineSpacing: CGFloat? { paragraphSpacing?.applied }
   private var surfaceAppearance: NativeEditorSurfaceAppearance?
   private(set) var currentLineRange: NSRange?
   private var currentLineCaret: Int?
@@ -27,6 +29,7 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
 
   func attach(to editor: MarkdownTextView, document: MarkdownDocument) {
     self.editor = editor
+    paragraphSpacing = NativeEditorLineSpacing(editor: editor)
     originalTextColor = editor.textColor
     surfaceAppearance = NativeEditorSurfaceAppearance(editor: editor)
     self.document = document
@@ -43,11 +46,17 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
 
   func update(
     syntax: MarkdownSyntax?, revision: UInt64?, enabled: Bool, font: NSFont,
-    document: MarkdownDocument, theme: EditorTheme? = nil, zoomScale: Double = 1
+    document: MarkdownDocument, theme: EditorTheme? = nil, zoomScale: Double = 1,
+    lineSpacing: Double? = nil
   ) {
     let normalizedZoom = DocumentZoomController.normalizedScale(zoomScale)
+    let normalizedSpacing = lineSpacing.map {
+      CGFloat(EditorLayoutPreferences(lineSpacing: $0).lineSpacing)
+    }
+    let spacingChanged = paragraphSpacing?.requested != normalizedSpacing
+    paragraphSpacing?.requested = normalizedSpacing
     let themeGeometryChanged =
-      self.themeID != theme?.id
+      spacingChanged || self.themeID != theme?.id
       || (theme != nil
         && (self.font != font || self.zoomScale != normalizedZoom || self.enabled != enabled
           || self.syntax?.id != syntax?.id
@@ -64,7 +73,7 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     self.zoomScale = normalizedZoom
     let changed =
       self.syntax?.id != syntax?.id || self.revision != revision || self.enabled != enabled
-      || presentationChanged || self.document !== document
+      || presentationChanged || spacingChanged || self.document !== document
     if self.document !== document {
       currentLineRevision = nil
       currentLineCaret = nil
@@ -89,10 +98,11 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     }
     _ = refreshCurrentLine()
     if pendingSurface { applySurfaceWhenSafe() }
-    let nativeFontChanged = synchronizeNativeWritingStyle(
+    let spacingGeometryChanged = paragraphSpacing?.needsSynchronization == true
+    let nativeGeometryChanged = synchronizeNativeWritingStyle(
       geometryAlreadyChanging: geometryAlreadyChanging)
     defer {
-      if nativeFontChanged && !geometryAlreadyChanging { editor?.viewportLayoutChanged?() }
+      if nativeGeometryChanged && !geometryAlreadyChanging { editor?.viewportLayoutChanged?() }
     }
     manager.invalidateRenderingAttributes(for: content.documentRange)
     // Refresh cached viewport fragments without forcing offscreen layout. Before
@@ -110,21 +120,25 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
       return true
     }
     editor?.needsDisplay = true
-    if let viewport, let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText,
-      let document, revision == document.revision, let storage = editor.textStorage
-    {
+    guard let editor, !editor.hasMarkedText(), !editor.isReceivingMarkedText,
+      let storage = editor.textStorage
+    else { return }
+    let refreshedRange: NSRange
+    if spacingGeometryChanged {
+      // Invalidate cached paragraph presentation without forcing offscreen layout.
+      // A view preference must refresh even while a parsed snapshot is stale.
+      refreshedRange = NSRange(location: 0, length: storage.length)
+    } else if let viewport, let document, revision == document.revision {
       let start = content.offset(from: content.documentRange.location, to: viewport.location)
       let end = content.offset(from: content.documentRange.location, to: viewport.endLocation)
-      if start >= 0, end >= start, end <= storage.length {
-        // Notify the owning text view that paragraph presentation changed. This
-        // attributes-only notification changes no stored attributes or source bytes.
-        refreshingPresentation = true
-        defer { refreshingPresentation = false }
-        storage.edited(
-          .editedAttributes, range: NSRange(location: start, length: end - start),
-          changeInLength: 0)
-      }
+      guard start >= 0, end >= start, end <= storage.length else { return }
+      refreshedRange = NSRange(location: start, length: end - start)
+    } else {
+      return
     }
+    refreshingPresentation = true
+    defer { refreshingPresentation = false }
+    storage.edited(.editedAttributes, range: refreshedRange, changeInLength: 0)
   }
 
   func compositionChanged() { invalidate() }
@@ -139,8 +153,8 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     pendingSurface = false
   }
 
-  /// Native default font/color are writing preferences shared by typing, marked
-  /// text, caret and extra-line layout. Semantic syntax remains in paragraph copies.
+  /// Native writing defaults drive typing, marked text and extra-line layout.
+  /// Semantic syntax and existing-paragraph spacing remain disposable copies.
   private func synchronizeNativeWritingStyle(geometryAlreadyChanging: Bool) -> Bool {
     guard let editor, let font, !editor.hasMarkedText(), !editor.isReceivingMarkedText else {
       return false
@@ -150,52 +164,63 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     let desiredColor = attributes?[.foregroundColor] as? NSColor ?? originalTextColor
     let fontChanged = editor.font != desiredFont
     let colorChanged = editor.textColor != desiredColor
-    guard fontChanged || colorChanged else { return false }
-    if fontChanged && !geometryAlreadyChanging { editor.viewportPresentationWillChange?() }
+    let geometryChanged = fontChanged || paragraphSpacing?.needsSynchronization == true
+    if geometryChanged && !geometryAlreadyChanging { editor.viewportPresentationWillChange?() }
     settingNativeStyle = true
     defer { settingNativeStyle = false }
     if fontChanged { editor.font = desiredFont }
     if colorChanged { editor.textColor = desiredColor }
-    return fontChanged
+    paragraphSpacing?.synchronize()
+    return geometryChanged
   }
 
   func textContentStorage(
     _ textContentStorage: NSTextContentStorage, textParagraphWith range: NSRange
   ) -> NSTextParagraph? {
-    guard let presentation = themePresentation, let editor,
-      !editor.hasMarkedText(), !editor.isReceivingMarkedText,
-      let storage = textContentStorage.textStorage,
+    guard let editor, let storage = textContentStorage.textStorage,
       range.location >= 0, range.length > 0, range.location <= storage.length,
       range.length <= storage.length - range.location
     else { return nil }
+    let presentation =
+      editor.hasMarkedText() || editor.isReceivingMarkedText ? nil : themePresentation
+    guard
+      presentation != nil || paragraphSpacing?.needsPresentation(in: storage, range: range) == true
+    else { return nil }
     let paragraph = NSMutableAttributedString(
       attributedString: storage.attributedSubstring(from: range))
-    let activeLine = currentLineRange?.location == range.location
-    paragraph.addAttributes(
-      presentation.attributes(for: [], currentLine: activeLine),
-      range: NSRange(location: 0, length: range.length))
-    if enabled, let document, revision == document.revision, let syntax {
-      for run in intersectingRuns(range, syntax: syntax) {
-        let intersection = NSIntersectionRange(run.range, range)
-        var attributes = presentation.attributes(for: run.style.tokens, currentLine: activeLine)
-        if run.style.underlined { attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue }
-        if run.style.strikethrough {
-          attributes[.strikethroughStyle] = NSUnderlineStyle.single.rawValue
+    paragraphSpacing?.apply(to: paragraph)
+    if let presentation {
+      let activeLine = currentLineRange?.location == range.location
+      paragraph.addAttributes(
+        presentation.attributes(for: [], currentLine: activeLine),
+        range: NSRange(location: 0, length: range.length))
+      if enabled, let document, revision == document.revision, let syntax {
+        for run in intersectingRuns(range, syntax: syntax) {
+          let intersection = NSIntersectionRange(run.range, range)
+          var attributes = presentation.attributes(for: run.style.tokens, currentLine: activeLine)
+          if run.style.underlined { attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue }
+          if run.style.strikethrough {
+            attributes[.strikethroughStyle] = NSUnderlineStyle.single.rawValue
+          }
+          if run.style.highlighted, run.style.role != .code {
+            attributes[.backgroundColor] = NSColor.systemYellow.withAlphaComponent(0.18)
+          }
+          paragraph.addAttributes(
+            attributes,
+            range: NSRange(
+              location: intersection.location - range.location, length: intersection.length))
         }
-        if run.style.highlighted, run.style.role != .code {
-          attributes[.backgroundColor] = NSColor.systemYellow.withAlphaComponent(0.18)
-        }
-        paragraph.addAttributes(
-          attributes,
-          range: NSRange(
-            location: intersection.location - range.location, length: intersection.length))
       }
     }
     return NSTextParagraph(attributedString: paragraph)
   }
 
   func selectionChanged() {
-    guard !refreshingPresentation, !settingNativeStyle, refreshCurrentLine() else { return }
+    guard !refreshingPresentation, !settingNativeStyle else { return }
+    settingNativeStyle = true
+    paragraphSpacing?.synchronizeTyping()
+    settingNativeStyle = false
+    guard refreshCurrentLine() else { return }
     let geometry = themePresentation?.currentLineChangesGeometry == true
     if geometry { editor?.viewportPresentationWillChange?() }
     invalidate(geometryAlreadyChanging: geometry)
@@ -278,6 +303,8 @@ final class NativeSyntaxHighlighter: NSObject, @MainActor NSTextContentStorageDe
     let defaultFont = restoreWritingStyle ? font : nil
     surfaceAppearance?.restore()
     surfaceAppearance = nil
+    paragraphSpacing?.restore()
+    paragraphSpacing = nil
     currentLineRange = nil
     currentLineCaret = nil
     currentLineRevision = nil

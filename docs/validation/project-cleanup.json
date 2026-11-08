@@ -311,7 +311,23 @@
       "scope": "Two exact superseded agent-generated code-presentation core/native downloads. Compact historical screenshots/reports, current source/build/current raw evidence and user documents retained.",
       "currentEvidence": "/private/tmp/snowfolio-asset-folder-hosted-native",
       "currentBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio"
+    },
+    {
+      "date": "2026-11-08T05:29:45.982326+00:00",
+      "items": [
+        {
+          "bytes": 1669,
+          "original": "/Users/caden/Dev/snowfolio/Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorLayoutFragment.swift",
+          "reason": "Unused experimental layout-fragment prototype; public view geometry correction replaces it.",
+          "recovery": "/private/tmp/snowfolio-line-spacing-recovery-20261107/Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorLayoutFragment.swift",
+          "sha256": "6161f53455c942cb0833565d44e10281045c10b84e220d5473599841d2757f6c",
+          "trash": "/Users/caden/.Trash/NativeEditorLayoutFragment.swift"
+        }
+      ],
+      "method": "FileManager.trashItem",
+      "trashEmptied": false,
+      "scope": "One unused agent-created layout-fragment prototype; public view correction replaced the experiment. Original source, active build, user documents and verified recovery retained."
     }
   ],
-  "lastUpdated": "2026-11-08T02:22:08Z"
+  "lastUpdated": "2026-11-08T05:29:45.982326+00:00"
 }

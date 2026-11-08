@@ -113,6 +113,11 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     weak var scrolling: DocumentScrollCoordinator?
     private weak var scrollView: WKWebView?
     private var scrollContextRevision: UInt64?
+    // WebKit input and native source input have separate sequences: a delayed
+    // report from either pane must not take control from a newer gesture.
+    private var scrollInputEpoch = 0
+    private var sourceInputEpoch = 0
+    private var minimumSourceInputEpoch = 0
     private var activatingScrollContext = false
     private var failedScrollRevision: UInt64?
     weak var callouts: CalloutEditorController?
@@ -158,6 +163,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         activatingScrollContext = false
         failedScrollRevision = nil
         generation = UUID()
+        scrollInputEpoch = 0
+        sourceInputEpoch = 0
+        minimumSourceInputEpoch = 0
         applying = false
         zooming = false
         failedZoom = nil
@@ -266,6 +274,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     private func applyZoom(to view: WKWebView) {
       let scale = pendingZoom
       let generation = generation
+      let sourceInputEpoch = sourceInputEpoch
       applying = true
       zooming = true
       view.callAsyncJavaScript(PreviewZoom.capture, arguments: [:], in: nil, in: .defaultClient) {
@@ -305,7 +314,9 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
             let actual = try? JSONDecoder().decode(PreviewZoomAnchor.self, from: data)
           {
             self.scrolling?.previewPresentationChanged(
-              to: actual.position, userInitiated: actual.inputEpoch != anchor.inputEpoch)
+              to: actual.position,
+              userInitiated: actual.inputEpoch != anchor.inputEpoch
+                && self.sourceInputEpoch == sourceInputEpoch)
           }
           self.applyLatest(to: view)
         }
@@ -337,10 +348,20 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       ) { [weak self, weak view] result in
         guard let self, let view, self.generation == generation else { return }
         self.activatingScrollContext = false
-        if case .success(let value) = result, (value as? Bool) == true,
+        if case .success(let value) = result,
+          let data = try? JSONSerialization.data(withJSONObject: value),
+          let context = try? JSONDecoder().decode(PreviewScrollContext.self, from: data),
+          context.inputEpoch >= 0, context.sourceInputEpoch >= 0, context.position.isValid,
           self.appliedRevision == revision
         {
+          let unreportedInput = context.inputEpoch > self.scrollInputEpoch
+          self.scrollInputEpoch = max(self.scrollInputEpoch, context.inputEpoch)
           self.scrollContextRevision = revision
+          if unreportedInput {
+            self.minimumSourceInputEpoch = context.sourceInputEpoch
+            self.scrolling?.previewScrolled(
+              context.position, revision: revision, programmatic: false, settled: false)
+          }
           self.scrolling?.layoutChanged()
         } else if self.appliedRevision == revision {
           self.failedScrollRevision = revision
@@ -349,6 +370,11 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         }
         if self.appliedRevision != revision { self.activateScrollContext(in: view) }
       }
+    }
+
+    func sourceInputBegan() {
+      sourceInputEpoch &+= 1
+      minimumSourceInputEpoch = sourceInputEpoch
     }
 
     func moveForScrolling(
@@ -363,7 +389,12 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       }
       view.callAsyncJavaScript(
         PreviewScroll.move,
-        arguments: ["line": position.line, "atTop": position.atTop, "atBottom": position.atBottom],
+        arguments: [
+          "token": generation.uuidString, "revision": String(revision),
+          "inputEpoch": scrollInputEpoch, "sourceInputEpoch": sourceInputEpoch,
+          "line": position.line,
+          "atTop": position.atTop, "atBottom": position.atBottom,
+        ],
         in: nil, in: .defaultClient
       ) { _ in completion() }
     }
@@ -372,17 +403,29 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       _ userContentController: WKUserContentController,
       didReceive message: WKScriptMessage
     ) {
-      guard !zooming, message.name == "snowfolioScroll", message.frameInfo.isMainFrame,
+      guard message.name == "snowfolioScroll", message.frameInfo.isMainFrame,
         let view = scrollView, message.webView === view, view.window?.isVisible == true,
         !view.isHiddenOrHasHiddenAncestor, let body = message.body as? [String: Any],
         let data = try? JSONSerialization.data(withJSONObject: body),
         let value = try? JSONDecoder().decode(PreviewScrollMessage.self, from: data),
         value.token == generation.uuidString, let revision = UInt64(value.revision),
-        revision == appliedRevision
+        revision == appliedRevision, value.inputEpoch >= scrollInputEpoch
       else { return }
-      scrolling?.previewScrolled(
-        value.position, revision: revision,
-        programmatic: value.programmatic, settled: value.settled)
+      guard value.sourceInputEpoch >= 0 else { return }
+      let newInput = value.inputEpoch > scrollInputEpoch
+      scrollInputEpoch = value.inputEpoch
+      if newInput {
+        minimumSourceInputEpoch = value.sourceInputEpoch
+        scrolling?.previewInputBegan(revision: revision)
+      }
+      if value.kind == .scroll, !zooming,
+        value.sourceInputEpoch >= minimumSourceInputEpoch,
+        let position = value.position, position.isValid
+      {
+        scrolling?.previewScrolled(
+          position, revision: revision,
+          programmatic: value.programmatic, settled: value.settled)
+      }
     }
 
     public func webView(
@@ -542,10 +585,20 @@ private struct PreviewZoomAnchor: Decodable {
   let inputEpoch: Int?
 }
 
+private struct PreviewScrollContext: Decodable {
+  let inputEpoch: Int
+  let sourceInputEpoch: Int
+  let position: MarkdownScrollPosition
+}
+
 private struct PreviewScrollMessage: Decodable {
+  enum Kind: String, Decodable { case input, scroll }
+  let kind: Kind
+  let inputEpoch: Int
+  let sourceInputEpoch: Int
   let token: String
   let revision: String
-  let position: MarkdownScrollPosition
+  let position: MarkdownScrollPosition?
   let programmatic: Bool
   let settled: Bool
 }

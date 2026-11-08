@@ -19,6 +19,7 @@ public final class AppPreferences {
       defaults.set(editorLayout.verticalInset, forKey: "editorVerticalInset")
       defaults.set(editorLayout.widthLimited, forKey: "editorWidthLimited")
       defaults.set(editorLayout.maximumWidth, forKey: "editorMaximumWidth")
+      defaults.set(editorLayout.lineSpacing, forKey: "editorLineSpacing")
     }
   }
 
@@ -120,7 +121,8 @@ public final class AppPreferences {
         ?? 24,
       widthLimited: boolean("editorWidthLimited", fallback: false),
       maximumWidth: (defaults.object(forKey: "editorMaximumWidth") as? NSNumber)?.doubleValue
-        ?? 1000)
+        ?? 1000,
+      lineSpacing: (defaults.object(forKey: "editorLineSpacing") as? NSNumber)?.doubleValue ?? 0)
     restoreDocumentsOnLaunch = boolean("NSQuitAlwaysKeepsWindows", fallback: true)
     preferDocumentTabs = boolean("preferDocumentTabs", fallback: true)
     frontMatter = boolean("htmlDetectFrontMatter", fallback: true)

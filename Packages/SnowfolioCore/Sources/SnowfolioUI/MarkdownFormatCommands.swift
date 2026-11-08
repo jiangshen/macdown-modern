@@ -119,6 +119,47 @@ final class MarkdownTextView: NSTextView {
   // The native snapshot may lag the reference model while a file loads.
   private(set) weak var sourceDocument: MarkdownDocument?
   private(set) var sourceRevision: UInt64?
+  private var insertionMetricsFont: NSFont?
+  private var insertionMetricsHeight: CGFloat = 0
+
+  override func firstRect(forCharacterRange range: NSRange, actualRange: NSRangePointer?) -> NSRect
+  {
+    let rect = super.firstRect(forCharacterRange: range, actualRange: actualRange)
+    return terminalInsertionRect(rect, range: range, screenCoordinates: true)
+  }
+
+  override func drawInsertionPoint(in rect: NSRect, color: NSColor, turnedOn flag: Bool) {
+    let corrected =
+      selectedRanges.count == 1
+      ? terminalInsertionRect(rect, range: selectedRange(), screenCoordinates: false) : rect
+    super.drawInsertionPoint(in: corrected, color: color, turnedOn: flag)
+  }
+
+  private func terminalInsertionRect(
+    _ original: NSRect, range: NSRange, screenCoordinates: Bool
+  ) -> NSRect {
+    guard range.length == 0, let storage = textStorage, range.location == storage.length,
+      (syntaxHighlighter?.appliedLineSpacing ?? 0) > 0, let font
+    else { return original }
+    if storage.length > 0 {
+      let last = (storage.string as NSString).character(at: storage.length - 1)
+      guard [10, 13, 0x2028, 0x2029].contains(last) else { return original }
+    }
+    if insertionMetricsFont != font {
+      insertionMetricsFont = font
+      // This standalone metric query never accesses NSTextView.layoutManager or
+      // attaches a TextKit 1 manager to the editor's TextKit 2 storage.
+      insertionMetricsHeight = ceil(NSLayoutManager().defaultLineHeight(for: font))
+    }
+    let height = insertionMetricsHeight
+    guard height > 0, original.height > height else { return original }
+    // Custom paragraph presentation can include the following line gap in the
+    // terminal insertion rectangle. Keep the native writing font's bottom edge.
+    var rect = original
+    if !screenCoordinates && isFlipped { rect.origin.y += rect.height - height }
+    rect.size.height = height
+    return rect
+  }
 
   func markSourceSynchronized(with document: MarkdownDocument) {
     sourceDocument = document

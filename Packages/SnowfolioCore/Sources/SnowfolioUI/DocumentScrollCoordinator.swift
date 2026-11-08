@@ -179,6 +179,7 @@ public final class DocumentScrollCoordinator: NSObject {
   }
 
   func sourceEditedOrNavigated() {
+    if linked { preview?.sourceInputBegan() }
     presentationAnchor = nil
     sourceWasUsed = true
     restoredSource = true
@@ -413,19 +414,25 @@ public final class DocumentScrollCoordinator: NSObject {
     }
   }
 
+  func previewInputBegan(revision: UInt64) {
+    guard document?.revision == revision else { return }
+    presentationAnchor = nil
+    pendingPreview = nil
+    needsAlignment = false
+    liveSourceScroll = false
+    previewWasUsed = true
+    restoredPreview = true
+    driver = .preview
+  }
+
   func previewScrolled(
     _ position: MarkdownScrollPosition, revision: UInt64, programmatic: Bool, settled: Bool
   ) {
     guard position.isValid, let document, document.revision == revision else { return }
     previewReading = position
     if !programmatic {
-      presentationAnchor = nil
       // A new user gesture supersedes queued movement from the other pane.
-      pendingPreview = nil
-      needsAlignment = false
-      previewWasUsed = true
-      restoredPreview = true
-      driver = .preview
+      previewInputBegan(revision: revision)
       if linked, editor?.hasMarkedText() == false { moveSource(to: position) }
     }
     if restoredPreview || previewWasUsed || programmatic { schedulePersistence() }
@@ -461,6 +468,7 @@ public final class DocumentScrollCoordinator: NSObject {
     }
   }
   @objc private func sourceScrollStarted(_ notification: Notification) {
+    if linked { preview?.sourceInputBegan() }
     presentationAnchor = nil
     liveSourceScroll = true
     sourceWasUsed = true

@@ -222,6 +222,12 @@ struct NativeEditorLayoutTests {
       "full column reading paragraph",
       diagnostic: { "before=\(anchor), now=\(paragraphOffset()), y=\(editor.visibleRect.minY)" },
       { paragraphOffset() == anchor })
+    preferences.editorLayout.lineSpacing = 18
+    try await waitFor("increased line spacing") { editor.defaultParagraphStyle?.lineSpacing == 18 }
+    try await waitFor(
+      "line spacing reading paragraph",
+      diagnostic: { "before=\(anchor), now=\(paragraphOffset()), y=\(editor.visibleRect.minY)" },
+      { paragraphOffset() == anchor })
     #expect(editor.selectedRange() == selected)
     #expect(document.text == source && document.revision == 0)
     #expect(find(host.view) === editor && editor.textLayoutManager != nil)

@@ -12,7 +12,7 @@ final class DocumentLifecycleTests: XCTestCase {
       "-editorThemeSelection", "automatic", "-readingStyleSelection", "snowfolio",
       "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
       "-editorHorizontalInset", "24", "-editorVerticalInset", "24",
-      "-editorWidthLimited", "NO", "-editorMaximumWidth", "1000",
+      "-editorWidthLimited", "NO", "-editorMaximumWidth", "1000", "-editorLineSpacing", "0",
     ]
     app.launchArguments += arguments
     app.launch()
@@ -721,6 +721,70 @@ final class DocumentLifecycleTests: XCTestCase {
     app.typeKey("a", modifierFlags: .command)
     path.typeText(directory.path + "\n")
     XCTAssertTrue(app.buttons["OKButton"].firstMatch.waitForExistence(timeout: 5))
+  }
+
+  @MainActor
+  func testEditorLineSpacingPreservesSourceAndHistory() {
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    editor.click()
+    editor.typeText("Original spacing source")
+    app.typeKey("a", modifierFlags: .command)
+    let source = "1. First\n2. Second\n\n- dfdfd\n"
+    editor.typeText(source)
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("line spacing")
+    let result = settings.outlines.firstMatch.staticTexts["Line spacing"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let spacing = settings.textFields["editorLineSpacing"]
+    XCTAssertTrue(spacing.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(settings.textFields.matching(identifier: "editorLineSpacing").count, 1)
+    XCTAssertTrue(spacing.isEnabled)
+    XCTAssertEqual(spacing.value as? String, "0")
+    spacing.click()
+    app.typeKey("a", modifierFlags: .command)
+    spacing.typeText("12.5")
+    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: [])
+    XCTAssertEqual(spacing.value as? String, "12.5")
+    let settingsImage = XCTAttachment(screenshot: settings.screenshot())
+    settingsImage.name = "editor-line-spacing-settings"
+    settingsImage.lifetime = .keepAlways
+    add(settingsImage)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, source)
+    editor.click()
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, "Original spacing source")
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, source)
+    app.typeKey("a", modifierFlags: .command)
+    let selectionImage = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    selectionImage.name = "editor-line-spacing-mixed-list-selection"
+    selectionImage.lifetime = .keepAlways
+    add(selectionImage)
+    app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+    let sourceImage = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    sourceImage.name = "editor-line-spacing-terminal-caret"
+    sourceImage.lifetime = .keepAlways
+    add(sourceImage)
+    app.typeKey(",", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    XCTAssertEqual(spacing.value as? String, "12.5")
+    spacing.click()
+    app.typeKey("a", modifierFlags: .command)
+    spacing.typeText("0")
+    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: [])
+    XCTAssertEqual(spacing.value as? String, "0")
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, source)
   }
 
   @MainActor
