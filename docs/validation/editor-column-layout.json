@@ -197,9 +197,13 @@
       "case": "testEditorColumnSettingsPreserveSourceAndHistory",
       "line": 751,
       "message": "XCTAssertEqual failed: nil is not equal to Optional(\"1\"); switch value was cast only to String. Existing earlier tests normalize numeric/string switch values.",
-      "scope": "All remaining assertions continued: enabled/disabled numeric field, 450-point entry and persistence, source and undo/redo. Final corrective UI run remains required.",
+      "scope": "Test stops at the switch-value assertion because launch sets continueAfterFailure=false. Maximum field enabled successfully; numeric entry 450, persistence, source/history checks and custom screenshot were NOT reached and remain unverified.",
       "failedWorkflowLog": "/private/tmp/snowfolio-editor-column-initial-hosted-failed.log",
-      "failedWorkflowLogSHA256": "c828fd2ebb107ad0f25c1339fc782ae5b7866ea122af78ab0a9d38990b620622"
+      "failedWorkflowLogSHA256": "c828fd2ebb107ad0f25c1339fc782ae5b7866ea122af78ab0a9d38990b620622",
+      "rawNativeLog": "/private/tmp/snowfolio-editor-column-initial-hosted-native/xcodebuild.log",
+      "rawNativeLogSHA256": "7cd77f84bb869988ffb617e43c454fd63ecf5175db873d03e74edd4a470a3e4e",
+      "attachments": "/private/tmp/snowfolio-editor-column-initial-ui-attachments/manifest.json",
+      "reportingCorrection": "Initial workflow-summary interpretation incorrectly said later assertions continued. Raw native log and test launch helper prove they did not; corrected before acceptance."
     }
   },
   "remaining": [
@@ -354,6 +358,26 @@
     "sourceSHA256": "f057df658e285fecef07e0ceff1ed7879f2458f381f897fbea4f9e08de18c7fe",
     "appBuildReport": "/private/tmp/snowfolio-editor-column-switch-type-app-build.json",
     "appBuildReportSHA256": "dc7ec1962fcc97dfdf51c11f1122fc984d2d8d31536382706d831f86e55cb1c7",
-    "hostedStatus": "Pending exact source push."
+    "hostedStatus": "Running exact combined correction in 42443442151; numeric/persistence/history UI acceptance pending."
+  },
+  "finalHosted": {
+    "commit": "b22326822025b9fcaab6508f32138bbb1f2661d9",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42443442151",
+    "status": "Running; follow this exact combined correction through completion.",
+    "expectedPackageTests": 340,
+    "expectedPackageSuites": 73,
+    "expectedNativeMethods": 18,
+    "supersededRuns": [
+      {
+        "run": 42442707167,
+        "commit": "6f2ad0b4c5a81958634bcc4542f1ab93edd097b0",
+        "scope": "Package failed with preserved exact geometry; native job cancellation requested because it retains known switch assertion defect."
+      },
+      {
+        "run": 42443281771,
+        "commit": "7cf4b717c3ff043725a49f7e0f3f22892f13a919",
+        "scope": "Cancellation requested because native test retains known switch assertion defect; final run includes same production fix plus corrected test."
+      }
+    ]
   }
 }

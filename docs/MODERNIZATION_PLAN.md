@@ -18,9 +18,13 @@ with persistent scrollbars. Updating the column immediately after the width chan
 passes both scrollbar modes, all 340 package tests and the app build. Exact final
 hosted acceptance remains pending. The first native UI run completed 18 methods with
 one failing switch-value assertion (numeric accessibility value cast as String);
-450-point entry/persistence and source/history assertions continued without failure.
+the launch helper stops at the first failure, so 450-point entry/persistence and
+source/history assertions were not reached. A prior summary incorrectly said they
+continued; raw native logs establish the remaining acceptance scope.
 The test now normalizes numeric/string values while requiring the same enabled state.
-The corrected native test builds; exact corrective hosted acceptance remains pending.
+The corrected native test builds. Exact combined correction `b223268` is running in
+[42443442151](https://github.com/jiangshen/snowfolio/actions/runs/42443442151);
+full hosted acceptance remains pending.
 See [editor-column-layout.json](validation/editor-column-layout.json) and
 [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md). Line spacing, scroll-past-end and other
 original editing/layout preferences remain open.
