@@ -4,6 +4,7 @@ repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 artifact_root="$repo_root/Build/DocumentHostProbe"
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 mkdir -p "$artifact_root"
+export TUIST_DOCUMENT_HOST_PROBE_KIND="${SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND:-swiftui}"
 tuist generate --no-open --path "$repo_root/Tools/DocumentHostProbe" > "$artifact_root/generate.log" 2>&1
 action="${1:-test}"
 case "$action" in test|build-for-testing) ;; *) exit 2 ;; esac
@@ -14,6 +15,7 @@ if xcodebuild "$action" -workspace "$repo_root/Tools/DocumentHostProbe/DocumentH
   echo "Standalone document host $action passed."
 else
   result=$?
+  sed -n '/error:/p; /Test Case.*failed/p' "$artifact_root/xcodebuild.log" >&2
   tail -60 "$artifact_root/xcodebuild.log" >&2
   exit "$result"
 fi

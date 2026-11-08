@@ -122,10 +122,19 @@ final class DocumentHostProbeTests: XCTestCase {
     XCTAssertEqual(editor.value as? String, original)
     editor.click()
     app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
-    editor.typeText("Undo checkpoint")
-    XCTAssertEqual(editor.value as? String, original + "Undo checkpoint")
+    // One character avoids comparing the documented sample's per-character model
+    // Undo registration with native NSTextView typing coalescing.
+    editor.typeText("X")
+    XCTAssertEqual(editor.value as? String, original + "X")
+    let finder = XCUIApplication(bundleIdentifier: "com.apple.finder")
+    finder.activate()
+    // Require the edited bytes to reach disk before Undo, so rollback persistence
+    // cannot pass merely because no edit has been written yet.
+    expectBytes(Data((original + "X").utf8), at: file, timeout: 35)
+    app.activate()
     app.typeKey("z", modifierFlags: .command)
     XCTAssertEqual(editor.value as? String, original)
-    expectBytes(Data(original.utf8), at: file, timeout: 8)
+    finder.activate()
+    expectBytes(Data(original.utf8), at: file, timeout: 35)
   }
 }

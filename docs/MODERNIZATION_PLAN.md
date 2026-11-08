@@ -2955,3 +2955,21 @@ but fails; its documented onChange model Undo only removes one character. Exact
 reload result locations still need collection before any host-policy conclusion.
 Full runs42474226792 and42474634394 remain live at this observation. Full lifecycle,
 remaining parity and modernization are incomplete.
+
+
+## Native document-host control prepared — 2026-11-08
+
+The standalone SwiftUI host reproduces both8s clean external reload failures;
+external bytes remain intact and no second read/apply callback occurs. Snowfolio's
+editor, parser and merge guard are absent from this control. This does not yet
+prove a framework bug. A separately compiled Swift NSDocument/TextKit2 control
+now builds without warnings, as does the revised SwiftUI control. Shared Undo
+fixtures require edited bytes to autosave before Undo, then original bytes to
+autosave after Undo/deactivation. A one-character edit avoids the sample's
+per-character model Undo versus native typing coalescing mismatch. Production
+assertions and host policy are unchanged. Hosted execution of both variants is
+next; no document lifecycle or fallback acceptance is claimed.
+
+Only the current raw stock-control result is retained; superseded Undo evidence
+is compacted, and the stock diagnostic system-log export is removed after console
+capture. The small isolated control build is reused while this comparison runs.

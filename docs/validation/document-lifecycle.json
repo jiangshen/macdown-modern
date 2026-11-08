@@ -258,18 +258,36 @@
     "buildForTesting": "passed; zero compiler errors/warnings; three UI methods compile",
     "buildReport": "/private/tmp/snowfolio-stock-host-build.json",
     "sourceFiles": {
-      "Tools/DocumentHostProbe/Project.swift": "1fbf7638becc37ed5a1263c639031ab9e59d860113a1881cf1cb1cb8a0307c09",
-      "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "e44687e77a0db8afffb66e02beaeb2b4bed13337833ece740989900ef075ed92",
-      "Tools/DocumentHostProbe/Sources/DocumentHostProbeApp.swift": "b7b20724b000276b80075f11dd1aaeb7edcf294b2ef7fb9968ebc8c1f4225e8a"
+      "Tools/DocumentHostProbe/Project.swift": "7419f0b8602cb1ca023e04c158cf5edb764c113605017fa9569be3f2edb094f1",
+      "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "a40443f57a36abe67c2d04c5b579438026bd29dd90d1ad917f027773cbda0e21",
+      "Tools/DocumentHostProbe/Sources/NativeDocumentHost.swift": "74eeea5264444319a70155a8a6972f51dc04824a8db0e52dbde82c9f74e0cb92",
+      "Tools/DocumentHostProbe/Sources/DocumentHostProbeApp.swift": "82640879a1abbcd7923de87d4174e843b26fa39ac7d5a4baf982ee56a4a421e2"
     },
     "runtime": "pending; comparison does not establish Snowfolio acceptance",
     "hosted": {
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42474650350",
       "commit": "12a356cc3d71aaf825d5e5f24c6eadb5d098605b",
-      "result": "Three selected control methods execute and fail. Undo only removes final character in the documented onChange sample, so its full-string grouping assumption is unsuitable; exact reload failure locations pending compact result collection.",
+      "result": "Three controls execute: clean reload before/after autosave both fail at unchanged8s; original Undo fixture stops because sample model Undo removes one character.",
       "failureLog": "/private/tmp/snowfolio-stock-host-failed.log",
-      "SnowfolioAcceptance": "none; independent control results do not fix or accept production lifecycle."
+      "SnowfolioAcceptance": "none; independent control results do not fix or accept production lifecycle.",
+      "externalReload": "Both attachments report reload outcome2 (timeout), externalBytesRetained=true. Console shows only initial read/apply per document plus autosave/write operations; no second read/apply. This occurs without Snowfolio code or merge guard.",
+      "summary": "/private/tmp/snowfolio-stock-host-summary.json",
+      "console": "/private/tmp/snowfolio-validation-history/stock-document-host-console/StandardOutputAndStandardError-local.snowfolio.document-host-probe.txt",
+      "observations": [
+        "/private/tmp/snowfolio-stock-host-text/53097FE0-AE1A-4D7A-827D-2CD24421BDA3.txt",
+        "/private/tmp/snowfolio-stock-host-text/836AA617-0ED3-4134-8C89-73CCAD3867E9.txt"
+      ],
+      "attribution": "No framework bug conclusion: compare native NSDocument and strengthen meaningful Undo persistence before choosing a host."
+    },
+    "nativeControlPreparation": {
+      "implementation": "Standalone Swift NSDocument with native TextKit2 editing/undo and autosavesInPlace; no production host change, Snowfolio code or third-party dependency. Nonisolated reading stores immutable text under Mutex; UI reflection occurs on main actor from revert.",
+      "checks": "Same clean external reload before/after autosave. Revised shared Undo check first requires one-character edited bytes to autosave on deactivation, then Undo restores exact source and original bytes after deactivation. It avoids sample-versus-native typing coalescing mismatch. Production8s Undo assertion unchanged.",
+      "appKitBuild": "/private/tmp/snowfolio-native-host-control-build-final.json",
+      "swiftUIBuild": "/private/tmp/snowfolio-stock-host-revised-build.json",
+      "localResult": "Both variants build-for-testing successfully; three methods compile per variant, zero compiler errors/warnings; strict formatting, shell syntax and workflow YAML pass.",
+      "runtime": "Both revised variants pending hosted execution."
     }
   },
-  "retentionNote": "Obsolete raw bundles and redundant exported system logs removed under user request; console/summary/screenshot history and retirement mapping are in storage-retention.json. Current raw Undo result retained."
+  "retentionNote": "Only latest useful raw control result retained. Superseded raw Undo bundle removed after preserving its summary/console/comparison; stock system-log export removed after compact console capture. Historical retirement mapping in storage-retention.json; app build remains canonical Build/Snowfolio.",
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_11-11-52-+0000.xcresult"
 }
