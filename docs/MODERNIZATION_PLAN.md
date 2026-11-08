@@ -8,7 +8,8 @@ verifies **334 package tests / 71 suites**, **ten Address Sanitizer tests / two 
 eight arm64 test executables and an arm64 native app build. The actual native workspace
 passes five missing/loaded image transitions and retains source, selection, views and
 undo. Two new app UI methods cover folder chooser/cancel/history and an actual untitled
-save followed by image export from the saved file's folder; hosted execution is pending.
+save followed by image export from the saved file's folder; hosted execution passed
+all 17 native UI methods, 334 package tests and 652 CommonMark examples.
 See [unsaved-asset-folder.json](validation/unsaved-asset-folder.json) and
 [DOCUMENT_ASSETS.md](DOCUMENT_ASSETS.md).
 
@@ -28,7 +29,7 @@ independent include/omit choices for document styles and code highlighting, with
 resources embedded. Separate user-provided license sidecars, remaining renderer parity
 and safe coupled legacy retirement stay open. The HTML accessory now starts without document styles for None; its new native UI
 case passes in the final hosted run. Unsaved-document default asset folders now have
-an explicit grant-backed migration workflow (`htmlDefaultDirectoryUrl`), with hosted chooser/Save As acceptance pending. The [original characterization ledger](validation/css-template-characterization.json)
+an explicit grant-backed migration workflow (`htmlDefaultDirectoryUrl`), with hosted chooser/Save As acceptance passed. The [original characterization ledger](validation/css-template-characterization.json)
 preserves source evidence and the call-site correction.
 
 Fresh user-desktop visual acceptance, captured WebKit glyph painting, real IME/VoiceOver,
@@ -2580,3 +2581,31 @@ Hosted follow-up for code `d3f5da23c5fc13f9ab1f0be67d784f52998483c7` is queued i
 [run 42436504932](https://github.com/jiangshen/snowfolio/actions/runs/42436504932).
 Poll this same run through completion and inspect its raw evidence; its 17 native UI
 methods are not accepted merely because they compile. The full goal remains active.
+
+
+## Hosted unsaved-folder and actual Save As acceptance — 2026-11-07
+
+[Run 42436504932](https://github.com/jiangshen/snowfolio/actions/runs/42436504932),
+code `d3f5da23c5fc13f9ab1f0be67d784f52998483c7`, passed both jobs. Downloaded
+raw evidence verifies 334 package tests / 71 suites, 652/652 CommonMark examples,
+eight arm64 executables and all 17 native document UI methods with zero failures.
+The new chooser/cancel/search/clear/history case passed in 64.875 seconds. The actual
+untitled Save→HTML case passed in 63.466 seconds: exact source bytes are saved in a
+new folder and the export embeds that folder's distinct PNG rather than the unsaved
+asset folder's image. The Settings screenshot paints the expected controls and path.
+
+Thirty priority diagnostics and two AppIntents metadata notices remain unattributed.
+Fresh user-desktop glyph/selection, real IME/VoiceOver, full document lifecycle,
+remaining feature parity, M5, measured app performance/releases and safe original-code
+retirement remain open. The screenshot does not establish reading-preview glyph paint.
+Exact methods, scope and hashes are in `validation/unsaved-asset-folder.json`.
+
+Two superseded agent-generated code-presentation downloads were moved to Trash after
+retaining the expanded current raw bundle: 2,127 files / 144,627,380 logical bytes /
+151,990,272 allocated bytes. Recovery markers and original/destination paths were
+verified. Trash was not emptied. Current builds, source, compact historical screenshots
+and reports, and user documents remain; see `validation/project-cleanup.json`.
+
+The next editor margin/width work is isolated in `/private/tmp/snowfolio-editor-layout`
+on `modernization/editor-layout`. It is not part of this accepted source checkpoint.
+Line spacing and scroll-past-end characterization remain separate parity work.

@@ -365,3 +365,19 @@ with original/destination marker verification: 4,344 files, 290,155,859 logical 
 and 305,160,192 allocated bytes. Current raw evidence, builds/source and compact prior
 reports/screenshots remain. Trash was not emptied, so no disk-space recovery is claimed.
 Recovery paths are recorded in `validation/project-cleanup.json`.
+
+
+## Unsaved asset access and validation cleanup — 2026-11-07
+
+The read-only folder grant survives frozen export snapshots and individual asynchronous
+preview reads, then releases when its owners finish. Native tests verify that switching
+roots no longer reuses a previous same-name decoded image. These establish lifetime
+and cache correctness, not lower typing latency or whole-app memory/energy acceptance.
+The accepted run passes 334 package tests and 17 native UI methods; 30 priority diagnostics
+and two AppIntents metadata notices remain without proven first-party attribution.
+
+Two superseded code-presentation downloads moved to native Trash with hash/destination
+verification: 2,127 files, 144,627,380 logical bytes and 151,990,272 allocated bytes.
+Current raw evidence and compact historical screenshots/reports remain. Trash was not
+emptied, so this does not claim disk-space recovery. Exact recovery paths are recorded
+in `validation/project-cleanup.json`.

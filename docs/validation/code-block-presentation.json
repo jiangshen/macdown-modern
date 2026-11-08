@@ -146,12 +146,16 @@
   "remaining": [
     "Fresh user-desktop visual glyph/selection acceptance remains pending; latest direct CUA observation was locked.",
     "Real IME/VoiceOver, document reliability and full native performance/energy/memory acceptance remain open.",
-    "Unsaved asset-folder implementation now has grant-backed migration and local acceptance; native chooser/Save As acceptance is tracked in unsaved-asset-folder.json.",
+    "Unsaved asset-folder migration and actual native chooser/Save As acceptance now pass; see unsaved-asset-folder.json. Fresh desktop acceptance stays open.",
     "Other original layout/editor preferences, renderer/math parity, user asset license sidecars, M5 integrations, releases and coupled original-target retirement remain open."
   ],
   "languageTitles": {
     "path": "Packages/SnowfolioCore/Sources/CodeHighlightCore/Resources/LanguageTitles.json",
     "sha256": "926ee64194c7743b78c576eb454dd138e38ee1b39398c5441192716e177a9210",
     "version": "Prism 1.30.0, existing pinned archive; other resource hashes unchanged"
+  },
+  "rawArtifactRecovery": {
+    "/private/tmp/snowfolio-code-presentation-hosted-core": "/Users/caden/.Trash/snowfolio-code-presentation-hosted-core",
+    "/private/tmp/snowfolio-code-presentation-hosted-native": "/Users/caden/.Trash/snowfolio-code-presentation-hosted-native"
   }
 }

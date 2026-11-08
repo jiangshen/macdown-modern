@@ -21,6 +21,6 @@ type, size, directory and symlink boundaries still apply. Document bytes, select
 and undo history remain owned by the native editor and document host.
 
 Local native workspace, export snapshot and memory-checker evidence is in
-[unsaved-asset-folder.json](validation/unsaved-asset-folder.json). Native chooser and
-actual untitled-save/export UI tests are pending hosted execution; fresh desktop and
-release/sandbox acceptance remain separate gates.
+[unsaved-asset-folder.json](validation/unsaved-asset-folder.json). Native chooser/cancel/history and
+actual untitled-save/export UI tests passed on the exact implementation in hosted run
+42436504932. Fresh desktop and release/sandbox acceptance remain separate gates.

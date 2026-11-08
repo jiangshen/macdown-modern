@@ -1,7 +1,7 @@
 {
   "checkpoint": "Grant-backed default asset folder for unsaved documents, fresh resource origins and model-undo revision protection",
   "date": "2026-11-07",
-  "status": "Implemented; local package/native workspace/ASAN acceptance passed; hosted native chooser/Save As tests pending",
+  "status": "Implemented; local and exact-code hosted package/native chooser/Save As/export acceptance passed; full modernization incomplete",
   "fullGoal": "active; incomplete",
   "originalEvidence": [
     {
@@ -117,14 +117,42 @@
     }
   },
   "hosted": {
-    "status": "Queued for exact pushed implementation; do not infer UI acceptance until terminal results and raw artifacts are inspected.",
+    "status": "Both jobs passed; raw package/corpus/architecture/native logs and Settings screenshot inspected. All 17 source UI methods match the passed method set.",
     "expectedNativeMethods": 17,
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42436504932",
-    "code": "d3f5da23c5fc13f9ab1f0be67d784f52998483c7"
+    "code": "d3f5da23c5fc13f9ab1f0be67d784f52998483c7",
+    "packageTests": 334,
+    "packageSuites": 71,
+    "commonMarkExamples": 652,
+    "commonMarkFailures": 0,
+    "arm64TestExecutables": 8,
+    "nativeUITests": 17,
+    "nativeUIFailures": 0,
+    "chooserTest": "passed in 64.875 seconds: unique searchable Choose Folder control, actual native folder selection, cancel preserves selection, Settings reopen/clear, source and explicit undo/redo history retained.",
+    "saveAsTest": "passed in 63.466 seconds: real untitled save in another directory, exact source bytes on disk, subsequent HTML embeds that saved folder\u2019s distinct PNG rather than the configured unsaved-folder image.",
+    "priorityDiagnostics": 30,
+    "appIntentsMetadataNotices": 2,
+    "diagnosticScope": "Priority diagnostic attribution and full app performance/energy/memory remain open. No first-party cause inferred from warning count.",
+    "rawCore": "/private/tmp/snowfolio-asset-folder-hosted-core",
+    "rawNative": "/private/tmp/snowfolio-asset-folder-hosted-native",
+    "workflowLog": "/private/tmp/snowfolio-asset-folder-hosted.log",
+    "settingsScreenshot": "/private/tmp/snowfolio-asset-folder-ui-attachments/9333A0EC-4C9C-46BB-9875-6B0924C85BBF.png",
+    "visualScope": "Native Settings labels, folder path, Choose Folder and Clear paint without clipped controls. This screenshot does not establish preview glyph painting or fresh user-desktop source-selection/IME/VoiceOver acceptance.",
+    "artifactSHA256": {
+      "/private/tmp/snowfolio-asset-folder-hosted-core/snowfolio-commonmark/commonmark.json": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885",
+      "/private/tmp/snowfolio-asset-folder-hosted-core/snowfolio-commonmark/build.log": "155adba3b0cfeca1adf53ea80b01eb44011b16e5a264f674ce20acf1e4e4431d",
+      "/private/tmp/snowfolio-asset-folder-hosted-core/snowfolio-validation/swift-test.log": "61a93d897b77adf4eb4f7bac099857cbf63a3c60367d9f802f60b54787db71d4",
+      "/private/tmp/snowfolio-asset-folder-hosted-core/snowfolio-validation/toolchain.txt": "04630ab8fa201f57c63c59730e638135e32584a97e16e004a417eb8ed283dc83",
+      "/private/tmp/snowfolio-asset-folder-hosted-core/snowfolio-validation/architecture.txt": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35",
+      "/private/tmp/snowfolio-asset-folder-hosted-native/xcodebuild.log": "9339885278888193f0fe2681f6ab6eb7876e59d1006656f4b47bcf763f49cd50",
+      "/private/tmp/snowfolio-asset-folder-hosted-native/generate.log": "097212ec5a821fe9bca7ad6ee9989e46db424255ca211d80d302b5468b369fbf",
+      "/private/tmp/snowfolio-asset-folder-hosted.log": "9e464584f5f9c78c3b4e194862d6329aef080932e4e3a7ed5c7cb944b25b06cb",
+      "/private/tmp/snowfolio-asset-folder-ui-attachments/9333A0EC-4C9C-46BB-9875-6B0924C85BBF.png": "fca5d6f0b5e3c9d41ab4138f63c889f74254cb6aeb773a6336b6b9ca62785b68",
+      "/private/tmp/snowfolio-asset-folder-ui-attachments/manifest.json": "91ec3e28b2216454462e0e2e2e325f11309308724cd51e3a2c739b450c158628"
+    }
   },
   "remaining": [
     "Fresh desktop glyph/selection inspection, real IME/VoiceOver, complete document lifecycle and accessibility acceptance remain open; latest direct CUA check is locked.",
-    "Native chooser and actual Save As/export app UI acceptance await hosted execution; package saved-file route test alone does not establish this.",
     "Current native app is not sandboxed; release entitlement/signing and sandbox distribution validation remain in M6.",
     "Separate user asset license sidecars, other original layout/editor/renderer/math preferences, M5 integrations, full app performance/energy/memory, releases and safe coupled legacy retirement remain open."
   ]

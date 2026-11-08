@@ -276,7 +276,42 @@
       "scope": "Four exact superseded agent-generated template validation downloads only; recovery markers verified. Current raw results, compact historical screenshots/reports, source, builds and user documents retained.",
       "currentBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
       "currentEvidence": "/private/tmp/snowfolio-code-presentation-hosted-native"
+    },
+    {
+      "date": "2026-11-08T02:22:08Z",
+      "items": [
+        {
+          "allocatedBytes": 143360,
+          "files": 5,
+          "logicalBytes": 128067,
+          "marker": "snowfolio-validation/swift-test.log",
+          "markerSHA256": "800a253cf7221ecd8985c23c5636e7ffdc0bb4aacb786d7ea76ee489ba2b25d0",
+          "original": "/private/tmp/snowfolio-code-presentation-hosted-core",
+          "reason": "Superseded agent-generated code-presentation validation download. Expanded accepted asset-folder run retains all prior methods plus chooser and actual untitled-save/image-export coverage; compact screenshots and reports retained.",
+          "trash": "/Users/caden/.Trash/snowfolio-code-presentation-hosted-core"
+        },
+        {
+          "allocatedBytes": 151846912,
+          "files": 2122,
+          "logicalBytes": 144499313,
+          "marker": "xcodebuild.log",
+          "markerSHA256": "5b681d583b7633beb4e131d50555a75c12c98c682f7237ac8065c7e50c387c7d",
+          "original": "/private/tmp/snowfolio-code-presentation-hosted-native",
+          "reason": "Superseded agent-generated code-presentation validation download. Expanded accepted asset-folder run retains all prior methods plus chooser and actual untitled-save/image-export coverage; compact screenshots and reports retained.",
+          "trash": "/Users/caden/.Trash/snowfolio-code-presentation-hosted-native"
+        }
+      ],
+      "totals": {
+        "files": 2127,
+        "logicalBytes": 144627380,
+        "allocatedBytes": 151990272
+      },
+      "method": "FileManager.trashItem",
+      "trashEmptied": false,
+      "scope": "Two exact superseded agent-generated code-presentation core/native downloads. Compact historical screenshots/reports, current source/build/current raw evidence and user documents retained.",
+      "currentEvidence": "/private/tmp/snowfolio-asset-folder-hosted-native",
+      "currentBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio"
     }
   ],
-  "lastUpdated": "2026-11-08T01:34:19Z"
+  "lastUpdated": "2026-11-08T02:22:08Z"
 }
