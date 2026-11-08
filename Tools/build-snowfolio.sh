@@ -4,6 +4,25 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 artifact_root="${SNOWFOLIO_APP_BUILD_DIR:-$repo_root/Build/Snowfolio}"
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
+action=build-for-testing
+if [ "${1:-}" = "--test" ]; then action=test; shift; fi
+build_arguments=("$action")
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --only-testing)
+            if [ "$action" != test ] || [ "$#" -lt 2 ]; then
+                echo "--only-testing requires --test and a SnowfolioUITests identifier." >&2
+                exit 2
+            fi
+            case "$2" in
+                SnowfolioUITests/*) build_arguments+=("-only-testing:$2") ;;
+                *) echo "The test identifier must start with SnowfolioUITests/." >&2; exit 2 ;;
+            esac
+            shift 2
+            ;;
+        *) echo "Usage: build-snowfolio.sh [--test [--only-testing identifier]...]" >&2; exit 2 ;;
+    esac
+done
 python3 "$repo_root/Tools/verify-markdown-engine.py"
 python3 "$repo_root/Tools/verify-editor-themes.py"
 python3 "$repo_root/Tools/verify-reading-styles.py"
@@ -20,12 +39,10 @@ fi
 mkdir -p "$artifact_root"
 artifact_root="$(cd "$artifact_root" && pwd)"
 tuist generate --no-open --path "$repo_root/App" > "$artifact_root/generate.log" 2>&1
-action=build-for-testing
-if [ "${1:-}" = "--test" ]; then action=test; fi
 if xcodebuild -workspace "$repo_root/App/Snowfolio.xcworkspace" \
     -scheme Snowfolio -configuration Debug -destination 'platform=macOS,arch=arm64' \
     -derivedDataPath "$artifact_root/DerivedData" -parallel-testing-enabled NO \
-    "$action" > "$artifact_root/xcodebuild.log" 2>&1; then
+    "${build_arguments[@]}" > "$artifact_root/xcodebuild.log" 2>&1; then
     echo "Native Mac app $action passed."
 else
     result=$?

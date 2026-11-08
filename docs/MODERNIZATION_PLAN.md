@@ -24,11 +24,14 @@ is in progress. Smart line start preserves the original preference and native
 wrapped-row/composition behavior. Follow-up close-cancellation and graceful-restoration
 fixtures now compile (23 UI methods total); their execution is not yet accepted.
 
-New work awaiting execution: the autosave/clean-external-reload encoding fixture in
-`6d911da`, [run42459610152](https://github.com/jiangshen/snowfolio/actions/runs/42459610152).
-All21 native UI methods compile. The fixture checks exact UTF-16LE BOM/CRLF/Unicode
-autosave before Save, outside replacement with UTF-8 BOM/LF, clean reload, Undo/Redo
-and Save. No runtime acceptance is claimed yet. See
+Document lifecycle currently fails acceptance: exact `6d911da`
+[run42459610152](https://github.com/jiangshen/snowfolio/actions/runs/42459610152)
+passes exact UTF-16LE BOM/CRLF/Unicode autosave before Save (observed1.285s after
+deactivation request), but the clean uncoordinated external-reload check times out at
+its unchanged8-second wait. Other20 native UI methods and the core job pass. The failure
+video retains old source with no visible conflict prompt; cause is not yet established.
+A separate coordinated-write comparison and opt-in Debug metadata trace now compile
+(24 methods total). No overwrite/conflict guard is weakened. See
 [document-lifecycle.json](validation/document-lifecycle.json).
 
 The light/default-font source-selection screenshot at the preceding accepted checkpoint
@@ -2836,3 +2839,22 @@ domain; a Foundation probe confirms last-value behavior without changing live de
 The native build-for-testing passes with23 methods compiled. Neither new method has
 runtime acceptance yet; exact source/build evidence is in document-lifecycle.json.
 Conflict/Versions and remaining document/IME/VoiceOver gates stay open.
+
+
+### Autosave accepted; external reload diagnosis remains open
+
+Exact6d911da/run42459610152 verifies native autosave before any Save command, with
+byte-exact UTF-16LE BOM/CRLF/Unicode and1.285s observed delay after deactivation. The
+external-reload phase fails its8-second wait; other20 methods pass. Raw result, native
+console/system archive, activities and failure video/frame are retained. Old source
+remains without a visible conflict prompt. No production-cause claim follows yet.
+
+Apple defines apply(snapshot:previous:)'s previous as the previously loaded snapshot,
+not a confirmed latest save. The existing guard therefore needs investigation after
+saved edits. A separate coordinated replacement comparison, unchanged original
+uncoordinated case and Debug-only state/operation trace distinguish notification from
+apply-policy failures. Trace contains no document source or URLs. Both cases preserve
+the exact-source/disk assertion and original wait; observations are captured before
+assertion. All24 UI methods compile. A manual document-reload scope runs these two
+methods quickly; push/PR/default dispatch keep all core/corpus/native gates. Focused
+results cannot establish complete acceptance. Full lifecycle/M2 remains open.

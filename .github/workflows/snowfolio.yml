@@ -14,12 +14,22 @@ on:
       - 'Tools/**'
       - '.github/workflows/snowfolio.yml'
   workflow_dispatch:
+    inputs:
+      native_test_scope:
+        description: Native UI test scope (focused reload diagnostics do not establish full acceptance)
+        type: choice
+        default: all
+        options:
+          - all
+          - document-reload
 
 permissions:
   contents: read
 
 jobs:
   swift-foundations:
+    # Push/PR and default dispatch always retain the complete core/corpus gate.
+    if: github.event_name != 'workflow_dispatch' || inputs.native_test_scope != 'document-reload'
     # Native arm64 macOS 27 / Xcode 27 hosted image. See actions/runner-images.
     runs-on: xcode-27
     timeout-minutes: 15
@@ -53,7 +63,16 @@ jobs:
       - name: Install project generator
         run: brew install tuist
       - name: Build native app and run document UI tests
-        run: bash Tools/build-snowfolio.sh --test
+        env:
+          SNOWFOLIO_TEST_SCOPE: ${{ inputs.native_test_scope || 'all' }}
+        run: |
+          if [ "$SNOWFOLIO_TEST_SCOPE" = document-reload ]; then
+            bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave
+          else
+            bash Tools/build-snowfolio.sh --test
+          fi
       - name: Preserve native UI test results
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

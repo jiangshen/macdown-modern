@@ -46,6 +46,9 @@ public final class MarkdownDocument: SwiftUI.Document {
       guard let data = wrapper.regularFileContents else {
         throw CocoaError(.fileReadCorruptFile)
       }
+      #if DEBUG
+        DocumentLifecycleTrace.note("read file wrapper bytes=\(data.count)")
+      #endif
       return try TextFileContents(decoding: data)
     }
   }
@@ -54,7 +57,10 @@ public final class MarkdownDocument: SwiftUI.Document {
     -> sending FileWrapperDocumentWriter<TextFileContents>
   {
     FileWrapperDocumentWriter(configuration) { snapshot, _ in
-      FileWrapper(regularFileWithContents: try snapshot.encoded())
+      #if DEBUG
+        DocumentLifecycleTrace.note("create write wrapper utf16=\(snapshot.text.utf16.count)")
+      #endif
+      return FileWrapper(regularFileWithContents: try snapshot.encoded())
     }
   }
 
@@ -66,6 +72,16 @@ public final class MarkdownDocument: SwiftUI.Document {
     snapshot: sending TextFileContents,
     previous: sending TextFileContents?
   ) async throws {
+    #if DEBUG
+      if DocumentLifecycleTrace.enabled {
+        let native = configuration?.fileURL.flatMap {
+          NSDocumentController.shared.document(for: $0)
+        }
+        DocumentLifecycleTrace.note(
+          "apply revision=\(revision) previous=\(previous != nil) previousMatches=\(previous.map { text.utf8.elementsEqual($0.text.utf8) } ?? false) incomingMatches=\(text.utf8.elementsEqual(snapshot.text.utf8)) nativeHost=\(native != nil) nativeEdited=\(native?.isDocumentEdited.description ?? "unavailable")"
+        )
+      }
+    #endif
     if let previous,
       !text.utf8.elementsEqual(previous.text.utf8),
       !text.utf8.elementsEqual(snapshot.text.utf8)
@@ -104,3 +120,14 @@ public struct EditorSelectionRequest: Equatable {
   public let id = UUID()
   public let offset: Int
 }
+
+#if DEBUG
+  /// Opt-in lifecycle diagnostics contain only operation/state metadata, never text or URLs.
+  private enum DocumentLifecycleTrace {
+    static let enabled =
+      ProcessInfo.processInfo.environment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] == "1"
+    static func note(_ message: String) {
+      if enabled { NSLog("SnowfolioDocument %@", message) }
+    }
+  }
+#endif

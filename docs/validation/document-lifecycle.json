@@ -1,5 +1,5 @@
 {
-  "checkpoint": "Automated native autosave and clean external-reload fixture; compiled, execution pending",
+  "checkpoint": "Autosave exact-byte acceptance passed; clean external reload failed; controlled diagnosis prepared",
   "base": "4ee7721bbf10b2243f25de985a4993949da0b057",
   "goal": "active; incomplete",
   "fixture": "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
@@ -22,7 +22,30 @@
   "hosted": {
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42459610152",
     "commit": "6d911da7096510f2e9bd215e0e02535648fbde26",
-    "status": "in progress at last authoritative poll; core job passed, native results pending"
+    "status": "completed; native job failed one of21 methods; other20 passed; core job passed",
+    "autosave": "Exact UTF-16LE BOM/CRLF/Unicode disk bytes verified before any Save command; observation1.284964125 seconds after deactivation request.",
+    "externalReload": "Original uncoordinated atomic replacement did not appear in source within unchanged8-second wait. Test failed at line98 before post-reload editing assertions.",
+    "visual": "Inspected final frame from exact failure video: old source remained, with no visible conflict prompt. Cause not established.",
+    "artifacts": [
+      {
+        "path": "/private/tmp/snowfolio-document-lifecycle-hosted-attachments/8351EFDB-E1E4-4270-9CF1-A1EE59D4525C.txt",
+        "sha256": "cb46736230648bfa60db433d5f91aaca5fc8cca3125ad331f2dfc7f331a9d90e"
+      },
+      {
+        "path": "/private/tmp/snowfolio-document-lifecycle-hosted-native/xcodebuild.log",
+        "sha256": "9859f1429a48fc9da3b225b9eab5c8f682f3680bd534dd94b8a9f2ec7eac6569"
+      },
+      {
+        "path": "/private/tmp/snowfolio-document-lifecycle-hosted-activities.json",
+        "sha256": "7cbbffa78717702cdbb10a862768134780cdf60f73c5221794a4a7ac696eef73"
+      },
+      {
+        "path": "/private/tmp/snowfolio-document-lifecycle-failure.png",
+        "sha256": "bacf5a9419ea584be202bdfc763827eec048789638f38c57b092b293438cab53"
+      }
+    ],
+    "diagnosticsDirectory": "/private/tmp/snowfolio-document-lifecycle-hosted-diagnostics",
+    "appConsole": "Native console/system log archive exported. No snapshot/conflict diagnosis is inferred from unrelated framework messages."
   },
   "pending": [
     "Execute the new native lifecycle method and inspect exact results.",
@@ -47,5 +70,20 @@
       "commit": "35013ec1d3be807ac87007f33c8c375aa233a050",
       "status": "in progress at last authoritative poll; exact23-method native execution pending"
     }
+  },
+  "diagnosticFollowup": {
+    "checks": [
+      "Keep the original uncoordinated replacement regression and unchanged8-second exact-source/disk-byte assertion.",
+      "Add separate NSFileCoordinator replacement comparison with identical source/encoding expectations.",
+      "Attach reload result/AX tree and external-byte preservation before asserting so failure state is retained.",
+      "Opt-in Debug-only lifecycle trace logs read/write/apply metadata, prior/current snapshot equality and public native host dirty state; no source text or URLs."
+    ],
+    "appleApplyDocumentation": "https://developer.apple.com/documentation/swiftui/readabledocument/apply(snapshot:previous:)",
+    "semanticFinding": "Apple defines previous as the previously loaded snapshot. It is not evidence of the latest successful save. Existing conflict guard may therefore reject a clean reload after saved local edits; whether it caused this exact failure remains unproven.",
+    "localBuildForTesting": "passed;24 methods compile",
+    "sourceSHA256": "a5af229d6165afea799960ddc0a56127541c58c1b4b4b5111055a6b149d60abb",
+    "buildLog": "/private/tmp/snowfolio-document-reload-diagnostics-helper-build.log",
+    "productionConflictPolicy": "unchanged pending evidence; no overwrite guard weakened",
+    "ci": "Push/PR/default dispatch still run full core/corpus and all native methods. Explicit document-reload dispatch selects only the two diagnostic methods and does not establish full acceptance."
   }
 }

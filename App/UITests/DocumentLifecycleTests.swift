@@ -3,7 +3,9 @@ import XCTest
 
 final class DocumentLifecycleTests: XCTestCase {
   @MainActor
-  private func launch(arguments: [String] = []) -> XCUIApplication {
+  private func launch(arguments: [String] = [], environment: [String: String] = [:])
+    -> XCUIApplication
+  {
     continueAfterFailure = false
     let app = XCUIApplication()
     app.launchArguments = [
@@ -16,6 +18,7 @@ final class DocumentLifecycleTests: XCTestCase {
       "-editorScrollsPastEnd", "NO",
     ]
     app.launchArguments += arguments
+    app.launchEnvironment.merge(environment) { _, supplied in supplied }
     app.launch()
     return app
   }
@@ -53,6 +56,16 @@ final class DocumentLifecycleTests: XCTestCase {
 
   @MainActor
   func testAutosavePreservesEncodingAndReloadsCleanExternalChange() throws {
+    try checkAutosaveAndExternalReload(coordinated: false)
+  }
+
+  @MainActor
+  func testCoordinatedExternalReloadAfterAutosave() throws {
+    try checkAutosaveAndExternalReload(coordinated: true)
+  }
+
+  @MainActor
+  private func checkAutosaveAndExternalReload(coordinated: Bool) throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     defer { try? FileManager.default.removeItem(at: directory) }
@@ -60,7 +73,7 @@ final class DocumentLifecycleTests: XCTestCase {
     let original = "# Native lifecycle\r\n中文 👩‍💻 e\u{301}\r\n"
     let utf16BOM = Data([0xFF, 0xFE])
     try (utf16BOM + XCTUnwrap(original.data(using: .utf16LittleEndian))).write(to: file)
-    let app = launch()
+    let app = launch(environment: ["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE": "1"])
     defer { app.terminate() }
     let editor = openDocument(file, in: app)
     XCTAssertEqual(editor.value as? String, original)
@@ -91,11 +104,33 @@ final class DocumentLifecycleTests: XCTestCase {
     let external = "# External snapshot\n中文 👩‍💻 e\u{301}\n"
     let utf8BOM = Data([0xEF, 0xBB, 0xBF])
     let externalBytes = utf8BOM + Data(external.utf8)
-    try externalBytes.write(to: file, options: .atomic)
+    if coordinated {
+      var coordinationError: NSError?
+      var writeError: Error?
+      NSFileCoordinator().coordinate(
+        writingItemAt: file, options: .forReplacing, error: &coordinationError
+      ) { url in
+        do { try externalBytes.write(to: url, options: .atomic) } catch { writeError = error }
+      }
+      if let coordinationError { throw coordinationError }
+      if let writeError { throw writeError }
+    } else {
+      try externalBytes.write(to: file, options: .atomic)
+    }
     app.activate()
-    let reloaded = NSPredicate { _, _ in editor.value as? String == external }
-    expectation(for: reloaded, evaluatedWith: nil)
-    waitForExpectations(timeout: 8)
+    let reloaded = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in editor.value as? String == external }, object: nil)
+    let result = XCTWaiter().wait(for: [reloaded], timeout: 8)
+    let observation = XCTAttachment(
+      string:
+        "Coordinated writer: \(coordinated); wait outcome: \(result.rawValue); external bytes retained: \((try? Data(contentsOf: file)) == externalBytes)\n"
+        + app.debugDescription)
+    observation.name =
+      coordinated ? "coordinated-reload-observation" : "uncoordinated-reload-observation"
+    observation.lifetime = .keepAlways
+    add(observation)
+    XCTAssertEqual(
+      result, .completed, "External reload must complete without Save, reopen or longer waits")
     XCTAssertEqual(editor.value as? String, external)
     XCTAssertEqual(try Data(contentsOf: file), externalBytes)
     let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
