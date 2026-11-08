@@ -25,6 +25,7 @@ on:
           - document-lifecycle
           - document-restoration
           - document-host-probe
+          - document-host-probe-url
           - document-host-probe-appkit
 
 permissions:
@@ -92,6 +93,8 @@ jobs:
         run: |
           if [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe-appkit ]; then
             SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND=appkit bash Tools/probe-document-host.sh
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe-url ]; then
+            SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND=swiftui-url bash Tools/probe-document-host.sh
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe ]; then
             bash Tools/probe-document-host.sh
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-reload ]; then
@@ -100,6 +103,7 @@ jobs:
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-lifecycle ]; then
             bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testCancelUnsavedDocumentCloseRetainsEditingAndUndo \

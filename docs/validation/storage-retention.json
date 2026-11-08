@@ -11,7 +11,7 @@
   "latestAppBuild": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
   "latestAppBuildAllocatedBytes": 518193152,
   "appConsolidation": "Newest locally verified app build moved unchanged from isolated scroll-past-end build to canonical Build/Snowfolio; older generated app builds removed after process inventory found no running app/compiler.",
-  "latestRawResult": "/private/tmp/snowfolio-current-undo-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_11-06-49-+0000.xcresult",
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_12-31-07-+0000.xcresult",
   "retainedRawResultBundleCount": 1,
   "historicalCompactEvidence": "/private/tmp/snowfolio-validation-history",
   "historicalCompactEvidenceAllocatedBytes": 17764352,
@@ -271,5 +271,20 @@
       "path": "/private/tmp/snowfolio-retired-extra-caches.json",
       "sha256": "de2cbea82cd03619097500ec627a967a79fe21340b6eb0522e967221c3d68bc3"
     }
-  ]
+  ],
+  "currentDocumentControlRetention": {
+    "dateUTC": "2026-11-08T12:48:52.487457+00:00",
+    "rawResultsRetained": 1,
+    "retiredRawRuns": [
+      42479210488,
+      42480609986
+    ],
+    "compactProduction": "/private/tmp/snowfolio-canonical-lifecycle-summary.json",
+    "compactStock": "/private/tmp/snowfolio-stock-canonical-summary.json",
+    "consoleDirectories": [
+      "/private/tmp/snowfolio-validation-history/canonical-lifecycle-console",
+      "/private/tmp/snowfolio-validation-history/stock-canonical-console"
+    ],
+    "action": "Replaced raw result in the same current location after extracting summaries/text/console; removed both exported diagnostic system archives and duplicate text exports. Current core logs replaced after verified355/76,652spec,8arm64 evidence."
+  }
 }

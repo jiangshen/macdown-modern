@@ -218,6 +218,42 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testActiveAutosaveAndSavedEditUndoPreserveBytes() throws {
+    let directory = FileManager.default.temporaryDirectory.resolvingSymlinksInPath()
+      .appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let file = directory.appendingPathComponent("active-autosave.md")
+    let original = "# Active autosave\r\n中文 👩‍💻 e\u{301}\r\n"
+    let bom = Data([0xFF, 0xFE])
+    let originalBytes = bom + (try XCTUnwrap(original.data(using: .utf16LittleEndian)))
+    try originalBytes.write(to: file)
+    let app = launch(environment: ["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE": "1"])
+    defer { app.terminate() }
+    let editor = openDocument(file, in: app)
+    XCTAssertEqual(editor.value as? String, original)
+    editor.click()
+    app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+    // Require edited bytes on disk before Undo; otherwise untouched original bytes
+    // could make rollback persistence pass without any automatic save.
+    editor.typeText("X")
+    XCTAssertEqual(editor.value as? String, original + "X")
+    let editedBytes = bom + (try XCTUnwrap((original + "X").data(using: .utf16LittleEndian)))
+    let edited = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == editedBytes }, object: nil)
+    XCTAssertEqual(XCTWaiter().wait(for: [edited], timeout: 8), .completed)
+    XCTAssertEqual(app.state, .runningForeground)
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, original)
+    let undone = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == originalBytes }, object: nil
+    )
+    XCTAssertEqual(XCTWaiter().wait(for: [undone], timeout: 8), .completed)
+    XCTAssertEqual(app.state, .runningForeground)
+    XCTAssertEqual(try Data(contentsOf: file), originalBytes)
+  }
+
+  @MainActor
   func testGracefulQuitRestoresSavedDocumentAndInsertionPosition() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

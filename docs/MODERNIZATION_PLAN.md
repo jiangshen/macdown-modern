@@ -24,7 +24,9 @@ optimization measurements and compatibility limits are recorded in
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 The full native47bfd91/12a356c runs complete24 methods with21 passes and the same
 three lifecycle failures: uncoordinated/coordinated external reload and the original
-active8s Undo disk assertion. Latest f552c24/1faedfd full hosted runs remain pending.
+active8s Undo disk assertion. Full `f552c24` / `1faedfd` hosted runs also execute 24 methods with the same 21 passes
+and three failures. Current `83ee161` core artifacts verify 355 tests / 76 suites,
+652 examples and eight arm64 executables.
 
 M2 remains incomplete. A standalone native NSDocument/TextKit2 control at1faedfd
 [run42479210488](https://github.com/jiangshen/snowfolio/actions/runs/42479210488)
@@ -33,11 +35,20 @@ user folders, plus saved-edit Undo/deactivation autosave; both uncoordinated rel
 fail. Registration/notification/revert/second-read traces confirm the native path.
 Only the latest useful raw control result is retained, with compact older evidence.
 
-The next production fixture uses identical canonical paths; exact8s reload assertions
-remain. A separate diagnostic compares deactivation-triggered autosave after the
-original active8s Undo failure, without replacing that assertion. Both stock and
-production fixtures compile without warnings. No production merge guard or native
-save policy is weakened. See [document-lifecycle.json](validation/document-lifecycle.json).
+Production `83ee161` / run `42480609986` still fails both reloads with canonical paths.
+The corrected minimal SwiftUI control / run `42480604498` registers one file presenter
+but fails coordinated reloads in both locations, plus both uncoordinated cases,
+without a second read/apply. Its saved-edit Undo/deactivation check passes.
+AppKit's matched coordinated success supports a diagnostic direct URL reader/writer
+comparison before changing the production host; no merge guard is weakened.
+
+Production Undo is byte-correct and automatically persists on deactivation. Its
+native periodic `autosavingDelay` is 0 (disabled). A native 2-second periodic policy
+is configured only after application launch, preserving the original active 8-second
+assertion. A new check requires edited bytes before Undo and original bytes afterward,
+both while foreground. Arm64 app (25 methods) and diagnostic (5 methods) builds pass
+without warnings; runtime acceptance is pending. See
+[document-lifecycle.json](validation/document-lifecycle.json).
 
 The light/default-font source-selection screenshot at the preceding accepted checkpoint
 has a continuous highlight without a marker seam. User-desktop dark selection remains
@@ -3032,3 +3043,30 @@ Detailed inputs, raw timing references, compatibility cases, limits and reproduc
 are in validation/markdown-engine-comparison.json. Full lifecycle and other
 modernization gates remain open. Temporary candidate builds/source are retired
 after retaining compact measurements per the standing cleanup preference.
+
+
+## Matched document-host results and native periodic autosave — 2026-11-08
+
+Exact production `83ee161` canonical-path fixtures execute four methods: Cancel-close
+passes, both external reloads and original active 8-second Undo persistence fail.
+The coordinated writer finishes in 0.443 seconds; external bytes remain intact and
+no second reader/apply occurs. The minimal SwiftUI FileWrapper host executes five
+methods: only saved-edit Undo/deactivation passes. Its one-presenter trace rules out
+an assumed missing registration, while 125-second AX snapshot latency needs further
+diagnosis. Native AppKit `1faedfd` passed matched coordinated reloads. Add a separate
+direct URL reader/writer control using documented public APIs and identical fixtures;
+production I/O remains unchanged until those results establish a direction.
+
+Production Undo has matching native/model revision 29 and 1,304 UTF-16 units. Native
+periodic `autosavingDelay` is 0; the deactivation diagnostic automatically restores
+original disk bytes before explicit Save. Configure a 2-second native periodic
+interval in `applicationDidFinishLaunching`, preserving the existing active 8-second
+gate. A new UTF-16LE/BOM/CRLF/Unicode check first requires edited bytes on disk, then
+Undo rollback bytes, with the app foreground throughout. Both local arm64 builds
+for testing pass without warnings. Runtime and full M2 acceptance remain open.
+
+Current `83ee161` core evidence independently verifies 355 package tests / 76 suites,
+652 CommonMark examples and eight arm64 executables. Full `f552c24` and `1faedfd`
+native runs complete 24 methods with 21 passes and three known lifecycle failures.
+Result, console and attachment references are retained compactly; only the latest
+stock-control raw result remains.

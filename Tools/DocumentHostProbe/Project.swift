@@ -1,6 +1,11 @@
 import ProjectDescription
 
-let appKitProbe = Environment.documentHostProbeKind.getString(default: "swiftui") == "appkit"
+let probeKind = Environment.documentHostProbeKind.getString(default: "swiftui")
+let appKitProbe = probeKind == "appkit"
+let probeCompilationConditions =
+  appKitProbe
+  ? "$(inherited) APPKIT_DOCUMENT_HOST_PROBE"
+  : probeKind == "swiftui-url" ? "$(inherited) DIRECT_URL_DOCUMENT_HOST_PROBE" : "$(inherited)"
 var probeDocumentType: [String: Plist.Value] = [
   "CFBundleTypeName": "Probe text", "CFBundleTypeRole": "Editor",
   "LSHandlerRank": "Alternate",
@@ -15,8 +20,7 @@ let project = Project(
     "SWIFT_VERSION": "6.0", "SWIFT_STRICT_CONCURRENCY": "complete",
     "ARCHS": "arm64", "ONLY_ACTIVE_ARCH": "YES",
     "CODE_SIGN_IDENTITY": "-", "CODE_SIGN_STYLE": "Manual",
-    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": appKitProbe
-      ? "$(inherited) APPKIT_DOCUMENT_HOST_PROBE" : "$(inherited)",
+    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": .string(probeCompilationConditions),
   ]),
   targets: [
     .target(
