@@ -211,7 +211,15 @@ struct NativeCodePresentationTests {
         const code=document.querySelector('pre>code'), lines=[...code.querySelectorAll('.md-code-line')];
         const range=document.createRange();range.selectNodeContents(code);
         const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
-        return {text:code.textContent,selected:selection.toString(),label:document.querySelector('.md-code-label').textContent,
+        const markerStyle=getComputedStyle(code.querySelector('.md-code-number'));
+        const rgb=s=>s.match(/[\\d.]+/g).slice(0,3).map(Number);
+        const background=rgb(getComputedStyle(code.closest('pre')).backgroundColor);
+        const opacity=parseFloat(markerStyle.opacity);
+        const foreground=rgb(markerStyle.color).map((v,i)=>v*opacity+background[i]*(1-opacity));
+        const luminance=values=>values.map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;})
+          .reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+        const a=luminance(foreground),b=luminance(background),contrast=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+        return {text:code.textContent,selected:selection.toString(),label:document.querySelector('.md-code-label').textContent,contrast,
           rows:lines.map(line=>{const marker=line.querySelector('.md-code-number');
             const rect=line.getBoundingClientRect(), number=marker.getBoundingClientRect();
             return Math.abs(rect.top-number.top)<1 && rect.height>0 && number.width>0;})};
@@ -221,6 +229,10 @@ struct NativeCodePresentationTests {
       #expect((value["selected"] as? String)?.utf8.elementsEqual(code.utf8) == true)
       #expect(value["label"] as? String == "Swift")
       #expect(value["rows"] as? [Bool] == [true, true, true])
+      if style.presentation == .notebook && style.codeTheme == .adaptive {
+        let contrast = try #require(value["contrast"] as? Double)
+        #expect(contrast >= 4.5, "Default number contrast: \(contrast); dark: \(dark)")
+      }
     }
   }
 

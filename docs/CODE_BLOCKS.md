@@ -34,7 +34,9 @@ standalone export.
 Numbers are generated inside empty, non-selectable, `aria-hidden` elements. The
 rendered code text and code-only selection stay identical to the parser's code
 literal, including blank lines, Unicode, nonbreaking spaces and its terminal newline.
-Wrapped logical lines keep one number aligned with their first visual line. The
+Wrapped logical lines keep one number aligned with their first visual line. Default
+number text keeps full foreground contrast; the divider is subtle and strengthens
+with Increase Contrast. The
 existing isolated preview bridge restores forward/backward selections when a code
 block's source position and text are unchanged through a presentation update.
 Actual code edits do not reuse stale code offsets.

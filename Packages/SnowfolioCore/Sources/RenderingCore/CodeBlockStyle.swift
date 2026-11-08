@@ -15,10 +15,13 @@ enum CodeBlockStyle {
     pre[data-code-numbered] .md-code-number {
       position: absolute; display: block; inset-inline-start: 0; inset-block-start: 0;
       inline-size: var(--md-code-gutter); box-sizing: border-box; padding-inline-end: .7ch;
-      border-inline-end: 1px solid currentColor; text-align: end; opacity: .6;
+      border-inline-end: 1px solid currentColor;
+      border-inline-end-color: color-mix(in srgb, currentColor 25%, transparent); text-align: end;
       font-variant-numeric: tabular-nums; pointer-events: none; user-select: none;
     }
     pre[data-code-numbered] .md-code-number::before { content: attr(data-line); }
-    @media (prefers-contrast: more) { pre[data-code-numbered] .md-code-number { opacity: 1; } }
+    @media (prefers-contrast: more) {
+      pre[data-code-numbered] .md-code-number { border-inline-end-color: currentColor; }
+    }
     """
 }

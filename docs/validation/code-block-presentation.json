@@ -48,10 +48,10 @@
       "suites": 70,
       "warnings": 0,
       "errors": 0,
-      "durationMs": 42573,
-      "report": "/private/tmp/snowfolio-code-presentation-final-full.json",
-      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-9FAFDA28-4D41-4D6E-9329-5C9C3F5A57DA/build.log",
-      "logSHA256": "33c043157c08c36a0cfca3bea0f284d8803e47b44a725c3583e0871a870f281b"
+      "durationMs": 43399,
+      "report": "/private/tmp/snowfolio-code-presentation-contrast-reviewed-full.json",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-7B42AAD4-7147-4191-984D-64EE73287521/build.log",
+      "logSHA256": "b6d7bb6eda3002f688e21085f42536eeb98d52003e25f7cb1df7a62ae1c89763"
     },
     "addressSanitizer": {
       "tests": 11,
@@ -64,9 +64,9 @@
       "logSHA256": "b9f2ad131efdf2fc10cf6ddb53c9c3d555bed334e3a36fd2574e8c3837892612"
     },
     "nativeBuildForTesting": "passed including source/app resource and license verification",
-    "appLog": "/private/tmp/snowfolio-code-presentation-final-app.log",
+    "appLog": "/private/tmp/snowfolio-code-presentation-contrast-app.log",
     "architecture": "eight arm64 test executables; /private/tmp/snowfolio-code-presentation-arm64.txt",
-    "formatting": "19 changed/new Swift files passed strict formatting",
+    "formatting": "20 changed/new Swift files passed strict formatting",
     "diffCheck": "passed"
   },
   "nativeCoverage": [
@@ -87,10 +87,24 @@
       "finding": "Old code-style expectation compared theme-only CSS instead of shared code CSS; updated the exact expected DocumentStyle.codeCSS. One concurrent local run also timed out in unchanged preview-led zoom; focused unchanged zoom and final full run pass. Zoom timeout cause is not proven; no timeout/behavior assertions removed."
     },
     "firstAppBuild": "New UI test used renamed Escape constant; compiler-directed XCUIKeyboardKey.escape replacement builds.",
-    "UIIsolation": "Every hosted app launch resets the two presentation options, preventing new preference UI changes from contaminating later export tests."
+    "UIIsolation": "Every hosted app launch resets the two presentation options, preventing new preference UI changes from contaminating later export tests.",
+    "numberContrast": {
+      "beforeReport": "/private/tmp/snowfolio-code-number-contrast-before.json",
+      "beforeDefaultLight": 3.5460144298607843,
+      "finding": "Whole-number opacity faded default light-mode text below 4.5:1. Full foreground contrast now retained; only decorative divider mixes alpha, strengthening with Increase Contrast.",
+      "accepted": "Native all-style/theme check now asserts default Notebook/adaptive number contrast >= 4.5 in both appearances; final complete suite passes."
+    },
+    "caretMetricsFollowup": {
+      "initialReport": "/private/tmp/snowfolio-code-presentation-contrast-full.json",
+      "isolatedReport": "/private/tmp/snowfolio-code-contrast-font-followup.json",
+      "finding": "An existing caret metric case intermittently differed from its native reference in a full local run. Unchanged focused cases and final full run pass. Added font/typing-attribute facts on failure only; no assertion or production font code changed. Cause unproven; final runtime/IME/typography acceptance remains open."
+    }
   },
   "hosted": {
-    "status": "pending; two new native UI methods cover Settings/source history and actual None-style save-panel default"
+    "status": "Waiting for exact final contrast commit; original feature run retained separately",
+    "initialRun": "https://github.com/jiangshen/snowfolio/actions/runs/42432393352",
+    "initialCode": "e062ba0b76798c231a3276e642a15aac0f64b8d0",
+    "note": "Initial package job passed; final contrast update requires fresh native/head validation."
   },
   "remaining": [
     "Fresh user-desktop visual glyph/selection acceptance remains pending; latest direct CUA observation was locked.",

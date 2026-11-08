@@ -65,9 +65,14 @@ struct NativeEditorInsertionFontTests {
           #expect(actualFont.fontName == font.fontName)
           let actual = try caret(editor)
           let expected = try caret(reference)
+          var facts = ""
+          if actual.height <= 0 || abs(actual.height - expected.height) >= 0.1 {
+            facts =
+              " actual descriptor: \(actualFont.fontDescriptor.fontAttributes); reference descriptor: \(String(describing: reference.font?.fontDescriptor.fontAttributes)); actual typing: \(editor.typingAttributes); reference typing: \(reference.typingAttributes)"
+          }
           #expect(
             actual.height > 0 && abs(actual.height - expected.height) < 0.1,
-            "\(selector), \(source.debugDescription), \(family ?? "monospaced"), zoom \(zoom): \(actual.height) vs \(expected.height)"
+            "\(selector), \(source.debugDescription), \(family ?? "monospaced"), zoom \(zoom): \(actual.height) vs \(expected.height)\(facts)"
           )
           #expect(editor.string.utf8.elementsEqual(source.utf8) && document.text == source)
           #expect(document.revision == 0)
