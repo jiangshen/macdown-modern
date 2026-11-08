@@ -308,7 +308,7 @@ struct NativeMarkdownPreviewTests {
         style: DocumentStyle(codeTheme: theme))
       try await waitFor {
         (try? await evaluate("return document.getElementById('code-style').textContent;", in: view))
-          == theme.css
+          == DocumentStyle(codeTheme: theme).codeCSS
       }
       #expect(
         try await evaluate(

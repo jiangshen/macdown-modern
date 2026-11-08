@@ -69,7 +69,7 @@ fi
 theme_resources="$app/Contents/Resources/SnowfolioCore_EditorCore.bundle/Contents/Resources/Themes"
 python3 "$repo_root/Tools/verify-editor-themes.py" "$theme_resources"
 highlight_resources="$app/Contents/Resources/SnowfolioCore_CodeHighlightCore.bundle/Contents/Resources"
-for resource in Prism.js Languages.json Prism-LICENSE.txt Prism-Provenance.json prism.css prism-coy.css prism-dark.css prism-funky.css prism-okaidia.css prism-solarizedlight.css prism-tomorrow.css prism-twilight.css; do
+for resource in Prism.js Languages.json LanguageTitles.json Prism-LICENSE.txt Prism-Provenance.json prism.css prism-coy.css prism-dark.css prism-funky.css prism-okaidia.css prism-solarizedlight.css prism-tomorrow.css prism-twilight.css; do
     if [ ! -s "$highlight_resources/$resource" ]; then
         echo "Bundled code-highlighting resource is missing: $resource" >&2
         exit 1

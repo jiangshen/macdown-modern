@@ -10,6 +10,7 @@ final class DocumentLifecycleTests: XCTestCase {
       "-ApplePersistenceIgnoreState", "YES", "-NSQuitAlwaysKeepsWindows", "NO",
       "-AppleWindowTabbingMode", "manual", "-preferDocumentTabs", "NO",
       "-editorThemeSelection", "automatic", "-readingStyleSelection", "snowfolio",
+      "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
     ]
     app.launchArguments += arguments
     app.launch()
@@ -547,6 +548,107 @@ final class DocumentLifecycleTests: XCTestCase {
     image.name = "editor-theme-library-restored-to-automatic"
     image.lifetime = .keepAlways
     add(image)
+  }
+
+  @MainActor
+  func testCodePresentationSettingsRetainSourceAndHistory() {
+    let app = launch(arguments: [
+      "-markdownManualRender", "NO", "-htmlSyntaxHighlighting", "NO",
+      "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
+    ])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    let source = "```swift:Snowfolio.swift\nlet value = 42\n```"
+    editor.click()
+    editor.typeText(source)
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Code history checkpoint")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, source)
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    let search = settings.searchFields["settingsSearch"]
+    search.click()
+    search.typeText("code label")
+    let result = settings.outlines.firstMatch.staticTexts["Code label"].firstMatch
+    XCTAssertTrue(result.waitForExistence(timeout: 5), app.debugDescription)
+    result.click()
+    let picker = settings.popUpButtons["previewCodeLabel"]
+    XCTAssertTrue(picker.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(settings.popUpButtons.matching(identifier: "previewCodeLabel").count, 1)
+    picker.click()
+    let menu = app.menus.containing(.menuItem, identifier: "Language name").firstMatch
+    XCTAssertTrue(menu.menuItems["None"].exists && menu.menuItems["Custom"].exists)
+    menu.menuItems["Custom"].click()
+    let numbers = settings.switches["previewCodeLineNumbers"]
+    XCTAssertTrue(numbers.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertTrue(numbers.isEnabled)
+    numbers.click()
+    let state = numbers.value as? Int ?? Int(numbers.value as? String ?? "")
+    XCTAssertEqual(state, 1)
+    XCTAssertEqual(picker.value as? String, "Custom")
+    let settingsImage = XCTAttachment(screenshot: settings.screenshot())
+    settingsImage.name = "code-presentation-settings"
+    settingsImage.lifetime = .keepAlways
+    add(settingsImage)
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    let preview = app.webViews.firstMatch
+    let label = preview.staticTexts["Snowfolio.swift"].firstMatch
+    XCTAssertTrue(label.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertEqual(editor.value as? String, source)
+    editor.click()
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "Code history checkpoint")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, source)
+    XCTAssertTrue(label.waitForExistence(timeout: 8))
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "numbered-code-and-custom-label"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
+  func testNoStyleHTMLExportStartsWithoutDocumentStyles() {
+    let app = launch(arguments: [
+      "-htmlTemplateName", "Default", "-htmlSyntaxHighlighting", "YES",
+      "-htmlLineNumbers", "NO", "-htmlCodeBlockAccessory", "0",
+    ])
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    let source = "```swift\nlet value = 42\n```"
+    editor.click()
+    editor.typeText(source)
+    app.typeKey(",", modifierFlags: .command)
+    let settings = app.windows["snowfolioSettings"]
+    XCTAssertTrue(settings.waitForExistence(timeout: 5))
+    settings.outlines.firstMatch.staticTexts["Appearance"].firstMatch.click()
+    let picker = settings.popUpButtons["readingStyle"]
+    XCTAssertTrue(picker.waitForExistence(timeout: 5))
+    picker.click()
+    let menu = app.menus.containing(.menuItem, identifier: "Clearness Dark").firstMatch
+    menu.menuItems["None"].click()
+    XCTAssertEqual(picker.value as? String, "None")
+    app.typeKey("w", modifierFlags: .command)
+    XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+    app.typeKey("e", modifierFlags: [.command, .shift])
+    let styles = app.checkBoxes["exportDocumentStyles"]
+    let code = app.checkBoxes["exportCodeHighlighting"]
+    XCTAssertTrue(styles.waitForExistence(timeout: 5), app.debugDescription)
+    XCTAssertEqual(styles.value as? Int, 0)
+    XCTAssertEqual(code.value as? Int, 1)
+    styles.click()
+    XCTAssertEqual(styles.value as? Int, 1)
+    styles.click()
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "no-document-style-export-default"
+    image.lifetime = .keepAlways
+    add(image)
+    app.typeKey(XCUIKeyboardKey.escape, modifierFlags: [])
+    XCTAssertTrue(styles.waitForNonExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, source)
   }
 
   @MainActor

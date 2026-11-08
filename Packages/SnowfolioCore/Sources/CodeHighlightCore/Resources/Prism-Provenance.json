@@ -7,6 +7,7 @@
     "Omit util.encode NBSP-to-space normalization; preserve exact code text"
   ],
   "files": {
+    "LanguageTitles.json": "926ee64194c7743b78c576eb454dd138e38ee1b39398c5441192716e177a9210",
     "Languages.json": "9fbebfc1040e6e23867125b64b4d52314295872496907b60a9b5e9b2a3d9626e",
     "Prism-LICENSE.txt": "2b947f0901a7ffcf08a89957da9783c0e9c6e72cb6ce8e959f501ab5409e4d2b",
     "Prism.js": "5bdb351b65f8b765cd55853d33f049447d8158203ea77451988b66774dc51cda",

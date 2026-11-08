@@ -46,7 +46,7 @@ public struct MarkdownExport: Sendable {
       fragment: fragment,
       document: try HTMLExportTemplate.document(
         body: body, title: title, style: style, includeStyles: includeStyles,
-        includeHighlighting: result.highlightedCodeBlocks > 0,
+        includeHighlighting: result.highlightedCodeBlocks > 0 || result.decoratedCodeBlocks > 0,
         includeMath: result.mathExpressions > 0 || result.diagramUsesMath,
         remoteImages: remoteImages, templateName: templateName))
   }

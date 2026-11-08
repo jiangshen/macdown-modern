@@ -71,7 +71,8 @@ final class SettingsNavigation {
 struct SettingsEntry: Identifiable {
   enum Control {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
-    case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy
+    case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy,
+      codeBlockAccessory
     case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate
   }
   let id: String
@@ -150,6 +151,14 @@ enum SettingsCatalog {
         .init(
           id: "previewCodeTheme", title: "Code theme", keywords: "color scheme prism",
           control: .codeTheme),
+        .init(
+          id: "previewCodeLineNumbers", title: "Show code line numbers",
+          detail: "Number code lines in reading previews and exports.", keywords: "gutter fence",
+          control: .toggle(\.codeLineNumbers)),
+        .init(
+          id: "previewCodeLabel", title: "Code label",
+          detail: "Custom labels use a colon in the opening fence, such as swift:File.swift.",
+          keywords: "language information accessory filename", control: .codeBlockAccessory),
       ]),
     .init(
       pane: .editor, title: "Typography",

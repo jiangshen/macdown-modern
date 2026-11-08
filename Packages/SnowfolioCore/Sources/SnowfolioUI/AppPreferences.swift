@@ -29,6 +29,10 @@ public final class AppPreferences {
   }
   public var frontMatter: Bool { didSet { save(frontMatter, "htmlDetectFrontMatter") } }
   public var tableOfContents: Bool { didSet { save(tableOfContents, "htmlRendersTOC") } }
+  public var codeLineNumbers: Bool { didSet { save(codeLineNumbers, "htmlLineNumbers") } }
+  public var codeBlockAccessory: CodeBlockAccessory {
+    didSet { defaults.set(codeBlockAccessory.rawValue, forKey: "htmlCodeBlockAccessory") }
+  }
   public var codeHighlighting: Bool { didSet { save(codeHighlighting, "htmlSyntaxHighlighting") } }
   public var codeTheme: CodeHighlightTheme {
     didSet { defaults.set(codeTheme.rawValue, forKey: "htmlHighlightingThemeName") }
@@ -104,6 +108,9 @@ public final class AppPreferences {
     frontMatter = boolean("htmlDetectFrontMatter", fallback: true)
     tableOfContents = boolean("htmlRendersTOC", fallback: true)
     codeHighlighting = boolean("htmlSyntaxHighlighting", fallback: true)
+    codeLineNumbers = boolean("htmlLineNumbers", fallback: false)
+    codeBlockAccessory =
+      CodeBlockAccessory(rawValue: defaults.integer(forKey: "htmlCodeBlockAccessory")) ?? .none
     codeTheme = .legacyName(defaults.string(forKey: "htmlHighlightingThemeName"))
     htmlTemplateName = defaults.string(forKey: "htmlTemplateName") ?? HTMLExportTemplate.defaultName
     previewFollowsEditorFont = boolean("previewZoomRelativeToBaseFontSize", fallback: false)
@@ -197,6 +204,8 @@ public final class AppPreferences {
     options.frontMatter = frontMatter
     options.tableOfContents = tableOfContents
     options.codeHighlighting = codeHighlighting
+    options.codeLineNumbers = codeLineNumbers
+    options.codeBlockAccessory = codeBlockAccessory
     options.mermaid = mermaid
     options.graphviz = graphviz
     options.math = math

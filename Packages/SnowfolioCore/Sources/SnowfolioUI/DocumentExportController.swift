@@ -73,7 +73,7 @@ public final class DocumentExportController {
       throw HTMLExportTemplate.Failure.unavailable
     }
     var destination: URL?
-    var styled = true
+    var styled = snapshot.style.presentation != .unstyled
     var options = snapshot.options
     if action == .html || action == .pdf {
       let panel = NSSavePanel()
@@ -82,7 +82,7 @@ public final class DocumentExportController {
       panel.canCreateDirectories = true
       let styleOption = NSButton(
         checkboxWithTitle: String(localized: "Include document styles"), target: nil, action: nil)
-      styleOption.state = .on
+      styleOption.state = styled ? .on : .off
       let codeOption = NSButton(
         checkboxWithTitle: String(localized: "Include code highlighting"), target: nil, action: nil)
       codeOption.state = options.codeHighlighting ? .on : .off

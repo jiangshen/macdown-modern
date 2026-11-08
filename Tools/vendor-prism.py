@@ -53,15 +53,20 @@ const vm = require('node:vm');
 const sandbox = {};
 vm.createContext(sandbox);
 vm.runInContext(bundle, sandbox);
-const languages = {};
+const languages = {}, titles = {};
 for (const id of names) {
   // Extras modify other grammars and are not standalone fence languages.
   if (!sandbox.Prism.languages[id]) continue;
   languages[id] = id;
+  titles[id] = components.languages[id].title;
   const alias = components.languages[id].alias || [];
-  for (const item of Array.isArray(alias) ? alias : [alias]) languages[item] = id;
+  for (const item of Array.isArray(alias) ? alias : [alias]) {
+    languages[item] = id;
+    titles[item] = components.languages[id].aliasTitles?.[item] || components.languages[id].title;
+  }
 }
 fs.writeFileSync(path.join(destination, 'Languages.json'), JSON.stringify(languages, null, 2) + '\n');
+fs.writeFileSync(path.join(destination, 'LanguageTitles.json'), JSON.stringify(titles, null, 2) + '\n');
 console.log(order.length + ' pinned components, ' + new Set(Object.values(languages)).size + ' standalone grammars');
 '''
         subprocess.run(['node', '-e', script, str(package), str(DEST)], check=True)

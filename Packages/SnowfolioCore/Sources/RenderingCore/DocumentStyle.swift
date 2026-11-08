@@ -23,7 +23,7 @@ public struct DocumentStyle: Hashable, Sendable {
   }
 
   public var codeTheme: CodeHighlightTheme
-  public var codeCSS: String { codeTheme.css }
+  public var codeCSS: String { codeTheme.css + "\n" + CodeBlockStyle.css }
 
   public var font: Font
   private var storedTextSize: Double

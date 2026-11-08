@@ -81,6 +81,11 @@ public enum MarkdownEmphasisPolicy: String, CaseIterable, Codable, Sendable {
   case standard, allowWithinWords, avoidWithinWords
 }
 
+public enum CodeBlockAccessory: Int, CaseIterable, Sendable {
+  case none = 0
+  case language, custom
+}
+
 public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var tables = true
   public var strikethrough = true
@@ -98,6 +103,8 @@ public struct MarkdownRenderingOptions: Equatable, Hashable, Sendable {
   public var rawHTML = false
   public var alerts = true
   public var codeHighlighting = true
+  public var codeLineNumbers = false
+  public var codeBlockAccessory = CodeBlockAccessory.none
   public var frontMatter = true
   public var tableOfContents = true
   public var math = false
@@ -114,6 +121,7 @@ public struct RenderedMarkdown: Sendable {
   public let headings: [MarkdownHeading]
   public let syntax: MarkdownSyntax?
   public let highlightedCodeBlocks: Int
+  public let decoratedCodeBlocks: Int
   public let mathExpressions: Int
   public let diagrams: Int
   public let diagramUsesMath: Bool
@@ -123,7 +131,7 @@ public struct RenderedMarkdown: Sendable {
 
 public enum MarkdownRenderNotice: String, Sendable {
   case invalidFrontMatter, complexFrontMatter, unsupportedMath, unsupportedDiagram,
-    complexInlineFormatting
+    complexInlineFormatting, limitedCodePresentation
 }
 
 public enum MarkdownRenderingError: Error, Sendable {

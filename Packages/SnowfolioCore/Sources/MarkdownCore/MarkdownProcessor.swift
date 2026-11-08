@@ -174,7 +174,7 @@ public actor MarkdownProcessor {
           end: .init(
             line: Int(cmark_node_get_end_line(node)), column: Int(cmark_node_get_end_column(node)))
         ) : nil
-      if options.codeHighlighting, kind == .codeBlock { codeBlocks.append(node) }
+      if kind == .codeBlock { codeBlocks.append(node) }
       if options.tableOfContents, kind == .paragraph,
         MarkdownNavigation.isTableOfContents(node, source: sourceText, lineStarts: lineStarts)
       {
@@ -265,7 +265,7 @@ public actor MarkdownProcessor {
           position: position, key: RenderedDiagram.key(source: source, kind: kind),
           presentation: diagramPresentation)
       else {
-        if options.codeHighlighting { codeBlocks.append(node) }
+        codeBlocks.append(node)
         continue
       }
       guard let replacement = cmark_node_new(CMARK_NODE_CUSTOM_BLOCK) else {
@@ -282,33 +282,46 @@ public actor MarkdownProcessor {
       diagramUsesMath = diagramUsesMath || result.usesMath
     }
     var highlightedCodeBlocks = 0
+    var decoratedCodeBlocks = 0
+    var codePresentationLimited = false
     for block in codeBlocks {
       try Task.checkCancellation()
-      guard let info = cmark_node_get_fence_info(block), info.pointee != 0,
-        let literal = cmark_node_get_literal(block)
-      else { continue }
-      if codeHighlighter == nil { codeHighlighter = try CodeHighlighter() }
-      guard
-        let code = try codeHighlighter?.highlight(
-          String(cString: literal), language: String(cString: info))
-      else { continue }
+      guard let literal = cmark_node_get_literal(block) else { continue }
+      let source = String(cString: literal)
+      let rawInfo = cmark_node_get_fence_info(block).map { String(cString: $0) } ?? ""
+      let information = CodeFenceInformation(rawInfo, accessory: options.codeBlockAccessory)
+      var highlighted: HighlightedCode?
+      var label = information.customLabel
+      if options.codeHighlighting || options.codeBlockAccessory == .language {
+        if codeHighlighter == nil { codeHighlighter = try CodeHighlighter() }
+        if options.codeHighlighting {
+          highlighted = try codeHighlighter?.highlight(source, language: information.language)
+        }
+        if options.codeBlockAccessory == .language {
+          label = codeHighlighter?.displayName(for: information.language)
+        }
+      }
+      guard highlighted != nil || options.codeLineNumbers || label != nil else { continue }
+      let position =
+        "\(cmark_node_get_start_line(block)):\(cmark_node_get_start_column(block))-\(cmark_node_get_end_line(block)):\(cmark_node_get_end_column(block))"
+      let presentation = try CodeBlockPresentation(
+        source: source, highlighted: highlighted,
+        information: information, label: label, lineNumbers: options.codeLineNumbers,
+        position: position)
+      codePresentationLimited = codePresentationLimited || presentation.limited
+      guard highlighted != nil || presentation.decorated else { continue }
       guard let container = cmark_node_new(CMARK_NODE_CUSTOM_BLOCK) else {
         throw MarkdownRenderingError.allocationFailure
       }
-      let position =
-        "\(cmark_node_get_start_line(block)):\(cmark_node_get_start_column(block))-\(cmark_node_get_end_line(block)):\(cmark_node_get_end_column(block))"
-      let opening =
-        "<pre data-sourcepos=\"\(position)\" class=\"language-\(code.language)\" data-code-highlighted=\"true\"><code class=\"language-\(code.language)\">"
-        + code.html
-      guard cmark_node_set_on_enter(container, opening) == 1,
-        cmark_node_set_on_exit(container, "</code></pre>") == 1,
+      guard cmark_node_set_on_enter(container, presentation.html) == 1,
         cmark_node_replace(block, container) == 1
       else {
         cmark_node_free(container)
         throw MarkdownRenderingError.invalidTreeTransformation
       }
       cmark_node_free(block)
-      highlightedCodeBlocks += 1
+      if highlighted != nil { highlightedCodeBlocks += 1 }
+      if presentation.decorated { decoratedCodeBlocks += 1 }
     }
     guard let html = cmark_render_html(root, flags, cmark_parser_get_syntax_extensions(parser))
     else {
@@ -319,11 +332,13 @@ public actor MarkdownProcessor {
       html: (front?.metadata?.html ?? "") + String(cString: html), nodes: nodes, headings: headings,
       syntax: includeSyntax
         ? try MarkdownSyntax.build(source: source, nodes: nodes, metadata: sourceMetadata) : nil,
-      highlightedCodeBlocks: highlightedCodeBlocks, mathExpressions: mathNodes.count,
+      highlightedCodeBlocks: highlightedCodeBlocks, decoratedCodeBlocks: decoratedCodeBlocks,
+      mathExpressions: mathNodes.count,
       diagrams: renderedDiagrams, diagramUsesMath: diagramUsesMath,
       frontMatter: front?.metadata,
       notices: (front?.notice.map { [$0] } ?? []) + (mathNotices ? [.unsupportedMath] : [])
         + (diagramNotices ? [.unsupportedDiagram] : [])
+        + (codePresentationLimited ? [.limitedCodePresentation] : [])
         + (inlineSyntax?.limited == true || delimiterSyntax?.limited == true
           ? [.complexInlineFormatting] : []))
   }

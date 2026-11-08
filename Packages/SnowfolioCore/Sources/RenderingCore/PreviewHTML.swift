@@ -77,6 +77,18 @@ public enum PreviewHTML {
     const anchor = [...root.querySelectorAll('[data-sourcepos]')].find(e => e.getBoundingClientRect().bottom > 0);
     const anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;
     const previousY = window.scrollY;
+    const selection = window.getSelection();
+    const codeFor = node => (node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement)?.closest('pre > code');
+    const selectedCode = selection?.rangeCount === 1 ? codeFor(selection.anchorNode) : null;
+    const codeOffset = (node, offset) => {
+      const range = document.createRange(); range.selectNodeContents(selectedCode); range.setEnd(node, offset);
+      return range.toString().length;
+    };
+    const codeSelection = selectedCode && root.contains(selectedCode) && codeFor(selection.focusNode) === selectedCode ? {
+      position: selectedCode.parentElement.getAttribute('data-sourcepos'), text: selectedCode.textContent,
+      anchor: codeOffset(selection.anchorNode, selection.anchorOffset), focus: codeOffset(selection.focusNode, selection.focusOffset),
+      pre: selectedCode.parentElement
+    } : null;
     function sync(oldParent, newParent) {
       const next = [...newParent.childNodes];
       for (let index = 0; index < next.length; index++) {
@@ -104,6 +116,22 @@ public enum PreviewHTML {
       while (oldParent.childNodes.length > next.length) oldParent.lastChild.remove();
     }
     sync(root, incoming);
+    let restoredCode;
+    if (codeSelection?.position) {
+      restoredCode = [...root.querySelectorAll('pre[data-sourcepos] > code')].find(code =>
+        code.parentElement.getAttribute('data-sourcepos') === codeSelection.position && code.textContent === codeSelection.text);
+      if (restoredCode) {
+        const endpoint = offset => {
+          const walker = document.createTreeWalker(restoredCode, NodeFilter.SHOW_TEXT);
+          let node; while (node = walker.nextNode()) {
+            if (offset <= node.length) return {node, offset}; offset -= node.length;
+          }
+          return {node: restoredCode, offset: restoredCode.childNodes.length};
+        };
+        const a = endpoint(codeSelection.anchor), f = endpoint(codeSelection.focus);
+        selection.setBaseAndExtent(a.node, a.offset, f.node, f.offset);
+      }
+    }
     for (const figure of root.querySelectorAll('div.md-diagram[data-diagram-key]')) {
       const template=figure.querySelector(':scope > template[data-snowfolio-diagram]');
       if (!template) continue;
@@ -111,6 +139,7 @@ public enum PreviewHTML {
       shadow.replaceChildren(template.content.cloneNode(true)); template.remove();
     }
     if (anchor && anchor.isConnected) window.scrollBy(0, anchor.getBoundingClientRect().top - anchorTop);
+    else if (restoredCode && anchor === codeSelection.pre) window.scrollBy(0, restoredCode.parentElement.getBoundingClientRect().top - anchorTop);
     else window.scrollTo(0, previousY);
     globalThis.__snowfolioScroll?.invalidateGeometry();
     globalThis.__snowfolioScroll?.markProgrammatic();

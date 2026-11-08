@@ -1,0 +1,106 @@
+{
+  "checkpoint": "Swift code-block line numbers, labels and None-style export default",
+  "date": "2026-11-07",
+  "status": "implemented; local package/native fixture/build acceptance passed; hosted UI pending",
+  "fullGoal": "active; incomplete",
+  "originalEvidence": [
+    {
+      "path": "MacDown/Code/Document/MPDocument.m",
+      "finding": "rendererFlags maps htmlLineNumbers to HOEDOWN_HTML_BLOCKCODE_LINE_NUMBERS and Custom accessory to HOEDOWN_HTML_BLOCKCODE_INFORMATION; exportHtml initializes stylesIncluded from htmlStyleName.",
+      "sha256": "f43f793c319f27f090c5a45a09636ff908a418d215ab521881b64101f8bd9bd0"
+    },
+    {
+      "path": "MacDown/Code/Extension/hoedown_html_patch.c",
+      "finding": "Custom mode splits the first fence-info colon into language/information, emits data-information and line-numbers flags, and keeps code escaped.",
+      "sha256": "9cef916fc1b934d30ba65bf794ea704bc367a64e13430cf0b07821f154b89755"
+    },
+    {
+      "path": "MacDown/Code/Document/MPRenderer.m",
+      "finding": "Prism line-numbers and show-language CSS/JS are conditional highlighting resources; custom information CSS is a separate preview stylesheet.",
+      "sha256": "d5b8c38fc7fac5163c7c0aed2bed6e31ac537313e56ec373f20846a970b9d901"
+    },
+    {
+      "path": "MacDown/Localization/Base.lproj/MPHtmlPreferencesViewController.xib",
+      "finding": "Show line numbers control and accessory choices None, Language name, Custom; original numbers control disabled when coloring is off.",
+      "sha256": "1f5142cc9761cde091bb0a03ba5d2b2702249c3a1d17ed438a05411c3dd71fdc"
+    }
+  ],
+  "implementation": [
+    "Migrate both original keys and enum values to the existing native Settings catalog; 48 entries remain unique/searchable. Numbers and labels are independently useful without coloring.",
+    "cmark AST supplies fence metadata and code literal. Swift presentation runs after source/AST/syntax collection; no Markdown regex parser or source rewriting.",
+    "All 292 pinned grammars can receive numbers; generated span attributes/entities and multiline tokens retained by a bounded Swift envelope splitter. Plain code requires no markup parser.",
+    "Empty aria-hidden number spans use generated CSS content. Code text and code-only selection preserve exact UTF-8-rendered literal bytes; blank lines and terminal LF preserved.",
+    "Both selection directions survive unchanged-code presentation updates, keyed by source position and exact text. Caption wrappers can preserve the selected code anchor when they replace the visible pre.",
+    "Shared code CSS reaches preview, fresh standalone HTML, PDF and print independently of document-style/color switches. No legacy document-side Prism plugins added.",
+    "None reading style initializes export style checkbox off; code choice independent. No-style PDF preparation omits empty document style."
+  ],
+  "limits": {
+    "sourceBytesPerNumberedBlock": 1048576,
+    "rowsPerBlock": 10000,
+    "highlightedMarkupBytes": 4194304,
+    "generatedSpanDepth": 64,
+    "numberedOutputBytes": 8388608,
+    "fallback": "Keep complete ordinary code/current highlighting and show limitedCodePresentation notice; avoid redundant large-code escaping when no replacement will be published."
+  },
+  "local": {
+    "full": {
+      "tests": 329,
+      "suites": 70,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 42573,
+      "report": "/private/tmp/snowfolio-code-presentation-final-full.json",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-9FAFDA28-4D41-4D6E-9329-5C9C3F5A57DA/build.log",
+      "logSHA256": "33c043157c08c36a0cfca3bea0f284d8803e47b44a725c3583e0871a870f281b"
+    },
+    "addressSanitizer": {
+      "tests": 11,
+      "suites": 3,
+      "warnings": 0,
+      "errors": 0,
+      "durationMs": 23432,
+      "report": "/private/tmp/snowfolio-code-presentation-final-asan.json",
+      "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-36EF5681-28A4-4914-A877-D028CF3F5408/build.log",
+      "logSHA256": "b9f2ad131efdf2fc10cf6ddb53c9c3d555bed334e3a36fd2574e8c3837892612"
+    },
+    "nativeBuildForTesting": "passed including source/app resource and license verification",
+    "appLog": "/private/tmp/snowfolio-code-presentation-final-app.log",
+    "architecture": "eight arm64 test executables; /private/tmp/snowfolio-code-presentation-arm64.txt",
+    "formatting": "19 changed/new Swift files passed strict formatting",
+    "diffCheck": "passed"
+  },
+  "nativeCoverage": [
+    "Actual WebKit code text and selected text across all 292 grammars; HTML entity, CJK, emoji/ZWJ, NBSP, blank-line and terminal-newline payload.",
+    "Narrow/wide wrapped multiline code in light/dark; sequential logical numbering, first-visual-line marker alignment, blank row height and shared text edge.",
+    "All eight reading styles and all nine code themes (16 distinct presentation configurations per appearance); exact code text/selection and marker geometry.",
+    "Forward/backward code selection through five label/number transitions, including replacement of pre by a caption wrapper.",
+    "Native PDF/print operation retains custom label and code with both document styling and syntax colors off.",
+    "Original AST nodes/source-syntax ranges, aliases/human names, custom-information escaping, indented/unknown code, bounds and preference migration/persistence."
+  ],
+  "diagnostics": {
+    "initialXMLAttempt": {
+      "report": "/private/tmp/snowfolio-code-presentation-grammar.json",
+      "finding": "All-grammar fixture rejected the XML approach: valid HTML entities in highlighter attributes caused 66 assertions in 22 grammars to fail. Replaced with the span-only Swift splitter; complete grammar/native DOM acceptance passes."
+    },
+    "firstFullRun": {
+      "report": "/private/tmp/snowfolio-code-presentation-full.json",
+      "finding": "Old code-style expectation compared theme-only CSS instead of shared code CSS; updated the exact expected DocumentStyle.codeCSS. One concurrent local run also timed out in unchanged preview-led zoom; focused unchanged zoom and final full run pass. Zoom timeout cause is not proven; no timeout/behavior assertions removed."
+    },
+    "firstAppBuild": "New UI test used renamed Escape constant; compiler-directed XCUIKeyboardKey.escape replacement builds.",
+    "UIIsolation": "Every hosted app launch resets the two presentation options, preventing new preference UI changes from contaminating later export tests."
+  },
+  "hosted": {
+    "status": "pending; two new native UI methods cover Settings/source history and actual None-style save-panel default"
+  },
+  "remaining": [
+    "Fresh user-desktop visual glyph/selection acceptance remains pending; latest direct CUA observation was locked.",
+    "Real IME/VoiceOver, document reliability and full native performance/energy/memory acceptance remain open.",
+    "htmlDefaultDirectoryUrl fallback for unsaved documents needs a modern explicit folder grant and migration workflow; MPDocument.m renderToWeb currently uses that original preference.",
+    "Other original layout/editor preferences, renderer/math parity, user asset license sidecars, M5 integrations, releases and coupled original-target retirement remain open."
+  ],
+  "languageTitles": {
+    "path": "Packages/SnowfolioCore/Sources/CodeHighlightCore/Resources/LanguageTitles.json",
+    "sha256": "926ee64194c7743b78c576eb454dd138e38ee1b39398c5441192716e177a9210",
+    "version": "Prism 1.30.0, existing pinned archive; other resource hashes unchanged"
+  }
+}

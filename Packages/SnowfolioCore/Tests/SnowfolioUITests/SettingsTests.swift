@@ -44,12 +44,14 @@ struct SettingsTests {
         "importReadingStyle", "importEditorTheme",
       ])
     #expect(SettingsCatalog.search("checkbox").map(\.id) == ["markdownTaskLists"])
+    #expect(SettingsCatalog.search("code label").map(\.id) == ["previewCodeLabel"])
+    #expect(SettingsCatalog.search("code line numbers").map(\.id) == ["previewCodeLineNumbers"])
     #expect(SettingsCatalog.search("privacy network").map(\.id) == ["previewRemoteImages"])
     let result = try #require(SettingsCatalog.search("sync").first)
     #expect(result.location == .init(pane: .editor, itemID: "synchronizedScrolling"))
     let entries = SettingsCatalog.sections.flatMap(\.entries)
     #expect(Set(entries.map(\.id)).count == entries.count)
-    #expect(entries.count == 46)
+    #expect(entries.count == 48)
   }
 
   @Test("Settings switches persist through the existing preference model")

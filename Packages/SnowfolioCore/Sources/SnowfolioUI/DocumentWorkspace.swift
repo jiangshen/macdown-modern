@@ -214,6 +214,9 @@ public struct DocumentWorkspace: View {
         String(localized: "Front matter is not valid YAML. It is shown as Markdown.")
       case .unsupportedMath:
         String(localized: "Some equations could not be rendered. Their TeX source is shown.")
+      case .limitedCodePresentation:
+        String(
+          localized: "Some code blocks could not show line numbers. Their code remains visible.")
       case .complexInlineFormatting:
         String(
           localized:

@@ -263,6 +263,15 @@ private struct SettingsPreferenceRow: View {
       Stepper(value: $preferences.documentTextSize, in: 12...28) {
         valueCaption(Int(preferences.documentStyle.textSize))
       }
+    case .codeBlockAccessory:
+      Picker(selection: $preferences.codeBlockAccessory) {
+        Text("None").tag(CodeBlockAccessory.none)
+        Text("Language name").tag(CodeBlockAccessory.language)
+        Text("Custom").tag(CodeBlockAccessory.custom)
+      } label: {
+        caption
+      }
+      .pickerStyle(.menu)
     case .codeTheme:
       Picker(selection: $preferences.codeTheme) {
         ForEach(CodeHighlightTheme.allCases, id: \.self) { theme in

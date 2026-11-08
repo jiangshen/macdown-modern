@@ -2,17 +2,20 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current code checkpoint: `e571b4a`, Swift HTML template/export compatibility, following
-`ab94471` custom CSS support. Local evidence verifies **318 package tests / 67 suites**,
-**11 Address Sanitizer tests / four suites**, eight arm64 test executables and an arm64
-app build with template/parser/style/license verification. Exact hosted artifacts verify
-the same package totals, all 652 CommonMark examples and **13 passing native app UI tests**,
-including all four HTML save-panel option combinations and unavailable-template recovery
-with retained source history. The recovered Settings screenshot was inspected.
-Exact evidence, the corrected native test-window animation setup and remaining limits
-are in [the template ledger](validation/html-template-exports.json), with behavior in
-[HTML_TEMPLATES.md](HTML_TEMPLATES.md). Earlier CSS acceptance remains recorded in
-[custom-reading-styles.json](validation/custom-reading-styles.json).
+Current worktree checkpoint: Swift code-block presentation and the None-style export
+default. Local evidence verifies **329 package tests / 70 suites**, **11 Address Sanitizer
+tests / three suites**, eight arm64 test executables and an arm64 app build. All 292
+pinned grammars retain exact native WebKit code/selection text with numbers; wrapped
+line geometry, all reading styles/code themes, custom labels and PDF preparation pass.
+Forward/backward selections survive unchanged-code presentation transitions. Hosted
+Settings and None-style save-panel UI execution is pending. Exact evidence and limits
+are in [code-block-presentation.json](validation/code-block-presentation.json), with use
+in [CODE_BLOCKS.md](CODE_BLOCKS.md).
+
+The preceding hosted template checkpoint `e571b4a` passed 318 package tests, 652
+CommonMark examples and 13 native app UI tests; its original failure diagnosis and
+final evidence remain in [html-template-exports.json](validation/html-template-exports.json).
+Earlier CSS acceptance remains in [custom-reading-styles.json](validation/custom-reading-styles.json).
 
 The existing notebook design remains the default. None, six original styles, edited
 MacDown CSS, local CSS and imported copies remain selectable. CSS/image/font imports
@@ -22,9 +25,9 @@ assembly and explicit unavailable-name recovery. Source call-site review confirm
 fully linked assets served the original preview internally; the HTML export UI exposed
 independent include/omit choices for document styles and code highlighting, with included
 resources embedded. Separate user-provided license sidecars, remaining renderer parity
-and safe coupled legacy retirement stay open. The HTML accessory’s initial checkbox for
-None still needs the original no-style default; the four-option native UI case covers
-Notebook. This remains a follow-up requirement. The [original characterization ledger](validation/css-template-characterization.json)
+and safe coupled legacy retirement stay open. The HTML accessory now starts without document styles for None; its new native UI
+case is awaiting hosted confirmation. Unsaved-document default asset folders still need
+an explicit grant-backed migration workflow (`htmlDefaultDirectoryUrl`). The [original characterization ledger](validation/css-template-characterization.json)
 preserves source evidence and the call-site correction.
 
 Fresh user-desktop visual acceptance, captured WebKit glyph painting, real IME/VoiceOver,
@@ -155,7 +158,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
 | Essential | Live/manual HTML preview, HTML copy/export, styled export, PDF and native printing | Core paths verified; advanced renderer/export fidelity pending |
-| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography and all eight Prism code themes implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; custom CSS/folder import, immutable local assets and reload implemented; Swift Default template/context and unavailable-name recovery implemented; hosted export-panel/recovery acceptance passed; direct desktop theme/export acceptance, user asset license sidecars and remaining layout preferences pending |
+| Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography all eight Prism code themes, code-block line numbers and language/custom labels implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; custom CSS/folder import, immutable local assets and reload implemented; Swift Default template/context and unavailable-name recovery implemented; hosted export-panel/recovery acceptance passed; direct desktop theme/export acceptance, user asset license sidecars and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
 | Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |

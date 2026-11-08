@@ -401,3 +401,21 @@ independent include/omit styles and highlighting, embedding included resources.
 User-provided asset license sidecars, remaining renderer parity and original-target
 callers remain open. The old renderer/asset/dependency graph is still coupled and is
 not retired by this template checkpoint. See `HTML_TEMPLATES.md` and its evidence ledger.
+
+
+## Swift code-block presentation ownership boundary
+
+`MarkdownCore` now reads code metadata from the native AST and owns the Swift label,
+numbering and bounded generated-span transformation. Original AST/source-syntax facts
+stay unchanged. `CodeHighlightCore` adds human names from the same pinned Prism archive;
+`LanguageTitles.json` is included in resource provenance/build verification and the
+existing MIT notice. The other pinned resources are byte-identical. `RenderingCore`
+owns shared code CSS and the existing isolated preview bridge's unchanged-code selection
+mapping. `SnowfolioUI` preserves htmlLineNumbers/htmlCodeBlockAccessory keys, original
+0/1/2 choices, and a no-style export default derived from the frozen presentation.
+
+The original Prism DOM plugins and custom-information stylesheet are not added to the
+native app; numbers/labels are generated before preview/export. The original target
+still owns unmigrated renderer/preferences/integration behavior, including the default
+asset directory for unsaved documents, so this checkpoint does not retire its coupled
+renderer/asset/dependency graph. See `CODE_BLOCKS.md` and its validation ledger.

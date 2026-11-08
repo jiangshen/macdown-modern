@@ -12,6 +12,7 @@ public struct HighlightedCode: Sendable {
 /// or JSValue escapes this object, and document text is passed only as a value.
 public final class CodeHighlighter {
   private let languages: [String: String]
+  private let titles: [String: String]
   private var context: JSContext?
   private var cache: [String: HighlightedCode] = [:]
   private var cacheBytes = 0
@@ -29,9 +30,22 @@ public final class CodeHighlighter {
       names[alias] = language
     }
     languages = names
+    guard let titleURL = Bundle.module.url(forResource: "LanguageTitles", withExtension: "json")
+    else {
+      throw CodeHighlightError.missingResources
+    }
+    titles = try JSONDecoder().decode([String: String].self, from: Data(contentsOf: titleURL))
   }
 
   public var supportedLanguages: [String] { Set(languages.values).sorted() }
+
+  public func displayName(for info: String) -> String? {
+    guard let name = info.split(whereSeparator: \.isWhitespace).first?.lowercased() else {
+      return nil
+    }
+    if let title = titles[name] ?? languages[name].flatMap({ titles[$0] }) { return title }
+    return name.prefix(1).uppercased() + name.dropFirst()
+  }
 
   public func highlight(_ source: String, language info: String) throws -> HighlightedCode? {
     try Task.checkCancellation()
