@@ -466,3 +466,17 @@ generation/revision and two-pane input ordering for scroll handoff. Source and u
 remain outside these presentation boundaries. Original scroll-past-end and remaining
 consumers still prevent coupled editor/preferences target retirement. Exact tests,
 sources, withdrawn prototype recovery and visual limits are in validation/editor-line-spacing.json.
+
+
+## Swift scroll-past-end ownership boundary
+
+EditorCore retains the original boolean choice; SnowfolioUI owns reversible native
+scroll insets, the public clip-view minimum document extent and cached last-visible-row
+geometry. It never changes source/backing attributes or adds history. ScrollCoordinator
+uses the native constrained maximum, including insets, for reading anchors. The native
+column and view identities stay intact; source paper fills added space.
+
+Local350/75 and31 sanitizer tests pass, with20 app UI methods compiled. Exact hosted
+acceptance and remaining original consumers still prevent coupled target retirement.
+See validation/editor-scroll-past-end.json for source hashes, withdrawn frame prototypes,
+font/spacing and native-reference evidence.

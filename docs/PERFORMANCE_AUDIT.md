@@ -458,3 +458,22 @@ recovery records remain. The partial download moved to native Trash; Trash was n
 emptied and no space recovery is attributed to that move. Details are in
 validation/project-cleanup.json. This is capacity maintenance, not an app performance
 measurement or a claim that the Mac's general storage audit is complete.
+
+
+## Scroll-past-end correctness and bounded geometry work
+
+Only the last visible grapheme is queried through native text segments. Source scans
+are cached by document/revision/load and length; stable layout does not fetch the full
+source. Geometry uses native width/insets/font/spacing/usage bounds. No complete layout
+is explicitly requested by the production helper. Default-off editors retain native
+clip behavior. The direct row target removes an unnecessary7-point extension at the
+largest-font CRLF case and avoids an EOF caret query; this is correctness evidence,
+not measured typing latency or lower whole-app memory/energy use.
+
+The expanded workload passes350 package tests /75 suites in61.701 seconds including
+build, and31 sanitizer tests /seven suites in24.509 seconds including build. Workloads
+differ from prior runs; those durations do not compare app performance. TextKit's
+reported usage height changed96...500 points across viewport visits in typography
+fixtures. Restoration matches a standard native clip using current geometry; original
+reported height is not a fixed reference. Exact hosted/UI/desktop and full M6 acceptance
+remain open. See validation/editor-scroll-past-end.json.

@@ -2,6 +2,13 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
+Current work awaiting hosted acceptance: scroll-past-end is integrated from the isolated
+reviewed source. Local350 package tests /75 suites,31 sanitizer tests /seven suites,
+eight arm64 test executables and the arm64 app build pass;20 UI methods compile. The
+last visible native row is the scroll target, with existing blank tails discounted.
+Source/selection/history, native resize and simulated composition remain covered.
+See [editor-scroll-past-end.json](validation/editor-scroll-past-end.json).
+
 Current accepted checkpoint: native source line spacing, terminal insertion **API**
 metrics and ordering of source/preview scroll gestures. Exact implementation `422da99`
 passes [hosted validation 42453343180](https://github.com/jiangshen/snowfolio/actions/runs/42453343180):
@@ -2743,3 +2750,28 @@ suites, 31 sanitizer tests /seven suites and an arm64 build with 20 compiled UI 
 pass. Font/zoom/spacing extremes and exact hosted UI acceptance remain next gates.
 The complete source/checkpoint state is in /private/tmp/snowfolio-scroll-past-end-state.json.
 No original target is retired by this preparation.
+
+
+## Native scroll-past-end integration — 2026-11-07
+
+The original boolean key now has a searchable native switch and explicit-false
+persistence. Public clip-view document extents supply short-document scrolling space
+without competing with TextKit2's internal frame updates. Native row geometry, not
+EOF caret metrics, determines the necessary space. Existing blank tails and normal
+native scrolling may already suffice. Defaults and source bytes remain unchanged.
+
+Ninety-six typography/source/scroller combinations include4/14/28/216-point native
+fonts, Menlo/Helvetica, zoom50...300%, spacing0/3/100 and window heights300...650. They
+verify last-row visibility, current native clamping after disable, literal storage,
+selection, revision and history. The largest-font CRLF case previously added7 points
+even when native scrolling was sufficient; the direct last-row target corrects it.
+A comparison with initial usage height was also invalid after TextKit refined layout;
+the restored extent is now compared with a standard native clip using current geometry.
+
+Local350/75,31 sanitizer tests/seven suites and source hashes match after adoption.
+The main-checkout app rebuild passes arm64 and all resource/license checks;20 UI methods
+compile, including a native switch search, toggle, reopen and explicit Undo/Redo case.
+Exact hosted acceptance is pending. Source and evidence are in the scroll-past-end
+ledger. Dark desktop selection, modern caret paint, real IME/VoiceOver, full document
+lifecycle, remaining renderer/typing/statistics/M5 and measured M6/release gates remain
+open. This does not retire the coupled original editor/preferences target.

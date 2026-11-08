@@ -1,6 +1,7 @@
 # Editor column layout
 
-Settings → Editor → Layout controls side margins, top/bottom margins and a maximum
+Settings → Editor → Layout controls line spacing, side margins, top/bottom margins,
+scrolling past the last text line and a maximum
 writing-column width. Type a point value directly or use the stepper. Enable Limit editor width to center the column in wider panes.
 Narrow panes retain the selected minimum margins. Values are native points; document
 magnification changes the text while this layout remains stable.
@@ -13,7 +14,7 @@ heuristic's approximate limit. These settings never rewrite document source.
 Layout changes preserve selection, native undo and the source paragraph being read.
 Changed geometry waits until marked text commits. Automated native composition cases
 are covered; real Chinese/Japanese IME and desktop visual acceptance remain required.
-Scrolling past the end remains separate migration work.
+Scrolling past the end is now integrated; its hosted UI acceptance is tracked below.
 
 Exact local evidence, initial fixture corrections and the reproduced reading-anchor
 fix are in [editor-column-layout.json](validation/editor-column-layout.json). The
@@ -48,3 +49,18 @@ all 19 app UI methods. Settings and the continuous light/default-font source sel
 are inspected. Dark user-desktop selection, real IME/VoiceOver and actual modern caret
 paint/native-reference equivalence remain open. Public caret API metrics are covered;
 they do not establish rendered-indicator equivalence.
+
+## Scrolling past the end
+
+Enable Scroll past the end in Settings → Editor → Layout to bring the last visible
+text row toward the normal top margin. Existing blank lines already provide scroll
+space; empty/whitespace-only documents retain normal scrolling. This preserves the
+original editorScrollsPastEnd key and explicit saved false values. Fresh profiles
+keep it off. Turning it off restores native insets and scroll bounds.
+
+The source, selection and native history stay intact. Composition defers changed
+preferences. Native resize tests cover overlay/persistent scrollbars, Menlo/Helvetica,
+4...216-point resolved fonts, zoom50...300% and spacing0/3/100. Current native geometry
+is the reference when TextKit updates usage bounds during scrolling. Exact local
+350-test acceptance and remaining hosted/desktop gates are in
+[editor-scroll-past-end.json](validation/editor-scroll-past-end.json).

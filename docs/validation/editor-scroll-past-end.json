@@ -1,5 +1,5 @@
 {
-  "checkpoint": "Prepared isolated native scroll-past-end; not integrated or hosted-accepted",
+  "checkpoint": "Integrated native scroll-past-end; local acceptance passes, exact hosted acceptance pending",
   "base": "422da99f488d8607f614fbdccef0f00a28e38793",
   "worktree": "/private/tmp/snowfolio-scroll-past-end",
   "localBranch": "modernization/scroll-past-end",
@@ -72,10 +72,10 @@
       }
     },
     "architecture": {
-      "path": "/private/tmp/snowfolio-scroll-past-end-arm64.json",
-      "sha256": "edd092a8582492e24e4cc141e7054cf7fed0a7a4379c3b5ac98392ea17b35fa6",
-      "executables": 8,
-      "scope": "Verified before regenerable build output was cleaned."
+      "path": "/private/tmp/snowfolio-scroll-past-end-adopted-arm64.json",
+      "sha256": "6bdced666716b930045745eeab376a83f1a8e238cf829ee2ba6108f6232dc059",
+      "packageExecutables": 8,
+      "app": "arm64"
     },
     "appBuild": {
       "log": "/private/tmp/snowfolio-scroll-past-end-row-target-app-build.log",
@@ -88,6 +88,11 @@
       "swiftFiles": 11,
       "strict": "passed",
       "diffCheck": "passed"
+    },
+    "adoptedAppBuild": {
+      "log": "/private/tmp/snowfolio-scroll-past-end-adopted-app-build.log",
+      "sha256": "399bd5ac3350cf9f925b913fe598862f7a07370e7e587fe91026e00990d6a161",
+      "result": "Passed build-for-testing and complete pinned resource/license/arm64 verification;20 compiled UI methods."
     }
   },
   "nativeAppUI": "New20th method searches the switch, toggles it, checks a single replacement Undo/Redo and Settings reopen, then restores false. Literal source line-spacing fixture remains the corrected version from422da99. Not yet hosted-executed.",
@@ -317,5 +322,17 @@
       "Restored extent matches a standard NSClipView with current native document geometry",
       "Reopen keeps an explicitly saved false"
     ]
+  },
+  "adoption": {
+    "branch": "modernization/swift-foundations",
+    "sourceCommit": "ff108c2bb3125ffb916cd2998647f76559e220cd",
+    "isolatedCommits": [
+      "ce4e9bbf4c7e8a83292b61d6bfad021b22f2fd1a",
+      "ee5cb6c69ec0b8d4431f5d78b80df2708ee8bc72"
+    ],
+    "sourceHashVerification": "All11 reviewed Swift files match after adoption. No test repeat needed for identical source; native app composition rebuilt from main checkout."
+  },
+  "hosted": {
+    "status": "pending source push; follow the exact run for the resulting head"
   }
 }
