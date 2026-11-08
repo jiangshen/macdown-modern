@@ -203,7 +203,10 @@
       "rawNativeLog": "/private/tmp/snowfolio-editor-column-initial-hosted-native/xcodebuild.log",
       "rawNativeLogSHA256": "7cd77f84bb869988ffb617e43c454fd63ecf5175db873d03e74edd4a470a3e4e",
       "attachments": "/private/tmp/snowfolio-editor-column-initial-ui-attachments/manifest.json",
-      "reportingCorrection": "Initial workflow-summary interpretation incorrectly said later assertions continued. Raw native log and test launch helper prove they did not; corrected before acceptance."
+      "reportingCorrection": "Initial workflow-summary interpretation incorrectly said later assertions continued. Raw native log and test launch helper prove they did not; corrected before acceptance.",
+      "priorityDiagnostics": 31,
+      "appIntentsMetadataNotices": 2,
+      "runtimeAttribution": "Raw log count; cause unproven. No first-party attribution or warning suppression."
     }
   },
   "remaining": [
@@ -371,13 +374,30 @@
       {
         "run": 42442707167,
         "commit": "6f2ad0b4c5a81958634bcc4542f1ab93edd097b0",
-        "scope": "Package failed with preserved exact geometry; native job cancellation requested because it retains known switch assertion defect."
+        "scope": "Completed package failure with preserved exact geometry; native job cancelled after known switch assertion defect was corrected. Overall cancelled, no acceptance claimed."
       },
       {
         "run": 42443281771,
         "commit": "7cf4b717c3ff043725a49f7e0f3f22892f13a919",
-        "scope": "Cancellation requested because native test retains known switch assertion defect; final run includes same production fix plus corrected test."
+        "scope": "Both jobs cancelled after known native switch assertion defect was corrected; final run includes same production fix plus corrected test. No acceptance claimed."
       }
-    ]
+    ],
+    "sourceSHA256": {
+      "Packages/SnowfolioCore/Sources/EditorCore/EditorLayoutPreferences.swift": "acf10ee58d8150f2651cb8355f3a2b876754538506ac5b3546a36e1a2fa7eacb",
+      "Packages/SnowfolioCore/Tests/EditorCoreTests/EditorLayoutPreferencesTests.swift": "05ab920988d04dca592e66e863604caed6fa1cf4661642bf85ca2ea9ae9a86f4",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorLayoutTests.swift": "b7ba5a9de0b8e5e6e17241b2fa63a971eeeb1eee7a95a16900436a55b4f5a62a",
+      "App/UITests/DocumentLifecycleTests.swift": "f057df658e285fecef07e0ceff1ed7879f2458f381f897fbea4f9e08de18c7fe",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/AppPreferences.swift": "088bd9626cc7594404c0f49fadf72d355e8626e073fc4b74ba2c3acfb6f35afb",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentScrollCoordinator.swift": "4a600147cc852bed41feae370ff245cdd8052f1be0c8c9de9016344a436e0880",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift": "bde29dc2396346a104ea998a07313b5788694e3da8989ddd6c352645bfda5b47",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeDocumentSplit.swift": "799282c164c63795e9eba13d4320847a6e001cc8f63a719ac1870ec043be03c1",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownEditor.swift": "2a76f97dc44d19875ff07fa403c3d3dbc2ca3f99997f5d71bdf9b5d1b300bba7",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/SettingsCatalog.swift": "3908f14401ba2ba6abf1be103635f92c105c566efdeea69fcf4ed8ab3b30cfd0",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/SnowfolioSettingsView.swift": "6dae0f47a7f8915b958fd84d72eeffcd0d69cff239c5d6a6e9db902f5205b116",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeZoomTests.swift": "4b8de49f31c0dade077cfb72e89fe8b3858b6f55637f3e5efa0abd98d5f58f24",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/SettingsTests.swift": "e7a9f82de787804f3154c4f5162fa1a59106f66178af5a6ca65bd75764624b06",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeEditorTheme.swift": "5c5402e1dfa158f1473657f7d97369776c7d3da43f8f31d55902c7c07fa6799e",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorInsertionFontTests.swift": "33ccfc86e75b8b362ce42392bd6c6f58d41ed29ce18b92f0905cbb0a265f6fc1"
+    }
   }
 }
