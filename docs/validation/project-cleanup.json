@@ -344,6 +344,22 @@
       "method": "FileManager.trashItem",
       "trashEmptied": false,
       "scope": "One exact incomplete agent-generated download; complete accepted hosted evidence retained. No disk space recovery attributed to Trash."
+    },
+    {
+      "date": "2026-11-08",
+      "method": "FileManager.trashItem; exact stale registration pruned after inspected dry run",
+      "items": [
+        {
+          "method": "FileManager.trashItem",
+          "original": "/private/tmp/snowfolio-document-acceptance",
+          "reason": "Superseded agent-owned document-acceptance worktree. Its sole modified file matches committed 6d911da byte for byte; current main contains that fixture plus follow-ups.",
+          "trash": "/Users/caden/.Trash/snowfolio-document-acceptance",
+          "trashEmptied": false,
+          "registration": "git worktree prune dry run listed only the moved document-acceptance registration; pruned that stale registration. Local branch and committed implementation remain in Git."
+        }
+      ],
+      "trashEmptied": false,
+      "scope": "Only completed agent-owned worktree; source edit verified byte-identical to 6d911da before moving. No current app/source/test result or user document moved."
     }
   ],
   "lastUpdated": "2026-11-08T06:38:32.079367+00:00",

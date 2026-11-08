@@ -41,6 +41,11 @@
     "log": "/private/tmp/snowfolio-close-restoration-app-build.log",
     "logSHA256": "399bd5ac3350cf9f925b913fe598862f7a07370e7e587fe91026e00990d6a161",
     "launchArgumentProbe": "Foundation runtime confirms repeated launch keys use the last value; restoration overrides of the shared test defaults therefore take effect. Only the test process argument domain is changed.",
-    "runtime": "pending; no close/restoration acceptance claimed"
+    "runtime": "pending; no close/restoration acceptance claimed",
+    "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42460573752",
+      "commit": "35013ec1d3be807ac87007f33c8c375aa233a050",
+      "status": "in progress at last authoritative poll; exact23-method native execution pending"
+    }
   }
 }
