@@ -54,7 +54,24 @@
     "result": "Complete rerun passes all 318 tests / 67 suites, including native diagram engine variants/lifecycle."
   },
   "hosted": {
-    "status": "pending; new save-panel and recovery UI tests require hosted execution"
+    "status": "Initial run failed two new UI test assumptions; corrected queries and deliberate native history checkpoint need hosted confirmation.",
+    "initialRun": "https://github.com/jiangshen/snowfolio/actions/runs/42427210442",
+    "code": "5e84728daacb004aebef4c2aeff5442e99fff094",
+    "package": {
+      "tests": 318,
+      "suites": 67,
+      "commonMark": 652,
+      "commonMarkFailures": 0,
+      "arm64TestExecutables": 8,
+      "result": "passed; exact downloaded core evidence verified"
+    },
+    "native": "13 tests executed; 11 passed, two new methods failed. All four file export combinations completed successfully before the final history assertion failed.",
+    "failures": [
+      "Multiline simulated typing creates native history groups. Establish one explicit replacement step and verify redo/undo survives all exports.",
+      "Alert is present as Sheet labeled alert; message is StaticText.value. Match label or value and scope OK to the actual sheet. Error implementation remains unchanged."
+    ],
+    "rawArtifacts": "/private/tmp/snowfolio-html-template-hosted-native",
+    "sourceEvidence": "Downloaded original xcodebuild.log and xcresult; no skipped or removed assertions."
   },
   "remaining": [
     "Fresh user-desktop glyph/selection and import/export acceptance; Mac locked at latest CUA check",

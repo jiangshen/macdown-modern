@@ -559,13 +559,17 @@ final class DocumentLifecycleTests: XCTestCase {
     app.typeKey("a", modifierFlags: .command)
     editor.typeText("Template recovery checkpoint")
     app.typeKey("e", modifierFlags: [.command, .shift])
-    let alert = app.dialogs["Couldn’t Export"].firstMatch
+    let alert = app.sheets.firstMatch
+    XCTAssertTrue(alert.waitForExistence(timeout: 8), app.debugDescription)
     let explanation = app.staticTexts.matching(
-      NSPredicate(format: "label CONTAINS %@", "The saved HTML template is unavailable")
+      NSPredicate(
+        format: "label CONTAINS %@ OR value CONTAINS %@",
+        "The saved HTML template is unavailable", "The saved HTML template is unavailable")
     ).firstMatch
     XCTAssertTrue(explanation.waitForExistence(timeout: 8), app.debugDescription)
     XCTAssertFalse(app.checkBoxes["exportDocumentStyles"].exists)
-    if alert.exists { alert.buttons["OK"].click() } else { app.buttons["OK"].firstMatch.click() }
+    alert.buttons["OK"].click()
+    XCTAssertTrue(alert.waitForNonExistence(timeout: 5))
     app.typeKey(",", modifierFlags: .command)
     let settings = app.windows["snowfolioSettings"]
     XCTAssertTrue(settings.waitForExistence(timeout: 5))
@@ -615,6 +619,12 @@ final class DocumentLifecycleTests: XCTestCase {
     editor.typeText(source)
     XCTAssertEqual(editor.value as? String, source)
     XCTAssertTrue(old.exists)
+    // Establish one explicit native history step; multiline simulated typing
+    // legitimately has more than one undo group.
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Export history checkpoint")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, source)
     for styled in [false, true] {
       for highlighted in [false, true] {
         let folder = root.appendingPathComponent("\(styled)-\(highlighted)")
@@ -665,8 +675,10 @@ final class DocumentLifecycleTests: XCTestCase {
       }
     }
     editor.click()
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, "Export history checkpoint")
     app.typeKey("z", modifierFlags: .command)
-    XCTAssertEqual(editor.value as? String, "Old preview checkpoint")
+    XCTAssertEqual(editor.value as? String, source)
   }
 
   @MainActor
