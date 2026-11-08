@@ -216,7 +216,17 @@
     ],
     "formatting": "passed",
     "compilationCorrections": "Fixed optional revision formatting in Debug trace; removed unused native-host lookup. Neither change alters document behavior/assertions.",
-    "next": "Focused document-restoration dispatch; examine actual model synchronization and explicit-save outcome before changing autosave expectations or host policy. Native reload still needs a minimal stock-host comparison if conversion/apply remains absent."
+    "next": "Focused document-restoration dispatch; examine actual model synchronization and explicit-save outcome before changing autosave expectations or host policy. Native reload still needs a minimal stock-host comparison if conversion/apply remains absent.",
+    "ciInstallation": {
+      "failedRuns": [
+        "https://github.com/jiangshen/snowfolio/actions/runs/42465157580",
+        "https://github.com/jiangshen/snowfolio/actions/runs/42465255596"
+      ],
+      "result": "Native tests did not execute: Homebrew moving Tuist 4.215.0 release download repeatedly returned HTTP 504. Focused run attempts 1 and 2 were terminal installation failures.",
+      "repair": "Pin official Tuist 4.214.1 asset 691940861; download via official GitHub release API, verify SHA-256 before extraction/execution, retain adjacent frameworks, remove archive on step exit.",
+      "sha256": "c9fb90582126d30380e9348da2c84d9c4ab08d59cded454f6bd8ef60bd93c759",
+      "localVerification": "Official metadata digest matches downloaded archive; extracted binary reports 4.214.1; workflow YAML and shell syntax parse; no new native acceptance claimed."
+    }
   },
   "fullDiagnosticCheckpoint": {
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42461258299",

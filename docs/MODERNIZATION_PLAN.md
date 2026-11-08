@@ -2923,3 +2923,15 @@ logs/results and required screenshots; retrieve large recordings/system archives
 for a specific unresolved failure. Do not leave new per-feature build caches behind
 after acceptance. This maintenance does not establish runtime performance or close
 any remaining modernization gate.
+
+
+## Restore hosted native diagnostics — 2026-11-08
+
+The latest full and focused Undo diagnostic runs failed before testing because
+Homebrew's Tuist 4.215.0 release download repeatedly returned HTTP504. CI now pins
+the locally working official4.214.1 archive via GitHub's release API and verifies
+its published SHA-256 before extracting or executing. The local downloaded archive
+matches that digest and the extracted tool reports4.214.1. The temporary archive
+is removed at step exit; framework layout is retained. Workflow YAML/shell syntax
+passes. Runtime Undo and external-reload issues remain open; this infrastructure
+repair does not establish native acceptance.
