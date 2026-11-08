@@ -285,9 +285,29 @@
       "appKitBuild": "/private/tmp/snowfolio-native-host-control-build-final.json",
       "swiftUIBuild": "/private/tmp/snowfolio-stock-host-revised-build.json",
       "localResult": "Both variants build-for-testing successfully; three methods compile per variant, zero compiler errors/warnings; strict formatting, shell syntax and workflow YAML pass.",
-      "runtime": "Both revised variants pending hosted execution."
+      "runtime": {
+        "AppKitRun": "https://github.com/jiangshen/snowfolio/actions/runs/42476058972",
+        "AppKitResult": "Three methods execute; both uncoordinated clean reload checks fail; saved-edit Undo/deactivation autosave passes. No native host migration justified yet.",
+        "SwiftUIRun": "https://github.com/jiangshen/snowfolio/actions/runs/42476061016",
+        "SwiftUIResult": "Terminal failure; compact failed log captured. Exact result inspection remains required before any attribution.",
+        "AppKitFailureLog": "/private/tmp/snowfolio-native-host-control-failed.log",
+        "SwiftUIFailureLog": "/private/tmp/snowfolio-stock-host-revised-failed.log",
+        "next": "Inspect current control console and compare coordinated/canonical user-document location. Both independent hosts failing uncoordinated reload requires investigating notification/fixture conditions before blaming SwiftUI or migrating production."
+      }
     }
   },
   "retentionNote": "Only latest useful raw control result retained. Superseded raw Undo bundle removed after preserving its summary/console/comparison; stock system-log export removed after compact console capture. Historical retirement mapping in storage-retention.json; app build remains canonical Build/Snowfolio.",
-  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_11-11-52-+0000.xcresult"
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_11-11-52-+0000.xcresult",
+  "latestFullCheckpoint": {
+    "commit": "47bfd9142d9b3e40e68a2a7f5bee5a08205a2ae8",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42474226792",
+    "result": "All24 native methods execute;21 pass,3 known lifecycle failures. Total1333.007s; no job timeout. Both reloads and original active8s Undo persistence fail; scoped Cancel-close passes.",
+    "log": "/private/tmp/snowfolio-current-full-native-failed.log"
+  },
+  "latestCoreCheckpoint": {
+    "commit": "12a356cc3d71aaf825d5e5f24c6eadb5d098605b",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42474634394",
+    "result": "Downloaded and counted354 tests/76 suites,652/652CommonMark examples,8arm64 executables.",
+    "directory": "/private/tmp/snowfolio-current-core-result"
+  }
 }

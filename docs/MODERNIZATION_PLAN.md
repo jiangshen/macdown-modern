@@ -2973,3 +2973,24 @@ next; no document lifecycle or fallback acceptance is claimed.
 Only the current raw stock-control result is retained; superseded Undo evidence
 is compacted, and the stock diagnostic system-log export is removed after console
 capture. The small isolated control build is reused while this comparison runs.
+
+
+## Markdown library review and full native checkpoint — 2026-11-08
+
+The user's engine question prompted a current source/library review, recorded in
+validation/markdown-engine-review.json. Snowfolio uses vendored/patched Swift
+cmark-gfm behind Swift integration and cmark HTML output, then WKWebView display.
+The grammar core was not written from scratch; custom feature/source integration
+is first-party Swift. MD4C is the first efficiency candidate to benchmark; Rust
+pulldown-cmark and native SwiftUI Textual are additional candidates. Swift Markdown
+still wraps cmark-gfm. No replacement or comparative speed claim is established.
+M6 must compare complete feature/source-mapping/output parity, allocations and
+render/publication/typing performance before changing libraries.
+
+Full47bfd91/run42474226792 completes all24 native methods:21 pass, two external
+reloads and the original8s active Undo disk assertion fail. It finishes without
+a job timeout. Exact12a356c core artifacts pass354/76,652examples and8arm64
+executables. AppKit control run42476058972 passes the saved-edit Undo/deactivation
+check but fails both uncoordinated reloads. Investigate coordinated notification
+and fixture/location conditions before a production host decision; no full M2
+or modernization acceptance is claimed.
