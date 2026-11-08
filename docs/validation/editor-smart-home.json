@@ -87,7 +87,9 @@
     }
   ],
   "hosted": {
-    "status": "pending"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42460295371",
+    "commit": "280e6a3c89e5e87aa1fe08cc5d825a361d6ee665",
+    "status": "in progress at last authoritative poll"
   },
   "remaining": [
     "Actual keyboard-only/user-desktop/VoiceOver acceptance remains open. Simulated composition is not a real IME session.",

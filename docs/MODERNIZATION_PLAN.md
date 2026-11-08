@@ -18,6 +18,12 @@ range and fractional persistence. Scroll-past-end retains the original boolean k
 and explicit false values. Geometry waits for composition. The30-minute native job
 envelope leaves artifact time; individual waits/assertions remain unchanged.
 
+Current local Smart Home implementation `280e6a3` passes354 tests/76 suites and the
+arm64 app build, with21 UI methods compiled; exact [hosted run42460295371](https://github.com/jiangshen/snowfolio/actions/runs/42460295371)
+is in progress. Smart line start preserves the original preference and native
+wrapped-row/composition behavior. Follow-up close-cancellation and graceful-restoration
+fixtures now compile (23 UI methods total); their execution is not yet accepted.
+
 New work awaiting execution: the autosave/clean-external-reload encoding fixture in
 `6d911da`, [run42459610152](https://github.com/jiangshen/snowfolio/actions/runs/42459610152).
 All21 native UI methods compile. The fixture checks exact UTF-16LE BOM/CRLF/Unicode
@@ -2815,3 +2821,18 @@ Exact evidence is in validation/editor-smart-home.json. Hosted/user-desktop/real
 IME/VoiceOver acceptance remains open; no coupled original file is retired. Remaining
 typing/statistics, full document lifecycle, renderer/M5 and measured M6/release gates
 still apply. The full goal remains active and incomplete.
+
+
+### Native close cancellation and graceful restoration fixtures
+
+Added separate native UI methods for cancelling Close on an unsaved Unicode document
+and resuming editing/Undo, plus normal Command-Q/relaunch of a saved document with
+restored first responder and EOF insertion. The restoration case checks saved bytes
+before and after; clicking the source after relaunch would replace the insertion
+position, so it sends text through the restored first responder. It uses only its own
+temporary file. Shared default launch arguments are overridden in the process argument
+domain; a Foundation probe confirms last-value behavior without changing live defaults.
+
+The native build-for-testing passes with23 methods compiled. Neither new method has
+runtime acceptance yet; exact source/build evidence is in document-lifecycle.json.
+Conflict/Versions and remaining document/IME/VoiceOver gates stay open.

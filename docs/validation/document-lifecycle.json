@@ -20,11 +20,27 @@
     "diagnostics": "No Swift compiler error/warning; existing AppIntents metadata-extraction notice because no AppIntents framework dependency."
   },
   "hosted": {
-    "status": "pending; no runtime acceptance claimed"
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42459610152",
+    "commit": "6d911da7096510f2e9bd215e0e02535648fbde26",
+    "status": "in progress at last authoritative poll; core job passed, native results pending"
   },
   "pending": [
     "Execute the new native lifecycle method and inspect exact results.",
     "Dirty external-conflict UI, Versions, graceful quit/relaunch restoration, real IME/VoiceOver and the rest of M2 remain open.",
     "No production lifecycle change or legacy-file retirement is justified by fixture compilation."
-  ]
+  ],
+  "preparedFollowups": {
+    "base": "280e6a3c89e5e87aa1fe08cc5d825a361d6ee665",
+    "fixtures": {
+      "testCancelUnsavedDocumentCloseRetainsEditingAndUndo": "Use native Close on own unsaved Unicode document; require Cancel, capture sheet, cancel, verify source and further replacement/Undo.",
+      "testGracefulQuitRestoresSavedDocumentAndInsertionPosition": "Open only own saved fixture, move insertion to EOF, issue real Command-Q and await exit, relaunch with native restoration enabled, require named document and restored first responder/EOF insertion, Undo and unchanged saved bytes."
+    },
+    "localBuildForTesting": "passed",
+    "compiledUIMethods": 23,
+    "sourceSHA256": "c55e64bc8bc7ef3ee51679dc303103e1ba07f9f82736bf56551070db33e8f5d2",
+    "log": "/private/tmp/snowfolio-close-restoration-app-build.log",
+    "logSHA256": "399bd5ac3350cf9f925b913fe598862f7a07370e7e587fe91026e00990d6a161",
+    "launchArgumentProbe": "Foundation runtime confirms repeated launch keys use the last value; restoration overrides of the shared test defaults therefore take effect. Only the test process argument domain is changed.",
+    "runtime": "pending; no close/restoration acceptance claimed"
+  }
 }

@@ -45,7 +45,7 @@ jobs:
 
   native-app:
     runs-on: xcode-27
-    # The 19-method native UI suite has reached 20 minutes including artifact upload.
+    # The growing native UI suite needs time for execution and artifact upload.
     # Keep per-test waits/assertions unchanged and leave time to preserve results.
     timeout-minutes: 30
     steps:

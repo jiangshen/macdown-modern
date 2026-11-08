@@ -120,6 +120,75 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testCancelUnsavedDocumentCloseRetainsEditingAndUndo() {
+    let app = launch()
+    defer { app.terminate() }
+    let editor = newDocument(in: app)
+    let original = "Unsaved Unicode document 中文 👩‍💻"
+    editor.click()
+    editor.typeText(original)
+    XCTAssertEqual(editor.value as? String, original)
+    app.typeKey("w", modifierFlags: .command)
+    let cancel = app.buttons["Cancel"].firstMatch
+    XCTAssertTrue(cancel.waitForExistence(timeout: 5), app.debugDescription)
+    let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    image.name = "native-unsaved-close-confirmation"
+    image.lifetime = .keepAlways
+    add(image)
+    cancel.click()
+    XCTAssertTrue(editor.waitForExistence(timeout: 5))
+    XCTAssertEqual(editor.value as? String, original)
+    editor.click()
+    app.typeKey("a", modifierFlags: .command)
+    editor.typeText("Editing continues after Cancel")
+    XCTAssertEqual(editor.value as? String, "Editing continues after Cancel")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, original)
+  }
+
+  @MainActor
+  func testGracefulQuitRestoresSavedDocumentAndInsertionPosition() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let file = directory.appendingPathComponent("restoration-checkpoint.md")
+    let source =
+      "# Restoration 中文 👩‍💻\n\n" + String(repeating: "Reading and writing checkpoint.\n", count: 40)
+    let bytes = Data(source.utf8)
+    try bytes.write(to: file)
+    let app = launch(arguments: [
+      "-ApplePersistenceIgnoreState", "NO", "-NSQuitAlwaysKeepsWindows", "YES",
+    ])
+    defer { app.terminate() }
+    let editor = openDocument(file, in: app)
+    XCTAssertEqual(editor.value as? String, source)
+    editor.click()
+    app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+    app.typeKey("q", modifierFlags: .command)
+    XCTAssertTrue(
+      app.wait(for: .notRunning, timeout: 10), "Normal Quit should finish without a sheet")
+    XCTAssertEqual(try Data(contentsOf: file), bytes)
+    app.launch()
+    let window = app.windows.matching(
+      NSPredicate(format: "title CONTAINS %@", "restoration-checkpoint")
+    ).firstMatch
+    XCTAssertTrue(window.waitForExistence(timeout: 10), app.debugDescription)
+    let restored = window.textViews["markdownSourceEditor"].firstMatch
+    XCTAssertTrue(restored.waitForExistence(timeout: 5))
+    XCTAssertEqual(restored.value as? String, source)
+    // Send through the restored first responder; clicking would replace the restored insertion position.
+    app.typeText("Restored insertion checkpoint")
+    XCTAssertEqual(restored.value as? String, source + "Restored insertion checkpoint")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(restored.value as? String, source)
+    XCTAssertEqual(try Data(contentsOf: file), bytes)
+    let image = XCTAttachment(screenshot: window.screenshot())
+    image.name = "native-graceful-document-restoration"
+    image.lifetime = .keepAlways
+    add(image)
+  }
+
+  @MainActor
   func testNewDocumentTypingUndoRedo() {
     let app = launch()
     defer { app.terminate() }
