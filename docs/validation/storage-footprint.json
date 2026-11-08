@@ -1,8 +1,6 @@
 {
   "dateUTC": "2026-11-08T10:57:02.963711+00:00",
   "scope": "Snowfolio checkout and this task-owned Snowfolio/MacDown temporary files; shared Codex history and unrelated projects excluded.",
-  "trackedFiles": 1057,
-  "trackedLogicalBytes": 27235420,
   "projectTemporaryAllocatedBytesBefore": 16591192064,
   "projectTemporaryAllocatedBytesAfter": 8001990656,
   "checkoutAllocatedBytesAfter": 916738048,
@@ -28,5 +26,8 @@
     "Clean isolated comparison/sanitizer/compiler caches after recording results.",
     "Retain compact logs/results and required screenshots; download/export large recordings or system logs only for a specific unresolved failure.",
     "No new per-feature build cache should remain after its validation is accepted."
-  ]
+  ],
+  "trackedFileCountAtAuditStart": 1057,
+  "trackedLogicalBytesAtAuditStart": 27235420,
+  "standingUserPreference": "Keep temporary items while needed; clear obsolete copies when the investigation or verification finishes. Recorded in AGENTS.md."
 }
