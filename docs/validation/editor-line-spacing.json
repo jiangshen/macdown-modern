@@ -167,7 +167,7 @@
   "sourceManifest": [
     {
       "path": "App/UITests/DocumentLifecycleTests.swift",
-      "sha256": "f86b05d6db1738a7c4ed58086dc82ce96230f7ac54f43ad91082eb4900e7e98a"
+      "sha256": "65ec4b7914498399277c9868381a40ddd0803070f0e4a4f61fb2a01f1d450530"
     },
     {
       "path": "Packages/SnowfolioCore/Sources/EditorCore/EditorLayoutPreferences.swift",
@@ -235,5 +235,50 @@
     "The 03:42 list screenshot predates the mixed-list preview correction; six preview list regressions remain in the suite. Source-editor-specific artifact is not declared fixed by caret work.",
     "ASAN and test durations are correctness evidence, not measured typing latency, leak, memory or energy improvement.",
     "Scroll-past-end, remaining original typing/statistics/preferences parity, full document lifecycle, renderer parity, M5 and M6/release acceptance remain open. Coupled original targets are retained."
-  ]
+  ],
+  "hostedInitial": {
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42451040567",
+    "commit": "4a9962207992e4a137a1116283b4b41a562e72e5",
+    "core": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42451040567",
+      "commit": "4a9962207992e4a137a1116283b4b41a562e72e5",
+      "packageTests": 347,
+      "suites": 74,
+      "commonMarkExamples": 652,
+      "commonMarkFailures": 0,
+      "arm64TestExecutables": 8,
+      "listParameterCases": 6,
+      "sourceScrollHandoffPassed": true,
+      "files": [
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-hosted-core/snowfolio-commonmark/commonmark.json",
+          "sha256": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-hosted-core/snowfolio-commonmark/build.log",
+          "sha256": "e1039ca8f53fc69738fc7b1644e3bcadcf51cc13850d6d6ec72e12ac0155c1d7"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-hosted-core/snowfolio-validation/swift-test.log",
+          "sha256": "220df974596f0fee8d85b3f5616a7c4bbf517cc1dd4425af20fc6d6d81e1de4d"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-hosted-core/snowfolio-validation/toolchain.txt",
+          "sha256": "04630ab8fa201f57c63c59730e638135e32584a97e16e004a417eb8ed283dc83"
+        },
+        {
+          "path": "/private/tmp/snowfolio-line-spacing-hosted-core/snowfolio-validation/architecture.txt",
+          "sha256": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35"
+        }
+      ]
+    },
+    "native": "In progress when literal-list setup follow-up was prepared; final outcome must be retained."
+  },
+  "literalListFixtureFollowup": {
+    "change": "Disable automatic block continuation only in the line-spacing UI fixture while typing the supplied literal numbered/bullet source, matching the existing theme UI fixture. Product behavior is unchanged.",
+    "appBuildReport": "/private/tmp/snowfolio-line-spacing-literal-list-app-build.json",
+    "appBuildStatus": "passed",
+    "strictLint": "passed",
+    "hosted": "pending"
+  }
 }

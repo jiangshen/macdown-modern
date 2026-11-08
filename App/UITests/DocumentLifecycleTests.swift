@@ -725,7 +725,7 @@ final class DocumentLifecycleTests: XCTestCase {
 
   @MainActor
   func testEditorLineSpacingPreservesSourceAndHistory() {
-    let app = launch()
+    let app = launch(arguments: ["-editorInsertPrefixInBlock", "NO"])
     defer { app.terminate() }
     let editor = newDocument(in: app)
     editor.click()
