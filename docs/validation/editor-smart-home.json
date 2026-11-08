@@ -89,7 +89,24 @@
   "hosted": {
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42460295371",
     "commit": "280e6a3c89e5e87aa1fe08cc5d825a361d6ee665",
-    "status": "in progress at last authoritative poll"
+    "core": "passed354 tests/76 suites,652 CommonMark examples and eight arm64 test executables",
+    "native": "21 methods executed;20 prior methods pass, the new clean external-reload method fails the same8s expectation as6d911da before this feature. Native job failed; not complete app acceptance.",
+    "coreLog": {
+      "path": "/private/tmp/snowfolio-smart-home-hosted-core/snowfolio-validation/swift-test.log",
+      "sha256": "d51807cd5b8bd4df2eea71a9d6ea3ed7606a0d19ee4df0b604bb96c1c3e9157e"
+    },
+    "commonMark": {
+      "path": "/private/tmp/snowfolio-smart-home-hosted-core/snowfolio-commonmark/commonmark.json",
+      "sha256": "f3029c2db3506632ea8b4ad3e81190678456d56d1995989d108ab1494c8ee885"
+    },
+    "architecture": {
+      "path": "/private/tmp/snowfolio-smart-home-hosted-core/snowfolio-validation/architecture.txt",
+      "sha256": "d4e75b7588ee72f63163cbc4810132ca3d5377f8aa10283ff5f68bf1b2096f35"
+    },
+    "nativeFailureLog": {
+      "path": "/private/tmp/snowfolio-smart-home-hosted-failed.log",
+      "sha256": "38d756ea7249c8dbff791c66f1699918cdb3fa5e51f246d4a1dc6bfe8d0befb9"
+    }
   },
   "remaining": [
     "Actual keyboard-only/user-desktop/VoiceOver acceptance remains open. Simulated composition is not a real IME session.",

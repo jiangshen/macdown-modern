@@ -48,9 +48,9 @@
     "appConsole": "Native console/system log archive exported. No snapshot/conflict diagnosis is inferred from unrelated framework messages."
   },
   "pending": [
-    "Execute the new native lifecycle method and inspect exact results.",
-    "Dirty external-conflict UI, Versions, graceful quit/relaunch restoration, real IME/VoiceOver and the rest of M2 remain open.",
-    "No production lifecycle change or legacy-file retirement is justified by fixture compilation."
+    "Execute corrected lifecycle fixtures; inspect real source/file/host state.",
+    "If native FileWrapper callbacks still do not recur, compare a minimal stock document host before changing merge policy or attributing a framework problem.",
+    "Dirty external conflicts, Versions, full native tabs/window restoration, real IME/VoiceOver and full remaining modernization remain open."
   ],
   "preparedFollowups": {
     "base": "280e6a3c89e5e87aa1fe08cc5d825a361d6ee665",
@@ -68,7 +68,13 @@
     "hosted": {
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42460573752",
       "commit": "35013ec1d3be807ac87007f33c8c375aa233a050",
-      "status": "in progress at last authoritative poll; exact23-method native execution pending"
+      "status": "completed;23 methods executed,3 failed; other20 passed; core job passed",
+      "cancelClose": "Found Cancel but global firstMatch selected a Touch Bar button; native sheet-specific query is the correction. No acceptance claimed yet.",
+      "restoration": "Normal Quit, named document restore, source restore, first responder/EOF insertion and Undo assertions passed. Immediate post-Undo disk assertion failed with intermediate autosave bytes (1340 versus1314); fixture must await asynchronous Undo autosave before its exact-byte assertion.",
+      "failureLog": {
+        "path": "/private/tmp/snowfolio-close-restoration-hosted-failed.log",
+        "sha256": "351f975edec6fd1d595498862700a2386e7519f5b18c1e4b68afac47c5a2759b"
+      }
     }
   },
   "diagnosticFollowup": {
@@ -84,6 +90,56 @@
     "sourceSHA256": "a5af229d6165afea799960ddc0a56127541c58c1b4b4b5111055a6b149d60abb",
     "buildLog": "/private/tmp/snowfolio-document-reload-diagnostics-helper-build.log",
     "productionConflictPolicy": "unchanged pending evidence; no overwrite guard weakened",
-    "ci": "Push/PR/default dispatch still run full core/corpus and all native methods. Explicit document-reload dispatch selects only the two diagnostic methods and does not establish full acceptance."
+    "ci": "Push/PR/default dispatch still run full core/corpus and all native methods. Explicit document-reload dispatch selects only the two diagnostic methods and does not establish full acceptance.",
+    "focusedRun": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42461274868",
+      "commit": "abe61e9d032563beab0b9eb49601459647dff722",
+      "result": "two selected methods executed; both external-reload waits failed",
+      "nativeSeconds": 302.486,
+      "observations": [
+        "Uncoordinated case: external bytes retained; no second file-wrapper conversion/apply callback.",
+        "Coordinated case: external bytes retained; no second conversion/apply callback. App automation reports main run loop busy repeatedly for30s; total case239.973s versus62.498s uncoordinated.",
+        "Trace contains initial reads/applies and autosave/write-wrapper operations. Existing merge guard did not run again; do not attribute this observed failure to it."
+      ],
+      "evidence": [
+        {
+          "path": "/private/tmp/snowfolio-document-reload-focused-native/xcodebuild.log",
+          "sha256": "8a5047124d46cc70441e379fd6c30b825efbfc1f816bb4d40ba8362e7a6d0f9b"
+        },
+        {
+          "path": "/private/tmp/snowfolio-document-reload-focused-text/0DD94DAA-1CA5-49D3-AD13-5FE79A426B2E.txt",
+          "sha256": "ecce6a02a2d780083dc07085e294b126035a17c5754ae8e27886a656655f3b85"
+        },
+        {
+          "path": "/private/tmp/snowfolio-document-reload-focused-text/AEC06560-1801-4595-A096-222A64E882D0.txt",
+          "sha256": "38171f197082685861e22b4885671976866316e0c848d178fb3b5450aa1b1fd0"
+        }
+      ],
+      "diagnosticsDirectory": "/private/tmp/snowfolio-document-reload-focused-diagnostics"
+    }
+  },
+  "responsiveFixtureCorrection": {
+    "changes": [
+      "Scope unsaved-close Cancel to native sheets, excluding Touch Bar buttons.",
+      "Preserve exact restored source/focus/insertion/Undo checks; wait up to8s for Undo autosave to restore exact original disk bytes instead of requiring synchronous disk I/O.",
+      "Run both controlled external writes on a serial background OperationQueue. A checked Sendable state uses Mutex only for the result; no lock spans I/O. XCTest wait pumps the main run loop and bounds write completion to8s, separate from unchanged8s reload/35s autosave waits. Attach I/O completion timing."
+    ],
+    "productionPolicy": "unchanged; no merge guard, source, native autosave, host or restoration implementation altered",
+    "buildForTesting": "passed;24 methods compile",
+    "source": {
+      "path": "App/UITests/DocumentLifecycleTests.swift",
+      "sha256": "6b48048b7ff359c6d79dc61535516cea80992e0cf253f7e79f4ac2ce9c28d53e"
+    },
+    "buildLog": {
+      "path": "/private/tmp/snowfolio-document-lifecycle-responsive-fixture-xcodebuild.log",
+      "sha256": "d6bd2fc231f5a73089d913a7a7ef7fd4ff0998ede9c78d67b7921bce06428e98"
+    },
+    "strictFormatting": "passed",
+    "modelTests": {
+      "path": "/private/tmp/snowfolio-document-reload-diagnostic-model-tests.json",
+      "sha256": "dd71a9dddc1fbd49ef053153a4c3c54ee24b42b129728ba2d40f2837815c938d"
+    },
+    "modelTestCount": 7,
+    "next": "Focused document-lifecycle dispatch covers both reload controls plus Cancel/restore; full push/PR/default gates remain unchanged. Runtime acceptance pending."
   }
 }

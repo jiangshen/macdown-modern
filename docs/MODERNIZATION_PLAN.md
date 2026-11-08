@@ -20,7 +20,7 @@ envelope leaves artifact time; individual waits/assertions remain unchanged.
 
 Current local Smart Home implementation `280e6a3` passes354 tests/76 suites and the
 arm64 app build, with21 UI methods compiled; exact [hosted run42460295371](https://github.com/jiangshen/snowfolio/actions/runs/42460295371)
-is in progress. Smart line start preserves the original preference and native
+passes its core/corpus gate; its native job fails only the existing clean external-reload check. Smart line start preserves the original preference and native
 wrapped-row/composition behavior. Follow-up close-cancellation and graceful-restoration
 fixtures now compile (23 UI methods total); their execution is not yet accepted.
 
@@ -2858,3 +2858,25 @@ the exact-source/disk assertion and original wait; observations are captured bef
 assertion. All24 UI methods compile. A manual document-reload scope runs these two
 methods quickly; push/PR/default dispatch keep all core/corpus/native gates. Focused
 results cannot establish complete acceptance. Full lifecycle/M2 remains open.
+
+
+### Exact lifecycle diagnostics and fixture corrections
+
+Focused abe61e9/run42461274868 executes both selected methods; both external-reload
+waits fail while external bytes remain intact. Trace shows only initial FileWrapper
+conversion/apply callbacks, followed by write-wrapper operations. No second apply
+reaches the merge guard, so it is not the cause established by this run. The
+coordinated case takes239.973s and logs repeated30s main-run-loop automation waits.
+Both controlled writers now execute on a background OperationQueue with checked
+Sendable/Mutex result state and bounded8s completion, preserving the original reload
+and autosave assertions/waits. No production merge/host policy changes.
+
+Run35013ec/42460573752 executes23 methods:20 prior methods pass, external reload
+fails, Cancel hits a global Touch Bar match, and restoration fails only an immediate
+post-Undo disk comparison. Quit/relaunch, named document/source/focus/insertion and
+Undo assertions pass. Cancel now queries native sheets. The byte assertion now waits
+for asynchronous Undo autosave, retaining exact bytes and8s completion. All24
+methods compile; corrected runtime acceptance is pending. If reload callbacks remain
+absent, next compare a minimal stock host; do not infer a merge-policy or framework
+cause. Exact evidence is in document-lifecycle.json. Full M2 and modernization remain
+active/incomplete.

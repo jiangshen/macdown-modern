@@ -22,6 +22,7 @@ on:
         options:
           - all
           - document-reload
+          - document-lifecycle
 
 permissions:
   contents: read
@@ -29,7 +30,7 @@ permissions:
 jobs:
   swift-foundations:
     # Push/PR and default dispatch always retain the complete core/corpus gate.
-    if: github.event_name != 'workflow_dispatch' || inputs.native_test_scope != 'document-reload'
+    if: github.event_name != 'workflow_dispatch' || (inputs.native_test_scope != 'document-reload' && inputs.native_test_scope != 'document-lifecycle')
     # Native arm64 macOS 27 / Xcode 27 hosted image. See actions/runner-images.
     runs-on: xcode-27
     timeout-minutes: 15
@@ -70,6 +71,12 @@ jobs:
             bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = document-lifecycle ]; then
+            bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testCancelUnsavedDocumentCloseRetainsEditingAndUndo \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testGracefulQuitRestoresSavedDocumentAndInsertionPosition
           else
             bash Tools/build-snowfolio.sh --test
           fi

@@ -1,4 +1,5 @@
 import AppKit
+import Synchronization
 import XCTest
 
 final class DocumentLifecycleTests: XCTestCase {
@@ -104,19 +105,7 @@ final class DocumentLifecycleTests: XCTestCase {
     let external = "# External snapshot\n中文 👩‍💻 e\u{301}\n"
     let utf8BOM = Data([0xEF, 0xBB, 0xBF])
     let externalBytes = utf8BOM + Data(external.utf8)
-    if coordinated {
-      var coordinationError: NSError?
-      var writeError: Error?
-      NSFileCoordinator().coordinate(
-        writingItemAt: file, options: .forReplacing, error: &coordinationError
-      ) { url in
-        do { try externalBytes.write(to: url, options: .atomic) } catch { writeError = error }
-      }
-      if let coordinationError { throw coordinationError }
-      if let writeError { throw writeError }
-    } else {
-      try externalBytes.write(to: file, options: .atomic)
-    }
+    try writeExternally(externalBytes, to: file, coordinated: coordinated)
     app.activate()
     let reloaded = XCTNSPredicateExpectation(
       predicate: NSPredicate { _, _ in editor.value as? String == external }, object: nil)
@@ -154,6 +143,52 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertEqual(try Data(contentsOf: file), expectedFinal)
   }
 
+  private final class ExternalWriteState: Sendable {
+    let result = Mutex<Result<Void, Error>?>(nil)
+  }
+
+  @MainActor
+  private func writeExternally(_ bytes: Data, to file: URL, coordinated: Bool) throws {
+    let state = ExternalWriteState()
+    let complete = XCTestExpectation(description: "External fixture writer completed")
+    let began = ProcessInfo.processInfo.systemUptime
+    let queue = OperationQueue()
+    queue.maxConcurrentOperationCount = 1
+    defer { queue.cancelAllOperations() }
+    // Coordination can wait for a file presenter. Keep the test's main run loop responsive.
+    queue.addOperation {
+      let result = Result<Void, Error> {
+        if coordinated {
+          var coordinationError: NSError?
+          var writeError: Error?
+          NSFileCoordinator().coordinate(
+            writingItemAt: file, options: .forReplacing, error: &coordinationError
+          ) { url in
+            do { try bytes.write(to: url, options: .atomic) } catch { writeError = error }
+          }
+          if let coordinationError { throw coordinationError }
+          if let writeError { throw writeError }
+        } else {
+          try bytes.write(to: file, options: .atomic)
+        }
+      }
+      state.result.withLock { $0 = result }
+      complete.fulfill()
+    }
+    let result = XCTWaiter().wait(for: [complete], timeout: 8)
+    let observation = XCTAttachment(
+      string:
+        "Coordinated writer: \(coordinated); completion: \(result.rawValue); elapsed: \(ProcessInfo.processInfo.systemUptime - began) seconds."
+    )
+    observation.name = "external-writer-completion"
+    observation.lifetime = .keepAlways
+    add(observation)
+    XCTAssertEqual(
+      result, .completed,
+      "External fixture I/O should finish while the main run loop stays responsive")
+    try XCTUnwrap(state.result.withLock { $0 }).get()
+  }
+
   @MainActor
   func testCancelUnsavedDocumentCloseRetainsEditingAndUndo() {
     let app = launch()
@@ -164,7 +199,7 @@ final class DocumentLifecycleTests: XCTestCase {
     editor.typeText(original)
     XCTAssertEqual(editor.value as? String, original)
     app.typeKey("w", modifierFlags: .command)
-    let cancel = app.buttons["Cancel"].firstMatch
+    let cancel = app.sheets.buttons["Cancel"].firstMatch
     XCTAssertTrue(cancel.waitForExistence(timeout: 5), app.debugDescription)
     let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
     image.name = "native-unsaved-close-confirmation"
@@ -216,6 +251,9 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertEqual(restored.value as? String, source + "Restored insertion checkpoint")
     app.typeKey("z", modifierFlags: .command)
     XCTAssertEqual(restored.value as? String, source)
+    let undoAutosaved = NSPredicate { _, _ in (try? Data(contentsOf: file)) == bytes }
+    expectation(for: undoAutosaved, evaluatedWith: nil)
+    waitForExpectations(timeout: 8)
     XCTAssertEqual(try Data(contentsOf: file), bytes)
     let image = XCTAttachment(screenshot: window.screenshot())
     image.name = "native-graceful-document-restoration"

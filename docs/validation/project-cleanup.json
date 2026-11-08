@@ -393,5 +393,24 @@
       "log": "/private/tmp/snowfolio-document-lifecycle-asan-cache-clean.log",
       "result": "passed; available filesystem capacity observed291MiB before and1.0GiB after, not a precise physical-recovery measurement"
     }
+  ],
+  "additionalGeneratedBuildMaintenance": [
+    {
+      "date": "2026-11-08",
+      "reason": "Disk could not create temporary files; retain source, reports, current app and Trash contents while reclaiming only regenerable agent build output.",
+      "failedAttempt": "Initial standard SwiftPM clean could not launch swiftc -print-target-info (ENOSPC/error28); no successful cleanup inferred from that attempt.",
+      "recovery": [
+        "Cleared only /private/tmp/snowfolio-native-theme-validation/build/out/Intermediates.noindex after actual arm64 inspection of all eight test executables; no current app/source/report was removed.",
+        "Standard swift package clean then succeeded for isolated PerformanceAudit cache and isolated native-theme-validation package cache."
+      ],
+      "architecture": {
+        "path": "/private/tmp/snowfolio-lifecycle-pre-clean-arm64.json",
+        "sha256": "9ef3c8f79cfa2bc0c06a3ae3b61f51cedc2af30bdd1d78f8dac6a9c8031e41c5"
+      },
+      "currentAppPreserved": "/private/tmp/snowfolio-scroll-past-end/Build/Snowfolio",
+      "rawLogsPreserved": true,
+      "trashEmptied": false,
+      "capacityObservation": "113MiB before recovery;859MiB after cache cleanup and unrelated filesystem activity. This is not a precise physical byte-recovery measurement."
+    }
   ]
 }
