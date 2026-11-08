@@ -247,7 +247,13 @@ final class DocumentHostProbeTests: XCTestCase {
         predicate: NSPredicate { _, _ in !marker.exists }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [reverted], timeout: 8), .completed)
       XCTAssertTrue(body.exists)
-      let screenshot = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+      let window = app.windows.firstMatch
+      let screen = try XCTUnwrap(NSScreen.main?.frame)
+      XCTAssertGreaterThanOrEqual(window.frame.minX, screen.minX)
+      XCTAssertLessThanOrEqual(window.frame.maxX, screen.maxX)
+      XCTAssertGreaterThanOrEqual(window.frame.minY, screen.minY)
+      XCTAssertLessThanOrEqual(window.frame.maxY, screen.maxY)
+      let screenshot = XCTAttachment(screenshot: window.screenshot())
       screenshot.name = "native-document-full-workspace-preview"
       screenshot.lifetime = .keepAlways
       add(screenshot)

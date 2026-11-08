@@ -23,20 +23,29 @@ final class NativeDocumentWindowController: NSWindowController {
     let hosting = NSHostingController(rootView: content)
     // NSDocument supplies title/proxy/edited state; SwiftUI supplies its real toolbar.
     hosting.sceneBridgingOptions = .toolbars
-    hosting.view.layoutSubtreeIfNeeded()
-    let minimum = hosting.sizeThatFits(in: .zero)
-    let measured = hosting.sizeThatFits(in: NSSize(width: 1120, height: 640))
     // Keep the minimum attached to the live SwiftUI layout. Disabling sizing
     // propagation clears the native minimum when the content joins its window.
     hosting.sizingOptions = [.minSize]
-    let size = NSSize(
-      width: max(minimum.width, measured.width), height: max(minimum.height, measured.height))
     let window = NSWindow(
-      contentRect: NSRect(origin: .zero, size: size),
+      contentRect: .zero,
       styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
       backing: .buffered, defer: false)
     window.contentViewController = hosting
     window.toolbarStyle = .unified
+    // NavigationSplitView needs its window before it can measure the workspace.
+    // Measuring before attachment returned zero and centered a growing window
+    // partly outside the display.
+    hosting.view.layoutSubtreeIfNeeded()
+    let available = window.screen.map { window.contentRect(forFrameRect: $0.visibleFrame).size }
+    let proposal = NSSize(
+      width: min(1120, available?.width ?? 1120),
+      height: min(640, available?.height ?? 640))
+    let measured = hosting.sizeThatFits(in: proposal)
+    let minimum = hosting.view.fittingSize
+    window.setContentSize(
+      NSSize(
+        width: ceil(max(minimum.width, measured.width)),
+        height: ceil(max(minimum.height, measured.height))))
     DocumentWindowPolicy.configure(window, preferTabs: preferences.preferDocumentTabs)
     window.center()
     super.init(window: window)

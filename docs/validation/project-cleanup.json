@@ -370,6 +370,16 @@
       "retained": "One raw full-app failure, compact evidence, running diagnostic and reusable app/core cache",
       "trashEmptied": false,
       "userDocumentsChanged": false
+    },
+    {
+      "date": "2026-11-08T23:51:43.014286+00:00",
+      "method": "Verify compact preceding full-app evidence and latest full-workspace summary/text/screenshot/console; replace the one retained raw result and remove system export/incoming directories. Compact exact hosted core counts/corpus/architectures, then remove duplicate downloaded logs.",
+      "obsoleteRawAllocatedBytesRemoved": 121151488,
+      "latestRawResultCount": 1,
+      "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_23-34-31-+0000.xcresult",
+      "preservedRunningDiagnosticPID": 85540,
+      "sourceAndUserDocumentsChanged": false,
+      "trashEmptied": false
     }
   ],
   "lastUpdated": "2026-11-08T11:21:22.729861+00:00",

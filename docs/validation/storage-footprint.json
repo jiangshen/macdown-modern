@@ -38,5 +38,38 @@
     "historicalRawBundlesRemoved": 34,
     "retainedRawBundleCount": 1,
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
+  },
+  "latestVerificationCycle": {
+    "dateUTC": "2026-11-08T23:51:43.014286+00:00",
+    "sourceCommit": "After e095964; marked-text checkpoint follow-up",
+    "locations": {
+      "appBuild": {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+        "allocatedBytes": 832323584
+      },
+      "runningDiagnosticBuild": {
+        "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
+        "allocatedBytes": 487800832
+      },
+      "coreCache": {
+        "path": "/private/tmp/snowfolio-native-theme-validation/build",
+        "allocatedBytes": 771018752
+      },
+      "currentRawResult": {
+        "path": "/private/tmp/snowfolio-current-native-result",
+        "allocatedBytes": 149188608
+      },
+      "compactValidationHistory": {
+        "path": "/private/tmp/snowfolio-validation-history",
+        "allocatedBytes": 20578304
+      }
+    },
+    "totalAllocatedBytes": 2260910080,
+    "obsoleteRawDownloadRemoved": "/private/tmp/snowfolio-native-checkpoint-incoming",
+    "exportedSystemDiagnosticsRemoved": true,
+    "runningDiagnosticPID": 85540,
+    "retention": "One full-workspace raw result, compact evidence/screenshots, reused app/core caches, and diagnostic build preserved while its app remains running.",
+    "userDocumentsChanged": false,
+    "trashEmptied": false
   }
 }

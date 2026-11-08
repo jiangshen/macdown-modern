@@ -319,8 +319,8 @@
       }
     }
   },
-  "retentionNote": "One useful raw full-app failure retained until full native-workspace result collection. Completed minimal-native result exported to compact summary/text/console, incoming raw removed, exported system diagnostics removed. Running diagnostic build is preserved.",
-  "latestRawResult": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_13-47-50-+0000.xcresult",
+  "retentionNote": "Current full-workspace raw result retained. Prior full-SwiftUI raw result removed after compact summary/text/console verification; new full-workspace summary/text/preview/console retained. Exported system archive and incoming download directories removed. Preserve running diagnostic and canonical caches.",
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_23-34-31-+0000.xcresult",
   "latestFullCheckpoint": {
     "commit": "83ee16168e451546b3cc0adb9ebb2b6ff70fb0df",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42480380793",
@@ -328,16 +328,16 @@
     "log": "/private/tmp/snowfolio-canonical-full-native-failed.log"
   },
   "latestCoreCheckpoint": {
-    "commit": "23016f1cb7c1753883c2b85e89d1b4126a03329f",
-    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42484023567",
-    "packageTests": 357,
-    "suites": 76,
-    "commonmarkPassed": 652,
-    "commonmarkTotal": 652,
+    "commit": "e09596475eacb3e94e63dd71ba69fc7a1017d220",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42535764367",
+    "coreJob": "success",
+    "tests": 365,
+    "suites": 78,
+    "commonMarkPassed": 652,
+    "commonMarkTotal": 652,
     "arm64Executables": 8,
-    "compilerErrors": 0,
-    "compilerWarnings": 0,
-    "artifacts": "/private/tmp/snowfolio-current-core-result"
+    "compact": "/private/tmp/snowfolio-validation-history/core-e095964",
+    "fullNativeJob": "Still running at this observation; do not infer terminal results"
   },
   "canonicalProductionFollowup": {
     "changes": [
@@ -564,7 +564,7 @@
   "nativeFullWorkspace": {
     "dateUTC": "2026-11-08T23:33:23.970772+00:00",
     "baseCommit": "0d1ca1d",
-    "status": "Local checks pass; seven-method hosted workspace diagnostic prepared",
+    "status": "Full workspace runtime executed seven methods: preview/Undo and saved-edit Undo pass; five lifecycle checks fail. Marked-text save checkpoint and initial placement correction locally verified; hosted follow-up pending.",
     "implementation": [
       "Shared SwiftUI workspace hosted in NSWindowController, preserving liked editor/preview and real toolbar",
       "Native NSDocument retains title/proxy/dirty state, Undo and Open ownership",
@@ -591,13 +591,60 @@
       "diagnosticBuild": "passed arm64 build-for-testing, zero errors/warnings; seven methods compile",
       "diagnosticReport": "/private/tmp/snowfolio-native-workspace-probe-build-report.json"
     },
-    "visual": "Not accepted. Direct CUA app inspection timed out without a window snapshot; running diagnostic PID 85540 and its Build/DocumentHostProbe cache preserved. Hosted preview/Undo test captures a screenshot for inspection.",
+    "visual": "Hosted preview screenshot inspected; initial window is partly offscreen. No visual acceptance. Direct CUA remains unavailable; running diagnostic PID85540 and its build/cache preserved.",
     "pending": [
       "Seven-method full workspace hosted execution and screenshot inspection",
       "Native application menus, Settings, focused commands and export/print routing",
       "Actual native window/tab/session restoration and Save As/assets integration",
       "Uncoordinated reload handling, dirty conflicts and Versions",
       "Real IME/VoiceOver, remaining parity, performance and release gates"
-    ]
+    ],
+    "hosted": {
+      "commit": "e09596475eacb3e94e63dd71ba69fc7a1017d220",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42535763807",
+      "executed": 7,
+      "passed": 2,
+      "failed": 5,
+      "skipped": 0,
+      "seconds": 421.511,
+      "passes": [
+        "Full workspace preview content, actual toolbar, edit-triggered preview update and native Undo",
+        "Saved-edit Undo/deactivation persistence"
+      ],
+      "failures": [
+        "Both coordinated cases and uncoordinated after-autosave case stop at final autosave byte assertion before replacement",
+        "Uncoordinated clean reload without editing",
+        "Staged encoded typing stops at final byte autosave assertion"
+      ],
+      "trace": "Failing saves repeatedly contain one attached editor with coalescing=1 marked=1. Data writes intermediate37 units, then final39 units arrive without another save; staged test writes45 then46 while marked, then final48 arrives without another save. The skip-marked checkpoint is a concrete difference from the passing minimal host. Runtime cause/fix acceptance still requires follow-up.",
+      "evidence": "/private/tmp/snowfolio-validation-history/full-workspace-e095964",
+      "visual": "Inspected successful preview screenshot: 513x412 capture clips the right side of the document window. Preview text/Undo assertions pass but window visual acceptance fails. Initial pre-attachment measurement and centering occurred before real workspace size."
+    },
+    "evidenceHashes": {
+      "/private/tmp/snowfolio-validation-history/full-workspace-e095964/summary.json": "34ea5cd2b688020ffaa3e10bbda7774b2835b022c819a5d1c7a798395705d300",
+      "/private/tmp/snowfolio-validation-history/full-workspace-e095964/preview/598E9CE2-6AF8-4D2D-89C4-AB359F7F1275.png": "b75aa86790365a0035cb59d2cb9697e5052a43a3593e45b824d506f404b32951",
+      "/private/tmp/snowfolio-validation-history/full-workspace-e095964/console-0.txt": "e3b5ad5042128f86b809581741b547d5cc6d285aece93c195de57a79f5050791",
+      "/private/tmp/snowfolio-validation-history/full-workspace-e095964/console-1.txt": "331fe098dc1888f8ecee701b8717671d98e9ea4e908ee52017b53fcfc8ce14ce"
+    }
+  },
+  "markedTextCheckpointFollowup": {
+    "dateUTC": "2026-11-08T23:51:43.014286+00:00",
+    "baseCommit": "e095964",
+    "implementation": "Always call documented NSTextView.breakUndoCoalescing during saving, including marked-text views. This changes Undo grouping and does not unmark text or replace its selection. Keep the default SwiftUI interval reverted until verified.",
+    "windowPlacement": "Measure workspace after attaching it to its native window, constrain the proposal to the available display and then size/center. Native and hosted tests reject partly offscreen frames.",
+    "local": {
+      "fullPackageTests": 366,
+      "suites": 78,
+      "errors": 0,
+      "warnings": 0,
+      "report": "/private/tmp/snowfolio-native-workspace-full-tests-report.json",
+      "focused": "10 tests / 2 suites pass, including both marked-text host cases; native Undo grouping ends but composition, source and selection stay intact. Actual native Save As retains UTF16LE BOM/CRLF/Unicode, original/destination bytes, live URL and Undo.",
+      "focusedReport": "/private/tmp/snowfolio-native-workspace-window-test-report.json",
+      "defaultAppBuild": "arm64 build-for-testing and all resource/license gates pass; one existing AppIntents metadata extraction warning",
+      "nativeDiagnosticBuild": "arm64 build-for-testing passes with zero errors/warnings",
+      "nativeBuildReport": "/private/tmp/snowfolio-native-workspace-probe-build-report.json",
+      "formatting": "strict changed-Swift formatting and diff check pass"
+    },
+    "hosted": "Pending follow-up; no final encoded autosave, complete native visual or M2 acceptance claimed."
   }
 }

@@ -61,7 +61,9 @@ public final class MarkdownDocument: SwiftUI.Document {
         )
       }
     #endif
-    for editor in editors where !editor.hasMarkedText() {
+    // This changes Undo grouping, not marked text or its selection. Skipping a
+    // composing editor lets its final commit merge into an already saved edit.
+    for editor in editors {
       editor.breakUndoCoalescing()
     }
   }

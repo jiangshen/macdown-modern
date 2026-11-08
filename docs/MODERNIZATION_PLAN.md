@@ -3176,3 +3176,40 @@ updates, native Undo and a screenshot to the six existing reliability methods.
 Execution and screenshot inspection are next. Compact minimal-control findings are
 retained; its downloaded raw result and exported system diagnostics were cleared.
 One current full-app raw failure remains until the full-workspace successor arrives.
+
+
+## Marked-text checkpoint and initial native placement — 2026-11-08
+
+Exact `e095964` full native workspace run `42535763807` executes seven methods:
+preview updates/native Undo and saved-edit Undo pass; five lifecycle checks fail.
+Both coordinated cases and the edited uncoordinated case stop at final autosave bytes
+before replacement. Staged encoded typing likewise stops at final autosave bytes;
+clean uncoordinated reload still fails. Traces repeatedly show one attached editor
+with `coalescing=1 marked=1` during intermediate writes, followed by final source
+without a later save. Do not claim native migration reliability from the minimal
+editor result: the full workspace currently fails these original gates.
+
+Remove the skip-marked condition from the documented save checkpoint. Native
+breakUndoCoalescing changes grouping without ending marked composition; both native
+and SwiftUI snapshot tests prove grouping ends while composition/source/selection
+remain intact. The default SwiftUI autosave interval stays reverted pending runtime
+evidence. Actual input-method sessions remain an open gate.
+
+Inspect the preview screenshot as well as its passing assertions: the 513x412 capture
+clips the native window's right side. Measure after attachment to the window, bound
+the proposal to the display, then size and center. Native window checks and the hosted
+preview test now reject partly offscreen frames. New hosted screenshot acceptance is
+required; the previous successful functional preview check is not visual acceptance.
+
+A real NSDocument Save As test writes a UTF16LE BOM/CRLF/Unicode file into another
+folder, verifies original and destination bytes, immediate native/model URL changes,
+unchanged source revision and retained Undo. All 366 current package tests / 78 suites
+pass without warnings; 10 focused native checks / 2 suites pass. The default arm64
+app/resource/license build passes with its existing AppIntents extraction warning;
+the seven-method diagnostic builds without warnings. Strict formatting passes.
+Independent hosted `e095964` core verification also confirms 365/78, all 652 CommonMark
+examples and eight arm64 executables. Full native follow-up remains necessary.
+
+Only the latest useful full-workspace raw result remains. Prior full-app raw output
+and duplicate incoming downloads were removed after compact reports/console capture;
+exported system archives were removed. Keep the existing running diagnostic cache.

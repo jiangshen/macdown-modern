@@ -81,10 +81,15 @@ struct NativeMarkdownEditorTests {
     #expect(document.text == "checkpoint")
   }
 
-  @Test("A save checkpoint does not end marked-text composition or move its selection")
-  func saveDuringComposition() async throws {
-    let document = MarkdownDocument()
+  @Test(
+    "A save checkpoint does not end marked-text composition or move its selection",
+    arguments: [false, true])
+  func saveDuringComposition(nativeHost: Bool) async throws {
+    let native = nativeHost ? NativeMarkdownDocument() : nil
+    let document = native?.markdownDocument ?? MarkdownDocument()
+    let manager = native?.undoManager ?? UndoManager()
     let coordinator = NativeMarkdownEditor.Coordinator(document: document)
+    coordinator.undoManager = manager
     let scroll = NativeMarkdownEditor.makeScrollView(document: document, coordinator: coordinator)
     let editor = try #require(scroll.documentView as? NSTextView)
     editor.setMarkedText(
@@ -93,7 +98,12 @@ struct NativeMarkdownEditorTests {
     #expect(editor.hasMarkedText())
     let text = editor.string
     let selection = editor.selectedRange()
-    _ = try await document.snapshot(contentType: .plainText)
+    if let native {
+      _ = try native.data(ofType: "public.plain-text")
+    } else {
+      _ = try await document.snapshot(contentType: .plainText)
+    }
+    #expect(!editor.isCoalescingUndo)
     #expect(editor.hasMarkedText())
     #expect(editor.string == text)
     #expect(editor.selectedRange() == selection)
