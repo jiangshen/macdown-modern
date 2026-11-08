@@ -2994,3 +2994,36 @@ executables. AppKit control run42476058972 passes the saved-edit Undo/deactivati
 check but fails both uncoordinated reloads. Investigate coordinated notification
 and fixture/location conditions before a production host decision; no full M2
 or modernization acceptance is claimed.
+
+
+## Measured parser comparison and parent-state optimization — 2026-11-08
+
+The user authorized choosing a faster library only with full functionality retained.
+A pinned MD4C v0.6.0 control and current cmark were measured on the same arm64 host
+with matched Release-Os native compilation. For1MB samples MD4C's bare core is
+4.11x faster for prose,2.22x for mixed Markdown and2.36x for a long line. Both
+match all652 CommonMark examples after official HTML normalization;54 MD4C byte
+differences are formatting/escaping, not claimed as grammar failures. However,
+upstream MD4C options differ from59 of184 existing optional-dialect expectations,
+including superscript, underline, highlight and quoted text. Full source-coordinate,
+editor, custom extension, style/template/export and rendering parity is unproven.
+Keep cmark in production; no candidate runtime dependency was added.
+
+The prior profile identified per-node parent dictionary work. Replace that dictionary
+with the live ancestor path during native preorder traversal, retaining only O(depth)
+parent bookkeeping. Paired baseline/optimized executables,5 fresh processes per case
+and5 warm renders each, reduce mixed1MB median105.54→99.96ms and mixed10MB
+1070.46→1017.08ms. Mixed10MB median whole-process peak falls1.247→1.114GB
+(10.67%);1MB mixed peak is essentially unchanged (+0.14%). The small100KB prose
+paired check improves1.742→1.679ms, resolving preliminary timing variation.
+All six process samples/case across ten broader fixtures and all paired runs retain
+identical HTML and AST-parent fingerprints. A nested/metadata/sibling/footnote
+regression passes with all355 package tests/76 suites. Arm64 app build-for-testing
+passes;24 native UI methods compile. Strict formatting/provenance checks pass.
+
+These are standalone pipeline measurements, not native typing, WebKit painting or
+p95 UI acceptance. TenMB mixed still needs substantial memory; M6 is incomplete.
+Detailed inputs, raw timing references, compatibility cases, limits and reproduction
+are in validation/markdown-engine-comparison.json. Full lifecycle and other
+modernization gates remain open. Temporary candidate builds/source are retired
+after retaining compact measurements per the standing cleanup preference.

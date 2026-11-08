@@ -35,7 +35,7 @@
       "finding": "Native SwiftUI rendering with Foundation Markdown and pluggable parsers; selection/math/styling. Interesting native display candidate, not a verified replacement for existing HTML/CSS/template/export/diagram behavior."
     }
   ],
-  "decision": "Retain current engine/display while finishing reliability. M6 comparison must measure the complete pipeline, not replace libraries based on language or vendor benchmark alone.",
+  "decision": "Keep cmark-gfm for production. MD4C has faster/lower-memory bare parsing but fails59 of184 existing optional-dialect output expectations using its upstream flags. Full AST/source-position/editor/preview parity is also unproven. Adopt the measured Swift parent-tracking optimization without changing grammar or output.",
   "evaluationGate": [
     "Representative100KB/1MB/10MB and pathological fixtures; releasearm64 on same host.",
     "Measure parse-only and complete source metadata/AST/HTML generation separately from WebKit publication, typing and scroll performance.",
@@ -43,5 +43,5 @@
     "Require652CommonMark examples, feature corpus, UTF8/UTF16 source mapping, unsafe-input boundaries, extensions, custom styles/templates and export parity.",
     "Prefer fewer native-engine patches and integration code only when behavior and measured results support the replacement."
   ],
-  "benchmarkStatus": "No candidate library installed, switched or benchmarked during this research. Earlier local pipeline measurements remain historical, not current comparative results."
+  "benchmarkStatus": "Completed matched arm64 -Os cmark/MD4C core comparison, optional dialect fixtures, full-pipeline baseline/optimization, and paired five-process confirmation. Detailed evidence in markdown-engine-comparison.json."
 }

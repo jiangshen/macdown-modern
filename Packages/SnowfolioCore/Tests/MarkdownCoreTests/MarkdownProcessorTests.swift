@@ -94,6 +94,57 @@ struct MarkdownProcessorTests {
     }
   }
 
+  @Test("Parent relationships survive nested containers, synthetic metadata and later siblings")
+  func nestedParentRelationships() async throws {
+    let source = """
+      ---
+      title: Parent relationships
+      ---
+      > 1. outer
+      >    - *deep*
+      >
+      > tail
+
+      Second **bold** [link](https://example.invalid) and `code`.
+
+      ```swift
+      let checkpoint = 1
+      ```
+
+      After[^note].
+
+      [^note]: foot body
+      """
+    let result = try await MarkdownProcessor().render(source, includeSyntax: true)
+    func parents(of literal: String) throws -> [MarkdownNodeKind] {
+      let leaf = try #require(result.nodes.first { $0.kind == .text && $0.literal == literal })
+      var child = leaf.id
+      var parent = leaf.parentID
+      var kinds: [MarkdownNodeKind] = []
+      while let id = parent {
+        try #require(result.nodes.indices.contains(id) && id < child)
+        kinds.append(result.nodes[id].kind)
+        child = id
+        parent = result.nodes[id].parentID
+      }
+      return kinds
+    }
+    #expect(result.nodes[0].kind == .document)
+    #expect(result.nodes[1].kind == .frontMatter)
+    #expect(result.nodes[1].parentID == 0)
+    #expect(
+      try parents(of: "deep") == [
+        .emphasis, .paragraph, .listItem, .list, .listItem, .list, .blockquote, .document,
+      ])
+    #expect(try parents(of: "bold") == [.strong, .paragraph, .document])
+    #expect(try parents(of: "link") == [.link, .paragraph, .document])
+    #expect(try parents(of: "foot body") == [.paragraph, .footnoteDefinition, .document])
+    let code = try #require(result.nodes.first { $0.kind == .inlineCode && $0.literal == "code" })
+    let paragraph = try #require(code.parentID)
+    #expect(result.nodes[paragraph].kind == .paragraph)
+    #expect(result.nodes[paragraph].parentID == 0)
+  }
+
   @Test("Outline offsets map CR, LF, CRLF and non-BMP text to native UTF-16 positions")
   func outlineOffsets() async throws {
     let result = try await MarkdownProcessor().render("# 中文 👩‍💻\r\nBody\r## Two\n### Three")

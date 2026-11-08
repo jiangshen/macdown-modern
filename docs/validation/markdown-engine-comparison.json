@@ -1,0 +1,818 @@
+{
+  "dateUTC": "2026-11-08T12:08:34.290617+00:00",
+  "policy": "Choose substantial measured efficiency gains only with the same complete functionality; retain the current library when it is the better feature-complete choice.",
+  "decision": "Keep cmark-gfm for production. MD4C has faster/lower-memory bare parsing but fails59 of184 existing optional-dialect output expectations using its upstream flags. Full AST/source-position/editor/preview parity is also unproven. Adopt the measured Swift parent-tracking optimization without changing grammar or output.",
+  "host": {
+    "model": "Mac16,10",
+    "chip": "Apple M4",
+    "os": "27.2",
+    "architecture": "arm64"
+  },
+  "candidate": {
+    "name": "MD4C",
+    "tag": "v0.6.0",
+    "revision": "7fc1815a5eeba2af7d6120a76202bf59f3b6e6e4",
+    "source": "https://github.com/mity/md4c/tree/7fc1815a5eeba2af7d6120a76202bf59f3b6e6e4",
+    "archiveSHA256": "7615c9d9b72a28374286371404df24fe2658d984e1d0f3f49d7c3aae71cf7514",
+    "productionDependency": false
+  },
+  "compilers": {
+    "matchedCore": "Both current cmark and candidate MD4C compile with Release -Os on arm64. Current Swift full pipeline uses -Owholemodule. Preliminary MD4C-O3 measurements are superseded for cross-engine claims.",
+    "candidateCommand": [
+      "xcrun",
+      "clang",
+      "-Os",
+      "-DNDEBUG",
+      "-arch",
+      "arm64",
+      "-dynamiclib",
+      "md4c.c",
+      "md4c-html.c",
+      "entity.c"
+    ]
+  },
+  "commonmark": {
+    "cmarkExactHTML": 652,
+    "md4cExactHTML": 598,
+    "md4cAfterOfficialNormalization": 652,
+    "total": 652,
+    "normalizer": "https://github.com/commonmark/cmark/blob/eec0eeba6d31189fd828314576494566d539b1e3/test/normalize.py",
+    "normalizerSHA256": "3d8935700caed4b3776860b3627b83160998082c08c539e76a6431fec5024810",
+    "note": "The54 MD4C exact-output differences normalize to equivalent spec HTML; they are not claimed as grammar failures."
+  },
+  "compatibility": {
+    "scope": "Existing characterized optional dialect fixtures using corresponding upstream flags only; official CommonMark HTML normalization. No custom Snowfolio MD4C adapter or source rewrite.",
+    "total": 184,
+    "passed": 125,
+    "different": 59,
+    "examples": [
+      {
+        "fixture": "LegacyInline.json",
+        "option": "highlight",
+        "enabled": true,
+        "source": "== space== ==space == ===triple===",
+        "expected": "<p>== space== ==space == =<mark>triple</mark>=</p>",
+        "actual": "<p>== space== ==space == ===triple===</p>\n",
+        "matches": false
+      },
+      {
+        "fixture": "LegacyInline.json",
+        "option": "highlight",
+        "enabled": true,
+        "source": "====x====",
+        "expected": "<p>==<mark>x</mark>==</p>",
+        "actual": "<p>====x====</p>\n",
+        "matches": false
+      },
+      {
+        "fixture": "LegacyInline.json",
+        "option": "highlight",
+        "enabled": true,
+        "source": "==a===b==",
+        "expected": "<p><mark>a</mark>=b==</p>",
+        "actual": "<p><mark>a===b</mark></p>\n",
+        "matches": false
+      },
+      {
+        "fixture": "LegacyInline.json",
+        "option": "highlight",
+        "enabled": true,
+        "source": "==a====b==",
+        "expected": "<p><mark>a</mark><mark>b</mark></p>",
+        "actual": "<p><mark>a====b</mark></p>\n",
+        "matches": false
+      },
+      {
+        "fixture": "LegacyInline.json",
+        "option": "highlight",
+        "enabled": true,
+        "source": "==a ==b== c==",
+        "expected": "<p>==a <mark>b</mark> c==</p>",
+        "actual": "<p><mark>a <mark>b</mark> c</mark></p>\n",
+        "matches": false
+      }
+    ],
+    "additionalGates": [
+      "Exact UTF8/UTF16 block and inline source coordinates for editor styling, callout edits, outline and scroll synchronization.",
+      "Fence disabling and independent intraword/quoted-text preferences.",
+      "Custom grammar extension hooks, secure HTML/URL behavior, full styles/templates/exports/math/diagram integration."
+    ],
+    "notProven": "MD4C cannot yet replace the full application pipeline with the same functionality. No claim that adaptation is impossible."
+  },
+  "matchedCoreMeasurements": {
+    "phase": "matched-native-core-Os",
+    "samples": 3,
+    "warmIterationsPerProcess": 5,
+    "method": "Release arm64, fresh processes, sequential alternating engine order; file I/O, fixture construction and output hashing excluded from elapsed render times. Peak RSS is whole-process, not a leak measurement. Core and full pipeline scopes are distinct.",
+    "corpus": [],
+    "cases": [
+      {
+        "workload": "prose",
+        "bytes": 100000,
+        "engine": "cmark",
+        "medianWarmMS": 0.852,
+        "medianColdMS": 1.071958,
+        "maxProcessPeakResidentBytes": 10977280,
+        "htmlSHA256": "b4e0881ce00979c23d15e894b09920465fbdc2c19200793ad38065d5c2ce31a6",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "prose",
+        "bytes": 100000,
+        "engine": "md4c",
+        "medianWarmMS": 0.291833,
+        "medianColdMS": 0.33825,
+        "maxProcessPeakResidentBytes": 9846784,
+        "htmlSHA256": "b4e0881ce00979c23d15e894b09920465fbdc2c19200793ad38065d5c2ce31a6",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "prose",
+        "bytes": 1000000,
+        "engine": "cmark",
+        "medianWarmMS": 6.678917,
+        "medianColdMS": 8.367875,
+        "maxProcessPeakResidentBytes": 27541504,
+        "htmlSHA256": "48307d8e35e163a12a13848ea14c02c2cfbe33676b59adbb5549e451696e1550",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "prose",
+        "bytes": 1000000,
+        "engine": "md4c",
+        "medianWarmMS": 1.626083,
+        "medianColdMS": 1.647208,
+        "maxProcessPeakResidentBytes": 14417920,
+        "htmlSHA256": "48307d8e35e163a12a13848ea14c02c2cfbe33676b59adbb5549e451696e1550",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "prose",
+        "bytes": 10000000,
+        "engine": "cmark",
+        "medianWarmMS": 73.026667,
+        "medianColdMS": 92.282708,
+        "maxProcessPeakResidentBytes": 248659968,
+        "htmlSHA256": "2ae52c9b25e28a81fb713aeb2ae09dc5ce5c37a98a29f91a11399ddcafe66047",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "prose",
+        "bytes": 10000000,
+        "engine": "md4c",
+        "medianWarmMS": 16.889667,
+        "medianColdMS": 17.443,
+        "maxProcessPeakResidentBytes": 118849536,
+        "htmlSHA256": "2ae52c9b25e28a81fb713aeb2ae09dc5ce5c37a98a29f91a11399ddcafe66047",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 100000,
+        "engine": "cmark",
+        "medianWarmMS": 2.072584,
+        "medianColdMS": 2.264625,
+        "maxProcessPeakResidentBytes": 13221888,
+        "htmlSHA256": "c30568592678e0b5888114e217adc87eba35658022d19eb4366e62e904ad663f",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 100000,
+        "engine": "md4c",
+        "medianWarmMS": 0.96625,
+        "medianColdMS": 0.995542,
+        "maxProcessPeakResidentBytes": 9945088,
+        "htmlSHA256": "c30568592678e0b5888114e217adc87eba35658022d19eb4366e62e904ad663f",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "engine": "cmark",
+        "medianWarmMS": 20.905791,
+        "medianColdMS": 24.311541,
+        "maxProcessPeakResidentBytes": 51396608,
+        "htmlSHA256": "830d6029bc51669a3e145462c542a8de5e653443607d2d2ed7fbcc177e824408",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "engine": "md4c",
+        "medianWarmMS": 9.436917,
+        "medianColdMS": 9.593167,
+        "maxProcessPeakResidentBytes": 15106048,
+        "htmlSHA256": "830d6029bc51669a3e145462c542a8de5e653443607d2d2ed7fbcc177e824408",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 10000000,
+        "engine": "cmark",
+        "medianWarmMS": 216.08775,
+        "medianColdMS": 248.5355,
+        "maxProcessPeakResidentBytes": 475873280,
+        "htmlSHA256": "3ce9e964f8e041ef9cbef2929758ab3747e035e1e16df74b3183d5befb25b23f",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 10000000,
+        "engine": "md4c",
+        "medianWarmMS": 96.298083,
+        "medianColdMS": 97.740583,
+        "maxProcessPeakResidentBytes": 200949760,
+        "htmlSHA256": "3ce9e964f8e041ef9cbef2929758ab3747e035e1e16df74b3183d5befb25b23f",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "long-line",
+        "bytes": 1000000,
+        "engine": "cmark",
+        "medianWarmMS": 9.825166,
+        "medianColdMS": 11.058875,
+        "maxProcessPeakResidentBytes": 36061184,
+        "htmlSHA256": "4ba8427038e56eeb73e6e1f6e2ac2425776883be605ca222985bad01d4f1c4d3",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "long-line",
+        "bytes": 1000000,
+        "engine": "md4c",
+        "medianWarmMS": 4.171416,
+        "medianColdMS": 4.296583,
+        "maxProcessPeakResidentBytes": 17334272,
+        "htmlSHA256": "4ba8427038e56eeb73e6e1f6e2ac2425776883be605ca222985bad01d4f1c4d3",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 1000000,
+        "engine": "cmark",
+        "medianWarmMS": 17.747084,
+        "medianColdMS": 19.723667,
+        "maxProcessPeakResidentBytes": 45367296,
+        "htmlSHA256": "f15ec8147a41c2d1b59864d06c318b6b856f61bac3fbc5efef0e195c4bd88b5f",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 1000000,
+        "engine": "md4c",
+        "medianWarmMS": 4.883833,
+        "medianColdMS": 5.130959,
+        "maxProcessPeakResidentBytes": 14401536,
+        "htmlSHA256": "832e0369e278f1748540261df6226e0ed482aa5c68ef3229cec8489cccd29d0d",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "escaped-cell",
+        "bytes": 1000000,
+        "engine": "cmark",
+        "medianWarmMS": 4.987208,
+        "medianColdMS": 4.996541,
+        "maxProcessPeakResidentBytes": 15990784,
+        "htmlSHA256": "d43139b525ac759e2b757806277153f6c74562d26fae516454d29f44c23d3345",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "escaped-cell",
+        "bytes": 1000000,
+        "engine": "md4c",
+        "medianWarmMS": 17.528042,
+        "medianColdMS": 17.574542,
+        "maxProcessPeakResidentBytes": 62717952,
+        "htmlSHA256": "d43139b525ac759e2b757806277153f6c74562d26fae516454d29f44c23d3345",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "nul",
+        "bytes": 1000000,
+        "engine": "cmark",
+        "medianWarmMS": 19.449958,
+        "medianColdMS": 22.075958,
+        "maxProcessPeakResidentBytes": 49315840,
+        "htmlSHA256": "2b5592e6f8639b92dd0409648102c9439e775f34da39cd18f0b9a4d33f38cb69",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      },
+      {
+        "workload": "nul",
+        "bytes": 1000000,
+        "engine": "md4c",
+        "medianWarmMS": 9.972833,
+        "medianColdMS": 10.09675,
+        "maxProcessPeakResidentBytes": 15040512,
+        "htmlSHA256": "2b5592e6f8639b92dd0409648102c9439e775f34da39cd18f0b9a4d33f38cb69",
+        "parentIDsSHA256": "",
+        "scope": "Bare parse plus HTML/output buffer; no source ranges, AST transfer, app features, highlighting or UI"
+      }
+    ]
+  },
+  "fullPipelineParentOptimization": {
+    "method": "Two release arm64 executables from the same source except parent-tracking implementation; same cache/resources/harness;5 fresh processes/version/case, alternating order,5 warm full renders per process. Construction, I/O and fingerprints excluded from timings; peak RSS is whole process.",
+    "baselineSourceSHA256": "331b35fc8c0000a1da03dbb19da7720de101a596e183767d2fd0d54928a1dc93",
+    "optimizedSourceSHA256": "fa827d9a155b2b6a700817e4587e9f118d42edce0dcb618ed921c8600ad56f7c",
+    "cases": [
+      {
+        "workload": "prose",
+        "bytes": 100000,
+        "warmMedianMS": {
+          "baseline": 1.742208,
+          "optimized": 1.679041
+        },
+        "medianPeakResidentBytes": {
+          "baseline": 12910592,
+          "optimized": 12812288
+        },
+        "timeReductionPercent": 3.6256864851958004,
+        "peakReductionPercent": 0.761421319796951,
+        "identicalHTMLAndParentRelationships": true
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "warmMedianMS": {
+          "baseline": 105.536375,
+          "optimized": 99.963375
+        },
+        "medianPeakResidentBytes": {
+          "baseline": 160792576,
+          "optimized": 161021952
+        },
+        "timeReductionPercent": 5.28064375908307,
+        "peakReductionPercent": -0.14265335235377208,
+        "identicalHTMLAndParentRelationships": true
+      },
+      {
+        "workload": "mixed",
+        "bytes": 10000000,
+        "warmMedianMS": {
+          "baseline": 1070.461459,
+          "optimized": 1017.084083
+        },
+        "medianPeakResidentBytes": {
+          "baseline": 1247215616,
+          "optimized": 1114079232
+        },
+        "timeReductionPercent": 4.986389332490681,
+        "peakReductionPercent": 10.674688665860966,
+        "identicalHTMLAndParentRelationships": true
+      }
+    ],
+    "harnessNote": "Copied standalone executables use links to the existing immutable resource bundles. An initial missing-bundle failure was diagnosed and excluded; the recorded paired run completes all cases with both executables."
+  },
+  "broaderFullPipelineCases": {
+    "baseline": [
+      {
+        "workload": "prose",
+        "bytes": 100000,
+        "engine": "snowfolio",
+        "medianWarmMS": 1.766167,
+        "medianColdMS": 2.024375,
+        "maxProcessPeakResidentBytes": 12910592,
+        "htmlSHA256": "2e8901fb1627a4af8dd76dc561a1a07508e248787de7c5ab17ccb97fcf6b1f3c",
+        "parentIDsSHA256": "040091e82449a0be505498b1869ff45e38db550a6255201f58620d7cc4ffa922",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "prose",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 17.821583,
+        "medianColdMS": 20.011375,
+        "maxProcessPeakResidentBytes": 43483136,
+        "htmlSHA256": "995b7fbaed07796d327ee6a9d9e3ca6a4950f76d8e96b6a35f01acbc86dd9af8",
+        "parentIDsSHA256": "9ef7f98870fdeee276d0465d138f6309fe04411c7f9a1021c0cf9f8409b2283b",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "prose",
+        "bytes": 10000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 194.034667,
+        "medianColdMS": 211.374833,
+        "maxProcessPeakResidentBytes": 357662720,
+        "htmlSHA256": "8686a5b147b37cc147c8dc3b4285f51406ed2c2d0bd03ae3f408cff0c29f69e1",
+        "parentIDsSHA256": "3f772a3f1799e5c3519192fe715c3a3ed5b94c0eea5eaa9a6885a30062fd988a",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 100000,
+        "engine": "snowfolio",
+        "medianWarmMS": 10.064625,
+        "medianColdMS": 318.139458,
+        "maxProcessPeakResidentBytes": 52314112,
+        "htmlSHA256": "99067fd8540b81919b319daf29caa0308f98ec31384003145c0b83c10f7d3b1f",
+        "parentIDsSHA256": "bc94250ff247d9c0ddf85412c693e4a76f6fe82f1e428ceffb84787a3daabd0f",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 105.41675,
+        "medianColdMS": 415.982167,
+        "maxProcessPeakResidentBytes": 161120256,
+        "htmlSHA256": "8e21227888618f888307599f31abb7dabe378a47bb5d88b5377c379ab6fd679c",
+        "parentIDsSHA256": "92a5ee9523ea35fcdbad3bfccefa59fe6792828c9fc9e288f10eac0a67e69846",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 10000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 1094.4882499999999,
+        "medianColdMS": 1455.258917,
+        "maxProcessPeakResidentBytes": 1247313920,
+        "htmlSHA256": "91331f969984a1d3a3ea343ccecf73e6d29d5c26df86aec2a1deaba5beb2795f",
+        "parentIDsSHA256": "38b8eab79327586f16ea89e1a58c6b6be2d0ad7aabd09fe9cec9de461d220dab",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "long-line",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 38.05575,
+        "medianColdMS": 40.323792,
+        "maxProcessPeakResidentBytes": 79052800,
+        "htmlSHA256": "81920ba3cc4bf5a9e078ce36e53ead576acca3bdb6b3b290835d927045324a05",
+        "parentIDsSHA256": "9b9ab1b19facd89a2fbca4b82ea078467c9fb01fd470529a966a9ca10fbdd540",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 81.355459,
+        "medianColdMS": 85.216083,
+        "maxProcessPeakResidentBytes": 121339904,
+        "htmlSHA256": "60dd51f55a9dc564410ad9da9d2563dc3c60277ee4c0c99c64a34d063e00af9d",
+        "parentIDsSHA256": "f1d4f9aa8571a63458e67694b374adc77fb3af03535dd3a453e8d5c3c277fd35",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "escaped-cell",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 13.12575,
+        "medianColdMS": 13.538125,
+        "maxProcessPeakResidentBytes": 21495808,
+        "htmlSHA256": "337791fdddee52d6a5a074d0e38b817fbdce97815a937ab6ec5b97c9e1f37438",
+        "parentIDsSHA256": "125cc5177dce7124b93b1018ff82f4809831934fe4b6bcd76da7bfd1b7a98951",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "nul",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 75.006542,
+        "medianColdMS": 79.705625,
+        "maxProcessPeakResidentBytes": 117669888,
+        "htmlSHA256": "b64c8b82d137022a29e3280aca58be0ccb619903cf72e5e95158aeceb16ae91d",
+        "parentIDsSHA256": "5f0dab4d38c52f18ac1a622514d0259dd607c914224192c62a4a6c5c2cd9b57d",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      }
+    ],
+    "optimized": [
+      {
+        "workload": "prose",
+        "bytes": 100000,
+        "engine": "snowfolio",
+        "medianWarmMS": 1.996,
+        "medianColdMS": 2.48175,
+        "maxProcessPeakResidentBytes": 12861440,
+        "htmlSHA256": "2e8901fb1627a4af8dd76dc561a1a07508e248787de7c5ab17ccb97fcf6b1f3c",
+        "parentIDsSHA256": "040091e82449a0be505498b1869ff45e38db550a6255201f58620d7cc4ffa922",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "prose",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 17.181208,
+        "medianColdMS": 19.645334,
+        "maxProcessPeakResidentBytes": 42926080,
+        "htmlSHA256": "995b7fbaed07796d327ee6a9d9e3ca6a4950f76d8e96b6a35f01acbc86dd9af8",
+        "parentIDsSHA256": "9ef7f98870fdeee276d0465d138f6309fe04411c7f9a1021c0cf9f8409b2283b",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "prose",
+        "bytes": 10000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 184.371334,
+        "medianColdMS": 205.666417,
+        "maxProcessPeakResidentBytes": 357580800,
+        "htmlSHA256": "8686a5b147b37cc147c8dc3b4285f51406ed2c2d0bd03ae3f408cff0c29f69e1",
+        "parentIDsSHA256": "3f772a3f1799e5c3519192fe715c3a3ed5b94c0eea5eaa9a6885a30062fd988a",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 100000,
+        "engine": "snowfolio",
+        "medianWarmMS": 9.576416,
+        "medianColdMS": 309.237084,
+        "maxProcessPeakResidentBytes": 51855360,
+        "htmlSHA256": "99067fd8540b81919b319daf29caa0308f98ec31384003145c0b83c10f7d3b1f",
+        "parentIDsSHA256": "bc94250ff247d9c0ddf85412c693e4a76f6fe82f1e428ceffb84787a3daabd0f",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 101.118875,
+        "medianColdMS": 404.565167,
+        "maxProcessPeakResidentBytes": 161267712,
+        "htmlSHA256": "8e21227888618f888307599f31abb7dabe378a47bb5d88b5377c379ab6fd679c",
+        "parentIDsSHA256": "92a5ee9523ea35fcdbad3bfccefa59fe6792828c9fc9e288f10eac0a67e69846",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "mixed",
+        "bytes": 10000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 1031.247042,
+        "medianColdMS": 1385.774708,
+        "maxProcessPeakResidentBytes": 1114013696,
+        "htmlSHA256": "91331f969984a1d3a3ea343ccecf73e6d29d5c26df86aec2a1deaba5beb2795f",
+        "parentIDsSHA256": "38b8eab79327586f16ea89e1a58c6b6be2d0ad7aabd09fe9cec9de461d220dab",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "long-line",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 36.077083,
+        "medianColdMS": 37.709208,
+        "maxProcessPeakResidentBytes": 76824576,
+        "htmlSHA256": "81920ba3cc4bf5a9e078ce36e53ead576acca3bdb6b3b290835d927045324a05",
+        "parentIDsSHA256": "9b9ab1b19facd89a2fbca4b82ea078467c9fb01fd470529a966a9ca10fbdd540",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "autolinks",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 76.034292,
+        "medianColdMS": 82.981709,
+        "maxProcessPeakResidentBytes": 118390784,
+        "htmlSHA256": "60dd51f55a9dc564410ad9da9d2563dc3c60277ee4c0c99c64a34d063e00af9d",
+        "parentIDsSHA256": "f1d4f9aa8571a63458e67694b374adc77fb3af03535dd3a453e8d5c3c277fd35",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "escaped-cell",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 13.147125,
+        "medianColdMS": 13.620416,
+        "maxProcessPeakResidentBytes": 21397504,
+        "htmlSHA256": "337791fdddee52d6a5a074d0e38b817fbdce97815a937ab6ec5b97c9e1f37438",
+        "parentIDsSHA256": "125cc5177dce7124b93b1018ff82f4809831934fe4b6bcd76da7bfd1b7a98951",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      },
+      {
+        "workload": "nul",
+        "bytes": 1000000,
+        "engine": "snowfolio",
+        "medianWarmMS": 68.592375,
+        "medianColdMS": 75.5735,
+        "maxProcessPeakResidentBytes": 114262016,
+        "htmlSHA256": "b64c8b82d137022a29e3280aca58be0ccb619903cf72e5e95158aeceb16ae91d",
+        "parentIDsSHA256": "5f0dab4d38c52f18ac1a622514d0259dd607c914224192c62a4a6c5c2cd9b57d",
+        "scope": "Full current Swift pipeline including syntax, AST, feature decoration and highlighting; excludes WebKit/UI/file IO"
+      }
+    ],
+    "equivalence": "HTML and parent-ID fingerprints match across all six process samples/case for all ten fixtures, plus all paired runs."
+  },
+  "implementation": "Replace the per-native-node pointer-to-ID dictionary with the live native ancestor path during preorder traversal. Only parent lookup storage changes from O(node count) to O(depth); the full AST/render still use memory proportional to document size.",
+  "validation": {
+    "packageTests": 355,
+    "suites": 76,
+    "newRegression": "Nested blockquote/list/emphasis, front matter synthetic node, following siblings/link/code and moved footnote definition parent relationships.",
+    "strictFormatting": "passed",
+    "nativeSourceAndNotices": "verified; unchanged",
+    "appBuild": "arm64 build-for-testing passed;24 native UI methods compile. Relocated-cache stale-path diagnostics from initial build clear on following incremental build: zero errors/warnings.",
+    "testReport": {
+      "artifacts": {
+        "log": "build.log",
+        "report": "report.json",
+        "run": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-F8A4F2AB-1D81-49FC-876A-FEA48B2EB6A9"
+      },
+      "collection": {
+        "buildCoverage": "unknown",
+        "issues": [],
+        "sources": [
+          "log",
+          "events"
+        ],
+        "status": "complete"
+      },
+      "command": {
+        "durationMs": 70729,
+        "exitCode": 0,
+        "interruptionSignal": null,
+        "kind": "swift-test",
+        "signal": null,
+        "status": "succeeded"
+      },
+      "counts": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 0,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "diagnostics": [],
+      "omissions": {
+        "details": 0,
+        "diagnostics": 0,
+        "issues": 0,
+        "warningFiles": 0
+      },
+      "schemaVersion": 1
+    },
+    "appBuildFinalReport": {
+      "artifacts": {
+        "log": "build.log",
+        "report": "report.json",
+        "run": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-02821CF3-5223-4C5B-A082-330211E88A28"
+      },
+      "collection": {
+        "buildCoverage": "unknown",
+        "issues": [],
+        "sources": [
+          "log"
+        ],
+        "status": "complete"
+      },
+      "command": {
+        "durationMs": 2528,
+        "exitCode": 0,
+        "interruptionSignal": null,
+        "kind": "xcodebuild",
+        "signal": null,
+        "status": "succeeded"
+      },
+      "counts": {
+        "errors": 0,
+        "failedTests": 0,
+        "notes": 3,
+        "remarks": 0,
+        "warnings": 0
+      },
+      "diagnostics": [
+        {
+          "file": null,
+          "items": [
+            {
+              "id": "d1",
+              "kind": "tool",
+              "message": "Building targets in dependency order",
+              "severity": "note",
+              "sources": [
+                "log"
+              ]
+            },
+            {
+              "id": "d2",
+              "kind": "tool",
+              "message": "Target dependency graph (27 targets)",
+              "severity": "note",
+              "sources": [
+                "log"
+              ]
+            },
+            {
+              "id": "d3",
+              "kind": "tool",
+              "message": "Disabling hardened runtime with ad-hoc codesigning. (in target 'Snowfolio' from project 'Snowfolio')",
+              "severity": "note",
+              "sources": [
+                "log"
+              ]
+            }
+          ]
+        }
+      ],
+      "omissions": {
+        "details": 0,
+        "diagnostics": 0,
+        "issues": 0,
+        "warningFiles": 0
+      },
+      "schemaVersion": 1
+    }
+  },
+  "limits": [
+    "Standalone render timings exclude native typing, WebKit DOM publication/painting, scrolling, file I/O, math and diagrams. They are not UI responsiveness or p95 results.",
+    "Bare core engine output omits the Swift AST transfer, source metadata, custom features and syntax highlighting; bare-engine ratios are not predicted app speedups.",
+    "Peak RSS is whole process, not leak detection; paired1MB mixed peak differs by+0.14%, while10MB mixed drops10.67%.",
+    "TenMB mixed still needs about1.11GB process peak in the paired standalone harness; the larger performance goal remains incomplete."
+  ],
+  "evidence": [
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/baseline-samples.json",
+      "sha256": "a1ce4bb09382b1d614b709b57c70781d108891445c3015553d5a987f5a3dcfde"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/baseline-summary.json",
+      "sha256": "ff5626bbb1581055a1045345754376c03ac779068b78c336378e24ca6ac9cecd"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/baseline-cmark-commonmark.json",
+      "sha256": "f994ffc6f74b3039eafb531c89cb384e85ae2359b5b5862cd3165a080a981340"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/baseline-md4c-commonmark.json",
+      "sha256": "4900a589e1c446bac8036626307b2835fdb24ea4cf69d3c7b665750cf593e449"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/matched-core-samples.json",
+      "sha256": "1754eedfb1f41d0e0b15464086d1f54adfc64c94937ee02b6a48455a8eda0ed2"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/matched-core-summary.json",
+      "sha256": "53b64996959639dc7317b995df9827b8e4941d794a2bdcebd79d09efc9b0ac19"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/optimized-samples.json",
+      "sha256": "4a7b4c95537b859cd4ab99668688bdf31eb2140da7b33d1d4ab2da7ea1deb193"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/optimized-summary.json",
+      "sha256": "44ed5743dcec7a38d6ccb265967a61e88b6150c0df73e50b97715d9b0181b7f3"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/paired-samples.json",
+      "sha256": "5b76b6763cd26bc6cdf6107cc087f37928ecdd1db29da3f455efa0586ee4892d"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/paired-summary.json",
+      "sha256": "cf7f767d189c85bbe180ae2b02a9814885f464d9bc386705df3aa958e0e57086"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/dialect-parity.json",
+      "sha256": "231000c201e2a03ecc984864dc7f1b09c14a6a6c3be487a89e8aec47f28a01ec"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/paired-check.py",
+      "sha256": "09675ae3e667b79dd7f95d5765d5a21dd24315a3b9dbc052eab44686ad0820cb"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/tests-report.json",
+      "sha256": "d8f3f3ec2849a69db3668bd21c2c8c200e76562c87b175e19c5ef37644dcd7f3"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/app-build-report.json",
+      "sha256": "50363d6ee36a4d1fafd8c8ecf3d454fc939b0cdb65ea2742df4a04713880cdeb"
+    },
+    {
+      "path": "/private/tmp/snowfolio-validation-history/engine-comparison/app-build-final-report.json",
+      "sha256": "5c82879dbd0c7e502433a26e2de5ff29b2f3386a66849155b726c4f65440bc5e"
+    }
+  ],
+  "reproduction": {
+    "tool": "Tools/compare-markdown-engines.py",
+    "audit": "Tools/PerformanceAudit/Sources/EngineComparisonAudit/EngineComparisonAudit.swift",
+    "build": [
+      "swift",
+      "build",
+      "--package-path",
+      "Tools/PerformanceAudit",
+      "--configuration",
+      "release",
+      "--product",
+      "EngineComparisonAudit",
+      "--arch",
+      "arm64"
+    ],
+    "coreOptions": "Supply pinned candidate library to --md4c, official corpus to --spec, and verified official normalizer to --normalize-module. Use --engines cmark md4c for bare-core scope; --engines snowfolio for full application processing.",
+    "baselineProcessorSourceSHA256": "331b35fc8c0000a1da03dbb19da7720de101a596e183767d2fd0d54928a1dc93",
+    "optimizedProcessorSourceSHA256": "fa827d9a155b2b6a700817e4587e9f118d42edce0dcb618ed921c8600ad56f7c"
+  },
+  "goal": "Active and incomplete; lifecycle reliability, full parity, real UI performance and release gates remain open."
+}

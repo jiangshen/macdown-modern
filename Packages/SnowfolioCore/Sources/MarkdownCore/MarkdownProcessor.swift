@@ -113,7 +113,9 @@ public actor MarkdownProcessor {
     var mathNodes: [(UnsafeMutablePointer<cmark_node>, String, Bool, Bool)] = []
     var callouts: [(UnsafeMutablePointer<cmark_node>, CalloutMarker)] = []
     var transformedDestinations: [String: String] = [:]
-    var identifiers: [UInt: Int] = [:]
+    // Preorder traversal only needs the live ancestor path. Keeping every native
+    // pointer in a dictionary retains O(node count) bookkeeping for parent lookup.
+    var ancestors: [(node: UnsafeMutablePointer<cmark_node>, id: Int)] = []
     let inputProjection = sourceMetadata.inputProjection
     while true {
       let event = cmark_iter_next(iterator)
@@ -122,8 +124,15 @@ public actor MarkdownProcessor {
       if nodes.count.isMultiple(of: 256) { try Task.checkCancellation() }
       inputProjection?.project(node)
       let id = nodes.count
-      identifiers[UInt(bitPattern: node)] = id
-      let parentID = cmark_node_parent(node).flatMap { identifiers[UInt(bitPattern: $0)] }
+      let nativeParent = cmark_node_parent(node)
+      while let ancestor = ancestors.last, ancestor.node != nativeParent {
+        ancestors.removeLast()
+      }
+      guard nativeParent == nil || ancestors.last != nil else {
+        throw MarkdownRenderingError.invalidTreeTransformation
+      }
+      let parentID = ancestors.last?.id
+      ancestors.append((node, id))
       let nativeName = String(cString: cmark_node_get_type_string(node))
       var kind =
         delimiterSyntax?.kind(for: node) ?? inlineSyntax?.kind(for: node)
