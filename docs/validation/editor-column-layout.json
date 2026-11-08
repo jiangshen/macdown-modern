@@ -1,7 +1,7 @@
 {
   "checkpoint": "Native editor margins/width, stable reading anchor and canonical named-font caret metrics",
   "date": "2026-11-07",
-  "status": "Persistent-scroller column-width defect reproduced and corrected locally; 340 tests and app build pass; ASAN and exact final hosted acceptance pending",
+  "status": "Persistent-scroller width defect reproduced and corrected locally; 340 tests, 18 ASAN tests and arm64 app build pass; exact final hosted acceptance running",
   "fullGoal": "active; incomplete",
   "originalEvidence": [
     {
@@ -296,10 +296,42 @@
           "remarks": 0,
           "warnings": 0
         }
-      }
+      },
+      "addressSanitizer": {
+        "tests": 18,
+        "suites": 4,
+        "report": "/private/tmp/snowfolio-editor-column-scroller-final-asan.json",
+        "reportSHA256": "5ebd71d42f4286cf205ec09500660990104da8af66b5e363048f0bda683816f6",
+        "log": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-5581DF2D-211E-4D5C-9987-61C5EC43AA12/build.log",
+        "logSHA256": "651d1f0faff1634a4d28a9860adea8260574d994c12dffce6b8305d41f9c1cc5",
+        "command": {
+          "durationMs": 19661,
+          "exitCode": 0,
+          "interruptionSignal": null,
+          "kind": "swift-test",
+          "signal": null,
+          "status": "succeeded"
+        },
+        "counts": {
+          "errors": 0,
+          "failedTests": 0,
+          "notes": 0,
+          "remarks": 0,
+          "warnings": 0
+        }
+      },
+      "arm64": {
+        "path": "/private/tmp/snowfolio-editor-column-scroller-arm64.txt",
+        "sha256": "c7699502407a855db49c337b944b72f879cd221988287fa17f4c18bcd1093aac",
+        "testExecutables": 8,
+        "app": true
+      },
+      "strictFormatting": "Both changed Swift files pass; git diff --check passes."
     },
     "hosted": {
-      "status": "Pending exact final source push."
+      "status": "Running exact final correction; acceptance pending.",
+      "commit": "7cf4b717c3ff043725a49f7e0f3f22892f13a919",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42443281771"
     },
     "sourceSHA256": {
       "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownFormatCommands.swift": "bde29dc2396346a104ea998a07313b5788694e3da8989ddd6c352645bfda5b47",
