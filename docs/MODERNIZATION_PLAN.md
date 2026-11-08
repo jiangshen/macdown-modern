@@ -2907,3 +2907,19 @@ abe61e9 full run executes24 methods with20 prior passes/four new failures. A foc
 restoration diagnostic and, if needed, a minimal stock document-host comparison are
 next; dirty conflicts/Versions and remaining M2/IME/VoiceOver/M3/M5/M6 remain open.
 The complete evidence and remaining gates are in validation/document-lifecycle.json.
+
+
+## Development storage audit and retention — 2026-11-08
+
+The user reported reduced free storage. Task-owned temporary files had accumulated
+16.6GB; tracked source/assets were27.2MB. Standard SwiftPM clean against33 inspected
+caches removed9.09GB of reported allocated build output. Source, both app bundles,
+all raw test/diagnostic/screenshot/performance evidence and Trash were preserved.
+The measured scope and exact cleanup results are in validation/storage-footprint.json.
+
+Use one current core cache and one app build location for routine work. Clean
+isolated comparison/sanitizer/compiler caches after recording results. Retain compact
+logs/results and required screenshots; retrieve large recordings/system archives only
+for a specific unresolved failure. Do not leave new per-feature build caches behind
+after acceptance. This maintenance does not establish runtime performance or close
+any remaining modernization gate.

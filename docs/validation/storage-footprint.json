@@ -1,0 +1,32 @@
+{
+  "dateUTC": "2026-11-08T10:57:02.963711+00:00",
+  "scope": "Snowfolio checkout and this task-owned Snowfolio/MacDown temporary files; shared Codex history and unrelated projects excluded.",
+  "trackedFiles": 1057,
+  "trackedLogicalBytes": 27235420,
+  "projectTemporaryAllocatedBytesBefore": 16591192064,
+  "projectTemporaryAllocatedBytesAfter": 8001990656,
+  "checkoutAllocatedBytesAfter": 916738048,
+  "cacheCleanup": {
+    "method": "Standard swift package clean against33 individually inspected scratch directories",
+    "count": 33,
+    "allocatedBytesBefore": 9852575744,
+    "allocatedBytesAfter": 762781696,
+    "allocatedByteReduction": 9089794048,
+    "allSucceeded": true,
+    "resultPath": "/private/tmp/snowfolio-storage-clean-result.json",
+    "resultSHA256": "6f64af62dbd2c75b566f0c06e29c72de764c9e6f66722ae1df9bce437ff096f3"
+  },
+  "preserved": [
+    "Source and Git history",
+    "Both existing app bundles",
+    "All test reports, recordings, diagnostics, screenshots and measured performance results",
+    "Other projects and Trash"
+  ],
+  "trash": "Size unavailable to shell because macOS privacy denied access. Trash was not emptied.",
+  "retentionPolicy": [
+    "Reuse one current core cache and one app build location for routine development.",
+    "Clean isolated comparison/sanitizer/compiler caches after recording results.",
+    "Retain compact logs/results and required screenshots; download/export large recordings or system logs only for a specific unresolved failure.",
+    "No new per-feature build cache should remain after its validation is accepted."
+  ]
+}

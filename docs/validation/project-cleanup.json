@@ -411,6 +411,18 @@
       "rawLogsPreserved": true,
       "trashEmptied": false,
       "capacityObservation": "113MiB before recovery;859MiB after cache cleanup and unrelated filesystem activity. This is not a precise physical byte-recovery measurement."
+    },
+    {
+      "date": "2026-11-08T10:57:02.963711+00:00",
+      "method": "Standard swift package clean against33 individually inspected scratch directories",
+      "cacheCount": 33,
+      "allocatedByteReduction": 9089794048,
+      "sourceChanged": false,
+      "appBundlesPreserved": true,
+      "testEvidencePreserved": true,
+      "trashEmptied": false,
+      "report": "storage-footprint.json",
+      "reason": "User reported storage loss; measured task temporary files at16.6GB and cleared only inspected, rebuildable SwiftPM caches."
     }
   ]
 }
