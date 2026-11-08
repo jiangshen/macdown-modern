@@ -729,10 +729,13 @@ final class DocumentLifecycleTests: XCTestCase {
     defer { app.terminate() }
     let editor = newDocument(in: app)
     editor.click()
-    editor.typeText("Original spacing source")
-    app.typeKey("a", modifierFlags: .command)
     let source = "1. First\n2. Second\n\n- dfdfd\n"
     editor.typeText(source)
+    XCTAssertEqual(editor.value as? String, source)
+    app.typeKey("a", modifierFlags: .command)
+    let replacement = "Line spacing undo checkpoint"
+    editor.typeText(replacement)
+    XCTAssertEqual(editor.value as? String, replacement)
     app.typeKey(",", modifierFlags: .command)
     let settings = app.windows["snowfolioSettings"]
     XCTAssertTrue(settings.waitForExistence(timeout: 5))
@@ -758,11 +761,13 @@ final class DocumentLifecycleTests: XCTestCase {
     add(settingsImage)
     app.typeKey("w", modifierFlags: .command)
     XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
-    XCTAssertEqual(editor.value as? String, source)
+    XCTAssertEqual(editor.value as? String, replacement)
     editor.click()
     app.typeKey("z", modifierFlags: .command)
-    XCTAssertEqual(editor.value as? String, "Original spacing source")
+    XCTAssertEqual(editor.value as? String, source)
     app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(editor.value as? String, replacement)
+    app.typeKey("z", modifierFlags: .command)
     XCTAssertEqual(editor.value as? String, source)
     app.typeKey("a", modifierFlags: .command)
     let selectionImage = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())

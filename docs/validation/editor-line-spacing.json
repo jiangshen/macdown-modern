@@ -167,7 +167,7 @@
   "sourceManifest": [
     {
       "path": "App/UITests/DocumentLifecycleTests.swift",
-      "sha256": "65ec4b7914498399277c9868381a40ddd0803070f0e4a4f61fb2a01f1d450530"
+      "sha256": "8e58978c3013d55d6e6583f047967e8a03852c65737dd70be09855a61c0656ce"
     },
     {
       "path": "Packages/SnowfolioCore/Sources/EditorCore/EditorLayoutPreferences.swift",
@@ -272,13 +272,53 @@
         }
       ]
     },
-    "native": "In progress when literal-list setup follow-up was prepared; final outcome must be retained."
+    "native": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42451040567",
+      "commit": "4a9962207992e4a137a1116283b4b41a562e72e5",
+      "result": "Failed",
+      "passedTests": 18,
+      "failedTests": 1,
+      "skippedTests": 0,
+      "failures": [
+        {
+          "failureText": "XCTAssertEqual failed: (\"Optional(\"1. First\\n2. 2. Second\\n\\n- dfdfd\\n- \")\") is not equal to (\"Optional(\"1. First\\n2. Second\\n\\n- dfdfd\\n\")\")",
+          "targetName": "SnowfolioUITests",
+          "testIdentifier": 3,
+          "testIdentifierString": "DocumentLifecycleTests/testEditorLineSpacingPreservesSourceAndHistory()",
+          "testIdentifierURL": "test://com.apple.xcode/Snowfolio/SnowfolioUITests/DocumentLifecycleTests/testEditorLineSpacingPreservesSourceAndHistory",
+          "testName": "testEditorLineSpacingPreservesSourceAndHistory()"
+        }
+      ],
+      "priorityRuntimeWarnings": 31,
+      "log": "/private/tmp/snowfolio-line-spacing-initial-hosted-native/xcodebuild.log",
+      "logSHA256": "4717452a6911d0a1e1e32d98af431007d8c3b24a6ee263991b5f186f928bda6c",
+      "resultBundle": "/private/tmp/snowfolio-line-spacing-initial-hosted-native/DerivedData/Logs/Test/Test-Snowfolio-2026.11.08_05-31-08-+0000.xcresult",
+      "settingsScreenshot": {
+        "path": "/private/tmp/snowfolio-line-spacing-initial-ui-attachments/D0058984-36FC-4057-B7E0-F767A50746EC.png",
+        "review": "Inspected: 12.5-point line spacing numeric field and native row/stepper displayed correctly. Test fails afterwards on literal source modified by automatic list continuation; source/caret screenshots not reached."
+      },
+      "appIntentsMetadataWarnings": 2,
+      "appIntentsInformationalNotices": 12
+    }
   },
   "literalListFixtureFollowup": {
     "change": "Disable automatic block continuation only in the line-spacing UI fixture while typing the supplied literal numbered/bullet source, matching the existing theme UI fixture. Product behavior is unchanged.",
     "appBuildReport": "/private/tmp/snowfolio-line-spacing-literal-list-app-build.json",
     "appBuildStatus": "passed",
     "strictLint": "passed",
+    "hosted": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42451908380",
+      "commit": "2e3f6f2cd541c759fb6f0ebb7b89d0d5c103c885",
+      "status": "Cancelled at 20-minute job limit; saved log shows new case failed because one native undo correctly removed only the terminal newline. Exact raw results are being downloaded.",
+      "failureLog": "/private/tmp/snowfolio-line-spacing-followup-cancelled.log"
+    }
+  },
+  "singleEditFixtureFollowup": {
+    "change": "Insert the literal list with continuation disabled, then replace it once with a single-line checkpoint. Verify spacing retains that edit, Undo restores the exact list, Redo restores the checkpoint, and Undo restores the list for selection/caret screenshots. This matches established native history tests; source assertions and wait thresholds remain intact.",
+    "appBuild": "/private/tmp/snowfolio-line-spacing-single-edit-app-build.json",
+    "appBuildStatus": "passed",
+    "strictLint": "passed",
+    "workflowEnvelope": "Native job 20 to 30 minutes because the prior 19-method run finished tests near its 20-minute job cap and was cancelled during result handling. Per-test waits and assertions unchanged.",
     "hosted": "pending"
   }
 }
