@@ -192,6 +192,9 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
     item(windows, String(localized: "Zoom"), #selector(NSWindow.performZoom(_:)))
     windows.addItem(.separator())
     item(windows, String(localized: "Show Tab Bar"), #selector(NSWindow.toggleTabBar(_:)))
+    item(
+      windows, String(localized: "Move Tab to New Window"),
+      #selector(NSWindow.moveTabToNewWindow(_:)))
     item(windows, String(localized: "Merge All Windows"), #selector(NSWindow.mergeAllWindows(_:)))
     windows.addItem(.separator())
     item(

@@ -144,5 +144,21 @@
       "image": "/private/tmp/snowfolio-validation-history/native-tabs-cefdbc0/images/C5F8553A-2C48-4424-ADC3-7F101B4EB3E7.png"
     },
     "defaultHostFixtureFollowup": "Exact dfdad63run42556738514focused1/1passes81.394s after native Window/ShowTabBar setup. Screenshot inspected: anchor+3created tabs, source/outline/selection correct. Original native2/2acceptance retained. Full default3lifecycle failures remain open."
+  },
+  "separateGroupsCandidate": {
+    "dateUTC": "2026-11-09T07:28:12.515548+00:00",
+    "change": "Add standard Window > Move Tab to New Window, routed directly to NSWindow.moveTabToNewWindow(_:). No replacement tab/group manager or persistence policy.",
+    "test": "testSeparateTabGroupsRestoreWithoutMergingDocuments",
+    "checks": [
+      "Open four byte-exact Unicode fixtures into two native groups via real detach command",
+      "Each group includes its two authored tabs and excludes other group documents",
+      "Separate Undo operations preserve both groups and all four files",
+      "Normal Quit/relaunch retains selected tabs, separate groups and insertion positions",
+      "Restored edits/Undo preserve exact original bytes"
+    ],
+    "local": "Native35/default27 compile; default app cache restored; strict changed Swift formatting/diff pass.",
+    "runtime": "Pending focused hosted run; existing native34 baseline remains running at292c17f.",
+    "remaining": "Exact source/preview viewport quit/relaunch, physical preview/dark selection/IME/VoiceOver and other parity/release gates remain open.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-groups-local"
   }
 }

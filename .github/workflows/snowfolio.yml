@@ -31,6 +31,7 @@ on:
           - document-host-probe-appkit
           - native-document-app
           - native-document-tabs
+          - native-document-groups
           - native-document-scripting
           - native-document-recovery
           - document-tab-creation
@@ -114,6 +115,9 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
             TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentScriptingTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-groups ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testSeparateTabGroupsRestoreWithoutMergingDocuments
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-tabs ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testSavedTabsRestoreSelectedDocumentAndIndependentUndo \

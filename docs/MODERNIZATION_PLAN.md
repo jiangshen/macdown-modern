@@ -3424,3 +3424,15 @@ Fresh complete core: 374 tests / 80 suites, zero compiler warnings/errors, all
 42578704447 is now running on this exact revision. Preserve accepted native33
 raw evidence until replaced by a complete useful newer result. No default host
 switch or physical preview/IME/VoiceOver/performance acceptance.
+
+
+## Separate native tab groups — candidate, 2026-11-09
+
+The native Window menu now exposes standard Move Tab to New Window directly
+through NSWindow, alongside Merge All Windows. A native-only 35th UI method
+opens four Unicode fixtures, detaches a tab, creates two groups and checks exact
+membership/exclusion, separate Undo, normal Quit/relaunch, selected documents,
+restored insertion positions and unchanged disk bytes. Native35/default27 compile
+and the normal default cache is restored; strict changed formatting/diff pass.
+Focused runtime remains pending. Exact fullnative34 still runs on292c17f; no
+acceptance or host switch based on compilation. No custom tab persistence added.

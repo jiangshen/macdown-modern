@@ -1575,6 +1575,128 @@ final class DocumentLifecycleTests: XCTestCase {
     add(after)
   }
 
+  #if NATIVE_DOCUMENT_HOST
+    @MainActor
+    func testSeparateTabGroupsRestoreWithoutMergingDocuments() throws {
+      let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
+        "SnowfolioSeparateGroups-\(UUID().uuidString)", isDirectory: true)
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      defer { try? FileManager.default.removeItem(at: directory) }
+      let names = ["group-alpha.md", "group-delta.md", "group-beta.md", "group-gamma.md"]
+      let sources = names.map { "# \($0) 中文 👩‍💻\n\nIndependent group checkpoint.\n" }
+      let files = names.map { directory.appendingPathComponent($0) }
+      for (file, source) in zip(files, sources) { try Data(source.utf8).write(to: file) }
+      let app = launch(arguments: [
+        "-ApplePersistenceIgnoreState", "NO", "-NSQuitAlwaysKeepsWindows", "YES",
+        "-preferDocumentTabs", "YES",
+      ])
+      defer { app.terminate() }
+      defer {
+        let tree = XCTAttachment(string: app.debugDescription)
+        tree.name = "native-separate-tab-groups"
+        tree.lifetime = .keepAlways
+        add(tree)
+        let image = XCTAttachment(screenshot: app.screenshot())
+        image.name = "native-separate-tab-groups"
+        image.lifetime = .keepAlways
+        add(image)
+      }
+      func editor(in name: String, source: String) -> XCUIElement {
+        let editor = app.windows[name].firstMatch.textViews["markdownSourceEditor"].firstMatch
+        let loaded = XCTNSPredicateExpectation(
+          predicate: NSPredicate { _, _ in editor.exists && editor.value as? String == source },
+          object: nil)
+        XCTAssertEqual(XCTWaiter().wait(for: [loaded], timeout: 8), .completed)
+        return editor
+      }
+      func selectWindow(_ name: String) {
+        let menu = app.menuBars.menuBarItems["Window"]
+        menu.click()
+        let item = menu.menuItems[name].firstMatch
+        XCTAssertTrue(item.waitForExistence(timeout: 5), app.debugDescription)
+        item.click()
+      }
+      func expectGroup(
+        selected: String, containing included: [String], excluding excluded: [String]
+      ) {
+        let window = app.windows[selected].firstMatch
+        XCTAssertTrue(window.waitForExistence(timeout: 8), app.debugDescription)
+        let group = window.tabGroups.firstMatch
+        XCTAssertTrue(group.waitForExistence(timeout: 5), app.debugDescription)
+        for name in included {
+          XCTAssertTrue(
+            group.descendants(matching: .any).matching(NSPredicate(format: "title == %@", name))
+              .firstMatch.exists, app.debugDescription)
+        }
+        for name in excluded {
+          XCTAssertFalse(
+            group.descendants(matching: .any).matching(NSPredicate(format: "title == %@", name))
+              .firstMatch.exists, app.debugDescription)
+        }
+      }
+      func expectBytes() throws {
+        for (file, source) in zip(files, sources) {
+          XCTAssertEqual(try Data(contentsOf: file), Data(source.utf8))
+        }
+      }
+      // Build the first two-file group, then split the third tab using the real
+      // native command. The fourth open must join that originating group only.
+      for index in 0...2 {
+        _ = openDocument(files[index], in: app)
+        _ = editor(in: names[index], source: sources[index])
+      }
+      let menu = app.menuBars.menuBarItems["Window"]
+      menu.click()
+      let detach = menu.menuItems["Move Tab to New Window"].firstMatch
+      XCTAssertTrue(detach.waitForExistence(timeout: 5))
+      XCTAssertTrue(detach.isEnabled)
+      detach.click()
+      _ = editor(in: names[2], source: sources[2])
+      _ = openDocument(files[3], in: app)
+      _ = editor(in: names[3], source: sources[3])
+      expectGroup(
+        selected: names[3], containing: [names[2], names[3]], excluding: [names[0], names[1]])
+      selectWindow(names[1])
+      let first = editor(in: names[1], source: sources[1])
+      expectGroup(
+        selected: names[1], containing: [names[0], names[1]], excluding: [names[2], names[3]])
+      first.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      first.typeText("First group history")
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(first.value as? String, sources[1])
+      selectWindow(names[3])
+      let second = editor(in: names[3], source: sources[3])
+      second.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      second.typeText("Second group history")
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(second.value as? String, sources[3])
+      try expectBytes()
+      app.typeKey("q", modifierFlags: .command)
+      XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
+      try expectBytes()
+      app.launch()
+      let restored = editor(in: names[3], source: sources[3])
+      expectGroup(
+        selected: names[3], containing: [names[2], names[3]], excluding: [names[0], names[1]])
+      // No click: native restoration must retain the front group and its caret.
+      app.typeText("Restored second group")
+      XCTAssertEqual(restored.value as? String, sources[3] + "Restored second group")
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(restored.value as? String, sources[3])
+      selectWindow(names[1])
+      let restoredFirst = editor(in: names[1], source: sources[1])
+      expectGroup(
+        selected: names[1], containing: [names[0], names[1]], excluding: [names[2], names[3]])
+      app.typeText("Restored first group")
+      XCTAssertEqual(restoredFirst.value as? String, sources[1] + "Restored first group")
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(restoredFirst.value as? String, sources[1])
+      try expectBytes()
+    }
+  #endif
+
   @MainActor
   func testNewTabsUseKeyboardAndNativePlusWithoutReusingEmptyDocuments() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
