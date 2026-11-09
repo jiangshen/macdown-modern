@@ -311,6 +311,11 @@ private struct DocumentWorkspaceContent: View {
 
   private func openDroppedFiles(_ urls: [URL]) -> Bool {
     guard MarkdownFileDrop.accepts(urls) else { return false }
+    #if DEBUG
+      DocumentLifecycleTrace.note(
+        "drop workspace urls=\(urls.count) native=\(nativeOpenFile != nil) window=\(output.window != nil)"
+      )
+    #endif
     let anchor = DocumentWindowAnchor(output.window)
     Task { @MainActor in
       await droppedDocuments.open(urls, from: anchor) { url in

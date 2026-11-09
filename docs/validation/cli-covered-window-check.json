@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T22:52:02.730795+00:00",
-  "status": "Test correction compiled; actual-app verification pending. No production change or new full-suite acceptance.",
+  "status": "Focused native real-app1/1accepted at289a815,89.181seconds, both relevant images inspected. Full current44 remains pending; no production/deadline change or combined acceptance.",
   "sourceParent": "9928b95",
   "sourceSHA256": {
     "App/UITests/CommandLineTests.swift": "22ce1da512eb816ce64d020520f54f2ac061bf1aa0d88199733b803ec507d7b6"
@@ -32,7 +32,28 @@
   "change": "Select each newly created file through the normal Window menu before checking its window and empty source. This follows the existing warm/cold content checks for covered windows/inactive tabs and adds source assertions for both missing files. Record app state/active/finished-launching/hidden with routing receipt.",
   "invariants": "No production launch routing, activation, receipt semantics, file creation, source or timeouts changed. Original8s window/source deadlines retained. Existing complete warm/cold, duplicate reuse, delayed pipe, Unicode/BOM/CRLF/encoded Save/Quit checks retained.",
   "local": "Standalone Swift6/arm64/macOS27type-check with correct XCTest overlay paths and strict formatting/diff checks pass. No app bundle built or overwritten.",
-  "pending": "Focused native CLI then complete actual-app acceptance at the current source. A focused pass cannot be combined with another run to claim complete44.",
+  "pending": "Corrected Finder gesture and complete current44-method native acceptance; physical/full-goal gates remain open.",
   "productionInstalled": false,
-  "defaultHandlerChanged": false
+  "defaultHandlerChanged": false,
+  "actualApp": {
+    "dateUTC": "2026-11-09T23:02:32.106656+00:00",
+    "source": "289a8155d803936345f4b0ea796af1ce278d7a60",
+    "run": 42715693199,
+    "job": 129496511873,
+    "artifact": 13718780753,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 89.181,
+    "runtimeQoSWarnings": 1,
+    "visual": "Warm and cold screenshots inspected: native encoded piped text visible with outline; cold native tabs and selected literal--help source. Hosted WebKit area remains blank; this is not physical preview-painting acceptance.",
+    "routing": "status0,0.270873208s,state4,active=true,launched=true,hidden=false; matching GUI PID5685,queued delivery acknowledged.",
+    "coverage": "Select both newly created files through normal Window menu then assert selected window and empty source; all prior warm/cold/duplicate/delayed stdin/encoded Save/normal Quit/exactsource/byte checks retained. No production or deadline changes.",
+    "transferBytes": 31458179,
+    "archiveBytes": 121635714,
+    "compact": "/private/tmp/snowfolio-validation-history/native-cli-289a815",
+    "scope": "Focused1/1only. Not combined with complete43at1d6bd22 to claim44/currentfullacceptance.",
+    "retiredAllocatedBytes": 37646336
+  }
 }

@@ -1531,5 +1531,53 @@
     "archiveBytes": 183207573,
     "scope": "All33terminalmethodsinspected; no rawxcresultdownload. No full app acceptance.",
     "finding": "Initial warmCLInew.mdwindow wait fails atCommandLineTests.swift156; postfailuremain--helpwindow. Three known autosave/reload failures and invalid-encoding presentation persist."
+  },
+  "fullNative43_1d6bd22": {
+    "dateUTC": "2026-11-09T23:08:25.597497+00:00",
+    "source": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
+    "run": 42710891156,
+    "job": 129479825147,
+    "artifact": 13718460397,
+    "executed": 43,
+    "passed": 43,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1875.3,
+    "sameMethodSetAsPrior43Attempt": true,
+    "visual": "All8selectedPNGsinspected: continuous mixed-list selection, native restored group/tabs, explicit plug-in consent and repeated runs/Undo, complete update controls/beta persistence, same visible source glyph position before/after Quit. Hosted WebKit area stays blank; not physical preview/IME/VoiceOver acceptance.",
+    "warnings": {
+      "internalRuntimeQoS": 59,
+      "XCTestAttachmentEncodingWarnings": 1,
+      "encodingLogMessages": 3,
+      "AppIntentsMetadataSkipped": 3,
+      "SwiftCompilerWarnings": 0,
+      "SwiftCompilerErrors": 0,
+      "scope": "Unattributed runtime warnings remain; not M6 performance or release acceptance."
+    },
+    "scope": "Complete actual-app43 acceptance at this exact source, including all41previousmethods plus plug-in and update settings. Later package-declaration followup and current44-method source remain separate/current full acceptance pending. No mixing focused CLI1/1 into full44.",
+    "transferBytes": 114911671,
+    "archiveBytes": 205305051,
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-1d6bd22"
+  },
+  "focusedCLI289a815": {
+    "dateUTC": "2026-11-09T23:02:32.106656+00:00",
+    "source": "289a8155d803936345f4b0ea796af1ce278d7a60",
+    "run": 42715693199,
+    "job": 129496511873,
+    "artifact": 13718780753,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 89.181,
+    "runtimeQoSWarnings": 1,
+    "visual": "Warm and cold screenshots inspected: native encoded piped text visible with outline; cold native tabs and selected literal--help source. Hosted WebKit area remains blank; this is not physical preview-painting acceptance.",
+    "routing": "status0,0.270873208s,state4,active=true,launched=true,hidden=false; matching GUI PID5685,queued delivery acknowledged.",
+    "coverage": "Select both newly created files through normal Window menu then assert selected window and empty source; all prior warm/cold/duplicate/delayed stdin/encoded Save/normal Quit/exactsource/byte checks retained. No production or deadline changes.",
+    "transferBytes": 31458179,
+    "archiveBytes": 121635714,
+    "compact": "/private/tmp/snowfolio-validation-history/native-cli-289a815",
+    "scope": "Focused1/1only. Not combined with complete43at1d6bd22 to claim44/currentfullacceptance.",
+    "retiredAllocatedBytes": 37646336
   }
 }

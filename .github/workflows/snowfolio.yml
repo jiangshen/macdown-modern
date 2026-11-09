@@ -201,7 +201,7 @@ jobs:
             bash Tools/build-snowfolio.sh --test
           fi
       - name: Capture focused launch metadata
-        if: ${{ always() && (inputs.native_test_scope == 'native-document-links' || inputs.native_test_scope == 'document-links' || inputs.native_test_scope == 'command-line' || inputs.native_test_scope == 'native-command-line') }}
+        if: ${{ always() && (inputs.native_test_scope == 'native-document-links' || inputs.native_test_scope == 'document-links' || inputs.native_test_scope == 'command-line' || inputs.native_test_scope == 'native-command-line' || inputs.native_test_scope == 'native-file-drops') }}
         run: |
           /usr/bin/log show --last 5m --style compact --info --debug \
             --predicate 'eventMessage BEGINSWITH "SnowfolioDocument"' \

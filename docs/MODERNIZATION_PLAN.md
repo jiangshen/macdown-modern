@@ -5,7 +5,7 @@ Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 pars
 Current accepted hosted core baseline: **461 package tests / 94 suites, all 652 published
 CommonMark examples and nine arm64 test executables pass** at `dc9eed3`, with zero
 compiler diagnostics. The exact compatibility increment also passes locally in
-57.534 seconds. The current regular and complete native app checks are still running;
+57.534 seconds. Regular-host checks continue; complete current44 native acceptance is pending.
 core acceptance does not establish full app acceptance.
 
 Pinned KaTeX remains the path for ordinary supported math. A document that needs broader
@@ -25,31 +25,32 @@ were inspected. Exact-source hosted core/corpus checks also pass; full app accep
 remains open. See
 [math-offline-require.json](validation/math-offline-require.json).
 
-The latest complete native attempt at `215ce9a` finishes **42/43**: the initial warm CLI
-window wait fails, although the post-failure hierarchy contains the opened files and
-piped notebook. No root cause is attributed yet. Native **41/41 at `c0c6e6f`** remains
-the complete accepted app baseline; focused passes are not combined into full acceptance.
-The corrected reading flow and earlier Settings/generic-file flows remain recorded.
+The complete native app suite now passes **43/43 at `1d6bd22`**, no failures or
+skips, in 1875.300 seconds. It retains the entire prior 43-method set, including
+plug-in/session/Undo and update settings. Eight relevant images were inspected.
+The earlier initial warm CLI wait failure is retained as historical evidence;
+no root cause is attributed to production code.
 
-The warm CLI check now selects covered documents through the native Window menu
-before asserting both the selected window and its empty source. SDK compilation passes;
-focused/current full app verification is pending. No production or timeout change was
-made. See [cli-covered-window-check.json](validation/cli-covered-window-check.json).
+The CLI check now selects covered documents through the native Window menu before
+asserting their windows and empty sources. Its focused native method passes **1/1
+at `289a815` in 89.181 seconds**, with both relevant images inspected and existing
+8-second deadlines retained. This is separate from complete 43 acceptance; the new
+Finder method makes the current complete set 44, still pending. See
+[cli-covered-window-check.json](validation/cli-covered-window-check.json).
 
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 
-The optional native document host's complete accepted baseline is **41/41 actual-app
-methods**, no failures/skips, in1844.364seconds at `c0c6e6f`
-([run42653830905](https://github.com/jiangshen/snowfolio/actions/runs/42653830905)).
-All36previous methods remain; counter, URL, CLI, Terminal and generic-file additions
-are included. Encoded lifecycle/recovery/Versions, scripting, tabs/groups/reading,
-menus/Settings/exports and exact warm Save/cold CLI checks pass together. Six relevant
-screenshots were inspected.58runtime warnings remain (57internal QoS and one XCTest
-string-attachment encoding warning). These are not zero-warning/performance/release
-acceptance. Physical Pinyin/VoiceOver/native preview and selection remain open; the
-source default and installed app have not changed. See document-lifecycle.json and
+The native host's complete accepted app baseline is **43/43 at `1d6bd22`**
+([run42710891156](https://github.com/jiangshen/snowfolio/actions/runs/42710891156)).
+Encoded lifecycle/recovery/Versions, scripting, tabs/groups/reading, menus/Settings,
+exports, warm/cold CLI, plug-in session/encoded Undo/Save and update choices pass
+together. There are 59 internal QoS warnings, one XCTest attachment encoding warning
+(three conversion log messages), and three skipped App Intents metadata extractions;
+Swift compiler diagnostics are zero. This is not performance/release acceptance.
+Physical Pinyin/VoiceOver/native preview and selection remain open; source default
+and installed app remain unchanged. See document-lifecycle.json and
 [the host decision](DOCUMENT_HOST_DECISION.md).
 
 The word/character counter replacement passes its actual-app flow in **both hosts**
@@ -62,8 +63,8 @@ preferences and source safety. See [writing-statistics.json](validation/writing-
 The latest complete regular SwiftUI-host run at `1d6bd22` executes 33 methods:
 28 pass / 5 fail (all terminal method outcomes inspected). The warm CLI window wait,
 three autosave/reload failures and invalid-encoding error presentation remain. Saved-tab restoration passes here; its prior intermittent
-failure is not globally resolved. This is not complete regular acceptance. Native41
-at `c0c6e6f` remains the complete accepted native baseline. See
+failure is not globally resolved. This is not complete regular acceptance. Native43
+at `1d6bd22` is the complete accepted native baseline. See
 [default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
@@ -250,7 +251,7 @@ verification. No essential feature is authorized for silent removal.
 
 | Category | Legacy capability / acceptance gate | Status |
 | --- | --- | --- |
-| Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Native full41 accepted at c0c6e6f; later full43 attempt42pass/1CLIreadiness failure at215ce9a. Encoded autosave/Undo, reloads, conflicts and Versions pass; physical/current whole-product acceptance stays open |
+| Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Native full43 accepted at1d6bd22; earlier42/43at215ce9a retained as CLI readiness evidence. Encoded autosave/Undo, reloads, conflicts and Versions pass; physical/current whole-product acceptance stays open |
 | Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Native paths and simulated composition covered; real IME/VoiceOver/desktop acceptance pending |
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
@@ -258,7 +259,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography all eight Prism code themes, code-block line numbers and language/custom labels implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; custom CSS/folder import, immutable local assets and reload implemented; Swift Default template/context and unavailable-name recovery implemented; hosted export-panel/recovery acceptance passed; direct desktop theme/export acceptance, user asset license sidecars and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
-| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Word/character replacement accepted in both real app hosts; [acceptance ledger](validation/writing-statistics.json) records DOM/UTF16 rules, source-only/manual render and Undo/encoded Save. Native full41 includes restoration/independent reading; full-screen/physical parity remains open |
+| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Word/character replacement accepted in both real app hosts; [acceptance ledger](validation/writing-statistics.json) records DOM/UTF16 rules, source-only/manual render and Undo/encoded Save. Native full43 includes restoration/independent reading; full-screen/physical parity remains open |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Swift CLI warm/cold/files/stdin and source-location URL flows accepted through native full41; [source contract](validation/launch-integrations-characterization.json) and document-links ledger retained. Later warm CLI readiness intermittency and complete current app/Finder acceptance remain open |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Three actual native scripting methods pass together in full35. Further options/composition parity and App Intents evaluation remain open |
 | Modernize | Plugin discovery/run compatibility, updater stable/prerelease choices and preferences migration | Native plug-in metadata/confirmation/session/Undo/encoded Save accepted in focused real-app flow; signing exception remains unapplied pending approval. Sparkle2.10.1 adapter and stable/prerelease controls implemented and actual Settings checks accepted; own signed feed/delivery/release acceptance remains open |

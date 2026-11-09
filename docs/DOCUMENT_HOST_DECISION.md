@@ -10,7 +10,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 
 | Evidence | SwiftUI DocumentGroup host | Swift NSDocument host |
 | --- | --- | --- |
-| Complete accepted comparison | Latest full32 at `c0c6e6f`:27pass/5fail (same3lifecycle cases, invalid-read handling and CLI new-file readiness) | 41/41 at `c0c6e6f`, no failures or skips |
+| Complete accepted comparison | Latest full33 at `1d6bd22`:28pass/5fail (same3lifecycle cases, invalid-read handling and CLI new-file readiness) | 43/43 at `1d6bd22`, no failures or skips; complete current44 pending |
 | Autosave and saved edit Undo | Acceptance fails | Passes, including exact encoded bytes |
 | Clean external changes after autosave | Two cases fail | Both pass |
 | Dirty conflicts and Versions | Full acceptance remains open | All conflict choices and native Versions/Restore pass |
@@ -32,7 +32,7 @@ file-watcher stack is not justified to keep DocumentGroup.
 
 Before selecting the native host as the source default:
 
-1. **Passed:** complete41/41 atc0c6e6f, including counter, URL, CLI, Terminal and generic-file additions.
+1. **Passed:** complete43/43 at1d6bd22, retaining all prior methods and adding plug-in/update acceptance. Current44, including the new real Finder method, remains pending.
 2. Verify the current native build physically: preview painting, active/inactive
    selection, caret, marked Pinyin composition and Undo/Redo, and VoiceOver.
 3. Recheck launch/restoration, preferences, all encoding and export contracts, and
@@ -44,6 +44,8 @@ Before selecting the native host as the source default:
 Making this architecture decision does not establish parser/export parity,
 plugin compatibility, accessibility, performance or release readiness. Those
 milestones remain separate acceptance gates.
+
+## Historical comparison increments
 
 The newer full native41 at f219e25 reports39pass/2fail, none skipped: CLI cold
 readiness searched inactive tab contents, and reading verification repeats the system

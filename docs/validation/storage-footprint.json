@@ -1376,5 +1376,31 @@
     },
     "kept": "/private/tmp/snowfolio-validation-history/finder-drop-9928b95 contains small text log,1inspectedPNG,twohierarchies and event-path summary. No rawxcresult,recording or large archive retained.",
     "protection": "Owner/open-file checks pass; existing core and ui-test module caches, running app42199/probe85540 and user documents untouched."
+  },
+  "completeNative43AndFocusedCLICycle": {
+    "dateUTC": "2026-11-09T23:08:25.597497+00:00",
+    "removedAllocatedBytes": 138428416,
+    "removed": [
+      "/private/tmp/snowfolio-native-current-result",
+      "/private/tmp/snowfolio-native-current-images",
+      "/private/tmp/snowfolio-native-current-extraction.log",
+      "/private/tmp/snowfolio-native-current-export.log"
+    ],
+    "kept": "/private/tmp/snowfolio-validation-history/native-full-1d6bd22 retains compact log/all43methodresults/report and8inspectedPNGs; focusedCLI289a815 retains two inspected images/small metadata. No raw result or recording remains.",
+    "cliRawCleanup": 37646336,
+    "protection": "Ownership/open-file checks pass. Current corecache951MiB reused; existing UI-test cache130MiB retained. Running Snowfolio42199,probe85540,appbundles and documents unchanged."
+  },
+  "finderMouseDeliveryDiagnostic": {
+    "dateUTC": "2026-11-09T23:18:07.638972+00:00",
+    "removedAllocatedBytes": 32407552,
+    "removed": [
+      "/private/tmp/snowfolio-finder-current-result",
+      "/private/tmp/snowfolio-finder-current-attachments",
+      "/private/tmp/snowfolio-finder-current-extraction.log",
+      "/private/tmp/snowfolio-finder-current-export.log",
+      "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-A2624BB5-21F8-4209-ACCE-15D3B752257E"
+    ],
+    "kept": "/private/tmp/snowfolio-validation-history/finder-drop-39d967b has smalllog,1inspectedPNG,twohierarchies,event summary and6/1focusedreport. No raw result/recording/new local app build.",
+    "protection": "Owner/open-file checks pass. Reused corecache and existing ui-test modulecache retained; running app/probe/documents untouched."
   }
 }

@@ -35,19 +35,40 @@ final class MarkdownFileDropHandler {
 
   /// nil lets a native editor or WebKit continue handling its ordinary drag types.
   func operation(for sender: any NSDraggingInfo) -> NSDragOperation? {
-    guard openFiles != nil, MarkdownFileDrop.urls(from: sender.draggingPasteboard) != nil else {
-      return nil
-    }
+    guard openFiles != nil else { return nil }
+    let urls = MarkdownFileDrop.urls(from: sender.draggingPasteboard)
+    #if DEBUG
+      trace(sender, phase: "validate", urls: urls)
+    #endif
+    guard urls != nil else { return nil }
     return sender.draggingSourceOperationMask.contains(.copy) ? .copy : []
   }
 
   func perform(_ sender: any NSDraggingInfo) -> Bool? {
-    guard let openFiles, let urls = MarkdownFileDrop.urls(from: sender.draggingPasteboard) else {
-      return nil
-    }
+    guard let openFiles else { return nil }
+    let urls = MarkdownFileDrop.urls(from: sender.draggingPasteboard)
+    #if DEBUG
+      trace(sender, phase: "perform", urls: urls)
+    #endif
+    guard let urls else { return nil }
     guard sender.draggingSourceOperationMask.contains(.copy) else { return false }
-    return openFiles(urls)
+    let accepted = openFiles(urls)
+    #if DEBUG
+      DocumentLifecycleTrace.note("drop dispatch accepted=\(accepted)")
+    #endif
+    return accepted
   }
+
+  #if DEBUG
+    private func trace(_ sender: any NSDraggingInfo, phase: String, urls: [URL]?) {
+      guard DocumentLifecycleTrace.enabled else { return }
+      let board = sender.draggingPasteboard
+      let types = (board.types ?? []).map(\.rawValue).joined(separator: ",")
+      DocumentLifecycleTrace.note(
+        "drop \(phase) items=\(board.pasteboardItems?.count ?? 0) urls=\(urls?.count ?? -1) mask=\(sender.draggingSourceOperationMask.rawValue) types=\(types)"
+      )
+    }
+  #endif
 }
 
 /// Tracks only whether a window can still anchor a UI operation; it never owns the window.
@@ -81,6 +102,10 @@ final class DroppedDocumentOpener {
     using action: @MainActor (URL) async throws -> Void
   ) async {
     guard MarkdownFileDrop.accepts(urls) else { return }
+    #if DEBUG
+      DocumentLifecycleTrace.note(
+        "drop batch begin urls=\(urls.count) anchor=\(anchor.window != nil)")
+    #endif
     activeBatches += 1
     defer { activeBatches -= 1 }
     for url in MarkdownFileDrop.unique(urls) {
@@ -90,6 +115,9 @@ final class DroppedDocumentOpener {
       defer { if access { url.stopAccessingSecurityScopedResource() } }
       do {
         try await action(url)
+        #if DEBUG
+          DocumentLifecycleTrace.note("drop document opened windows=\(NSApp.windows.count)")
+        #endif
         Self.placeNewWindow(at: url, anchor: anchor, existing: existing, windows: NSApp.windows)
       } catch {
         if error is CancellationError || (error as? CocoaError)?.code == .userCancelled { break }

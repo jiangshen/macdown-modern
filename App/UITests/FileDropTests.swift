@@ -27,6 +27,7 @@
         "-AppleWindowTabbingMode", "manual", "-preferDocumentTabs", "YES",
         "-editorSyntaxHighlighting", "NO",
       ]
+      app.launchEnvironment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] = "1"
       app.launch()
       defer { app.terminate() }
       func capture(_ name: String) {
@@ -91,7 +92,8 @@
         // A real mouse drag can reach the exposed sidebar below the Finder window.
         // The cross-platform press API emits touch events rather than mouse input.
         XCTAssertFalse(finderWindow.frame.contains(point), "Finder covers the drop destination")
-        icon.click(forDuration: 1, thenDragTo: target)
+        icon.click(
+          forDuration: 1, thenDragTo: target, withVelocity: .slow, thenHoldForDuration: 1)
       }
       dragBatch()
       capture("finder-drop-initial-gesture")

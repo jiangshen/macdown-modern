@@ -28,7 +28,7 @@
   ],
   "finderGestureAcceptance": {
     "dateUTC": "2026-11-09T22:46:17.151457+00:00",
-    "status": "First actual-Finder attempt fails because touch-style test gestures do not perform mouse drags; corrected public mouse API compiles, focused rerun pending. No gesture acceptance claim.",
+    "status": "Mouse API corrected but first delivery still fails at39d967b. Final diagnostic gesture rerun pending; no gesture acceptance or app root-cause claim.",
     "method": "FileDropTests/testFinderMultiFileDropOpensTabsAndReusesDocumentsWithoutChangingBytes",
     "scope": "Native host only, disposable fixture folder and desktop. Real Finder multi-selection drag to sidebar Open Files destination, two Unicode/encoded documents plus dirty anchor in same native tab group, repeated batch reuses existing documents, independent source/Undo/Save and exact original bytes.",
     "local": "Swift6/arm64/macOS27 type-check with XCTest Swift overlay passed; strict formatting/YAML parse/diff checks pass. No running bundle overwritten, new local app build or duplicate core run.",
@@ -97,6 +97,83 @@
       "archiveBytes": 118368226,
       "transferredBytes": 28069829,
       "compact": "/private/tmp/snowfolio-validation-history/finder-drop-9928b95"
+    },
+    "secondAttempt": {
+      "dateUTC": "2026-11-09T23:18:07.638972+00:00",
+      "source": "39d967b6f7cf3deaf3a7d6ddfa1f0c6a91ce0937",
+      "run": 42716651712,
+      "job": 129499837879,
+      "artifact": 13718292762,
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "seconds": 27.547,
+      "visual": "Inspected after-mouse screenshot: both Finder files selected, exposed destination button below Finder, only Untitled remains. No modal or file error shown.",
+      "inputRecord": {
+        "name": "click, hold, drag, and hold",
+        "pathType": 3,
+        "events": [
+          {
+            "eventType": 2,
+            "coordinate.x": 295.0,
+            "coordinate.y": 190.0,
+            "offset": 0.0,
+            "buttonType": 0
+          },
+          {
+            "eventType": 0,
+            "coordinate.x": 295.0,
+            "coordinate.y": 190.0,
+            "offset": 0.1,
+            "buttonType": 0
+          },
+          {
+            "eventType": 1,
+            "coordinate.x": 295.0,
+            "coordinate.y": 190.0,
+            "offset": 0.25,
+            "buttonType": 1
+          },
+          {
+            "eventType": 4,
+            "coordinate.x": 295.0,
+            "coordinate.y": 190.0,
+            "offset": 1.25,
+            "buttonType": 0
+          },
+          {
+            "eventType": 0,
+            "coordinate.x": 105.0,
+            "coordinate.y": 654.0,
+            "offset": 2.2527881132123575,
+            "buttonType": 0
+          },
+          {
+            "eventType": 3,
+            "coordinate.x": 105.0,
+            "coordinate.y": 654.0,
+            "offset": 2.2527881132123575,
+            "buttonType": 1
+          }
+        ]
+      },
+      "finding": "Correct macOS mouse path travels295,190to105,654; no opened documents. Callback/pasteboard delivery not yet observed; no production root cause attributed. Video attachment contains an XCTest pending-attachment error instead of a recording.",
+      "next": "Final allowed fix/rerun cycle2: normal slow mouse drag/1shover and opt-in metadata-only validation/perform/workspace/open tracing. Existing copy-only/file-reference/source policy and8s checks unchanged. Stop further speculative Finder reruns if this fails; report known issue and use separate evidence for any later investigation.",
+      "archiveBytes": 116091333,
+      "transferBytes": 25613195,
+      "compact": "/private/tmp/snowfolio-validation-history/finder-drop-39d967b"
+    },
+    "finalDiagnostic": {
+      "cycle": 2,
+      "local": "Existing6dropintegrationtests/1suite pass0.328s; package build8.542s, zero compiler warnings/errors. SDKtesttype-check, strictformat/YAMLparse/diffchecks pass.",
+      "trace": "Opt-in DEBUG metadata: pasteboard type identifiers/item/URL counts/copy mask, dispatch/workspace/native host/anchor and opened window counts. No text,URLs,filepaths or security grants. Release code excludes tracing.",
+      "gesture": "Public macOS slow mouse drag with1shover; fixed response deadlines and all byte/tab/Undo assertions retained.",
+      "sourceSHA256": {
+        "App/UITests/FileDropTests.swift": "bf9ca430bafb78abfe14d6fc62c2fd28f74fc5c834e779f8112ffd649339563d",
+        ".github/workflows/snowfolio.yml": "e3bf2772c3f2d996d8ef99eff80878bc7110d6feb3e50caf9068c4a10e23cc9b",
+        "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentFileDrops.swift": "f61dfe410a0a6b495819088d2f4ef8719c56a13fb9aaf230b01f07579590c55f",
+        "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspace.swift": "f518f798f6b3533c96d5b79e6456d726801a6128cd76aa96ff64fc35192c943e"
+      }
     }
   }
 }
