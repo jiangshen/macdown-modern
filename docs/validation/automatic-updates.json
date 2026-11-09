@@ -1,0 +1,53 @@
+{
+  "dateUTC": "2026-11-09T18:29:33.211336+00:00",
+  "status": "Implemented; local foundation/compile and arm64 preparation accepted. Actual-app control persistence, full-source suites and signed delivery remain pending.",
+  "version": "2.10.1",
+  "scope": "Actual Sparkle adapter in app target only; first-party orchestration Swift6/MainActor. Both app hosts, native/SwiftUI commands and searchable General Settings. No app-security exception or installed/default-handler change.",
+  "originalContract": {
+    "source": "MacDown/Code/Application/MPMainController.m:265; MacDown/MacDown-Info.plist:133",
+    "preserved": "Stable/default plus opt-in prerelease, persisted SUEnableAutomaticChecks consent and updateIncludesPreReleases choice. Modern delivery uses one own feed plus beta channel, new Ed25519 trust root; inherited old feed overrides ignored."
+  },
+  "configuration": "HTTPS host/no credentials or fragment, complete base64 32-byte public key from bundle metadata only; no dummy or upstream feed. Verify archive before extraction. Release packaging requires --require-configured and --require-arm64-only.",
+  "lifecycle": "Release-only initialization after preference migration and before didFinishLaunching returns; Sparkle scheduler/standard UI. MainActor KVO bridge with weak captures; busy checks disabled. DEBUG constructs/starts no updater controller. Channel changes use normal delayed reset.",
+  "local": {
+    "focusedTests": 11,
+    "suites": 4,
+    "seconds": 0.282,
+    "nativeBuildForTestingSeconds": 19.035,
+    "regularBuildForTestingSeconds": 5.426,
+    "nativeReleaseCompileSeconds": 28.259,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "strictFormat": "pass",
+    "sourceDefault": "regular generated project restored; protected running apps not rebuilt or launched",
+    "finalUnconditionalUITestBuildSeconds": 2.291,
+    "finalUITestSource": "Complete regular Xcode build-for-testing compiles final menu/NSNumber persistence assertions. A standalone swiftc invocation lacked XCTest overlay search paths and is not used as evidence.",
+    "arm64PreparationRepeat": "Idempotent: no additional files thinned; whole app signature still passes.",
+    "unconfiguredReleaseRejection": "--require-configured exits1 with a clear own-feed/public-key requirement on the real local app; no metadata altered."
+  },
+  "arm64Preparation": {
+    "architecture": "arm64",
+    "executables": 5,
+    "thinned": [
+      "Contents/Frameworks/Sparkle.framework/Versions/B/Autoupdate",
+      "Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle",
+      "Contents/Frameworks/Sparkle.framework/Versions/B/Updater.app/Contents/MacOS/Updater",
+      "Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Downloader.xpc/Contents/MacOS/Downloader",
+      "Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc/Contents/MacOS/Installer"
+    ],
+    "executableBytesBefore": 2385664,
+    "executableBytesAfter": 1140480,
+    "deepStrictSignatureVerification": "pass",
+    "resigned": false
+  },
+  "resolver": "Owned resolver sampled waiting in KeychainAuthorizationProvider/SecItemCopyMatching, not downloading. Explicitly stopped that PID63141; documented -packageAuthorizationProvider netrc resolves public artifact normally without changing Keychain or skipping validation. Source package lock restored to its core-only pins after Xcode resolution.",
+  "actualAppMethod": "UpdateSettingsTests/testDevelopmentUpdateControlsAndPrereleaseChoicePersistAcrossLaunches",
+  "pending": [
+    "Actual-app menu/Settings controls and beta persistence",
+    "Complete package/corpus/new-source native parity",
+    "Real own feed/public key/signed appcast and Developer ID/notarization/update installation",
+    "Original updater retirement after accepted replacement"
+  ],
+  "compact": "/private/tmp/snowfolio-validation-history/modern-updater",
+  "pluginExceptionStillUnapplied": true
+}

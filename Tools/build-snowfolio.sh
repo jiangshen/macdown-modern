@@ -177,4 +177,5 @@ for name in ('Mermaid', 'Viz', 'Graphviz', 'Graphviz-rbtree', 'Expat', 'Emscript
 if (notices / 'Diagram-Sources.txt').read_bytes() != (root / 'Diagram-Sources.txt').read_bytes():
     raise SystemExit('Bundled diagram source availability notice is missing')
 VERIFY_DIAGRAMS
+python3 "$repo_root/Tools/verify-snowfolio-updates.py" "$app"
 echo "App: $app"

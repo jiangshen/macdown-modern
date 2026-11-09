@@ -44,9 +44,18 @@ if nativeDocumentHost {
   otherDocumentType["NSDocumentClass"] = "SnowfolioNativeDocument"
 }
 
+let updateFeed = Environment.snowfolioUpdateFeedUrl.getString(default: "")
+let updatePublicKey = Environment.snowfolioUpdatePublicKey.getString(default: "")
+var updateInfo: [String: Plist.Value] = ["SUVerifyUpdateBeforeExtraction": .boolean(true)]
+if !updateFeed.isEmpty { updateInfo["SUFeedURL"] = .string(updateFeed) }
+if !updatePublicKey.isEmpty { updateInfo["SUPublicEDKey"] = .string(updatePublicKey) }
+
 let project = Project(
   name: "Snowfolio",
-  packages: [.local(path: "../Packages/SnowfolioCore")],
+  packages: [
+    .local(path: "../Packages/SnowfolioCore"),
+    .remote(url: "https://github.com/sparkle-project/Sparkle", requirement: .exact("2.10.1")),
+  ],
   settings: .settings(base: [
     "SWIFT_VERSION": "6.0",
     "SWIFT_STRICT_CONCURRENCY": "complete",
@@ -67,48 +76,49 @@ let project = Project(
       productName: "Snowfolio",
       bundleId: "local.macdown.modern",
       deploymentTargets: .macOS("27.0"),
-      infoPlist: .extendingDefault(with: [
-        "CFBundleDisplayName": "Snowfolio",
-        "CFBundleName": "Snowfolio",
-        "CFBundleShortVersionString": "$(MARKETING_VERSION)",
-        "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
-        "NSPrincipalClass": "NSApplication",
-        "CFBundleURLTypes": .array([
-          .dictionary([
-            "CFBundleURLName": "local.macdown.modern.open",
-            "CFBundleURLSchemes": .array([
-              .string("snowfolio"), .string("x-snowfolio"), .string("x-macdown"),
-            ]),
-            "CFBundleTypeRole": "Editor",
-          ])
-        ]),
-        "NSAppleScriptEnabled": .boolean(nativeDocumentHost),
-        "OSAScriptingDefinition": "Snowfolio.sdef",
-        "LSApplicationCategoryType": "public.app-category.productivity",
-        "NSHumanReadableCopyright":
-          "Copyright © 2014–2020 Tzu-ping Chung and contributors. MIT License.",
-        "CFBundleDocumentTypes": .array([
-          .dictionary(markdownDocumentType), .dictionary(plainDocumentType),
-          .dictionary(otherDocumentType),
-        ]),
-        "UTImportedTypeDeclarations": .array([
-          .dictionary([
-            "UTTypeIdentifier": "net.daringfireball.markdown",
-            "UTTypeConformsTo": .array([.string("public.plain-text")]),
-            "UTTypeDescription": "Markdown document",
-            "UTTypeIconFile": "MarkdownDocument",
-            "UTTypeIcons": .dictionary([
-              "UTTypeIconBackgroundName": "MarkdownDocumentBackground",
-              "UTTypeIconBadgeName": "MarkdownDocumentBadge",
-              "UTTypeIconText": "MD",
-            ]),
-            "UTTypeTagSpecification": .dictionary([
-              "public.filename-extension": .array([.string("md"), .string("markdown")]),
-              "public.mime-type": .array([.string("text/markdown"), .string("text/x-markdown")]),
-            ]),
-          ])
-        ]),
-      ]),
+      infoPlist: .extendingDefault(
+        with: [
+          "CFBundleDisplayName": "Snowfolio",
+          "CFBundleName": "Snowfolio",
+          "CFBundleShortVersionString": "$(MARKETING_VERSION)",
+          "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
+          "NSPrincipalClass": "NSApplication",
+          "CFBundleURLTypes": .array([
+            .dictionary([
+              "CFBundleURLName": "local.macdown.modern.open",
+              "CFBundleURLSchemes": .array([
+                .string("snowfolio"), .string("x-snowfolio"), .string("x-macdown"),
+              ]),
+              "CFBundleTypeRole": "Editor",
+            ])
+          ]),
+          "NSAppleScriptEnabled": .boolean(nativeDocumentHost),
+          "OSAScriptingDefinition": "Snowfolio.sdef",
+          "LSApplicationCategoryType": "public.app-category.productivity",
+          "NSHumanReadableCopyright":
+            "Copyright © 2014–2020 Tzu-ping Chung and contributors. MIT License.",
+          "CFBundleDocumentTypes": .array([
+            .dictionary(markdownDocumentType), .dictionary(plainDocumentType),
+            .dictionary(otherDocumentType),
+          ]),
+          "UTImportedTypeDeclarations": .array([
+            .dictionary([
+              "UTTypeIdentifier": "net.daringfireball.markdown",
+              "UTTypeConformsTo": .array([.string("public.plain-text")]),
+              "UTTypeDescription": "Markdown document",
+              "UTTypeIconFile": "MarkdownDocument",
+              "UTTypeIcons": .dictionary([
+                "UTTypeIconBackgroundName": "MarkdownDocumentBackground",
+                "UTTypeIconBadgeName": "MarkdownDocumentBadge",
+                "UTTypeIconText": "MD",
+              ]),
+              "UTTypeTagSpecification": .dictionary([
+                "public.filename-extension": .array([.string("md"), .string("markdown")]),
+                "public.mime-type": .array([.string("text/markdown"), .string("text/x-markdown")]),
+              ]),
+            ])
+          ]),
+        ].merging(updateInfo) { _, published in published }),
       sources: ["Sources/**"],
       resources: [
         "Resources/AppIcon.icon", "Resources/DocumentIcons.xcassets",
@@ -125,7 +135,10 @@ let project = Project(
           inputPaths: ["$(BUILT_PRODUCTS_DIR)/snowfolio"],
           outputPaths: ["$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Helpers/snowfolio"])
       ],
-      dependencies: [.package(product: "SnowfolioUI"), .target(name: "SnowfolioCLI")],
+      dependencies: [
+        .package(product: "SnowfolioUI"), .package(product: "Sparkle"),
+        .target(name: "SnowfolioCLI"),
+      ],
       settings: .settings(base: [
         "ENABLE_HARDENED_RUNTIME": "YES", "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
         "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "",

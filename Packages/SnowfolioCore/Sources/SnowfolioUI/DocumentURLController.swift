@@ -128,12 +128,3 @@ public final class DocumentURLController: NSObject {
     #endif
   }
 }
-
-/// SwiftUI retains this adaptor even when no document window is open.
-@MainActor
-public final class DocumentURLAppDelegate: NSObject, NSApplicationDelegate {
-  private let links = DocumentURLController()
-  public func applicationWillFinishLaunching(_ notification: Notification) { links.install() }
-  public func applicationDidFinishLaunching(_ notification: Notification) { links.install() }
-  public func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool { true }
-}

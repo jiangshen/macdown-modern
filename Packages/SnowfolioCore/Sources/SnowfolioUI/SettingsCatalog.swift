@@ -76,7 +76,7 @@ struct SettingsEntry: Identifiable {
       codeBlockAccessory, writingStatisticsMode
     case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate,
       assetFolder,
-      commandLineTool
+      commandLineTool, applicationUpdates
   }
   let id: String
   let title: String
@@ -114,6 +114,14 @@ enum SettingsCatalog {
           detail:
             "Turn off to follow your Mac’s window setting. You can move tabs into separate windows.",
           keywords: "multiple files windows", control: .toggle(\.preferDocumentTabs)),
+      ]),
+    .init(
+      pane: .general, title: "Software Updates",
+      entries: [
+        .init(
+          id: "softwareUpdates", title: "Software Updates",
+          detail: "Choose which new versions Snowfolio checks for.",
+          keywords: "automatic beta prerelease stable update check", control: .applicationUpdates)
       ]),
     .init(
       pane: .general, title: "Terminal",

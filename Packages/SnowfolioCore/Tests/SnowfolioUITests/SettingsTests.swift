@@ -52,7 +52,8 @@ struct SettingsTests {
     let entries = SettingsCatalog.sections.flatMap(\.entries)
     #expect(Set(entries.map(\.id)).count == entries.count)
     #expect(SettingsCatalog.search("shell install").map(\.id) == ["commandLineTool"])
-    #expect(entries.count == 59)
+    #expect(entries.count == 60)
+    #expect(SettingsCatalog.search("beta updates").map(\.id) == ["softwareUpdates"])
   }
 
   @Test("Settings switches persist through the existing preference model")

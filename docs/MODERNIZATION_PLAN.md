@@ -2,9 +2,10 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **434 package tests / 91 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `c0c6e6f`, with
-zero compiler errors/warnings.
+Current accepted core baseline: **437 package tests / 92 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `0f015bd`, with
+zero compiler errors/warnings. The complete native 42-method check at that source
+is still running; newer updater work has focused validation only.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
@@ -77,7 +78,7 @@ gates are not accepted. No default-host, installation, release or file-handler
 switch has been made, and coupled original source remains until feature parity.
 
 Storage retains one core cache, one canonical app cache, the protected running probe
-and only the latest useful full native36 raw result. Finished comparison downloads
+and only the latest useful partial native41 raw result. Finished comparison downloads
 and obsolete build wrappers are removed after compact findings and relevant
 screenshots are retained. The current roots total approximately 2.4 GB; see
 [project-cleanup.json](validation/project-cleanup.json) and
@@ -4010,3 +4011,39 @@ open-file checks, and compact evidence capture. Broad cleanup was rejected and n
 executed. Both running apps, unsaved physical input and the current core cache remain.
 The regular generated project and normal MobileBuildMCP profile were restored. Trash
 was not emptied and the source default did not change.
+
+
+## Modern updater integrated; release delivery remains open — 2026-11-09
+
+The reading-authority correction passes all 437 package tests in 92 suites,
+652 CommonMark examples and nine arm64 test executables at 0f015bd, with zero
+compiler diagnostics (run 42669662386, core job 129342511632). The full native
+42-method run at that exact source remains active; do not aggregate its result
+with a newer application source.
+
+The new updater replaces Sparkle 1 integration with pinned Sparkle 2.10.1 and
+Swift orchestration. Both hosts have Check for Updates and searchable General
+Settings controls. Stable and opt-in beta choices retain the original preferences;
+Sparkle owns consent, scheduling, verification, standard UI and installation.
+Development builds never construct/start the updater. Release startup requires
+Snowfolio's own HTTPS feed and Ed25519 public key; inherited MacDown feed preferences
+cannot override it. No dummy feed/key, new entitlement, signed feed, publication,
+installation or default-handler change occurred.
+
+Eleven focused updater/Settings checks pass in four suites (0.282 seconds). Native
+and regular build-for-testing pass in 19.035 and 5.426 seconds; native Release
+compiles in 28.259 seconds. Compiler and strict format/diff checks are clean. The
+complete upstream/external notices are preserved. On an unused local Release app,
+all five updater executables thin to arm64 while the entire app passes deep/strict
+signature verification without re-signing. The preparation tool rejects running or
+open builds and never modifies the package cache. Real signing/notarization, configured
+release metadata and signed update delivery remain acceptance gates.
+
+An owned package resolver waited in Keychain credential lookup despite a public
+artifact. Its exact process was stopped after sampling; the supported netrc provider
+resolved public packages without changing Keychain or skipping validation. Both
+running user apps and unsaved physical input remain protected. Actual-app update
+controls/persistence and complete new-source suites are next. See
+[automatic updates](AUTOMATIC_UPDATES.md) and
+[the validation ledger](validation/automatic-updates.json). The original updater is
+retained until those gates pass; the separate plug-in signing approval remains pending.

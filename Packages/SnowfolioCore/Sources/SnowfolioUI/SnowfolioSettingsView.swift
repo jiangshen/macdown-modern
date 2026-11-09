@@ -196,7 +196,7 @@ private struct SettingsPreferenceRow: View {
     switch entry.control {
     case .editorMetric, .editorTheme, .importEditorTheme, .readingStyle, .importReadingStyle,
       .htmlTemplate,
-      .assetFolder, .commandLineTool:
+      .assetFolder, .commandLineTool, .applicationUpdates:
       // Compound rows own distinct identifiers and labels on their controls.
       // A row-wide modifier would cascade to Import and Reload alike.
       control
@@ -279,6 +279,8 @@ private struct SettingsPreferenceRow: View {
       } label: {
         caption
       }
+    case .applicationUpdates:
+      ApplicationUpdateSettingsControl(updates: .shared)
     case .commandLineTool:
       CommandLineToolSettingsControl(model: preferences.commandLineTool)
     case .assetFolder:

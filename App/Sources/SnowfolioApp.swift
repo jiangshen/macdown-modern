@@ -4,7 +4,7 @@
 
   @main
   struct SnowfolioApp: App {
-    @NSApplicationDelegateAdaptor(DocumentURLAppDelegate.self) private var appDelegate
+    @NSApplicationDelegateAdaptor(SnowfolioApplicationDelegate.self) private var appDelegate
     @State private var preferences = AppPreferences()
 
     var body: some Scene {
@@ -16,6 +16,7 @@
       }
       .commands {
         SnowfolioSettingsCommands(preferences: preferences)
+        ApplicationUpdateCommands()
         TextEditingCommands()
         DocumentTabCommands()
         DocumentScrollCommands(preferences: preferences)

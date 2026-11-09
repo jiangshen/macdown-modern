@@ -83,6 +83,10 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
     item(
       application, String(localized: "About \(name)"),
       #selector(NSApplication.orderFrontStandardAboutPanel(_:)))
+    let updateItem = item(
+      application, String(localized: "Check for Updates…"), #selector(checkForUpdates), target: self
+    )
+    updateItem.setAccessibilityIdentifier("checkForUpdates")
     application.addItem(.separator())
     item(application, String(localized: "Settings…"), #selector(showSettings), ",", target: self)
     application.addItem(.separator())
@@ -211,10 +215,18 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
   public func menuNeedsUpdate(_ menu: NSMenu) { focus.refresh() }
 
   public func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    if menuItem.action == #selector(checkForUpdates) {
+      menuItem.toolTip = ApplicationUpdateService.shared.status
+      return ApplicationUpdateService.shared.canCheckForUpdates
+    }
     if menuItem.action == #selector(printDocument) {
       return focus.commands?.output?.isAvailable == true
     }
     return true
+  }
+
+  @objc private func checkForUpdates(_ sender: Any?) {
+    ApplicationUpdateService.shared.checkForUpdates()
   }
 
   @objc private func showSettings(_ sender: Any?) {

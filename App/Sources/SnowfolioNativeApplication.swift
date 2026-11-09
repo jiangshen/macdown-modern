@@ -28,7 +28,10 @@
       menus.install()
     }
 
-    func applicationDidFinishLaunching(_ notification: Notification) { links.install() }
+    func applicationDidFinishLaunching(_ notification: Notification) {
+      links.install()
+      SnowfolioUpdateBootstrap.start()
+    }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool { true }
   }
