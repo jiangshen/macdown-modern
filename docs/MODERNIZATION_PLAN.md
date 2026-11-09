@@ -3978,3 +3978,35 @@ PLUGIN_COMPATIBILITY.md. The asynchronous approval question is pending. Continue
 unaffected implementation/tests, but do not apply or indirectly bypass the exception.
 Native physical host acceptance, supported release signing, original-loader retirement
 and the full modernization remain open.
+
+
+## Native plug-in workflow accepted; source reflow authority corrected — 2026-11-09
+
+At a99b9de the complete focused plug-in method passes 1/1 in 90.975 seconds, with
+no skips. All four screenshots were inspected. Metadata, cancel and refresh invoke
+nothing; the runtime name and one construction, one initialization and two runs
+survive refresh. Shared document source/fileURL, native Undo/Redo and exact
+UTF16LE/BOM/CRLF/Unicode Save pass. A third false result shows a normal alert without
+modifying source or bytes. One internal QoS warning remains; hosted blank preview
+capture does not establish physical painting. The app signing exception remains
+unapplied and awaits explicit approval; the original loader is retained.
+
+The preceding c66e2d9 passes all 436 core tests in 92 suites, 652 CommonMark examples
+and nine arm64 executables with zero compiler diagnostics. The newer full core at
+a99b9de exposes one intermittent linked source-column reading case: before=3303,
+now=58931, y=-82. Unchanged local geometry checks pass 3/3; the hosted failure remains
+an acceptance failure. A focused regression proves delayed nonprogrammatic preview
+reports can discard an active source-reflow anchor without new preview input. It
+fails before the correction in 0.162 seconds. During linked reflow those reports now
+retain source authority; genuine new preview input still takes control. All 14
+related scrolling/layout tests in two suites pass in 7.976 seconds, with strict
+format/diff checks and no compiler diagnostics. Fresh complete verification remains
+required. The gap is consistent with the hosted symptom; full attribution and
+resolution remain unproven. See [the reflow evidence](validation/source-reflow-preview-authority.json).
+
+The local build (509,932 KiB), packaged test products (75,504 KiB) and standalone
+proof (268 KiB) were retired after an explicit-path xcodebuild clean, ownership and
+open-file checks, and compact evidence capture. Broad cleanup was rejected and never
+executed. Both running apps, unsaved physical input and the current core cache remain.
+The regular generated project and normal MobileBuildMCP profile were restored. Trash
+was not emptied and the source default did not change.

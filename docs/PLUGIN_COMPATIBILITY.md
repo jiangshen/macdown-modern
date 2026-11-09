@@ -1,6 +1,6 @@
 # Native plug-in compatibility
 
-Status: implementation and verification in progress. Original loader retained.
+Status: native focused app workflow accepted at a99b9de; release signing remains open. Original loader retained.
 
 Snowfolio inventories the Snowfolio and MacDown Application Support PlugIns folders
 without loading code, querying principal classes or creating folders. Its native menu
@@ -21,7 +21,10 @@ The app test fixture is first-party Swift, bundled only with the UI test runner 
 copied to an owned temporary plug-in folder. It never publishes anything or uses the
 user's real plug-ins. Its test covers metadata-only listing, cancellation, repeated
 runs, initialization count, current document/source/fileURL, native Undo/Redo, exact
-UTF16LE/BOM/CRLF/Unicode Save and a false-return error. Runtime acceptance is pending.
+UTF16LE/BOM/CRLF/Unicode Save and a false-return error. The complete method passes
+1/1 without skips in 90.975 seconds (run42667389193); all four screenshots were
+inspected. One internal QoS warning remains. This does not establish whole-app,
+third-party binary, physical-accessibility or release-signing acceptance.
 
 ## Release signing proposal — approval pending
 

@@ -172,6 +172,38 @@ struct NativeScrollTests {
     #expect(fixture.editor.selectedRange() == selection)
   }
 
+  @Test("Source reflow keeps its reading target until a new preview gesture supersedes it")
+  func reflowRetainsSourceAuthority() async throws {
+    let source = (1...150).map {
+      "Paragraph \($0) 中文 👩‍💻 " + String(repeating: "A reading line with wrapping text. ", count: 10)
+        + "\n\n"
+    }.joined()
+    let fixture = try Fixture(source: source, linked: true)
+    defer { fixture.close() }
+    fixture.scrolling.sourceEditedOrNavigated()
+    fixture.scroll.contentView.scroll(to: NSPoint(x: 0, y: 800))
+    let before = try #require(fixture.scrolling.captureSource())
+    #expect(!before.atTop && before.offset > 0)
+    let selection = fixture.editor.selectedRange()
+    fixture.scrolling.sourcePresentationWillChange()
+    // A delayed WebKit scroll report can arrive while the source is reflowing.
+    // It is not new preview input and must not take control of the reading target.
+    fixture.scrolling.previewScrolled(
+      MarkdownScrollPosition(line: 1, atTop: true), revision: 0,
+      programmatic: false, settled: false)
+    let retained = try #require(fixture.scrolling.captureSource())
+    #expect(retained.offset == before.offset && !retained.atTop)
+    // A real gesture has its own input message before the throttled scroll report.
+    fixture.scrolling.previewInputBegan(revision: 0)
+    fixture.scrolling.previewScrolled(
+      MarkdownScrollPosition(line: 1, atTop: true), revision: 0,
+      programmatic: false, settled: true)
+    #expect(fixture.scrolling.captureSource()?.atTop == true)
+    #expect(fixture.editor.selectedRange() == selection)
+    #expect(fixture.editor.string == source && fixture.document.text == source)
+    #expect(fixture.document.revision == 0 && !fixture.undo.canUndo)
+  }
+
   @Test("Native keyboard paging drives linked preview scrolling without editing or selecting")
   func keyboardPaging() async throws {
     let source = (1...150).map { "Paragraph \($0)\n\n" }.joined()

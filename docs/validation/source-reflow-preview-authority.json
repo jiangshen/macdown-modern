@@ -1,0 +1,10 @@
+{
+  "dateUTC": "2026-11-09T17:56:33.635398+00:00",
+  "trigger": "Full core a99b9de run42667366768/job129334507956 fails NativeEditorLayoutTests.readingAnchor(linked:true): narrow column reading paragraph; before3303,now58931,y=-82.0. Other method results retained; no new full-core acceptance.",
+  "localBaseline": "Unchanged focused NativeEditorLayoutTests3/3passes1.851s; hosted condition is intermittent.",
+  "deterministicGap": "While sourcePresentationWillChange retains an anchor, a delayed nonprogrammatic preview report previously invoked previewInputBegan itself and discarded that anchor without new preview input. New regression fails before fix in0.162s.",
+  "fix": "Only during linked source presentation, ignore nonprogrammatic preview scroll reports until previewInputBegan clears the anchor for genuine new preview input; request normal alignment instead. Other scrolling contracts unchanged.",
+  "focusedAfter": "14tests/2suites pass7.976s, including both original full workspace reflow cases, bidirectional linking/edges/restoration, queued user-input arbitration and new negative/control gesture regression. Strict format/diff pass; zero compiler diagnostics.",
+  "attributionLimit": "This proves and corrects a source/preview ownership gap consistent with the hosted failure. No full-suite resolution is claimed before fresh complete verification.",
+  "compact": "/private/tmp/snowfolio-validation-history/reflow-preview-authority"
+}

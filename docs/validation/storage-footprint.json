@@ -939,5 +939,32 @@
     "compactHistoryKiBBeforeThisLog": 136752,
     "stagedPhysicalAppKiB": 24104,
     "decision": "Existing core scratch cache reused; no separate app/build/result directory created. Retain small focused log. No obsolete bulky task artifact introduced; protected apps and unsaved physical-check source untouched."
+  },
+  "completedNativePluginLocalBuilds": {
+    "dateUTC": "2026-11-09T17:45:55.411773+00:00",
+    "standardClean": "Explicit xcodebuild clean restricted to /private/tmp/snowfolio-plugin-app-current/DerivedData succeeded. Broad tool clean was rejected; no broad cleanup performed.",
+    "beforeStandardCleanKiB": {
+      "isolatedBuild": 509932,
+      "packagedTestProducts": 75504,
+      "standaloneProof": 268
+    },
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-plugin-app-current",
+        "allocatedBytesRemovedAfterStandardClean": 362835968,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-plugin-runtime-proof",
+        "allocatedBytesRemovedAfterStandardClean": 274432,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/Users/caden/Library/Developer/MobileBuildMCP/workspaces/Nice-Projects-1ea838b4d9c5/test-products/build_macos_2026-11-09T17-37-14-494Z_pid37392_9ecc23f9.xctestproducts",
+        "allocatedBytesRemovedAfterStandardClean": 77316096,
+        "ownershipAndOpenFilesChecked": true
+      }
+    ],
+    "preserved": "Running Snowfolio42199/DocumentHostProbe85540, current staged app, source, unsaved physical input, one core cache and current raw result preserved. Retain only compact logs/proof; no Trash emptied."
   }
 }

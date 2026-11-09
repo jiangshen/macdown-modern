@@ -435,6 +435,15 @@ public final class DocumentScrollCoordinator: NSObject {
     _ position: MarkdownScrollPosition, revision: UInt64, programmatic: Bool, settled: Bool
   ) {
     guard position.isValid, let document, document.revision == revision else { return }
+    if linked, presentationAnchor != nil, !programmatic {
+      // WebKit can report a layout-induced scroll after a source reflow has
+      // started. Its old position must not become a new user reading target.
+      // Actual preview input arrives through previewInputBegan first, which
+      // clears the source anchor and lets that gesture take control normally.
+      needsAlignment = true
+      layoutChanged()
+      return
+    }
     previewReading = position
     if !programmatic {
       // A new user gesture supersedes queued movement from the other pane.

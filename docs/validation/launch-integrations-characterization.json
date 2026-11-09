@@ -431,7 +431,7 @@
   },
   "nativePluginMenu": {
     "dateUTC": "2026-11-09T17:42:49.860577+00:00",
-    "status": "Implemented; local compile and focused core acceptance only. Actual native UI workflow and release signing remain pending.",
+    "status": "Actual native focused workflow1/1accepted ata99b9de; release signing approval and complete native-host/full-core acceptance remain separate.",
     "behavior": "Native menu inventories modern/legacy folders without execution or creation; explicit folder opening; disabled Intel/unsupported/invalid rows; cached async refresh without mutating tracking menus; first-run trust sheet, session reuse, restored document focus, normal errors and restart guidance.",
     "localValidation": {
       "pluginTests": "9/9 in3suites",
@@ -459,6 +459,24 @@
       "Packages/SnowfolioCore/Sources/SnowfolioUI/NativePluginMenuController.swift": "32d3c930b18d9e65f0460bbfa4d31fea7df113cccf2c9e3846ad11f84700108a",
       "App/TestFixtures/PluginFixture.swift": "5b4431ffd5c91f186e9927a744563d48ff4b6c449a181ab2e60227ed058857b2",
       "App/UITests/PluginTests.swift": "481873ff8433e9b26099cd135c2667ecbba3318f2592a6e53377260ead80b4de"
+    },
+    "actualAppAccepted": {
+      "dateUTC": "2026-11-09T17:56:33.635398+00:00",
+      "source": "a99b9de7c9299963f42d0a34abfcd843e5d942c4",
+      "run": 42667389193,
+      "job": 129334591021,
+      "artifact": 13696363636,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 90.975,
+      "internalQoSRuntimeWarnings": 1,
+      "visual": "All4screenshots inspected: metadata inventory with disabled Intel/broken rows, native first-run confirmation, retained run state/source after UndoRedoSave, and false-result alert. Native controls fit and text is readable; hosted preview remains blank and does not establish physical painting.",
+      "behavior": "No callback event file at discovery/cancel/refresh; exact construct,name,initialize,run1,run2 events after two runs with refresh between; run3false displayed normally without source or saved-byte changes. Shared document markdown/fileURL and exact UTF16LE/BOM/CRLF/Chinese/emoji/combining checks pass; Undo/Redo and Save pass.",
+      "compact": "/private/tmp/snowfolio-validation-history/plugin-menu-runtime",
+      "rawPolicy": "Small result objects temporarily extracted; two large diagnostic objects skipped. Preserve compact summaries,4screenshots and relevant AX/text; remove concluded temporary partial raw. Full original remains available in GitHub artifact during retention.",
+      "limits": "No new complete-native42/full-core acceptance, third-party execution, app-security change, installation/default-handler switch or original-loader retirement."
     }
   }
 }
