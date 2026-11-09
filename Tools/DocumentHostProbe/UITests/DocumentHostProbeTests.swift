@@ -4,7 +4,7 @@ import XCTest
 
 final class DocumentHostProbeTests: XCTestCase {
   @MainActor
-  private func launch() -> XCUIApplication {
+  private func launch(environment: [String: String] = [:]) -> XCUIApplication {
     continueAfterFailure = false
     let app = XCUIApplication()
     app.launchArguments = [
@@ -19,6 +19,7 @@ final class DocumentHostProbeTests: XCTestCase {
         "snowfolio",
       ]
     #endif
+    app.launchEnvironment.merge(environment) { _, supplied in supplied }
     app.launch()
     return app
   }
@@ -217,6 +218,58 @@ final class DocumentHostProbeTests: XCTestCase {
 
   #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
     @MainActor
+    func testDirtyExternalReplacementPreservesBothVersionsUntilUserChoice() throws {
+      let file = try fixture()
+      defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
+      let originalBytes = try Data(contentsOf: file)
+      let original = try XCTUnwrap(String(data: originalBytes, encoding: .utf8))
+      // Keep this fixture dirty until the explicit Save conflict check. All
+      // existing automatic-save methods retain the standard2-second policy.
+      let app = launch(environment: ["SNOWFOLIO_PROBE_AUTOSAVE_DELAY": "30"])
+      defer { app.terminate() }
+      let editor = open(file, in: app)
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      editor.typeText("X")
+      let local = original + "X"
+      XCTAssertEqual(editor.value as? String, local)
+      XCTAssertEqual(
+        try Data(contentsOf: file), originalBytes, "Fixture must still have unsaved local changes")
+      let external = Data("External conflict checkpoint 中文 👩‍💻\n".utf8)
+      try replaceExternally(external, at: file, coordinated: false)
+      let loss = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          editor.value as? String != local || (try? Data(contentsOf: file)) != external
+        }, object: nil)
+      loss.isInverted = true
+      let preserved = XCTWaiter().wait(for: [loss], timeout: 3)
+      let state = XCTAttachment(
+        string:
+          "sourcePreserved=\(editor.value as? String == local); externalPreserved=\((try? Data(contentsOf: file)) == external)\n\(app.debugDescription)"
+      )
+      state.name = "native-dirty-external-conflict"
+      state.lifetime = .keepAlways
+      add(state)
+      XCTAssertEqual(
+        preserved, .completed,
+        "An external change must not silently replace either unsaved local source or external disk bytes"
+      )
+      app.typeKey("s", modifierFlags: .command)
+      let conflict = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          app.sheets.firstMatch.exists || app.dialogs.firstMatch.exists
+            || app.alerts.firstMatch.exists
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [conflict], timeout: 5), .completed)
+      XCTAssertEqual(editor.value as? String, local)
+      XCTAssertEqual(try Data(contentsOf: file), external)
+      let screenshot = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+      screenshot.name = "native-dirty-external-conflict"
+      screenshot.lifetime = .keepAlways
+      add(screenshot)
+    }
+
+    @MainActor
     func testNativeWorkspaceMenusSettingsAndExports() throws {
       let file = try fixture()
       defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
@@ -254,12 +307,23 @@ final class DocumentHostProbeTests: XCTestCase {
       let copy = app.menuItems["Copy HTML"].firstMatch
       XCTAssertTrue(copy.waitForExistence(timeout: 5))
       XCTAssertTrue(copy.isEnabled)
+      NSPasteboard.general.clearContents()
       copy.click()
+      let expectedHTML = "<p data-sourcepos=\"1:1-1:15\">Menu checkpoint</p>\n"
       let copied = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in
-          NSPasteboard.general.string(forType: .string)?.contains("<p>Menu checkpoint</p>") == true
+          NSPasteboard.general.string(forType: .string) == expectedHTML
+            && NSPasteboard.general.string(forType: .html) == expectedHTML
         }, object: nil)
-      XCTAssertEqual(XCTWaiter().wait(for: [copied], timeout: 8), .completed)
+      let copiedResult = XCTWaiter().wait(for: [copied], timeout: 8)
+      let clipboard = XCTAttachment(
+        string:
+          "plain=\(NSPasteboard.general.string(forType: .string) ?? "missing")\nhtml=\(NSPasteboard.general.string(forType: .html) ?? "missing")"
+      )
+      clipboard.name = "native-menu-copy-html"
+      clipboard.lifetime = .keepAlways
+      add(clipboard)
+      XCTAssertEqual(copiedResult, .completed)
       XCTAssertEqual(editor.value as? String, source)
 
       app.typeKey(",", modifierFlags: .command)

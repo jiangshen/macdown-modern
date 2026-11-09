@@ -9,6 +9,8 @@ import Synchronization
 open class NativeMarkdownDocument: NSDocument {
   private nonisolated let loadedContents = Mutex(TextFileContents())
   private var loadedModel: MarkdownDocument?
+  private let fileMonitor = NativeDocumentFileMonitor()
+  private var isClosed = false
   let workspaceState = DocumentWorkspaceState()
   private static let workspaceStateKey = "snowfolioWorkspaceState"
 
@@ -19,12 +21,31 @@ open class NativeMarkdownDocument: NSDocument {
     set {
       super.fileURL = newValue
       Task { @MainActor [weak self] in
-        self?.loadedModel?.nativeFileLocationChanged()
+        guard let self, !self.isClosed else { return }
+        self.loadedModel?.nativeFileLocationChanged()
+        self.fileMonitor.didChange = { [weak self] url in
+          guard let self, !self.isClosed, self.fileURL == url,
+            NSFileCoordinator.filePresenters.contains(where: { ($0 as AnyObject) === self })
+          else { return }
+          self.presentedItemOperationQueue.addOperation { @Sendable [weak self] in
+            guard let self, self.fileURL == url,
+              NSFileCoordinator.filePresenters.contains(where: { ($0 as AnyObject) === self })
+            else { return }
+            self.presentedItemDidChange()
+          }
+        }
+        self.fileMonitor.observe(self.fileURL)
       }
     }
   }
 
   open override class var autosavesInPlace: Bool { true }
+
+  open override func close() {
+    isClosed = true
+    fileMonitor.stop()
+    super.close()
+  }
 
   public var markdownDocument: MarkdownDocument {
     if let loadedModel { return loadedModel }

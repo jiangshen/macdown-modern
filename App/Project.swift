@@ -1,11 +1,28 @@
 import ProjectDescription
 
+let nativeDocumentHost = Environment.snowfolioDocumentHost.getString(default: "swiftui") == "native"
+var markdownDocumentType: [String: Plist.Value] = [
+  "CFBundleTypeName": "Markdown", "CFBundleTypeRole": "Editor",
+  "CFBundleTypeIconFile": "MarkdownDocument", "LSHandlerRank": "Alternate",
+  "LSItemContentTypes": .array([.string("net.daringfireball.markdown")]),
+]
+var plainDocumentType: [String: Plist.Value] = [
+  "CFBundleTypeName": "Plain text", "CFBundleTypeRole": "Editor",
+  "LSHandlerRank": "Alternate", "LSItemContentTypes": .array([.string("public.plain-text")]),
+]
+if nativeDocumentHost {
+  markdownDocumentType["NSDocumentClass"] = "SnowfolioNativeDocument"
+  plainDocumentType["NSDocumentClass"] = "SnowfolioNativeDocument"
+}
+
 let project = Project(
   name: "Snowfolio",
   packages: [.local(path: "../Packages/SnowfolioCore")],
   settings: .settings(base: [
     "SWIFT_VERSION": "6.0",
     "SWIFT_STRICT_CONCURRENCY": "complete",
+    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": .string(
+      nativeDocumentHost ? "$(inherited) NATIVE_DOCUMENT_HOST" : "$(inherited)"),
     "ARCHS": "arm64",
     "ONLY_ACTIVE_ARCH": "YES",
     "MARKETING_VERSION": "0.2.0",
@@ -31,21 +48,7 @@ let project = Project(
         "NSHumanReadableCopyright":
           "Copyright © 2014–2020 Tzu-ping Chung and contributors. MIT License.",
         "CFBundleDocumentTypes": .array([
-          .dictionary([
-            "CFBundleTypeName": "Markdown",
-            "CFBundleTypeRole": "Editor",
-            "CFBundleTypeIconFile": "MarkdownDocument",
-            "LSHandlerRank": "Alternate",
-            "LSItemContentTypes": .array([
-              .string("net.daringfireball.markdown")
-            ]),
-          ]),
-          .dictionary([
-            "CFBundleTypeName": "Plain text",
-            "CFBundleTypeRole": "Editor",
-            "LSHandlerRank": "Alternate",
-            "LSItemContentTypes": .array([.string("public.plain-text")]),
-          ]),
+          .dictionary(markdownDocumentType), .dictionary(plainDocumentType),
         ]),
         "UTImportedTypeDeclarations": .array([
           .dictionary([

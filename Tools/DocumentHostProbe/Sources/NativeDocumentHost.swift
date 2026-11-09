@@ -125,7 +125,10 @@
 
     func applicationWillFinishLaunching(_ notification: Notification) {
       #if PRODUCTION_NATIVE_DOCUMENT_HOST_PROBE
-        NSDocumentController.shared.autosavingDelay = 2
+        let requested = ProcessInfo.processInfo.environment["SNOWFOLIO_PROBE_AUTOSAVE_DELAY"]
+          .flatMap(Double.init)
+        NSDocumentController.shared.autosavingDelay =
+          requested.flatMap { (2...30).contains($0) ? $0 : nil } ?? 2
       #else
         _ = NSDocumentController.shared
       #endif

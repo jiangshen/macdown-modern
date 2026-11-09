@@ -18,41 +18,43 @@ range and fractional persistence. Scroll-past-end retains the original boolean k
 and explicit false values. Geometry waits for composition. The30-minute native job
 envelope leaves artifact time; individual waits/assertions remain unchanged.
 
-Latest local save-checkpoint/workspace-boundary implementation passes **362 package
-tests / 77 suites**. The app (25 native methods) and native adapter control (six methods)
-build without compiler errors/warnings. Hosted `23016f1` core artifacts verify 357 tests
-/ 76 suites, 652 CommonMark examples and eight arm64 executables. The preceding
-`83ee161` full native run executes 24 methods with 21 passes and three lifecycle
-failures. Parser measurements remain in
+Latest native-host/file-event increment passes **368 package tests /79 suites**.
+After the final queued-event guard, all15 focused document/window/event tests pass
+with zero warnings. Both actual app host variants and the nine-method full workspace
+diagnostic build for arm64. Resource, icon, type-declaration and license gates pass;
+the existing AppIntents metadata-extraction warning remains. The canonical cache is
+restored to the default SwiftUI host. Parser comparison is complete: retain cmark-gfm
+because MD4C differs on59/184 optional dialect expectations. The measured Swift
+parent-tracking optimization is integrated; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 
-M2 remains incomplete. A standalone native NSDocument/TextKit2 control at1faedfd
-[run42479210488](https://github.com/jiangshen/snowfolio/actions/runs/42479210488)
-passes coordinated reload after autosave in both canonical temporary and ordinary
-user folders, plus saved-edit Undo/deactivation autosave; both uncoordinated reloads
-fail. Registration/notification/revert/second-read traces confirm the native path.
-Only the latest useful raw control result is retained, with compact older evidence.
+M2 remains incomplete. Native workspace `82e172e`
+[run42538664366](https://github.com/jiangshen/snowfolio/actions/runs/42538664366)
+executes8 methods:5pass/3fail. Both coordinated reloads, staged encoded foreground
+saves with both Undo/Redo steps, native window/toolbar/preview-accessibility updates
+and saved-edit Undo persistence pass. Both uncoordinated reloads still fail. The
+menu method fails at an expectation omitting required HTML source attributes; its
+Settings portion is not reached. The corrected fixture checks both clipboard types
+and attaches actual values. Preview painting remains blank in the inspected image;
+IOSurface errors do not establish a root cause.
 
-Production `83ee161` / run `42480609986` still fails both reloads with canonical paths.
-Both minimal SwiftUI variants (FileWrapper `42480604498`, direct URL `42482081493`)
-register a presenter but fail coordinated reloads in both canonical locations without
-a second read/apply. Each passes saved-edit Undo/deactivation. AppKit's matched
-coordinated success now justifies starting the planned Swift NSDocument fallback.
+The full default SwiftUI app at the same commit
+[run42538664521](https://github.com/jiangshen/snowfolio/actions/runs/42538664521)
+executes25 methods:22pass/3 lifecycle failures (active autosave/Undo and both clean
+external reloads). Earlier `74807c1` was cancelled at the confirmed30-minute job limit;
+its25-method completion is not inferred.
 
-The native adapter control (`23016f1`, run `42484042685`) passes both coordinated
-reloads with actual native revert/second-read traces, plus saved-edit Undo/deactivation.
-Both uncoordinated reloads and late typing after an autosave checkpoint fail. Its
-45-unit checkpoint writes, followed by 48-unit model content without another write,
-reproduce the missing final-save issue independently of SwiftUI.
-
-Apple documents that NSTextView typing coalescing must end when saving. Both host
-snapshot boundaries now checkpoint attached source editors, without rewriting text,
-clearing Undo or disturbing marked text. The combined checkpoint/2-second policy needs
-fresh runtime acceptance; the interval-only implementation remains rejected. Original
-encoding/reload/restoration gates remain unchanged. Shared workspace content now accepts
-scene-owned or native window-owned UI bindings, preserving current SceneStorage keys
-and appearance. Full native composition/menus/restoration remain pending. See
-[document-lifecycle.json](validation/document-lifecycle.json).
+The optional `SNOWFOLIO_DOCUMENT_HOST=native` now builds the actual Snowfolio app
+with native NSDocument registration, retained shared menus and document ownership.
+Its explicit `native-document-app` workflow runs all25 existing methods within a
+45-minute job envelope; behavioral waits/assertions stay unchanged. The default host
+is not switched. Directory events wake the native presenter for uncoordinated atomic
+replacement without a second writer or merge policy. The new ninth diagnostic rejects
+silent loss of unsaved local/external versions and requires a conflict surface on
+Save. Only that fixture delays autosaving to stage unsaved state; standard-periodic
+conflict acceptance remains open. Hosted runtime, actual native restoration, visible
+preview painting, real IME/VoiceOver, full parity and performance/release gates remain
+required. See [document-lifecycle.json](validation/document-lifecycle.json).
 
 The light/default-font source-selection screenshot at the preceding accepted checkpoint
 has a continuous highlight without a marker seam. User-desktop dark selection remains

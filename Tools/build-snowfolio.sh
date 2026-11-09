@@ -4,6 +4,9 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 artifact_root="${SNOWFOLIO_APP_BUILD_DIR:-$repo_root/Build/Snowfolio}"
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
+document_host="${SNOWFOLIO_DOCUMENT_HOST:-swiftui}"
+case "$document_host" in swiftui|native) ;; *) echo "Unknown document host: $document_host" >&2; exit 2 ;; esac
+export TUIST_SNOWFOLIO_DOCUMENT_HOST="$document_host"
 action=build-for-testing
 if [ "${1:-}" = "--test" ]; then action=test; shift; fi
 build_arguments=("$action")
@@ -51,6 +54,17 @@ else
     exit "$result"
 fi
 app="$artifact_root/DerivedData/Build/Products/Debug/Snowfolio.app"
+python3 - "$app/Contents/Info.plist" "$document_host" <<'VERIFY_HOST'
+import plistlib
+from pathlib import Path
+import sys
+info = plistlib.loads(Path(sys.argv[1]).read_bytes())
+types = info['CFBundleDocumentTypes']
+expected = 'SnowfolioNativeDocument' if sys.argv[2] == 'native' else None
+if len(types) != 2 or any(t.get('NSDocumentClass') != expected for t in types):
+    raise SystemExit('Document type declarations do not match selected host')
+print('Verified document host:', sys.argv[2])
+VERIFY_HOST
 if [ "$(xcrun lipo -archs "$app/Contents/MacOS/Snowfolio")" != arm64 ]; then
     echo "The app executable must be arm64 only." >&2
     exit 1

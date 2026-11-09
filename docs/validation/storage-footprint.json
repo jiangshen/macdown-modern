@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-09T00:08:12.633637+00:00",
-    "sourceCommit": "After74807c1; native menu integration",
+    "dateUTC": "2026-11-09T01:08:00.730606+00:00",
+    "sourceCommit": "After82e172e; optional native actual app and directory events",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 837652480
+        "allocatedBytes": 845430784
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -53,22 +53,22 @@
       },
       "coreCache": {
         "path": "/private/tmp/snowfolio-native-theme-validation/build",
-        "allocatedBytes": 773357568
+        "allocatedBytes": 774684672
       },
       "currentRawResult": {
         "path": "/private/tmp/snowfolio-current-native-result",
-        "allocatedBytes": 140144640
+        "allocatedBytes": 90808320
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 20963328
+        "allocatedBytes": 21544960
       }
     },
-    "totalAllocatedBytes": 2259918848,
-    "obsoleteRawDownloadRemoved": "/private/tmp/snowfolio-native-checkpoint-incoming",
+    "totalAllocatedBytes": 2220269568,
+    "obsoleteRawDownloadRemoved": "82incoming rotated to current raw; obsolete748removed",
     "exportedSystemDiagnosticsRemoved": true,
     "runningDiagnosticPID": 85540,
-    "retention": "One748 full-workspace raw result and compact decision evidence; reused app/core caches; diagnostic cache preserved while85540runs.",
+    "retention": "One82workspace raw; compact older findings. Reused app/core caches; default host restored; diagnostic cache preserved while85540runs.",
     "userDocumentsChanged": false,
     "trashEmptied": false
   }

@@ -475,6 +475,20 @@
       "evidence": "markdown-engine-comparison.json",
       "trashEmptied": false,
       "userDocumentsChanged": false
+    },
+    {
+      "dateUTC": "2026-11-09T01:05:26.109581+00:00",
+      "removedRawBundle": "74807c1",
+      "removedAllocatedBytes": 140144640,
+      "retainedRawBundle": "82e172e",
+      "currentRawPath": "/private/tmp/snowfolio-current-native-result",
+      "compactOlderEvidence": "/private/tmp/snowfolio-validation-history/full-workspace-74807c1",
+      "newCompactEvidence": "/private/tmp/snowfolio-validation-history/full-workspace-82e172e",
+      "ownershipAndOpenFilesChecked": true,
+      "runningDiagnosticPIDPreserved": 85540,
+      "trashEmptied": false,
+      "method": "Remove obsolete generated748raw after compact evidence/open-file/ownership checks; rotate82incoming to canonical latest.",
+      "sourceOrUserDocumentsChanged": false
     }
   ]
 }

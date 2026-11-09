@@ -693,7 +693,7 @@
   "nativeCommandIntegration": {
     "dateUTC": "2026-11-09T00:08:12.633637+00:00",
     "baseCommit": "74807c1",
-    "status": "Local unit/compile checks pass; eight-method native workspace runtime pending",
+    "status": "82e172e hosted8:5pass/3fail. Final increment local compile/unit checks pass; hosted9and native actual app25pending.",
     "implementation": [
       "Native application menu controller uses public native document/responder actions for New/Open/Save/SaveAs/Duplicate/Versions/Undo/Find/spelling/tabs and window management",
       "Shared SwiftUI format/export/zoom/layout menu views serve both hosts via NSHostingMenu, without duplicating editing or export logic",
@@ -716,12 +716,109 @@
     "runtimeFixture": "Native Format Bold/Undo, View ZoomIn/ActualSize, File Print validation, Export CopyHTML exact content, Settings open/close/reopen, and screenshot. Does not yet establish complete multiwindow focus or native restoration acceptance.",
     "inputDefaults": "An unexpected trailing s appears on first staged Undo. Legacy MPDocument.m defaults automaticSpellingCorrectionEnabled toNO. Explicitly disable automatic spelling correction, automatic completion and inline prediction for authored Markdown; retain continuous spelling marks, manual spelling/grammar and opt-in native menu actions. Runtime cause/fix acceptance pending.",
     "remaining": [
-      "Eight-method native runtime execution",
-      "Staged encoded Undo/Redo acceptance",
-      "Uncoordinated external reloads",
-      "Visible preview painting and root cause of IOSurface failures",
-      "Actual native application entrypoint/type declarations, window/tab/session restoration, conflicts/Versions, complete menu and export parity",
-      "Real IME/VoiceOver and full remaining modernization/performance/release gates"
-    ]
+      "Hosted9 runtime: corrected CopyHTML/Settings, unsaved conflict, uncoordinated reloads",
+      "Visible preview painting",
+      "Actual native application25-method parity, window/tab/session restoration",
+      "Standard-periodic dirty conflicts, Versions, real IME/VoiceOver, remaining parity/performance/release"
+    ],
+    "hosted": {
+      "commit": "82e172e5de10fb3be7e812aa4e9c0c2f1ed9156d",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42538664366",
+      "executed": 8,
+      "passed": 5,
+      "failed": 3,
+      "skipped": 0,
+      "seconds": 267.507,
+      "passes": [
+        "Both coordinated reloads after final autosave",
+        "Staged UTF16LE/BOM/CRLF/Unicode autosaves, both Undo and both Redo steps with exact disk bytes while foreground",
+        "Preview accessibility content update, toolbar, native Undo and complete onscreen window",
+        "Saved-edit Undo/deactivation persistence"
+      ],
+      "failures": [
+        "Both original uncoordinated external reload controls",
+        "Menu method stops at Copy HTML expectation; Settings portion not reached"
+      ],
+      "copyHTMLCorrection": "Old expected string omitted required data-sourcepos attributes. Actual clipboard not attached; no success claim. New fixture clears clipboard, attaches both observed types and requires exact source-position HTML in string and HTML types.",
+      "visual": "Inspected1024x640 window: preview pane blank despite accessible content. Repeated WebContent IOSurface creation/open failures; no painting acceptance or confirmed environmental root cause.",
+      "compact": "/private/tmp/snowfolio-validation-history/full-workspace-82e172e"
+    }
+  },
+  "latestDefaultFullNative": {
+    "commit": "82e172e5de10fb3be7e812aa4e9c0c2f1ed9156d",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42538664521",
+    "executed": 25,
+    "passed": 22,
+    "failed": 3,
+    "skipped": 0,
+    "seconds": 1156.556,
+    "failures": [
+      "Active autosave/saved-edit Undo persistence",
+      "Clean uncoordinated external reload",
+      "Clean coordinated external reload"
+    ],
+    "log": "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-82e-full-app-failed.log",
+    "core": "Hosted core job success; no raw default result download this cycle."
+  },
+  "precedingDefaultFullTimeout": {
+    "commit": "74807c13649c4fa700c23ab9af23678565966337",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42537213212",
+    "conclusion": "cancelled",
+    "reason": "Check-run annotation confirms job exceeded30-minute maximum. No25-method completion inference.",
+    "core": "success",
+    "checkRun": 128904067174
+  },
+  "nativeApplicationAndFileEvents": {
+    "dateUTC": "2026-11-09T01:08:00.730606+00:00",
+    "baseCommit": "82e172e",
+    "status": "Final-source local focused tests and compile checks pass; hosted9diagnostic/25actual native app pending.",
+    "application": [
+      "SNOWFOLIO_DOCUMENT_HOST=native selects conditional retained AppKit delegate and NSDocumentClass=SnowfolioNativeDocument for both Markdown/plain text",
+      "Same bundle identity, icons, resources, UTIs and license checks; SwiftUI remains default",
+      "Retains shared menus; NSDocumentController owns documents/windows/save/quit with2-second autosavingDelay. Secure restoration support declared, actual restoration not accepted",
+      "native-document-app workflow runs all25existing UI methods;45-minute job envelope only for this scope after confirmed30-minute cancellation; unchanged behavioral waits/assertions"
+    ],
+    "fileEvents": [
+      "Directory DispatchSource detects atomic replacement with device/inode/size/mtime signature,50ms coalescing and sibling-write filtering",
+      "Parent open/stat off-main; cancellation/generation/weak ownership; descriptors close on stale setup/cancel",
+      "Events enqueue native presentedItemDidChange on presentedItemOperationQueue; URL/registered-presenter guards before enqueue and inside queued operation",
+      "No source reads, custom writer, manual revert, merge or dirty-count policy; native NSDocument retains reload/conflict/Versions ownership",
+      "File URL changes rebind; close stops monitor"
+    ],
+    "dispatchCorrection": "Initial utility callback inherited MainActor and trapped. Explicit @Sendable Dispatch event/cancel/presenter callbacks plus explicit MainActor hops fix isolation. Fresh focused/full suites pass; no unsafe isolation suppression.",
+    "newTests": [
+      "Atomic replacement and sibling filtering",
+      "Rebinding detaches old directory and stop cancels callbacks",
+      "Ninth workspace diagnostic rejects silent loss of unsaved local/external versions and requires conflict surface on manual Save"
+    ],
+    "conflictScope": "Only new fixture requests bounded30-second probe autosave delay to stage unsaved state. Existing8methods/actual native app retain2seconds. Standard-periodic dirty-conflict acceptance remains open.",
+    "local": {
+      "fullPackageTests": 368,
+      "suites": 79,
+      "fullBeforeFinalQueuedGuard": true,
+      "fullReport": "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-full-report.json",
+      "focusedAfterFinalQueuedGuard": "15tests/3suites pass;0errors/0warnings",
+      "focusedReport": "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-focused-report.json",
+      "nativeApp": "Final arm64 build-for-testing, host mapping/resource/license gates pass; existing AppIntents extraction warning",
+      "defaultApp": "Final arm64 build-for-testing, default host mapping/resource/license gates pass; existing AppIntents extraction warning",
+      "diagnostic": "Final nine-method arm64 build-for-testing;0errors/0warnings",
+      "probeReport": "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-probe-build-report.json",
+      "formatting": "Strict changed-Swift lint, shell syntax, workflow YAML and git diff check pass"
+    },
+    "acceptanceLimits": "No native actual app local launch/install/default viewer change. Running diagnostic85540/cache preserved. Exact-app desktop inspection timed out without binding/snapshot, no lock inference or physical visual acceptance.",
+    "remaining": [
+      "Hosted9and native25runtime",
+      "Preview painting",
+      "Native restoration, standard-periodic dirty conflicts and Versions",
+      "IME/VoiceOver, complete parity/performance/release"
+    ],
+    "evidenceHashes": {
+      "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-full-report.json": "8171c2e25194eca0d5484b3d05415a061a3b9de89f50bf287ddce2c7789d87a2",
+      "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-cleanup.json": "e3ae8946fe5394b1fb268f619c81ad4b15e6a0d9f91f8a18a6bc6c8db2e4fdbd",
+      "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-focused-report.json": "6c3d8e744ed35e33edaf10a37ae35dea43bf49aa570729483bf8bcdb3b301fe5",
+      "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-probe-build-report.json": "cc354e0321a99db16fb98a56a87b1f512a374c2d6a09d35558ade3dcdf179cdd",
+      "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-82e-full-app-failed.log": "de8cc25038a420b0999bfd151a7947628764a19f2380c888f603ce225fee5051",
+      "/private/tmp/snowfolio-validation-history/full-workspace-82e172e/summary.json": "6993d338c31d77c56ba53b6424ca059cc4d8a2908a4bb14f60ad5260a4e9004a"
+    }
   }
 }
