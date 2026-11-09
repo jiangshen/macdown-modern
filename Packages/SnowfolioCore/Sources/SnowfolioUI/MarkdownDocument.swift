@@ -17,7 +17,12 @@ public final class MarkdownDocument: SwiftUI.Document {
   nonisolated public static let markdownType = UTType(
     importedAs: "net.daringfireball.markdown",
     conformingTo: .plainText)
-  nonisolated public static let readableContentTypes = [markdownType, UTType.plainText]
+  // The original app also declared a public.data viewer. The byte codec still
+  // rejects unsupported encodings rather than repairing arbitrary binary input.
+  nonisolated public static let readableContentTypes = [
+    markdownType, UTType.plainText, UTType.data,
+  ]
+  nonisolated public static let writableContentTypes = [markdownType, UTType.plainText]
 
   public private(set) var text: String
   public private(set) var revision: UInt64 = 0

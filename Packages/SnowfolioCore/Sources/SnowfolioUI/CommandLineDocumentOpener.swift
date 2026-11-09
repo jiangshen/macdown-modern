@@ -40,20 +40,8 @@ enum CommandLineDocumentOpener {
         #if DEBUG
           DocumentLifecycleTrace.note("command line file begin index=\(index)")
         #endif
-        let created = try await prepareFile(file)
-        if created, controller.document(for: file) == nil {
-          // A newly created extensionless file is inferred as public.data. Use
-          // Markdown explicitly, with the same native document ownership/window
-          // steps as NSDocumentController's ordinary open implementation.
-          let document = try controller.makeDocument(
-            withContentsOf: file, ofType: MarkdownDocument.markdownType.identifier)
-          controller.addDocument(document)
-          document.makeWindowControllers()
-          document.showWindows()
-          controller.noteNewRecentDocument(document)
-        } else {
-          _ = try await controller.openDocument(withContentsOf: file, display: true)
-        }
+        try await prepareFile(file)
+        _ = try await controller.openDocument(withContentsOf: file, display: true)
         #if DEBUG
           DocumentLifecycleTrace.note("command line file opened index=\(index)")
         #endif
@@ -83,20 +71,18 @@ enum CommandLineDocumentOpener {
   }
 
   /// Preserve the CLI's missing-file behavior without the old unchecked create
-  /// that could overwrite an existing file. Return true only for this exclusive
-  /// creation, so existing files retain normal type inference and reuse.
-  @concurrent nonisolated private static func prepareFile(_ file: URL) async throws -> Bool {
+  /// that could overwrite an existing file. All opening remains owned by the
+  /// native controller, including generic text through the declared data viewer.
+  @concurrent nonisolated private static func prepareFile(_ file: URL) async throws {
     try Task.checkCancellation()
-    return try file.withUnsafeFileSystemRepresentation { path in
+    try file.withUnsafeFileSystemRepresentation { path in
       guard let path else { throw CommandLineInvocationError.invalidPath }
       let descriptor = Darwin.open(path, O_WRONLY | O_CREAT | O_EXCL | O_CLOEXEC, mode_t(0o666))
       if descriptor >= 0 {
         _ = Darwin.close(descriptor)
-        return true
       } else {
         let failure = errno
         if failure != EEXIST { throw POSIXError(POSIXErrorCode(rawValue: failure) ?? .EIO) }
-        return false
       }
     }
   }

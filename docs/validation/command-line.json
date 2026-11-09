@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T12:42:02.230725+00:00",
+  "dateUTC": "2026-11-09T15:03:52.050024+00:00",
   "status": "Acknowledged local transport works in the packaged native app. Complete417/87core+652corpus passes. Save/cold packaged acceptance remains pending after test-window/readiness corrections; no production opener behavior changed.",
   "sources": [
     "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInvocation.swift",
@@ -182,7 +182,8 @@
       "harnessFinding": "XCUI window.title is Untitled2; window.label is empty. Test incorrectly used label. Installed public XCUIElementAttributes.h exposes title separately. Test now captures title before opening the native menu, requires nonempty title, uses it for the menu item and captures failure before asserting.",
       "compact": "/private/tmp/snowfolio-validation-history/command-line-native-ebcad08",
       "limits": "Save/cold remains unaccepted; no app/menu behavior change for this test-only correction."
-    }
+    },
+    "supersededBy": "genericViewerRestoration; narrow construction workaround replaced by restored original generic viewer"
   },
   "resultExtractionImprovement": {
     "archiveBytes": 178138874,
@@ -201,5 +202,27 @@
     "compilerWarnings": 0,
     "compilerErrors": 0,
     "compact": "/private/tmp/snowfolio-validation-history/core-ebcad08"
+  },
+  "actualValueWindowFollowup": {
+    "source": "1f5749725d0fce483f4aa3250174e0a6e9cfdf84",
+    "run": 42633803170,
+    "job": 129216573067,
+    "result": "Fails after33.664s at active source equality. Native menu selects --help because the scoped compound exists matcher returned the wrong containing window. This is a verification bug; the new equality assertion exposed it. Save/cold remains unaccepted.",
+    "correction": "Enumerate source editors and read their actual String values. Find containing window by actual editor value, cache its public title, select native Window-menu item, then assert active editor value before Save. Original deadlines, source/byte/reuse/Save/cold assertions retained.",
+    "compact": "/private/tmp/snowfolio-validation-history/command-line-native-1f57497"
+  },
+  "genericViewerRestoration": {
+    "dateUTC": "2026-11-09T15:03:52.050024+00:00",
+    "status": "Implemented; local checks pass; actual-app acceptance pending.",
+    "original": "MacDown/MacDown-Info.plist third CFBundleDocumentTypes entry: Viewer/public.data/MPDocument.",
+    "behavior": "Restore broad generic-file viewer at Alternate rank in both hosts; Markdown/plain-text remain editors. Byte codec continues to reject unsupported encodings. Native controller owns ordinary opening for all paths, including existing/new extensionless text.",
+    "supersedes": "The ebcad08 new-file-only explicit Markdown-construction workaround was narrower than original behavior and is removed. No duplicate custom document ownership remains.",
+    "tests": "New DocumentTypeTests opens UTF16LE/BOM/CRLF README and UTF8/BOM/CRLF unfamiliar extension, checks actual source values and unchanged bytes, and requires a normal error alert/no document for invalid byte encoding. CLI cold phase also reopens literal --help.",
+    "local": "Shared-cache SnowfolioUI build has zero diagnostics; both UI test files typecheck in Swift6 and strict formatting/diff/shell syntax checks pass. Both generated schemas verify Editor/Editor/Viewer, Alternate ranks, host classes; canonical regular project restored.",
+    "expectedAppMethods": {
+      "regular": 32,
+      "native": 41
+    },
+    "limits": "No arbitrary-binary detection is claimed. No host-default, current-app installation or default-handler change."
   }
 }

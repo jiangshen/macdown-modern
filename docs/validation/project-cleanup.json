@@ -1323,5 +1323,17 @@
       42199,
       85540
     ]
+  },
+  "completedPluginInvocationProbeCleanup": {
+    "dateUTC": "2026-11-09T15:03:52.050024+00:00",
+    "path": "/private/tmp/snowfolio-plugin-probe",
+    "allocatedBytesRemoved": 241664,
+    "ownershipAndOpenFilesChecked": true,
+    "compact": "/private/tmp/snowfolio-validation-history/plugin-foundation-probe/invocation",
+    "reason": "Finished first-party standalone invocation experiment. Keep compact source/results, remove regenerable fixture bundle/dylib/executable. No user documents, actual plugins or running apps touched.",
+    "protectedApps": [
+      42199,
+      85540
+    ]
   }
 }

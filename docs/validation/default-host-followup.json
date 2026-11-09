@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T04:49:37.336209+00:00",
+  "dateUTC": "2026-11-09T15:03:52.050024+00:00",
   "status": "Both preceding default SwiftUI full runs fail; native host remains opt-in while its remaining acceptance gates are open.",
   "runs": [
     {
@@ -191,5 +191,15 @@
     "result": "CLI extensionless-file type failure plus the three established lifecycle failures. After runner restart,30other methods execute27pass/3fail in1261.178s. Terminal Settings passes in the complete run. This is31methods total, not30.",
     "compact": "/private/tmp/snowfolio-validation-history/default-d7f410e",
     "correction": "Explicit Markdown type only for newly created CLI paths; runtime followup pending."
+  },
+  "fullEbcad08": {
+    "source": "ebcad08a09698c22e46232aaeb35088bfbd8cd3b",
+    "run": 42632090081,
+    "job": 129210672281,
+    "status": "completed/failure",
+    "result": "CLI times out obtaining matching snapshots at old compound source query, plus the same three established SwiftUI lifecycle failures. After runner restart,30other methods execute27pass/3fail in1307.178s. Entire invocation31methods.",
+    "limits": "Predates public-title, actual-value matcher and generic-viewer changes. No new source failure attributed to those corrections.",
+    "evidence": "/private/tmp/snowfolio-default-ebcad08-failed.log",
+    "core": "427/89,652CommonMark,8arm64,zero diagnostics accepted."
   }
 }

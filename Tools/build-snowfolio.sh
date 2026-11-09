@@ -61,8 +61,17 @@ import sys
 info = plistlib.loads(Path(sys.argv[1]).read_bytes())
 types = info['CFBundleDocumentTypes']
 expected = 'SnowfolioNativeDocument' if sys.argv[2] == 'native' else None
-if len(types) != 2 or any(t.get('NSDocumentClass') != expected for t in types):
+if len(types) != 3 or any(t.get('NSDocumentClass') != expected for t in types):
     raise SystemExit('Document type declarations do not match selected host')
+expected_types = [
+    ('Editor', ['net.daringfireball.markdown']),
+    ('Editor', ['public.plain-text']),
+    ('Viewer', ['public.data']),
+]
+if [(t.get('CFBundleTypeRole'), t.get('LSItemContentTypes')) for t in types] != expected_types:
+    raise SystemExit('Markdown/plain-text editors and generic-file viewer must remain declared')
+if any(t.get('LSHandlerRank') != 'Alternate' for t in types):
+    raise SystemExit('Type registration must not claim default file handlers')
 if info.get('NSAppleScriptEnabled') != (sys.argv[2] == 'native'):
     raise SystemExit('Scripting enablement does not match selected host')
 if info.get('OSAScriptingDefinition') != 'Snowfolio.sdef':

@@ -40,6 +40,8 @@ on:
           - native-command-line
           - terminal-settings
           - native-terminal-settings
+          - generic-documents
+          - native-generic-documents
           - native-document-scripting
           - native-document-recovery
           - document-tab-creation
@@ -140,6 +142,12 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = terminal-settings ]; then
             bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/TerminalSettingsTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-generic-documents ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentTypeTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = generic-documents ]; then
+            bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentTypeTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-writing-statistics ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testWritingStatisticsFollowManualRenderAndPreserveUndo

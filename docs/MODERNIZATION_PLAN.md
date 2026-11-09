@@ -29,12 +29,12 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `8b1b28f` has the old CLI
-background-window test failure plus the same three lifecycle failures: active
-autosave/Undo and both external reload cases. After runner restart, its other
-29 methods report 26 passes /3 failures in1492.530 seconds. It predates the CLI
-Window-menu and readiness-order corrections. The current `d7f410e` full regular
-run remains active; no newer complete native acceptance is claimed. See
+The latest complete regular SwiftUI-host run at `ebcad08` has the old CLI
+compound-query timeout plus the same three lifecycle failures: active autosave/Undo
+and both external reload cases. After runner restart, its other30 methods report
+27passes/3failures in1307.178seconds; the entire invocation contains31methods.
+It predates public-title/actual-value window matching and generic-viewer restoration.
+No newer complete native acceptance is claimed. See
 [default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
@@ -3727,3 +3727,32 @@ The same source passes all427core tests/89suites, zero compilerwarnings/errors,
 652CommonMark examples and eightarm64 test executables. Its automatic regular
 full run42632090081 is still executing. No fresh full native acceptance or physical
 composition/VoiceOver claim is made.
+
+
+## Generic text opening parity and verification correction — 2026-11-09
+
+The original plist declares a third public.data Viewer type. Restore that generic
+fallback at Alternate rank in both modern hosts, so existing extensionless text and
+unfamiliar text extensions use ordinary document-controller opening. This supersedes
+the narrow new-CLI-file typed-construction workaround; exclusive creation and exact
+source/encoding preservation remain. Readable data does not broaden writable types;
+unsupported byte encoding still reports an error. New actual-app coverage checks
+UTF16LE/BOM/CRLF README, UTF8/BOM/CRLF custom extension, unchanged bytes and a normal
+invalid-encoding alert without a document window. Expected full counts:32regular,
+41native. Local build/typecheck/schema/formatting checks pass; runtime is pending.
+
+The1f57497 native CLI flow fails at the new active-source equality assertion after
+33.664seconds. Its old compound existence matcher chose the wrong containing window
+and therefore the --help menu item. The test now enumerates editors and reads their
+actual values for source readiness and window ownership, then selects the public
+window title and rechecks active content before Save. Earlier source-existence
+assertions alone do not prove exact text. Save/cold acceptance stays open, with all
+original deadlines and byte assertions retained.
+
+The local first-party plug-in fixture now verifies shared currentDocument source
+and fileURL access, name, explicit initialization, BOOL run results and rejection
+of a void-return run signature. Exact Chinese/emoji/combining-mark/CRLF UTF8 passes;
+zero Swift6 diagnostics. This is a standalone probe, not production-loader caching
+or actual-host compatibility. Its compact source/results remain; generated binaries
+were removed after owner/open-file checks. No third-party code was executed and no
+app entitlement changed. See launch-integrations-characterization.json.

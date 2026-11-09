@@ -98,15 +98,12 @@ final class CommandLineTests: XCTestCase {
       FileManager.default.fileExists(
         atPath: directory.appendingPathComponent("never-created.md").path))
 
-    func source(_ text: String) -> XCUIElement {
-      app.textViews.matching(
-        NSPredicate(format: "identifier == 'markdownSourceEditor' AND value == %@", text)
-      ).firstMatch
-    }
     func waitForSource(_ text: String) async {
-      let view = source(text)
       let ready = XCTNSPredicateExpectation(
-        predicate: NSPredicate { _, _ in view.exists }, object: nil)
+        predicate: NSPredicate { _, _ in
+          app.textViews.matching(identifier: "markdownSourceEditor")
+            .allElementsBoundByIndex.contains { $0.value as? String == text }
+        }, object: nil)
       let result = await XCTWaiter.fulfillment(of: [ready], timeout: 8)
       if result != .completed {
         let image = XCTAttachment(screenshot: app.screenshot())
@@ -151,9 +148,8 @@ final class CommandLineTests: XCTestCase {
     // coordinates reaches the front document; select its native Window menu item.
     let pipedWindow = try XCTUnwrap(
       app.windows.allElementsBoundByIndex.first { window in
-        window.textViews.matching(
-          NSPredicate(format: "identifier == 'markdownSourceEditor' AND value == %@", pipedText)
-        ).firstMatch.exists
+        let editor = window.textViews["markdownSourceEditor"].firstMatch
+        return editor.exists && editor.value as? String == pipedText
       })
     let pipedTitle = pipedWindow.title
     XCTAssertFalse(pipedTitle.isEmpty, app.debugDescription)
@@ -169,10 +165,9 @@ final class CommandLineTests: XCTestCase {
     }
     XCTAssertTrue(itemAppeared, app.debugDescription)
     pipedItem.click()
-    XCTAssertEqual(
-      app.windows.firstMatch.textViews["markdownSourceEditor"].firstMatch.value as? String,
-      pipedText, app.debugDescription)
-    source(pipedText).click()
+    let activeEditor = app.windows.firstMatch.textViews["markdownSourceEditor"].firstMatch
+    XCTAssertEqual(activeEditor.value as? String, pipedText, app.debugDescription)
+    activeEditor.click()
     app.typeKey("s", modifierFlags: .command)
     XCTAssertTrue(app.buttons["OKButton"].firstMatch.waitForExistence(timeout: 5))
     app.typeKey("g", modifierFlags: [.command, .shift])
@@ -206,11 +201,15 @@ final class CommandLineTests: XCTestCase {
     try Data(coldText.utf8).write(to: cold)
     let coldPipe = "# Cold pipe\nArrived from stdin.\n"
     let launched = try await Self.runTool(
-      tool, arguments: [cold.path], directory: directory, input: Data(coldPipe.utf8))
+      tool, arguments: [cold.path, directory.appendingPathComponent("--help").path],
+      directory: directory, input: Data(coldPipe.utf8))
     XCTAssertEqual(launched.status, 0, launched.error)
     XCTAssertTrue(app.wait(for: .runningForeground, timeout: 8))
     await waitForSource(coldText)
     await waitForSource(coldPipe)
+    XCTAssertTrue(
+      app.windows["--help"].firstMatch.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("--help")), Data())
     XCTAssertEqual(try Data(contentsOf: cold), Data(coldText.utf8))
     let coldImage = XCTAttachment(screenshot: app.screenshot())
     coldImage.name = "command-line-cold-launch-file-and-stdin"

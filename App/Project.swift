@@ -31,9 +31,17 @@ var plainDocumentType: [String: Plist.Value] = [
   "CFBundleTypeName": "Plain text", "CFBundleTypeRole": "Editor",
   "LSHandlerRank": "Alternate", "LSItemContentTypes": .array([.string("public.plain-text")]),
 ]
+// Preserve the original explicit generic-file viewer, including extensionless
+// text. Alternate rank keeps this broad fallback below normal file handlers.
+var otherDocumentType: [String: Plist.Value] = [
+  "CFBundleTypeName": "Other text documents", "CFBundleTypeRole": "Viewer",
+  "LSHandlerRank": "Alternate", "LSItemContentTypes": .array([.string("public.data")]),
+  "LSTypeIsPackage": .boolean(false),
+]
 if nativeDocumentHost {
   markdownDocumentType["NSDocumentClass"] = "SnowfolioNativeDocument"
   plainDocumentType["NSDocumentClass"] = "SnowfolioNativeDocument"
+  otherDocumentType["NSDocumentClass"] = "SnowfolioNativeDocument"
 }
 
 let project = Project(
@@ -81,6 +89,7 @@ let project = Project(
           "Copyright © 2014–2020 Tzu-ping Chung and contributors. MIT License.",
         "CFBundleDocumentTypes": .array([
           .dictionary(markdownDocumentType), .dictionary(plainDocumentType),
+          .dictionary(otherDocumentType),
         ]),
         "UTImportedTypeDeclarations": .array([
           .dictionary([
