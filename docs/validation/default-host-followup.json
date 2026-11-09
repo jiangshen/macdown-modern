@@ -99,5 +99,13 @@
       42564524548
     ],
     "reason": "Allproductionchangesabsent; onlynative-conditionalUItests/docs/recoveryscopechanged since acceptedeb46674default27/24/3. Preservecompletedcorejobssuccess, keepnewestdefault42565180234, fullnative42564902278, focusedrecovery42565202255. No restarts/canceledactualacceptancegate."
+  },
+  "currentDuplicateRunHousekeeping": {
+    "dateUTC": "2026-11-09T07:23:21.815528+00:00",
+    "cancelledDuplicateDefaultRun": 42578097051,
+    "preservedCompletedCoreJob": 129030273844,
+    "keptEarlierDefaultRun": 42576275391,
+    "keptFullActualNative34": 42578704447,
+    "reason": "New production launch call is native-host conditional; default build passes locally. Earlier full default run is still executing. Fresh complete core374/80 and652CommonMark already captured. Avoid repeating the same known default lifecycle failures in parallel."
   }
 }

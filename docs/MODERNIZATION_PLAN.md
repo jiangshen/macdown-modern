@@ -3406,3 +3406,21 @@ specifiers and save options. Four focused tests / six cases pass in 0.306s with
 zero warnings/errors; native34 compiles. Exact real-event retry remains required.
 No default host switch, installation, release, local automation grant or legacy
 retirement. Full modernization remains active.
+
+
+## Initial-data scripting accepted — 2026-11-09
+
+Exact `292c17f` focused real-event suite passes 3/3, zero failures/skips, 50.763s.
+The new initial-data/reference/error/close-saving-in method passes in 14.155s:
+Make returns the created document with exact Unicode/CRLF source; document list,
+front ordering, window document/id, read-only HTML error -10006, nonexistent
+document error -1728, immutable source/cache and exact UTF8 Close saving in all
+pass. Existing format-save and source/Undo/autosave/manual-cache methods repass.
+Initial-data and edited-source screenshots inspected; hosted reading pane still
+blank. One internal Utility QoS warning remains unattributed.
+
+Fresh complete core: 374 tests / 80 suites, zero compiler warnings/errors, all
+652 CommonMark examples and eight arm64 test executables. Full native34 run
+42578704447 is now running on this exact revision. Preserve accepted native33
+raw evidence until replaced by a complete useful newer result. No default host
+switch or physical preview/IME/VoiceOver/performance acceptance.

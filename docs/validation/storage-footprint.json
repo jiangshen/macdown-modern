@@ -355,5 +355,76 @@
     "ownershipAndOpenFilesChecked": true,
     "sourceAndRunningProbeAndLatestFullNative33RawPreserved": true,
     "trashEmptied": false
+  },
+  "latestCoercionCycleCleanup": {
+    "dateUTC": "2026-11-09T07:15:42.631352+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-scripting-current-incoming",
+        "allocatedBytesRemoved": 72060928
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-03B96BBB-2CDB-46E7-8E72-EC9D7F0A76E1",
+        "allocatedBytesRemoved": 45056
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-5D02DE1F-F668-4344-90DE-B6B146182602",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-7F44A631-858E-49A7-BED4-238A5E50A736",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-B275DDD9-32EC-4D98-9A91-8DC0AB2F1BFA",
+        "allocatedBytesRemoved": 40960
+      }
+    ],
+    "keptCompactFindings": "/private/tmp/snowfolio-validation-history/native-coercion-local",
+    "ownershipAndOpenFilesChecked": true,
+    "runningProbeAndCurrentFullRawPreserved": true,
+    "trashEmptied": false
+  },
+  "retiredSuccessfulDiagnosticCopies": {
+    "dateUTC": "2026-11-09T07:16:50.766525+00:00",
+    "removedSuccessfulProjectDiagnosticDirectories": 176,
+    "allocatedBytesRemoved": 43278336,
+    "policy": "Only successful Snowfolio runs older than 24 hours, confirmed by invocation working directory and current ownership. Open files checked. Compact invocation/outcome/count index retained. Failed and unrelated runs preserved.",
+    "compact": "/private/tmp/snowfolio-validation-history/retired-successful-diagnostics.json"
+  },
+  "acceptedScripting3Cleanup": {
+    "dateUTC": "2026-11-09T07:22:59.791727+00:00",
+    "allocatedBytesRemoved": 124674048,
+    "removed": "/private/tmp/snowfolio-native-scripting-current-incoming",
+    "kept": "/private/tmp/snowfolio-validation-history/native-scripting-292c17f",
+    "reason": "Accepted 3/3 scripting results, expected error records and relevant screenshots compacted and inspected. Full native33 raw retained until native34 replacement.",
+    "ownershipAndOpenFilesChecked": true
+  },
+  "currentMeasuredRoots": {
+    "dateUTC": "2026-11-09T07:22:59.791727+00:00",
+    "roots": [
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+        "allocatedBytes": 842387456
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
+        "allocatedBytes": 487702528
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-theme-validation",
+        "allocatedBytes": 777314304
+      },
+      {
+        "path": "/private/tmp/snowfolio-validation-history",
+        "allocatedBytes": 65314816
+      },
+      {
+        "path": "/private/tmp/snowfolio-current-native-result",
+        "allocatedBytes": 188977152
+      }
+    ],
+    "totalAllocatedBytes": 2361696256,
+    "reason": "One canonical default app cache, one core cache, protected running probe cache, compact evidence and latest useful full native33 raw result."
   }
 }

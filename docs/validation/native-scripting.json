@@ -319,7 +319,52 @@
     "reference": "https://developer.apple.com/documentation/foundation/nscreatecommand",
     "implementation": "Register only NSString-to-NativeMarkdownDocument coercion at native app launch. Native init(type:) and existing markdown setter initialize source. Cocoa retains insertion/window/specifier/save ownership. No custom create command, writer, extra rendering, wait or permission change.",
     "local": "4 tests / 6 cases pass, 0.306s, zero warnings/errors. Native34 build/resource/type/dictionary/license gates pass.",
-    "runtime": "Pending exact three-method hosted retry.",
-    "compact": "/private/tmp/snowfolio-validation-history/native-scripting-600fc51"
+    "runtime": {
+      "commit": "292c17f15ba57d5bed90ace1489b94b9659908ed",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42578096362",
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 50.763,
+      "methodSeconds": {
+        "creationAndFormats": 18.087,
+        "initialDataReferencesErrorsCloseSavingIn": 14.155,
+        "sourceUndoAutosaveHTML": 18.521
+      },
+      "visual": "Initial-data and edited-source screenshots inspected; exact Unicode source and native edited state visible. Expected -10006/-1728 error attachments inspected. Hosted reading pane remains blank and is not physical preview acceptance.",
+      "runtimeWarnings": {
+        "UtilityQoS": 1,
+        "attribution": "Internal warning, no established production attribution or M6 acceptance."
+      },
+      "compact": "/private/tmp/snowfolio-validation-history/native-scripting-292c17f"
+    },
+    "compact": "/private/tmp/snowfolio-validation-history/native-scripting-600fc51",
+    "freshCore": {
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42578097051",
+      "job": 129030273844,
+      "tests": 374,
+      "suites": 80,
+      "warnings": 0,
+      "errors": 0,
+      "commonMarkPassed": 652,
+      "commonMarkTotal": 652,
+      "arm64TestExecutables": 8,
+      "compact": "/private/tmp/snowfolio-validation-history/core-292c17f"
+    }
+  },
+  "fullNative34Pending": {
+    "commit": "292c17f15ba57d5bed90ace1489b94b9659908ed",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42578704447",
+    "scope": "All 34 actual native app methods",
+    "status": "in progress; no acceptance before complete result inspection"
+  },
+  "currentDuplicateRunHousekeeping": {
+    "dateUTC": "2026-11-09T07:23:21.815528+00:00",
+    "cancelledDuplicateDefaultRun": 42578097051,
+    "preservedCompletedCoreJob": 129030273844,
+    "keptEarlierDefaultRun": 42576275391,
+    "keptFullActualNative34": 42578704447,
+    "reason": "New production launch call is native-host conditional; default build passes locally. Earlier full default run is still executing. Fresh complete core374/80 and652CommonMark already captured. Avoid repeating the same known default lifecycle failures in parallel."
   }
 }
