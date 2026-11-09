@@ -7,6 +7,7 @@ let package = Package(
   products: [
     .executable(name: "snowfolio", targets: ["SnowfolioCLI"]),
     .library(name: "DocumentCore", targets: ["DocumentCore"]),
+    .library(name: "PluginCore", targets: ["PluginCore"]),
     .library(name: "EditorCore", targets: ["EditorCore"]),
     .library(name: "SnowfolioUI", targets: ["SnowfolioUI"]),
     .library(name: "MarkdownCore", targets: ["MarkdownCore"]),
@@ -20,6 +21,7 @@ let package = Package(
   ],
   targets: [
     .target(name: "DocumentCore"),
+    .target(name: "PluginCore"),
     .executableTarget(name: "SnowfolioCLI", dependencies: ["DocumentCore"]),
     .target(name: "CodeHighlightCore", resources: [.process("Resources")]),
     .target(name: "EmojiCore", resources: [.process("Resources")]),
@@ -53,6 +55,7 @@ let package = Package(
       name: "MarkdownCoreTests", dependencies: ["MarkdownCore", "CodeHighlightCore", "MathCore"],
       resources: [.process("Fixtures")]),
     .testTarget(name: "DocumentCoreTests", dependencies: ["DocumentCore"]),
+    .testTarget(name: "PluginCoreTests", dependencies: ["PluginCore"]),
     .testTarget(
       name: "EditorCoreTests", dependencies: ["EditorCore"], resources: [.process("Fixtures")]),
     .testTarget(

@@ -3,7 +3,7 @@
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
 Current accepted core baseline: **427 package tests / 89 suites, all 652 published
-CommonMark examples and eight arm64 test executables pass** at `ebcad08`, with
+CommonMark examples and eight arm64 test executables pass** at `f219e25`, with
 zero compiler errors/warnings.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -3756,3 +3756,38 @@ zero Swift6 diagnostics. This is a standalone probe, not production-loader cachi
 or actual-host compatibility. Its compact source/results remain; generated binaries
 were removed after owner/open-file checks. No third-party code was executed and no
 app entitlement changed. See launch-integrations-characterization.json.
+
+
+## Native generic-viewer acceptance and plug-in core — 2026-11-09
+
+At f219e25 the new actual native document-type flow passes1/1 in91.357seconds:
+extensionless UTF16LE/BOM/CRLF README and unfamiliar UTF8/BOM/CRLF text show their
+exact source and preserve bytes; unsupported encoding presents a normal macOS error
+without a document window or byte change. Both screenshots were inspected. One
+internal QoS warning remains unattributed. This gate does not resolve the known
+hosted blank preview capture or physical composition/VoiceOver. Full427/89core,
+652CommonMark examples and8arm64 executables pass with zero compiler diagnostics.
+Complete regular32 and native41 runs are still active at this source; the older
+native36 remains the fully accepted complete baseline.
+
+A new isolated PluginCore package target implements metadata-only folder discovery
+and the explicit original Objective-C callback boundary in Swift. Discovery runs off
+the UI actor, creates no missing folders, deduplicates aliases and distinguishes
+arm64/universal, Intel-only, other architectures and invalid metadata without loading
+code. Explicit loading/invocation stays on MainActor; optional name, initialization
+and BOOL run: preserve original behavior, including false for a missing run callback.
+All present callback signatures are checked before any callback. Seven focused tests
+in two suites pass locally with zero diagnostics; full expected core is434/91 with
+9arm64 test executables, not yet accepted remotely.
+
+The production core APIs also pass an actual first-party bundle probe: discovery
+keeps code unloaded; explicit load obtains the name and its first two runs require
+exact Unicode/CRLF source, fileURL and one initialization through shared AppKit
+currentDocument. A third run with no document returns false. Re-signing the same
+standalone probe with Hardened Runtime yields Cocoa3588 during Bundle load. That
+comparison establishes an unresolved runtime/signing gate, not a complete underlying
+diagnosis. No app entitlements or protections changed, no third-party code ran, and
+no plug-in was installed. This foundation is not yet wired to app menus/session
+caching; preserve original loader until actual-host and release compatibility pass.
+Probe sources/findings remain compact; generated bundles/executables were removed
+after ownership/open-file checks. See launch-integrations-characterization.json.

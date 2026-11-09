@@ -213,7 +213,7 @@
   },
   "genericViewerRestoration": {
     "dateUTC": "2026-11-09T15:03:52.050024+00:00",
-    "status": "Implemented; local checks pass; actual-app acceptance pending.",
+    "status": "Native generic-document flow accepted; complete app and CLI Save/cold gates remain pending.",
     "original": "MacDown/MacDown-Info.plist third CFBundleDocumentTypes entry: Viewer/public.data/MPDocument.",
     "behavior": "Restore broad generic-file viewer at Alternate rank in both hosts; Markdown/plain-text remain editors. Byte codec continues to reject unsupported encodings. Native controller owns ordinary opening for all paths, including existing/new extensionless text.",
     "supersedes": "The ebcad08 new-file-only explicit Markdown-construction workaround was narrower than original behavior and is removed. No duplicate custom document ownership remains.",
@@ -223,6 +223,37 @@
       "regular": 32,
       "native": 41
     },
-    "limits": "No arbitrary-binary detection is claimed. No host-default, current-app installation or default-handler change."
+    "limits": "No arbitrary-binary detection is claimed. No host-default, current-app installation or default-handler change.",
+    "acceptedNative": {
+      "source": "f219e25c701c37f61edb7f1a1424ee9495257a1f",
+      "run": 42640892104,
+      "job": 129241389300,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 91.357,
+      "runtimeWarnings": 1,
+      "warning": "Internal user-interactive thread waiting on lower Utility QoS; cause unestablished. No zero-warning claim.",
+      "visual": "Both opened-source and rejection screenshots inspected. Source/caret/outline fit; standard modal alert and OK button visible. Hosted preview glyph capture remains blank as already documented; this focused test does not accept preview painting.",
+      "coverage": "Open extensionless UTF16LE/BOM/CRLF README and unfamiliar-extension UTF8/BOM/CRLF text; actual editor values and unchanged exact bytes. Unsupported encoding presents native alert, no document window, all original bytes preserved.",
+      "compact": "/private/tmp/snowfolio-validation-history/generic-documents-native-f219e25"
+    },
+    "liveRuns": {
+      "fullRegular32": 42640865194,
+      "fullNative41": 42641584413
+    }
+  },
+  "acceptedCoreF219e25": {
+    "source": "f219e25c701c37f61edb7f1a1424ee9495257a1f",
+    "run": 42640865194,
+    "job": 129241286286,
+    "tests": 427,
+    "suites": 89,
+    "commonMark": "652/652",
+    "arm64TestExecutables": 8,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-f219e25"
   }
 }

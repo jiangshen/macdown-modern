@@ -1335,5 +1335,19 @@
       42199,
       85540
     ]
+  },
+  "completedGenericDocumentsNativeCleanup": {
+    "dateUTC": "2026-11-09T15:09:52.507983+00:00",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "allocatedBytesRemoved": 37212160,
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Passing focused native1/1 record and two inspected screenshots compacted. Concluded partial raw removed; latest accepted full native raw and running apps preserved."
+  },
+  "completedPluginCoreProbeCleanup": {
+    "dateUTC": "2026-11-09T15:20:58.567996+00:00",
+    "path": "/private/tmp/snowfolio-plugin-probe",
+    "allocatedBytesRemoved": 286720,
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Core API real-bundle and hardened-runtime probes concluded. Keep compact source/results; remove generated first-party fixture bundle and executable."
   }
 }

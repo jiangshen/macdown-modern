@@ -337,5 +337,48 @@
     "compilerWarnings": 0,
     "compilerErrors": 0,
     "compact": "/private/tmp/snowfolio-validation-history/plugin-foundation-probe/invocation"
+  },
+  "pluginCoreFoundation": {
+    "dateUTC": "2026-11-09T15:21:46.174966+00:00",
+    "status": "Implemented and locally accepted foundation. App menu/session caching, production-host acceptance and release signing remain open.",
+    "sources": [
+      "Packages/SnowfolioCore/Sources/PluginCore/PluginCatalog.swift",
+      "Packages/SnowfolioCore/Sources/PluginCore/LegacyPlugin.swift"
+    ],
+    "discovery": "Off-main metadata inventory only; no principal-class access, code loading, folder creation or automatic user-plug-in execution. Missing folders remain absent; canonical paths deduplicate aliases; invalid bundles, Intel-only and unsupported architectures are reported, arm64/universal eligible. Eligibility describes architecture only, not trust, ABI or signing validity.",
+    "invocation": "Explicit MainActor boundary, NSObject principal construction, optional name/initialization/run callbacks. Retained instance initializes once; missing run returns false like original. Before callbacks, validates return/argument encodings; malformed callbacks rejected rather than guessing ABI.",
+    "localTests": {
+      "tests": 7,
+      "suites": 2,
+      "compilerWarnings": 0,
+      "compilerErrors": 0,
+      "covers": "Real header-only arm64/Intel/other/fat universal metadata without code loading; missing/error folders, aliases, unchanged files and deterministic cancellation; name/fallback, sender identity, retained-instance initialization, BOOL results and bad selector signatures.",
+      "expectedWholeCore": "434tests/91suites,9arm64 executables; full remote gate pending."
+    },
+    "realBundleProbe": {
+      "result": {
+        "name": "Local fixture 🧊",
+        "runResults": [
+          true,
+          true,
+          false
+        ],
+        "sharedController": true,
+        "unloadedAfterDiscovery": true,
+        "unloadedBefore": true
+      },
+      "scope": "New production PluginCore APIs used directly with locally authored actual arm64 bundle and fake AppKit NSDocumentController/NSDocument. Fixture requires exact Chinese/emoji/combining-mark/CRLF UTF8, fileURL and single initialization for first two true results. No actual native-host/menu integration inferred."
+    },
+    "hardenedRuntimeComparison": {
+      "result": {
+        "exitCode": 2,
+        "stdout": "{\"description\":\"The bundle “Fixture.plugin” couldn’t be loaded.\",\"errorCode\":3588,\"errorDomain\":\"NSCocoaErrorDomain\",\"failureReason\":\"The bundle couldn’t be loaded.\",\"underlying\":\"\"}\n",
+        "stderr": ""
+      },
+      "scope": "Same owned standalone executable re-signed ad-hoc with runtime option, no entitlements. Bundle load fails with NSCocoaErrorDomain3588; direct unhardened invocation passes. Underlying cause is not further established from Cocoa error; this is not release compatibility. No app protection or entitlement changed."
+    },
+    "compact": "/private/tmp/snowfolio-validation-history/plugin-core-foundation",
+    "thirdPartyExecution": false,
+    "retirement": "Original plugin loader remains until actual host, user-driven UI, session cache and supported signing/runtime behavior are accepted."
   }
 }
