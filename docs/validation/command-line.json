@@ -332,5 +332,14 @@
     "fullNative41": 42653830905,
     "coreAndFullRegular": 42652615632,
     "prior2eCoreAndRegular": 42649368020
+  },
+  "acceptedRegular2e54294": {
+    "source": "2e54294ea6c2cdfb7ca458bec899df0529cf6d71",
+    "run": 42649368020,
+    "job": 129271227860,
+    "status": "Complete method passed in full regular run",
+    "seconds": 86.785,
+    "coverage": "All original exact source/encoded warm Save/normal Quit/cold selection checks in CommandLineTests pass. Full regular32is28pass/4fail; no combined cross-revision full acceptance claimed.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-2e54294"
   }
 }

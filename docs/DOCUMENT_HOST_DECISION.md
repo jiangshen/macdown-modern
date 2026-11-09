@@ -10,7 +10,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 
 | Evidence | SwiftUI DocumentGroup host | Swift NSDocument host |
 | --- | --- | --- |
-| Complete accepted comparison | Latest full32 at `f219e25`:27pass/5fail (same3lifecycle failures plus CLI readiness/invalid-read handling) | 36/36 at `2bc01b2`, no failures or skips |
+| Complete accepted comparison | Latest full32 at `2e54294`:28pass/4fail (same3lifecycle failures plus invalid-read handling) | 36/36 at `2bc01b2`, no failures or skips |
 | Autosave and saved edit Undo | Acceptance fails | Passes, including exact encoded bytes |
 | Clean external changes after autosave | Two cases fail | Both pass |
 | Dirty conflicts and Versions | Full acceptance remains open | All conflict choices and native Versions/Restore pass |
@@ -18,7 +18,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 | Native tabs, separate groups, carets and independent reading positions | Partial evidence; lifecycle acceptance remains open | Actual Quit/relaunch acceptance passes |
 | New counter and document links | Focused flows pass | Focused flows pass |
 | Terminal installation controls | Actual chooser/link/copy/remove/collision flow passes at `d7f410e` | Same complete focused flow passes at `d7f410e` |
-| Packaged command-line helper | Old readiness query fails in full9e99ebb; visible-document followup running | Whole warm/byte-exact Save/normal Quit/cold native-tab method1/1passes atc0c6e6f |
+| Packaged command-line helper | Whole CLI method passes in full2e54294;4other host gates fail | Whole warm/byte-exact Save/normal Quit/cold native-tab method1/1passes atc0c6e6f |
 | Generic text viewer and invalid encoding | Positive source/bytes pass; invalid-read handling fails in full f219e25 | Complete focused1/1passes at f219e25 |
 
 Exact source versions, run links and limitations are recorded in

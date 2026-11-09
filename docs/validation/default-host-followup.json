@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T15:40:31.410066+00:00",
+  "dateUTC": "2026-11-09T16:44:01.628723+00:00",
   "status": "Both preceding default SwiftUI full runs fail; native host remains opt-in while its remaining acceptance gates are open.",
   "runs": [
     {
@@ -233,5 +233,30 @@
     "result": "Same three established SwiftUI autosave/reload failures, first CLI exact-source wait and invalid-read alert failure. No app implementation changed from f219e25; new unused PluginCore target only. Warm/cold active-document selector correction follows at next revision.",
     "compact": "/private/tmp/snowfolio-validation-history/default-9e99ebb",
     "rawDownload": "None; range-only log (681624bytes transferred from188386109byte archive)."
+  },
+  "full2e54294": {
+    "source": "2e54294ea6c2cdfb7ca458bec899df0529cf6d71",
+    "run": 42649368020,
+    "job": 129271227860,
+    "executed": 32,
+    "passed": 28,
+    "failed": 4,
+    "skipped": 0,
+    "CLICompleteMethod": {
+      "status": "passed",
+      "seconds": 86.785,
+      "scope": "Complete existing strict warm pipe/exact encoded Save/normal Quit/cold selected-document flow. No new regular screenshot inspection claimed."
+    },
+    "failures": [
+      "testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "testCoordinatedExternalReloadAfterAutosave",
+      "testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "finding": "CLI now accepted in both hosts at their stated distinct revisions. Same three SwiftUI lifecycle failures and invalid-read presentation failure remain. Current c0 visible-warm-window correction removes the old intermittent occlusion assumption; latest regular followup remains active.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-2e54294",
+    "rangeLogTransferBytes": 653614,
+    "archiveBytes": 184309398,
+    "rawDownloaded": false
   }
 }

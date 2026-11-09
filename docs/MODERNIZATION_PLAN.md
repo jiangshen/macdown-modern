@@ -29,15 +29,14 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `f219e25` executes32methods:
-27pass/5fail, none skipped. The three established autosave/reload failures recur;
-CLI actual-source readiness fails with a blank front document, and invalid-read
-handling leaves an empty window without the expected native error alert. Generic
-text positive source/byte checks pass. The three relevant screenshots were inspected;
-no wait or query is weakened. The native generic flow also passes in its complete41method invocation, which
-reports39pass/2fail: cold-tab source selection and the repeated screenshot exception.
-No newer complete native acceptance is claimed.
-See [default-host-followup.json](validation/default-host-followup.json).
+The latest complete regular SwiftUI-host run at `2e54294` executes32methods:
+28pass/4fail, none skipped. Its complete CLI warm/encoded Save/normal Quit/cold selected-
+document flow passes in86.785seconds. The three established autosave/reload failures
+and invalid-read error presentation failure remain. Currentc0removes the old covered-
+warm-window readiness assumption; its regular followup is active. Whole native41 at
+f219e25 was39/41; corrected focused CLI and reading now pass at their stated revisions.
+No cross-revision complete native acceptance is claimed. See
+[default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
 [launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
@@ -3895,3 +3894,10 @@ The Mac is still locked on recheck; physical Pinyin candidate/preview/VoiceOver 
 remains pending. Preserve both running physical-check apps and the owned unsaved source.
 Completed focused raw copies and duplicate failure wrappers are removed after compacting;
 latest useful complete native raw, one core cache and protected apps remain about2.5GiB.
+
+
+The completed older regular2e54294 full run also accepts the complete CLI method in
+86.785seconds. Its32methods report28passes/4failures: the same three autosave/reload
+cases and unsupported-read presentation. Only653614archive bytes were transferred for
+its exact complete log/method list; no duplicate full raw was downloaded. CLI is now
+accepted in both hosts at their explicit sources; whole host/physical gates remain.
