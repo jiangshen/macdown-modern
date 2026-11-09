@@ -63,8 +63,16 @@ types = info['CFBundleDocumentTypes']
 expected = 'SnowfolioNativeDocument' if sys.argv[2] == 'native' else None
 if len(types) != 2 or any(t.get('NSDocumentClass') != expected for t in types):
     raise SystemExit('Document type declarations do not match selected host')
-print('Verified document host:', sys.argv[2])
+if info.get('NSAppleScriptEnabled') != (sys.argv[2] == 'native'):
+    raise SystemExit('Scripting enablement does not match selected host')
+if info.get('OSAScriptingDefinition') != 'Snowfolio.sdef':
+    raise SystemExit('Scripting dictionary registration is missing')
+print('Verified document host and scripting registration:', sys.argv[2])
 VERIFY_HOST
+if ! cmp -s "$repo_root/App/Resources/Snowfolio.sdef" "$app/Contents/Resources/Snowfolio.sdef"; then
+    echo "Bundled scripting dictionary differs from source." >&2
+    exit 1
+fi
 if [ "$(xcrun lipo -archs "$app/Contents/MacOS/Snowfolio")" != arm64 ]; then
     echo "The app executable must be arm64 only." >&2
     exit 1

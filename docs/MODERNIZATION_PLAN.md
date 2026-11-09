@@ -89,7 +89,12 @@ shared a parent; the corrected ordering builds and the10/10retry confirms window
 The native snapshots and captured window differ as recorded above; no paint
 cause is established. Legacy scripting text/HTML/metadata/command event contracts are
 now characterized, including initially empty cached HTML that does not force render;
-actual modern scripting registration/execution remains pending in
+the optional native host now registers a compatible dictionary and native
+Undo-aware text/cached-HTML properties. All373package tests/80suites and8arm64executables pass; both hosts build,
+29native UI methods compile and the default cache is restored. Actual event
+execution and remaining scripting
+options are pending in [native-scripting.json](validation/native-scripting.json).
+The legacy contract remains in
 [applescript-characterization.json](validation/applescript-characterization.json).
 An additional actual-app method now compiles repeated Command-T on empty tabs,
 native tab-bar plus creation and separate Undo/Redo, with an unchanged Unicode

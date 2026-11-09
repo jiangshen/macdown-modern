@@ -43,12 +43,13 @@
     "initialHTML": "MPRenderer.m344-350 initializes currentHtml to empty string.",
     "renderCache": "MPRenderer.m606 assigns generated HTML; scripts read latest cached fragment, consistent with manual-render behavior."
   },
-  "modernGap": "Current App/Project.swift has no scripting-definition/AppleScript-enabled registration, and NativeMarkdownDocument has no markdown/html Objective-C scripting proxies. Native backend choice remains gated on scripting/Versions and remaining requirements.",
+  "modernGap": "Historical gap characterized before this increment: no registration or properties. The optional native host now implements registration and text/cachedHTML proxies; see native-scripting.json for exact implementation and unaccepted runtime/remaining standard-command scope.",
   "implementationRequirements": [
     "Keep compatible property/standard command event codes while using Snowfolio branding/class names",
     "Route script source changes through native document/model Undo ownership and byte-preserving saves; do not reproduce setter dirty-state bypass",
     "Expose latest successful rendered HTML cache, initially empty, without blocking/spinning or silently changing cached getter to force-fresh behavior",
     "Verify actual Cocoa script object specifiers, metadata, creation/open/close/save/format aliases, text read/write/Undo/autosave and cached HTML/manual rendering",
     "Validate script events in an isolated owned-fixture app/test workflow; no unrelated app control or user data changes"
-  ]
+  ],
+  "implementedIncrement": "native-scripting.json"
 }

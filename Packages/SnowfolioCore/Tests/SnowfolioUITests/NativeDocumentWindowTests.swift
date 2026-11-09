@@ -67,6 +67,11 @@ struct NativeDocumentWindowTests {
       #expect(window.frame.minY >= screen.visibleFrame.minY)
       #expect(window.frame.maxY <= screen.visibleFrame.maxY)
     }
+    for _ in 0..<200 {
+      if native.html.contains("Native window") { break }
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    #expect(native.html.contains("Native window"))
     #expect(editor.string == original)
     #expect(controller.commands.editor?.coordinator?.editor === editor)
     #expect(controller.commands.output?.window === window)

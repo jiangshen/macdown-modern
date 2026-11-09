@@ -343,6 +343,7 @@ private struct DocumentWorkspaceContent: View {
       {
         callouts.setTargets(result.nodes, revision: revision)
         previewHTML = result.html
+        document.acceptRenderedHTML(result.html, sourceRevision: revision)
         renderedRevision = revision
         previewLoadRevision = request.loadRevision
         previewOptions = request.options

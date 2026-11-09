@@ -46,6 +46,12 @@ public final class MarkdownDocument: SwiftUI.Document {
   }
   @ObservationIgnored private var baseline: TextFileContents
   @ObservationIgnored private let sourceEditors = NSHashTable<NSTextView>.weakObjects()
+  @ObservationIgnored private(set) var lastRenderedHTML = ""
+
+  func acceptRenderedHTML(_ html: String, sourceRevision: UInt64) {
+    guard revision == sourceRevision else { return }
+    lastRenderedHTML = html
+  }
 
   func attachSourceEditor(_ editor: NSTextView) { sourceEditors.add(editor) }
   func detachSourceEditor(_ editor: NSTextView) { sourceEditors.remove(editor) }

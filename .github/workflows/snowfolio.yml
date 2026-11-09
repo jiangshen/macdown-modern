@@ -31,6 +31,7 @@ on:
           - document-host-probe-appkit
           - native-document-app
           - native-document-tabs
+          - native-document-scripting
 
 permissions:
   contents: read
@@ -99,6 +100,9 @@ jobs:
         run: |
           if [ "$SNOWFOLIO_TEST_SCOPE" = native-document-app ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentScriptingTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-tabs ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testSavedTabsRestoreSelectedDocumentAndIndependentUndo \

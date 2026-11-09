@@ -1,0 +1,56 @@
+{
+  "dateUTC": "2026-11-09T03:18:26.290812+00:00",
+  "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
+  "status": "373tests/80suites and all8arm64 executables pass; both hosts build, native29UI methods/default27compile and gates pass. Native scripting event execution pending; no full scripting/host acceptance.",
+  "interface": {
+    "dictionary": "App/Resources/Snowfolio.sdef",
+    "nativeClass": "SnowfolioNativeDocument",
+    "registration": "NSAppleScriptEnabled true only for explicit native host; false for default SwiftUI host. Both bundle verified dictionary.",
+    "compatibility": "Compared all legacy command/class/property/enumerator names, codes, types and access: unchanged. Branding updated; suite mcdn and text/rndd event codes preserved.",
+    "text": "Objective-C dynamic markdown property uses shared model replaceText with native Undo grouping, typing checkpoint and native dirty/autosave ownership. No change-count override or extra file writer. UTF8byte-exact no-op detection. Reject marked composition with script error -10000 and preserve editor/model.",
+    "html": "Objective-C read-only html property returns cached last published fragment, initially empty; no new rendering, WebKit evaluation, waits or nested run loops. Workspace records only current successful preview publications, retaining manual-render behavior and rejecting stale source revisions.",
+    "formats": "Markdown retains md  /net.daringfireball.markdown. Text txt  and Data data event codes remain; their internal Cocoa type aliases use public.plain-text, the modern native writer that retains exact encoding/BOM/line endings. No new public.data document claim or save-format popup entry. Actual save behavior must pass runtime tests."
+  },
+  "validation": {
+    "focused": "NativeDocumentScriptingTests3/3pass0.130s after using real registered file document and yielding for documented native autosaving-safety activity. Initial synthetic direct-read fixture asserted dirty synchronously and failed; no production change-count workaround added.",
+    "integration": "Existing nativeOwnership test now waits for real workspace renderer HTML publication; full suite pending.",
+    "actualAppTests": [
+      "DocumentScriptingTests.testScriptedTextUndoAutosaveAndManualHTMLCache",
+      "DocumentScriptingTests.testScriptedCreationSaveFormatsAndClose"
+    ],
+    "events": "Tests send AppleScript only to currently running owned Snowfolio test app path/dictionary. They do not control another app or automate desktop. Authorization errors fail explicitly; no permission bypass.",
+    "actualChecks": [
+      "Script open/text/name/file metadata",
+      "UnicodeUTF16LE/BOM/CRLF source replacement, native UI Undo/Redo and active autosave without Save",
+      "Cached HTML reads before/after source edits under manual mode; explicit Render refresh",
+      "Native save/close and quit-saving-option events",
+      "Make with text properties and save as Markdown/Text/Data with exact file bytes"
+    ],
+    "nativeBuild": "arm64 build-for-testing/29UI methods, dictionary/host/icon/resource/type/license gates pass; existing AppIntents metadata warning.",
+    "fullCore": {
+      "tests": 373,
+      "suites": 80,
+      "errors": 0,
+      "warnings": 0,
+      "arm64Executables": 8,
+      "compact": "/private/tmp/snowfolio-validation-history/native-scripting-local"
+    },
+    "defaultBuild": "arm64 build-for-testing and resource/icon/type/license/disabled-scripting checks pass; canonical build restored to default SwiftUI host. Existing AppIntents metadata warning only.",
+    "format": "Strict changed-Swift lint, shell syntax and diff check pass. Manual AppKit review: main-actor scripting, native Undo ownership, no extra file writer or synchronous renderer, weak/native ownership retained; cached fragment shares String storage with preview."
+  },
+  "remaining": [
+    "Actual Apple-event execution and permissions in hosted native-scripting scope",
+    "Make with data semantics, script object indexing/window references and complete standard command/options parity",
+    "Error paths/read-only/current composition behavior via real Apple events",
+    "Default-host removal and legacy retirement only after full native host acceptance",
+    "Physical preview/IME/VoiceOver, native conflict choices/Versions/group/scroll restoration, full M3-M6 gates"
+  ],
+  "sourceHashes": {
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeDocumentScripting.swift": "e843adf84701b72d7cfb294370e42f2300bceb14a7c941da3a044a1d159e0015",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownDocument.swift": "891c78bb3589a22ed6e588676206c4611714a1eb60fadaa1891517cf99021f57",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspace.swift": "665b24ec7470a60d34f04c7fb6272d1a7de38de7f6a0187c42ef83ee3581f8dc",
+    "App/Resources/Snowfolio.sdef": "aeb4003af0f3beace7d522340765912b3ddd0524c925952a9e7166fa11b753c8",
+    "App/Project.swift": "80ac2424d4639989ef498d7ffa7f4c3f60f295bb485031d3d563773c0d60a2f4",
+    "App/UITests/DocumentScriptingTests.swift": "7b053b1ed9b6214b3e57bac63e9e93d27322eeca332e7984d7403d0037a38dbc"
+  }
+}

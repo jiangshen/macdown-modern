@@ -44,6 +44,8 @@ let project = Project(
         "CFBundleShortVersionString": "$(MARKETING_VERSION)",
         "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
         "NSPrincipalClass": "NSApplication",
+        "NSAppleScriptEnabled": .boolean(nativeDocumentHost),
+        "OSAScriptingDefinition": "Snowfolio.sdef",
         "LSApplicationCategoryType": "public.app-category.productivity",
         "NSHumanReadableCopyright":
           "Copyright © 2014–2020 Tzu-ping Chung and contributors. MIT License.",
@@ -71,7 +73,7 @@ let project = Project(
       sources: ["Sources/**"],
       resources: [
         "Resources/AppIcon.icon", "Resources/DocumentIcons.xcassets",
-        "Resources/MarkdownDocument.icns", "Resources/Licenses/**",
+        "Resources/MarkdownDocument.icns", "Resources/Licenses/**", "Resources/Snowfolio.sdef",
       ],
       dependencies: [.package(product: "SnowfolioUI")],
       settings: .settings(base: [
@@ -85,7 +87,9 @@ let project = Project(
       product: .uiTests,
       bundleId: "local.macdown.modern.uitests",
       deploymentTargets: .macOS("27.0"),
-      infoPlist: .default,
+      infoPlist: .extendingDefault(with: [
+        "NSAppleEventsUsageDescription": "Verify Snowfolio's own document scripting interface."
+      ]),
       sources: ["UITests/**"],
       dependencies: [.target(name: "Snowfolio")]
     ),
