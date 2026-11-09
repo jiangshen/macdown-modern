@@ -112,6 +112,6 @@
   },
   "offlineRequirementsFollowup": {
     "ledger": "math-offline-require.json",
-    "status": "Final local461/94passes, exact-source hosted pending. Whitelisted preloaded declarations accepted with runtime loading disabled; broader optional packages and HTML extensions remain unaccepted."
+    "status": "Final local461/94 and hosted461/94+652CommonMark/ninearm64passed atdc9eed3. Whitelisted preloaded declarations accepted with runtime loading disabled; broader optional packages and HTML extensions remain unaccepted."
   }
 }

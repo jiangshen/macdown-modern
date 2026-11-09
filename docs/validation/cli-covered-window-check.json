@@ -1,0 +1,38 @@
+{
+  "dateUTC": "2026-11-09T22:52:02.730795+00:00",
+  "status": "Test correction compiled; actual-app verification pending. No production change or new full-suite acceptance.",
+  "sourceParent": "9928b95",
+  "sourceSHA256": {
+    "App/UITests/CommandLineTests.swift": "22ce1da512eb816ce64d020520f54f2ac061bf1aa0d88199733b803ec507d7b6"
+  },
+  "evidence": {
+    "native215ce9a": "Full43attempt42pass/1fail;8swarmnew.mdwindow wait fails although final hierarchy contains all opened documents. Inspected small screenshot in native-full-215ce9a shows --help frontmost, normal caret and no visible dialog. Receipt0.508197708s confirms queued delivery only.",
+    "regular1d6bd22": {
+      "source": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
+      "run": 42710852576,
+      "job": 129479673989,
+      "artifact": 13717198138,
+      "executed": 33,
+      "passed": 28,
+      "failed": 5,
+      "failedMethods": [
+        "SnowfolioUITests.CommandLineTests/testBundledCommandLineOpensFilesAndDelayedPipesAcrossLaunches",
+        "SnowfolioUITests.DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes",
+        "SnowfolioUITests.DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+        "SnowfolioUITests.DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave",
+        "SnowfolioUITests.DocumentTypeTests/testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+      ],
+      "compact": "/private/tmp/snowfolio-validation-history/regular-1d6bd22",
+      "transferBytes": 679019,
+      "archiveBytes": 183207573,
+      "scope": "All33terminalmethodsinspected; no rawxcresultdownload. No full app acceptance.",
+      "finding": "Initial warmCLInew.mdwindow wait fails atCommandLineTests.swift156; postfailuremain--helpwindow. Three known autosave/reload failures and invalid-encoding presentation persist."
+    }
+  },
+  "change": "Select each newly created file through the normal Window menu before checking its window and empty source. This follows the existing warm/cold content checks for covered windows/inactive tabs and adds source assertions for both missing files. Record app state/active/finished-launching/hidden with routing receipt.",
+  "invariants": "No production launch routing, activation, receipt semantics, file creation, source or timeouts changed. Original8s window/source deadlines retained. Existing complete warm/cold, duplicate reuse, delayed pipe, Unicode/BOM/CRLF/encoded Save/Quit checks retained.",
+  "local": "Standalone Swift6/arm64/macOS27type-check with correct XCTest overlay paths and strict formatting/diff checks pass. No app bundle built or overwritten.",
+  "pending": "Focused native CLI then complete actual-app acceptance at the current source. A focused pass cannot be combined with another run to claim complete44.",
+  "productionInstalled": false,
+  "defaultHandlerChanged": false
+}

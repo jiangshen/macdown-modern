@@ -1,7 +1,7 @@
 {
   "dateUTC": "2026-11-09T22:38:01.700568+00:00",
   "sourceParent": "59b0bfd",
-  "status": "Implemented and final full local461/94passes. Exact-source hosted/core/corpus/app acceptance pending; full modernization remains open.",
+  "status": "Implemented and exact-source hosted461/94+652CommonMark/ninearm64accepted atdc9eed3, zero compiler diagnostics. Complete current actual-app acceptance and wider compatibility remain open.",
   "sourceSHA256": {
     "Packages/SnowfolioCore/Sources/MathCore/MathJaxRenderer.swift": "cee9f8ca6b5b625ac44d2e2a37ede35d0d442f6e363d6604669f297b74e6bfed",
     "Packages/SnowfolioCore/Sources/MathCore/MathMarkup.swift": "1c3a8b9865dfa6be014a5f1b0281b9c01270a392224a928b2086c18df84abd4d",
@@ -55,12 +55,29 @@
     "diagnostics": "First new test finds AMSalign rejected due to indentshift, plus a string-based msup assertion failed because upstream attaches attributes. Preserve the inert upstream attribute under bounds and query the semantic msup element; final full suite passes unchanged safety/behavior gates."
   },
   "remaining": [
-    "Exact-source hosted acceptance; prior1d6bd22core460/94+652CommonMark is historical accepted baseline only.",
+    "Complete exact-source actual-app acceptance; regular dc9eed3 job remains live. New Finder test source9928b95 has separate pending checks.",
     "Original optional MathJax2 extensions outside the current bundled allowlist and arbitrary HTML/style/link behavior require further compatibility review; no original-loader retirement.",
     "Current complete native/regular app outcomes, physical Pinyin/VoiceOver/preview, measured app performance/productivity/signing/release and safe progressive legacy retirement."
   ],
   "compact": "/private/tmp/snowfolio-validation-history/math-offline-require",
   "productionInstalled": false,
   "defaultHandlerChanged": false,
-  "fullGoal": "Active and incomplete."
+  "fullGoal": "Active and incomplete.",
+  "sourceCommit": "dc9eed383274dcd9b62a500e78bb0a803e276107",
+  "hostedCore": {
+    "source": "dc9eed383274dcd9b62a500e78bb0a803e276107",
+    "run": 42713674464,
+    "job": 129489515555,
+    "artifact": 13716163671,
+    "tests": 461,
+    "suites": 94,
+    "executables": 9,
+    "architecture": "arm64",
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "commonMarkPassed": 652,
+    "commonMarkTotal": 652,
+    "compact": "/private/tmp/snowfolio-validation-history/core-dc9eed3",
+    "scope": "Completed exact-source core and corpus job only. Complete native/regular app acceptance is separate."
+  }
 }

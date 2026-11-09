@@ -1,7 +1,7 @@
 {
   "dateUTC": "2026-11-09T22:01:15.423591+00:00",
   "sourceParent": "705cc004c5a37a3f54a91699b8cfb13256834d6f",
-  "status": "Initial integration accepted hosted460/94+652CommonMark at1d6bd22; offline require/AMS alignment followup passes final local461/94. Exact followup hosted/app acceptance and wider parity remain open.",
+  "status": "Initial integration accepted hosted460/94 at1d6bd22; offline require/AMS alignment followup now accepted hosted461/94+652CommonMark/ninearm64atdc9eed3. Full actual-app and wider parity remain open.",
   "sourceSHA256": {
     "Packages/SnowfolioCore/Sources/MathCore/MathRenderer.swift": "08d52b656c5669454b0afffa45d5a24453883ebbb277205f6145212e41e54ba0",
     "Packages/SnowfolioCore/Sources/MathCore/MathJaxRenderer.swift": "069d0f31392fc88d19fe17253f3bc463c54a14b8a6972835958c8f61e988cad2",
@@ -275,6 +275,22 @@
       "compilerWarnings": 0,
       "compilerErrors": 0
     },
-    "scope": "Preloaded upstream package declarations and AMSalignment; no runtime loading. Wider extensions/full app acceptance still open."
+    "scope": "Preloaded upstream package declarations and AMSalignment; no runtime loading. Wider extensions/full app acceptance still open.",
+    "hostedCore": {
+      "source": "dc9eed383274dcd9b62a500e78bb0a803e276107",
+      "run": 42713674464,
+      "job": 129489515555,
+      "artifact": 13716163671,
+      "tests": 461,
+      "suites": 94,
+      "executables": 9,
+      "architecture": "arm64",
+      "compilerWarnings": 0,
+      "compilerErrors": 0,
+      "commonMarkPassed": 652,
+      "commonMarkTotal": 652,
+      "compact": "/private/tmp/snowfolio-validation-history/core-dc9eed3",
+      "scope": "Completed exact-source core and corpus job only. Complete native/regular app acceptance is separate."
+    }
   }
 }

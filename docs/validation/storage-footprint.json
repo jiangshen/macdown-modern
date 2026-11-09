@@ -1347,5 +1347,16 @@
     ],
     "kept": "/private/tmp/snowfolio-validation-history/math-offline-require contains small logs/reports,3inspectedPNGs and1PDF. No rawxcresult or dependency/module-cache/prototype build remains.",
     "protected": "One reused core cache; running Snowfolio42199 andDocumentHostProbe85540/bundles and user-assisted document untouched. No local app build/install/default change. Ownership and active open-file checks completed; no Trash emptied."
+  },
+  "finderGesturePreparation": {
+    "dateUTC": "2026-11-09T22:49:12.518700+00:00",
+    "scope": "Finder test SDK type-check/format/YAML validation and hosted core evidence collection only.",
+    "localAppBuilds": 0,
+    "coreReruns": 0,
+    "kept": "Reused one current core module cache for standalone type-check. Downloaded only28534compressedbytes of core logs; retained compactcore-dc9eed3. No app result archives, recordings or duplicate build directories created.",
+    "retired": [
+      "/private/tmp/snowfolio-file-drop-tests.swift"
+    ],
+    "protection": "Running app/probe bundles and user document untouched; no user-Mac Finder action, installation, default-handler or security-setting change."
   }
 }

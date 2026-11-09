@@ -1510,5 +1510,26 @@
     "visual": "Inspected: Snowfolio is foreground with --help as the front empty document, normal caret, no visible prompt or modal. Other documents are occluded. Existing AX failure hierarchy includes new.md and the other opened documents.",
     "routing": "Helper status0, receipt0.508197708s, correct GUI PID16613, delivery acknowledged. Receipt indicates queued delivery, not completed document opens.",
     "conclusion": "Possible occluded-window AX query/readiness problem, not established. No production fix, test assertion weakening, deadline increase or combined full-suite acceptance. Current complete native run remains pending."
+  },
+  "regular_1d6bd22": {
+    "source": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
+    "run": 42710852576,
+    "job": 129479673989,
+    "artifact": 13717198138,
+    "executed": 33,
+    "passed": 28,
+    "failed": 5,
+    "failedMethods": [
+      "SnowfolioUITests.CommandLineTests/testBundledCommandLineOpensFilesAndDelayedPipesAcrossLaunches",
+      "SnowfolioUITests.DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "SnowfolioUITests.DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "SnowfolioUITests.DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave",
+      "SnowfolioUITests.DocumentTypeTests/testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "compact": "/private/tmp/snowfolio-validation-history/regular-1d6bd22",
+    "transferBytes": 679019,
+    "archiveBytes": 183207573,
+    "scope": "All33terminalmethodsinspected; no rawxcresultdownload. No full app acceptance.",
+    "finding": "Initial warmCLInew.mdwindow wait fails atCommandLineTests.swift156; postfailuremain--helpwindow. Three known autosave/reload failures and invalid-encoding presentation persist."
   }
 }

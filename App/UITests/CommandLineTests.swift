@@ -138,13 +138,19 @@ final class CommandLineTests: XCTestCase {
       tool, arguments: [file.lastPathComponent, "./" + file.lastPathComponent, "new.md", "--help"],
       directory: directory, input: pipedBytes, delayedInput: true)
     let launchTrace = XCTAttachment(
-      string: "status=\(warm.status) seconds=\(warm.seconds)\n\(warm.error)")
+      string:
+        "status=\(warm.status) seconds=\(warm.seconds) state=\(app.state.rawValue) active=\(running.isActive) launched=\(running.isFinishedLaunching) hidden=\(running.isHidden)\n\(warm.error)"
+    )
     launchTrace.name = "command-line-routing-metadata"
     launchTrace.lifetime = .keepAlways
     add(launchTrace)
     XCTAssertEqual(warm.status, 0, warm.error)
     XCTAssertGreaterThanOrEqual(warm.seconds, 0.2)
+    // The last opened window covers the other documents. Select each through
+    // normal native UI before asserting its window and complete source, just as
+    // the warm/cold content checks below already do for occluded windows/tabs.
     for name in ["new.md", "--help"] {
+      selectDocument(name)
       let appeared = app.windows[name].firstMatch.waitForExistence(timeout: 8)
       if !appeared {
         // Fatal XCTest failures may skip Swift defers. Capture before asserting.
@@ -154,6 +160,7 @@ final class CommandLineTests: XCTestCase {
         add(image)
       }
       XCTAssertTrue(appeared, app.debugDescription)
+      await waitForSource("")
     }
     XCTAssertEqual(
       app.windows.matching(NSPredicate(format: "title == %@", file.lastPathComponent)).count, 1)
