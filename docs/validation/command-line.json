@@ -1,6 +1,6 @@
 {
-  "dateUTC": "2026-11-09T15:03:52.050024+00:00",
-  "status": "Acknowledged local transport works in the packaged native app. Complete417/87core+652corpus passes. Save/cold packaged acceptance remains pending after test-window/readiness corrections; no production opener behavior changed.",
+  "dateUTC": "2026-11-09T16:33:59.887385+00:00",
+  "status": "Complete native warm/cold actual CLI flow accepted atc0c6e6f; full native41, physical and production-host/retirement gates remain open. Original CLI retained until host integration is selected.",
   "sources": [
     "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInvocation.swift",
     "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineConnection.swift",
@@ -299,5 +299,38 @@
     "correction": "Select requested file and newest fresh Untitled from native Window menu before exact current-window source equality in both phases. Retain all source/file/Save/cold checks and original8/5/20second bounds; share selection/capture helpers instead of duplicating warm/cold logic. Runtime pending.",
     "compact": "/private/tmp/snowfolio-validation-history/command-line-native-2e54294",
     "limit": "No new production CLI defect established from this failure; earlier f219e25 warm exact source and Save passed. No repeated rerun without this visibility correction."
+  },
+  "acceptedCoreC0c6e6f": {
+    "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+    "run": 42652615632,
+    "job": 129282689732,
+    "tests": 434,
+    "suites": 91,
+    "commonMark": "652/652",
+    "arm64TestExecutables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-c0c6e6f"
+  },
+  "acceptedNativeC0c6e6f": {
+    "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+    "run": 42652683272,
+    "job": 129282941687,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 94.29,
+    "runtimeWarnings": 1,
+    "warmReceiptSeconds": 0.7232199583334022,
+    "coverage": "Packaged help/version/unknown option, delayed stdin acknowledgement, duplicate relative paths reuse one existing document, exact UTF16LE/BOM/CRLF original bytes, exclusive missing new.md and literal --help, selected actual original/pipe source, native Save preserving exact UTF8/BOM/CRLF/Chinese/emoji/combining bytes, Close All/Quit, normal helper cold launch, explicit file/Untitled/--help native selection with exact actual source and preserved file bytes.",
+    "visual": "Warm pipe Save and normal cold three-tab images inspected; no pane clipping. Hosted blank preview capture remains unrelated/unaccepted. Final hierarchy proves one Cocoa Open Recent entry and Clear Menu after duplicate manual list removal.",
+    "scope": "Complete focused native method accepted. This does not compose other revisions into a new full-native baseline or accept regular host lifecycle.",
+    "compact": "/private/tmp/snowfolio-validation-history/command-line-native-c0c6e6f"
+  },
+  "liveRuns": {
+    "fullNative41": 42653830905,
+    "coreAndFullRegular": 42652615632,
+    "prior2eCoreAndRegular": 42649368020
   }
 }

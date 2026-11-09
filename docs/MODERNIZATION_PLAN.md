@@ -3,7 +3,7 @@
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
 Current accepted core baseline: **434 package tests / 91 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `9e99ebb`, with
+CommonMark examples and nine arm64 test executables pass** at `c0c6e6f`, with
 zero compiler errors/warnings.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -49,17 +49,15 @@ initial-snapshot readiness followup passes at `3b68499` (24.870 seconds), with a
 400 core tests and corpus examples; earlier intermittent caret failure attribution
 remains open. See [document-links.json](validation/document-links.json).
 
-The native Swift CLI candidate now implements deterministic options/files/stdin,
-an in-memory acknowledged local connection, exclusive missing-file creation and
-bundled arm64 packaging.24 focused checks, standalone help/error processes,
-project generation and UI-test typechecking pass. The initial custom Apple-event
-attempt failed actual delivery and was retired to Trash; no Automation grant was
-made. Actual packaged warm acknowledgement, pipe import and file reuse work;
-Save/cold acceptance remains pending after Window-menu/readiness test corrections.
-Terminal installation controls pass in both hosts with screenshots inspected;
-complete app followups continue. The original CLI stays until its
-replacement is accepted. See [command-line.json](validation/command-line.json) and
-the18-case original-parser characterization.
+The native Swift CLI now passes its complete packaged warm/cold flow at `c0c6e6f`:
+deterministic options/files/stdin, acknowledged in-memory connection, duplicate-file
+reuse, exclusive missing-file creation, byte-exact UTF8/BOM/CRLF/Unicode Save, normal
+Quit and cold native-tab selection/content. Its1/1method takes94.290seconds; both
+relevant images were inspected and one internal runtime warning remains. Source
+checks explicitly select documents, avoiding occluded-window/inactive-tab AX values.
+Terminal installation controls pass in both hosts. The original CLI remains until
+the production-host integration/retirement gate; no source-default switch is made.
+See [command-line.json](validation/command-line.json).
 
 
 Real native scripting passes three methods covering Open/text/name/file, source
@@ -3876,3 +3874,24 @@ strict lint/diff pass. Actual menu and complete native41 acceptance remain pendi
 The latest complete regular run9e99ebb is27/32with the same5failures, including CLI
 readiness still subject to the old covered-window assumption. No newer host-default,
 installation, release or file-handler change is made.
+
+
+## Complete native CLI accepted and final core — 2026-11-09
+
+Atc0c6e6f complete focused native CLI1/1passes in94.290seconds, no failures/skips,
+with one internal QoS warning. Original help/version/error/delay checks, relative-path
+reuse, all file windows and exact bytes, correctly selected source and UTF8/BOM/CRLF/
+Unicode Save, normal Close All/Quit and helper cold launch all pass. Cold three tabs
+are selected and checked individually, including the empty literal --help file. Both
+relevant images were inspected. Final File-menu hierarchy has exactly one standard
+Open Recent item with Clear Menu, confirming removal of duplicate manual ownership.
+No extra native permissions, app installation or default-handler change occurred.
+
+The same exact code passes434package tests/91suites,652/652CommonMark and9arm64 test
+executables, zero compiler warnings/errors. Whole native41 run42653830905 now executes
+at this source; the complete accepted baseline remains native36, with no cross-revision
+aggregation. Reading restoration separately passes at2e54294 with zero glyph difference.
+The Mac is still locked on recheck; physical Pinyin candidate/preview/VoiceOver acceptance
+remains pending. Preserve both running physical-check apps and the owned unsaved source.
+Completed focused raw copies and duplicate failure wrappers are removed after compacting;
+latest useful complete native raw, one core cache and protected apps remain about2.5GiB.

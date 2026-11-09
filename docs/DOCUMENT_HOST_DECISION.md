@@ -18,7 +18,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 | Native tabs, separate groups, carets and independent reading positions | Partial evidence; lifecycle acceptance remains open | Actual Quit/relaunch acceptance passes |
 | New counter and document links | Focused flows pass | Focused flows pass |
 | Terminal installation controls | Actual chooser/link/copy/remove/collision flow passes at `d7f410e` | Same complete focused flow passes at `d7f410e` |
-| Packaged command-line helper | Exact-source readiness fails with blank front window in full f219e25 | Warm exact-source/reuse/byte-exact Save pass at f219e25; cold verification must select inactive tabs |
+| Packaged command-line helper | Old readiness query fails in full9e99ebb; visible-document followup running | Whole warm/byte-exact Save/normal Quit/cold native-tab method1/1passes atc0c6e6f |
 | Generic text viewer and invalid encoding | Positive source/bytes pass; invalid-read handling fails in full f219e25 | Complete focused1/1passes at f219e25 |
 
 Exact source versions, run links and limitations are recorded in
@@ -64,3 +64,11 @@ source readiness with exactly overlapping windows. Verification now selects each
 document before current-window source equality in both warm/cold phases. The duplicate
 manual Open Recent implementation is also removed using documented Cocoa ownership;
 this builds locally, with latest actual-app verification pending.
+
+The complete focused native CLI flow passes1/1 atc0c6e6f in94.290seconds, including
+all strict warm and cold source/encoded-byte checks. Its final native File menu has
+one Cocoa Open Recent entry and Clear Menu; duplicate manual ownership is retired.
+The exact source also passes434/91core,652CommonMark and9arm64 executables with zero
+compiler diagnostics. Whole native41 run42653830905 is active at this source. Keep
+native36 as the fully accepted complete baseline until that run passes; physical
+Pinyin/VoiceOver/preview gates remain open because the Mac is locked.

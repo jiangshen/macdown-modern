@@ -391,6 +391,19 @@
       "compilerWarnings": 0,
       "compilerErrors": 0,
       "compact": "/private/tmp/snowfolio-validation-history/core-9e99ebb"
+    },
+    "acceptedCoreC0c6e6f": {
+      "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+      "run": 42652615632,
+      "job": 129282689732,
+      "tests": 434,
+      "suites": 91,
+      "commonMark": "652/652",
+      "arm64TestExecutables": 9,
+      "compilerWarnings": 0,
+      "compilerErrors": 0,
+      "compact": "/private/tmp/snowfolio-validation-history/core-c0c6e6f"
     }
-  }
+  },
+  "acceptedNativeCLI": "See command-line.json acceptedNativeC0c6e6f: whole actual warm/encoded Save/normal Quit/cold native-tab flow1/1passes94.290s. Original code remains until host switch/retirement gate."
 }

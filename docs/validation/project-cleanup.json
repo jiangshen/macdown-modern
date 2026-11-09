@@ -1377,6 +1377,45 @@
     "reason": "Native cold AX exposed both Cocoa and manual Open Recent menus. Installed SDK NSDocumentController.h:223 documents automatic menu creation and maximumRecentDocumentCount. Remove manual list/fixed10cap/custom async action; standard native controller owns recent opening/reuse/clear and respects the system count.",
     "local": "Shared-cache SnowfolioUI build passes, zero diagnostics; strict formatting/diff pass. Actual latest menu validation pending.",
     "fileRetired": false,
-    "reasonNoTrashFile": "Active source file remains; only duplicate implementation is removed."
+    "reasonNoTrashFile": "Active source file remains; only duplicate implementation is removed.",
+    "actualVerification": {
+      "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+      "run": 42652683272,
+      "result": "Passing complete CLI flow final File-menu AX inspected: exactly one Open Recent entry and its standard clearRecentDocuments: Clear Menu. Open/reuse content and bytes pass; no separate Open Recent click acceptance claimed."
+    }
+  },
+  "acceptedNativeCommandLineCleanup": {
+    "dateUTC": "2026-11-09T16:27:48.929406+00:00",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "allocatedBytesRemoved": 34361344,
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Complete warm/cold CLI1/1 accepted, both relevant screenshots inspected and final AX confirms one native recent menu. Compact records retained; concluded focused raw removed. Latest useful full native raw and running apps preserved."
+  },
+  "completedDuplicateFailureWrappersCleanup": {
+    "dateUTC": "2026-11-09T16:16:21.636951+00:00",
+    "items": [
+      {
+        "path": "/private/tmp/snowfolio-default-ebcad08-failed.log",
+        "allocatedBytes": 28672
+      },
+      {
+        "path": "/private/tmp/snowfolio-default-f219e25-failed.log",
+        "allocatedBytes": 28672
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-f219e25-failed.log",
+        "allocatedBytes": 28672
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-cli-2e54294-failed.log",
+        "allocatedBytes": 28672
+      },
+      {
+        "path": "/private/tmp/snowfolio-default-9e99ebb-failed.log",
+        "allocatedBytes": 28672
+      }
+    ],
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Exact complete logs already retained in compact histories; these duplicate gh failure wrappers are no longer needed."
   }
 }

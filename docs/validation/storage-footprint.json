@@ -905,5 +905,16 @@
       42199,
       85540
     ]
+  },
+  "latestCommandLineAcceptanceReview": {
+    "dateUTC": "2026-11-09T16:33:59.887385+00:00",
+    "allocatedKiB": {
+      "BuildProtectedApps": 1340476,
+      "oneCoreCache": 932476,
+      "latestUsefulAcceptedFullNativeRaw": 194620,
+      "compactValidationHistory": 130652
+    },
+    "retention": "Protected appPIDs42199/85540 still running. No temporary probe or focused/raw incoming result remains. Reuse one core cache; preserve latest complete accepted native36 raw until a new full native acceptance. Focused CLI and reading captures/findings compacted; concluded raws and duplicate wrappers removed.",
+    "limitations": "Allocated root snapshots are approximate and exclude ordinary active compiler temporary files; source/docs cleanup does not empty Trash or remove user documents."
   }
 }

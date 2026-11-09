@@ -199,7 +199,7 @@
     "status": "completed/failure",
     "result": "CLI times out obtaining matching snapshots at old compound source query, plus the same three established SwiftUI lifecycle failures. After runner restart,30other methods execute27pass/3fail in1307.178s. Entire invocation31methods.",
     "limits": "Predates public-title, actual-value matcher and generic-viewer changes. No new source failure attributed to those corrections.",
-    "evidence": "/private/tmp/snowfolio-default-ebcad08-failed.log",
+    "evidence": "/private/tmp/snowfolio-validation-history/default-ebcad08/xcodebuild.log",
     "core": "427/89,652CommonMark,8arm64,zero diagnostics accepted."
   },
   "fullF219e25": {
