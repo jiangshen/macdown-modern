@@ -10,7 +10,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 
 | Evidence | SwiftUI DocumentGroup host | Swift NSDocument host |
 | --- | --- | --- |
-| Complete accepted comparison | Latest full32 at `2e54294`:28pass/4fail (same3lifecycle failures plus invalid-read handling) | 36/36 at `2bc01b2`, no failures or skips |
+| Complete accepted comparison | Latest full32 at `c0c6e6f`:27pass/5fail (same3lifecycle cases, invalid-read handling and CLI new-file readiness) | 41/41 at `c0c6e6f`, no failures or skips |
 | Autosave and saved edit Undo | Acceptance fails | Passes, including exact encoded bytes |
 | Clean external changes after autosave | Two cases fail | Both pass |
 | Dirty conflicts and Versions | Full acceptance remains open | All conflict choices and native Versions/Restore pass |
@@ -32,7 +32,7 @@ file-watcher stack is not justified to keep DocumentGroup.
 
 Before selecting the native host as the source default:
 
-1. Pass its complete newest UI suite, including counter, URL and CLI additions.
+1. **Passed:** complete41/41 atc0c6e6f, including counter, URL, CLI, Terminal and generic-file additions.
 2. Verify the current native build physically: preview painting, active/inactive
    selection, caret, marked Pinyin composition and Undo/Redo, and VoiceOver.
 3. Recheck launch/restoration, preferences, all encoding and export contracts, and
@@ -72,3 +72,17 @@ The exact source also passes434/91core,652CommonMark and9arm64 executables with 
 compiler diagnostics. Whole native41 run42653830905 is active at this source. Keep
 native36 as the fully accepted complete baseline until that run passes; physical
 Pinyin/VoiceOver/preview gates remain open because the Mac is locked.
+
+Latest complete native acceptance is now41/41 atc0c6e6f in1844.364seconds
+(run42653830905). This supersedes native36; all36old methods remain in the41-method
+set. The exact code also passes434core/91suites,652CommonMark and9arm64 executables.
+Six relevant full-suite screenshots were inspected.58runtime warnings remain:
+57internal QoS warnings and one XCTest UTF8 string-attachment encoding warning;
+functional/pixel/byte assertions all pass. Full regular at the same source is27/32.
+
+A current native physical-check app is ready at
+/private/tmp/snowfolio-native-physical-check/Snowfolio.app (~24MB including records).
+It has not launched or installed. Codesign/arm64/resource/native-class checks pass;
+temporary486MB build intermediates were cleaned and the regular generated project
+restored. The Mac remains locked, so physical marked Pinyin, VoiceOver and native
+preview/selection gates still precede the source-default/installation decision.

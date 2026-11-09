@@ -361,5 +361,47 @@
     "visual": "Before/restored cropped window images inspected: same actual source glyph position and no crop/overlap error. Source scrollbar proportion differs with TextKit estimated total extent; zero glyph difference proves actual source reading position. Known blank hosted preview capture is not claimed fixed.",
     "scope": "Normal Quit/relaunch, independent source glyph/preview position, negative control, original UTF16LE/BOM/CRLF bytes and offscreen caret/Undo assertions all retained. Public main-screen crop avoids failing element screenshot resolution.",
     "compact": "/private/tmp/snowfolio-validation-history/native-reading-2e54294"
+  },
+  "fullNative41Accepted": {
+    "dateUTC": "2026-11-09T17:18:43.160944+00:00",
+    "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+    "run": 42653830905,
+    "job": 129286919765,
+    "executed": 41,
+    "passed": 41,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1844.364,
+    "runtimeWarnings": 58,
+    "warningBreakdown": {
+      "internalQoSPriorityInversions": 57,
+      "XCTestReadingTreeAttachmentUTF8Encoding": 1
+    },
+    "limits": "Warning causes remain unestablished; no zero-runtime-warning or release-performance claim. Missing reading tree attachment is an artifact warning; pixel measurements, screenshots and all assertions pass. Hosted blank preview capture is not accepted as physical preview painting.",
+    "reading": {
+      "sourceGlyphDifference": 0.0,
+      "negativeControlDifference": 0.9410569105691057,
+      "previewBefore": 0.35292819142341614,
+      "previewAfter": 0.35281792283058167
+    },
+    "visual": "Six key full-suite screenshots inspected: reading before/restored, CLI warm Save/cold tabs, generic text and invalid-encoding alert. Source/crops/caret/dialog fit. All41exact method results retained, including every previous36method.",
+    "coverage": "Encoded autosave/Undo, clean external reloads, all dirty-conflict choices, Versions/Restore, three actual scripting methods, tabs/carets/separate groups/independent reading positions, menus/Settings and exports, word/character counter, URL navigation/reuse, packaged CLI warm/byte-exact Save/normal Quit/cold documents, Terminal chooser/ownership/collision flow and generic text/encoding-error handling.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-c0c6e6f",
+    "raw": "/private/tmp/snowfolio-current-native-result/Test-Snowfolio-2026.11.09_16-21-27-+0000.xcresult",
+    "rawIsPartial": true,
+    "rawOmitted": "Two redundant large diagnostic blobs; complete test summaries and small result objects retained. Original full archive available on GitHub during artifact retention.",
+    "retirementProof": {
+      "dateUTC": "2026-11-09T17:08:03.317866+00:00",
+      "oldRoot": "/private/tmp/snowfolio-current-native-result",
+      "oldAcceptedMethods": 36,
+      "newAcceptedMethods": 41,
+      "allOldMethodsRetained": true,
+      "oldAllocatedBytesRemoved": 199290880,
+      "newAllocatedBytesRetained": 124583936,
+      "ownershipAndOpenFilesChecked": true,
+      "rawResult": "Latest accepted full-suite summaries/individual small result objects retained. Partial xcresult intentionally omits two large diagnostic blobs (46881777 and46344129bytes); complete original archive remains on GitHub during retention.",
+      "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+      "run": 42653830905
+    }
   }
 }

@@ -187,5 +187,15 @@
     "supersededFull34AllocatedBytesRemoved": 190341120,
     "latestFull35AllocatedBytes": 193961984,
     "ownershipAndOpenFilesChecked": true
+  },
+  "fullNative41Accepted": {
+    "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+    "run": 42653830905,
+    "executed": 41,
+    "passed": 41,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "Every original recovery method retained and passing in complete latest suite; no source-default or physical acceptance inferred.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-c0c6e6f"
   }
 }

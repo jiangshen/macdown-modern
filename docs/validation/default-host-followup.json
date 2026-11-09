@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T16:44:01.628723+00:00",
+  "dateUTC": "2026-11-09T17:18:43.160944+00:00",
   "status": "Both preceding default SwiftUI full runs fail; native host remains opt-in while its remaining acceptance gates are open.",
   "runs": [
     {
@@ -257,6 +257,26 @@
     "compact": "/private/tmp/snowfolio-validation-history/default-2e54294",
     "rangeLogTransferBytes": 653614,
     "archiveBytes": 184309398,
+    "rawDownloaded": false
+  },
+  "fullC0c6e6f": {
+    "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+    "run": 42652615632,
+    "job": 129282690231,
+    "executed": 32,
+    "passed": 27,
+    "failed": 5,
+    "skipped": 0,
+    "failures": [
+      "testBundledCommandLineOpensFilesAndDelayedPipesAcrossLaunches",
+      "testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "testCoordinatedExternalReloadAfterAutosave",
+      "testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "CLI": "Fails new-file window readiness after26.657seconds, before current source selection. Earlier2e complete regular CLI flow passed86.785s. No new focused regular rerun.",
+    "comparison": "Exact same source passes native41/41; regular retains three established lifecycle failures, invalid-read handling and this new-file readiness failure.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-c0c6e6f",
     "rawDownloaded": false
   }
 }

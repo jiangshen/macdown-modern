@@ -9,18 +9,17 @@ The patched cmark-gfm engine and measured Swift parent-tracking optimization rem
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 
-The optional native document host's complete accepted baseline is **36/36 actual-app
-methods**, no failures/skips, in 1810.693 seconds at `2bc01b2`
-([run 42588674603](https://github.com/jiangshen/snowfolio/actions/runs/42588674603)).
-It includes encoded autosave/Undo, clean reloads, all dirty-conflict choices,
-read-only Versions/Restore, three actual scripting methods, menus/Settings, exports,
-close cancellation, saved tabs/carets, separate tab groups and independent source/
-preview reading positions through normal Quit/relaunch. Six key screenshots were
-inspected. Source reading pixels match exactly even when TextKit's estimated total
-extent changes; the preview position, offscreen caret and exact encoded bytes pass.
-See [document-lifecycle.json](validation/document-lifecycle.json),
-[native-tabs.json](validation/native-tabs.json), and
-[native-recovery.json](validation/native-recovery.json).
+The optional native document host's complete accepted baseline is **41/41 actual-app
+methods**, no failures/skips, in1844.364seconds at `c0c6e6f`
+([run42653830905](https://github.com/jiangshen/snowfolio/actions/runs/42653830905)).
+All36previous methods remain; counter, URL, CLI, Terminal and generic-file additions
+are included. Encoded lifecycle/recovery/Versions, scripting, tabs/groups/reading,
+menus/Settings/exports and exact warm Save/cold CLI checks pass together. Six relevant
+screenshots were inspected.58runtime warnings remain (57internal QoS and one XCTest
+string-attachment encoding warning). These are not zero-warning/performance/release
+acceptance. Physical Pinyin/VoiceOver/native preview and selection remain open; the
+source default and installed app have not changed. See document-lifecycle.json and
+[the host decision](DOCUMENT_HOST_DECISION.md).
 
 The word/character counter replacement passes its actual-app flow in **both hosts**
 at `ece6558`, with source-only manual Render, mode selection, keyboard Undo and exact
@@ -29,14 +28,12 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `2e54294` executes32methods:
-28pass/4fail, none skipped. Its complete CLI warm/encoded Save/normal Quit/cold selected-
-document flow passes in86.785seconds. The three established autosave/reload failures
-and invalid-read error presentation failure remain. Currentc0removes the old covered-
-warm-window readiness assumption; its regular followup is active. Whole native41 at
-f219e25 was39/41; corrected focused CLI and reading now pass at their stated revisions.
-No cross-revision complete native acceptance is claimed. See
-[default-host-followup.json](validation/default-host-followup.json).
+The latest complete regular SwiftUI-host run at the same `c0c6e6f` source executes
+32methods:27pass/5fail, none skipped. The same three autosave/reload failures and
+invalid-read error presentation remain, with CLI new-file window readiness failing
+before source selection. Earlier2e54294 complete regular CLI passed86.785seconds;
+that does not establish a current complete regular acceptance. Native41passes at
+this exact source. See [default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
 [launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
@@ -3901,3 +3898,33 @@ The completed older regular2e54294 full run also accepts the complete CLI method
 cases and unsupported-read presentation. Only653614archive bytes were transferred for
 its exact complete log/method list; no duplicate full raw was downloaded. CLI is now
 accepted in both hosts at their explicit sources; whole host/physical gates remain.
+
+
+## Complete native41 accepted; current physical app prepared — 2026-11-09
+
+Whole native41/41 passes atc0c6e6f,1844.364seconds, no skips/failures. All old36methods
+are explicitly verified as a subset. Source glyph difference0.0, negative control
+0.941057 and independent preview position pass along with byte/caret/Undo guarantees.
+Six full-suite images were inspected (reading pair, CLI Save/cold, generic text/error).
+One missing UTF8 tree attachment adds to57internal QoS warnings; no runtime-warning
+cause or physical preview rendering acceptance is claimed. Complete core434/91,
+652CommonMark and9arm64 are accepted at the same exact code. Full regular27/32 still
+fails its3known lifecycle cases, invalid-read handling and CLI new-file readiness.
+
+Current native app is staged, not launched/installed, at
+/private/tmp/snowfolio-native-physical-check/Snowfolio.app. Local build-for-testing,
+strict signing verification, arm64, all3native classes/roles and resource checks pass.
+Xcode's ad-hoc debug notes are not release-hardening acceptance. The canonical regular
+workspace is restored. Only~24MB app/records remain after standardxcodebuild clean
+and removal of486313984bytes of owned temporary intermediates. Mac is locked; retain
+the existing apps/owned unsaved source and finish real Pinyin/VoiceOver/preview and
+selection checks before selecting the production host or installing/defaulting.
+
+The old199290880-byte raw36 is retired after accepting41and proving its method superset.
+Latest useful raw is124583936bytes of partial xcresult: complete test summaries and
+small objects, with two bulky diagnostic blobs omitted. Full original archive remains
+on GitHub during retention. One core cache, two protected running builds, latest raw,
+compact findings and current physical app total about2.44GiB; Trash is not emptied.
+The complete modernization goal remains active: physical host acceptance plus remaining
+plugin runtime/UI/signing, renderer/math/export/style parity, productivity, performance,
+release and progressive original-code retirement still require work.

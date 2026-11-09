@@ -916,5 +916,19 @@
     },
     "retention": "Protected appPIDs42199/85540 still running. No temporary probe or focused/raw incoming result remains. Reuse one core cache; preserve latest complete accepted native36 raw until a new full native acceptance. Focused CLI and reading captures/findings compacted; concluded raws and duplicate wrappers removed.",
     "limitations": "Allocated root snapshots are approximate and exclude ordinary active compiler temporary files; source/docs cleanup does not empty Trash or remove user documents."
+  },
+  "latestFullNative41Review": {
+    "dateUTC": "2026-11-09T17:18:43.160944+00:00",
+    "allocatedKiB": {
+      "protectedBuildApps": 1340476,
+      "oneCoreCache": 932456,
+      "latestUsefulPartialNative41Raw": 121664,
+      "compactHistory": 135148,
+      "currentNativePhysicalAppAndRecords": 24104
+    },
+    "retainedApproxGiB": 2.44,
+    "cleanup": "Old199290880-byte raw36 removed only after new41accepted and old36method subset verified; new partial124583936-byte raw retained. Current physical app staged in~24MB;486313984bytes of temporary build intermediates removed usingxcodebuild clean and owned residual cleanup. No extra current build cache remains; running old apps/source preserved.",
+    "rawLimit": "Large diagnostics deliberately omitted; full test summaries and useful small attachments retained.",
+    "trashEmptied": false
   }
 }

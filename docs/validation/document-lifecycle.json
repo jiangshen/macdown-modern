@@ -907,7 +907,7 @@
       "probeReport": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-probe-build-report.json",
       "format": "Strict changed Swift lint and diff checks pass"
     },
-    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta\u2192ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
+    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta→ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
     "limits": [
       "Exact ae2d602 nine diagnostic methods and all26actual native app methods pass; remaining feature/visual gates stay open.",
       "File byte comparison/native revert are synchronous within native file access; real app latency/large-file performance remains an open M6gate",
@@ -1166,5 +1166,47 @@
     "unexpected": "testIndependentReadingPositionsSurviveQuitAndRelaunch fails at screenshot acquisition before the bitmap unwrap: NSInternalInconsistencyException cannot determine bundle identifier for Apple ThemeWidgetControlViewService.xpc. No restoration assertion failed at this point; cause unestablished. No production workaround/skip added.",
     "coverage": "All other baseline lifecycle/recovery/script/tab methods and counter/URL/Terminal additions pass. Exact method list retained in compact build log.",
     "compact": "/private/tmp/snowfolio-validation-history/native-full-d7f410e"
+  },
+  "fullNative41Accepted": {
+    "dateUTC": "2026-11-09T17:18:43.160944+00:00",
+    "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+    "run": 42653830905,
+    "job": 129286919765,
+    "executed": 41,
+    "passed": 41,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1844.364,
+    "runtimeWarnings": 58,
+    "warningBreakdown": {
+      "internalQoSPriorityInversions": 57,
+      "XCTestReadingTreeAttachmentUTF8Encoding": 1
+    },
+    "limits": "Warning causes remain unestablished; no zero-runtime-warning or release-performance claim. Missing reading tree attachment is an artifact warning; pixel measurements, screenshots and all assertions pass. Hosted blank preview capture is not accepted as physical preview painting.",
+    "reading": {
+      "sourceGlyphDifference": 0.0,
+      "negativeControlDifference": 0.9410569105691057,
+      "previewBefore": 0.35292819142341614,
+      "previewAfter": 0.35281792283058167
+    },
+    "visual": "Six key full-suite screenshots inspected: reading before/restored, CLI warm Save/cold tabs, generic text and invalid-encoding alert. Source/crops/caret/dialog fit. All41exact method results retained, including every previous36method.",
+    "coverage": "Encoded autosave/Undo, clean external reloads, all dirty-conflict choices, Versions/Restore, three actual scripting methods, tabs/carets/separate groups/independent reading positions, menus/Settings and exports, word/character counter, URL navigation/reuse, packaged CLI warm/byte-exact Save/normal Quit/cold documents, Terminal chooser/ownership/collision flow and generic text/encoding-error handling.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-c0c6e6f",
+    "raw": "/private/tmp/snowfolio-current-native-result/Test-Snowfolio-2026.11.09_16-21-27-+0000.xcresult",
+    "rawIsPartial": true,
+    "rawOmitted": "Two redundant large diagnostic blobs; complete test summaries and small result objects retained. Original full archive available on GitHub during artifact retention.",
+    "retirementProof": {
+      "dateUTC": "2026-11-09T17:08:03.317866+00:00",
+      "oldRoot": "/private/tmp/snowfolio-current-native-result",
+      "oldAcceptedMethods": 36,
+      "newAcceptedMethods": 41,
+      "allOldMethodsRetained": true,
+      "oldAllocatedBytesRemoved": 199290880,
+      "newAllocatedBytesRetained": 124583936,
+      "ownershipAndOpenFilesChecked": true,
+      "rawResult": "Latest accepted full-suite summaries/individual small result objects retained. Partial xcresult intentionally omits two large diagnostic blobs (46881777 and46344129bytes); complete original archive remains on GitHub during retention.",
+      "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+      "run": 42653830905
+    }
   }
 }

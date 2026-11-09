@@ -1417,5 +1417,41 @@
     ],
     "ownershipAndOpenFilesChecked": true,
     "reason": "Exact complete logs already retained in compact histories; these duplicate gh failure wrappers are no longer needed."
+  },
+  "acceptedFullNative41Replacement": {
+    "dateUTC": "2026-11-09T17:08:03.317866+00:00",
+    "oldRoot": "/private/tmp/snowfolio-current-native-result",
+    "oldAcceptedMethods": 36,
+    "newAcceptedMethods": 41,
+    "allOldMethodsRetained": true,
+    "oldAllocatedBytesRemoved": 199290880,
+    "newAllocatedBytesRetained": 124583936,
+    "ownershipAndOpenFilesChecked": true,
+    "rawResult": "Latest accepted full-suite summaries/individual small result objects retained. Partial xcresult intentionally omits two large diagnostic blobs (46881777 and46344129bytes); complete original archive remains on GitHub during retention.",
+    "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+    "run": 42653830905
+  },
+  "preparedCurrentNativePhysicalApp": {
+    "source": {
+      "commit": "2fca241dff1b4d2225de849db8d9374a85f22df4",
+      "applicationCode": "c0c6e6facc704a43376f9ff6780266ac2037db75",
+      "host": "native",
+      "createdUTC": "2026-11-09T16:48:22.611414+00:00",
+      "purpose": "Current physical input/preview/VoiceOver check; do not install or change default handlers. Protect existing running physical apps and their unsaved source."
+    },
+    "app": "/private/tmp/snowfolio-native-physical-check/Snowfolio.app",
+    "status": "Built and staged, not launched/installed. Codesign deep/strict and arm64 verified; all3native document classes/roles and app resources validated. Normal generated regular project restored.",
+    "compilerDiagnostics": "Build passed; no compiler warnings/errors. Xcode notes ad-hoc signing disables runtime hardening for this debug build; this is not Developer ID/release hardening acceptance.",
+    "cleanup": {
+      "dateUTC": "2026-11-09T16:51:48.939293+00:00",
+      "path": "/private/tmp/snowfolio-native-physical-build",
+      "allocatedBuildBytesRemoved": 486313984,
+      "retainedStageAllocatedBytes": 24678400,
+      "ownershipAndOpenFilesChecked": true,
+      "standardTool": "xcodebuild clean, then remove own residual task cache",
+      "purpose": "Keep only the current signed arm64 native physical-check app and compact build/source records; no running app or user document touched.",
+      "launched": false
+    },
+    "physicalPending": "Mac locked. Preserve running apps42199/85540 and owned unsaved Physical Check. Real Pinyin candidate, VoiceOver and native preview/selection checks still needed; launch newest staged native app only when useful and after safeguarding current input."
   }
 }
