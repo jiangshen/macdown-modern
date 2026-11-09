@@ -161,5 +161,18 @@
       "compact": "/private/tmp/snowfolio-validation-history/terminal-settings-default-d7f410e",
       "physicalInstallation": false
     }
+  },
+  "createdFileTypeRegression": {
+    "dateUTC": "2026-11-09T14:10:30.976899+00:00",
+    "source": "d7f410e",
+    "regularRun": 42625848485,
+    "nativeRun": 42626855827,
+    "finding": "Both full runs fail the new-window check for --help. Regular archived AX snapshot gives full error: Snowfolio cannot open files in data format. This establishes a production type-inference defect, beyond the earlier test focus/readiness errors.",
+    "correction": "prepareFile returns whether O_CREAT|O_EXCL actually created the file. Only those newly created paths, with no already-owned document, use makeDocument(withContentsOf:ofType:) and existing Markdown UTI, then normal controller registration, window creation/display and recent-document notification. Existing files retain normal open/type/reuse handling. No custom reader/writer/Undo owner added.",
+    "SDKReference": "Installed macOS27.2 NSDocumentController.h documents these same construction/registration/window steps for the ordinary open implementation.",
+    "local": "SnowfolioUI builds with zero diagnostics in the shared cache. Actual UI test typechecks and strict changed lint/diff pass. Runtime correction pending.",
+    "testEvidence": "Fatal failure can skip deferred captures; missing-window snapshot is now attached before the assertion. All original waits, file/source/encoding/Save/cold assertions retained.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-d7f410e",
+    "limits": "No explicit CLI PNG was retained at d7f410e because the fatal assertion skipped the defer. Full UI Snapshot bplist and extracted complete error retained."
   }
 }

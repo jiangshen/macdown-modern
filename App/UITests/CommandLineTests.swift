@@ -133,7 +133,15 @@ final class CommandLineTests: XCTestCase {
     XCTAssertEqual(
       app.windows.matching(NSPredicate(format: "title == %@", file.lastPathComponent)).count, 1)
     for name in ["new.md", "--help"] {
-      XCTAssertTrue(app.windows[name].firstMatch.waitForExistence(timeout: 8), app.debugDescription)
+      let appeared = app.windows[name].firstMatch.waitForExistence(timeout: 8)
+      if !appeared {
+        // Fatal XCTest failures may skip Swift defers. Capture before asserting.
+        let image = XCTAttachment(screenshot: app.screenshot())
+        image.name = "command-line-new-file-failure"
+        image.lifetime = .keepAlways
+        add(image)
+      }
+      XCTAssertTrue(appeared, app.debugDescription)
     }
     XCTAssertEqual(try Data(contentsOf: file), originalBytes)
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("new.md")), Data())

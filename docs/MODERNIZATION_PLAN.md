@@ -3685,3 +3685,29 @@ click fails, plus the same three lifecycle cases. After runner restart, its othe
 29 methods report26 passes/3 failures in1492.530s. This predates the test corrections.
 Its job took28m56s; the new complete job has35 minutes (native full45 minutes) to
 include Terminal coverage, retaining every behavioral timeout and assertion.
+
+
+## CLI extensionless-file type correction — 2026-11-09
+
+Both complete `d7f410e` runs expose a production failure: the newly created literal
+`--help` path is inferred as generic data and rejected. The archived regular-host
+UI Snapshot contains the full error. The opener now uses the existing Markdown
+type only for paths its exclusive create actually created, retaining normal native
+construction, controller registration, windows and recent-document notification.
+Existing files still use ordinary opening/type inference/reuse. Shared-cache build,
+UI-test typecheck and strict lint/diff pass; actual correction acceptance is pending.
+The missing-window screenshot is captured before its fatal assertion.
+
+The full regular invocation has the CLI failure plus the same three lifecycle
+failures. Its30other methods report27pass/3fail in1261.178s. Full native has the
+CLI failure plus one unexpected screenshot framework exception: Apple’s
+ThemeWidgetControlViewService.xpc bundle identifier cannot be determined while
+acquiring the reading-position screenshot. Its39other methods report38pass/1fail
+in1539.739s. No restoration assertion failed there, and no cause, app workaround
+or skip is claimed. The complete native36 baseline remains the accepted full gate.
+
+The plug-in Foundation probe also confirms metadata architecture scanning leaves
+locally authored code unloaded; explicit load obtains its principal class. Swift6
+NSObject.Type construction compiles normally. Neither user plug-in directory
+exists; no third-party plug-in was loaded or installed. Invocation/host/release
+compatibility remains open. Current CLI regression takes priority.

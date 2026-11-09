@@ -183,5 +183,13 @@
     "CLIRevision": "Predates2cadbd8 Window-menu and6d0d679 readiness-order corrections. No failure attributed to those later corrections.",
     "core": "success; source core unchanged from417/87+652accepted36230c1.",
     "evidence": "/private/tmp/snowfolio-default-8b1b28f-failed.log"
+  },
+  "fullD7f410e": {
+    "run": 42625848485,
+    "job": 129189312412,
+    "source": "d7f410e",
+    "result": "CLI extensionless-file type failure plus the three established lifecycle failures. After runner restart,30other methods execute27pass/3fail in1261.178s. Terminal Settings passes in the complete run. This is31methods total, not30.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-d7f410e",
+    "correction": "Explicit Markdown type only for newly created CLI paths; runtime followup pending."
   }
 }

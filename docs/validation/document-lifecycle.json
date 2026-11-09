@@ -1157,5 +1157,14 @@
     "finding": "The same three established SwiftUI lifecycle failures; no new default-host failure. No host/install/release/handler switch.",
     "compact": "/private/tmp/snowfolio-validation-history/default-ece6558",
     "runtimeWarnings": 44
+  },
+  "fullNativeD7f410e": {
+    "run": 42626855827,
+    "job": 129192737816,
+    "source": "d7f410e",
+    "result": "CLI extensionless-file error before runner restart;39other methods execute38pass/1unexpected failure in1539.739s. Total40methods:38pass/2fail. Previous complete native36 baseline remains accepted; this is not a newer full acceptance.",
+    "unexpected": "testIndependentReadingPositionsSurviveQuitAndRelaunch fails at screenshot acquisition before the bitmap unwrap: NSInternalInconsistencyException cannot determine bundle identifier for Apple ThemeWidgetControlViewService.xpc. No restoration assertion failed at this point; cause unestablished. No production workaround/skip added.",
+    "coverage": "All other baseline lifecycle/recovery/script/tab methods and counter/URL/Terminal additions pass. Exact method list retained in compact build log.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-d7f410e"
   }
 }

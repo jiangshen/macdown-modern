@@ -301,5 +301,18 @@
       "execution": "Source read only. The example posts document content as a public GitHub Gist, so it was not built, loaded or run."
     },
     "next": "Implement metadata-only discovery/architecture checks and explicit user-driven loading. Use a local non-network fixture with the same selector contract to verify one-time initialization, names, BOOL run and native document source access; preserve original plugin code until accepted."
+  },
+  "pluginBundleFoundationProbe": {
+    "dateUTC": "2026-11-09T14:10:30.979021+00:00",
+    "installed": "MacDown and Snowfolio PlugIns folders both absent on recheck; no third-party code loaded.",
+    "fixture": "Only locally authored Swift/Foundation fixture compiled as an arm64 dylib in a standard .plugin bundle. Before inspection: isLoaded=false,class absent. After executableArchitectures=[16777228]: isLoaded=false,class absent. Explicit first-party load then succeeds and returns principalClass.",
+    "construction": "Swift6 NSObject.Type.init() independently typechecks; no unsafe constructor dispatch is needed. Legacy BOOL run invocation boundary not yet implemented/tested.",
+    "references": [
+      "https://developer.apple.com/documentation/foundation/bundle/executablearchitectures",
+      "https://developer.apple.com/documentation/foundation/bundle/principalclass",
+      "https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.security.cs.disable-library-validation"
+    ],
+    "releaseLimit": "Apple documents matching-team/Apple signatures under normal library validation. Third-party release loading needs an intentional supported runtime configuration; no app entitlement changed by this probe.",
+    "GistIt": "Read-only maintainer example remains unbuilt/unrun because it posts public Gists. No external requests or plugin installation from this probe."
   }
 }
