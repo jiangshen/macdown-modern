@@ -512,6 +512,70 @@ struct NativeScrollTests {
       shortened.editor.selectedRange().location <= (shortened.editor.string as NSString).length)
   }
 
+  @Test(
+    "Wrapped CRLF source restores the same visible glyph coordinates",
+    arguments: [2100.0, 2104.0, 2112.0])
+  func wrappedSourceRestoration(y: Double) async throws {
+    let source =
+      "# Independent reading positions\r\n\r\n"
+      + (1...160).map {
+        "Paragraph \($0) 中文 👩‍💻 e\u{301}. A separate reading checkpoint in both panes.\r\n\r\n"
+      }.joined()
+    func shape(_ fixture: Fixture) throws {
+      fixture.scroll.scrollerStyle = .legacy
+      fixture.scroll.autohidesScrollers = false
+      fixture.sourceWindow.setContentSize(NSSize(width: 407, height: 588))
+      fixture.editorCoordinator.highlighter.update(
+        syntax: nil, revision: nil, enabled: false,
+        font: try #require(NSFont(name: "Menlo-Regular", size: 14)),
+        document: fixture.document)
+      fixture.scroll.layoutSubtreeIfNeeded()
+      fixture.editor.setFrameSize(NSSize(width: fixture.scroll.contentSize.width, height: 588))
+      let manager = try #require(fixture.editor.textLayoutManager)
+      manager.ensureLayout(for: try #require(manager.textContentManager?.documentRange))
+      fixture.editor.sizeToFit()
+    }
+    func glyphY(_ fixture: Fixture, offset: Int) throws -> CGFloat {
+      let manager = try #require(fixture.editor.textLayoutManager)
+      let content = try #require(manager.textContentManager)
+      let location = try #require(
+        content.location(content.documentRange.location, offsetBy: offset))
+      var line: CGRect?
+      manager.enumerateTextSegments(
+        in: NSTextRange(location: location), type: .standard, options: []
+      ) {
+        _, rect, _, _ in
+        line = rect
+        return false
+      }
+      return try #require(line).minY + fixture.editor.textContainerOrigin.y
+        - fixture.editor.visibleRect.minY
+    }
+    let original = try Fixture(source: source)
+    defer { original.close() }
+    try shape(original)
+    original.scrolling.sourceEditedOrNavigated()
+    original.scroll.contentView.scroll(to: CGPoint(x: 0, y: y))
+    let saved = try #require(original.scrolling.captureSource())
+    let beforeY = try glyphY(original, offset: saved.offset)
+    let restored = try Fixture(source: source, sourceData: JSONEncoder().encode(saved))
+    defer { restored.close() }
+    try shape(restored)
+    let selection = NSRange(location: 2, length: 3)
+    restored.editor.setSelectedRange(selection)
+    try await waitFor("wrapped source logical restoration") {
+      restored.scrolling.captureSource()?.offset == saved.offset
+    }
+    let afterY = try glyphY(restored, offset: saved.offset)
+    let actual = try #require(restored.scrolling.captureSource())
+    #expect(
+      abs(afterY - beforeY) <= 1,
+      "requestedY=\(y), saved=\(saved), actual=\(actual), glyphY=\(beforeY)→\(afterY)")
+    #expect(restored.editor.string == source && restored.document.text == source)
+    #expect(restored.document.revision == 0 && !restored.undo.canUndo)
+    #expect(restored.editor.selectedRange() == selection)
+  }
+
   @Test("Independent preview position survives reopening and a local-resource context reload")
   func previewRestoration() async throws {
     let source = (1...150).map { "## Section \($0)\n\n> [!NOTE]\n> 内容 😀\n\n- One\n  - Two\n\n" }

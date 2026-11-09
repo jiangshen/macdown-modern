@@ -1,0 +1,29 @@
+{
+  "dateUTC": "2026-11-09T19:26:39.505273+00:00",
+  "status": "Exact12pt source drift reproduced and corrected locally; real app and complete new-source acceptance pending.",
+  "baselineFailure": {
+    "source": "33a229c",
+    "run": 42680308706,
+    "actualSourceGlyphDifference": 0.9464285714285714,
+    "previewBefore": 0.35292819142341614,
+    "previewAfter": 0.35281792283058167
+  },
+  "cause": "NSTextView nearest insertion anchor can precede the viewport by more than one typographic segment during wrapping or paragraph gaps. Capture capped the normalized displacement at1.0, so saved and restored logical offsets/fractions compared equal while source glyphs moved12pt.",
+  "change": "Keep every finite nonnegative displacement; retain existing JSON field/old0..1positions. Reject nonfinite computed coordinates before scrolling. Source/selection/Undo/file bytes are not part of this state.",
+  "regression": {
+    "fixture": "407x588legacy-scroller source; Menlo14;160wrapped paragraphs with CRLF, Chinese, compound emoji and combining accent.",
+    "positions": [
+      2100,
+      2104,
+      2112
+    ],
+    "negative": "Original capture/validation with corrected test fixture fails exactly1issue/0.465s: glyphY-28\u2192-16at2100, offset3134/fraction1beforeandafter. Selection invariant passes.",
+    "after": "2restoration checks pass0.571s. All12NativeScrollTests pass7.112s, including linked input authority, deferred load, light/dark drawing, focus, corrupt scene data and document shortening.",
+    "glyphTolerancePoints": 1,
+    "selection": "Explicit2,3range preserved; native source/revision/Undo invariants retained.",
+    "format": "Strict format and diff checks pass; no compiler diagnostics."
+  },
+  "realApp": "Not yet verified; original pixel0.05/two-pixel alignment/negative control and exact source/Undo/encoded-byte checks remain unchanged.",
+  "compact": "/private/tmp/snowfolio-validation-history/source-reading-displacement",
+  "storage": "Current core cache reused; only small logs/new screenshots at existing fixed paths. No new app build or installed/default-handler change."
+}

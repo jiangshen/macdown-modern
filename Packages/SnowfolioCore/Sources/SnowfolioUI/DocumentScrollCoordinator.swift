@@ -4,10 +4,13 @@ import SwiftUI
 
 struct SourceReadingPosition: Codable, Equatable {
   let offset: Int
+  // Displacement from the insertion segment in units of its typographic height.
+  // A wrapped line or paragraph gap can put the viewport more than one segment
+  // below the nearest insertion anchor; retaining that displacement avoids drift.
   let fraction: Double
   let atTop: Bool
   let atBottom: Bool
-  var isValid: Bool { offset >= 0 && fraction.isFinite && (0...1).contains(fraction) }
+  var isValid: Bool { offset >= 0 && fraction.isFinite && fraction >= 0 }
 }
 
 /// UI-only per-document coordination. It owns no text, file I/O, selection or undo.
@@ -273,7 +276,7 @@ public final class DocumentScrollCoordinator: NSObject {
       editor.characterIndexForInsertion(
         at: NSPoint(x: editor.textContainerInset.width + 1, y: visible.minY + 1)), in: editor)
     let rect = caretRect(at: offset, in: editor)
-    let fraction = rect.map { min(1, max(0, (visible.minY - $0.minY) / $0.height)) } ?? 0
+    let fraction = rect.map { max(0, (visible.minY - $0.minY) / $0.height) } ?? 0
     return SourceReadingPosition(
       offset: offset, fraction: fraction, atTop: clip.bounds.minY <= 0.5,
       atBottom: maximum > 0.5 && clip.bounds.minY >= maximum - 0.5)
@@ -305,6 +308,7 @@ public final class DocumentScrollCoordinator: NSObject {
     guard reading.atTop || reading.atBottom || rect != nil else { return false }
     let maximum = maximumScroll(in: clip)
     let lineY = rect.map { $0.minY + reading.fraction * $0.height } ?? 0
+    guard lineY.isFinite else { return false }
     let y = reading.atTop ? 0 : reading.atBottom ? maximum : lineY
     clip.scroll(to: NSPoint(x: clip.bounds.minX, y: min(maximum, max(0, y))))
     editor.enclosingScrollView?.reflectScrolledClipView(clip)

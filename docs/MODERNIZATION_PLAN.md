@@ -4103,3 +4103,22 @@ all41accepted method results, screenshots, exact failure measurements and Window
 spindump. Only the latest unresolved reading partial raw remains. This cycle also
 removed standalone proof cache and duplicate diagnostic exports after ownership/open-
 file checks. Compact evidence and protected running apps remain; Trash was not emptied.
+
+
+## Source reading displacement correction — 2026-11-09
+
+A407×588Menlo14fixture with wrapped Unicode/CRLF paragraphs reproduces the actual
+12point source shift. The nearest insertion anchor can precede the viewport by
+more than one typographic segment. Clamping its normalized displacement to1.0
+loses the extra distance; saved/restored logical coordinates can still compare equal.
+The production coordinator now retains finite nonnegative displacement and refuses
+nonfinite computed scroll coordinates. Existing saved0..1positions decode unchanged.
+
+The regression tests2100/2104/2112point positions, unchanged source/revision/Undo
+and an explicit preserved selection. Original capture/validation fails exactly one
+glyph-coordinate issue in0.465s, -28→-16at2100. After correction, both restoration
+checks pass0.571s; all12scrolling checks pass7.112s, including linked gestures, deferred
+load, light/dark drawing and shortened documents. Strict format/diff and compiler
+checks are clean. Actual-app quit/relaunch and complete new-source acceptance are
+next; all existing pixel/source/Undo/encoded-byte protections remain unchanged.
+See [source-reading-displacement.json](validation/source-reading-displacement.json).
