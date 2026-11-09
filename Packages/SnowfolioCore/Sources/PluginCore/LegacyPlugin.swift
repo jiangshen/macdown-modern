@@ -1,9 +1,22 @@
 import Foundation
 import ObjectiveC
 
-public enum PluginInvocationError: Error, Equatable, Sendable {
+public enum PluginInvocationError: Error, Equatable, Sendable, LocalizedError {
   case invalidBundle, incompatibleArchitecture, missingPrincipalClass
   case invalidSignature(String)
+
+  public var errorDescription: String? {
+    switch self {
+    case .invalidBundle:
+      String(localized: "This is not a valid native plug-in bundle.")
+    case .incompatibleArchitecture:
+      String(localized: "This plug-in is not compatible with Apple silicon.")
+    case .missingPrincipalClass:
+      String(localized: "The plug-in does not provide a supported principal class.")
+    case .invalidSignature(let callback):
+      String(localized: "The plug-in’s “\(callback)” callback has an unsupported signature.")
+    }
+  }
 }
 
 /// Explicit execution boundary for the original optional name/initialization and

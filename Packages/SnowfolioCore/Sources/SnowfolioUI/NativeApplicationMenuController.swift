@@ -32,6 +32,7 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
   private let windows = NSMenu(title: String(localized: "Window"))
   private let help = NSMenu(title: String(localized: "Help"))
   private var settings: SettingsWindowController?
+  private let plugins = NativePluginMenuController()
 
   public override convenience init() { self.init(preferences: NativeDocumentPreferences.shared) }
 
@@ -54,6 +55,7 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
     NSApp.servicesMenu = services
     NSApp.windowsMenu = windows
     NSApp.helpMenu = help
+    plugins.refresh()
   }
 
   private func attach(_ menu: NSMenu, title: String) {
@@ -183,6 +185,11 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
     attach(
       NSHostingMenu(rootView: NativeViewMenu(focus: focus, preferences: preferences)),
       title: String(localized: "View"))
+    let pluginItem = NSMenuItem(
+      title: String(localized: "Plug-ins"), action: nil, keyEquivalent: "")
+    pluginItem.setAccessibilityIdentifier("pluginMenu")
+    pluginItem.submenu = plugins.menu
+    mainMenu.addItem(pluginItem)
     attach(windows, title: String(localized: "Window"))
     item(windows, String(localized: "Minimize"), #selector(NSWindow.performMiniaturize(_:)), "m")
     item(windows, String(localized: "Zoom"), #selector(NSWindow.performZoom(_:)))

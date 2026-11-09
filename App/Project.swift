@@ -143,6 +143,17 @@ let project = Project(
       settings: .settings(base: ["ENABLE_HARDENED_RUNTIME": "YES"])
     ),
     .target(
+      name: "SnowfolioPluginFixture",
+      destinations: .macOS,
+      product: .bundle,
+      bundleId: "local.snowfolio.tests.plugin-fixture",
+      deploymentTargets: .macOS("27.0"),
+      infoPlist: .extendingDefault(with: [
+        "NSPrincipalClass": "SnowfolioPluginFixture"
+      ]),
+      sources: ["TestFixtures/PluginFixture.swift"]
+    ),
+    .target(
       name: "SnowfolioUITests",
       destinations: .macOS,
       product: .uiTests,
@@ -153,7 +164,21 @@ let project = Project(
       ]),
       sources: ["UITests/**"],
       entitlements: .dictionary(uiTestEntitlements),
-      dependencies: [.target(name: "Snowfolio")],
+      scripts: [
+        .post(
+          script: """
+            set -euo pipefail
+            /usr/bin/ditto "$BUILT_PRODUCTS_DIR/SnowfolioPluginFixture.bundle" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/SnowfolioPluginFixture.bundle"
+            """,
+          name: "Bundle first-party plug-in test fixture",
+          inputPaths: [
+            "$(BUILT_PRODUCTS_DIR)/SnowfolioPluginFixture.bundle/Contents/MacOS/SnowfolioPluginFixture"
+          ],
+          outputPaths: [
+            "$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/SnowfolioPluginFixture.bundle/Contents/MacOS/SnowfolioPluginFixture"
+          ])
+      ],
+      dependencies: [.target(name: "Snowfolio"), .target(name: "SnowfolioPluginFixture")],
       settings: .settings(
         base: nativeDocumentHost
           ? [

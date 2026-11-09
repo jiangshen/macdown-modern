@@ -42,6 +42,7 @@ on:
           - native-terminal-settings
           - generic-documents
           - native-generic-documents
+          - native-plugins
           - native-document-scripting
           - native-document-recovery
           - document-tab-creation
@@ -121,6 +122,9 @@ jobs:
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testPeriodicDirtyConflictSaveAnywayKeepsExternalVersion \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testPeriodicDirtyConflictSaveAsKeepsBothFiles \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testNativeVersionsBrowseAndRestoreExactPreviousBytes
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-plugins ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/PluginTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
             TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentScriptingTests

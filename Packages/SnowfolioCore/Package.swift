@@ -45,7 +45,7 @@ let package = Package(
       name: "SnowfolioUI",
       dependencies: [
         "DocumentCore", "EditorCore", "MarkdownCore", "RenderingCore", "PreferencesCore",
-        "ExportCore", "EmojiCore", "CodeHighlightCore",
+        "ExportCore", "EmojiCore", "CodeHighlightCore", "PluginCore",
       ]),
     .testTarget(name: "DiagramCoreTests", dependencies: ["DiagramCore"]),
     .testTarget(name: "ExportCoreTests", dependencies: ["ExportCore", "MarkdownCore"]),

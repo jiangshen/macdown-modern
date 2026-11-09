@@ -3949,3 +3949,32 @@ marked-composition acceptance is claimed. Existing apps/unsaved input are preser
 The existing core cache was reused (~934MB); no new build/result directory or bulky
 artifact was created. Only a compact log/source record is retained for this increment.
 No installation, default-handler, app-security or original-loader change occurred.
+
+
+## Native plug-in menu and explicit execution — 2026-11-09
+
+The native host now exposes a Plug-ins menu backed by metadata-only discovery in
+modern/legacy support folders. Discovery creates nothing and invokes no callbacks.
+Incompatible/malformed bundles remain visible and disabled. Async refresh stores
+inventory for the next menu update. Explicit Open Plug-ins Folder creates only the
+modern directory. First Run requires a native trust sheet before loading any code;
+then PluginSession retains the runtime name, initialization and run state. Invocation
+restores the originating document focus; failures/false returns show normal alerts.
+
+A first-party Swift bundle is built only for the test runner, not Snowfolio.app. The
+new actual-app workflow checks discovery/cancel/refresh nonexecution, incompatible
+rows, one initialization, repeated runs, shared current document/source/fileURL,
+Undo/Redo and exact encoded Save, then a false-return error. Local native build for
+testing passes19.2s without compiler diagnostics; final shared UI builds1.61s, focused
+PluginCore9/9/3suites and strict lint/diff pass. Runtime acceptance remains pending.
+
+Apple documents a process-wide library-validation exception for plug-ins from other
+developers. An owned current-production-code hardened executable proves strict load
+fails3588 and the sole exception permits the expected true,true,false fixture results.
+Automatic approval review rejected applying that entitlement to native Snowfolio
+because explicit user approval of its target/release security scope is absent. No
+app entitlement was changed; exact proposal/risk and primary guidance are recorded in
+PLUGIN_COMPATIBILITY.md. The asynchronous approval question is pending. Continue
+unaffected implementation/tests, but do not apply or indirectly bypass the exception.
+Native physical host acceptance, supported release signing, original-loader retirement
+and the full modernization remain open.

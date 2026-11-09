@@ -428,5 +428,37 @@
     },
     "compact": "/private/tmp/snowfolio-validation-history/plugin-session",
     "limits": "No user bundle executed, menu wired, app entitlement changed, installation/default-handler change or original-loader retirement. Host physical input/preview/VoiceOver gates remain pending; Mac locked at latest check."
+  },
+  "nativePluginMenu": {
+    "dateUTC": "2026-11-09T17:42:49.860577+00:00",
+    "status": "Implemented; local compile and focused core acceptance only. Actual native UI workflow and release signing remain pending.",
+    "behavior": "Native menu inventories modern/legacy folders without execution or creation; explicit folder opening; disabled Intel/unsupported/invalid rows; cached async refresh without mutating tracking menus; first-run trust sheet, session reuse, restored document focus, normal errors and restart guidance.",
+    "localValidation": {
+      "pluginTests": "9/9 in3suites",
+      "finalSnowfolioUITargetBuildSeconds": 1.61,
+      "nativeAppBuildForTestingSeconds": 19.2,
+      "appBuildCompilerWarnings": 0,
+      "appBuildCompilerErrors": 0,
+      "strictFormat": "pass",
+      "diffCheck": "pass",
+      "fixtureIsolation": "Compiled fixture is present only in test products/test-runner resource bundle, absent from Snowfolio.app."
+    },
+    "actualAppMethod": "PluginTests/testExplicitPluginRunRetainsStateAndPreservesNativeUndoAndEncodedSave",
+    "runtimePending": "Native actual-app fixture verifies no callbacks at discovery/cancel/refresh, loaded runtime name, single initialization/repeated state, original shared current document/fileURL/source API, Undo/Redo, byte-exact UTF16LE/BOM/CRLF/Chinese/emoji/combining Save and false-result alert. No runtime pass claimed until run collected.",
+    "signing": {
+      "appEntitlementApplied": false,
+      "approval": "Automatic approval review rejected adding com.apple.security.cs.disable-library-validation to native Snowfolio because it weakens Hardened Runtime and user has not explicitly approved entitlement/target/release scope. Exact proposal in docs/PLUGIN_COMPATIBILITY.md; asynchronous approval question pending. Do not bypass.",
+      "standaloneProof": "Owned current-production PluginCore executable, ad-hoc runtime signature. Strict load fails3588; with only proposed exception succeeds with nonexecuting metadata, true,true,false callbacks and shared controller. Not actual-app/DeveloperID/notarization acceptance.",
+      "primarySource": "https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.security.cs.disable-library-validation",
+      "compact": "/private/tmp/snowfolio-validation-history/plugin-menu-runtime/hardened-runtime.json"
+    },
+    "thirdPartyCodeExecuted": false,
+    "originalLoaderRetired": false,
+    "appInstalled": false,
+    "sourceHashes": {
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/NativePluginMenuController.swift": "32d3c930b18d9e65f0460bbfa4d31fea7df113cccf2c9e3846ad11f84700108a",
+      "App/TestFixtures/PluginFixture.swift": "5b4431ffd5c91f186e9927a744563d48ff4b6c449a181ab2e60227ed058857b2",
+      "App/UITests/PluginTests.swift": "481873ff8433e9b26099cd135c2667ecbba3318f2592a6e53377260ead80b4de"
+    }
   }
 }
