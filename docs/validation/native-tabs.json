@@ -210,5 +210,30 @@
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42581073714",
     "scope": "All35methods includingactualseparategroups and3realscriptingmethods",
     "status": "in progress; no full acceptance claim"
+  },
+  "fullNative34Accepted": {
+    "dateUTC": "2026-11-09T07:47:11.418269+00:00",
+    "commit": "292c17f15ba57d5bed90ace1489b94b9659908ed",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42578704447",
+    "executed": 34,
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1253.0,
+    "coverage": "All preceding33methods plus initial-data/reference/error/close-saving-in method. No baseline method missing.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-292c17f",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_07-20-55-+0000.xcresult",
+    "visual": "Six major screenshots inspected: continuous mixed-list selection/aligned markers, terminalcaret, Settings, restored tabs, readonlyhistoricalsource and scriptedinitialsource. Hostedpreviewremainsblank; physicaldarkselection/caret/IME/VoiceOverunaccepted.",
+    "runtimeWarnings": {
+      "count": 50,
+      "byQoS": {
+        "Default": 18,
+        "Utility": 32
+      },
+      "attribution": "Internalpriorityinversionsremainunattributed; noM6acceptance."
+    },
+    "replacedSupersededFull33RawAllocatedBytes": 188977152,
+    "currentRetainedAllocatedBytes": 190341120,
+    "ownershipAndOpenFilesChecked": true
   }
 }

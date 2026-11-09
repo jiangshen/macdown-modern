@@ -12,15 +12,17 @@ The native host compiles35 UI methods; the default host compiles27. Existing
 AppIntents metadata-extraction warnings remain. Compilation alone is not runtime
 acceptance.
 
-The optional NSDocument host's complete accepted baseline is **33/33 actual-app
-methods, zero skips**, 1318.325s at `54237aa`
-([run42564902278](https://github.com/jiangshen/snowfolio/actions/runs/42564902278)).
-It covers document/editor/settings/export behavior plus the first two real scripting
-methods. Native encoded autosave/Undo, both clean reload paths, all three dirty
-conflict choices, Versions, menus/Settings, exact Copy HTML, close cancellation and
-saved-tab/selected-file/caret restoration pass. The complete34-method run at
-`292c17f` is still executing; it includes the initial-data scripting method.
-See [document-lifecycle.json](validation/document-lifecycle.json).
+The optional NSDocument host's complete accepted baseline is **34/34 actual-app
+methods, zero failures/skips**,1253.000s at `292c17f`
+([run42578704447](https://github.com/jiangshen/snowfolio/actions/runs/42578704447)).
+Every preceding33 method remains included, with the initial-data/reference/error/
+Close-saving-in scripting case added. Native encoded autosave/Undo, both clean
+reload paths, all dirty-conflict choices, read-only Versions/Restore, menus/Settings,
+exports, cancel-close and saved-tab/selected-file/caret restoration pass together.
+Six major screenshots inspected; continuous light mixed-list selection and aligned
+markers remain correct. The complete35-method run at `28243a6` is executing to add
+separate tab-group acceptance to that full suite. See
+[document-lifecycle.json](validation/document-lifecycle.json).
 
 Two separate native tab groups now pass an actual quit/relaunch test **1/1**, zero
 skips,175.705s at `05ed81e`
@@ -75,7 +77,7 @@ security, local automation-permission, default-host, installation, release or
 file-handler change. See [preview-paint-controls.json](validation/preview-paint-controls.json).
 
 Retain one core cache, one canonical app cache, the protected running probe and the
-latest useful fullnative33 raw result. Concluded focused downloads/recordings and
+latest useful fullnative34 raw result. Concluded focused downloads/recordings and
 obsolete successful diagnostics are removed after compact findings and relevant
 screenshots are saved. See [project-cleanup.json](validation/project-cleanup.json)
 and [storage-footprint.json](validation/storage-footprint.json).
@@ -3472,3 +3474,20 @@ Fresh28243a6 core accepted:375tests/80suites, zero compilerwarnings/errors,
 reload-observation wait pass in the complete package run. Fullnative35run42581073714
 now validates everyactualnative method together; earlier34run42578704447continues.
 No default switch/install/release or physical painting/IME/VoiceOver acceptance.
+
+
+## Full native34 accepted — 2026-11-09
+
+Exact292c17f fullactualnative34/34passes, zero failures/skips,1253.000s. Coverage
+comparison confirms every preceding33method plus initial-data/reference/error/
+Close-saving-in. Allthree scripting methods, four conflict/Versions cases, native
+autosave/reloads, tabs/restoration, editor/Settings/export methods pass together.
+Six majorimages inspected: continuous light mixed-list selection/aligned markers,
+terminalcaret, Settings, restoredtabs, readonlyhistoricalsource and initialsource.
+Hosted preview is still blank; physicalpreview/darkselection/caret/IME/VoiceOver
+remain unaccepted. Fiftyinternal priority warnings (18Default/32Utility) remain
+unattributed. Fullnative35 at28243a6 continues for separate groups in the full suite.
+
+The inspected34raw replaces the superseded33raw after source/ownership/open-file
+checks, with compact records retained. One useful fullraw remains,190341120bytes.
+No app install/default host/file-handler change or coupled legacy retirement.
