@@ -28,8 +28,13 @@ final class MarkdownMath {
   private var runs: [Int: Int] = [:]
   private var inlineClosers: [Int] = []
   private var displayClosers: [Int] = []
-  private var legacyOpeners: Set<Int> = []
-  private var legacyClosers: [Int] = []
+  private struct Bracket: Hashable {
+    let backslashes: Int
+    let display: Bool
+    var width: Int { backslashes + 1 }
+  }
+  private var bracketOpeners: [Int: Bracket] = [:]
+  private var bracketClosers: [Bracket: [Int]] = [:]
 
   init(source: String, inlineDollars: Bool) throws {
     guard let native = cmark_syntax_extension_new("snowfolio_math") else {
@@ -43,7 +48,7 @@ final class MarkdownMath {
       cmark_get_default_mem_allocator(), nil,
       UnsafeMutableRawPointer(bitPattern: 36))
     chars = cmark_llist_append(
-      cmark_get_default_mem_allocator(), chars, UnsafeMutableRawPointer(bitPattern: 40))
+      cmark_get_default_mem_allocator(), chars, UnsafeMutableRawPointer(bitPattern: 92))
     cmark_syntax_extension_set_special_inline_chars(native, chars)
     cmark_syntax_extension_set_open_block_func(native) {
       ext, indented, parser, parent, input, length in
@@ -64,7 +69,7 @@ final class MarkdownMath {
     // after a multiline match; changing only the byte offset loses later lines.
     cmark_syntax_extension_set_match_inline_before_func(native) {
       ext, _, parent, character, parser in
-      guard character == 36 || character == 40, let ext, let parser, let parent,
+      guard character == 36 || character == 92, let ext, let parser, let parent,
         let state = cmark_syntax_extension_get_private(ext)
       else { return nil }
       return Unmanaged<MarkdownMath>.fromOpaque(state).takeUnretainedValue().match(
@@ -197,8 +202,8 @@ final class MarkdownMath {
     runs.removeAll(keepingCapacity: true)
     inlineClosers.removeAll(keepingCapacity: true)
     displayClosers.removeAll(keepingCapacity: true)
-    legacyOpeners.removeAll(keepingCapacity: true)
-    legacyClosers.removeAll(keepingCapacity: true)
+    bracketOpeners.removeAll(keepingCapacity: true)
+    bracketClosers.removeAll(keepingCapacity: true)
     var cursor = 0
     while cursor < count {
       let byte = bytes[cursor]
@@ -206,14 +211,28 @@ final class MarkdownMath {
         cursor += 1
         continue
       }
-      if byte == 92, cursor + 1 < count, bytes[cursor + 1] != 10, bytes[cursor + 1] != 13 {
-        cursor += 2
+      if byte == 92 {
+        let start = cursor
+        while cursor < count, bytes[cursor] == 92 { cursor += 1 }
+        let backslashes = cursor - start
+        if cursor < count, backslashes <= 2,
+          [40, 41, 91, 93].contains(bytes[cursor])
+        {
+          let marker = bytes[cursor]
+          let bracket = Bracket(backslashes: backslashes, display: marker == 91 || marker == 93)
+          if marker == 40 || marker == 91 {
+            bracketOpeners[start] = bracket
+          } else {
+            bracketClosers[bracket, default: []].append(start)
+          }
+          cursor += 1
+        } else if backslashes % 2 == 1, cursor < count,
+          bytes[cursor] != 10, bytes[cursor] != 13
+        {
+          // An odd final backslash escapes the following native character.
+          cursor += 1
+        }
         continue
-      }
-      if byte == 40 || byte == 41, cursor >= 2, bytes[cursor - 1] == 92, bytes[cursor - 2] == 92,
-        cursor < 3 || bytes[cursor - 3] != 92
-      {
-        if byte == 40 { legacyOpeners.insert(cursor) } else { legacyClosers.append(cursor) }
       }
       guard byte == 36 else {
         cursor += 1
@@ -255,19 +274,23 @@ final class MarkdownMath {
       preparedParent = parent
     }
     let start = Int(cmark_inline_parser_get_offset(parser))
-    if character == 40 {
-      guard legacyOpeners.contains(start),
-        let close = Self.first(after: start + 3, in: legacyClosers)
-      else { return nil }
-      let raw = Array(UnsafeBufferPointer(start: bytes + start + 1, count: close - start - 3))
-      let source = Self.decodeLegacy(raw)
+    if character == 92 {
+      guard let bracket = bracketOpeners[start] else { return nil }
+      let body = start + bracket.width
+      guard let close = Self.first(after: body, in: bracketClosers[bracket] ?? []) else {
+        return nil
+      }
+      let raw = UnsafeBufferPointer(start: bytes + body, count: close - body)
+      let source =
+        bracket.backslashes == 2
+        ? Self.decodeLegacy(Array(raw)) : String(decoding: raw, as: UTF8.self)
       guard
         let node = makeInline(
-          source, display: false, parser: parser,
-          startColumn: cmark_inline_parser_get_column(parser) - 2, length: close + 1 - (start - 2))
+          source, display: bracket.display, parser: parser,
+          startColumn: cmark_inline_parser_get_column(parser), length: close + bracket.width - start
+        )
       else { return nil }
-      cmark_node_unput(parent, 1)
-      cmark_inline_parser_set_offset(parser, Int32(close + 1))
+      cmark_inline_parser_set_offset(parser, Int32(close + bracket.width))
       return node
     }
     guard let width = runs[start], width <= 2, width == 2 || inlineDollars else { return nil }

@@ -337,5 +337,25 @@
     ],
     "finding": "Three autosave/reload and invalid-encoding error presentation failures persist; no complete regular acceptance.",
     "compact": "/private/tmp/snowfolio-validation-history/regular-3cf9ded"
+  },
+  "regular215ce9a": {
+    "dateUTC": "2026-11-09T21:14:17.848393+00:00",
+    "source": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+    "run": 42695103454,
+    "job": 129424745330,
+    "artifact": 13709953050,
+    "executed": 33,
+    "passed": 29,
+    "failed": 4,
+    "scope": "All33terminalmethodoutcomes read from complete xcodebuild.log; no rawxcresultdownload.",
+    "failedMethods": [
+      "DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave",
+      "DocumentTypeTests/testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "finding": "Same three regular SwiftUI-host autosave/external-reload and invalid-encoding error presentation failures persist. This is not complete regular-host acceptance and does not establish a parser/math regression.",
+    "compact": "/private/tmp/snowfolio-validation-history/regular-215ce9a",
+    "transfer": "679442of189568729artifactbytes retrieved; compactlog and all33methodresults retained. No extra raw result download."
   }
 }

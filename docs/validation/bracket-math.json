@@ -1,0 +1,78 @@
+{
+  "dateUTC": "2026-11-09T21:10:32.399260+00:00",
+  "sourceParent": "d6e39ca0a3eff0673de9f788faeeed8a4737cc6f",
+  "feature": "Standard and legacy TeX bracket delimiters",
+  "implementation": "Swift indexes single/doubled-backslash bracket runs once per native inline container. The existing native pre-token bridge owns newline advancement. Match at the opening backslash before Markdown escaping; old doubled-backslash bodies retain their existing one-pass punctuation unescaping. The math integration no longer rewinds or removes a preceding native text node.",
+  "sourceSHA256": {
+    "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownMath.swift": "6c0b6e911384e594b1324cc8d1a2bfa006ae992a3985f6f7e5341e5dd7c0f85e",
+    "Packages/SnowfolioCore/Tests/MarkdownCoreTests/MarkdownMathTests.swift": "e785aa4a59bb113fc7e2b32a42ffd7600d3ade7dc9d3de672b69b2b1ae85bc6d",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeMathTests.swift": "a8946000f1ec1ef0d91334e54ce6e3193ed662d92c335cc5489b41e6cfb58867"
+  },
+  "newSyntax": [
+    "Single-backslash inline parentheses, same-line and wrapped",
+    "Single/doubled-backslash display brackets sharing body on delimiter lines, same-line and wrapped"
+  ],
+  "compatibility": "Existing doubled-backslash parentheses, stand-alone display blocks, dollars and math fences remain. Delimiter widths must match; odd longer escapes remain native text. Math stays opt-in and bracket forms do not require the single-dollar preference.",
+  "negative": {
+    "test": "bracketEquations",
+    "failedTests": 1,
+    "issues": 2,
+    "reason": "Baseline d6e39ca yields no equation for single-backslash inline syntax."
+  },
+  "local": {
+    "tests": 452,
+    "suites": 93,
+    "seconds": 58.452,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "architectures": [
+      {
+        "target": "EditorCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "DiagramCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "MarkdownCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PluginCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "ExportCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "RenderingCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "DocumentCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PreferencesCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "SnowfolioUITests",
+        "architecture": "arm64"
+      }
+    ],
+    "focused": "All16mathmethods pass. Wrapped position matrix expands to54contexts (6delimiterforms x3newlineforms x3paragraph/list/quotecontexts). Exact TeX escapes/source ranges, following strong/math/headings/UTF16positions, disabled math, independent dollar preference and mismatched/unmatched/longer escapes pass.",
+    "native": "Four native variants (dollar/bracket xlight/dark) retain loaded fonts, visible equation geometry, MathML, disabled document JavaScript and unchanged equation DOM identity after patch. All four PNGs visually inspected. Existing PDF/export and full native package contracts pass.",
+    "boundaries": "Code spans/fences, image alt, URL destinations, paragraph/list/quote boundaries remain owned by cmark. Ten-thousand unmatched bracket openers preserve the following heading."
+  },
+  "compact": "/private/tmp/snowfolio-validation-history/bracket-math",
+  "remaining": [
+    "Wider MathJax environment/extension/reference/numbering compatibility",
+    "Current-source hosted package and complete app acceptance",
+    "Physical native preview/foreground selection, real IME and VoiceOver",
+    "M5/M6 and progressive legacy retirement"
+  ],
+  "fullGoal": "Active and incomplete. No host default, installed app, file handler or release change."
+}

@@ -25,7 +25,8 @@
     "stand-alone multiline double-dollar delimiters",
     "stand-alone display bracket delimiters, single and doubled backslashes",
     "legacy doubled-backslash inline parentheses across soft line breaks",
-    "optional single dollars across soft line breaks"
+    "optional single dollars across soft line breaks",
+    "single-backslash inline parentheses and single/doubled-backslash display brackets with body on delimiter lines, including soft line breaks"
   ],
   "preferences": {
     "enable": "htmlMathJax",
@@ -70,9 +71,7 @@
   "testIsolation": "Native suites share a nonblocking asynchronous exclusive scope for process-wide NSApplication window/focus/printing state; existing assertions/timeouts retained",
   "remainingCompatibility": [
     "Full MathJax-specific TeX/extensions",
-    "Remaining MathJax definition/environment commands, equation references and numbering",
-    "Single-backslash inline parentheses",
-    "Display bracket delimiters sharing body text across multiple lines"
+    "Remaining MathJax definition/environment commands, equation references and numbering"
   ],
   "remainingGoal": [
     "Mermaid and Graphviz",
@@ -93,5 +92,9 @@
   "wrappedMath20261109": {
     "ledger": "wrapped-math.json",
     "local": "450/93passes; both native preview PNGs inspected. Hosted current source pending."
+  },
+  "bracketMath20261109": {
+    "ledger": "bracket-math.json",
+    "local": "452/93passes, zero diagnostics, ninearm64executables; four nativepreviewPNGsinspected. Hostedcurrent-sourcepending."
   }
 }

@@ -2,8 +2,8 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted hosted core baseline: **448 package tests / 93 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `215ce9a`, with
+Current accepted hosted core baseline: **450 package tests / 93 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `d6e39ca`, with
 zero compiler errors/warnings. The corrected native reading flow passes1/1 with
 source glyph difference0.0; prior Settings and generic-file focused flows pass
 at33a229c. Native43at3cf9ded finishes42pass/1fail: the plug-in test’s
@@ -18,6 +18,14 @@ nine arm64 test executables. Light/dark native preview images were inspected. Se
 1/1 at `215ce9a` (73.370 seconds); a fresh complete native run
 [42696388379](https://github.com/jiangshen/snowfolio/actions/runs/42696388379) is pending.
 Neither focused success nor local preview checks close complete app/physical IME gates.
+
+Standard inline `\(…\)` and display `\[…\]` delimiters now also support same-line
+and wrapped body text, retaining the original doubled-backslash forms and exact source
+coordinates. The math integration no longer removes a preceding native text suffix.
+All **452 local tests / 93 suites** pass with zero compiler diagnostics and nine arm64
+executables; all four native preview variants were inspected. See
+[bracket-math.json](validation/bracket-math.json). Whole MathJax compatibility remains
+open; no coupled legacy source is retired on this narrower acceptance.
 
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -42,8 +50,8 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `3cf9ded` executes33methods:
-29pass/4fail, none skipped. Three autosave/reload failures and invalid-encoding
+The latest complete regular SwiftUI-host run at `215ce9a` executes 33 methods:
+29 pass / 4 fail (all terminal method outcomes inspected). Three autosave/reload failures and invalid-encoding
 error presentation remain. Saved-tab restoration passes here; its prior intermittent
 failure is not globally resolved. This is not complete regular acceptance. Native41
 at `c0c6e6f` remains the complete accepted native baseline. See
@@ -358,13 +366,16 @@ The current native app uses pinned **KaTeX 0.19.1** in an actor-confined JavaScr
 context. First-party orchestration and parser extension code are Swift; the maintained
 third-party engine is an explicit JavaScript exception. Expressions enter as values,
 with no DOM, file/network/native bindings, trusted TeX commands disabled, bounded macro
-expansion/size/input/output and a bounded cache. Macro definitions are isolated between
-expressions. Unsupported/malformed or oversized expressions render escaped source and
+expansion/size/input/output and a bounded cache. Standalone calls isolate definitions;
+ordered document batches share definitions only for that render, as recorded in
+[document-math-definitions.json](validation/document-math-definitions.json).
+Unsupported/malformed or oversized expressions render escaped source and
 a preview notice, without dropping the source or failing the whole document.
 
-Supported syntax: `math` fenced blocks; same-line `$$…$$`; display `$$` delimiters on
-separate lines; display `\[…\]` and the original doubled `\\[…\\]` forms on separate
-lines; the original `\\(…\\)` inline syntax; and optional same-line `$…$`. Native cmark
+Supported syntax: `math` fenced blocks, double-dollar math and optional single-dollar
+inline math, plus single/doubled-backslash inline parentheses and display brackets.
+Inline forms support soft line breaks; display bodies can share delimiter lines.
+Stand-alone display blocks retain their native block boundary handling. Native cmark
 extension hooks protect TeX punctuation before Markdown inline processing and keep the
 single native parse/AST/source-position model. Stand-alone block delimiters are matched
 against future candidates before opening, preventing an unmatched opener from swallowing
@@ -381,8 +392,8 @@ HTML. No Node, CDN or runtime download is required. The app build verifies pinne
 stylesheet/license checksums and all 20 font declarations. `Tools/vendor-katex.py`
 reproduces the assets from the integrity-pinned npm release.
 
-Validation: **156 tests in 32 suites**, seven native arm64 test executables, native
-build-for-testing, strict changed-Swift formatting, shell/Python syntax and diff checks.
+Initial validation (2026-11-06): **156 tests in 32 suites**, seven native arm64 test
+executables, native build-for-testing, strict changed-Swift formatting, shell/Python syntax and diff checks.
 Real WebKit checks load the embedded fonts, verify visible equation geometry and MathML,
 retain equation node identity across a patch, and take inspected light/dark snapshots.
 Native print-to-PDF yields a one-page document containing the equation and both surrounding
@@ -397,14 +408,21 @@ separate suites to interleave windows and produced scrolling timeouts. Tests sti
 condition-based waits and run without weakening assertions or increasing timeouts.
 
 **The math parity gate remains open.** Remaining work includes full MathJax-only extension
-compatibility, document-wide macro definitions/equation references/numbering, single-
-backslash inline delimiters, multiline inline math, and display delimiters mixed with
-body text across lines. KaTeX's supported TeX set is not identical to MathJax. Preserve
+compatibility, remaining environment commands, equation references and numbering.
+KaTeX's supported TeX set is not identical to MathJax. Preserve
 this distinction and add the required compatibility behavior before retiring the old
 MathJax target/resources. Mermaid/Graphviz, custom themes/templates and the other
 modernization requirements also remain. Direct desktop/VoiceOver/real IME acceptance is
 still pending the existing Mac unlock request. No production installation or default
 handler change is claimed. See `docs/validation/offline-math.json`.
+
+A separate MathJax 4.1.3 direct-module proof now runs offline inside JavaScriptCore:
+custom environments, reset between documents, and both forward/backward explicit
+references pass without rewriting TeX. KaTeX remains faster in the narrow uncached
+ordinary-formula comparison. This is a non-shipping evaluation; resource/bounds,
+streaming/cache, exports, accessibility/layout and broader package compatibility must
+be accepted before integration. See [mathjax-candidate.json](validation/mathjax-candidate.json).
+The disposable npm source/cache/build folder was removed after compact evidence capture.
 
 ### M4 — Native workspace and design
 

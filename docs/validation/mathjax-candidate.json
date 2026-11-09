@@ -1,0 +1,50 @@
+{
+  "dateUTC": "2026-11-09T21:10:32.399260+00:00",
+  "status": "Non-shipping offline evaluation only; no new production dependency or fallback integration.",
+  "candidate": "MathJax4.1.3, original TeXfont4.1.3, esbuild0.28.2; exactresolvedversions/integrities in lockfile",
+  "packages": {
+    "node_modules/@mathjax/mathjax-tex-font": {
+      "version": "4.1.3",
+      "integrity": "sha512-9B78brBEmmAwyumaREIyM1gF2HgDamDIXA36UyeXWxX7XrpLdmoSB5NLIf/c6tEA4L6xNrIdMxfgY6YX/kcSNw==",
+      "resolved": "https://registry.npmjs.org/@mathjax/mathjax-tex-font/-/mathjax-tex-font-4.1.3.tgz"
+    },
+    "node_modules/@mathjax/src": {
+      "version": "4.1.3",
+      "integrity": "sha512-rIrWquuBSoJuoMBdC/1qD+AUHTorlccPicoVy6P2xbUgnuDBpCcpbHtOAsB8L3hdCHtNBg92lF8e3Fz+pkcQbw==",
+      "resolved": "https://registry.npmjs.org/@mathjax/src/-/src-4.1.3.tgz"
+    },
+    "node_modules/esbuild": {
+      "version": "0.28.2",
+      "integrity": "sha512-HKVLS8dvII+xoKW9kmqxbRKrnWEXfJJr/FZhhJmiqIB0e053QNYFqOBouTMO/k5sID4MvCiUCvv8b9M4h32wIA==",
+      "resolved": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.2.tgz"
+    }
+  },
+  "sources": [
+    "https://docs.mathjax.org/en/latest/server/direct.html",
+    "https://docs.mathjax.org/en/latest/input/tex/extensions/newcommand.html",
+    "https://katex.org/docs/support_table.html"
+  ],
+  "verified": [
+    "Self-contained1.7MiB direct-module bundle executes in native arm64 JavaScriptCore with no Node/native DOM/file/network bindings and no dynamic loader",
+    "Custom newenvironment/renewenvironment with arguments persists within a source-ordered batch and resets with a fresh document",
+    "Document-wide native MathDocument.compile resolves both backward and forward explicit label/eqref references without a source rewrite",
+    "bbox color produces inert SVG/MathML in the evaluated package subset",
+    "Unknown href command rejected and recursive macro fails at maxMacros1000"
+  ],
+  "probeLimits": [
+    "Only base/ams/newcommand/bbox/color packages evaluated; does not establish all legacy MathJax compatibility",
+    "Raw candidate SVG/MathML is not yet integrated with preview/export/resource policy, output/geometry limits, document ID scoping, error/cache/streaming/cancellation rules or accessibility layout",
+    "An initial per-expression doc.convert prototype left forwardrefs as???; final document-wide compile resolves them. Only final bundle/source/results/timing retained."
+  ],
+  "bundleBytes": 1821886,
+  "bundleSHA256": "48f87cbde3425618a6e4b42f79bace70208128895215987c4d29b2c564797de3",
+  "performance": {
+    "scope": "Unoptimized arm64 Swift probe, same JavaScriptCore host, 24 ordinary display formulas, 10 warm ordered document batches, no application caches; MathJax creates fresh document/TeX/SVG objects per batch; KaTeX uses a fresh macro object. Different SVG+MathML versus HTML+MathML outputs. Diagnostic only, not whole-app or release acceptance.",
+    "mathjaxMedianSeconds": 0.01785600185394287,
+    "katexMedianSeconds": 0.004234015941619873,
+    "limit": "Narrow fresh-batch diagnostic with different outputs and no app caches; not whole-app/release acceptance or feature-complete library substitution proof."
+  },
+  "direction": "Keep KaTeX for ordinary supported formulas. Evaluate document-wide MathJax fallback for unsupported compatibility syntax; fallback must preserve source order/definitions/forwardrefs and pass existing resource, bounds, export, layout and document isolation contracts before shipping. Do not hand-write a TeX interpreter to emulate missing environments.",
+  "compact": "/private/tmp/snowfolio-validation-history/mathjax-candidate",
+  "cleanup": "Disposable npm source/cache/binary retired after compact source, lockfile, bundle/notices and results were captured; only the compact prototype remains for the active compatibility investigation."
+}

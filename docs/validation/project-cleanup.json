@@ -1694,5 +1694,41 @@
     "retention": "One current core cache, current app cache and protected probe/staged app. No raw xcresult retained. Compact logs/reports/source hashes and inspected math/plug-in screenshots retained; no new app build cache.",
     "preserved": "User documents, both running app bundles, source and uncommitted work preserved. Trash not emptied.",
     "note": "Allocated scoped sizes are not unique physical APFS usage or a whole-disk audit."
+  },
+  "bracketMathCycle": {
+    "dateUTC": "2026-11-09T21:12:21.693249+00:00",
+    "removed": [
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-FEC4E301-A168-4B9C-AFF8-9A56E6BA6B16",
+        "allocatedFileBytesRemoved": 45056,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-BAFBAC76-D046-42C7-9C94-2BAA8BDA04D7",
+        "allocatedFileBytesRemoved": 73728,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-F7618585-7C55-4908-B3A6-45E46A0F9F9D",
+        "allocatedFileBytesRemoved": 1257472,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-mathjax-evaluation",
+        "allocatedBytesRemoved": 183484416,
+        "ownershipAndOpenFilesChecked": true,
+        "retained": "Small final source/lockfile, self-contained bundle/legal notices and measured compatibility results only; no npm cache/source/install/binary retained."
+      }
+    ],
+    "scopedAllocatedBytes": {
+      "/private/tmp/snowfolio-native-theme-validation/build": 979337216,
+      "/Users/caden/Dev/snowfolio/Build/Snowfolio": 884891648,
+      "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe": 487702528,
+      "/private/tmp/snowfolio-validation-history": 177836032
+    },
+    "protectedRunningApps": "42199 Snowfolio\n85540 DocumentHostPro",
+    "retained": "One current core cache; existing running app/probe bundles preserved. No raw xcresult. Compact452logs/reports/hashes and four reviewedPNGs; finalMathJaxprototype bundle/source/notices/results retained solely for active compatibility integration.",
+    "preserved": "User documents, source/uncommitted work, installed app and handlers untouched. Trash not emptied.",
+    "note": "Scoped allocated size is not unique APFS physical disk usage."
   }
 }

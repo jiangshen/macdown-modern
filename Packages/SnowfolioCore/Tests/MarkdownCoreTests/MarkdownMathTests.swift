@@ -285,6 +285,7 @@ struct MarkdownMathTests {
     options.inlineDollarMath = true
     for (opening, closing, display) in [
       ("$", "$", false), ("$$", "$$", true), (#"\\("#, #"\\)"#, false),
+      (#"\("#, #"\)"#, false), (#"\["#, #"\]"#, true), (#"\\["#, #"\\]"#, true),
     ] {
       for (prefix, continuation) in [("", ""), ("> ", "> "), ("- ", "  ")] {
         let before = prefix + "😀 Before "
@@ -347,6 +348,74 @@ struct MarkdownMathTests {
       let parsed = try await MarkdownProcessor().render(source, options: options)
       #expect(parsed.mathExpressions == 0, "\(source.debugDescription)")
     }
+  }
+
+  @Test("Bracket delimiters preserve TeX escapes and are independent of single-dollar preference")
+  func bracketEquations() async throws {
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    let processor = MarkdownProcessor()
+    for (opening, closing, display, legacy) in [
+      (#"\("#, #"\)"#, false, false), (#"\["#, #"\]"#, true, false),
+      (#"\\("#, #"\\)"#, false, true), (#"\\["#, #"\\]"#, true, true),
+    ] {
+      let tex = #"\left\{\frac{a_b}{c}\right\}"#
+      let body = legacy ? tex.replacingOccurrences(of: #"\"#, with: #"\\"#) : tex
+      let source = "😀 Before " + opening + body + closing + " **after** $d$"
+      let result = try await processor.render(source, options: options, includeSyntax: true)
+      #expect(result.mathExpressions == 1, "\(source.debugDescription)")
+      let math = try #require(
+        result.nodes.first {
+          if case .math = $0.kind { return true }
+          return false
+        })
+      #expect(math.kind == .math(display: display))
+      #expect(math.literal == tex)
+      #expect(
+        math.range
+          == .init(
+            start: .init(line: 1, column: "😀 Before ".utf8.count + 1),
+            end: .init(
+              line: 1,
+              column: "😀 Before ".utf8.count + opening.utf8.count + body.utf8.count
+                + closing.utf8.count)))
+      #expect(result.notices.isEmpty)
+      #expect(result.html.contains("$d$"))
+      #expect(result.html.contains("<strong>after</strong>"))
+      #expect(try await processor.render(source).mathExpressions == 0)
+    }
+  }
+
+  @Test(
+    "Bracket math respects native code, alt text, destinations, unmatched delimiters and block boundaries"
+  )
+  func bracketBoundaries() async throws {
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    for (opening, closing) in [
+      (#"\("#, #"\)"#), (#"\["#, #"\]"#), (#"\\("#, #"\\)"#), (#"\\["#, #"\\]"#),
+    ] {
+      for source in [
+        "`" + opening + "a" + closing + "`",
+        "![" + opening + "a" + closing + "](image.png)",
+        opening + "a\n\nb" + closing,
+        "- " + opening + "a\n- b" + closing,
+        "> " + opening + "a\n\nb" + closing,
+        opening + "a\n```text\nb" + closing + "\n```",
+        "```text\n" + opening + "a" + closing + "\n```",
+        opening + "a", "a" + closing,
+      ] {
+        let result = try await MarkdownProcessor().render(source, options: options)
+        #expect(result.mathExpressions == 0, "\(source.debugDescription)")
+      }
+    }
+    for source in [#"\(a\\)"#, #"\\(a\)"#, #"\[a\\]"#, #"\\[a\]"#, #"\\\(a\\\)"#] {
+      #expect(try await MarkdownProcessor().render(source, options: options).mathExpressions == 0)
+    }
+    let unmatched = String(repeating: #"\( unmatched "#, count: 10_000) + "\n\n# After"
+    let result = try await MarkdownProcessor().render(unmatched, options: options)
+    #expect(result.mathExpressions == 0)
+    #expect(result.headings.first?.sourceLine == 3)
   }
 
   @Test("Long unmatched delimiters preserve text and following source positions")

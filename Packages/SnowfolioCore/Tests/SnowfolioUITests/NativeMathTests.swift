@@ -27,14 +27,21 @@ struct NativeMathTests {
 
   @Test(
     "Preview loads embedded math fonts and patches equation nodes in both appearances",
-    arguments: [false, true])
-  func preview(dark: Bool) async throws {
+    arguments: [false, true], [false, true])
+  func preview(dark: Bool, brackets: Bool) async throws {
     _ = NSApplication.shared
     var options = MarkdownRenderingOptions()
     options.math = true
     options.inlineDollarMath = true
+    let inlineOpen = brackets ? #"\("# : "$"
+    let inlineClose = brackets ? #"\)"# : "$"
+    let displayOpen = brackets ? #"\["# : "$$"
+    let displayClose = brackets ? #"\]"# : "$$"
     let source =
-      "# Equation notebook\n\nInline $E=\nmc^2$ stays with the sentence.\n\n$$\\int_0^1 x^2\\,dx=\n\\frac{1}{3}$$\n\nOffline fonts and accessible MathML."
+      "# Equation notebook\n\nInline " + inlineOpen + "E=\nmc^2" + inlineClose
+      + " stays with the sentence.\n\n" + displayOpen
+      + "\\int_0^1 x^2\\,dx=\n\\frac{1}{3}" + displayClose
+      + "\n\nOffline fonts and accessible MathML."
     let result = try await MarkdownProcessor().render(source, options: options)
     let coordinator = NativeMarkdownPreview.Coordinator()
     let web = WKWebView(
@@ -90,7 +97,11 @@ struct NativeMathTests {
     let tiff = try #require(image.tiffRepresentation)
     let bitmap = try #require(NSBitmapImageRep(data: tiff))
     let png = try #require(bitmap.representation(using: .png, properties: [:]))
-    try png.write(to: URL(filePath: "/private/tmp/snowfolio-math-\(dark ? "dark" : "light").png"))
+    try png.write(
+      to: URL(
+        filePath:
+          "/private/tmp/snowfolio-math-\(brackets ? "brackets" : "dollars")-\(dark ? "dark" : "light").png"
+      ))
   }
 
   @Test("Document definitions appear in offline preview and fresh HTML/PDF export")
