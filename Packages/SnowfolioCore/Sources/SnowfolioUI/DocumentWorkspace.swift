@@ -34,6 +34,7 @@ struct NativeDocumentWorkspace: View {
   let preferences: AppPreferences
   @Bindable var state: DocumentWorkspaceState
   var hostUndoManager: UndoManager? = nil
+  let commandContext: NativeWorkspaceCommandContext
   let openFile: @MainActor (URL) async throws -> Void
 
   var body: some View {
@@ -41,7 +42,7 @@ struct NativeDocumentWorkspace: View {
       document: document, preferences: preferences,
       sourceViewport: $state.sourceViewport, previewViewport: $state.previewViewport,
       editorSelection: $state.editorSelection, zoomPercent: $state.zoomPercent, mode: $state.mode,
-      nativeOpenFile: openFile, hostUndoManager: hostUndoManager)
+      nativeOpenFile: openFile, hostUndoManager: hostUndoManager, nativeCommands: commandContext)
   }
 }
 
@@ -51,6 +52,7 @@ private struct DocumentWorkspaceContent: View {
   let preferences: AppPreferences
   let nativeOpenFile: (@MainActor (URL) async throws -> Void)?
   let hostUndoManager: UndoManager?
+  let nativeCommands: NativeWorkspaceCommandContext?
   @Environment(\.openDocument) private var openDocument
   @Environment(\.scenePhase) private var scenePhase
   @State private var scrolling = DocumentScrollCoordinator()
@@ -85,12 +87,13 @@ private struct DocumentWorkspaceContent: View {
     sourceViewport: Binding<Data?>, previewViewport: Binding<Data?>,
     editorSelection: Binding<Data?>, zoomPercent: Binding<Int>, mode: Binding<WorkspaceMode>,
     nativeOpenFile: (@MainActor (URL) async throws -> Void)? = nil,
-    hostUndoManager: UndoManager? = nil
+    hostUndoManager: UndoManager? = nil, nativeCommands: NativeWorkspaceCommandContext? = nil
   ) {
     self.document = document
     self.preferences = preferences
     self.nativeOpenFile = nativeOpenFile
     self.hostUndoManager = hostUndoManager
+    self.nativeCommands = nativeCommands
     _sourceViewport = sourceViewport
     _previewViewport = previewViewport
     _editorSelection = editorSelection
@@ -237,6 +240,9 @@ private struct DocumentWorkspaceContent: View {
       callouts.preferences = preferences
       output.document = document
       output.preferences = preferences
+      nativeCommands?.editor = editing
+      nativeCommands?.output = output
+      nativeCommands?.zoom = zoom
     }
     .alert(
       "Couldn’t Export",

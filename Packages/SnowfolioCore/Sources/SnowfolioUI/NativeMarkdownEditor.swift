@@ -91,6 +91,11 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
     editor.usesFindBar = true
     editor.isIncrementalSearchingEnabled = true
     editor.isContinuousSpellCheckingEnabled = true
+    // Prose prediction and correction can add unrequested source/Undo edits.
+    // Preserve authored Markdown and the original default of no autocorrection.
+    editor.isAutomaticSpellingCorrectionEnabled = false
+    editor.isAutomaticTextCompletionEnabled = false
+    editor.inlinePredictionType = .no
     editor.isAutomaticQuoteSubstitutionEnabled = false
     editor.isAutomaticDashSubstitutionEnabled = false
     editor.isAutomaticTextReplacementEnabled = false

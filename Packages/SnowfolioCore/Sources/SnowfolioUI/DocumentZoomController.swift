@@ -73,6 +73,16 @@ public struct DocumentZoomCommands: Commands {
 
   public var body: some Commands {
     CommandGroup(before: .sidebar) {
+      DocumentZoomMenuContent(zoom: zoom)
+    }
+  }
+}
+
+struct DocumentZoomMenuContent: View {
+  let zoom: DocumentZoomController?
+
+  var body: some View {
+    Group {
       Button("Zoom In") { zoom?.zoomIn() }
         .keyboardShortcut("+", modifiers: [.command, .option])
         .disabled(zoom?.canZoomIn != true)

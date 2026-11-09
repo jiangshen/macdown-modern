@@ -10,11 +10,15 @@ enum NativeDocumentPreferences {
 /// the hosting controller measures that content before the native window is sized.
 @MainActor
 final class NativeDocumentWindowController: NSWindowController {
+  let commands: NativeWorkspaceCommandContext
+
   init(document: NativeMarkdownDocument, preferences: AppPreferences, state: DocumentWorkspaceState)
   {
+    let commands = NativeWorkspaceCommandContext()
+    self.commands = commands
     let content = NativeDocumentWorkspace(
       document: document.markdownDocument, preferences: preferences, state: state,
-      hostUndoManager: document.undoManager,
+      hostUndoManager: document.undoManager, commandContext: commands,
       openFile: { url in
         _ = try await NSDocumentController.shared.openDocument(withContentsOf: url, display: true)
       }

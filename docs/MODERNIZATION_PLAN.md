@@ -3213,3 +3213,43 @@ examples and eight arm64 executables. Full native follow-up remains necessary.
 Only the latest useful full-workspace raw result remains. Prior full-app raw output
 and duplicate incoming downloads were removed after compact reports/console capture;
 exported system archives were removed. Keep the existing running diagnostic cache.
+
+
+## Native command integration and marked checkpoint runtime — 2026-11-09
+
+Exact `74807c1` run `42537213307` executes seven methods: four pass, three fail.
+Both coordinated reload cases now pass their final-byte autosave and reload gates.
+The staged UTF16/BOM/CRLF/Unicode case reaches both saved-byte checkpoints, but its
+first Undo restores an unexpected plural “checkpoints” instead of the saved partial
+word. Both uncoordinated reload controls remain failures. Keep those assertions and
+waits intact. The screenshot now shows a complete1024x640 native window and toolbar,
+but the reading preview is blank despite accessible document content. WebContent
+logs repeated IOSurface open/creation failures. Window placement improved; preview
+painting remains unaccepted and the cause is not yet proven environmental.
+
+Native application menus now use the existing command controllers and shared SwiftUI
+menu content through public NSHostingMenu. File/document/responder actions stay with
+AppKit; formatting, export, zoom and layout controls keep one behavior implementation.
+A weak per-window context follows the actual native main window. Settings reuses the
+liked SettingsWindowController. Independent minimal controls keep their original
+menus; the full-workspace diagnostic installs the new application menu controller.
+A new eighth runtime method exercises Format Bold/Undo, Zoom/ActualSize, Print
+validation, exact CopyHTML and Settings open/close/reopen. Runtime execution is next.
+
+A native Format menu test edits the real selected source and verifies native Undo and
+byte preservation. All366 package tests/78 suites pass with zero warnings;10 focused
+native checks/2 suites pass. Default app/resource/license checks and eight-method
+arm64 diagnostic compile checks pass. This does not switch the production host.
+The original native text-input defaults disabled automatic spelling correction.
+Explicitly disable prose autocorrection, automatic completion and inline prediction
+in the Markdown source view to avoid unauthored source/Undo changes. Manual spelling,
+grammar, IME and opt-in native correction/completion actions remain available. This
+is the next staged-Undo comparison, not a confirmed runtime fix.
+
+Preceding default full run `e095964`/`42535764367` completes25 methods:21 pass, four
+lifecycle failures (active Undo, both reloads, restored active Undo persistence).
+Its core/corpus/arm64 job passes. Keep the default periodic policy reverted while
+native host reliability, actual app menus/entrypoint, multiwindow focus/restoration,
+conflicts/Versions, preview painting and remaining feature parity are completed.
+One latest748 raw result remains; obsolete e095 raw/incoming/system exports are
+cleared after compact capture. The running diagnostic build stays preserved.

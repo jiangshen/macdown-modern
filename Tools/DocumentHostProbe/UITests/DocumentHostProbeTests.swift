@@ -217,6 +217,69 @@ final class DocumentHostProbeTests: XCTestCase {
 
   #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
     @MainActor
+    func testNativeWorkspaceMenusSettingsAndExports() throws {
+      let file = try fixture()
+      defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
+      let source = "Menu checkpoint"
+      try Data(source.utf8).write(to: file)
+      let app = launch()
+      defer { app.terminate() }
+      let editor = open(file, in: app)
+      editor.click()
+      app.typeKey("a", modifierFlags: .command)
+      app.menuBars.menuBarItems["Format"].click()
+      let bold = app.menuItems["Bold"].firstMatch
+      XCTAssertTrue(bold.waitForExistence(timeout: 5), app.debugDescription)
+      XCTAssertTrue(bold.isEnabled)
+      bold.click()
+      XCTAssertEqual(editor.value as? String, "**Menu checkpoint**")
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(editor.value as? String, source)
+
+      app.menuBars.menuBarItems["View"].click()
+      let zoom = app.menuItems["Zoom In"].firstMatch
+      XCTAssertTrue(zoom.waitForExistence(timeout: 5))
+      XCTAssertTrue(zoom.isEnabled)
+      zoom.click()
+      app.menuBars.menuBarItems["View"].click()
+      let reset = app.menuItems["Actual Size"].firstMatch
+      XCTAssertTrue(reset.waitForExistence(timeout: 5))
+      XCTAssertTrue(reset.isEnabled)
+      reset.click()
+      XCTAssertEqual(editor.value as? String, source)
+
+      app.menuBars.menuBarItems["File"].click()
+      XCTAssertTrue(app.menuItems["Print…"].firstMatch.isEnabled)
+      app.menuItems["Export"].firstMatch.click()
+      let copy = app.menuItems["Copy HTML"].firstMatch
+      XCTAssertTrue(copy.waitForExistence(timeout: 5))
+      XCTAssertTrue(copy.isEnabled)
+      copy.click()
+      let copied = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          NSPasteboard.general.string(forType: .string)?.contains("<p>Menu checkpoint</p>") == true
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [copied], timeout: 8), .completed)
+      XCTAssertEqual(editor.value as? String, source)
+
+      app.typeKey(",", modifierFlags: .command)
+      let settings = app.windows["snowfolioSettings"]
+      XCTAssertTrue(settings.waitForExistence(timeout: 5), app.debugDescription)
+      XCTAssertTrue(settings.searchFields["settingsSearch"].exists)
+      XCTAssertTrue(settings.switches["restoreDocumentsOnLaunch"].exists)
+      app.typeKey("w", modifierFlags: .command)
+      XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+      app.typeKey(",", modifierFlags: .command)
+      XCTAssertTrue(settings.waitForExistence(timeout: 5))
+      app.typeKey("w", modifierFlags: .command)
+      XCTAssertTrue(settings.waitForNonExistence(timeout: 5))
+      let screenshot = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+      screenshot.name = "native-document-workspace-command-routing"
+      screenshot.lifetime = .keepAlways
+      add(screenshot)
+    }
+
+    @MainActor
     func testNativeWorkspacePreviewAndUndo() throws {
       let file = try fixture()
       defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }

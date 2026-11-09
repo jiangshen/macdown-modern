@@ -68,45 +68,54 @@ public struct MarkdownFormatCommands: Commands {
 
   public var body: some Commands {
     CommandMenu("Format") {
-      Group {
-        Button("Bold") { editor?.perform(.bold) }.keyboardShortcut("b")
-        Button("Italic") { editor?.perform(.italic) }.keyboardShortcut("i")
-        Button("Underline") { editor?.perform(.underline) }.keyboardShortcut("u")
-          .disabled(editor?.allowsUnderline != true)
-        Button("Inline Code") { editor?.perform(.inlineCode) }.keyboardShortcut("k")
-        Button("Strikethrough") { editor?.perform(.strikethrough) }.keyboardShortcut("-")
-          .disabled(editor?.allowsStrikethrough != true)
-        Button("Highlight") { editor?.perform(.highlight) }.keyboardShortcut("=")
-          .disabled(editor?.allowsHighlight != true)
-        Button("Comment") { editor?.perform(.comment) }.keyboardShortcut("/")
-        Divider()
-        Menu("Heading") {
-          ForEach(1...6, id: \.self) { level in
-            Button("Heading \(level)") { editor?.perform(.heading(level)) }
-              .keyboardShortcut(KeyEquivalent(Character(String(level))))
-          }
-          Divider()
-          Button("Paragraph") { editor?.perform(.paragraph) }.keyboardShortcut("0")
+      MarkdownFormatMenuContent(editor: editor)
+    }
+  }
+}
+
+/// Shared by SwiftUI commands and the native application's NSHostingMenu.
+struct MarkdownFormatMenuContent: View {
+  let editor: EditorCommandController?
+
+  var body: some View {
+    Group {
+      Button("Bold") { editor?.perform(.bold) }.keyboardShortcut("b")
+      Button("Italic") { editor?.perform(.italic) }.keyboardShortcut("i")
+      Button("Underline") { editor?.perform(.underline) }.keyboardShortcut("u")
+        .disabled(editor?.allowsUnderline != true)
+      Button("Inline Code") { editor?.perform(.inlineCode) }.keyboardShortcut("k")
+      Button("Strikethrough") { editor?.perform(.strikethrough) }.keyboardShortcut("-")
+        .disabled(editor?.allowsStrikethrough != true)
+      Button("Highlight") { editor?.perform(.highlight) }.keyboardShortcut("=")
+        .disabled(editor?.allowsHighlight != true)
+      Button("Comment") { editor?.perform(.comment) }.keyboardShortcut("/")
+      Divider()
+      Menu("Heading") {
+        ForEach(1...6, id: \.self) { level in
+          Button("Heading \(level)") { editor?.perform(.heading(level)) }
+            .keyboardShortcut(KeyEquivalent(Character(String(level))))
         }
         Divider()
-        Button("Ordered List") { editor?.perform(.orderedList) }.keyboardShortcut(
-          "o", modifiers: [.command, .shift])
-        Button("Unordered List") { editor?.perform(.unorderedList) }.keyboardShortcut(
-          "u", modifiers: [.command, .shift])
-        Button("Blockquote") { editor?.perform(.blockquote) }.keyboardShortcut(
-          "b", modifiers: [.command, .shift])
-        Button("Toggle Task") { editor?.perform(.toggleTask) }
-        Divider()
-        Button("Indent") { editor?.perform(.indent) }.keyboardShortcut("]")
-        Button("Outdent") { editor?.perform(.outdent) }.keyboardShortcut("[")
-        Divider()
-        Button("Link") { editor?.insertLink() }.keyboardShortcut(
-          "k", modifiers: [.command, .shift])
-        Button("Image") { editor?.insertLink(image: true) }.keyboardShortcut(
-          "i", modifiers: [.command, .shift])
-        Button("New Paragraph") { editor?.perform(.newParagraph) }.keyboardShortcut(.return)
-      }.disabled(editor?.canPerform != true)
-    }
+        Button("Paragraph") { editor?.perform(.paragraph) }.keyboardShortcut("0")
+      }
+      Divider()
+      Button("Ordered List") { editor?.perform(.orderedList) }.keyboardShortcut(
+        "o", modifiers: [.command, .shift])
+      Button("Unordered List") { editor?.perform(.unorderedList) }.keyboardShortcut(
+        "u", modifiers: [.command, .shift])
+      Button("Blockquote") { editor?.perform(.blockquote) }.keyboardShortcut(
+        "b", modifiers: [.command, .shift])
+      Button("Toggle Task") { editor?.perform(.toggleTask) }
+      Divider()
+      Button("Indent") { editor?.perform(.indent) }.keyboardShortcut("]")
+      Button("Outdent") { editor?.perform(.outdent) }.keyboardShortcut("[")
+      Divider()
+      Button("Link") { editor?.insertLink() }.keyboardShortcut(
+        "k", modifiers: [.command, .shift])
+      Button("Image") { editor?.insertLink(image: true) }.keyboardShortcut(
+        "i", modifiers: [.command, .shift])
+      Button("New Paragraph") { editor?.perform(.newParagraph) }.keyboardShortcut(.return)
+    }.disabled(editor?.canPerform != true)
   }
 }
 

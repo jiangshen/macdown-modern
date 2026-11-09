@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-08T23:51:43.014286+00:00",
-    "sourceCommit": "After e095964; marked-text checkpoint follow-up",
+    "dateUTC": "2026-11-09T00:08:12.633637+00:00",
+    "sourceCommit": "After74807c1; native menu integration",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 832323584
+        "allocatedBytes": 837652480
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -53,22 +53,22 @@
       },
       "coreCache": {
         "path": "/private/tmp/snowfolio-native-theme-validation/build",
-        "allocatedBytes": 771018752
+        "allocatedBytes": 773357568
       },
       "currentRawResult": {
         "path": "/private/tmp/snowfolio-current-native-result",
-        "allocatedBytes": 149188608
+        "allocatedBytes": 140144640
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 20578304
+        "allocatedBytes": 20963328
       }
     },
-    "totalAllocatedBytes": 2260910080,
+    "totalAllocatedBytes": 2259918848,
     "obsoleteRawDownloadRemoved": "/private/tmp/snowfolio-native-checkpoint-incoming",
     "exportedSystemDiagnosticsRemoved": true,
     "runningDiagnosticPID": 85540,
-    "retention": "One full-workspace raw result, compact evidence/screenshots, reused app/core caches, and diagnostic build preserved while its app remains running.",
+    "retention": "One748 full-workspace raw result and compact decision evidence; reused app/core caches; diagnostic cache preserved while85540runs.",
     "userDocumentsChanged": false,
     "trashEmptied": false
   }

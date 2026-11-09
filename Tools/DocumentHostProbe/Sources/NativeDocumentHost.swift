@@ -112,6 +112,9 @@
   @main
   @MainActor
   final class ProbeNativeApplication: NSObject, NSApplicationDelegate {
+    #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
+      private var menus: NativeApplicationMenuController?
+    #endif
     static func main() {
       let app = NSApplication.shared
       let delegate = ProbeNativeApplication()
@@ -126,38 +129,44 @@
       #else
         _ = NSDocumentController.shared
       #endif
-      let main = NSMenu()
-      func menu(_ title: String) -> NSMenu {
-        let root = NSMenuItem()
-        let submenu = NSMenu(title: title)
-        root.submenu = submenu
-        main.addItem(root)
-        return submenu
-      }
-      let application = menu("DocumentHostProbe")
-      application.addItem(
-        withTitle: "Quit DocumentHostProbe", action: #selector(NSApplication.terminate(_:)),
-        keyEquivalent: "q")
-      let file = menu("File")
-      file.addItem(
-        withTitle: "New", action: #selector(NSDocumentController.newDocument(_:)),
-        keyEquivalent: "n")
-      file.addItem(
-        withTitle: "Open…", action: #selector(NSDocumentController.openDocument(_:)),
-        keyEquivalent: "o")
-      file.addItem(
-        withTitle: "Close", action: #selector(NSWindow.performClose(_:)), keyEquivalent: "w")
-      file.addItem(withTitle: "Save", action: #selector(NSDocument.save(_:)), keyEquivalent: "s")
-      let edit = menu("Edit")
-      edit.addItem(withTitle: "Undo", action: Selector(("undo:")), keyEquivalent: "z")
-      edit.addItem(withTitle: "Redo", action: Selector(("redo:")), keyEquivalent: "Z")
-      edit.addItem(.separator())
-      edit.addItem(withTitle: "Cut", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
-      edit.addItem(withTitle: "Copy", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
-      edit.addItem(withTitle: "Paste", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
-      edit.addItem(
-        withTitle: "Select All", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
-      NSApp.mainMenu = main
+      #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
+        let menus = NativeApplicationMenuController()
+        self.menus = menus
+        menus.install()
+      #else
+        let main = NSMenu()
+        func menu(_ title: String) -> NSMenu {
+          let root = NSMenuItem()
+          let submenu = NSMenu(title: title)
+          root.submenu = submenu
+          main.addItem(root)
+          return submenu
+        }
+        let application = menu("DocumentHostProbe")
+        application.addItem(
+          withTitle: "Quit DocumentHostProbe", action: #selector(NSApplication.terminate(_:)),
+          keyEquivalent: "q")
+        let file = menu("File")
+        file.addItem(
+          withTitle: "New", action: #selector(NSDocumentController.newDocument(_:)),
+          keyEquivalent: "n")
+        file.addItem(
+          withTitle: "Open…", action: #selector(NSDocumentController.openDocument(_:)),
+          keyEquivalent: "o")
+        file.addItem(
+          withTitle: "Close", action: #selector(NSWindow.performClose(_:)), keyEquivalent: "w")
+        file.addItem(withTitle: "Save", action: #selector(NSDocument.save(_:)), keyEquivalent: "s")
+        let edit = menu("Edit")
+        edit.addItem(withTitle: "Undo", action: Selector(("undo:")), keyEquivalent: "z")
+        edit.addItem(withTitle: "Redo", action: Selector(("redo:")), keyEquivalent: "Z")
+        edit.addItem(.separator())
+        edit.addItem(withTitle: "Cut", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
+        edit.addItem(withTitle: "Copy", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
+        edit.addItem(withTitle: "Paste", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
+        edit.addItem(
+          withTitle: "Select All", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
+        NSApp.mainMenu = main
+      #endif
     }
 
     func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool { false }

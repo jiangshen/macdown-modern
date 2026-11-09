@@ -187,15 +187,26 @@ public struct DocumentExportCommands: Commands {
 
   public var body: some Commands {
     CommandGroup(after: .importExport) {
+      DocumentExportMenuContent(output: output)
+    }
+    CommandGroup(replacing: .printItem) {
+      Button("Print…") { output?.printDocument() }.keyboardShortcut("p").disabled(
+        output?.isAvailable != true)
+    }
+  }
+}
+
+/// The same actions and availability rules serve both application lifecycles.
+struct DocumentExportMenuContent: View {
+  let output: DocumentExportController?
+
+  var body: some View {
+    Group {
       Button("Export HTML…") { output?.exportHTML() }
         .keyboardShortcut("e", modifiers: [.command, .shift])
         .disabled(output?.isAvailable != true)
       Button("Export PDF…") { output?.exportPDF() }.disabled(output?.isAvailable != true)
       Button("Copy HTML") { output?.copyHTML() }.disabled(output?.isAvailable != true)
-    }
-    CommandGroup(replacing: .printItem) {
-      Button("Print…") { output?.printDocument() }.keyboardShortcut("p").disabled(
-        output?.isAvailable != true)
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "checkpoint": "Native full workspace constructed and locally verified; hosted full workspace lifecycle and visual acceptance pending",
+  "checkpoint": "Native menus locally integrated;748 full workspace coordinated reload and final autosave pass, staged Undo and uncoordinated reloads remain open; preview painting not accepted",
   "base": "4ee7721bbf10b2243f25de985a4993949da0b057",
   "goal": "active; incomplete",
   "fixture": "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
@@ -319,8 +319,8 @@
       }
     }
   },
-  "retentionNote": "Current full-workspace raw result retained. Prior full-SwiftUI raw result removed after compact summary/text/console verification; new full-workspace summary/text/preview/console retained. Exported system archive and incoming download directories removed. Preserve running diagnostic and canonical caches.",
-  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_23-34-31-+0000.xcresult",
+  "retentionNote": "One748 full-workspace raw bundle; preceding e095 raw removed after compact evidence verification. Keep compact console/text/summary and decision screenshots. System export and incoming directories removed. Preserve running85540 diagnostic and reused app/core caches.",
+  "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_23-52-40-+0000.xcresult",
   "latestFullCheckpoint": {
     "commit": "83ee16168e451546b3cc0adb9ebb2b6ff70fb0df",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42480380793",
@@ -645,6 +645,83 @@
       "nativeBuildReport": "/private/tmp/snowfolio-native-workspace-probe-build-report.json",
       "formatting": "strict changed-Swift formatting and diff check pass"
     },
-    "hosted": "Pending follow-up; no final encoded autosave, complete native visual or M2 acceptance claimed."
+    "hosted": {
+      "commit": "74807c13649c4fa700c23ab9af23678565966337",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42537213307",
+      "executed": 7,
+      "passed": 4,
+      "failed": 3,
+      "skipped": 0,
+      "seconds": 272.518,
+      "passes": [
+        "Coordinated temporary-folder reload after final autosave",
+        "Coordinated ordinary-user-folder reload after final autosave",
+        "Complete native frame on display, toolbar, preview accessibility content updates and Undo",
+        "Saved-edit Undo/deactivation exact byte persistence"
+      ],
+      "failures": [
+        "Both uncoordinated reload controls",
+        "Staged encoded typing passes both autosaves but first Undo yields unexpected plural checkpoints rather than saved partial checkpo"
+      ],
+      "visual": "Inspected1024x640 screenshot: complete window and toolbar now visible. Reading preview is blank despite accessible content assertions. WebContent repeatedly logs IOSurface creation/open failures. No preview painting acceptance or confirmed environment attribution.",
+      "evidence": "/private/tmp/snowfolio-validation-history/full-workspace-74807c1",
+      "screenshot": "/private/tmp/snowfolio-validation-history/full-workspace-74807c1/preview/592874D5-2C1A-4367-A7A6-F5E748BF5136.png"
+    },
+    "evidenceHashes": {
+      "/private/tmp/snowfolio-validation-history/full-workspace-74807c1/summary.json": "b4a88e9d49b8849413452c9100f5d1b63c220fce4ebd825fdb5df72d7cffdeee",
+      "/private/tmp/snowfolio-validation-history/full-workspace-74807c1/console-0.txt": "34f4d24c056bf3bdfb86c35f1a991996d36e7e2f1477dbc7b374e58f0f4c29cd",
+      "/private/tmp/snowfolio-validation-history/full-workspace-74807c1/console-1.txt": "30bdd38b655703ecac6dbc5992319eeca4f241861e92b39d76bea898df7ea19e",
+      "/private/tmp/snowfolio-validation-history/full-workspace-74807c1/preview/592874D5-2C1A-4367-A7A6-F5E748BF5136.png": "fe728dfef7144ffb4e1037a83df199f48c6a0548650b10d7f3564bb12b29b97e"
+    }
+  },
+  "precedingDefaultFullNative": {
+    "commit": "e09596475eacb3e94e63dd71ba69fc7a1017d220",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42535764367",
+    "executed": 25,
+    "passed": 21,
+    "failed": 4,
+    "skipped": 0,
+    "seconds": 1446.351,
+    "failures": [
+      "Active single-character Undo persistence",
+      "Both clean external reloads",
+      "Restored Undo active persistence"
+    ],
+    "core": "365/78,652CommonMark,8arm64 passed; compact core evidence retained",
+    "log": "/private/tmp/snowfolio-e095-full-app-failed.log"
+  },
+  "nativeCommandIntegration": {
+    "dateUTC": "2026-11-09T00:08:12.633637+00:00",
+    "baseCommit": "74807c1",
+    "status": "Local unit/compile checks pass; eight-method native workspace runtime pending",
+    "implementation": [
+      "Native application menu controller uses public native document/responder actions for New/Open/Save/SaveAs/Duplicate/Versions/Undo/Find/spelling/tabs and window management",
+      "Shared SwiftUI format/export/zoom/layout menu views serve both hosts via NSHostingMenu, without duplicating editing or export logic",
+      "A weak per-window context links the existing editor/export/zoom controllers; active native main-window notifications and menu validation determine command routing",
+      "Settings reuses the existing retained SettingsWindowController and preferences",
+      "Full workspace diagnostic installs native menus; independent minimal controls retain their original menus"
+    ],
+    "local": {
+      "tests": 366,
+      "suites": 78,
+      "report": "/private/tmp/snowfolio-native-menu-full-tests-report.json",
+      "errors": 0,
+      "warnings": 0,
+      "focused": "10/2 pass. Native Format NSHostingMenu Bold edits the intended source view, and native Undo restores exact original bytes. Existing native ownership, marked composition and SaveAs checks pass.",
+      "focusedReport": "/private/tmp/snowfolio-native-menu-focused-tests-report.json",
+      "diagnostic": "Eight UI methods compile arm64 with0errors/0warnings",
+      "diagnosticReport": "/private/tmp/snowfolio-native-menu-probe-build-report.json",
+      "defaultApp": "arm64 app/resource/license build passes with existing AppIntents extraction warning"
+    },
+    "runtimeFixture": "Native Format Bold/Undo, View ZoomIn/ActualSize, File Print validation, Export CopyHTML exact content, Settings open/close/reopen, and screenshot. Does not yet establish complete multiwindow focus or native restoration acceptance.",
+    "inputDefaults": "An unexpected trailing s appears on first staged Undo. Legacy MPDocument.m defaults automaticSpellingCorrectionEnabled toNO. Explicitly disable automatic spelling correction, automatic completion and inline prediction for authored Markdown; retain continuous spelling marks, manual spelling/grammar and opt-in native menu actions. Runtime cause/fix acceptance pending.",
+    "remaining": [
+      "Eight-method native runtime execution",
+      "Staged encoded Undo/Redo acceptance",
+      "Uncoordinated external reloads",
+      "Visible preview painting and root cause of IOSurface failures",
+      "Actual native application entrypoint/type declarations, window/tab/session restoration, conflicts/Versions, complete menu and export parity",
+      "Real IME/VoiceOver and full remaining modernization/performance/release gates"
+    ]
   }
 }

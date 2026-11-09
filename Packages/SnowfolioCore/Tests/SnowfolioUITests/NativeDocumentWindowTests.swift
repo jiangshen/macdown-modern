@@ -1,5 +1,6 @@
 import AppKit
 import DocumentCore
+import SwiftUI
 import Testing
 import WebKit
 
@@ -36,7 +37,11 @@ struct NativeDocumentWindowTests {
     }
     let content = try #require(window.contentView)
     for _ in 0..<200 {
-      if source(in: content) != nil, preview(in: content) != nil { break }
+      if source(in: content) != nil, preview(in: content) != nil,
+        controller.commands.editor != nil, controller.commands.output?.window === window
+      {
+        break
+      }
       try await Task.sleep(for: .milliseconds(25))
     }
     let editor = try #require(source(in: content))
@@ -57,6 +62,9 @@ struct NativeDocumentWindowTests {
       #expect(window.frame.maxY <= screen.visibleFrame.maxY)
     }
     #expect(editor.string == original)
+    #expect(controller.commands.editor?.coordinator?.editor === editor)
+    #expect(controller.commands.output?.window === window)
+    #expect(controller.commands.zoom != nil)
     let manager = try #require(native.undoManager)
     #expect(editor.undoManager === manager)
     manager.groupsByEvent = false
@@ -66,6 +74,23 @@ struct NativeDocumentWindowTests {
     #expect(native.markdownDocument.text == original + "X")
     manager.undo()
     #expect(native.markdownDocument.text == original)
+    #expect(editor.string == original)
+    #expect(try native.data(ofType: "public.plain-text") == bytes)
+
+    window.makeFirstResponder(editor)
+    editor.setSelectedRange(NSRange(location: 2, length: 6))
+    let format = NSHostingMenu(
+      rootView: MarkdownFormatMenuContent(editor: controller.commands.editor))
+    for _ in 0..<100 {
+      format.update()
+      if format.item(withTitle: "Bold")?.isEnabled == true { break }
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    let bold = try #require(format.item(withTitle: "Bold"))
+    #expect(bold.isEnabled)
+    format.performActionForItem(at: format.index(of: bold))
+    #expect(native.markdownDocument.text == "# **Native** window\n\nShared source and preview.\n")
+    manager.undo()
     #expect(editor.string == original)
     #expect(try native.data(ofType: "public.plain-text") == bytes)
   }

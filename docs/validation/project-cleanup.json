@@ -380,6 +380,16 @@
       "preservedRunningDiagnosticPID": 85540,
       "sourceAndUserDocumentsChanged": false,
       "trashEmptied": false
+    },
+    {
+      "date": "2026-11-09T00:08:12.633637+00:00",
+      "method": "Verify latest748 summary/text/console/screenshot and compact e095 evidence, then replace single raw bundle; remove system diagnostics export and duplicate incoming directory",
+      "obsoleteRawAllocatedBytesRemoved": 149188608,
+      "latestRawResultCount": 1,
+      "latestRawResult": "/private/tmp/snowfolio-current-native-result/DocumentHostProbe/DerivedData/Logs/Test/Test-DocumentHostProbe-2026.11.08_23-52-40-+0000.xcresult",
+      "preservedRunningDiagnosticPID": 85540,
+      "userDocumentsChanged": false,
+      "trashEmptied": false
     }
   ],
   "lastUpdated": "2026-11-08T11:21:22.729861+00:00",
