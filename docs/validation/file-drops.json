@@ -25,5 +25,18 @@
     "End-to-end native OpenDocumentAction from a delivered drag",
     "Sandboxed release file access",
     "Remaining tab restoration and accessibility gates"
-  ]
+  ],
+  "finderGestureAcceptance": {
+    "dateUTC": "2026-11-09T22:46:17.151457+00:00",
+    "status": "New real Finder gesture acceptance method prepared and SDK type-check passed; hosted execution pending. No new product acceptance claim.",
+    "method": "FileDropTests/testFinderMultiFileDropOpensTabsAndReusesDocumentsWithoutChangingBytes",
+    "scope": "Native host only, disposable fixture folder and desktop. Real Finder multi-selection drag to sidebar Open Files destination, two Unicode/encoded documents plus dirty anchor in same native tab group, repeated batch reuses existing documents, independent source/Undo/Save and exact original bytes.",
+    "local": "Swift6/arm64/macOS27 type-check with XCTest Swift overlay passed; strict formatting/YAML parse/diff checks pass. No running bundle overwritten, new local app build or duplicate core run.",
+    "diagnostics": "Capture public screen and both app/Finder hierarchies after initial gesture, final independent Undo and on icon/menu/source readiness failures. No AppleScript or added system permissions.",
+    "limits": "Does not yet establish hosted gesture success, preview/source destinations, release sandbox access, physical user-Mac accessibility or complete app acceptance.",
+    "sourceSHA256": {
+      "App/UITests/FileDropTests.swift": "786418892b4a1bc67fb9b0aa944e6e738043175cd4cc38613667127349a1e0dc",
+      ".github/workflows/snowfolio.yml": "cd14ee32f822c5aa9267b5c9c78fdee4c77aac33d386c75ed96a274b39d9a68d"
+    }
+  }
 }

@@ -31,6 +31,7 @@ on:
           - document-host-probe-appkit
           - native-document-app
           - native-document-tabs
+          - native-file-drops
           - native-document-groups
           - native-document-reading
           - native-writing-statistics
@@ -165,6 +166,9 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-groups ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testSeparateTabGroupsRestoreWithoutMergingDocuments
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-file-drops ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/FileDropTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-tabs ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testSavedTabsRestoreSelectedDocumentAndIndependentUndo \

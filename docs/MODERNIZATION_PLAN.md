@@ -537,6 +537,11 @@ end-to-end acceptance check remains open. Do not equate protocol-level integrati
 coverage with a completed Finder drag gesture. Sandboxed release access remains part
 of production readiness. See `docs/validation/file-drops.json`.
 
+A native actual-Finder multi-file gesture method now compiles against the SDK and
+has a focused disposable-host workflow. It checks tab grouping, duplicate reuse,
+independent Undo and byte-exact Save after two real drags. Execution is pending;
+handler-level coverage is still distinct from accepted Finder gesture evidence.
+
 #### Linked scrolling and reading-position restoration — implemented increment (2026-11-06)
 
 Editor and preview scrolling now share source-line coordinates in split mode, with a
