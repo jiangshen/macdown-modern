@@ -3342,3 +3342,27 @@ native host reliability, actual app menus/entrypoint, multiwindow focus/restorat
 conflicts/Versions, preview painting and remaining feature parity are completed.
 One latest748 raw result remains; obsolete e095 raw/incoming/system exports are
 cleared after compact capture. The running diagnostic build stays preserved.
+
+
+## Native recovery and authorized scripting follow-up — 2026-11-09
+
+At `eb46674`, actual native periodic conflict Revert passes (45.564s): external
+UTF8 BOM/LF content and save baseline are restored, with the unsaved local UTF16LE
+BOM/CRLF edit recoverable in native version history. Sheet/reverted images inspected.
+Versions history/browser works, but XCTest cannot adjust its custom timeline because
+it omits AXOrientation. Test now selects the exact older source via the observed
+native browsing arrows before Restore; no version injection or custom writer.
+
+The user explicitly authorized Allow for the exact SnowfolioUITests-Runner →
+Snowfolio prompt on disposable test machines. The app interruption monitor failed
+to receive this system-owned prompt (2 methods fail before scripting commands).
+The temporary test now queries only already-running verified system prompt owners
+through public XCTest UI, requiring exact sender/quoted target/control text/Allow.
+Native31 and default27 compile checks pass; normal app restored, temporary marker
+excluded from default runner/app. Actual grant and Apple-event behavior remain open.
+
+Default-host ancestor-scoped tab setup passes focused1/1 (66.123s), with screenshot
+showing the saved anchor plus3newtabs. The preceding990full27still has3known SwiftUI
+lifecycle failures and its old tab setup failure. Full current-run reliability and
+preview painting remain unaccepted. No document host, installation or default file
+handler changes. Full modernization remains active and incomplete.

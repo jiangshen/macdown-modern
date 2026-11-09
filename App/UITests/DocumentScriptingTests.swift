@@ -59,13 +59,40 @@
             address.aeDesc, AEEventClass(kAECoreSuite), AEEventID(kAEGetData), true)
           permission.status.withLock { $0 = status }
         }
+        // These installed system app identifiers were verified from their Info.plists.
+        // macOS may present this prompt outside the tested app's interruption tree.
+        let promptOwnerIDs = ["com.apple.coreservices.uiagent", "com.apple.UserNotificationCenter"]
+        let promptOwners = promptOwnerIDs.map { XCUIApplication(bundleIdentifier: $0) }
         let render = app.buttons["Render"].firstMatch
         XCTAssertTrue(render.waitForExistence(timeout: 8))
         let finished = XCTNSPredicateExpectation(
           predicate: NSPredicate { _, _ in
             if permission.status.withLock({ $0 != nil }) { return true }
-            // A normal app interaction lets XCTest invoke the interruption
-            // monitor. Only the exact sender/target prompt above is accepted.
+            for owner in promptOwners where owner.state != .notRunning {
+              let containers =
+                owner.alerts.allElementsBoundByIndex
+                + owner.dialogs.allElementsBoundByIndex + owner.windows.allElementsBoundByIndex
+              for window in containers {
+                let text =
+                  window.label + " "
+                  + window.staticTexts.allElementsBoundByIndex.map {
+                    $0.label + " " + ($0.value as? String ?? "")
+                  }.joined(separator: " ")
+                guard text.contains("SnowfolioUITests-Runner"),
+                  text.contains("wants access to control"),
+                  text.contains("“Snowfolio”") || text.contains("\"Snowfolio\""),
+                  window.buttons["Allow"].exists
+                else { continue }
+                let image = XCTAttachment(screenshot: window.screenshot())
+                image.name = "authorized-own-app-consent-prompt"
+                image.lifetime = .keepAlways
+                self.add(image)
+                window.buttons["Allow"].click()
+                return permission.status.withLock { $0 != nil }
+              }
+            }
+            // Retain the ordinary app interruption path if the system attaches
+            // the prompt there; all acceptance remains guarded to the same pair.
             render.click()
             return permission.status.withLock { $0 != nil }
           }, object: nil)
@@ -77,6 +104,19 @@
         record.name = "native-script-consent-result"
         record.lifetime = .keepAlways
         add(record)
+        if outcome != .completed {
+          let owners = promptOwners.enumerated().map { index, owner in
+            "owner=\(promptOwnerIDs[index]) state=\(owner.state.rawValue)\n"
+              + (owner.state == .notRunning ? "not running" : owner.debugDescription)
+          }.joined(separator: "\n")
+          let diagnostic = XCTAttachment(
+            string:
+              "frontmost=\(NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "nil")\n"
+              + owners)
+          diagnostic.name = "temporary-consent-owner-state"
+          diagnostic.lifetime = .keepAlways
+          add(diagnostic)
+        }
         XCTAssertEqual(outcome, .completed)
         XCTAssertEqual(status, OSStatus(noErr))
       }

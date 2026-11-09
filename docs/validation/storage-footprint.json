@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-08T10:57:02.963711+00:00",
+  "dateUTC": "2026-11-09T04:42:02.105670+00:00",
   "scope": "Snowfolio checkout and this task-owned Snowfolio/MacDown temporary files; shared Codex history and unrelated projects excluded.",
   "projectTemporaryAllocatedBytesBefore": 16591192064,
   "projectTemporaryAllocatedBytesAfter": 8001990656,
@@ -116,5 +116,29 @@
         "kept": "/private/tmp/snowfolio-validation-history/native-recovery-990ec40"
       }
     ]
+  },
+  "latestAuthorizedFollowupCleanup": {
+    "dateUTC": "2026-11-09T04:42:02.105670+00:00",
+    "removedGeneratedResults": [
+      {
+        "path": "/private/tmp/snowfolio-native-scripting-authorized-incoming",
+        "allocatedBytesRemoved": 126021632,
+        "kept": "/private/tmp/snowfolio-validation-history/native-scripting-eb46674"
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-recovery-current-incoming",
+        "allocatedBytesRemoved": 133427200,
+        "kept": "/private/tmp/snowfolio-validation-history/native-recovery-eb46674"
+      },
+      {
+        "path": "/private/tmp/snowfolio-default-tabs-current-incoming",
+        "allocatedBytesRemoved": 127176704,
+        "kept": "/private/tmp/snowfolio-validation-history/default-tabs-eb46674"
+      }
+    ],
+    "ownershipAndOpenFilesChecked": true,
+    "currentFullNative26RawPreserved": true,
+    "sourceAndRunningAppPreserved": true,
+    "trashEmptied": false
   }
 }

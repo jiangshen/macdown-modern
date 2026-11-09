@@ -1836,12 +1836,20 @@ final class DocumentLifecycleTests: XCTestCase {
       XCTAssertTrue(browserReady, app.debugDescription)
       let timeline = browser.sliders.firstMatch
       XCTAssertTrue(timeline.exists, app.debugDescription)
-      // The initial browser selected the newest saved copy (Version two).
-      // Select the oldest entry through its actual native timeline first.
-      timeline.adjust(toNormalizedSliderPosition: 1)
+      // This native timeline omits AXOrientation, so XCTest's generic slider
+      // adjustment cannot synthesize it. Use the observed browsing arrows.
+      let navigation = browser.buttons.matching(
+        NSPredicate(format: "title != %@ AND title != %@", "Done", "Restore"))
+      XCTAssertEqual(navigation.count, 2)
       let originalPreview = app.textViews.matching(identifier: "markdownSourceEditor").matching(
         NSPredicate(format: "value == %@", original)
       ).firstMatch
+      for _ in 0..<max(1, versions.count) {
+        if originalPreview.exists { break }
+        let older = try XCTUnwrap(navigation.allElementsBoundByIndex.first { $0.isEnabled })
+        older.click()
+        if originalPreview.waitForExistence(timeout: 5) { break }
+      }
       let selectedOriginal = originalPreview.waitForExistence(timeout: 8)
       attachRecoveryState(
         "native-versions-original-selected", app: app,
