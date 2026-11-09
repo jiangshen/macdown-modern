@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T15:03:52.050024+00:00",
+  "dateUTC": "2026-11-09T15:40:31.410066+00:00",
   "status": "Both preceding default SwiftUI full runs fail; native host remains opt-in while its remaining acceptance gates are open.",
   "runs": [
     {
@@ -201,5 +201,25 @@
     "limits": "Predates public-title, actual-value matcher and generic-viewer changes. No new source failure attributed to those corrections.",
     "evidence": "/private/tmp/snowfolio-default-ebcad08-failed.log",
     "core": "427/89,652CommonMark,8arm64,zero diagnostics accepted."
+  },
+  "fullF219e25": {
+    "source": "f219e25c701c37f61edb7f1a1424ee9495257a1f",
+    "run": 42640865194,
+    "job": 129241285672,
+    "executed": 32,
+    "passed": 27,
+    "failed": 5,
+    "skipped": 0,
+    "runtimeWarnings": 46,
+    "failures": [
+      "testBundledCommandLineOpensFilesAndDelayedPipesAcrossLaunches",
+      "testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "testCoordinatedExternalReloadAfterAutosave",
+      "testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "findings": "CLI first actual-source readiness fails after26.850s; source-failure screenshot shows blank front existing Markdown window with piped Untitled behind, not an error dialog. Generic text positive source/byte checks pass, but invalid bytes leave an empty document window with no normal rejection alert after73.419s. The three established SwiftUI lifecycle failures recur. No query relaxation or arbitrary wait increase applied.",
+    "limits": "Screenshot/AX output does not establish exact pipe contents or the cause of the disabled/blank windows. This is regular host only; focused native generic1/1passes, complete native41 still running.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-f219e25"
   }
 }

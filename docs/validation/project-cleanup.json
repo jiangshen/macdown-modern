@@ -1349,5 +1349,19 @@
     "allocatedBytesRemoved": 286720,
     "ownershipAndOpenFilesChecked": true,
     "reason": "Core API real-bundle and hardened-runtime probes concluded. Keep compact source/results; remove generated first-party fixture bundle and executable."
+  },
+  "completedRegularF219e25FailureCleanup": {
+    "dateUTC": "2026-11-09T15:39:24.321858+00:00",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "allocatedBytesRemoved": 110014464,
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Full32-method summary/exact method list and targeted CLI/generic failure screenshots compacted and inspected. Remove concluded partial raw; retain latest useful accepted native full raw and protected running apps."
+  },
+  "completedNativeFullF219e25FailureCleanup": {
+    "dateUTC": "2026-11-09T15:51:51.196846+00:00",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "allocatedBytesRemoved": 131690496,
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Full41/39pass/2fail summary, exact methods, logs and both inspected CLI warm-Save/cold-tabs screenshots compacted. Remove concluded partial raw; keep latest complete accepted native36 raw and protected running apps."
   }
 }

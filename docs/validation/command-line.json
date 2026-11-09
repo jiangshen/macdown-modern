@@ -242,6 +242,12 @@
     "liveRuns": {
       "fullRegular32": 42640865194,
       "fullNative41": 42641584413
+    },
+    "regularFull": {
+      "source": "f219e25",
+      "run": 42640865194,
+      "result": "Positive generic text opens/bytes pass; invalid-read error handling fails, leaving empty window without expected native error alert. Snapshot inspected. No test weakening.",
+      "compact": "/private/tmp/snowfolio-validation-history/default-f219e25"
     }
   },
   "acceptedCoreF219e25": {
@@ -255,5 +261,33 @@
     "compilerWarnings": 0,
     "compilerErrors": 0,
     "compact": "/private/tmp/snowfolio-validation-history/core-f219e25"
+  },
+  "regularActualValueF219e25": {
+    "run": 42640865194,
+    "seconds": 26.85,
+    "result": "First exact-source wait times out; existing file window is blank in captured UI with piped Untitled behind and app AX disabled. Save/cold remains unaccepted.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-f219e25"
+  },
+  "nativeFullF219e25": {
+    "source": "f219e25c701c37f61edb7f1a1424ee9495257a1f",
+    "run": 42641584413,
+    "job": 129243794978,
+    "executed": 41,
+    "passed": 39,
+    "failed": 2,
+    "skipped": 0,
+    "runtimeWarnings": 57,
+    "CLISeconds": 76.917,
+    "warmStage": "Actual source matching, correctly selected Untitled2 Window item, original/new-file checks and native Save to piped.md all pass. Saved bytes equal original UTF8 BOM/CRLF/Unicode input. Warm-Save screenshot inspected. This is stage evidence inside a failed method, not complete CLI acceptance.",
+    "coldStage": "Normal helper launch succeeds and AX/screenshot show Untitled, cold.md and --help in one native tab group, selected --help. First exact coldText wait fails because inactive tab source is not exposed. Warm test arguments disabling tabs do not propagate to NSWorkspace cold launch. Cold exact contents remain unaccepted until explicit document selection.",
+    "otherFailure": "The same ThemeWidgetControlViewService.xpc bundle identifier exception at sourceScroll.screenshot line1634 during reading-position verification. No restoration assertion failure established.",
+    "otherPasses": "All other39methods pass, including actual generic-viewer flow87.178s, all scripting, counter, URL, Terminal, encoded lifecycle/recovery and separate groups.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-f219e25"
+  },
+  "coldNativeTabSelectionCorrection": {
+    "dateUTC": "2026-11-09T15:54:15.317604+00:00",
+    "status": "Implemented/typechecked/linted; focused runtime pending.",
+    "behavior": "Select cold.md, newest fresh Untitled pipe and --help using the scoped native Window menu before original actual-source/byte assertions. Add empty --help source equality. A normal app launch retains its normal tab preference.",
+    "limits": "No app behavior, waits, source/Save/cold byte assertions or expected methods removed. Still41native/32regular. Full native36remains accepted baseline."
   }
 }

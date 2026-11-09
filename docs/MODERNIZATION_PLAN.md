@@ -2,8 +2,8 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **427 package tests / 89 suites, all 652 published
-CommonMark examples and eight arm64 test executables pass** at `f219e25`, with
+Current accepted core baseline: **434 package tests / 91 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `9e99ebb`, with
 zero compiler errors/warnings.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -29,13 +29,15 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `ebcad08` has the old CLI
-compound-query timeout plus the same three lifecycle failures: active autosave/Undo
-and both external reload cases. After runner restart, its other30 methods report
-27passes/3failures in1307.178seconds; the entire invocation contains31methods.
-It predates public-title/actual-value window matching and generic-viewer restoration.
-No newer complete native acceptance is claimed. See
-[default-host-followup.json](validation/default-host-followup.json).
+The latest complete regular SwiftUI-host run at `f219e25` executes32methods:
+27pass/5fail, none skipped. The three established autosave/reload failures recur;
+CLI actual-source readiness fails with a blank front document, and invalid-read
+handling leaves an empty window without the expected native error alert. Generic
+text positive source/byte checks pass. The three relevant screenshots were inspected;
+no wait or query is weakened. The native generic flow also passes in its complete41method invocation, which
+reports39pass/2fail: cold-tab source selection and the repeated screenshot exception.
+No newer complete native acceptance is claimed.
+See [default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
 [launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
@@ -3791,3 +3793,56 @@ no plug-in was installed. This foundation is not yet wired to app menus/session
 caching; preserve original loader until actual-host and release compatibility pass.
 Probe sources/findings remain compact; generated bundles/executables were removed
 after ownership/open-file checks. See launch-integrations-characterization.json.
+
+
+The complete expanded core/corpus gate passes at9e99ebb (run42643954862,
+job129252059551):434package tests/91suites,652/652CommonMark and9arm64
+executables, zero compiler warnings/errors. This accepts the new plug-in foundation
+alongside all prior core behavior. It does not accept app integration or hardened
+third-party loading. Small logs are retained under core-9e99ebb; the duplicate ZIP
+was removed after extraction. Complete app runs remain separate source-specific gates.
+
+
+## Complete regular-host followup at f219e25 — 2026-11-09
+
+The full32-method regular invocation reports27passes/5failures, no skips and46runtime
+warnings. Besides the same three SwiftUI lifecycle failures, CLI first actual-source
+readiness fails after26.850seconds. Its inspected screenshot shows an empty front
+existing-file window with piped Untitled behind; the hierarchy is disabled. Generic
+text opens pass exact source/byte checks, but unsupported encoding leaves an empty
+document window and no native error alert (73.419seconds). This is a failed behavior
+gate, not established as a bad alert query. Do not weaken assertions or deadlines.
+No exact pipe-source/cause claim follows from a truncated AX display. The independent
+native generic flow passes; its full41 remains active. Small summaries, exact method
+list and the three relevant screenshots were retained; the110014464-byte concluded
+partial raw copy was removed after ownership/open-file checks.
+
+
+## Warm CLI Save accepted; normal cold tabs and screenshot verification — 2026-11-09
+
+Full native41 at f219e25 reports39pass/2fail, no skips and57runtime warnings. CLI
+progresses through strict actual source matching, correct native Window selection,
+original/new-file checks and byte-exact UTF8/BOM/CRLF/Unicode Save to piped.md. The
+warm-Save image was inspected. It fails only after normal Quit/cold helper launch:
+Untitled, cold.md and --help are correctly grouped as native tabs, selected --help.
+The old test searches inactive tab text even though the cold launch does not inherit
+XCTest's argument-domain no-tabs choice. Tests now select each normal document via
+the scoped Window menu before reading actual source, including empty --help. Original
+8second source bounds, Save and all byte checks remain; cold runtime is pending.
+
+The other failure repeats ThemeWidgetControlViewService.xpc bundle-identifier lookup
+inside per-element sourceScroll.screenshot, before restoration assertions. Reading
+verification now uses public XCUIScreen.main capture cropped to the identical visible
+editor/window frame. Main-display bounds are asserted; original sampled glyph region,
+negative control, scrollbar/preview checks and pixel tolerances remain. Attachments
+use the same crop path. Both changed actual-app test files typecheck in Swift6 and
+strict formatting/diff pass; real correction acceptance remains pending. No skip,
+private API, production behavior or app protection change is introduced.
+
+All other39methods pass, including generic text/error handling87.178seconds, scripting,
+counter, URL, Terminal and native lifecycle/recovery/tab groups. This is not a complete
+new baseline; native36 remains the fully accepted complete suite. Exact41-method
+results, log and both CLI images are compact; the131690496-byte partial raw copy was
+removed after owner/open-file checks. The native cold AX File menu also shows both
+Cocoa and custom Open Recent entries: inspect/deduplicate ownership before the default
+host switch. Physical composition/VoiceOver and the complete product gates stay open.

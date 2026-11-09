@@ -1601,7 +1601,7 @@ final class DocumentLifecycleTests: XCTestCase {
         tree.name = "native-reading-restoration-tree"
         tree.lifetime = .keepAlways
         add(tree)
-        let image = XCTAttachment(screenshot: app.screenshot())
+        let image = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         image.name = "native-reading-restoration-final"
         image.lifetime = .keepAlways
         add(image)
@@ -1630,9 +1630,36 @@ final class DocumentLifecycleTests: XCTestCase {
         }
         return value
       }
+      func capturedImage(of element: XCUIElement) throws -> CGImage {
+        // Element screenshot resolution asks XCTest to identify AppKit's
+        // ThemeWidgetControlViewService, which has thrown an internal exception
+        // on this SDK. Capture the public main screen and crop the same viewport;
+        // the source-pixel sample and restoration tolerances remain unchanged.
+        let frame = element.frame
+        let screen = try XCTUnwrap(NSScreen.screens.first)
+        let bounds = CGRect(origin: .zero, size: screen.frame.size)
+        XCTAssertTrue(
+          bounds.contains(frame), "The reading fixture must be visible on the main screen")
+        let bitmap = try XCTUnwrap(
+          NSBitmapImageRep(data: XCUIScreen.main.screenshot().pngRepresentation))
+        let fullImage = try XCTUnwrap(bitmap.cgImage)
+        let screenScale = CGFloat(fullImage.width) / bounds.width
+        let crop = CGRect(
+          x: frame.minX * screenScale, y: frame.minY * screenScale,
+          width: frame.width * screenScale, height: frame.height * screenScale
+        ).integral
+        return try XCTUnwrap(fullImage.cropping(to: crop))
+      }
+      func capture(_ element: XCUIElement, named name: String) throws {
+        let image = try capturedImage(of: element)
+        let attachment = XCTAttachment(
+          image: NSImage(cgImage: image, size: NSSize(width: image.width, height: image.height)))
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+      }
       func visibleSource(_ scroll: XCUIElement) throws -> SourceReadingSnapshot {
-        let bitmap = try XCTUnwrap(NSBitmapImageRep(data: scroll.screenshot().pngRepresentation))
-        let image = try XCTUnwrap(bitmap.cgImage)
+        let image = try capturedImage(of: scroll)
         let scale = CGFloat(image.width) / scroll.frame.width
         // The fixture fixes Menlo14 and the24pt inset. Sample its paragraph
         // numbers across multiple visual lines, including a partially clipped row.
@@ -1674,14 +1701,8 @@ final class DocumentLifecycleTests: XCTestCase {
       XCTAssertLessThanOrEqual(try visibleSource(sourceScroll).difference(from: sourceSample), 0.05)
       XCTAssertEqual(editor.value as? String, source)
       XCTAssertEqual(try Data(contentsOf: file), bytes)
-      let before = XCTAttachment(screenshot: window.screenshot())
-      before.name = "native-independent-reading-before-quit"
-      before.lifetime = .keepAlways
-      add(before)
-      let beforeSource = XCTAttachment(screenshot: sourceScroll.screenshot())
-      beforeSource.name = "native-source-reading-before-quit"
-      beforeSource.lifetime = .keepAlways
-      add(beforeSource)
+      try capture(window, named: "native-independent-reading-before-quit")
+      try capture(sourceScroll, named: "native-source-reading-before-quit")
       app.typeKey("q", modifierFlags: .command)
       XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
       XCTAssertEqual(try Data(contentsOf: file), bytes)
@@ -1714,14 +1735,8 @@ final class DocumentLifecycleTests: XCTestCase {
       values.name = "native-independent-reading-positions"
       values.lifetime = .keepAlways
       add(values)
-      let reopenedImage = XCTAttachment(screenshot: restored.screenshot())
-      reopenedImage.name = "native-independent-reading-restored"
-      reopenedImage.lifetime = .keepAlways
-      add(reopenedImage)
-      let reopenedSource = XCTAttachment(screenshot: restoredSource.screenshot())
-      reopenedSource.name = "native-source-reading-restored"
-      reopenedSource.lifetime = .keepAlways
-      add(reopenedSource)
+      try capture(restored, named: "native-independent-reading-restored")
+      try capture(restoredSource, named: "native-source-reading-restored")
       XCTAssertEqual(outcome, .completed)
       // Do not click: the source caret at the beginning must restore independently
       // of both reading positions. Editing must still have native Undo ownership.

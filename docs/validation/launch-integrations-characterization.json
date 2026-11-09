@@ -353,7 +353,7 @@
       "compilerWarnings": 0,
       "compilerErrors": 0,
       "covers": "Real header-only arm64/Intel/other/fat universal metadata without code loading; missing/error folders, aliases, unchanged files and deterministic cancellation; name/fallback, sender identity, retained-instance initialization, BOOL results and bad selector signatures.",
-      "expectedWholeCore": "434tests/91suites,9arm64 executables; full remote gate pending."
+      "expectedWholeCore": "Accepted remotely434tests/91suites,9arm64 executables and652/652CommonMark at9e99ebb."
     },
     "realBundleProbe": {
       "result": {
@@ -379,6 +379,18 @@
     },
     "compact": "/private/tmp/snowfolio-validation-history/plugin-core-foundation",
     "thirdPartyExecution": false,
-    "retirement": "Original plugin loader remains until actual host, user-driven UI, session cache and supported signing/runtime behavior are accepted."
+    "retirement": "Original plugin loader remains until actual host, user-driven UI, session cache and supported signing/runtime behavior are accepted.",
+    "acceptedCore": {
+      "source": "9e99ebb6a3f5004e3511f4206aa1c6844c02048d",
+      "run": 42643954862,
+      "job": 129252059551,
+      "tests": 434,
+      "suites": 91,
+      "commonMark": "652/652",
+      "arm64TestExecutables": 9,
+      "compilerWarnings": 0,
+      "compilerErrors": 0,
+      "compact": "/private/tmp/snowfolio-validation-history/core-9e99ebb"
+    }
   }
 }

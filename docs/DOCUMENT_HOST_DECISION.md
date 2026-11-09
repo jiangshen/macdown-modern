@@ -10,7 +10,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 
 | Evidence | SwiftUI DocumentGroup host | Swift NSDocument host |
 | --- | --- | --- |
-| Complete accepted comparison | 26/29 at `4791020`; repeated same three lifecycle failures at `3b68499` | 36/36 at `2bc01b2`, no failures or skips |
+| Complete accepted comparison | Latest full32 at `f219e25`:27pass/5fail (same3lifecycle failures plus CLI readiness/invalid-read handling) | 36/36 at `2bc01b2`, no failures or skips |
 | Autosave and saved edit Undo | Acceptance fails | Passes, including exact encoded bytes |
 | Clean external changes after autosave | Two cases fail | Both pass |
 | Dirty conflicts and Versions | Full acceptance remains open | All conflict choices and native Versions/Restore pass |
@@ -18,7 +18,8 @@ of documents, file coordination, native Undo, Versions and window restoration.
 | Native tabs, separate groups, carets and independent reading positions | Partial evidence; lifecycle acceptance remains open | Actual Quit/relaunch acceptance passes |
 | New counter and document links | Focused flows pass | Focused flows pass |
 | Terminal installation controls | Actual chooser/link/copy/remove/collision flow passes at `d7f410e` | Same complete focused flow passes at `d7f410e` |
-| Packaged command-line helper | Current full followup running | Warm acknowledged delivery passes; Save/cold acceptance pending |
+| Packaged command-line helper | Exact-source readiness fails with blank front window in full f219e25 | Warm exact-source/reuse/byte-exact Save pass at f219e25; cold verification must select inactive tabs |
+| Generic text viewer and invalid encoding | Positive source/bytes pass; invalid-read handling fails in full f219e25 | Complete focused1/1passes at f219e25 |
 
 Exact source versions, run links and limitations are recorded in
 [the roadmap](MODERNIZATION_PLAN.md) and `docs/validation`. Results from different
@@ -43,3 +44,13 @@ Before selecting the native host as the source default:
 Making this architecture decision does not establish parser/export parity,
 plugin compatibility, accessibility, performance or release readiness. Those
 milestones remain separate acceptance gates.
+
+The newer full native41 at f219e25 reports39pass/2fail, none skipped: CLI cold
+readiness searched inactive tab contents, and reading verification repeats the system
+ThemeWidgetControlViewService screenshot exception. These do not establish full41
+acceptance. Tests now select normal cold-launch tabs explicitly and capture the
+public main screen cropped to the same visible editor/window. Pixel samples, negative
+control, restoration tolerances and all behavioral deadlines are unchanged; runtime
+verification of these test corrections remains pending. The cold AX File menu also
+contains two Open Recent entries (Cocoa and manual). Inspect/deduplicate ownership
+before the host switch; no menu behavior was changed in this verification correction.

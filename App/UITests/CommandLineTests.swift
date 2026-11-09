@@ -205,10 +205,48 @@ final class CommandLineTests: XCTestCase {
       directory: directory, input: Data(coldPipe.utf8))
     XCTAssertEqual(launched.status, 0, launched.error)
     XCTAssertTrue(app.wait(for: .runningForeground, timeout: 8))
+    // A normal helper launch does not inherit XCTest's argument-domain tab
+    // preference. Select each native document: inactive tabs do not expose their
+    // source editors to AX, even though all documents opened successfully.
+    func selectColdDocument(_ title: String) {
+      let windowMenu = app.menuBars.menuBarItems["Window"]
+      windowMenu.click()
+      let item = windowMenu.menus.firstMatch.menuItems[title].firstMatch
+      let appeared = item.waitForExistence(timeout: 5)
+      if !appeared {
+        let image = XCTAttachment(screenshot: app.screenshot())
+        image.name = "command-line-cold-window-menu-failure"
+        image.lifetime = .keepAlways
+        add(image)
+      }
+      XCTAssertTrue(appeared, app.debugDescription)
+      item.click()
+    }
+    selectColdDocument(cold.lastPathComponent)
     await waitForSource(coldText)
+    let coldWindowMenu = app.menuBars.menuBarItems["Window"]
+    coldWindowMenu.click()
+    let untitled = coldWindowMenu.menus.firstMatch.menuItems
+      .matching(NSPredicate(format: "title BEGINSWITH %@", "Untitled"))
+      .allElementsBoundByIndex.map(\.title)
+    if untitled.isEmpty {
+      let image = XCTAttachment(screenshot: app.screenshot())
+      image.name = "command-line-cold-pipe-menu-failure"
+      image.lifetime = .keepAlways
+      add(image)
+    }
+    XCTAssertFalse(untitled.isEmpty, app.debugDescription)
+    // This fresh process owns only the two requested files and its new pipe.
+    // Read the actual source after selection; a title alone proves no contents.
+    let pipeTitle = try XCTUnwrap(untitled.last)
+    coldWindowMenu.menus.firstMatch.menuItems[pipeTitle].firstMatch.click()
     await waitForSource(coldPipe)
+    selectColdDocument("--help")
     XCTAssertTrue(
       app.windows["--help"].firstMatch.waitForExistence(timeout: 8), app.debugDescription)
+    XCTAssertEqual(
+      app.windows.firstMatch.textViews["markdownSourceEditor"].firstMatch.value as? String, "",
+      app.debugDescription)
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("--help")), Data())
     XCTAssertEqual(try Data(contentsOf: cold), Data(coldText.utf8))
     let coldImage = XCTAttachment(screenshot: app.screenshot())
