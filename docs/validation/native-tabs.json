@@ -241,8 +241,22 @@
     "method": "testIndependentReadingPositionsSurviveQuitAndRelaunch",
     "scope": "Actual native app opens UTF16LE/BOM/CRLF/Unicode fixture. User scroll events place source and preview separately with linking off. NormalQuit/relaunch must restore numeric native scrollbar positions within0.002, sourcecaret0, editing/Undo and exactfilebytes.",
     "testIsolation": "Scrollbars Always and restoration/linking preferences supplied only through disposable app launch arguments. No global preference or production behavior changes.",
-    "local": "Native36/default27 compile and resource/type/dictionary/license gates pass. Canonical default restored. Strict changedSwiftlint/diffpass.",
-    "runtime": "Pending focused exact hosted run. Fullnative35 at28243a6 remains live.",
-    "compact": "/private/tmp/snowfolio-validation-history/native-reading-local"
+    "local": "Corrected native36/default27 compile; normaldefault restored; strict changedSwiftlint/diffpass; recorded-frame recognition verifies paragraph35 before/after.",
+    "runtime": "Corrected focused runtime pending; no new app defect/fix or reading-relaunch acceptance yet.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-reading-local",
+    "firstHosted": {
+      "commit": "a909bfeedb0b9ae09d510b57b4ef4fcfeaedc960",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42582051118",
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 58.495,
+      "failure": "Post-relaunch numeric scrollbar equality times out. Initial user scrolls/readings/unchanged bytes and normalQuit/relaunch all reached. Assertion stops before final diagnostic defer, so recorded sequence inspected.",
+      "visual": "Before screenshot and two recorded end frames inspected. First visible source paragraph35 restored even though scrollbar thumb/extent differs; preview thumb also below top. This does not establish an app reading-position defect or full acceptance.",
+      "recordedFrameRecognition": "Native Vision recognizer independently reads Paragraph35 in both before and restored recorded frames. Exact local probe output retained.",
+      "compact": "/private/tmp/snowfolio-validation-history/native-reading-a909bfe"
+    },
+    "correction": "Measure actual source-visible paragraph via read-only screenshot recognition, leaving the offscreen caret untouched. Keep preview numeric position within0.002, source-not-at-top, independent panes, exactUnicodebytes, no-click restored insertion and Undo checks. Capture values/tree/restored screenshot before failing assertion; same8second condition deadline. No production behavior change."
   }
 }

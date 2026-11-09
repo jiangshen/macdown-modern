@@ -3501,3 +3501,15 @@ native edit/Undo with exactUTF16LE/BOM/CRLF/Unicode bytes. Scrollbar/linking set
 are isolated launch arguments on the disposable machine. Native36/default27 compile;
 canonicaldefault restored; strictchangedlint/diffpass. Runtimepending; no production
 change or acceptance based only on compilation. Fullnative35 at28243a6 continues.
+
+
+The a909bfe reading-relaunch probe fails only post-relaunch scrollbar equality
+(1exec/0pass/1fail58.495s). Before screenshot/recorded finalframes show source
+paragraph35 restored despite a different scrollbar thumb/extent. A native Vision
+probe independently reads Paragraph35 in both frames. This establishes that a
+normalized source scrollbar alone is insufficient to identify the reading anchor;
+no production scroll bug or fix is claimed. Corrected test recognizes the visible
+source paragraph without moving its offscreen caret; keeps preview ratio0.002,
+source-not-at-top, exactbytes, no-click restored insertion/Undo and the same8s
+condition deadline. Diagnostics precede the fatal assertion. Native36/default27
+compile/defaultrestored; corrected real-event retry remains required.

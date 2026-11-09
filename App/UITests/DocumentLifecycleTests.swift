@@ -1,5 +1,6 @@
 import AppKit
 import Synchronization
+import Vision
 import XCTest
 
 final class DocumentLifecycleTests: XCTestCase {
@@ -1629,6 +1630,29 @@ final class DocumentLifecycleTests: XCTestCase {
         }
         return value
       }
+      func visibleParagraph(_ scroll: XCUIElement) throws -> Int {
+        let bitmap = try XCTUnwrap(NSBitmapImageRep(data: scroll.screenshot().pngRepresentation))
+        let image = try XCTUnwrap(bitmap.cgImage)
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.recognitionLanguages = ["en-US"]
+        request.usesLanguageCorrection = false
+        request.regionOfInterest = CGRect(x: 0, y: 0.85, width: 0.9, height: 0.15)
+        try VNImageRequestHandler(cgImage: image, options: [:]).perform([request])
+        let pattern = try NSRegularExpression(pattern: "Paragraph\\s*(\\d+)")
+        for observation in (request.results ?? []).sorted(by: {
+          $0.boundingBox.maxY > $1.boundingBox.maxY
+        }) {
+          guard let text = observation.topCandidates(1).first?.string,
+            let match = pattern.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)),
+            let range = Range(match.range(at: 1), in: text), let number = Int(text[range])
+          else { continue }
+          return number
+        }
+        throw NSError(
+          domain: "SnowfolioReadingRestoration", code: 2,
+          userInfo: [NSLocalizedDescriptionKey: "No visible paragraph near source viewport top"])
+      }
       XCTAssertTrue(
         sourceScroll.scrollBars.firstMatch.waitForExistence(timeout: 5), app.debugDescription)
       XCTAssertTrue(
@@ -1641,13 +1665,15 @@ final class DocumentLifecycleTests: XCTestCase {
         predicate: NSPredicate { _, _ in (try? position(sourceScroll)) ?? 0 > 0.03 }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [sourceMoved], timeout: 8), .completed)
       let sourcePosition = try position(sourceScroll)
+      let sourceParagraph = try visibleParagraph(sourceScroll)
+      XCTAssertGreaterThan(sourceParagraph, 1)
       XCTAssertLessThanOrEqual(try position(previewScroll), 0.001)
       previewScroll.scroll(byDeltaX: 0, deltaY: -3200)
       let previewMoved = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in (try? position(previewScroll)) ?? 0 > 0.03 }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [previewMoved], timeout: 8), .completed)
       let previewPosition = try position(previewScroll)
-      XCTAssertEqual(try position(sourceScroll), sourcePosition, accuracy: 0.002)
+      XCTAssertEqual(try visibleParagraph(sourceScroll), sourceParagraph)
       XCTAssertEqual(editor.value as? String, source)
       XCTAssertEqual(try Data(contentsOf: file), bytes)
       let before = XCTAttachment(screenshot: window.screenshot())
@@ -1671,17 +1697,25 @@ final class DocumentLifecycleTests: XCTestCase {
             let sourceValue = try? position(restoredSource),
             let previewValue = try? position(restoredPreview)
           else { return false }
-          return abs(sourceValue - sourcePosition) < 0.002
+          // TextKit 2 can estimate a different total extent after reopening.
+          // Compare the actual visible paragraph without moving the offscreen caret.
+          return sourceValue > 0.03 && (try? visibleParagraph(restoredSource)) == sourceParagraph
             && abs(previewValue - previewPosition) < 0.002
         }, object: nil)
-      XCTAssertEqual(XCTWaiter().wait(for: [readingRestored], timeout: 8), .completed)
+      let outcome = XCTWaiter().wait(for: [readingRestored], timeout: 8)
       let values = XCTAttachment(
         string:
-          "Source before=\(sourcePosition), after=\(try position(restoredSource)); preview before=\(previewPosition), after=\(try position(restoredPreview))"
+          "Visible paragraph before=\(sourceParagraph), after=\(String(describing: try? visibleParagraph(restoredSource))); source scrollbar before=\(sourcePosition), after=\(String(describing: try? position(restoredSource))); preview before=\(previewPosition), after=\(String(describing: try? position(restoredPreview)))\n"
+          + app.debugDescription
       )
       values.name = "native-independent-reading-positions"
       values.lifetime = .keepAlways
       add(values)
+      let reopenedImage = XCTAttachment(screenshot: restored.screenshot())
+      reopenedImage.name = "native-independent-reading-restored"
+      reopenedImage.lifetime = .keepAlways
+      add(reopenedImage)
+      XCTAssertEqual(outcome, .completed)
       // Do not click: the source caret at the beginning must restore independently
       // of both reading positions. Editing must still have native Undo ownership.
       app.typeText("Restored checkpoint. ")
