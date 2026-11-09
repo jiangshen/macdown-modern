@@ -1,6 +1,6 @@
 {
-  "dateUTC": "2026-11-09T09:30:09.437930+00:00",
-  "status": "Implemented;12 focused local checks pass, final native build passes. Actual app manual-Render test, fresh hosted full-core gate and current physical screenshot remain pending. Preserve original counter.",
+  "dateUTC": "2026-11-09T09:42:14.790233+00:00",
+  "status": "Counter increment accepted through full-core384/83+652CommonMark and actual native app1/1 at ece6558. Physical dark/preview/IME/VoiceOver and full modernization remain open. Original coupled app code retained.",
   "implementation": {
     "renderSource": "Read-only committed preview DOM snapshot in isolated WebKit client world; document scripts remain disabled. No polling, DOM mutation, layout query or raw-source parser.",
     "counting": "Foundation NSString byWords independently per text node. HEAD/STYLE/SCRIPT ignored. PRE>CODE excluded from words only. Inline CODE collapses to one word if any of its children has a Foundation word. Characters use filtered Unicode scalars measured in UTF16 units.",
@@ -15,14 +15,47 @@
     "focused": "12 tests in4 suites pass: nativeDOM/coalescing/shadow content/manualsource-only, preferences, Settings search/history/persistence, Foundation/UTF16/whitespace/cancellation.",
     "build": "Final native arm64 app and all37 native UI methods compile; MobileBuildMCP build-for-testing5.8s, zero warnings/errors.",
     "lint": "Strict swift-format and git diff checks pass.",
-    "fullCoreAttempt": "Interrupted after existing NativeDiagramTests.engines(.mermaid) timedOut. Owned process sample reports64 worker threads blocked in AppKit NSAnimation _runBlocking; main run loop idle. No counter/diagram production failure attribution. Only identified own test parent/helper stopped; running probe85540 preserved. Fresh hosted full-core gate required.",
-    "sample": "/private/tmp/snowfolio-validation-history/writing-statistics-local/core-animation-stall.txt"
+    "fullCoreAttempt": "Interrupted after existing NativeDiagramTests.engines(.mermaid) timedOut. Owned process sample reports64 worker threads blocked in AppKit NSAnimation _runBlocking; main run loop idle. No counter/diagram production failure attribution. Only identified own test parent/helper stopped; running probe85540 preserved. Fresh hosted full-core gate required. Later exact hosted full384/83 passes all diagram checks; local stall is not treated as production failure.",
+    "sample": "/private/tmp/snowfolio-validation-history/writing-statistics-local/core-animation-stall.txt",
+    "regularHost": "Canonical SwiftUI host restored: arm64 build-for-testing passes with28 compiled default UI methods. Shared counter unchanged. Existing2AppIntents metadata warnings; zero Swift compiler warnings/errors."
   },
   "actualAppMethod": "testWritingStatisticsFollowManualRenderAndPreserveUndo",
   "pending": [
-    "Actual-app source-only counter/manual Render/three modes/Undo/exact UTF16 bytes.",
-    "Complete fresh core suite on disposable test machine.",
-    "Current app physical preview/dark selection/counter; Mac currently locked, one unlock request pending.",
-    "Full modernization, accessibility/IME/integrations/measured release gates; original code retirement after verified replacement."
-  ]
+    "Collect current default-host28 UI run42593915627; three established SwiftUI lifecycle failures remain baseline.",
+    "Physical current-app preview/dark selection/caret, real IME/VoiceOver; current unlock request is pending.",
+    "Remaining CLI/URL/plugin/update/integration and measured performance/release gates. Retire original coupled source only after replacement acceptance."
+  ],
+  "sourceCommit": "ece65585e52f23ed404cc5495fdcf76d5f652e77",
+  "actualAppAccepted": {
+    "commit": "ece65585e52f23ed404cc5495fdcf76d5f652e77",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42593961131",
+    "method": "testWritingStatisticsFollowManualRenderAndPreserveUndo",
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 62.463,
+    "compact": "/private/tmp/snowfolio-validation-history/writing-statistics-native-ece6558",
+    "visual": "Screenshot inspected: native source-only workspace, unchanged first word source,9characterswithoutspaces footer, manual-render status. No physical dark preview/selection acceptance.",
+    "checks": "Native Open of UTF16LE/BOM/CRLF bytes; source-only switch; counts2words remain stale after added text until explicit Render;3words after Render; native popup selects14characterswithoutspaces; keyboard Undo restores source, counts remain stale until Render;9characterswithoutspaces and Save restores exact original bytes.",
+    "runtimeWarnings": 1,
+    "performance": "Internal runtime inversion warning remains unattributed. No M6 acceptance."
+  },
+  "fullCoreAccepted": {
+    "dateUTC": "2026-11-09T09:42:14.790233+00:00",
+    "commit": "ece65585e52f23ed404cc5495fdcf76d5f652e77",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42593915627",
+    "job": 129081859965,
+    "tests": 384,
+    "suites": 83,
+    "failed": 0,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "commonMarkPassed": 652,
+    "commonMarkTotal": 652,
+    "arm64TestExecutables": 8,
+    "compact": "/private/tmp/snowfolio-validation-history/core-ece6558",
+    "scope": "Completed core job including native diagram checks. Overall default-host UI job still running; do not report full run success."
+  },
+  "toolLimitation": "MobileBuildMCP build success initially; later calls returned missing scheme despite configured profile. No build started for those calls. Existing project build script restored default host and passed all asset/type/dictionary/license gates."
 }

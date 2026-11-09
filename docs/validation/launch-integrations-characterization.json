@@ -1,0 +1,39 @@
+{
+  "dateUTC": "2026-11-09T09:34:42.275609+00:00",
+  "status": "Source characterization only. No modern CLI, URL handler or plugin replacement acceptance. Keep originals until verified replacements exist.",
+  "sources": [
+    "macdown-cmd/MPArgumentProcessor.m",
+    "macdown-cmd/main.m",
+    "MacDown/Code/Application/MPMainController.m",
+    "MacDown/Code/Application/MPPlugInController.m",
+    "MacDown/Code/Utility/MPPlugIn.m",
+    "MacDown/Code/Preferences/MPTerminalPreferencesViewController.m"
+  ],
+  "cli": {
+    "arguments": "-h/--help and -v/--version exit successfully; help wins when both flags are set. Remaining arguments are filenames, resolved against the CLI current directory and ordered-deduplicated. GBCli unknown-option behavior needs executable characterization rather than invented status codes.",
+    "delivery": "Original writes pending absolute file paths and one piped temporary path into the old app suite; app consumes on activation. This is transient state, already excluded from preference migration.",
+    "stdin": "Original uses zero-timeout select then reads available stdin to EOF, writes a unique pipedText.txt and imports it as an Untitled UTF8 document before file arguments. A slow producer can be missed and the temporary file is not deleted by the observed consumer. Preserve piping, replace those bugs.",
+    "missingPaths": "Existing paths open through native document controller; missing paths create empty documents for the requested URL. Exact relative-path, Unicode, duplicate, leading-dash and exit-error semantics need tests.",
+    "installation": "Original Terminal settings finds brew prefix but install target remains a global configured path and old app-bundle symlink. Modern install must handle arm64 Homebrew and user-owned paths without replacing unrelated commands or installing yet."
+  },
+  "url": {
+    "shape": "x-macdown://open?url=file:///path&line=123&column=45",
+    "observed": "Requires host open and a url query item. Uses first query value. Opens via NSDocumentController; newly opened windows expand to visible screen. Original line/column are read and logged but explicitly unimplemented.",
+    "replacementGates": [
+      "Introduce branded scheme with explicit compatibility decision for old scheme.",
+      "Restrict this local-file open surface to validated file URLs; reject malformed, duplicate/conflicting or remote scheme requests with useful feedback.",
+      "Honor valid one-based line/column through existing source editor navigation without changing bytes or Undo.",
+      "Test new/cold and already-running app, existing documents, encoded Unicode paths and malformed input. Do not claim navigation parity for functionality the old code never implemented."
+    ]
+  },
+  "plugins": {
+    "observed": "Files with the configured plugin extension in the app data directory become NSBundles. Loader loads native code and instantiates the principal class. Optional name falls back to filename, optional plugInDidInitialize is called, and run: returns BOOL. Menu rebuild creates wrappers anew; initialization happens on a background queue.",
+    "replacementGates": [
+      "Inventory metadata/architectures without loading arbitrary plugin code.",
+      "Preserve practical selector/API compatibility for arm64 or universal plugins; report Intel-only binaries explicitly in a native-only app.",
+      "Document compatibility with old document-specific APIs before migrating or retiring MPDocument.",
+      "Use explicit user-driven loading and native error states; avoid initialization/menu rescanning work on typing/preview paths."
+    ]
+  },
+  "next": "Finish counter acceptance, then implement deterministic CLI request parsing/delivery and source-navigation URL handling with isolated byte/Undo/error tests. Characterize actual plugin consumers before loading anything."
+}

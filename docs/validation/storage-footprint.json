@@ -647,5 +647,73 @@
     "ownershipAndOpenFilesChecked": true,
     "sourceAndProtectedRunningProbePreserved": true,
     "reason": "Full36 passed all35 earlier methods plus reading relaunch; six key screenshots inspected; replace obsolete full35 raw."
+  },
+  "writingBuildCopyCleanup": {
+    "dateUTC": "2026-11-09T09:31:10.543695+00:00",
+    "removed": [
+      {
+        "path": "/Users/caden/Library/Developer/MobileBuildMCP/workspaces/Nice-Projects-1ea838b4d9c5/test-products/build_macos_2026-11-09T09-25-43-784Z_pid37392_62f8ecf5.xctestproducts",
+        "allocatedBytesRemoved": 67186688
+      },
+      {
+        "path": "/Users/caden/Library/Developer/MobileBuildMCP/workspaces/Nice-Projects-1ea838b4d9c5/logs/build_macos_2026-11-09T09-25-43-785Z_pid37392_973ae7bd.log",
+        "allocatedBytesRemoved": 204800
+      }
+    ],
+    "reason": "Copied test products are unused: native build and37UI compile accepted. Canonical app37266 and protected probe85540 remain in their original caches. Build log compacted.",
+    "ownershipAndOpenFilesChecked": true,
+    "kept": "/private/tmp/snowfolio-validation-history/writing-statistics-local/native-build.log"
+  },
+  "acceptedWritingStatisticsCleanup": {
+    "dateUTC": "2026-11-09T09:40:18.734135+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-writing-native-current-incoming",
+        "allocatedBytesRemoved": 124133376
+      },
+      {
+        "path": "/private/tmp/snowfolio-writing-core-current-incoming",
+        "allocatedBytesRemoved": 167936
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-781B3A40-6864-4B00-8A81-AEC269C556C2",
+        "allocatedBytesRemoved": 249856
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-F04A5FCD-B110-43E5-A776-3F7F9A5FBC1E",
+        "allocatedBytesRemoved": 253952
+      }
+    ],
+    "reason": "Counter1/1 and fullcore384/83 accepted; counter screenshot inspected and compact evidence retained. Keep latest full36 raw and canonical app/core caches only. Both concluded build-wrapper logs compacted.",
+    "ownershipAndOpenFilesChecked": true,
+    "protectedProbe85540Preserved": true
+  },
+  "currentWritingVerificationFootprint": {
+    "dateUTC": "2026-11-09T09:42:14.790233+00:00",
+    "units": "Allocated bytes from du -sk, multiplied by1024",
+    "roots": [
+      {
+        "path": "Build/Snowfolio/DerivedData",
+        "allocatedBytes": 879636480
+      },
+      {
+        "path": "Build/DocumentHostProbe/DerivedData",
+        "allocatedBytes": 487698432
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-theme-validation/build",
+        "allocatedBytes": 785436672
+      },
+      {
+        "path": "/private/tmp/snowfolio-validation-history",
+        "allocatedBytes": 92393472
+      },
+      {
+        "path": "/private/tmp/snowfolio-current-native-result",
+        "allocatedBytes": 199290880
+      }
+    ],
+    "totalAllocatedBytes": 2444455936,
+    "policy": "One app cache, one core cache, protected running probe cache, compact evidence and latestfull36raw. No focused raw or copied test products remain."
   }
 }

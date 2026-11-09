@@ -1,5 +1,5 @@
 {
-  "checkpoint": "Full native36 accepted at2bc01b2. Replacement writing statistics implemented; exact actual-app and full-core verification pending.",
+  "checkpoint": "Full native36 accepted at2bc01b2. Writing counter accepted through native1/1 and fullcore384/83+652CommonMark at ece6558. Current full default28 UI run remains in progress.",
   "base": "4ee7721bbf10b2243f25de985a4993949da0b057",
   "goal": "active; incomplete",
   "fixture": "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
@@ -1107,5 +1107,36 @@
       "attribution": "Internal runtime priority inversions remain unattributed; no M6 acceptance."
     },
     "fullGoal": "Active and incomplete; no default host, install, release, handler switch or coupled legacy retirement."
+  },
+  "writingStatisticsAccepted": {
+    "commit": "ece65585e52f23ed404cc5495fdcf76d5f652e77",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42593961131",
+    "method": "testWritingStatisticsFollowManualRenderAndPreserveUndo",
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 62.463,
+    "compact": "/private/tmp/snowfolio-validation-history/writing-statistics-native-ece6558",
+    "visual": "Screenshot inspected: native source-only workspace, unchanged first word source,9characterswithoutspaces footer, manual-render status. No physical dark preview/selection acceptance.",
+    "checks": "Native Open of UTF16LE/BOM/CRLF bytes; source-only switch; counts2words remain stale after added text until explicit Render;3words after Render; native popup selects14characterswithoutspaces; keyboard Undo restores source, counts remain stale until Render;9characterswithoutspaces and Save restores exact original bytes.",
+    "runtimeWarnings": 1,
+    "performance": "Internal runtime inversion warning remains unattributed. No M6 acceptance."
+  },
+  "latestFullCore": {
+    "dateUTC": "2026-11-09T09:42:14.790233+00:00",
+    "commit": "ece65585e52f23ed404cc5495fdcf76d5f652e77",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42593915627",
+    "job": 129081859965,
+    "tests": 384,
+    "suites": 83,
+    "failed": 0,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "commonMarkPassed": 652,
+    "commonMarkTotal": 652,
+    "arm64TestExecutables": 8,
+    "compact": "/private/tmp/snowfolio-validation-history/core-ece6558",
+    "scope": "Completed core job including native diagram checks. Overall default-host UI job still running; do not report full run success."
   }
 }

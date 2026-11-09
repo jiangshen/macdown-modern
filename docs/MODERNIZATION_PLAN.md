@@ -243,8 +243,8 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography all eight Prism code themes, code-block line numbers and language/custom labels implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; custom CSS/folder import, immutable local assets and reload implemented; Swift Default template/context and unavailable-name recovery implemented; hosted export-panel/recovery acceptance passed; direct desktop theme/export acceptance, user asset license sidecars and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
-| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Word/character counter remains unimplemented; [original contract](validation/writing-statistics-characterization.json) recorded. Tested native menus/tabs/restoration pass35/35 plus focused actual independent viewport relaunch; full-screen/physical parity remains open |
-| Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
+| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Word/character replacement implemented and focused-tested; [acceptance ledger](validation/writing-statistics.json) retains actual-app/full-core gates. Native menus/tabs/restoration pass36/36, including independent viewport relaunch; full-screen/physical parity remains open |
+| Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | CLI/URL/plugin [source contract](validation/launch-integrations-characterization.json) recorded; modern delivery/navigation remains pending |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Three actual native scripting methods pass together in full35. Further options/composition parity and App Intents evaluation remain open |
 | Modernize | Plugin discovery/run compatibility, updater stable/prerelease choices and preferences migration | Pending |
 | Add | Standards-verified CommonMark/GFM, AST outline, workspace/search/Quick Open/command palette | Planned after parity |
@@ -3580,14 +3580,20 @@ and navigation generations reject stale work; hidden-preview counting and manual
 publication reuse the existing render policy.12 focused checks pass, including
 Unicode UTF16 units, styled-node boundaries, code, shadow diagram labels,
 manual-source-only behavior, selection, native Undo and exact UTF16LE/BOM/CRLF bytes.
-The final native app and37 UI methods compile with zero warnings/errors.
+The final native app and37 UI methods compile with zero Swift warnings/errors.
 
 The full local package attempt stalled in an existing Mermaid test: a short sample
-found64 AppKit animation workers blocked. Keep its compact diagnostic, stop only
-the owned stalled test process, and verify fresh full-core results on the disposable
-machine. Actual-app manual Render and current physical preview/dark/counter checks
-remain pending. The physical Mac locked again; one unlock request is pending.
-The older protected probe visibly painted after its offscreen window was zoomed,
+found64 AppKit animation workers blocked. Only the owned stalled test processes were
+stopped. Exact ece6558 hosted full-core384tests/83suites now passes, with8arm64 binaries,
+zero compiler warnings/errors, and652/652CommonMark. All diagram checks pass there.
+The actual native app counter test also passes1/1,62.463s: source-only manual Render,
+native mode picker, keyboard Undo and exact encoded Save are accepted. Screenshot
+inspected. Keep the53-warning full36 baseline distinct from this focused1-warning
+result; neither establishes measured app performance. Current physical preview/dark
+checks remain pending. The physical Mac locked again; one unlock request is pending. The empty owned
+current-app check was stopped without touching user documents. The canonical
+regular SwiftUI host is restored and28UI methods compile; both original app/probe
+caches are preserved. The older protected probe visibly painted after its offscreen window was zoomed,
 and its temporary mixed-list test was undone and closed; that binary is not current
 app acceptance. Preserve original counter code until replacement acceptance.
 See validation/writing-statistics.json for exact scope and remaining gates.
