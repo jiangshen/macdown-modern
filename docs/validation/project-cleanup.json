@@ -731,5 +731,16 @@
     "ownershipAndOpenFilesChecked": true,
     "runningProbeAndSourceAndCurrentFullNative26RawPreserved": true,
     "trashEmptied": false
+  },
+  "latestStandardCommandFixtureCleanup": {
+    "dateUTC": "2026-11-09T05:27:06.704741+00:00",
+    "removedGeneratedDownload": "/private/tmp/snowfolio-native-scripting-current-incoming",
+    "allocatedBytesRemoved": 72392704,
+    "kept": "/private/tmp/snowfolio-validation-history/native-scripting-6d01d83",
+    "failureScreenshotInspected": true,
+    "videosRemovedAfterCompactCapture": true,
+    "ownershipAndOpenFilesChecked": true,
+    "sourceAndRunningProbeAndCurrentFullNative26RawPreserved": true,
+    "trashEmptied": false
   }
 }

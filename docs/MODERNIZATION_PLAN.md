@@ -3342,3 +3342,11 @@ Currentdfcorejob passes373tests/80suites with0warnings/errors,652/652CommonMark 
 8arm64executables; full default job stillrunning. Fullnative33on54237aa also continues.
 A34thUI method compilesMakewithdata, document/windowreferences, readonly/missing-object
 errors andclose-savingin. Runtimepending; no productionstandardcommandchange.
+
+
+The new6d01d83standard-contract method initially stops beforecreation because its
+firstCountcommand isnotinthelegacydictionary(-1708). The twoestablishedmethods
+repass;3executed/2pass/1fail38.887s. Correctfixture nowGetsdocuments, requiresAEList
+andcounts theactualdescriptor locally. AllMakewithdata/index/window/readonly/error/
+close-savingchecks remain. Native34/default27compile; normaldefaultrestored. No
+productionCountcommand or speculativeinitial-contentimplementationadded.

@@ -258,12 +258,14 @@
       let source = "# Initial data 中文 👩‍💻\r\ne\u{301}\r\n"
       let app = launch()
       defer { app.terminate() }
-      let initialCount = try execute("return count of documents").int32Value
+      let initialDocuments = try execute("return documents")
+      XCTAssertEqual(initialDocuments.descriptorType, typeAEList)
+      let initialCount = initialDocuments.numberOfItems
       let made = try execute(
         "make new document with data \(literal(source))\nreturn text of document 1")
       XCTAssertEqual(made.stringValue, source)
       _ = waitForSource(source, in: app)
-      XCTAssertEqual(try execute("return count of documents").int32Value, initialCount + 1)
+      XCTAssertEqual(try execute("return documents").numberOfItems, initialCount + 1)
       XCTAssertEqual(try execute("return text of item 1 of documents").stringValue, source)
       XCTAssertEqual(try execute("return text of document of window 1").stringValue, source)
       XCTAssertGreaterThan(try execute("return id of window 1").int32Value, 0)
@@ -288,7 +290,7 @@
         predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == Data(source.utf8) },
         object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [saved], timeout: 8), .completed)
-      XCTAssertEqual(try execute("return count of documents").int32Value, initialCount)
+      XCTAssertEqual(try execute("return documents").numberOfItems, initialCount)
       _ = try execute("quit saving no")
       XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
     }

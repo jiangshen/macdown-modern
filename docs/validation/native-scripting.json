@@ -217,6 +217,19 @@
       "Close savingyes savingin exactUTF8file; countreturnsbaseline; Quit"
     ],
     "local": "Native34/default27compile; currentdefaultrestored; strictchangedSwiftlint/diffpass",
-    "status": "Pendingruntime; no productioncommandchange."
+    "status": "Correctedfixturecompilesnative34/default27; normaldefaultrestored; strictchangedlint/diffpass; runtimepending.",
+    "initialHosted": {
+      "commit": "6d01d83b1abd874bce64ba2f2d30fae08251593f",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42566748578",
+      "executed": 3,
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 38.887,
+      "failure": "Newmethodfirstquery countofdocuments fails-1708: Countcommandnotadvertisedbydictionary. StopsBEFOREMakewithdata; no newcreation/reference/error/optionsproductionfailureestablished. Existing2methodsrepass.",
+      "compact": "/private/tmp/snowfolio-validation-history/native-scripting-6d01d83",
+      "visual": "InspectedinitialemptyUntitledscreenshot, confirmingprecreationstage."
+    },
+    "correction": "Use supportedGetdocuments; requiretypeAEList andcountreturneddescriptor.numberOfItems locally. Preserveallcreation/index/window/read-only/missingobject/close-savinginchecks. No Countcommand or productioncodeadded."
   }
 }
