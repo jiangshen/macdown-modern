@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-09T02:21:41.058600+00:00",
-    "sourceCommit": "After466ca0d; accepted native26and preview control layout correction",
+    "dateUTC": "2026-11-09T02:52:11.223345+00:00",
+    "sourceCommit": "After03bf0a7; direct-root diagnostic phase",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 853307392
+        "allocatedBytes": 854544384
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -53,7 +53,7 @@
       },
       "coreCache": {
         "path": "/private/tmp/snowfolio-native-theme-validation/build",
-        "allocatedBytes": 776773632
+        "allocatedBytes": 776880128
       },
       "currentRawResult": {
         "path": "/private/tmp/snowfolio-current-native-result",
@@ -61,16 +61,17 @@
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 27521024
+        "allocatedBytes": 27762688
       }
     },
-    "totalAllocatedBytes": 2321534976,
+    "totalAllocatedBytes": 2323120128,
     "obsoleteRawDownloadsRemoved": [
       "fb4actual native app25replaced byae2actual26",
-      "466failed preview control raw after compact summary/activity/text/log capture"
+      "466failed preview control raw after compact summary/activity/text/log capture",
+      "03bf0a7 passing paint comparison:147738624allocated bytes; compact4images/geometry/tests retained"
     ],
     "runningDiagnosticPID": 85540,
-    "retention": "One full actual native app ae2d26/26raw; compact passing9and failed10control evidence. Reused current caches/default restored; running85540app/cache preserved.",
+    "retention": "One full actual native app ae2d60226/26raw; compact paint evidence. Canonical build restored to default SwiftUI. Running diagnostic85540preserved.",
     "userDocumentsChanged": false,
     "trashEmptied": false
   }

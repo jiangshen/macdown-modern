@@ -543,5 +543,15 @@
       "trashEmptied": false,
       "userDocumentsChanged": false
     }
-  ]
+  ],
+  "latestWebKitComparisonCleanup": {
+    "dateUTC": "2026-11-09T02:52:11.937517+00:00",
+    "removedGeneratedPath": "/private/tmp/snowfolio-webkit-paint-fixed-incoming",
+    "allocatedBytesRemoved": 147738624,
+    "compactEvidence": "/private/tmp/snowfolio-validation-history/webkit-paint-controls-03bf0a7",
+    "ownershipAndOpenFilesChecked": true,
+    "currentNative26RawPreserved": true,
+    "runningAppPreserved": true,
+    "trashEmptied": false
+  }
 }

@@ -59,8 +59,12 @@ is still blank; passing accessibility checks do not accept painting.
 The test-only workspace diagnostic now compiles a10th method comparing plain
 WebKit and the exact shared preview coordinator/configuration in a direct AppKit
 container. It collects native view/layer/occlusion/loading/error geometry, WebKit
-snapshots, a window image and a full-screen image. Runtime and image inspection are
-pending; no embedding/environment/capture root cause is established. Production app
+snapshots, a window image and a full-screen image. The corrected03bf0a7 run42551032297 passes10/10. Both native WebKit snapshots
+show correct content, while both window/full-screen web regions are blank. A
+SwiftUI-only cause is ruled out, but no definitive composition/capture/environment
+cause or physical paint acceptance is established. A third phase replaces the
+already-visible window content with bare WebKit and loads after attachment; local
+compilation passes and hosted evidence is pending. Production app
 code is unchanged. The build helper can reuse the canonical cache while preserving
 a running diagnostic. See [preview-paint-controls.json](validation/preview-paint-controls.json).
 
@@ -78,7 +82,8 @@ failures (active autosave/Undo and both clean reloads); its core job succeeds.
 methods within a45-minute job envelope; behavioral waits/assertions are unchanged.
 The first preview-control run executes10methods:9document passes and one missing
 comparison window. Source inspection found a constraint activated before the views
-shared a parent; the corrected ordering builds, with runtime retry pending. No paint
+shared a parent; the corrected ordering builds and the10/10retry confirms window creation.
+The native snapshots and captured window differ as recorded above; no paint
 cause is established. Legacy scripting text/HTML/metadata/command event contracts are
 now characterized, including initially empty cached HTML that does not force render;
 actual modern scripting registration/execution remains pending in

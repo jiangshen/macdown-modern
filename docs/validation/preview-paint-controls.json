@@ -1,13 +1,14 @@
 {
-  "dateUTC": "2026-11-09T02:03:56.362145+00:00",
+  "dateUTC": "2026-11-09T02:51:03.209929+00:00",
   "milestone": "M2/M3native preview painting investigation; full modernization remains active",
   "productionBaseCommit": "ae2d602ace84cf0f9c6c561772497e735bbcc88f",
-  "status": "Initial466ca0d hosted10executes9document passes and one comparison window-creation failure. Native control constraint ordering corrected and rebuilt; retry pending.",
+  "status": "Corrected03bf0a7 hosted10/10 passes; both native WebKit snapshots have correct content but window/full-screen captures are blank. New direct-root third phase builds; hosted visual evidence pending.",
   "problem": "Reading pane blank in inspected hosted diagnostic and actual-app window screenshots despite correct preview accessibility updates. Earlier IOSurface failures known but root cause unconfirmed. AXWebView coordinates differ from its native parent; geometry/paint/capture need separation.",
   "comparison": [
     "Plain WKWebView in direct AppKit stack: nonpersistent data store, document JavaScript disabled, self-contained styled HTML",
     "Exact Snowfolio NativeMarkdownPreview.configuration, Coordinator and MarkdownPreviewWebView in same AppKit stack, with production resource handler, isolated-world scroll script, native reading preferences/style and synthetic HTML",
-    "Use @testable import in test-only Debug app; no production API added and no private WebKit/GPU/security setting changed"
+    "Use @testable import in test-only Debug app; no production API added and no private WebKit/GPU/security setting changed",
+    "Third phase: bare WKWebView replaces existing visible window contentView, then loads inline HTML after attachment. No SwiftUI, stack or intermediate container. Menu-triggered native snapshot plus window/full-screen captures."
   ],
   "evidence": [
     "Initial native frame/bounds/visibleRect/screen position/layer/occlusion/loading/error JSON written before snapshots",
@@ -22,22 +23,28 @@
   "local": {
     "probe": "Final helper build-for-testing passes for native-workspace with10compiled methods; prior direct axbuild reports0errors/0warnings",
     "helperLog": "/private/tmp/snowfolio-validation-history/webkit-paint-controls/snowfolio-webkit-paint-helper-build.log",
-    "defaultApp": "Build-for-testing/resource/icon/type/license checks pass; canonical default host restored; existing AppIntents metadata extraction warning",
+    "defaultApp": "Canonical SwiftUI app build restored and passes resource/icon/type/license gates after direct-root probe compilation; existing AppIntents metadata-extraction warning.",
     "defaultLog": "/private/tmp/snowfolio-validation-history/webkit-paint-controls/snowfolio-default-after-webkit-paint-build.log",
     "sourceFormat": "Strict changed-Swift lint, shell syntax and diff check pass",
     "core": "No production source change since370/79full suite/8arm64 inspection at ae2d602; no redundant package rerun",
-    "correctedBuild": "Helper native-workspace build-for-testing passes after one-line layout correction; default app build restored and passes gates."
+    "correctedBuild": "Helper native-workspace build-for-testing passes after one-line layout correction; default app build restored and passes gates.",
+    "directRoot": "Helper native-workspace build-for-testing passes with third phase; no production source change.",
+    "geometryRegression": {
+      "file": "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeDocumentWindowTests.swift",
+      "test": "nativeOwnership",
+      "result": "Focused1test/1suite passes with zero errors/warnings. Verifies actual WKWebView ownership, visibility, positive visible size and content bounds. Does not establish pixels/hosted geometry.",
+      "report": "/private/tmp/snowfolio-preview-host-geometry-report.json"
+    }
   },
   "remaining": [
-    "Hosted ten-method run and screenshot/native geometry inspection",
-    "Observe live actual native26run without restarting",
-    "Physical desktop preview check after pending unlock request; last observed lock is not current proof of lock",
-    "Actual preview painting and complete native restoration/IME/VoiceOver/remaining modernization/performance/release gates"
+    "Hosted third-phase direct-root run and inspect all native/window/full-screen images",
+    "Physical preview after pending unlock; fresh CUA reports Mac locked",
+    "Complete native restoration/IME/VoiceOver, conflicts/Versions/scripting/parity/performance/release gates"
   ],
   "sourceHashes": {
-    "Tools/DocumentHostProbe/Sources/NativeWebKitPaintControl.swift": "06a86d295723c09779dc70779ce895dfc7816ce6dbe520ac8cfa8d71b65b6028",
+    "Tools/DocumentHostProbe/Sources/NativeWebKitPaintControl.swift": "de862ea52cfc23cb0ee6f92e8fa3c9ee85f0f2a93ba83fcd3a630389cf7034fe",
     "Tools/DocumentHostProbe/Sources/NativeDocumentHost.swift": "7c3bb25a4d3bfab999bfe6df4912e24c849999275e99eede1dcec32350b5753a",
-    "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "789c1f21a07d024e99271a8c3038877f4ffd81921de6525b262d5057b1cf2565",
+    "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "602cf540d5af064dde42f4e6fa80d99a99b99974211c6f54a0b2f9020c018d6c",
     "Tools/probe-document-host.sh": "ba98d4fd448786cf476adea56f7bc4871869d9218839bfdf638db93637ba93b9"
   },
   "initialHosted": {
@@ -51,5 +58,17 @@
     "productionRegression": "All nine document methods still pass.",
     "compact": "/private/tmp/snowfolio-validation-history/webkit-paint-controls-466ca0d"
   },
-  "layoutCorrection": "Source inspection found a parent/child constraint activated before column was added to columns; move addArrangedSubview before activation. No wait/assertion or production rendering change. Runtime retry must confirm window creation; first failure does not establish any WebKit paint cause."
+  "layoutCorrection": "Source inspection found a parent/child constraint activated before column was added to columns; move addArrangedSubview before activation. No wait/assertion or production rendering change. Runtime retry must confirm window creation; first failure does not establish any WebKit paint cause.",
+  "correctedHosted": {
+    "commit": "03bf0a70b58a407da64ea6a1e70981427625ddce",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42551032297",
+    "executed": 10,
+    "passed": 10,
+    "failed": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/webkit-paint-controls-03bf0a7",
+    "images": "Plain and production-pipeline native snapshots visibly contain headings/text/blue markers. Both are blank in window and full-screen images; native AppKit labels/buttons paint.",
+    "geometry": "Both436x445, visible window, not hidden, layer not hidden, loading false/progress1, sensible native screen positions.",
+    "conclusion": "DOM/rendering work without SwiftUI embedding; SwiftUI-only cause ruled out. Native composition/capture/runner behavior remains under investigation; no definitive environmental root cause or physical acceptance."
+  },
+  "storage": "Removed obsolete03bf0a7 raw diagnostic download after compact summaries/native geometry/relevant images and ownership/open-file checks; retained full actual native26 raw."
 }

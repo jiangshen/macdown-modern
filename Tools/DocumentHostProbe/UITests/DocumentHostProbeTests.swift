@@ -405,6 +405,44 @@ final class DocumentHostProbeTests: XCTestCase {
       XCTAssertGreaterThan(plain.frame.width, 300)
       XCTAssertGreaterThan(pipeline.frame.width, 300)
       XCTAssertLessThan(plain.frame.minX, pipeline.frame.minX)
+
+      window.buttons["showDirectPaintControl"].click()
+      let direct = app.descendants(matching: .any)["directPaintWebView"].firstMatch
+      let directReady = direct.staticTexts["Direct window WebKit checkpoint"].firstMatch
+        .waitForExistence(timeout: 8)
+      app.menuBars.menuBarItems["DocumentHostProbe"].click()
+      let captureDirect = app.menuItems["Capture Direct WebKit Snapshot"].firstMatch
+      XCTAssertTrue(captureDirect.waitForExistence(timeout: 5))
+      captureDirect.click()
+      let directReport = output.appendingPathComponent("paint-direct-diagnostics.json")
+      let directCompleted = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: directReport.path)
+        }, object: nil)
+      let directResult = XCTWaiter().wait(for: [directCompleted], timeout: 8)
+      for (name, shot) in [
+        ("native-webkit-direct-window-screen", window.screenshot()),
+        ("native-webkit-direct-full-screen", XCUIScreen.main.screenshot()),
+      ] {
+        let image = XCTAttachment(screenshot: shot)
+        image.name = name
+        image.lifetime = .keepAlways
+        add(image)
+      }
+      for name in ["paint-direct-diagnostics.json", "direct.png"] {
+        let file = output.appendingPathComponent(name)
+        if FileManager.default.fileExists(atPath: file.path) {
+          let attachment = XCTAttachment(contentsOfFile: file)
+          attachment.name = "native-webkit-" + name
+          attachment.lifetime = .keepAlways
+          add(attachment)
+        }
+      }
+      XCTAssertTrue(directReady)
+      XCTAssertEqual(directResult, .completed)
+      let directRecords = try XCTUnwrap(
+        JSONSerialization.jsonObject(with: Data(contentsOf: directReport)) as? [[String: Any]])
+      XCTAssertEqual(directRecords.count, 1)
+      XCTAssertTrue(directRecords.first?["snapshotSaved"] as? Bool == true)
     }
 
     @MainActor

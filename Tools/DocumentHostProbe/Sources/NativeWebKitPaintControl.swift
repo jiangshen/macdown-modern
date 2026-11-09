@@ -17,6 +17,8 @@
     private var captureTask: Task<Void, Never>?
     private var loadTask: Task<Void, Never>?
     private var previewError: String?
+    private var direct: WKWebView?
+    private var directCaptureTask: Task<Void, Never>?
 
     init(output: URL) {
       self.output = output
@@ -66,7 +68,10 @@
       captureButton.action = #selector(capture)
       captureButton.setAccessibilityIdentifier("capturePaintSnapshots")
       status.setAccessibilityIdentifier("paintCaptureStatus")
-      let controls = NSStackView(views: [captureButton, status])
+      let directButton = NSButton(
+        title: "Use direct WebKit window", target: self, action: #selector(showDirect))
+      directButton.setAccessibilityIdentifier("showDirectPaintControl")
+      let controls = NSStackView(views: [captureButton, directButton, status])
       controls.orientation = .horizontal
       controls.spacing = 12
       let root = NSStackView(views: [columns, controls])
@@ -153,21 +158,7 @@
         } catch { self.status.stringValue = error.localizedDescription }
         var results: [[String: Any]] = []
         for (name, view) in views {
-          var result = self.geometry(view)
-          result["name"] = name
-          do {
-            let image = try await view.takeSnapshot(configuration: nil)
-            guard let tiff = image.tiffRepresentation,
-              let bitmap = NSBitmapImageRep(data: tiff),
-              let png = bitmap.representation(using: .png, properties: [:])
-            else { throw CocoaError(.fileWriteUnknown) }
-            try png.write(to: self.output.appendingPathComponent(name + ".png"), options: .atomic)
-            result["snapshotSaved"] = true
-          } catch {
-            result["snapshotSaved"] = false
-            result["error"] = error.localizedDescription
-          }
-          results.append(result)
+          results.append(await self.snapshot(view, name: name))
         }
         do {
           let report = try JSONSerialization.data(
@@ -179,9 +170,77 @@
       }
     }
 
+    private func snapshot(_ view: WKWebView, name: String) async -> [String: Any] {
+      var result = geometry(view)
+      result["name"] = name
+      do {
+        let image = try await view.takeSnapshot(configuration: nil)
+        guard let tiff = image.tiffRepresentation,
+          let bitmap = NSBitmapImageRep(data: tiff),
+          let png = bitmap.representation(using: .png, properties: [:])
+        else { throw CocoaError(.fileWriteUnknown) }
+        try png.write(to: output.appendingPathComponent(name + ".png"), options: .atomic)
+        result["snapshotSaved"] = true
+      } catch {
+        result["snapshotSaved"] = false
+        result["error"] = error.localizedDescription
+      }
+      return result
+    }
+
+    @objc private func showDirect(_ sender: Any?) {
+      guard direct == nil, let window else { return }
+      loadTask?.cancel()
+      pipeline.stopLoading()
+      coordinator.resources.cancelAll()
+      let configuration = WKWebViewConfiguration()
+      configuration.websiteDataStore = .nonPersistent()
+      configuration.defaultWebpagePreferences.allowsContentJavaScript = false
+      let view = WKWebView(frame: window.contentLayoutRect, configuration: configuration)
+      view.setAccessibilityIdentifier("directPaintWebView")
+      direct = view
+      // No SwiftUI, stack or intermediate native container. Load after attaching
+      // to the existing visible window, matching the simplest AppKit setup.
+      window.contentView = view
+      window.title = "Direct WebKit window control"
+      let capture = NSMenuItem(
+        title: "Capture Direct WebKit Snapshot", action: #selector(captureDirect), keyEquivalent: ""
+      )
+      capture.target = self
+      NSApp.mainMenu?.items.first?.submenu?.addItem(capture)
+      view.loadHTMLString(
+        """
+        <!doctype html><html><meta charset="utf-8"><body style="margin:24px;color:#111;background:#fff;font:20px system-ui">
+        <h1>Direct window WebKit checkpoint</h1><p>WKWebView is the window content view.</p>
+        <div style="height:96px;background:#2864dc;color:white;padding:12px">Direct painting marker</div>
+        </body></html>
+        """, baseURL: nil)
+    }
+
+    @objc private func captureDirect(_ sender: Any?) {
+      guard let direct, directCaptureTask == nil else { return }
+      directCaptureTask = Task { @MainActor [weak self] in
+        guard let self else { return }
+        let result = await self.snapshot(direct, name: "direct")
+        do {
+          let report = try JSONSerialization.data(
+            withJSONObject: [result], options: [.prettyPrinted, .sortedKeys])
+          try report.write(
+            to: self.output.appendingPathComponent("paint-direct-diagnostics.json"),
+            options: .atomic)
+        } catch {
+          NSLog(
+            "Direct WebKit control could not write capture metadata: %@", error.localizedDescription
+          )
+        }
+      }
+    }
+
     override func close() {
       loadTask?.cancel()
       captureTask?.cancel()
+      directCaptureTask?.cancel()
+      direct?.stopLoading()
       plain.stopLoading()
       pipeline.stopLoading()
       coordinator.resources.cancelAll()

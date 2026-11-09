@@ -46,7 +46,12 @@ struct NativeDocumentWindowTests {
       try await Task.sleep(for: .milliseconds(25))
     }
     let editor = try #require(source(in: content))
-    _ = try #require(preview(in: content))
+    let previewView = try #require(preview(in: content))
+    #expect(previewView.window === window)
+    #expect(!previewView.isHiddenOrHasHiddenAncestor)
+    #expect(previewView.visibleRect.width > 0)
+    #expect(previewView.visibleRect.height > 0)
+    #expect(content.bounds.contains(previewView.convert(previewView.bounds, to: content)))
     #expect(window.windowController === controller)
     #expect(controller.document as? NSDocument === native)
     #expect(window.contentMinSize.width >= 720)

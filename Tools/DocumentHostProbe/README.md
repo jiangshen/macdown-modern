@@ -36,6 +36,11 @@ It retains production data-store/script policy, local resource handler, isolated
 scroll script and reading style. The plain control uses nonpersistent storage,
 disabled document JavaScript and self-contained HTML.
 
+A third phase replaces the already visible window content view with a bare
+WKWebView and loads its inline HTML after attachment. There is no SwiftUI, stack
+or intermediate container in this phase. A menu command captures its native
+snapshot and geometry; separate window and full-screen images compare composition.
+
 The test records accessibility readiness, native frames/visible rectangles/layers,
 loading/error state, each WebKit-native snapshot, a window screenshot and a full-screen
 screenshot. Geometry is saved before snapshots so a failed/hung snapshot does not
