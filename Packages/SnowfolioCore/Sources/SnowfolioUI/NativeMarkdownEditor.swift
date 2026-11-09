@@ -169,7 +169,8 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       enabled: syntaxHighlighting, font: font, document: document, theme: theme,
       zoomScale: zoomScale, lineSpacing: layout.lineSpacing)
     if let request = document.selectionRequest,
-      request.id != context.coordinator.selectionID, !editor.hasMarkedText()
+      request.id != context.coordinator.selectionID, !editor.hasMarkedText(),
+      !editor.isHiddenOrHasHiddenAncestor
     {
       var offset = min(max(0, request.offset), (editor.string as NSString).length)
       if offset < (editor.string as NSString).length,

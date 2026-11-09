@@ -214,15 +214,18 @@ struct DocumentExportMenuContent: View {
 struct DocumentWindowBridge: NSViewRepresentable {
   let preferTabs: Bool
   let output: DocumentExportController
-  init(output: DocumentExportController, preferTabs: Bool = true) {
+  let document: MarkdownDocument
+  init(output: DocumentExportController, document: MarkdownDocument, preferTabs: Bool = true) {
     self.output = output
+    self.document = document
     self.preferTabs = preferTabs
   }
   func makeNSView(context: Context) -> WindowView {
-    WindowView(output: output, preferTabs: preferTabs)
+    WindowView(output: output, document: document, preferTabs: preferTabs)
   }
   func updateNSView(_ view: WindowView, context: Context) {
     view.output = output
+    view.document = document
     view.preferTabs = preferTabs
     view.synchronizeWindow()
   }
@@ -230,15 +233,20 @@ struct DocumentWindowBridge: NSViewRepresentable {
 
   final class WindowView: NSView {
     weak var output: DocumentExportController?
+    weak var document: MarkdownDocument?
     var preferTabs: Bool
-    init(output: DocumentExportController, preferTabs: Bool) {
+    init(output: DocumentExportController, document: MarkdownDocument, preferTabs: Bool) {
+      self.document = document
       self.output = output
       self.preferTabs = preferTabs
       super.init(frame: .zero)
     }
     required init?(coder: NSCoder) { nil }
     func synchronizeWindow() {
-      if let window { DocumentWindowPolicy.configure(window, preferTabs: preferTabs) }
+      if let window {
+        DocumentWindowPolicy.configure(window, preferTabs: preferTabs)
+        if let document { DocumentWorkspaceRegistry.shared.register(document, in: window) }
+      }
       guard output?.window !== window else { return }
       Task { @MainActor [weak self] in
         guard let self, self.output?.window !== self.window else { return }
@@ -247,6 +255,9 @@ struct DocumentWindowBridge: NSViewRepresentable {
       }
     }
     override func viewWillMove(toWindow newWindow: NSWindow?) {
+      if let window, window !== newWindow {
+        DocumentWorkspaceRegistry.shared.unregister(window, matching: document)
+      }
       if let newWindow { DocumentWindowPolicy.configure(newWindow, preferTabs: preferTabs) }
       super.viewWillMove(toWindow: newWindow)
     }

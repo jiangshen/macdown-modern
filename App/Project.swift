@@ -48,6 +48,13 @@ let project = Project(
         "CFBundleShortVersionString": "$(MARKETING_VERSION)",
         "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
         "NSPrincipalClass": "NSApplication",
+        "CFBundleURLTypes": .array([
+          .dictionary([
+            "CFBundleURLName": "local.macdown.modern.open",
+            "CFBundleURLSchemes": .array([.string("snowfolio"), .string("x-snowfolio")]),
+            "CFBundleTypeRole": "Editor",
+          ])
+        ]),
         "NSAppleScriptEnabled": .boolean(nativeDocumentHost),
         "OSAScriptingDefinition": "Snowfolio.sdef",
         "LSApplicationCategoryType": "public.app-category.productivity",

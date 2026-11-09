@@ -67,7 +67,10 @@ if info.get('NSAppleScriptEnabled') != (sys.argv[2] == 'native'):
     raise SystemExit('Scripting enablement does not match selected host')
 if info.get('OSAScriptingDefinition') != 'Snowfolio.sdef':
     raise SystemExit('Scripting dictionary registration is missing')
-print('Verified document host and scripting registration:', sys.argv[2])
+schemes = {s for t in info.get('CFBundleURLTypes', []) for s in t.get('CFBundleURLSchemes', [])}
+if schemes != {'snowfolio', 'x-snowfolio'}:
+    raise SystemExit('Branded document URL schemes are missing or unexpectedly changed')
+print('Verified document host, URL schemes and scripting registration:', sys.argv[2])
 VERIFY_HOST
 if ! cmp -s "$repo_root/App/Resources/Snowfolio.sdef" "$app/Contents/Resources/Snowfolio.sdef"; then
     echo "Bundled scripting dictionary differs from source." >&2

@@ -4,6 +4,7 @@
 
   @main
   struct SnowfolioApp: App {
+    @NSApplicationDelegateAdaptor(DocumentURLAppDelegate.self) private var appDelegate
     @State private var preferences = AppPreferences()
 
     var body: some Scene {

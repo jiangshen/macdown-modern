@@ -2,102 +2,70 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **375 package tests / 80 suites, 652 published
-CommonMark examples and eight arm64 test executables pass** at `28243a6`.
+Current accepted core baseline: **384 package tests / 83 suites, all 652 published
+CommonMark examples and eight arm64 test executables pass** at `ece6558`.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
-the production choice; the completed comparison is in
+the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
-Both app hosts compile and pass icon/resource/type/dictionary/license checks.
-The native host compiles36 UI methods; the default host compiles27. Existing
-AppIntents metadata-extraction warnings remain. Compilation alone is not runtime
-acceptance.
 
-The optional NSDocument host's complete accepted baseline is **35/35 actual-app
-methods, zero failures/skips**,1264.810s at `28243a6`
-([run42581073714](https://github.com/jiangshen/snowfolio/actions/runs/42581073714)).
-Every preceding34 method remains included, plus normal quit/relaunch of separate
-native tab groups. Encoded autosave/Undo, clean reloads, all dirty-conflict choices,
-read-only Versions/Restore, three real scripting methods, menus/Settings, exports,
-close cancellation, saved tabs/carets and separate groups pass together. Six major
-screenshots inspected; light mixed-list selection is continuous and markers align.
-The native host now compiles36 UI methods. Its new independent reading-position
-relaunch case passes focused1/1; full36 execution is in progress. See
-[document-lifecycle.json](validation/document-lifecycle.json).
+The optional native document host's complete accepted baseline is **36/36 actual-app
+methods**, no failures/skips, in 1810.693 seconds at `2bc01b2`
+([run 42588674603](https://github.com/jiangshen/snowfolio/actions/runs/42588674603)).
+It includes encoded autosave/Undo, clean reloads, all dirty-conflict choices,
+read-only Versions/Restore, three actual scripting methods, menus/Settings, exports,
+close cancellation, saved tabs/carets, separate tab groups and independent source/
+preview reading positions through normal Quit/relaunch. Six key screenshots were
+inspected. Source reading pixels match exactly even when TextKit's estimated total
+extent changes; the preview position, offscreen caret and exact encoded bytes pass.
+See [document-lifecycle.json](validation/document-lifecycle.json),
+[native-tabs.json](validation/native-tabs.json), and
+[native-recovery.json](validation/native-recovery.json).
 
-Two separate native tab groups now pass an actual quit/relaunch test **1/1**, zero
-skips,175.705s at `05ed81e`
-([run42579544002](https://github.com/jiangshen/snowfolio/actions/runs/42579544002)).
-The standard Window > Move Tab to New Window command creates the second group;
-four files retain exact group membership, selected tabs, carets, editing/Undo and
-disk contents. Screenshot and complete AX tree inspected. A separate local full
-native-workspace integration test also restores independent source/preview reading
-positions through secure NSDocument callbacks without changing selection, revision,
-UTF16LE/BOM/CRLF/Unicode bytes, clean state or Undo. The six-method native-window
-suite passes. Actual app quit/relaunch viewport behavior now passes focused1/1 at `2bc01b2`:
-source glyphs match exactly despite changed scrollbar extent; independent preview
-position, offscreen caret, edit/Undo and exactUTF16bytes survive. Full36 remains
-in progress.
-See [native-tabs.json](validation/native-tabs.json).
+The word/character counter replacement passes its actual-app flow in **both hosts**
+at `ece6558`, with source-only manual Render, mode selection, keyboard Undo and exact
+UTF16LE/BOM/CRLF Save. The focused native flow takes 62.463 seconds; both screenshots
+were inspected. Its 12 focused checks and full core baseline cover DOM word rules,
+UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
+preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-Normal two-second autosave conflict Revert, Save Anyway and Save As, plus native
-Versions read-only history/Restore pass **4/4**, zero skips,185.652s at `df05cdb`
-([run42565202255](https://github.com/jiangshen/snowfolio/actions/runs/42565202255)).
-Exact historical Copy establishes focus; ordinary typing cannot mutate history,
-current source, disk bytes or versions. Restore retains exact older bytes and newer
-recoverability. No injected history, alternate writer or autosave policy.
-See [native-recovery.json](validation/native-recovery.json).
-
-Real native scripting passes **3/3**, zero skips,50.763s at `292c17f`
-([run42578096362](https://github.com/jiangshen/snowfolio/actions/runs/42578096362)).
-This covers Open/text/name/file, source replacement/Undo/encoded autosave, manual
-HTML cache/explicit Render, Make with properties and initial Unicode/CRLF data,
-document/window references, public format-code saves, read-only/missing-object
-errors, Close saving in and Quit. Cocoa's text-to-document coercion initializes
-Make's ObjectData through the existing source setter; native ownership stays in
-place. Further command/options/composition parity remains required. The user
-approved only the exact SnowfolioUITests-Runner → Snowfolio automation prompt on
-disposable test machines; temporary handling stays excluded from normal builds.
-See [native-scripting.json](validation/native-scripting.json).
-
-The latest complete default-host suite at `600fc51` passes **24/27**,1186.471s.
-The same three SwiftUI lifecycle failures remain: active autosave/Undo and both
-external reload cases. The latest `05ed81e` core run also has373/374 tests passing:
-reload/text/bytes/read-count pass, but one test ends its wait before the directory
-callback arrives. The test now waits for both observations within the same existing
-three-second deadline; all assertions and production code stay intact. Fresh core375
-verification at `28243a6` now passes with zero compiler warnings/errors and all652
-CommonMark examples. The complete35-method native run42581073714 passes on
-that revision, including actual separate groups; the duplicate default suite was
-canceled after its successful core evidence was saved. See
+The latest complete regular SwiftUI-host run is **25/28**, in 1190.239 seconds at
+`ece6558`. The same three lifecycle failures remain: active autosave/Undo and both
+external reload cases. The new counter flow passes. Its full core job passes all
+384 tests with zero compiler warnings/errors and all CommonMark examples. No new
+regular-host failure is established. See
 [default-host-followup.json](validation/default-host-followup.json).
 
-Preview painting remains unaccepted: direct-root, direct-AppKit-stack and production
-WebKit snapshots contain correct glyphs, while hosted window/screen captures have
-blank web regions. A SwiftUI-only container cause is ruled out; an environmental
-cause or physical correctness is not proven. The Mac remains locked at the latest
-physical inspection, with the existing unlock request pending. No private WebKit,
-security, local automation-permission, default-host, installation, release or
-file-handler change. See [preview-paint-controls.json](validation/preview-paint-controls.json).
+The original command-line, URL and plugin behavior is recorded in
+[launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
+Branded document links and source navigation are now implemented in Swift. Both
+hosts compile, with 38 native / 29 regular UI methods. Focused parser/location/
+ownership checks pass; actual URL delivery in each host and a fresh full core gate
+remain pending. See [document-links.json](validation/document-links.json).
+The CLI stdin/files replacement and its packaging remain to be implemented.
 
-Retain one core cache, one canonical app cache, the protected running probe and the
-latest useful fullnative35 raw result. Concluded focused downloads/recordings and
-obsolete successful diagnostics are removed after compact findings and relevant
-screenshots are saved. See [project-cleanup.json](validation/project-cleanup.json)
-and [storage-footprint.json](validation/storage-footprint.json).
+Real native scripting passes three methods covering Open/text/name/file, source
+replacement/Undo/encoded autosave, manual HTML cache/Render, Make with properties and
+initial data, object references, format-code saves, read-only/missing-object errors,
+Close saving in and Quit. Further command/options/composition parity remains open.
+Only the user-approved SnowfolioUITests-Runner → Snowfolio automation prompt on
+**disposable test machines** is authorized; temporary handling remains excluded
+from regular builds. See [native-scripting.json](validation/native-scripting.json).
 
-Light/default-font source selection is continuous and its list markers align.
-Physical dark selection, caret/native-reference painting, preview glyphs, real
-IME/VoiceOver, remaining typing/statistics/renderer parity, M5 and measured M6/release
-readiness remain required. Internal QoS inversion warnings remain unattributed.
-No coupled original target is retired. See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md).
+Current physical preview/dark selection/caret, real IME and VoiceOver acceptance
+remain open. Hosted WebKit snapshots have correct glyphs while app-window captures
+have blank preview regions. The older protected probe painted after its offscreen
+window was zoomed, but it is not current-app acceptance. The Mac locked again and
+one unlock reply is pending. No private WebKit or permission workaround is used.
+Internal runtime QoS warnings remain unattributed; measured M6 performance/release
+gates are not accepted. No default-host, installation, release or file-handler
+switch has been made, and coupled original source remains until feature parity.
 
-The preceding asset-folder implementation `d3f5da2` passed exact hosted acceptance:
-334 package tests, 652 CommonMark examples and all 17 native UI methods, including
-actual untitled Save→saved-folder image export. Raw evidence and scope remain in
-[unsaved-asset-folder.json](validation/unsaved-asset-folder.json). Code-presentation
-and template/CSS evidence remain in [code-block-presentation.json](validation/code-block-presentation.json),
-[html-template-exports.json](validation/html-template-exports.json) and
-[custom-reading-styles.json](validation/custom-reading-styles.json).
+Storage retains one core cache, one canonical app cache, the protected running probe
+and only the latest useful full native36 raw result. Finished comparison downloads
+and obsolete build wrappers are removed after compact findings and relevant
+screenshots are retained. The current roots total approximately 2.4 GB; see
+[project-cleanup.json](validation/project-cleanup.json) and
+[storage-footprint.json](validation/storage-footprint.json).
 
 The existing notebook design remains the default. None, six original styles, edited
 MacDown CSS, local CSS and imported copies remain selectable. CSS/image/font imports

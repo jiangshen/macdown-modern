@@ -1,0 +1,43 @@
+{
+  "dateUTC": "2026-11-09T10:27:59.854395+00:00",
+  "status": "Implemented; focused parser/location/ownership tests and both host builds pass. Real URL delivery, warm/cold launch and latest full-core acceptance are pending.",
+  "sources": [
+    "Packages/SnowfolioCore/Sources/DocumentCore/DocumentOpenRequest.swift",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentURLController.swift",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspaceRegistry.swift",
+    "App/UITests/DocumentLinksTests.swift"
+  ],
+  "protocol": {
+    "canonical": "snowfolio://open?url=<encoded absolute file URL>&line=<one-based line>&column=<one-based UTF16 column>",
+    "registration": [
+      "snowfolio",
+      "x-snowfolio"
+    ],
+    "compatibility": "Explicitly app-targeted x-macdown links are parsed; their existing system URL handler is not registered or changed.",
+    "validation": "Known target/line/column query items must be unique. Local absolute file URLs only; remote hosts, credentials, ports, fragments, file queries and decoded null bytes are rejected. Optional location defaults column to1 when a line exists; a column requires a line. Unknown optional query items remain ignored like the original.",
+    "navigation": "Foundation line boundaries and UTF16 columns clamp at content ends and composed-character boundaries, including CRLF, non-BMP emoji and combining marks. Computation runs off the UI actor. A newer source revision prevents stale positioning.",
+    "opening": "Normal NSDocumentController open with display, reusing existing documents. No alternate reader/writer/autosave/Undo policy, no file creation for URL links and no evaluation of input as a command.",
+    "ownership": "Native documents expose their shared model directly. The regular host resolves its model via a weak, event-driven window registration and public NSDocument ownership. Cancellation releases waiters/deadlines; a failed8-second lookup reports an error without changing source.",
+    "view": "Location requests reveal the source from preview-only mode. Hidden source views defer selection until visible and existing marked-text protection remains.",
+    "lifecycle": "Get-URL handler installed during will/did-finish launch for both hosts; ordered queue retains requests across asynchronous opening."
+  },
+  "local": {
+    "focused": "14 tests in2suites pass:5native ownership/lifetime/preview-reveal tests, plus9pure link/location tests with parameter matrices. No errors/warnings.",
+    "builds": "Native38/default29 UI methods compile; all resource/type/icon/dictionary/license/URL-declaration gates pass. Regular host is restored. Final actual native/regular URL delivery remains pending.",
+    "compact": "/private/tmp/snowfolio-validation-history/document-links-local",
+    "physical": "Mac remains unavailable pending the existing unlock reply. Protected probe85540 and its older binary remain untouched."
+  },
+  "actualAppTest": "DocumentLinksTests/testDocumentLinksOpenNavigateAndReuseAcrossLaunches",
+  "pending": [
+    "Actual Get-URL delivery on native and regular host, including cold launch.",
+    "No-click insertion proves exact location, existing-file reuse, Undo and exact encoded bytes.",
+    "Latest full-core398 tests/85suites and652CommonMark; prior accepted baseline384/83 at ece6558 remains distinct.",
+    "CLI stdin/files protocol and packaging remain unimplemented; preserve original CLI source.",
+    "Full goal M3-M6 including physical preview/dark/IME/VoiceOver, practical plugin compatibility and measured releases remains active."
+  ],
+  "primaryReferences": [
+    "https://developer.apple.com/documentation/foundation/nsappleeventmanager/seteventhandler(_:andselector:foreventclass:andeventid:)",
+    "https://developer.apple.com/documentation/appkit/nsdocumentcontroller",
+    "Local macOS27.2 public SDK headers for NSDocumentController and SwiftUI NewDocumentAction/OpenDocumentAction"
+  ]
+}

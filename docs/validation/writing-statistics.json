@@ -21,7 +21,6 @@
   },
   "actualAppMethod": "testWritingStatisticsFollowManualRenderAndPreserveUndo",
   "pending": [
-    "Collect current default-host28 UI run42593915627; three established SwiftUI lifecycle failures remain baseline.",
     "Physical current-app preview/dark selection/caret, real IME/VoiceOver; current unlock request is pending.",
     "Remaining CLI/URL/plugin/update/integration and measured performance/release gates. Retire original coupled source only after replacement acceptance."
   ],
@@ -57,5 +56,24 @@
     "compact": "/private/tmp/snowfolio-validation-history/core-ece6558",
     "scope": "Completed core job including native diagram checks. Overall default-host UI job still running; do not report full run success."
   },
-  "toolLimitation": "MobileBuildMCP build success initially; later calls returned missing scheme despite configured profile. No build started for those calls. Existing project build script restored default host and passed all asset/type/dictionary/license gates."
+  "toolLimitation": "MobileBuildMCP build success initially; later calls returned missing scheme despite configured profile. No build started for those calls. Existing project build script restored default host and passed all asset/type/dictionary/license gates.",
+  "actualDefaultHostAccepted": {
+    "dateUTC": "2026-11-09T10:06:54.829726+00:00",
+    "commit": "ece65585e52f23ed404cc5495fdcf76d5f652e77",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42593915627",
+    "executed": 28,
+    "passed": 25,
+    "failed": 3,
+    "skipped": 0,
+    "seconds": 1190.239,
+    "failures": [
+      "testActiveAutosaveAndSavedEditUndoPreserveBytes()",
+      "testAutosavePreservesEncodingAndReloadsCleanExternalChange()",
+      "testCoordinatedExternalReloadAfterAutosave()"
+    ],
+    "newCounterFlow": "Passed and screenshot inspected. Source-only manual Render, counting mode and Undo/exact bytes accepted in both hosts.",
+    "finding": "The same three established SwiftUI lifecycle failures; no new default-host failure. No host/install/release/handler switch.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-ece6558",
+    "runtimeWarnings": 44
+  }
 }

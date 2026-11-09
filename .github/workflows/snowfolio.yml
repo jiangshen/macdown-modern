@@ -34,6 +34,8 @@ on:
           - native-document-groups
           - native-document-reading
           - native-writing-statistics
+          - native-document-links
+          - document-links
           - native-document-scripting
           - native-document-recovery
           - document-tab-creation
@@ -117,6 +119,12 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
             TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentScriptingTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-links ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentLinksTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = document-links ]; then
+            bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentLinksTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-writing-statistics ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testWritingStatisticsFollowManualRenderAndPreserveUndo

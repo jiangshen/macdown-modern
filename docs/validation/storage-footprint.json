@@ -715,5 +715,13 @@
     ],
     "totalAllocatedBytes": 2444455936,
     "policy": "One app cache, one core cache, protected running probe cache, compact evidence and latestfull36raw. No focused raw or copied test products remain."
+  },
+  "completedDefaultCounterCleanup": {
+    "dateUTC": "2026-11-09T10:06:54.829726+00:00",
+    "path": "/private/tmp/snowfolio-default-writing-current-incoming",
+    "allocatedBytesRemoved": 186085376,
+    "kept": "/private/tmp/snowfolio-validation-history/default-ece6558",
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Default28 exact counts and three unchanged failures compacted; new counter screenshot inspected. Preserve latest full native36 raw only."
   }
 }

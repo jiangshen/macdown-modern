@@ -213,7 +213,9 @@ private struct DocumentWorkspaceContent: View {
       }
     }
     .background(
-      DocumentWindowBridge(output: output, preferTabs: preferences.preferDocumentTabs).frame(
+      DocumentWindowBridge(
+        output: output, document: document, preferTabs: preferences.preferDocumentTabs
+      ).frame(
         width: 0, height: 0)
     )
     .focusedSceneValue(\.documentExport, output)
@@ -237,6 +239,9 @@ private struct DocumentWorkspaceContent: View {
     }
     .onChange(of: preferences.strikethrough, initial: true) { _, value in
       editing.setStrikethroughEnabled(value)
+    }
+    .onChange(of: document.selectionRequest?.id) { _, request in
+      if request != nil, mode == .preview { mode = .split }
     }
     // Scene restoration may deliver these values after native views are created.
     .onChange(of: sourceViewport) { _, _ in scrolling.layoutChanged() }

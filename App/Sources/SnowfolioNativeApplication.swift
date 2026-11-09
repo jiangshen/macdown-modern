@@ -8,6 +8,7 @@
   @MainActor
   final class SnowfolioNativeApplication: NSObject, NSApplicationDelegate {
     private var menus: NativeApplicationMenuController?
+    private let links = DocumentURLController()
 
     static func main() {
       let application = NSApplication.shared
@@ -19,12 +20,15 @@
 
     func applicationWillFinishLaunching(_ notification: Notification) {
       guard menus == nil else { return }
+      links.install()
       NativeMarkdownDocument.registerScriptingCoercions()
       NSDocumentController.shared.autosavingDelay = 2
       let menus = NativeApplicationMenuController()
       self.menus = menus
       menus.install()
     }
+
+    func applicationDidFinishLaunching(_ notification: Notification) { links.install() }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool { true }
   }
