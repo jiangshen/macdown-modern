@@ -357,7 +357,7 @@
     "commit": "292c17f15ba57d5bed90ace1489b94b9659908ed",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42578704447",
     "scope": "All 34 actual native app methods",
-    "status": "in progress; no acceptance before complete result inspection"
+    "status": "Completed34/34; superseded by accepted35/35 full suite, see fullNative35Accepted."
   },
   "currentDuplicateRunHousekeeping": {
     "dateUTC": "2026-11-09T07:23:21.815528+00:00",

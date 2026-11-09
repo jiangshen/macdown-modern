@@ -3535,3 +3535,15 @@ Original writing-counter behavior is characterized in
 committed preview text, Foundation word boundaries, special inline/block-code
 semantics and newline/whitespace-filtered UTF16 counts. Modern counter remains
 unimplemented; preserve the original code until a verified replacement exists.
+
+
+The613b8d8 CPU-only probe still failsbeforeQuit/relaunch in the same
+TextRecognition detectorload(error1/nilError),1fail62.218s. Stop model retries.
+The UItest now removesVision and compares actual rendered source glyphs without
+changing the offscreen caret. FixedMenlo14 launch arguments and a paragraph-number
+strip isolate the reading content; an actualwrong-position control must fail.
+Read-only calibration: same recordedsource2.454percent inkdifference, neighboring
+paragraph18.023percent; bound is5percent withatmost2logicalpixels rasterrounding.
+Preview0.002, source-not-at-top, original8second deadline, no-click restoredcaret,
+Undo andUTF16bytes remainstrict. Native36/default27compile/defaultrestored;
+focusedrealrelaunch remainsrequired. No production scrollfix or featureacceptance.

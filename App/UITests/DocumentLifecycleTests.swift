@@ -1,6 +1,5 @@
 import AppKit
 import Synchronization
-import Vision
 import XCTest
 
 final class DocumentLifecycleTests: XCTestCase {
@@ -1594,6 +1593,7 @@ final class DocumentLifecycleTests: XCTestCase {
       let app = launch(arguments: [
         "-ApplePersistenceIgnoreState", "NO", "-NSQuitAlwaysKeepsWindows", "YES",
         "-AppleShowScrollBars", "Always", "-editorSyncScrolling", "NO",
+        "-editorBaseFontInfo", "{ name = Menlo-Regular; size = 14; }",
       ])
       defer { app.terminate() }
       defer {
@@ -1630,38 +1630,17 @@ final class DocumentLifecycleTests: XCTestCase {
         }
         return value
       }
-      func visibleParagraph(_ scroll: XCUIElement) throws -> Int {
+      func visibleSource(_ scroll: XCUIElement) throws -> SourceReadingSnapshot {
         let bitmap = try XCTUnwrap(NSBitmapImageRep(data: scroll.screenshot().pngRepresentation))
         let image = try XCTUnwrap(bitmap.cgImage)
-        let request = VNRecognizeTextRequest()
-        request.recognitionLevel = .accurate
-        request.recognitionLanguages = ["en-US"]
-        request.usesLanguageCorrection = false
-        request.regionOfInterest = CGRect(x: 0, y: 0.85, width: 0.9, height: 0.15)
-        // Hosted macOS guests may advertise acceleration that cannot compile
-        // the recognition model. Use a supported CPU for each test-only stage.
-        for (stage, devices) in try request.supportedComputeStageDevices {
-          let cpu = try XCTUnwrap(
-            devices.first {
-              if case .cpu = $0 { return true }
-              return false
-            })
-          request.setComputeDevice(cpu, for: stage)
-        }
-        try VNImageRequestHandler(cgImage: image, options: [:]).perform([request])
-        let pattern = try NSRegularExpression(pattern: "Paragraph\\s*(\\d+)")
-        for observation in (request.results ?? []).sorted(by: {
-          $0.boundingBox.maxY > $1.boundingBox.maxY
-        }) {
-          guard let text = observation.topCandidates(1).first?.string,
-            let match = pattern.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)),
-            let range = Range(match.range(at: 1), in: text), let number = Int(text[range])
-          else { continue }
-          return number
-        }
-        throw NSError(
-          domain: "SnowfolioReadingRestoration", code: 2,
-          userInfo: [NSLocalizedDescriptionKey: "No visible paragraph near source viewport top"])
+        let scale = CGFloat(image.width) / scroll.frame.width
+        // The fixture fixes Menlo14 and the24pt inset. Sample its paragraph
+        // numbers across multiple visual lines, including a partially clipped row.
+        return try SourceReadingSnapshot(
+          image: image,
+          readingRect: CGRect(x: 108 * scale, y: 0, width: 36 * scale, height: 64 * scale),
+          backgroundPoint: CGPoint(x: 4 * scale, y: 4 * scale),
+          maximumShift: Int(ceil(2 * scale)))
       }
       XCTAssertTrue(
         sourceScroll.scrollBars.firstMatch.waitForExistence(timeout: 5), app.debugDescription)
@@ -1674,22 +1653,35 @@ final class DocumentLifecycleTests: XCTestCase {
       let sourceMoved = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in (try? position(sourceScroll)) ?? 0 > 0.03 }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [sourceMoved], timeout: 8), .completed)
+      let earlierSource = try visibleSource(sourceScroll)
+      sourceScroll.scroll(byDeltaX: 0, deltaY: -300)
+      let differentReading = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          guard let sample = try? visibleSource(sourceScroll) else { return false }
+          return sample.difference(from: earlierSource) > 0.05
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [differentReading], timeout: 8), .completed)
+      let sourceSample = try visibleSource(sourceScroll)
+      // A negative control proves that another reading position cannot pass.
+      XCTAssertGreaterThan(sourceSample.difference(from: earlierSource), 0.05)
       let sourcePosition = try position(sourceScroll)
-      let sourceParagraph = try visibleParagraph(sourceScroll)
-      XCTAssertGreaterThan(sourceParagraph, 1)
       XCTAssertLessThanOrEqual(try position(previewScroll), 0.001)
       previewScroll.scroll(byDeltaX: 0, deltaY: -3200)
       let previewMoved = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in (try? position(previewScroll)) ?? 0 > 0.03 }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [previewMoved], timeout: 8), .completed)
       let previewPosition = try position(previewScroll)
-      XCTAssertEqual(try visibleParagraph(sourceScroll), sourceParagraph)
+      XCTAssertLessThanOrEqual(try visibleSource(sourceScroll).difference(from: sourceSample), 0.05)
       XCTAssertEqual(editor.value as? String, source)
       XCTAssertEqual(try Data(contentsOf: file), bytes)
       let before = XCTAttachment(screenshot: window.screenshot())
       before.name = "native-independent-reading-before-quit"
       before.lifetime = .keepAlways
       add(before)
+      let beforeSource = XCTAttachment(screenshot: sourceScroll.screenshot())
+      beforeSource.name = "native-source-reading-before-quit"
+      beforeSource.lifetime = .keepAlways
+      add(beforeSource)
       app.typeKey("q", modifierFlags: .command)
       XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
       XCTAssertEqual(try Data(contentsOf: file), bytes)
@@ -1707,15 +1699,16 @@ final class DocumentLifecycleTests: XCTestCase {
             let sourceValue = try? position(restoredSource),
             let previewValue = try? position(restoredPreview)
           else { return false }
-          // TextKit 2 can estimate a different total extent after reopening.
-          // Compare the actual visible paragraph without moving the offscreen caret.
-          return sourceValue > 0.03 && (try? visibleParagraph(restoredSource)) == sourceParagraph
+          // TextKit2 may estimate a different total extent after reopening.
+          // Actual glyphs identify the reading position without moving the caret.
+          guard let sample = try? visibleSource(restoredSource) else { return false }
+          return sourceValue > 0.03 && sample.difference(from: sourceSample) <= 0.05
             && abs(previewValue - previewPosition) < 0.002
         }, object: nil)
       let outcome = XCTWaiter().wait(for: [readingRestored], timeout: 8)
       let values = XCTAttachment(
         string:
-          "Visible paragraph before=\(sourceParagraph), after=\(String(describing: try? visibleParagraph(restoredSource))); source scrollbar before=\(sourcePosition), after=\(String(describing: try? position(restoredSource))); preview before=\(previewPosition), after=\(String(describing: try? position(restoredPreview)))\n"
+          "Source glyph difference=\(String(describing: try? visibleSource(restoredSource).difference(from: sourceSample))); negative control=\(sourceSample.difference(from: earlierSource)); source scrollbar before=\(sourcePosition), after=\(String(describing: try? position(restoredSource))); preview before=\(previewPosition), after=\(String(describing: try? position(restoredPreview)))\n"
           + app.debugDescription
       )
       values.name = "native-independent-reading-positions"
@@ -1725,6 +1718,10 @@ final class DocumentLifecycleTests: XCTestCase {
       reopenedImage.name = "native-independent-reading-restored"
       reopenedImage.lifetime = .keepAlways
       add(reopenedImage)
+      let reopenedSource = XCTAttachment(screenshot: restoredSource.screenshot())
+      reopenedSource.name = "native-source-reading-restored"
+      reopenedSource.lifetime = .keepAlways
+      add(reopenedSource)
       XCTAssertEqual(outcome, .completed)
       // Do not click: the source caret at the beginning must restore independently
       // of both reading positions. Editing must still have native Undo ownership.

@@ -209,7 +209,7 @@
     "commit": "28243a6c12b46672249da69e7a0e0d084324e8bd",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42581073714",
     "scope": "All35methods includingactualseparategroups and3realscriptingmethods",
-    "status": "in progress; no full acceptance claim"
+    "status": "Completed35/35; see fullNative35Accepted for inspected evidence and retained result."
   },
   "fullNative34Accepted": {
     "dateUTC": "2026-11-09T07:47:11.418269+00:00",
@@ -242,7 +242,7 @@
     "scope": "Actual native app opens UTF16LE/BOM/CRLF/Unicode fixture. User scroll events place source and preview separately with linking off. NormalQuit/relaunch must restore numeric native scrollbar positions within0.002, sourcecaret0, editing/Undo and exactfilebytes.",
     "testIsolation": "Scrollbars Always and restoration/linking preferences supplied only through disposable app launch arguments. No global preference or production behavior changes.",
     "local": "Corrected native36/default27 compile; normaldefault restored; strict changedSwiftlint/diffpass; recorded-frame recognition verifies paragraph35 before/after.",
-    "runtime": "CPU-configured focused retry pending. Fullnative35 baseline accepted; 36th readingmethod remains unaccepted.",
+    "runtime": "Portable glyph-comparison focused run pending. Fullnative35 remains accepted; native36 reading case remains unaccepted.",
     "compact": "/private/tmp/snowfolio-validation-history/native-reading-local",
     "firstHosted": {
       "commit": "a909bfeedb0b9ae09d510b57b4ef4fcfeaedc960",
@@ -270,7 +270,26 @@
       "visual": "Finalsource PNG inspected: source atparagraph34, previewstilltop. This is prequit firstOCR stage.",
       "compact": "/private/tmp/snowfolio-validation-history/native-reading-50b17ca"
     },
-    "cpuRecognitionFollowup": "Select supported .cpu device for every Vision compute stage using current public API; avoid unavailable guest acceleration. Native36/default27 compile, defaultrestored, strictlint/diffpass. CPU-configured local probe stillreadsParagraph35inbothrecordedbefore/afterframes. Exactdisposablemachine retryrequired; no skip or production scrollchange."
+    "cpuRecognitionFollowup": "Select supported .cpu device for every Vision compute stage using current public API; avoid unavailable guest acceleration. Native36/default27 compile, defaultrestored, strictlint/diffpass. CPU-configured local probe stillreadsParagraph35inbothrecordedbefore/afterframes. Exactdisposablemachine retryrequired; no skip or production scrollchange.",
+    "CPUHosted": {
+      "commit": "613b8d835df0971b0d3d4665302a127067fd27de",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42584794463",
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 62.218,
+      "failure": "Same TextRecognition detector model load error1, now nilError from first visibleParagraph call despite supportedCPU configuration. StopsBEFOREQuit/relaunch. Screenshot inspected. No app restoration conclusion.",
+      "compact": "/private/tmp/snowfolio-validation-history/native-reading-613b8d8"
+    },
+    "portableGlyphFollowup": {
+      "scope": "Remove Vision dependency from UItests; compare real source screenshot glyphs in controlled Menlo14 paragraph-number strip without changing offscreen caret. Wrong-position control must be rejected before selecting saved baseline.",
+      "comparison": "Normalize actual ink pixels by sampled source background. Allow at most2logicalpixels raster rounding and5percent ink difference. Same-position recorded frames differ2.454percent; adjacent paragraph control differs18.023percent. Preview position remains within0.002; source must remain awayfromtop; same8second condition deadline.",
+      "safety": "No production behavior, parser, writer, selection/Undo policy or global preference changes. Font and scrollbar settings are disposable launch arguments; font dictionary argument verified locally.",
+      "calibration": "/private/tmp/snowfolio-validation-history/native-reading-local/glyph-calibration.log",
+      "local": "Native36/default27 compile; canonicaldefaultrestored; strictSwiftlint/diffpass.",
+      "runtime": "Focused actualquit/relaunch stillpending; no acceptance from compilation/calibration alone."
+    }
   },
   "fullNative35Accepted": {
     "dateUTC": "2026-11-09T08:14:02.511219+00:00",

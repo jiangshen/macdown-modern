@@ -1012,5 +1012,29 @@
     "supersededFull34AllocatedBytesRemoved": 190341120,
     "latestFull35AllocatedBytes": 193961984,
     "ownershipAndOpenFilesChecked": true
+  },
+  "readingCPUProbeCleanup": {
+    "dateUTC": "2026-11-09T08:18:34.534645+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-reading-current-incoming",
+        "allocatedBytesRemoved": 125292544
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-ED1B4AE7-5DF4-4DFD-B339-AA39EEF1B7D0",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-FDDBE82B-B0AB-409F-B8F1-DF80EBCAA072",
+        "allocatedBytesRemoved": 180224
+      }
+    ],
+    "kept": [
+      "/private/tmp/snowfolio-validation-history/native-reading-local",
+      "/private/tmp/snowfolio-validation-history/native-reading-50b17ca"
+    ],
+    "ownershipAndOpenFilesChecked": true,
+    "protectedProbeAndLatestFullNative35RawPreserved": true,
+    "reason": "Recognition model-compile failure fully captured; retain compact findings/final screenshot, clear concluded raw/builddiagnostics."
   }
 }
