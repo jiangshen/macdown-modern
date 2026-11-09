@@ -2,10 +2,9 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **398 package tests / 85 suites, all 652 published
-CommonMark examples and eight arm64 test executables pass** at `4791020`.
-Its two registry-test weak-mutability warnings are corrected in the current focused
-followup; full warning-free acceptance of that followup remains pending.
+Current accepted core baseline: **400 package tests / 85 suites, all 652 published
+CommonMark examples and eight arm64 test executables pass** at `3b68499`, with
+zero compiler errors/warnings.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
@@ -30,25 +29,31 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run is **25/28**, in 1190.239 seconds at
-`ece6558`. The same three lifecycle failures remain: active autosave/Undo and both
-external reload cases. The new counter flow passes. Its full core job passes all
-384 tests with zero compiler warnings/errors and all CommonMark examples. No new
+The latest complete regular SwiftUI-host run is **26/29**, in 1402.916 seconds at
+`4791020`. The same three lifecycle failures remain: active autosave/Undo and both
+external reload cases. The counter and new document-link flows pass. The separate `3b68499` core gate
+passes all400 tests with zero compiler warnings/errors and all CommonMark examples. No new
 regular-host failure is established. See
 [default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
 [launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
 Branded document links and source navigation are now implemented in Swift. Both
-hosts compile, with 38 native / 29 regular UI methods. Both actual-app warm/cold
-link flows pass at `4791020`, including exact no-click Unicode locations, old alias,
-reuse, Undo and encoded bytes. The earlier regular-host caret failure has not been
-conclusively attributed. A separate initial-snapshot ordering gap now has a failing-
-then-passing regression and an event-driven readiness fix: 16 focused checks pass;
-its latest actual-app/full-core gates remain pending. See
-[document-links.json](validation/document-links.json). The CLI stdin/files replacement
-and packaging remain to be implemented;18 isolated original-parser probes now
-characterize option/dash/unknown-option behavior.
+hosts compile, with 38 native / 29 regular UI methods at the accepted link baseline.
+Both actual-app warm/cold link flows pass at `4791020`, including exact no-click
+Unicode locations, old alias, reuse, Undo and encoded bytes. The regular-host
+initial-snapshot readiness followup passes at `3b68499` (24.870 seconds), with all
+400 core tests and corpus examples; earlier intermittent caret failure attribution
+remains open. See [document-links.json](validation/document-links.json).
+
+The native Swift CLI candidate now implements deterministic options/files/stdin,
+an in-memory launch envelope, exclusive missing-file creation and bundled arm64
+packaging.19 focused checks, standalone help/error processes, project generation
+and UI-test typechecking pass. Actual packaged warm/cold delivery, permission
+behavior and the new full gate remain pending. The original CLI stays until its
+replacement is accepted. See [command-line.json](validation/command-line.json) and
+the18-case original-parser characterization.
+
 
 Real native scripting passes three methods covering Open/text/name/file, source
 replacement/Undo/encoded autosave, manual HTML cache/Render, Make with properties and

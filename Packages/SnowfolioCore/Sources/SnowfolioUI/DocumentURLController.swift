@@ -6,7 +6,11 @@ import DocumentCore
 /// and conflict policy remain owned by the selected document host.
 @MainActor
 public final class DocumentURLController: NSObject {
-  private var pending: [DocumentOpenRequest] = []
+  private enum Request {
+    case link(DocumentOpenRequest)
+    case commandLine(Data)
+  }
+  private var pending: [Request] = []
   private var task: Task<Void, Never>?
 
   public func install() {
@@ -14,6 +18,9 @@ public final class DocumentURLController: NSObject {
       self,
       andSelector: #selector(receive(_:withReplyEvent:)),
       forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
+    NSAppleEventManager.shared().setEventHandler(
+      self, andSelector: #selector(receiveCommandLine(_:withReplyEvent:)),
+      forEventClass: CommandLineLaunchEvent.eventClass, andEventID: CommandLineLaunchEvent.eventID)
   }
 
   @objc private func receive(
@@ -24,7 +31,23 @@ public final class DocumentURLController: NSObject {
       guard let value = event.paramDescriptor(forKeyword: AEKeyword(keyDirectObject))?.stringValue,
         let url = URL(string: value)
       else { throw DocumentOpenRequestError.unsupportedLink }
-      pending.append(try DocumentOpenRequest(link: url))
+      pending.append(.link(try DocumentOpenRequest(link: url)))
+      drain()
+    } catch {
+      reply.setParam(NSAppleEventDescriptor(int32: -1703), forKeyword: AEKeyword(keyErrorNumber))
+      reply.setParam(
+        NSAppleEventDescriptor(string: error.localizedDescription),
+        forKeyword: AEKeyword(keyErrorString))
+      _ = NSApp.presentError(error)
+    }
+  }
+
+  @objc private func receiveCommandLine(
+    _ event: NSAppleEventDescriptor,
+    withReplyEvent reply: NSAppleEventDescriptor
+  ) {
+    do {
+      pending.append(.commandLine(try CommandLineLaunchEvent.payload(from: event)))
       drain()
     } catch {
       reply.setParam(NSAppleEventDescriptor(int32: -1703), forKeyword: AEKeyword(keyErrorNumber))
@@ -42,7 +65,19 @@ public final class DocumentURLController: NSObject {
       defer { self.task = nil }
       while !self.pending.isEmpty {
         let request = self.pending.removeFirst()
-        do { try await self.open(request) } catch is CancellationError { return } catch {
+        do {
+          switch request {
+          case .link(let link): try await self.open(link)
+          case .commandLine(let payload):
+            let launch = try await CommandLineLaunchEvent.decodePayload(payload)
+            #if DEBUG
+              DocumentLifecycleTrace.note(
+                "command line files=\(launch.files.count) pipeBytes=\(launch.pipedData?.count ?? 0)"
+              )
+            #endif
+            try await CommandLineDocumentOpener.open(launch)
+          }
+        } catch is CancellationError { return } catch {
           _ = NSApp.presentError(error)
         }
       }

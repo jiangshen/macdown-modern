@@ -76,6 +76,13 @@ if ! cmp -s "$repo_root/App/Resources/Snowfolio.sdef" "$app/Contents/Resources/S
     echo "Bundled scripting dictionary differs from source." >&2
     exit 1
 fi
+cli="$app/Contents/Helpers/snowfolio"
+if [ ! -x "$cli" ] || [ "$(xcrun lipo -archs "$cli")" != arm64 ]; then
+    echo "The bundled command-line tool must be executable and arm64 only." >&2
+    exit 1
+fi
+"$cli" --help > "$artifact_root/cli-help.txt"
+"$cli" --version > "$artifact_root/cli-version.txt"
 if [ "$(xcrun lipo -archs "$app/Contents/MacOS/Snowfolio")" != arm64 ]; then
     echo "The app executable must be arm64 only." >&2
     exit 1

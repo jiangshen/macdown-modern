@@ -1,6 +1,6 @@
 {
-  "dateUTC": "2026-11-09T11:21:57.468113+00:00",
-  "status": "Both actual-app hosts pass warm/cold links at4791020; full398/85 core and652 corpus pass. Initial-load readiness regression reproduced and fixed locally; its source-version actual-app/full gates remain pending. Original intermittent caret failure not conclusively attributed.",
+  "dateUTC": "2026-11-09T11:44:36.098069+00:00",
+  "status": "Both hosts warm/cold delivery accepted at4791020. Regular host followup at3b68499 passes; full400/85 core+652corpus, zero compiler diagnostics. CLI now implemented as a candidate; actual packaged delivery pending.",
   "sources": [
     "Packages/SnowfolioCore/Sources/DocumentCore/DocumentOpenRequest.swift",
     "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentURLController.swift",
@@ -31,11 +31,9 @@
   },
   "actualAppTest": "DocumentLinksTests/testDocumentLinksOpenNavigateAndReuseAcrossLaunches",
   "pending": [
-    "Actual-app warm/cold link followup at the new initial-load readiness source revision.",
-    "Full400 tests/85 suites with warning fix and652CommonMark at the new readiness revision.",
-    "Resolve any recurrence of original regular-host caret failure with exact failing trace.",
-    "CLI stdin/files transport and packaging; original CLI source preserved.",
-    "Remaining full modernization M3-M6, physical marked composition/VoiceOver, plugin compatibility and measured releases."
+    "Observe any recurrence of the original regular-host caret failure using opt-in metadata.",
+    "CLI actual warm/cold delivery, byte safety and packaging verification.",
+    "Remaining full goal M3-M6 including physical composition, accessibility, integrations, legacy retirement, performance and release."
   ],
   "primaryReferences": [
     "https://developer.apple.com/documentation/foundation/nsappleeventmanager/seteventhandler(_:andselector:foreventclass:andeventid:)",
@@ -96,5 +94,27 @@
     "local": "16 tests/2 suites pass, including7 ownership tests and9 parser/location tests; zero compiler errors/warnings. New initial-file load test fails twice before the production fix (empty and Unicode sources), then passes; late-load cancellation/release also passes.",
     "compact": "/private/tmp/snowfolio-validation-history/document-links-load-readiness",
     "limits": "The older actual-app caret failure remains unattributed. The passing4791020 trace shows initial load1 and expected offsets12/20. This new deterministic regression proves an independent readiness precondition, not the original failure cause."
+  },
+  "acceptedCore3b68499": {
+    "source": "3b6849937430b48ca705ad46d487d2fc52ce4412",
+    "run": 42608538990,
+    "job": 129130599252,
+    "tests": 400,
+    "suites": 85,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "commonMark": "652/652",
+    "arm64Executables": 8
+  },
+  "acceptedActualApp3b68499": {
+    "run": 42608597966,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 24.87,
+    "runtimeWarnings": 1,
+    "compact": "/private/tmp/snowfolio-validation-history/document-links-default-3b68499",
+    "visual": "Both warm/cold screenshots inspected: exact source and restored caret; hosted blank preview capture unchanged.",
+    "limits": "Original intermittent first-caret failure remains unattributed; current targeted flow and full4791020 flow both pass canonical navigation."
   }
 }

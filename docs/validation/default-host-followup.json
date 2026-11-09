@@ -142,5 +142,22 @@
     "finding": "The same three established SwiftUI lifecycle failures; no new default-host failure. No host/install/release/handler switch.",
     "compact": "/private/tmp/snowfolio-validation-history/default-ece6558",
     "runtimeWarnings": 44
+  },
+  "full4791020": {
+    "source": "47910201ad919957f6ac1708dfb29d5407407129",
+    "run": 42606567869,
+    "job": 129123964922,
+    "executed": 29,
+    "passed": 26,
+    "failed": 3,
+    "skipped": 0,
+    "seconds": 1402.916,
+    "failures": [
+      "testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "testCoordinatedExternalReloadAfterAutosave"
+    ],
+    "finding": "Same three established regular-host lifecycle failures; new link flow passes in the complete run. No new latest full-native acceptance inferred.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-4791020"
   }
 }

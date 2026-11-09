@@ -36,6 +36,8 @@ on:
           - native-writing-statistics
           - native-document-links
           - document-links
+          - command-line
+          - native-command-line
           - native-document-scripting
           - native-document-recovery
           - document-tab-creation
@@ -125,6 +127,12 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-links ]; then
             bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLinksTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-command-line ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/CommandLineTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = command-line ]; then
+            bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/CommandLineTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-writing-statistics ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testWritingStatisticsFollowManualRenderAndPreserveUndo
@@ -165,8 +173,8 @@ jobs:
           else
             bash Tools/build-snowfolio.sh --test
           fi
-      - name: Capture focused document-link metadata
-        if: ${{ always() && (inputs.native_test_scope == 'native-document-links' || inputs.native_test_scope == 'document-links') }}
+      - name: Capture focused launch metadata
+        if: ${{ always() && (inputs.native_test_scope == 'native-document-links' || inputs.native_test_scope == 'document-links' || inputs.native_test_scope == 'command-line' || inputs.native_test_scope == 'native-command-line') }}
         run: |
           /usr/bin/log show --last 5m --style compact --info --debug \
             --predicate 'eventMessage BEGINSWITH "SnowfolioDocument"' \

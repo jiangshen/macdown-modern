@@ -5,6 +5,7 @@ let package = Package(
   name: "SnowfolioCore",
   platforms: [.macOS("27.0")],
   products: [
+    .executable(name: "snowfolio", targets: ["SnowfolioCLI"]),
     .library(name: "DocumentCore", targets: ["DocumentCore"]),
     .library(name: "EditorCore", targets: ["EditorCore"]),
     .library(name: "SnowfolioUI", targets: ["SnowfolioUI"]),
@@ -19,6 +20,7 @@ let package = Package(
   ],
   targets: [
     .target(name: "DocumentCore"),
+    .executableTarget(name: "SnowfolioCLI", dependencies: ["DocumentCore"]),
     .target(name: "CodeHighlightCore", resources: [.process("Resources")]),
     .target(name: "EmojiCore", resources: [.process("Resources")]),
     .target(name: "MathCore", resources: [.process("Resources")]),

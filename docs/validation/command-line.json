@@ -1,0 +1,31 @@
+{
+  "dateUTC": "2026-11-09T11:44:36.098069+00:00",
+  "status": "Candidate implemented;19 focused core/ownership tests pass, standalone help/error processes pass with stdin open, project generation and actual UI test typecheck pass. No packaged actual-app or new full-core acceptance yet.",
+  "sources": [
+    "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInvocation.swift",
+    "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineLaunchEvent.swift",
+    "Packages/SnowfolioCore/Sources/SnowfolioCLI/SnowfolioCommandLine.swift",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/CommandLineDocumentOpener.swift",
+    "App/UITests/CommandLineTests.swift"
+  ],
+  "protocol": {
+    "transport": "NSWorkspace.OpenConfiguration.appleEvent with version1 JSON data in a custom SNFL/Clio event. Ordered with URL requests, no executable input, no source in URLs/defaults/temporary files. Actual warm/cold delivery and permission behavior are pending disposable-machine verification.",
+    "source": "UTF8 input only, exact BOM/CRLF/composed Unicode preserved. CLI waits for EOF for non-terminal stdin, including delayed producers. App decodes/validates off UI actor and retains an immutable initial snapshot. A fresh Untitled source is imported before ordered file requests; user edits/composition and cancellation are preserved.",
+    "files": "Relative to invoking directory, ordered standardized dedup. Missing leaf files use O_CREAT|O_EXCL and normal document opening; existing files are never truncated and parent failures are reported. No implicit directory creation.",
+    "options": "Preserve h/v, help precedence, boolean values, independent no-help/no-version keys and options ending at first filename. Deliberate fixes: conventional -- delimiter, and unknown leading options exit64 instead of discarding input with success.",
+    "packaging": "Native arm64 helper at Snowfolio.app/Contents/Helpers/snowfolio, built by Xcode target and SwiftPM. Resolves its own containing app, including symlink invocation. No PATH links, installation or handler/default-host changes.",
+    "completion": "Like the original CLI, exit0 means launch/event delivery accepted, not that every document has finished opening. Document errors are presented by the app; launch/input failures exit nonzero."
+  },
+  "local": {
+    "tests": "12 CLI tests plus7 ownership tests; no compiler errors/warnings. Includes malformed messages, literal paths, nil/empty/UTF8 BOM input, async decode and a multi-megabyte envelope.",
+    "process": "--help returns0 while stdin stays open; unknown option returns64 before app lookup/launch.",
+    "project": "Tuist regular-host project generation passes. Standalone actual UI test source typechecks with Xcode Swift XCTest overlay. Active app bundles untouched.",
+    "compact": "/private/tmp/snowfolio-validation-history/command-line-local"
+  },
+  "pending": [
+    "Actual packaged CLI warm/cold files+piping in both hosts.",
+    "No additional macOS automation permission prompt, or redesign transport if required.",
+    "Full412/86 core+652 corpus and packaging gates.",
+    "Terminal settings exposure/installation and safe original CLI retirement after acceptance."
+  ]
+}

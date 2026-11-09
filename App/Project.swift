@@ -88,11 +88,33 @@ let project = Project(
         "Resources/AppIcon.icon", "Resources/DocumentIcons.xcassets",
         "Resources/MarkdownDocument.icns", "Resources/Licenses/**", "Resources/Snowfolio.sdef",
       ],
-      dependencies: [.package(product: "SnowfolioUI")],
+      scripts: [
+        .post(
+          script: """
+            set -euo pipefail
+            mkdir -p "$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Helpers"
+            /usr/bin/install -m 755 "$BUILT_PRODUCTS_DIR/snowfolio" "$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Helpers/snowfolio"
+            """,
+          name: "Bundle command-line tool",
+          inputPaths: ["$(BUILT_PRODUCTS_DIR)/snowfolio"],
+          outputPaths: ["$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Helpers/snowfolio"])
+      ],
+      dependencies: [.package(product: "SnowfolioUI"), .target(name: "SnowfolioCLI")],
       settings: .settings(base: [
         "ENABLE_HARDENED_RUNTIME": "YES", "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon",
         "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "",
       ])
+    ),
+    .target(
+      name: "SnowfolioCLI",
+      destinations: .macOS,
+      product: .commandLineTool,
+      productName: "snowfolio",
+      bundleId: "local.snowfolio.cli",
+      deploymentTargets: .macOS("27.0"),
+      sources: ["../Packages/SnowfolioCore/Sources/SnowfolioCLI/**"],
+      dependencies: [.package(product: "DocumentCore")],
+      settings: .settings(base: ["ENABLE_HARDENED_RUNTIME": "YES"])
     ),
     .target(
       name: "SnowfolioUITests",

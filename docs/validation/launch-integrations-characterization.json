@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T11:21:57.468113+00:00",
-  "status": "Original command-line parser characterized with18 isolated executable probes; modern CLI remains unimplemented. Document-link delivery accepted in both hosts at4791020; readiness followup pending. Plugin replacement remains unaccepted.",
+  "status": "Original CLI18-case executable characterization retained. Swift CLI candidate now implements options, piping, deterministic requests and packaging; actual delivery/permission checks pending. Document links accepted in both hosts with regular initial-read followup. Original CLI/plugin code retained.",
   "sources": [
     "macdown-cmd/MPArgumentProcessor.m",
     "macdown-cmd/main.m",
@@ -281,5 +281,6 @@
       "Help wins when both positive help/version switches are present; no-help/no-version are separate setting keys and do not reset earlier positives.",
       "Boolean = values are accepted; splitting occurs at the last equals sign. These obscure behaviors must be explicitly preserved or documented as bug fixes in the modern CLI."
     ]
-  }
+  },
+  "modernCLI": "See command-line.json for precise candidate scope and explicit option bug fixes."
 }
