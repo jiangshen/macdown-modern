@@ -1458,6 +1458,116 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testSavedTabsRestoreSelectedDocumentAndIndependentUndo() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
+      "SnowfolioTabRestoration-\(UUID().uuidString)", isDirectory: true)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let alpha = directory.appendingPathComponent("tab-alpha.md")
+    let beta = directory.appendingPathComponent("tab-beta.md")
+    let alphaSource = "# Alpha 中文 👩‍💻\n\nFirst document checkpoint.\n"
+    let betaSource = "# Beta e\u{301}\n\nSecond document checkpoint.\n"
+    let alphaBytes = Data(alphaSource.utf8)
+    let betaBytes = Data(betaSource.utf8)
+    try alphaBytes.write(to: alpha)
+    try betaBytes.write(to: beta)
+    let app = launch(arguments: [
+      "-ApplePersistenceIgnoreState", "NO", "-NSQuitAlwaysKeepsWindows", "YES",
+      "-preferDocumentTabs", "YES",
+    ])
+    defer { app.terminate() }
+    func activeEditor(showing source: String) -> XCUIElement {
+      let editor = app.textViews["markdownSourceEditor"].firstMatch
+      let matches = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in editor.exists && editor.value as? String == source },
+        object: nil)
+      let result = XCTWaiter().wait(for: [matches], timeout: 8)
+      if result != .completed {
+        let state = XCTAttachment(string: app.debugDescription)
+        state.name = "native-tab-source-mismatch"
+        state.lifetime = .keepAlways
+        add(state)
+        let image = XCTAttachment(screenshot: app.screenshot())
+        image.name = "native-tab-source-mismatch"
+        image.lifetime = .keepAlways
+        add(image)
+      }
+      XCTAssertEqual(result, .completed)
+      return editor
+    }
+    _ = openDocument(alpha, in: app)
+    _ = activeEditor(showing: alphaSource)
+    _ = openDocument(beta, in: app)
+    _ = activeEditor(showing: betaSource)
+
+    // Use the real native menu. It can already be disabled when the preferred
+    // tab policy placed the two opened documents in the same tab group.
+    app.menuBars.menuBarItems["Window"].click()
+    let merge = app.menuItems["Merge All Windows"].firstMatch
+    XCTAssertTrue(merge.waitForExistence(timeout: 5))
+    if merge.isEnabled {
+      merge.click()
+    } else {
+      app.typeKey(XCUIKeyboardKey.escape.rawValue, modifierFlags: [])
+    }
+
+    func expectOriginalBytes() {
+      let original = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          (try? Data(contentsOf: alpha)) == alphaBytes && (try? Data(contentsOf: beta)) == betaBytes
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [original], timeout: 8), .completed)
+    }
+    func appendAndUndo(_ text: String, to source: String) {
+      let editor = activeEditor(showing: source)
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      editor.typeText(text)
+      XCTAssertEqual(editor.value as? String, source + text)
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(editor.value as? String, source)
+      expectOriginalBytes()
+    }
+
+    // Switching must reveal the other source, and Undo must target only the
+    // selected document. Cycling also proves these are tabs, not two windows.
+    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: .control)
+    appendAndUndo("Alpha edit", to: alphaSource)
+    XCTAssertEqual(try Data(contentsOf: beta), betaBytes)
+    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: .control)
+    appendAndUndo("Beta edit", to: betaSource)
+    XCTAssertEqual(try Data(contentsOf: alpha), alphaBytes)
+    let before = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    before.name = "native-saved-tabs-before-quit"
+    before.lifetime = .keepAlways
+    add(before)
+
+    app.typeKey("q", modifierFlags: .command)
+    XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
+    XCTAssertEqual(try Data(contentsOf: alpha), alphaBytes)
+    XCTAssertEqual(try Data(contentsOf: beta), betaBytes)
+    app.launch()
+    let restored = activeEditor(showing: betaSource)
+    // Do not click: the selected tab and its insertion position must restore.
+    app.typeText("Restored beta")
+    XCTAssertEqual(restored.value as? String, betaSource + "Restored beta")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(restored.value as? String, betaSource)
+    expectOriginalBytes()
+    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: .control)
+    let restoredAlpha = activeEditor(showing: alphaSource)
+    app.typeText("Restored alpha")
+    XCTAssertEqual(restoredAlpha.value as? String, alphaSource + "Restored alpha")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(restoredAlpha.value as? String, alphaSource)
+    expectOriginalBytes()
+    let after = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    after.name = "native-saved-tabs-restored"
+    after.lifetime = .keepAlways
+    add(after)
+  }
+
+  @MainActor
   func testMultipleDocumentWindows() {
     let app = launch()
     defer { app.terminate() }

@@ -56,6 +56,15 @@ conflict acceptance remains open. Hosted runtime, actual native restoration, vis
 preview painting, real IME/VoiceOver, full parity and performance/release gates remain
 required. See [document-lifecycle.json](validation/document-lifecycle.json).
 
+The actual app now also compiles a26th UI method for two saved native tabs:
+Control-Tab switching, separate edits/Undo and exact file bytes, graceful quit,
+selected-tab restoration and each insertion position after relaunch. The focused
+`native-document-tabs` scope executes this new case; full `native-document-app`
+continues to run every app method. Its runtime acceptance is pending. Both host
+variants compile the final test; the default host build is restored. Earlier direct
+tab evidence used the preceding SwiftUI host, so it does not accept the new AppKit
+entrypoint. See [native-tabs.json](validation/native-tabs.json).
+
 The light/default-font source-selection screenshot at the preceding accepted checkpoint
 has a continuous highlight without a marker seam. User-desktop dark selection remains
 unverified while the Mac is locked. Actual modern caret paint/native-reference

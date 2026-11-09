@@ -60,5 +60,40 @@
   "appleReferences": [
     "https://developer.apple.com/documentation/appkit/nsresponder/newwindowfortab(_:)",
     "https://developer.apple.com/documentation/appkit/nswindow/addtabbedwindow(_:ordered:)"
-  ]
+  ],
+  "nativeActualAppRestorationFollowup": {
+    "dateUTC": "2026-11-09T01:15:37.572840+00:00",
+    "productionBaseCommit": "fb4de2bdb8b224aacc2a5045a40803b29f3e53c4",
+    "status": "Final native/default app build-for-testing passes; new saved-tab UI method not yet executed. Existing9and25runs remain live on fb4de2b.",
+    "boundary": "Earlier November6 direct native UI evidence used the preceding SwiftUI document host; it does not establish restoration for the newly introduced actual AppKit application host.",
+    "newActualAppMethod": "DocumentLifecycleTests.testSavedTabsRestoreSelectedDocumentAndIndependentUndo",
+    "checks": [
+      "Open two authored Markdown files with Unicode and preferred native tabs",
+      "Use native Merge All Windows when necessary and Control-Tab to prove tab switching",
+      "Edit/Undo each selected document while checking both files remain byte-identical",
+      "Quit normally, relaunch and require selected beta tab/source and insertion position",
+      "Switch to restored alpha tab and require its source/insertion position; separate Undo and byte invariants",
+      "Attach before/after screenshots and app tree/screenshot on source mismatch"
+    ],
+    "isolation": "UUIDtemporary fixture folder only; argument-domain tab/reopen preferences, no persistent user defaults writes. App terminates before fixture removal.",
+    "workflowScope": "native-document-tabs runs this case against actual native app; full native-document-app scope now includes all26methods. Focused execution does not establish full acceptance.",
+    "local": {
+      "nativeApp": "Final arm64 build-for-testing, host/resource/license gates pass",
+      "defaultApp": "Final arm64 build-for-testing and default host/resource/license gates pass; canonical cache restored to default",
+      "warning": "Existing AppIntents metadata-extraction warnings only",
+      "compiledUIMethodCount": 26,
+      "formatAndSyntax": "Strict Swift lint, workflow YAML, diff checks pass"
+    },
+    "logs": {
+      "snowfolio-native-tabs-app-build.log": "e002cd8a71752a10e554c9b789a44d8856b48530672389a69fd062b8e6c682fb",
+      "snowfolio-default-tabs-app-build.log": "3886a3a1008468b4097004b9dbdce41517b9f40bb6f216ac545229177b7dbadd"
+    },
+    "runtime": "Pending hosted targeted tab check. Full native app25and workspace9still live at fb4de2b; do not restart them.",
+    "remaining": [
+      "Selected tab/group/caret restoration runtime",
+      "Multiple separate groups and scroll restoration",
+      "IME/VoiceOver, file drop and Finder integration",
+      "Document safety, visual paint, complete parity/performance/release gates"
+    ]
+  }
 }
