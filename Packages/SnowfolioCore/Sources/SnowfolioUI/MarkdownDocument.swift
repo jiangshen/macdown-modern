@@ -195,8 +195,8 @@ public struct EditorSelectionRequest: Equatable {
   enum DocumentLifecycleTrace {
     static let enabled =
       ProcessInfo.processInfo.environment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] == "1"
-    static func note(_ message: String) {
-      if enabled { NSLog("SnowfolioDocument %@", message) }
+    static func note(_ message: @autoclosure () -> String) {
+      if enabled { NSLog("SnowfolioDocument %@", message()) }
     }
   }
 #endif

@@ -51,18 +51,43 @@ public final class DocumentURLController: NSObject {
 
   public func open(_ request: DocumentOpenRequest) async throws {
     let controller = NSDocumentController.shared
+    #if DEBUG
+      DocumentLifecycleTrace.note("link open begin")
+    #endif
     let (document, _) = try await controller.openDocument(
       withContentsOf: request.fileURL, display: true)
+    #if DEBUG
+      if DocumentLifecycleTrace.enabled {
+        DocumentLifecycleTrace.note(
+          "link open returned native=\(document is NativeMarkdownDocument) member=\(controller.documents.contains { $0 === document }) docs=\(controller.documents.count)"
+        )
+      }
+    #endif
     guard let position = request.location else { return }
     let model = try await DocumentWorkspaceRegistry.shared.model(
       for: document, controller: controller)
     let revision = model.revision
+    #if DEBUG
+      DocumentLifecycleTrace.note(
+        "link model ready revision=\(revision) load=\(model.loadRevision) utf16=\(model.text.utf16.count)"
+      )
+    #endif
     let offset = try await position.utf16Offset(in: model.text)
     try Task.checkCancellation()
+    #if DEBUG
+      if DocumentLifecycleTrace.enabled {
+        DocumentLifecycleTrace.note(
+          "link computed offset=\(offset) revision=\(revision) now=\(model.revision) load=\(model.loadRevision) member=\(controller.documents.contains { $0 === document })"
+        )
+      }
+    #endif
     // A user's newer edit wins over a location computed from the earlier text.
     guard revision == model.revision, controller.documents.contains(where: { $0 === document })
     else { return }
     model.navigate(toUTF16Offset: offset)
+    #if DEBUG
+      DocumentLifecycleTrace.note("link published selection offset=\(offset)")
+    #endif
   }
 }
 

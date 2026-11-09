@@ -51,7 +51,9 @@ let project = Project(
         "CFBundleURLTypes": .array([
           .dictionary([
             "CFBundleURLName": "local.macdown.modern.open",
-            "CFBundleURLSchemes": .array([.string("snowfolio"), .string("x-snowfolio")]),
+            "CFBundleURLSchemes": .array([
+              .string("snowfolio"), .string("x-snowfolio"), .string("x-macdown"),
+            ]),
             "CFBundleTypeRole": "Editor",
           ])
         ]),

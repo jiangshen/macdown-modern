@@ -183,9 +183,20 @@ struct NativeDocumentWindowTests {
     let web = try #require(find(WKWebView.self, in: content))
     let scrolling = try #require(controller.commands.editor?.coordinator?.scrolling)
     let scroll = try #require(editor.enclosingScrollView)
+    let previewCoordinator = try #require(
+      web.navigationDelegate as? NativeMarkdownPreview.Coordinator)
     try await ready {
-      guard original.html.contains("Section 160") else { return false }
-      return (try? await previewY(web)) == 0
+      guard original.html.contains("Section 160"),
+        previewCoordinator.isReadyForScrolling(revision: original.markdownDocument.revision)
+      else { return false }
+      // Rendered model HTML precedes WebKit's asynchronous content patch. An empty
+      // skeleton also reports scrollY == 0, but cannot receive this scroll gesture.
+      let hasContent =
+        try await web.callAsyncJavaScript(
+          "return document.querySelector('h2:last-of-type')?.textContent.includes('Section 160') === true && document.documentElement.scrollHeight > innerHeight + 2800;",
+          arguments: [:], in: nil, contentWorld: .defaultClient) as? Bool
+      guard hasContent == true else { return false }
+      return try await previewY(web) == 0
     }
     controller.window?.makeFirstResponder(editor)
     let selection = NSRange(location: 3, length: 5)
@@ -200,7 +211,13 @@ struct NativeDocumentWindowTests {
     _ = try await web.callAsyncJavaScript(
       "window.dispatchEvent(new Event('wheel')); window.scrollTo(0, 2800); window.dispatchEvent(new Event('scroll')); return true;",
       arguments: [:], in: nil, contentWorld: .defaultClient)
-    try await ready { original.workspaceState.previewViewport != nil }
+    try await ready {
+      guard let data = original.workspaceState.previewViewport,
+        let position = try? JSONDecoder().decode(MarkdownScrollPosition.self, from: data)
+      else { return false }
+      guard !position.atTop else { return false }
+      return try await previewY(web) > 1000
+    }
     scrolling.flush()
     let sourceData = try #require(original.workspaceState.sourceViewport)
     let previewData = try #require(original.workspaceState.previewViewport)

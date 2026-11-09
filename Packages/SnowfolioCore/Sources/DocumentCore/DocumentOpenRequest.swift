@@ -53,7 +53,7 @@ public enum DocumentOpenRequestError: Error, LocalizedError, Sendable {
 
 /// File contents and paths stay data; decoding never evaluates a command or script.
 public struct DocumentOpenRequest: Equatable, Sendable {
-  public static let registeredSchemes = ["snowfolio", "x-snowfolio"]
+  public static let registeredSchemes = ["snowfolio", "x-snowfolio", "x-macdown"]
   public let fileURL: URL
   public let location: DocumentSourceLocation?
 
@@ -72,8 +72,8 @@ public struct DocumentOpenRequest: Equatable, Sendable {
   }
 
   public init(link: URL) throws {
-    // Accept explicit old-app links without registering or changing their system handler.
-    let schemes = Set(Self.registeredSchemes + ["x-macdown"])
+    // Keep the original external link format as an alias for existing integrations.
+    let schemes = Set(Self.registeredSchemes)
     guard let parts = URLComponents(url: link, resolvingAgainstBaseURL: false),
       let scheme = parts.scheme?.lowercased(), schemes.contains(scheme),
       parts.host?.lowercased() == "open", parts.path.isEmpty || parts.path == "/",

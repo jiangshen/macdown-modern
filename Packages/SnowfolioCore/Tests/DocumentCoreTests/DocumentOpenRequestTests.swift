@@ -19,7 +19,7 @@ struct DocumentOpenRequestTests {
     let decoded = try DocumentOpenRequest(link: #require(parts.url))
     #expect(decoded == request)
     #expect(decoded.fileURL.absoluteString.utf8.elementsEqual(file.absoluteString.utf8))
-    #expect(DocumentOpenRequest.registeredSchemes == ["snowfolio", "x-snowfolio"])
+    #expect(DocumentOpenRequest.registeredSchemes == ["snowfolio", "x-snowfolio", "x-macdown"])
   }
 
   private func link(_ items: [URLQueryItem]) throws -> URL {

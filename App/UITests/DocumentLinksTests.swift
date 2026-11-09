@@ -23,6 +23,7 @@ final class DocumentLinksTests: XCTestCase {
       "-editorThemeSelection", "automatic", "-readingStyleSelection", "snowfolio",
       "-editorSyntaxHighlighting", "NO", "-editorShowWordCount", "NO",
     ]
+    app.launchEnvironment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] = "1"
     app.launch()
     defer { app.terminate() }
     let running = try XCTUnwrap(
@@ -34,6 +35,7 @@ final class DocumentLinksTests: XCTestCase {
     configuration.activates = true
     configuration.createsNewApplicationInstance = false
     configuration.arguments = app.launchArguments
+    configuration.environment = app.launchEnvironment
     func open(_ file: URL, line: Int, column: Int, scheme: String = "snowfolio") async throws {
       var parts = URLComponents()
       parts.scheme = scheme
@@ -58,6 +60,12 @@ final class DocumentLinksTests: XCTestCase {
           view.exists && view.value as? String == text
         }, object: nil)
       let result = await XCTWaiter.fulfillment(of: [ready], timeout: 8)
+      if result != .completed {
+        let image = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+        image.name = "document-link-source-failure"
+        image.lifetime = .keepAlways
+        add(image)
+      }
       XCTAssertEqual(result, .completed, app.debugDescription)
     }
     func waitForBytes(_ bytes: Data, file: URL) async {
@@ -78,7 +86,7 @@ final class DocumentLinksTests: XCTestCase {
     app.typeKey("z", modifierFlags: .command)
     await waitForSource(source, file: file)
     let windows = app.windows.count
-    // Explicitly targeting an old URL is compatible without claiming its system handler.
+    // The original scheme remains compatible with existing external integrations.
     try await open(file, line: 3, column: 1, scheme: "x-macdown")
     await waitForSource(source, file: file)
     XCTAssertEqual(app.windows.count, windows)

@@ -51,11 +51,14 @@ Only the user-approved SnowfolioUITests-Runner → Snowfolio automation prompt o
 **disposable test machines** is authorized; temporary handling remains excluded
 from regular builds. See [native-scripting.json](validation/native-scripting.json).
 
-Current physical preview/dark selection/caret, real IME and VoiceOver acceptance
-remain open. Hosted WebKit snapshots have correct glyphs while app-window captures
-have blank preview regions. The older protected probe painted after its offscreen
-window was zoomed, but it is not current-app acceptance. The Mac locked again and
-one unlock reply is pending. No private WebKit or permission workaround is used.
+The current regular-host binary at `1b222df` visibly paints dark preview glyphs,
+headings/lists/quotes and committed Chinese input. Counter updates and native
+Undo/Redo were observed; inactive mixed-list selection is continuous and the caret
+is visible. The user supplied Pinyin input, but its candidate/marked phase was not
+captured: real composition, foreground blue-selection comparison, VoiceOver and
+physical native-host parity remain open. Hosted app-window preview captures remain
+blank despite correct WebKit glyph snapshots. Both running physical-check bundles
+remain protected. No private WebKit or permission workaround is used.
 Internal runtime QoS warnings remain unattributed; measured M6 performance/release
 gates are not accepted. No default-host, installation, release or file-handler
 switch has been made, and coupled original source remains until feature parity.

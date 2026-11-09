@@ -179,6 +179,11 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
         offset = max(0, offset - 1)
       }
       let range = NSRange(location: offset, length: 0)
+      #if DEBUG
+        DocumentLifecycleTrace.note(
+          "navigation apply offset=\(offset) previous=\(editor.selectedRange().location) revision=\(document.revision) load=\(document.loadRevision)"
+        )
+      #endif
       scrolling?.sourceEditedOrNavigated()
       editor.setSelectedRange(range)
       editor.scrollRangeToVisible(range)
@@ -431,6 +436,11 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       let previous = isSynchronizing
       isSynchronizing = true
       defer { isSynchronizing = previous }
+      #if DEBUG
+        DocumentLifecycleTrace.note(
+          "selection restore location=\(state.location) length=\(state.length) navigationSeen=\(selectionID != nil)"
+        )
+      #endif
       editor.restoreSelection(location: state.location, length: state.length)
     }
 

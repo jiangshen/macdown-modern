@@ -165,6 +165,12 @@ jobs:
           else
             bash Tools/build-snowfolio.sh --test
           fi
+      - name: Capture focused document-link metadata
+        if: ${{ always() && (inputs.native_test_scope == 'native-document-links' || inputs.native_test_scope == 'document-links') }}
+        run: |
+          /usr/bin/log show --last 5m --style compact --info --debug \
+            --predicate 'eventMessage BEGINSWITH "SnowfolioDocument"' \
+            > Build/Snowfolio/document-links.log 2>&1 || true
       - name: Preserve native UI test results
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

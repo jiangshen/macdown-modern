@@ -68,7 +68,7 @@ if info.get('NSAppleScriptEnabled') != (sys.argv[2] == 'native'):
 if info.get('OSAScriptingDefinition') != 'Snowfolio.sdef':
     raise SystemExit('Scripting dictionary registration is missing')
 schemes = {s for t in info.get('CFBundleURLTypes', []) for s in t.get('CFBundleURLSchemes', [])}
-if schemes != {'snowfolio', 'x-snowfolio'}:
+if schemes != {'snowfolio', 'x-snowfolio', 'x-macdown'}:
     raise SystemExit('Branded document URL schemes are missing or unexpectedly changed')
 print('Verified document host, URL schemes and scripting registration:', sys.argv[2])
 VERIFY_HOST
