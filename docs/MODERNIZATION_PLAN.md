@@ -118,6 +118,15 @@ No real scripting functional acceptance or privacy grant is claimed. Both hosts
 build and the full373/80local regression passes. See
 [default-host-followup.json](validation/default-host-followup.json) and
 [native-scripting.json](validation/native-scripting.json).
+The later full dfdad63default27run still fails tab-bar setup after the explicit
+ShowTabBar action, despite its focused1/1pass. Full-run fixture reliability is
+unaccepted pending exact captured-state inspection; the three lifecycle failures
+also remain. No production tab regression or fixture cause is inferred yet.
+Two independent actual-native recovery methods now compile normal-periodic
+dirty conflict/Revert and native Versions history/browser/Restore, including exact
+Unicode encoding bytes and recoverable newer history. They use native UI/actions,
+no injected versions or added writer/autosave policy. Runtime is pending;31native
+UI methods compile. See [native-recovery.json](validation/native-recovery.json).
 No default-host switch, installation or release is accepted. M2's remaining host gates,
 native separate-group/scroll restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
 and release gates remain open. See

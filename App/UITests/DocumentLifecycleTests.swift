@@ -1660,6 +1660,180 @@ final class DocumentLifecycleTests: XCTestCase {
     XCTAssertEqual(try Data(contentsOf: file), bytes)
   }
 
+  #if NATIVE_DOCUMENT_HOST
+    @MainActor
+    private func pasteRecoveryText(_ text: String, in app: XCUIApplication) {
+      let board = NSPasteboard.general
+      let saved = (board.pasteboardItems ?? []).map { item in
+        item.types.compactMap { type in item.data(forType: type).map { (type, $0) } }
+      }
+      defer {
+        board.clearContents()
+        let items = saved.map { entries in
+          let item = NSPasteboardItem()
+          for (type, data) in entries { item.setData(data, forType: type) }
+          return item
+        }
+        board.writeObjects(items)
+      }
+      board.clearContents()
+      board.setString(text, forType: .string)
+      app.typeKey("v", modifierFlags: .command)
+    }
+
+    @MainActor
+    private func attachRecoveryState(_ name: String, app: XCUIApplication, note: String = "") {
+      let state = XCTAttachment(string: note + "\n" + app.debugDescription)
+      state.name = name
+      state.lifetime = .keepAlways
+      add(state)
+      let screenshot = XCTAttachment(screenshot: app.screenshot())
+      screenshot.name = name
+      screenshot.lifetime = .keepAlways
+      add(screenshot)
+    }
+
+    @MainActor
+    func testPeriodicDirtyConflictRevertKeepsExternalSource() throws {
+      let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
+        "SnowfolioPeriodicConflict-\(UUID().uuidString)", isDirectory: true)
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      let file = directory.appendingPathComponent("periodic-conflict.md")
+      defer {
+        try? NSFileVersion.removeOtherVersionsOfItem(at: file)
+        try? FileManager.default.removeItem(at: directory)
+      }
+      let original = "# Original 中文 👩‍💻\r\n"
+      let originalBytes =
+        Data([0xFF, 0xFE])
+        + (try XCTUnwrap(original.data(using: .utf16LittleEndian)))
+      try originalBytes.write(to: file)
+      let app = launch(environment: ["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE": "1"])
+      defer { app.terminate() }
+      let editor = openDocument(file, in: app)
+      XCTAssertEqual(editor.value as? String, original)
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      // One native paste transaction keeps the edit/external-write boundary short.
+      // This actual app retains its normal2-second periodic autosave policy.
+      pasteRecoveryText("X", in: app)
+      let diskBeforeExternal = try Data(contentsOf: file)
+      let external = "# External e\u{301} 中文 👩‍💻\n"
+      let externalBytes = Data([0xEF, 0xBB, 0xBF]) + Data(external.utf8)
+      let began = ProcessInfo.processInfo.systemUptime
+      try externalBytes.write(to: file, options: .atomic)
+      let local = original + "X"
+      XCTAssertEqual(diskBeforeExternal, originalBytes, "The staged edit must still be unsaved")
+      let surfaced = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          app.sheets.firstMatch.exists || app.dialogs.firstMatch.exists
+            || app.alerts.firstMatch.exists
+        }, object: nil)
+      // No Save, deactivation, custom autosave delay or scripted edit precedes this.
+      let outcome = XCTWaiter().wait(for: [surfaced], timeout: 35)
+      attachRecoveryState(
+        "native-periodic-dirty-conflict", app: app,
+        note:
+          "surfaceOutcome=\(outcome.rawValue) elapsed=\(ProcessInfo.processInfo.systemUptime - began) localPreserved=\(editor.value as? String == local) externalPreserved=\((try? Data(contentsOf: file)) == externalBytes)"
+      )
+      XCTAssertEqual(outcome, .completed)
+      XCTAssertEqual(editor.value as? String, local)
+      XCTAssertEqual(try Data(contentsOf: file), externalBytes)
+      let revert = app.buttons["Revert"].firstMatch
+      XCTAssertTrue(revert.waitForExistence(timeout: 5), app.debugDescription)
+      revert.click()
+      let restored = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          editor.value as? String == external && (try? Data(contentsOf: file)) == externalBytes
+            && !app.sheets.firstMatch.exists && !app.dialogs.firstMatch.exists
+            && !app.alerts.firstMatch.exists
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [restored], timeout: 8), .completed)
+      attachRecoveryState("native-periodic-conflict-reverted", app: app)
+      // The new read must also become the document's byte-preserving save baseline.
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+      editor.typeText("After revert")
+      app.typeKey("s", modifierFlags: .command)
+      let expected = externalBytes + Data("After revert".utf8)
+      let saved = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == expected }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [saved], timeout: 8), .completed)
+    }
+
+    @MainActor
+    func testNativeVersionsBrowseAndRestoreExactPreviousBytes() throws {
+      let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
+        "SnowfolioNativeVersions-\(UUID().uuidString)", isDirectory: true)
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      let file = directory.appendingPathComponent("native-versions.md")
+      defer {
+        try? NSFileVersion.removeOtherVersionsOfItem(at: file)
+        try? FileManager.default.removeItem(at: directory)
+      }
+      let original = "# Version one 中文 👩‍💻\r\ne\u{301}\r\n"
+      let replacement = "# Version two 中文 👩‍💻\r\nRetain this newer revision too.\r\n"
+      let bom = Data([0xFF, 0xFE])
+      let originalBytes = bom + (try XCTUnwrap(original.data(using: .utf16LittleEndian)))
+      let replacementBytes = bom + (try XCTUnwrap(replacement.data(using: .utf16LittleEndian)))
+      try originalBytes.write(to: file)
+      let app = launch(environment: ["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE": "1"])
+      defer { app.terminate() }
+      let editor = openDocument(file, in: app)
+      XCTAssertEqual(editor.value as? String, original)
+      editor.click()
+      app.typeKey("a", modifierFlags: .command)
+      pasteRecoveryText(replacement, in: app)
+      XCTAssertEqual(editor.value as? String, replacement)
+      app.typeKey("s", modifierFlags: .command)
+      let saved = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == replacementBytes },
+        object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [saved], timeout: 8), .completed)
+      func historyContains(_ bytes: Data) -> Bool {
+        (NSFileVersion.otherVersionsOfItem(at: file) ?? []).contains {
+          (try? Data(contentsOf: $0.url)) == bytes
+        }
+      }
+      let recorded = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in historyContains(originalBytes) }, object: nil)
+      let historyOutcome = XCTWaiter().wait(for: [recorded], timeout: 8)
+      let versions = NSFileVersion.otherVersionsOfItem(at: file) ?? []
+      // Native Save must create its own history. This test never injects versions
+      // and never restores through a file-copy or NSFileVersion replacement API.
+      app.menuBars.menuBarItems["File"].click()
+      let browse = app.menuItems["Browse All Versions…"].firstMatch
+      XCTAssertTrue(browse.waitForExistence(timeout: 5), app.debugDescription)
+      XCTAssertTrue(browse.isEnabled)
+      browse.click()
+      let restore = app.buttons["Restore"].firstMatch
+      let browserReady = restore.waitForExistence(timeout: 12)
+      attachRecoveryState(
+        "native-versions-before-restore", app: app,
+        note:
+          "nativeHistoryCount=\(versions.count) originalHistory=\(historyOutcome.rawValue) restoreExists=\(browserReady) currentBytes=\((try? Data(contentsOf: file)) == replacementBytes)"
+      )
+      XCTAssertEqual(historyOutcome, .completed)
+      XCTAssertTrue(browserReady, app.debugDescription)
+      XCTAssertTrue(restore.isEnabled)
+      restore.click()
+      let confirm = app.sheets.buttons["Restore"].firstMatch
+      if confirm.exists { confirm.click() }
+      XCTAssertTrue(restore.waitForNonExistence(timeout: 12))
+      let reverted = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          editor.exists && editor.value as? String == original
+            && (try? Data(contentsOf: file)) == originalBytes
+        }, object: nil)
+      let restored = XCTWaiter().wait(for: [reverted], timeout: 8)
+      attachRecoveryState("native-versions-restored", app: app)
+      XCTAssertEqual(restored, .completed)
+      let recoverableNewer = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in historyContains(replacementBytes) }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [recoverableNewer], timeout: 8), .completed)
+    }
+  #endif
+
   @MainActor
   func testMultipleDocumentWindows() {
     let app = launch()

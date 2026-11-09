@@ -17,6 +17,22 @@
       "passed": 23,
       "failed": 4,
       "seconds": 1297.718
+    },
+    {
+      "commit": "5de9f1b507fde7df52c095079742579a04771671",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42555759244",
+      "executed": 27,
+      "passed": 23,
+      "failed": 4,
+      "seconds": 1115.382
+    },
+    {
+      "commit": "dfdad634d87555c4d25a586a5aee0e680391ac73",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42556687534",
+      "executed": 27,
+      "passed": 23,
+      "failed": 4,
+      "seconds": 1102.008
     }
   ],
   "existingFailures": [
@@ -39,5 +55,6 @@
     "compact": "/private/tmp/snowfolio-validation-history/default-tabs-dfdad63",
     "visual": "Inspected screenshot: saved anchor plus3created tabs, correct selected anchor source and outline. Preview capture blank remains independent open issue.",
     "image": "/private/tmp/snowfolio-validation-history/default-tabs-dfdad63/images/613D4EBA-A981-441D-B31B-B5AEA86A2945.png"
-  }
+  },
+  "fullRunCaution": "dfdad63full27still fails new-tab setup at line1611 after explicit ShowTabBar, while its focused1/1passed. Three lifecycle failures persist. Focused acceptance does not establish full-run fixture reliability. Collect currentfull AXtree/screenshot before another fix; possible open/active-window ordering is a hypothesis only."
 }

@@ -1,0 +1,33 @@
+{
+  "dateUTC": "2026-11-09T03:53:49.080684+00:00",
+  "milestone": "M2 actual native document conflicts and Versions; full modernization active",
+  "status": "Actual native app31UI methods compile. New periodic-conflict/Revert and native Versions browser/Restore acceptance cases have no runtime evidence yet. No production source/policy change.",
+  "methods": [
+    "DocumentLifecycleTests.testPeriodicDirtyConflictRevertKeepsExternalSource",
+    "DocumentLifecycleTests.testNativeVersionsBrowseAndRestoreExactPreviousBytes"
+  ],
+  "periodicConflict": {
+    "policy": "Actual app normal2-second native autosaving; no test delay, scripted edit, manualSave or deactivation before conflict surface. One native paste transaction stages an unsavedX; assert disk still original at external-write boundary.",
+    "external": "Uncoordinated atomic UTF8BOM/LF/combining/emoji external replacement against localUTF16LEBOM/CRLF unsavedsource.",
+    "checks": "Require native conflict surface under periodic saves, local source and external bytes retained before choice; click nativeRevert; require external source/bytes and sheet dismissal; subsequent edit/Save must retain external encoding/BOM baseline.",
+    "limit": "Fixture staging itself must be accepted at standard timing; failure before conflict is not accepted as production bug. SaveAnyway/SaveAs and recoverable-version choices remain required."
+  },
+  "versions": {
+    "policy": "Native user paste and explicitSave create their own history. Never inject an NSFileVersion, copy an old version over current source or programmatically replace/revert contents.",
+    "checks": "Exact UTF16LEBOM/CRLF original and savednewerbytes; original appears in native saved history; File/BrowseAllVersions enabled; capture tree/image; click nativeRestore and native confirmation ifpresent; browser dismisses; source/diskexactoriginal; newerbytesremain recoverable in history.",
+    "limits": "Runtime may reveal Versions UI/window/viewing-mode gaps. Read-only old-version interaction, multiple selected history entries and comprehensive keyboard/accessibility remain required."
+  },
+  "isolation": "UUID-owned authored fixture folder only. Clipboard types/data copied/restored around each single paste, never logged. Test app terminates before per-file NSFileVersion.removeOtherVersionsOfItem and folder cleanup. No user docs or unrelated version history touched.",
+  "workflow": "native-document-recovery runs only these two methods on actual native app. All previous scopes retained. No Apple-event consent required or approved.",
+  "local": "Both apphosts build-for-testing with resource/icon/type/license/dictionary gates. Native31/default27UI methods compile; canonical default restored. Existing AppIntents warning only. Changed-Swift strict lint/diff checks pass. No production code change since373/80baseline, so no redundant core rerun.",
+  "remaining": [
+    "Hosted actual recovery2run and image/tree/file-byte inspection",
+    "SaveAnyway/SaveAs and full standard-periodic conflict recoverability",
+    "Complete Versions read-only/selection/accessibility and restoration parity",
+    "Pending separate AppleScript OSconsent choice; no grant or dependent retry without explicitreply",
+    "Physical preview/selection/IME/VoiceOver and full remaining M3-M6gates"
+  ],
+  "sourceHashes": {
+    "App/UITests/DocumentLifecycleTests.swift": "9ba99638a47d2a66796cc1cb6b3f362e66821554568fe15785a25ddc94379243"
+  }
+}
