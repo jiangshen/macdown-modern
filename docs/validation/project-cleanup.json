@@ -1363,5 +1363,20 @@
     "allocatedBytesRemoved": 131690496,
     "ownershipAndOpenFilesChecked": true,
     "reason": "Full41/39pass/2fail summary, exact methods, logs and both inspected CLI warm-Save/cold-tabs screenshots compacted. Remove concluded partial raw; keep latest complete accepted native36 raw and protected running apps."
+  },
+  "acceptedReadingScreenCaptureCleanup": {
+    "dateUTC": "2026-11-09T16:07:00.071705+00:00",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "allocatedBytesRemoved": 35815424,
+    "ownershipAndOpenFilesChecked": true,
+    "reason": "Passing reading1/1, exact glyph difference0/negative control, independent preview position and inspected before/after images compacted. Remove concluded focused raw, preserve latest accepted full native raw."
+  },
+  "retiredDuplicateRecentMenuCode": {
+    "dateUTC": "2026-11-09T16:11:58.078890+00:00",
+    "path": "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeApplicationMenuController.swift",
+    "reason": "Native cold AX exposed both Cocoa and manual Open Recent menus. Installed SDK NSDocumentController.h:223 documents automatic menu creation and maximumRecentDocumentCount. Remove manual list/fixed10cap/custom async action; standard native controller owns recent opening/reuse/clear and respects the system count.",
+    "local": "Shared-cache SnowfolioUI build passes, zero diagnostics; strict formatting/diff pass. Actual latest menu validation pending.",
+    "fileRetired": false,
+    "reasonNoTrashFile": "Active source file remains; only duplicate implementation is removed."
   }
 }

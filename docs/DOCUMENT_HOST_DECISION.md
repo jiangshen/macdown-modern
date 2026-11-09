@@ -54,3 +54,13 @@ control, restoration tolerances and all behavioral deadlines are unchanged; runt
 verification of these test corrections remains pending. The cold AX File menu also
 contains two Open Recent entries (Cocoa and manual). Inspect/deduplicate ownership
 before the host switch; no menu behavior was changed in this verification correction.
+
+At2e54294 the focused reading flow now passes1/1 in67.746seconds. Actual source
+glyph difference is0.0 with0.93927negative control; independent preview position,
+normal Quit/relaunch, exact bytes and caret/Undo pass. Both cropped window images
+were inspected. Two internal runtime warnings remain; physical preview painting and
+whole41 acceptance are separate gates. The focused CLI fails earlier at warm global
+source readiness with exactly overlapping windows. Verification now selects each
+document before current-window source equality in both warm/cold phases. The duplicate
+manual Open Recent implementation is also removed using documented Cocoa ownership;
+this builds locally, with latest actual-app verification pending.

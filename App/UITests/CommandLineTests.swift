@@ -98,19 +98,38 @@ final class CommandLineTests: XCTestCase {
       FileManager.default.fileExists(
         atPath: directory.appendingPathComponent("never-created.md").path))
 
+    func captureFailure(_ name: String) {
+      let image = XCTAttachment(screenshot: app.screenshot())
+      image.name = name
+      image.lifetime = .keepAlways
+      add(image)
+    }
+    func selectDocument(_ title: String) {
+      let menu = app.menuBars.menuBarItems["Window"]
+      menu.click()
+      let item = menu.menuItems[title].firstMatch
+      let appeared = item.waitForExistence(timeout: 5)
+      if !appeared { captureFailure("command-line-window-menu-failure") }
+      XCTAssertTrue(appeared, app.debugDescription)
+      item.click()
+    }
+    func selectNewPipe() throws {
+      let menu = app.menuBars.menuBarItems["Window"]
+      menu.click()
+      let titles = menu.menuItems
+        .matching(NSPredicate(format: "title BEGINSWITH %@", "Untitled"))
+        .allElementsBoundByIndex.map(\.title)
+      if titles.isEmpty { captureFailure("command-line-pipe-menu-failure") }
+      let title = try XCTUnwrap(titles.last, app.debugDescription)
+      menu.menuItems[title].firstMatch.click()
+    }
     func waitForSource(_ text: String) async {
+      let editor = app.windows.firstMatch.textViews["markdownSourceEditor"].firstMatch
       let ready = XCTNSPredicateExpectation(
-        predicate: NSPredicate { _, _ in
-          app.textViews.matching(identifier: "markdownSourceEditor")
-            .allElementsBoundByIndex.contains { $0.value as? String == text }
-        }, object: nil)
+        predicate: NSPredicate { _, _ in editor.exists && editor.value as? String == text },
+        object: nil)
       let result = await XCTWaiter.fulfillment(of: [ready], timeout: 8)
-      if result != .completed {
-        let image = XCTAttachment(screenshot: app.screenshot())
-        image.name = "command-line-source-failure"
-        image.lifetime = .keepAlways
-        add(image)
-      }
+      if result != .completed { captureFailure("command-line-source-failure") }
       XCTAssertEqual(result, .completed, app.debugDescription)
     }
     let pipedText = "# Piped notebook\r\n中文 🧊 e\u{301}\r\n"
@@ -125,10 +144,6 @@ final class CommandLineTests: XCTestCase {
     add(launchTrace)
     XCTAssertEqual(warm.status, 0, warm.error)
     XCTAssertGreaterThanOrEqual(warm.seconds, 0.2)
-    await waitForSource(pipedText)
-    await waitForSource(original)
-    XCTAssertEqual(
-      app.windows.matching(NSPredicate(format: "title == %@", file.lastPathComponent)).count, 1)
     for name in ["new.md", "--help"] {
       let appeared = app.windows[name].firstMatch.waitForExistence(timeout: 8)
       if !appeared {
@@ -140,31 +155,18 @@ final class CommandLineTests: XCTestCase {
       }
       XCTAssertTrue(appeared, app.debugDescription)
     }
+    XCTAssertEqual(
+      app.windows.matching(NSPredicate(format: "title == %@", file.lastPathComponent)).count, 1)
+    selectDocument(file.lastPathComponent)
+    await waitForSource(original)
+    // Occluded windows, like inactive tabs, need not publish full AX values.
+    // Select the newest fresh Untitled, then prove its actual source before Save.
+    try selectNewPipe()
+    await waitForSource(pipedText)
     XCTAssertEqual(try Data(contentsOf: file), originalBytes)
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("new.md")), Data())
     // After the first filename --help is a literal filename, as in the original CLI.
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("--help")), Data())
-    // These independent windows overlap exactly. Clicking the background editor's
-    // coordinates reaches the front document; select its native Window menu item.
-    let pipedWindow = try XCTUnwrap(
-      app.windows.allElementsBoundByIndex.first { window in
-        let editor = window.textViews["markdownSourceEditor"].firstMatch
-        return editor.exists && editor.value as? String == pipedText
-      })
-    let pipedTitle = pipedWindow.title
-    XCTAssertFalse(pipedTitle.isEmpty, app.debugDescription)
-    let windowMenu = app.menuBars.menuBarItems["Window"]
-    windowMenu.click()
-    let pipedItem = windowMenu.menuItems[pipedTitle].firstMatch
-    let itemAppeared = pipedItem.waitForExistence(timeout: 5)
-    if !itemAppeared {
-      let image = XCTAttachment(screenshot: app.screenshot())
-      image.name = "command-line-window-menu-failure"
-      image.lifetime = .keepAlways
-      add(image)
-    }
-    XCTAssertTrue(itemAppeared, app.debugDescription)
-    pipedItem.click()
     let activeEditor = app.windows.firstMatch.textViews["markdownSourceEditor"].firstMatch
     XCTAssertEqual(activeEditor.value as? String, pipedText, app.debugDescription)
     activeEditor.click()
@@ -205,43 +207,13 @@ final class CommandLineTests: XCTestCase {
       directory: directory, input: Data(coldPipe.utf8))
     XCTAssertEqual(launched.status, 0, launched.error)
     XCTAssertTrue(app.wait(for: .runningForeground, timeout: 8))
-    // A normal helper launch does not inherit XCTest's argument-domain tab
-    // preference. Select each native document: inactive tabs do not expose their
-    // source editors to AX, even though all documents opened successfully.
-    func selectColdDocument(_ title: String) {
-      let windowMenu = app.menuBars.menuBarItems["Window"]
-      windowMenu.click()
-      let item = windowMenu.menus.firstMatch.menuItems[title].firstMatch
-      let appeared = item.waitForExistence(timeout: 5)
-      if !appeared {
-        let image = XCTAttachment(screenshot: app.screenshot())
-        image.name = "command-line-cold-window-menu-failure"
-        image.lifetime = .keepAlways
-        add(image)
-      }
-      XCTAssertTrue(appeared, app.debugDescription)
-      item.click()
-    }
-    selectColdDocument(cold.lastPathComponent)
+    // A normal helper launch retains its normal tab preference. Select each
+    // document before checking source; inactive tabs expose only selected content.
+    selectDocument(cold.lastPathComponent)
     await waitForSource(coldText)
-    let coldWindowMenu = app.menuBars.menuBarItems["Window"]
-    coldWindowMenu.click()
-    let untitled = coldWindowMenu.menus.firstMatch.menuItems
-      .matching(NSPredicate(format: "title BEGINSWITH %@", "Untitled"))
-      .allElementsBoundByIndex.map(\.title)
-    if untitled.isEmpty {
-      let image = XCTAttachment(screenshot: app.screenshot())
-      image.name = "command-line-cold-pipe-menu-failure"
-      image.lifetime = .keepAlways
-      add(image)
-    }
-    XCTAssertFalse(untitled.isEmpty, app.debugDescription)
-    // This fresh process owns only the two requested files and its new pipe.
-    // Read the actual source after selection; a title alone proves no contents.
-    let pipeTitle = try XCTUnwrap(untitled.last)
-    coldWindowMenu.menus.firstMatch.menuItems[pipeTitle].firstMatch.click()
+    try selectNewPipe()
     await waitForSource(coldPipe)
-    selectColdDocument("--help")
+    selectDocument("--help")
     XCTAssertTrue(
       app.windows["--help"].firstMatch.waitForExistence(timeout: 8), app.debugDescription)
     XCTAssertEqual(

@@ -289,5 +289,15 @@
     "status": "Implemented/typechecked/linted; focused runtime pending.",
     "behavior": "Select cold.md, newest fresh Untitled pipe and --help using the scoped native Window menu before original actual-source/byte assertions. Add empty --help source equality. A normal app launch retains its normal tab preference.",
     "limits": "No app behavior, waits, source/Save/cold byte assertions or expected methods removed. Still41native/32regular. Full native36remains accepted baseline."
+  },
+  "focusedNative2e54294": {
+    "source": "2e54294ea6c2cdfb7ca458bec899df0529cf6d71",
+    "run": 42649402142,
+    "job": 129271359152,
+    "observedMethodFailureSeconds": 16.763,
+    "finding": "Fails first warm exact-source read, before cold correction. All3file opens complete in opt-in trace; AX has five exactly overlapping windows and piped Untitled2 behind the selected empty --help. Global descendant-value readiness is sensitive to covered windows too.",
+    "correction": "Select requested file and newest fresh Untitled from native Window menu before exact current-window source equality in both phases. Retain all source/file/Save/cold checks and original8/5/20second bounds; share selection/capture helpers instead of duplicating warm/cold logic. Runtime pending.",
+    "compact": "/private/tmp/snowfolio-validation-history/command-line-native-2e54294",
+    "limit": "No new production CLI defect established from this failure; earlier f219e25 warm exact source and Save passed. No repeated rerun without this visibility correction."
   }
 }

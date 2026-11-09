@@ -101,7 +101,7 @@
       "passed": 0,
       "failed": 1,
       "seconds": 91.953,
-      "finding": "Screenshot and AXtree show native Untitled/Alpha/Beta tabs; first Beta\u2192ControlTab selects Untitled. Quit/relaunch portion not reached.",
+      "finding": "Screenshot and AXtree show native Untitled/Alpha/Beta tabs; first Beta→ControlTab selects Untitled. Quit/relaunch portion not reached.",
       "compact": "/private/tmp/snowfolio-validation-history/native-tabs-22b65b2"
     },
     "fixtureCorrection": "Select authored Alpha through native TabGroup/title before Control-Tab to adjacent Beta; select restored Alpha by title after checking selected Beta/caret. Do not assume startup created exactly two tabs. All original content/Undo/byte/restore assertions and waits stay.",
@@ -341,5 +341,25 @@
     "commit": "2bc01b22a9b6e57140f705ea3e10d9f015ed9f16",
     "run": "https://github.com/jiangshen/snowfolio/actions/runs/42588674603",
     "status": "in progress; no complete36methodacceptanceyet"
+  },
+  "acceptedScreenCaptureReading2e54294": {
+    "source": "2e54294ea6c2cdfb7ca458bec899df0529cf6d71",
+    "run": 42649434570,
+    "job": 129271472939,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 67.746,
+    "runtimeWarnings": 2,
+    "sourceGlyphDifference": 0.0,
+    "negativeControlDifference": 0.9392712550607287,
+    "previewPositionBefore": 0.35292819142341614,
+    "previewPositionAfter": 0.35281792283058167,
+    "sourceScrollBefore": 0.22278803309993633,
+    "sourceScrollAfter": 0.2517282521434052,
+    "visual": "Before/restored cropped window images inspected: same actual source glyph position and no crop/overlap error. Source scrollbar proportion differs with TextKit estimated total extent; zero glyph difference proves actual source reading position. Known blank hosted preview capture is not claimed fixed.",
+    "scope": "Normal Quit/relaunch, independent source glyph/preview position, negative control, original UTF16LE/BOM/CRLF bytes and offscreen caret/Undo assertions all retained. Public main-screen crop avoids failing element screenshot resolution.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-reading-2e54294"
   }
 }

@@ -31,7 +31,6 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
   private let services = NSMenu(title: String(localized: "Services"))
   private let windows = NSMenu(title: String(localized: "Window"))
   private let help = NSMenu(title: String(localized: "Help"))
-  private let recent = NSMenu(title: String(localized: "Open Recent"))
   private var settings: SettingsWindowController?
 
   public override convenience init() { self.init(preferences: NativeDocumentPreferences.shared) }
@@ -108,11 +107,8 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
     item(file, String(localized: "New"), #selector(NSDocumentController.newDocument(_:)), "n")
     item(file, String(localized: "New Tab"), #selector(newTab), "t", target: self)
     item(file, String(localized: "Open…"), #selector(NSDocumentController.openDocument(_:)), "o")
-    let recentItem = NSMenuItem(
-      title: String(localized: "Open Recent"), action: nil, keyEquivalent: "")
-    recentItem.submenu = recent
-    recent.delegate = self
-    file.addItem(recentItem)
+    // NSDocumentController supplies the standard Open Recent menu, respecting
+    // maximumRecentDocumentCount. A second manual menu duplicates Cocoa's item.
     file.addItem(.separator())
     item(file, String(localized: "Close"), #selector(NSWindow.performClose(_:)), "w")
     item(file, String(localized: "Save"), #selector(NSDocument.save(_:)), "s")
@@ -205,20 +201,7 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
 
   @objc private func windowChanged(_ notification: Notification) { focus.refresh() }
 
-  public func menuNeedsUpdate(_ menu: NSMenu) {
-    focus.refresh()
-    guard menu === recent else { return }
-    recent.removeAllItems()
-    for url in NSDocumentController.shared.recentDocumentURLs.prefix(10) {
-      let entry = item(recent, url.lastPathComponent, #selector(openRecent), target: self)
-      entry.representedObject = url
-      entry.toolTip = url.path
-    }
-    if !recent.items.isEmpty { recent.addItem(.separator()) }
-    item(
-      recent, String(localized: "Clear Menu"),
-      #selector(NSDocumentController.clearRecentDocuments(_:)))
-  }
+  public func menuNeedsUpdate(_ menu: NSMenu) { focus.refresh() }
 
   public func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
     if menuItem.action == #selector(printDocument) {
@@ -238,15 +221,6 @@ public final class NativeApplicationMenuController: NSObject, NSMenuDelegate, NS
   }
 
   @objc private func printDocument(_ sender: Any?) { focus.commands?.output?.printDocument() }
-
-  @objc private func openRecent(_ sender: NSMenuItem) {
-    guard let url = sender.representedObject as? URL else { return }
-    Task { @MainActor in
-      do {
-        _ = try await NSDocumentController.shared.openDocument(withContentsOf: url, display: true)
-      } catch { NSApp.presentError(error) }
-    }
-  }
 
   @objc private func showHelp(_ sender: Any?) {
     if let url = URL(string: "https://github.com/jiangshen/snowfolio#readme") {

@@ -221,5 +221,17 @@
     "findings": "CLI first actual-source readiness fails after26.850s; source-failure screenshot shows blank front existing Markdown window with piped Untitled behind, not an error dialog. Generic text positive source/byte checks pass, but invalid bytes leave an empty document window with no normal rejection alert after73.419s. The three established SwiftUI lifecycle failures recur. No query relaxation or arbitrary wait increase applied.",
     "limits": "Screenshot/AX output does not establish exact pipe contents or the cause of the disabled/blank windows. This is regular host only; focused native generic1/1passes, complete native41 still running.",
     "compact": "/private/tmp/snowfolio-validation-history/default-f219e25"
+  },
+  "full9e99ebb": {
+    "source": "9e99ebb6a3f5004e3511f4206aa1c6844c02048d",
+    "run": 42643954862,
+    "job": 129252060186,
+    "executed": 32,
+    "passed": 27,
+    "failed": 5,
+    "skipped": 0,
+    "result": "Same three established SwiftUI autosave/reload failures, first CLI exact-source wait and invalid-read alert failure. No app implementation changed from f219e25; new unused PluginCore target only. Warm/cold active-document selector correction follows at next revision.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-9e99ebb",
+    "rawDownload": "None; range-only log (681624bytes transferred from188386109byte archive)."
   }
 }

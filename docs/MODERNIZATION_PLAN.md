@@ -3846,3 +3846,33 @@ results, log and both CLI images are compact; the131690496-byte partial raw copy
 removed after owner/open-file checks. The native cold AX File menu also shows both
 Cocoa and custom Open Recent entries: inspect/deduplicate ownership before the default
 host switch. Physical composition/VoiceOver and the complete product gates stay open.
+
+
+## Reading pixels accepted; visible CLI documents and native recent menu — 2026-11-09
+
+At2e54294 the corrected reading-position flow passes1/1 in67.746seconds, with2internal
+runtime warnings. Original pixel/negative-control/independent-preview/normal-relaunch/
+byte/caret/Undo checks pass. Glyph difference is0.0; wrong-reading negative control is
+0.939271. Preview position0.352928→0.352818 remains within its unchanged tolerance.
+TextKit estimated total height changes the source scrollbar proportion, while actual
+source pixels match exactly. Before/restored window images were inspected and crops
+are correct. Hosted preview glyph capture stays blank; physical painting is not
+accepted by this result. Compact evidence remains;35815424-byte focused raw removed.
+
+The focused CLI fails first warm exact-source readiness after16.763seconds, before
+its new cold selection runs. Trace reports all3files opened; AX shows five overlapping
+windows with Untitled2 behind empty --help. Verification now selects actual documents
+through the scoped Window menu before reading active editor values in both phases.
+It waits for requested new windows before source checks, retains original source/
+byte/Save/relaunch assertions and all8/5/20second bounds, and removes duplicate helpers.
+Runtime remains pending; do not endlessly repeat unchanged focused trials.
+
+The native cold AX also proved duplicate Open Recent entries. Installed public SDK
+NSDocumentController.h:223 explicitly documents automatic standard-menu creation and
+maximumRecentDocumentCount. Remove the extra manual list, fixed10cap and duplicate
+async open action; normal Cocoa owns opening, reuse, Clear Menu and system count.
+Shared-cache SnowfolioUI builds without diagnostics; changed UI tests typecheck and
+strict lint/diff pass. Actual menu and complete native41 acceptance remain pending.
+The latest complete regular run9e99ebb is27/32with the same5failures, including CLI
+readiness still subject to the old covered-window assumption. No newer host-default,
+installation, release or file-handler change is made.
