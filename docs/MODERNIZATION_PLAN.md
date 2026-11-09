@@ -3491,3 +3491,13 @@ unattributed. Fullnative35 at28243a6 continues for separate groups in the full s
 The inspected34raw replaces the superseded33raw after source/ownership/open-file
 checks, with compact records retained. One useful fullraw remains,190341120bytes.
 No app install/default host/file-handler change or coupled legacy retirement.
+
+
+## Actual independent reading-position relaunch — candidate, 2026-11-09
+
+A native-only36th UI method now compiles real user scroll events, separate source/
+preview scrollbar readings, normalQuit/relaunch, restored scroll values/caret and
+native edit/Undo with exactUTF16LE/BOM/CRLF/Unicode bytes. Scrollbar/linking settings
+are isolated launch arguments on the disposable machine. Native36/default27 compile;
+canonicaldefault restored; strictchangedlint/diffpass. Runtimepending; no production
+change or acceptance based only on compilation. Fullnative35 at28243a6 continues.

@@ -235,5 +235,14 @@
     "replacedSupersededFull33RawAllocatedBytes": 188977152,
     "currentRetainedAllocatedBytes": 190341120,
     "ownershipAndOpenFilesChecked": true
+  },
+  "actualReadingPositionsCandidate": {
+    "dateUTC": "2026-11-09T07:52:24.216174+00:00",
+    "method": "testIndependentReadingPositionsSurviveQuitAndRelaunch",
+    "scope": "Actual native app opens UTF16LE/BOM/CRLF/Unicode fixture. User scroll events place source and preview separately with linking off. NormalQuit/relaunch must restore numeric native scrollbar positions within0.002, sourcecaret0, editing/Undo and exactfilebytes.",
+    "testIsolation": "Scrollbars Always and restoration/linking preferences supplied only through disposable app launch arguments. No global preference or production behavior changes.",
+    "local": "Native36/default27 compile and resource/type/dictionary/license gates pass. Canonical default restored. Strict changedSwiftlint/diffpass.",
+    "runtime": "Pending focused exact hosted run. Fullnative35 at28243a6 remains live.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-reading-local"
   }
 }

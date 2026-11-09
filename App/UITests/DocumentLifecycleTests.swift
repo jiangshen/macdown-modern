@@ -1577,6 +1577,123 @@ final class DocumentLifecycleTests: XCTestCase {
 
   #if NATIVE_DOCUMENT_HOST
     @MainActor
+    func testIndependentReadingPositionsSurviveQuitAndRelaunch() throws {
+      let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
+        "SnowfolioReadingRestoration-\(UUID().uuidString)", isDirectory: true)
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      defer { try? FileManager.default.removeItem(at: directory) }
+      let file = directory.appendingPathComponent("reading-positions.md")
+      let source =
+        "# Independent reading positions\r\n\r\n"
+        + (1...160).map {
+          "Paragraph \($0) 中文 👩‍💻 e\u{301}. A separate reading checkpoint in both panes.\r\n\r\n"
+        }.joined()
+      let bytes = Data([0xFF, 0xFE]) + (try XCTUnwrap(source.data(using: .utf16LittleEndian)))
+      try bytes.write(to: file)
+      let app = launch(arguments: [
+        "-ApplePersistenceIgnoreState", "NO", "-NSQuitAlwaysKeepsWindows", "YES",
+        "-AppleShowScrollBars", "Always", "-editorSyncScrolling", "NO",
+      ])
+      defer { app.terminate() }
+      defer {
+        let tree = XCTAttachment(string: app.debugDescription)
+        tree.name = "native-reading-restoration-tree"
+        tree.lifetime = .keepAlways
+        add(tree)
+        let image = XCTAttachment(screenshot: app.screenshot())
+        image.name = "native-reading-restoration-final"
+        image.lifetime = .keepAlways
+        add(image)
+      }
+      let editor = openDocument(file, in: app)
+      let window = app.windows[file.lastPathComponent].firstMatch
+      let loaded = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in editor.value as? String == source }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [loaded], timeout: 8), .completed)
+      let sourceScroll = window.scrollViews["markdownSourceScroll"].firstMatch
+      let preview = window.descendants(matching: .any).matching(identifier: "markdownPreview")
+        .firstMatch
+      let previewScroll = preview.scrollViews.firstMatch
+      let heading = preview.staticTexts.matching(
+        NSPredicate(format: "value == %@", "Independent reading positions")
+      ).firstMatch
+      XCTAssertTrue(heading.waitForExistence(timeout: 8), app.debugDescription)
+      func position(_ scroll: XCUIElement) throws -> Double {
+        let bar = scroll.scrollBars.firstMatch
+        guard bar.exists, let value = bar.value as? Double else {
+          throw NSError(
+            domain: "SnowfolioReadingRestoration", code: 1,
+            userInfo: [
+              NSLocalizedDescriptionKey: "Missing numeric scrollbar: \(scroll.debugDescription)"
+            ])
+        }
+        return value
+      }
+      XCTAssertTrue(
+        sourceScroll.scrollBars.firstMatch.waitForExistence(timeout: 5), app.debugDescription)
+      XCTAssertTrue(
+        previewScroll.scrollBars.firstMatch.waitForExistence(timeout: 5), app.debugDescription)
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.upArrow.rawValue, modifierFlags: .command)
+      XCTAssertLessThanOrEqual(try position(sourceScroll), 0.001)
+      sourceScroll.scroll(byDeltaX: 0, deltaY: -1800)
+      let sourceMoved = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? position(sourceScroll)) ?? 0 > 0.03 }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [sourceMoved], timeout: 8), .completed)
+      let sourcePosition = try position(sourceScroll)
+      XCTAssertLessThanOrEqual(try position(previewScroll), 0.001)
+      previewScroll.scroll(byDeltaX: 0, deltaY: -3200)
+      let previewMoved = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? position(previewScroll)) ?? 0 > 0.03 }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [previewMoved], timeout: 8), .completed)
+      let previewPosition = try position(previewScroll)
+      XCTAssertEqual(try position(sourceScroll), sourcePosition, accuracy: 0.002)
+      XCTAssertEqual(editor.value as? String, source)
+      XCTAssertEqual(try Data(contentsOf: file), bytes)
+      let before = XCTAttachment(screenshot: window.screenshot())
+      before.name = "native-independent-reading-before-quit"
+      before.lifetime = .keepAlways
+      add(before)
+      app.typeKey("q", modifierFlags: .command)
+      XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
+      XCTAssertEqual(try Data(contentsOf: file), bytes)
+      app.launch()
+      let restored = app.windows[file.lastPathComponent].firstMatch
+      let restoredEditor = restored.textViews["markdownSourceEditor"].firstMatch
+      let restoredSource = restored.scrollViews["markdownSourceScroll"].firstMatch
+      let restoredPreview = restored.descendants(matching: .any).matching(
+        identifier: "markdownPreview"
+      )
+      .firstMatch.scrollViews.firstMatch
+      let readingRestored = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          guard restoredEditor.exists, restoredEditor.value as? String == source,
+            let sourceValue = try? position(restoredSource),
+            let previewValue = try? position(restoredPreview)
+          else { return false }
+          return abs(sourceValue - sourcePosition) < 0.002
+            && abs(previewValue - previewPosition) < 0.002
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [readingRestored], timeout: 8), .completed)
+      let values = XCTAttachment(
+        string:
+          "Source before=\(sourcePosition), after=\(try position(restoredSource)); preview before=\(previewPosition), after=\(try position(restoredPreview))"
+      )
+      values.name = "native-independent-reading-positions"
+      values.lifetime = .keepAlways
+      add(values)
+      // Do not click: the source caret at the beginning must restore independently
+      // of both reading positions. Editing must still have native Undo ownership.
+      app.typeText("Restored checkpoint. ")
+      XCTAssertEqual(restoredEditor.value as? String, "Restored checkpoint. " + source)
+      app.typeKey("z", modifierFlags: .command)
+      XCTAssertEqual(restoredEditor.value as? String, source)
+      let unchanged = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == bytes }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [unchanged], timeout: 8), .completed)
+    }
+
+    @MainActor
     func testSeparateTabGroupsRestoreWithoutMergingDocuments() throws {
       let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
         "SnowfolioSeparateGroups-\(UUID().uuidString)", isDirectory: true)
