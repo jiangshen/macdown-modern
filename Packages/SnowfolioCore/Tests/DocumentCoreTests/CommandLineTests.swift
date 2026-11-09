@@ -7,6 +7,7 @@ import Testing
 @Suite("Command-line requests")
 struct CommandLineTests {
   private let directory = URL(fileURLWithPath: "/tmp/cli folder", isDirectory: true)
+  private let application = URL(fileURLWithPath: "/Applications/Snowfolio.app", isDirectory: true)
 
   @Test(
     "Help and version preserve the original precedence",
@@ -75,9 +76,12 @@ struct CommandLineTests {
     for input in [nil, Data(), bytes] {
       let request = try CommandLineLaunchRequest(
         files: [directory.appendingPathComponent("% #.md")], pipedData: input)
-      let event = try CommandLineLaunchEvent.encode(request)
+      let event = try CommandLineLaunchEvent.encode(request, applicationURL: application)
       #expect(event.eventClass == CommandLineLaunchEvent.eventClass)
       #expect(event.eventID == CommandLineLaunchEvent.eventID)
+      let address = try #require(event.attributeDescriptor(forKeyword: AEKeyword(keyAddressAttr)))
+      #expect(address.descriptorType == typeApplicationURL)
+      #expect(address.data == NSAppleEventDescriptor(applicationURL: application).data)
       #expect(try CommandLineLaunchEvent.decode(event) == request)
       #expect(
         try await CommandLineLaunchEvent.decodePayload(CommandLineLaunchEvent.payload(from: event))
@@ -129,6 +133,8 @@ struct CommandLineTests {
     let bytes = Data(String(repeating: "中文 🧊 e\u{301}\r\n", count: 150_000).utf8)
     let request = try CommandLineLaunchRequest(files: [], pipedData: bytes)
     #expect(
-      try CommandLineLaunchEvent.decode(CommandLineLaunchEvent.encode(request)).pipedData == bytes)
+      try CommandLineLaunchEvent.decode(
+        CommandLineLaunchEvent.encode(request, applicationURL: application)
+      ).pipedData == bytes)
   }
 }

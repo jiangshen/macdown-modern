@@ -282,5 +282,24 @@
       "Boolean = values are accepted; splitting occurs at the last equals sign. These obscure behaviors must be explicitly preserved or documented as bug fixes in the modern CLI."
     ]
   },
-  "modernCLI": "See command-line.json for precise candidate scope and explicit option bug fixes."
+  "modernCLI": "See command-line.json for precise candidate scope and explicit option bug fixes.",
+  "practicalPluginConsumerInventory": {
+    "dateUTC": "2026-11-09T11:59:30.919135+00:00",
+    "installed": "No PlugIns directory at the original MacDown app-data location; no local plugin bundles inventoried or loaded. Snowfolio app-data directory is not created by this inspection.",
+    "maintainerExample": {
+      "repository": "https://github.com/MacDownApp/macdown-gistit",
+      "commit": "ccbb6bf6268ae19a5ccfbba621095840b9398556",
+      "source": "macdown-gistit/MacDownGistItController.m",
+      "observedAPI": [
+        "name getter",
+        "run: returning BOOL",
+        "NSDocumentController.sharedDocumentController.currentDocument",
+        "readonly markdown selector",
+        "NSDocument.fileURL"
+      ],
+      "compatibilityFinding": "The actual example uses a structural Objective-C markdown protocol cast and NSDocument, without linking or checking MPDocument class identity. NativeMarkdownDocument already exposes readonly-compatible markdown and public fileURL through its Swift scripting surface; loader and real fixture acceptance remain unimplemented. This is not blanket compatibility for arbitrary plugins.",
+      "execution": "Source read only. The example posts document content as a public GitHub Gist, so it was not built, loaded or run."
+    },
+    "next": "Implement metadata-only discovery/architecture checks and explicit user-driven loading. Use a local non-network fixture with the same selector contract to verify one-time initialization, names, BOOL run and native document source access; preserve original plugin code until accepted."
+  }
 }

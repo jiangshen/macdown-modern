@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T11:57:37.010974+00:00",
+  "dateUTC": "2026-11-09T12:06:58.295854+00:00",
   "status": "Candidate compiles and packaged help/version/error checks pass. Both initial actual-app flows fail because piped source never appears after CLI launch returns0; transport is unaccepted. Metadata-only routing diagnostics added before changing transport.",
   "sources": [
     "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInvocation.swift",
@@ -35,5 +35,25 @@
     "nativeCompact": "/private/tmp/snowfolio-validation-history/command-line-native-15d767f",
     "regularCompact": "/private/tmp/snowfolio-validation-history/command-line-default-15d767f",
     "diagnostic": "Opt-in helper ownPID/mainBundle and returnedPID/bundle/self flag; app handler installation/entry; attached as test metadata without text or paths. Establish cause before changing target addressing or identity."
+  },
+  "addressFollowup": {
+    "diagnosticSource": "3037f3dffa7ee52f699e4a955d10c3de93eac80f",
+    "run": 42613182769,
+    "finding": "Helper PID13981 receives GUI PID13915, correct bundle local.macdown.modern and self=false. App install traces exist for PID13915 but no receive trace. This disproves self-routing/identity hypothesis; original encoded event has no destination attribute.",
+    "change": "The envelope now requires an explicit applicationURL destination using the public NSAppleEventDescriptor application-address API. Unit regression requires typeApplicationURL/keyAddressAttr and exact target data. Twelve focused tests pass; runtime followup pending.",
+    "primaryReference": "https://developer.apple.com/documentation/appkit/nsworkspace/openconfiguration/appleevent",
+    "diagnosticCompact": "/private/tmp/snowfolio-validation-history/command-line-native-3037f3d",
+    "limits": "Missing address is the next controlled correction, not yet proven to resolve delivery. No automation permission or security change has been made."
+  },
+  "acceptedCore15d767f": {
+    "run": 42611629244,
+    "job": 129141214871,
+    "tests": 412,
+    "suites": 86,
+    "commonMark": "652/652",
+    "arm64Executables": 8,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-15d767f"
   }
 }

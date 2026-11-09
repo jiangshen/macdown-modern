@@ -7,9 +7,15 @@ public enum CommandLineLaunchEvent {
   public static let eventClass: AEEventClass = 0x534E_464C  // SNFL
   public static let eventID: AEEventID = 0x436C_696F  // Clio
 
-  public static func encode(_ request: CommandLineLaunchRequest) throws -> NSAppleEventDescriptor {
+  public static func encode(_ request: CommandLineLaunchRequest, applicationURL: URL) throws
+    -> NSAppleEventDescriptor
+  {
+    guard applicationURL.isFileURL, applicationURL.pathExtension == "app" else {
+      throw CommandLineInvocationError.unsupportedMessage
+    }
     let event = NSAppleEventDescriptor(
-      eventClass: eventClass, eventID: eventID, targetDescriptor: nil,
+      eventClass: eventClass, eventID: eventID,
+      targetDescriptor: NSAppleEventDescriptor(applicationURL: applicationURL),
       returnID: AEReturnID(kAutoGenerateReturnID), transactionID: AETransactionID(kAnyTransactionID)
     )
     guard

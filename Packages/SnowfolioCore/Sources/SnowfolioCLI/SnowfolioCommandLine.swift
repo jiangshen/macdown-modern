@@ -41,7 +41,7 @@ struct SnowfolioCommandLine {
         configuration.activates = true
         configuration.createsNewApplicationInstance = false
         configuration.allowsRunningApplicationSubstitution = false
-        configuration.appleEvent = try CommandLineLaunchEvent.encode(request)
+        configuration.appleEvent = try CommandLineLaunchEvent.encode(request, applicationURL: app)
         #if DEBUG
           trace(
             "before launch ownPID=\(ProcessInfo.processInfo.processIdentifier) mainBundle=\(Bundle.main.bundleIdentifier ?? "none")"
