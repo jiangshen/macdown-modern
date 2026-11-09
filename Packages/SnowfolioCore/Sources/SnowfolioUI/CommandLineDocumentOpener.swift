@@ -35,11 +35,24 @@ enum CommandLineDocumentOpener {
         model.navigate(toUTF16Offset: 0)
       } catch is CancellationError { throw CancellationError() } catch { failures.append(error) }
     }
-    for file in request.files {
+    for (index, file) in request.files.enumerated() {
       do {
+        #if DEBUG
+          DocumentLifecycleTrace.note("command line file begin index=\(index)")
+        #endif
         try await prepareFile(file)
         _ = try await controller.openDocument(withContentsOf: file, display: true)
-      } catch is CancellationError { throw CancellationError() } catch { failures.append(error) }
+        #if DEBUG
+          DocumentLifecycleTrace.note("command line file opened index=\(index)")
+        #endif
+      } catch is CancellationError { throw CancellationError() } catch {
+        #if DEBUG
+          let failure = error as NSError
+          DocumentLifecycleTrace.note(
+            "command line file failed index=\(index) domain=\(failure.domain) code=\(failure.code)")
+        #endif
+        failures.append(error)
+      }
     }
     if request.files.isEmpty, request.pipedData == nil, controller.documents.isEmpty {
       _ = try controller.openUntitledDocumentAndDisplay(true)

@@ -24,7 +24,6 @@
   },
   "pending": [
     "Actual packaged CLI warm/cold files and delayed piping in both hosts with the acknowledged connection.",
-    "Full417tests/87suites+652corpus and actual arm64 packaging gates.",
     "Confirm receipt trace and no custom Apple-event dependency under normal temporary-machine permissions.",
     "Terminal settings exposure/installation, safe original CLI retirement and all remaining full-goal gates."
   ],
@@ -71,5 +70,26 @@
     "compact": "/private/tmp/snowfolio-validation-history/command-line-native-36230c1",
     "followup": "Only UI-test target gains anchored lookup rule for local.snowfolio.cli.<uid>.<pid>. Existing UI HID/signal and native scripting rules preserved; app/helper entitlement settings unchanged. Both Tuist configurations generate and generated dictionaries validated; regular configuration restored. Runtime followup pending.",
     "reference": "https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/AppSandboxTemporaryExceptionEntitlements.html"
+  },
+  "acceptedCore36230c1": {
+    "source": "36230c15fd58e73cb452c86249a29988c2f6f2d8",
+    "run": 42619318264,
+    "job": 129167074248,
+    "tests": 417,
+    "suites": 87,
+    "commonMark": "652/652",
+    "arm64Executables": 8,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-36230c1"
+  },
+  "scopedRunnerFollowup": {
+    "source": "8b1b28f0d36d9e1e0faee5cba2073788fd11e81f",
+    "focusedRun": 42621191612,
+    "fullRun": 42621125150,
+    "status": "Native focused1/1 failed at Save-panel assertion after35.643s. Connection acknowledged in0.650s including200ms producer delay; pipe/source/reuse/exact original bytes and empty created-file checks pass. No Save/cold acceptance.",
+    "finding": "AX hierarchy shows new.md remains main/focused while piped Untitled2 is behind exactly overlapping frames. Corrected test selects the actual pipe window through native Window menu, asserts its front source and additionally requires both newly created file windows. Always retain final hierarchy/screenshot; file-index/error-code-only opt-in metadata added.",
+    "compact": "/private/tmp/snowfolio-validation-history/command-line-native-8b1b28f",
+    "limits": "No screenshot attachment was retained by the failed original method. Complete hierarchy and receipt were exported; raw download remains only while current inspection is active."
   }
 }

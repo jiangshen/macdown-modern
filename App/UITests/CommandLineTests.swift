@@ -70,6 +70,16 @@ final class CommandLineTests: XCTestCase {
     app.launchEnvironment["SNOWFOLIO_TRACE_DOCUMENT_LIFECYCLE"] = "1"
     app.launch()
     defer { app.terminate() }
+    defer {
+      let tree = XCTAttachment(string: app.debugDescription)
+      tree.name = "command-line-final-hierarchy"
+      tree.lifetime = .keepAlways
+      add(tree)
+      let image = XCTAttachment(screenshot: app.screenshot())
+      image.name = "command-line-final-state"
+      image.lifetime = .keepAlways
+      add(image)
+    }
     let running = try XCTUnwrap(
       NSRunningApplication.runningApplications(withBundleIdentifier: "local.macdown.modern").first)
     let bundle = try XCTUnwrap(running.bundleURL)
@@ -126,6 +136,25 @@ final class CommandLineTests: XCTestCase {
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("new.md")), Data())
     // After the first filename --help is a literal filename, as in the original CLI.
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("--help")), Data())
+    for name in ["new.md", "--help"] {
+      XCTAssertTrue(app.windows[name].firstMatch.waitForExistence(timeout: 8), app.debugDescription)
+    }
+    // These independent windows overlap exactly. Clicking the background editor's
+    // coordinates reaches the front document; select its native Window menu item.
+    let pipedWindow = try XCTUnwrap(
+      app.windows.allElementsBoundByIndex.first { window in
+        window.textViews.matching(
+          NSPredicate(format: "identifier == 'markdownSourceEditor' AND value == %@", pipedText)
+        ).firstMatch.exists
+      })
+    let windowMenu = app.menuBars.menuBarItems["Window"]
+    windowMenu.click()
+    let pipedItem = windowMenu.menuItems[pipedWindow.label].firstMatch
+    XCTAssertTrue(pipedItem.waitForExistence(timeout: 5), app.debugDescription)
+    pipedItem.click()
+    XCTAssertEqual(
+      app.windows.firstMatch.textViews["markdownSourceEditor"].firstMatch.value as? String,
+      pipedText, app.debugDescription)
     source(pipedText).click()
     app.typeKey("s", modifierFlags: .command)
     XCTAssertTrue(app.buttons["OKButton"].firstMatch.waitForExistence(timeout: 5))

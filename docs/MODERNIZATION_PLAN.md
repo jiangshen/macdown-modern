@@ -2,8 +2,8 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **400 package tests / 85 suites, all 652 published
-CommonMark examples and eight arm64 test executables pass** at `3b68499`, with
+Current accepted core baseline: **417 package tests / 87 suites, all 652 published
+CommonMark examples and eight arm64 test executables pass** at `36230c1`, with
 zero compiler errors/warnings.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -3605,3 +3605,22 @@ namespace, retaining Xcode UI input/signal and existing native scripting rules.
 Both generated test entitlement dictionaries are checked; the shipped app/helper
 permissions are unchanged. Focused actual-app retry remains required. No delivery,
 Save/cold launch, physical composition or full-goal acceptance is claimed.
+
+The complete `36230c1` core gate passes 417 tests /87 suites, all 652 CommonMark
+examples and eight arm64 executables, with zero compiler warnings/errors. The scoped
+runner CLI followup42621191612 and automatic full42621125150 are running at8b1b28f;
+no packaged CLI acceptance yet.
+
+
+## Packaged CLI delivery succeeds; Save-window test correction — 2026-11-09
+
+At `8b1b28f` the scoped runner correction succeeds: warm delivery is acknowledged
+in 0.650 seconds, including the 200 ms producer delay. Pipe/source/reuse and
+original/created byte assertions pass. The method fails at the Save panel check
+in 35.643 seconds. Its full AX hierarchy shows `new.md` still main/focused and
+the piped `Untitled 2` behind exactly overlapping window frames. The test now
+selects the pipe through the native Window menu, checks its front source and
+requires both new file windows. Final screenshot/hierarchy are always captured;
+opt-in file-index/domain/code metadata distinguishes ordinary open errors.
+Original deadlines and byte/launch assertions remain. Save and cold acceptance
+stay pending; no production document behavior is changed by this followup.
