@@ -1,6 +1,10 @@
 import ProjectDescription
 
 let nativeDocumentHost = Environment.snowfolioDocumentHost.getString(default: "swiftui") == "native"
+let temporaryScriptingConsentApproved =
+  nativeDocumentHost
+  && Environment.snowfolioApproveTestAutomation.getString(default: "no") == "yes"
+
 var markdownDocumentType: [String: Plist.Value] = [
   "CFBundleTypeName": "Markdown", "CFBundleTypeRole": "Editor",
   "CFBundleTypeIconFile": "MarkdownDocument", "LSHandlerRank": "Alternate",
@@ -95,7 +99,10 @@ let project = Project(
       settings: .settings(
         base: nativeDocumentHost
           ? [
-            "CODE_SIGN_ENTITLEMENTS": "$(SRCROOT)/UITests/SnowfolioUITests.entitlements"
+            "CODE_SIGN_ENTITLEMENTS": "$(SRCROOT)/UITests/SnowfolioUITests.entitlements",
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": .string(
+              temporaryScriptingConsentApproved
+                ? "$(inherited) TEMPORARY_SCRIPTING_CONSENT_APPROVED" : "$(inherited)"),
           ] : [:])
     ),
   ]

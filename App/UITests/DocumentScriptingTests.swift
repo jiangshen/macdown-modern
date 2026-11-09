@@ -1,5 +1,7 @@
 #if NATIVE_DOCUMENT_HOST
   import AppKit
+  import Carbon
+  import Synchronization
   import XCTest
 
   /// Exercise Snowfolio's public scripting interface in its actual app process.
@@ -15,8 +17,70 @@
         "-htmlSyntaxHighlighting", "NO", "-readingStyleSelection", "snowfolio",
       ]
       app.launch()
+      #if TEMPORARY_SCRIPTING_CONSENT_APPROVED
+        approveTemporaryAutomationConsent(in: app)
+      #endif
       return app
     }
+
+    #if TEMPORARY_SCRIPTING_CONSENT_APPROVED
+      private final class PermissionResult: Sendable {
+        let status = Mutex<OSStatus?>(nil)
+      }
+
+      @MainActor
+      private func approveTemporaryAutomationConsent(in app: XCUIApplication) {
+        // The user authorized this exact prompt on disposable test machines.
+        // This build flag is supplied only by the temporary hosted test scopes.
+        let monitor = addUIInterruptionMonitor(withDescription: "Snowfolio test automation consent")
+        {
+          alert in
+          let text =
+            alert.label + " "
+            + alert.staticTexts.allElementsBoundByIndex.map {
+              $0.label + " " + ($0.value as? String ?? "")
+            }.joined(separator: " ")
+          guard text.contains("SnowfolioUITests-Runner"),
+            text.contains("“Snowfolio”") || text.contains("\"Snowfolio\""),
+            alert.buttons["Allow"].exists
+          else { return false }
+          alert.buttons["Allow"].click()
+          return true
+        }
+        defer { removeUIInterruptionMonitor(monitor) }
+        let permission = PermissionResult()
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        // Apple's synchronous permission API explicitly requires a background
+        // thread. Keep the test's main thread available for the native prompt.
+        queue.addOperation { @Sendable in
+          let address = NSAppleEventDescriptor(bundleIdentifier: "local.macdown.modern")
+          let status = AEDeterminePermissionToAutomateTarget(
+            address.aeDesc, AEEventClass(kAECoreSuite), AEEventID(kAEGetData), true)
+          permission.status.withLock { $0 = status }
+        }
+        let render = app.buttons["Render"].firstMatch
+        XCTAssertTrue(render.waitForExistence(timeout: 8))
+        let finished = XCTNSPredicateExpectation(
+          predicate: NSPredicate { _, _ in
+            if permission.status.withLock({ $0 != nil }) { return true }
+            // A normal app interaction lets XCTest invoke the interruption
+            // monitor. Only the exact sender/target prompt above is accepted.
+            render.click()
+            return permission.status.withLock { $0 != nil }
+          }, object: nil)
+        let outcome = XCTWaiter().wait(for: [finished], timeout: 35)
+        let status = permission.status.withLock { $0 }
+        let record = XCTAttachment(
+          string:
+            "temporaryOwnAppPermission=\(String(describing: status)) outcome=\(outcome.rawValue)")
+        record.name = "native-script-consent-result"
+        record.lifetime = .keepAlways
+        add(record)
+        XCTAssertEqual(outcome, .completed)
+        XCTAssertEqual(status, OSStatus(noErr))
+      }
+    #endif
 
     private func escaped(_ value: String) -> String {
       value.replacingOccurrences(of: "\\", with: "\\\\")

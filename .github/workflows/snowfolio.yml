@@ -101,7 +101,7 @@ jobs:
           SNOWFOLIO_TEST_SCOPE: ${{ inputs.native_test_scope || 'all' }}
         run: |
           if [ "$SNOWFOLIO_TEST_SCOPE" = native-document-app ]; then
-            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test
+            TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-tab-creation ]; then
             bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testNewTabsUseKeyboardAndNativePlusWithoutReusingEmptyDocuments
@@ -110,7 +110,7 @@ jobs:
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testPeriodicDirtyConflictRevertKeepsExternalSource \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testNativeVersionsBrowseAndRestoreExactPreviousBytes
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
-            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+            TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentScriptingTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-tabs ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \

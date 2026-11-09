@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T03:53:49.080684+00:00",
+  "dateUTC": "2026-11-09T04:16:43.230848+00:00",
   "milestone": "M2 actual native document conflicts and Versions; full modernization active",
-  "status": "Actual native app31UI methods compile. New periodic-conflict/Revert and native Versions browser/Restore acceptance cases have no runtime evidence yet. No production source/policy change.",
+  "status": "Initial990ec40actual recovery2exec0pass2fail. Native periodic conflict surface/data preservation and native Versions history/browser are proven. Observed UI selection mistakes corrected; full recovery choices/restoration remain pending retry.",
   "methods": [
     "DocumentLifecycleTests.testPeriodicDirtyConflictRevertKeepsExternalSource",
     "DocumentLifecycleTests.testNativeVersionsBrowseAndRestoreExactPreviousBytes"
@@ -24,10 +24,27 @@
     "Hosted actual recovery2run and image/tree/file-byte inspection",
     "SaveAnyway/SaveAs and full standard-periodic conflict recoverability",
     "Complete Versions read-only/selection/accessibility and restoration parity",
-    "Pending separate AppleScript OSconsent choice; no grant or dependent retry without explicitreply",
+    "Separate AppleScript OSconsent explicitly authorized for temporary own-app tests; actual event retry remains required",
     "Physical preview/selection/IME/VoiceOver and full remaining M3-M6gates"
   ],
   "sourceHashes": {
-    "App/UITests/DocumentLifecycleTests.swift": "9ba99638a47d2a66796cc1cb6b3f362e66821554568fe15785a25ddc94379243"
+    "App/UITests/DocumentLifecycleTests.swift": "3b906546cc105493dab52dcf1e7db85ec073b90e7f3878ac0aa2a009d0a94555"
+  },
+  "initialHosted": {
+    "commit": "990ec4088d19d446b74c5ff07abc014989546b27",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42559080541",
+    "executed": 2,
+    "passed": 0,
+    "failed": 2,
+    "seconds": 95.949,
+    "compact": "/private/tmp/snowfolio-validation-history/native-recovery-990ec40",
+    "periodic": "Surface arrives2.098296s after uncoordinated external write with local source and external bytes retained. Inspected native cannot-be-autosaved sheet explicitly offersSaveAs/Revert/SaveAnyway and says Revert preserves local changes asversion. App-wide Revert query picked TouchBar control; native sheet button was never clicked.",
+    "versions": "Native Save creates2history entries; exactoriginal bytes readable. Native Versions UI opens, Restore is enabled, but selected saved pane is Versiontwo (same ascurrent) in bothAX andimage. Test restores that selected newer entry then wrongly expectsVersionone. No production restore failure established.",
+    "imagesInspected": 3
+  },
+  "correction": {
+    "revert": "Scope Revert to actual native sheet, excluding TouchBar. Retain all prior source/disk/assertions; additionally require exact unsaved local UTF16bytes recoverable in native history after Revert.",
+    "versions": "Scope controls to observed NSVersionBrowsingControls window; adjust actual public native timeline slider to oldest entry, require original text visible in past pane before clickingRestore. Preserve final exact bytes/newer recovery assertions.",
+    "local": "Both hosts compile with native31/default27UI methods and resource/icon/type/license/dictionary gates; canonicaldefaultrestored. Strict changed-Swift lint/diff checks pass. No production document or autosave policy changed."
   }
 }

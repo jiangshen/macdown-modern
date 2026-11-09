@@ -56,5 +56,11 @@
     "visual": "Inspected screenshot: saved anchor plus3created tabs, correct selected anchor source and outline. Preview capture blank remains independent open issue.",
     "image": "/private/tmp/snowfolio-validation-history/default-tabs-dfdad63/images/613D4EBA-A981-441D-B31B-B5AEA86A2945.png"
   },
-  "fullRunCaution": "dfdad63full27still fails new-tab setup at line1611 after explicit ShowTabBar, while its focused1/1passed. Three lifecycle failures persist. Focused acceptance does not establish full-run fixture reliability. Collect currentfull AXtree/screenshot before another fix; possible open/active-window ordering is a hypothesis only."
+  "fullRunCaution": "dfdad63full27still fails new-tab setup at line1611 after explicit ShowTabBar, while its focused1/1passed. Three lifecycle failures persist. Focused acceptance does not establish full-run fixture reliability. Collect currentfull AXtree/screenshot before another fix; possible open/active-window ordering is a hypothesis only.",
+  "fullRunInspection": {
+    "compact": "/private/tmp/snowfolio-validation-history/default-full-dfdad63-tab",
+    "finding": "Actual anchor window/source correct, no tab bar. AXShowTabBar lives under View in SwiftUI host. Test openedWindow, then XCTest auto-navigated toView and onlyhoveredShowTabBar; item remainsShowTabBar in failuretree. Existing native host puts this item underWindow.",
+    "correction": "Choose observed ancestor perhost and scope query to that exact menu; wait for loaded anchor contents before setup. All actual creation/content/Undo/file-byte assertions remain. Source compiles, focused/full retry pending.",
+    "causeLimit": "Cross-menu test navigation mistake proven from actions/tree; focused/full retry must establish reliability. No production tab policy change."
+  }
 }

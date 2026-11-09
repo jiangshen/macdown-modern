@@ -113,7 +113,9 @@ scripting2/2fails on first Apple event with-600; a missing required scoped sende
 entitlement is identified and corrected only for native UI tests, with sandbox
 retained. The corrected retry times out2/2behind an inspected macOS prompt
 asking whether the test runner may control Snowfolio; both app processes are
-alive. Explicit user authorization for that disposable-machine consent is pending.
+alive. The user explicitly authorizes allowing that exact temporary own-app prompt.
+A public UI monitor/background permission preflight now compiles only under an
+explicit temporary-test flag; actual event retry remains pending.
 No real scripting functional acceptance or privacy grant is claimed. Both hosts
 build and the full373/80local regression passes. See
 [default-host-followup.json](validation/default-host-followup.json) and
@@ -127,6 +129,15 @@ dirty conflict/Revert and native Versions history/browser/Restore, including exa
 Unicode encoding bytes and recoverable newer history. They use native UI/actions,
 no injected versions or added writer/autosave policy. Runtime is pending;31native
 UI methods compile. See [native-recovery.json](validation/native-recovery.json).
+Initial recovery2/2fails expose two test selection mistakes: standard periodic
+autosave surfaces the native conflict in2.10seconds with both versions retained,
+but an app-wide Revert query hits TouchBar; Versions records2entries and opens,
+but the test restores the selected newer entry. Native sheet/timeline selection
+is now explicit, with original-preview and recoverable-local assertions. Runtime
+retry is pending; no production document policy change is justified by these
+findings. Full default tab setup also now uses its observed View menu ancestor
+(native host usesWindow), with loaded-anchor readiness; focused/full confirmation
+remains required.
 No default-host switch, installation or release is accepted. M2's remaining host gates,
 native separate-group/scroll restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
 and release gates remain open. See

@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T03:43:49.388543+00:00",
+  "dateUTC": "2026-11-09T04:16:43.230848+00:00",
   "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
-  "status": "Native source/cache implementation373/80passes. Corrected sender run dfdad632/2times out because the macOS automation-consent prompt remains unanswered, proven by both screenshots and live target metadata. Real Apple-event functional acceptance pending explicit authorization; no production scripting correctness inferred from these failures.",
+  "status": "User explicitly authorized Allow for temporary tests. Public UI interruption monitor and background Apple-event permission preflight compile only in explicit temporary native test builds; actual authorized event retry pending.373/80production baseline remains accepted; no real scripting event acceptance yet.",
   "interface": {
     "dictionary": "App/Resources/Snowfolio.sdef",
     "nativeClass": "SnowfolioNativeDocument",
@@ -61,7 +61,7 @@
     }
   },
   "remaining": [
-    "User authorization for temporary own-app automation consent, then actual real-event tests; no automatic approval before reply.",
+    "Run the now-authorized temporary own-app consent and actual event checks; inspect exact granted status and all source/cache/bytes/format results.",
     "Actual Apple-event execution and permissions in hosted native-scripting scope",
     "Make with data semantics, script object indexing/window references and complete standard command/options parity",
     "Error paths/read-only/current composition behavior via real Apple events",
@@ -73,8 +73,8 @@
     "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownDocument.swift": "891c78bb3589a22ed6e588676206c4611714a1eb60fadaa1891517cf99021f57",
     "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspace.swift": "665b24ec7470a60d34f04c7fb6272d1a7de38de7f6a0187c42ef83ee3581f8dc",
     "App/Resources/Snowfolio.sdef": "aeb4003af0f3beace7d522340765912b3ddd0524c925952a9e7166fa11b753c8",
-    "App/Project.swift": "82be0c189c0c9060866d5b821b605c88c4984d48837169b8077ea497077aedf4",
-    "App/UITests/DocumentScriptingTests.swift": "39ada1c9142a6f3efdd3f01c25502e3590dd5f0bcb6bf914c16886fbfea036f5",
+    "App/Project.swift": "049b368e4f9b3042cde9f8996ae2dd786b8592d9381cad464542938fa0ef3ba9",
+    "App/UITests/DocumentScriptingTests.swift": "502b6d6427014a85d2608f77a0b2cd6f191c87073c8c8804feaf0b7d9cf5f817",
     "App/UITests/SnowfolioUITests.entitlements": "cd1bd74fd4fe576fee9717916562ce1da5363cfb8b05202159d035f4fecad733"
   },
   "initialHosted": {
@@ -112,11 +112,19 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-scripting-dfdad63",
     "failure": "-1712AppleEvent timed out after waiting for normal macOS automation consent. Both target PIDs finishedLaunching=true/terminated=false. Both inspected images show SnowfolioUITests-Runner wants access to control Snowfolio with Allow/DontAllow. Open fixture reaches actual native source window in the second method, then the text query waits at consent.",
     "permissionScope": "Disposable hosted test machine; test sender entitlement limited to local.macdown.modern. Request explicit user authorization before any test approves the visible OS prompt. No TCC database edits, reset/grant command, sandbox removal or broad-target exception.",
-    "approval": "Async user choice requested for this exact temporary-machine/own-app prompt; pending. Do not execute dependent grant/retry before reply.",
+    "approval": "Explicit user reply: Allow for the temporary tests. Authorization persists for the exact own-app Snowfolio control prompt on disposable test machines; no further permission question is needed for that scope.",
     "screenshots": [
       "/private/tmp/snowfolio-validation-history/native-scripting-dfdad63/images/089FE52A-CF91-46EC-8BA6-9B2C3B6A4A38.png",
       "/private/tmp/snowfolio-validation-history/native-scripting-dfdad63/images/5878CBE3-DF93-4AE7-AA7B-AE942B58ADD8.png"
     ],
     "functionalLimit": "Source setter/HTML/save/make/close/quit event assertions are still unaccepted. Initial error to timeout transition establishes corrected sender reaches permission flow; not full command behavior."
+  },
+  "temporaryConsentImplementation": {
+    "authorization": "Allow for the temporary tests",
+    "buildFlag": "TEMPORARY_SCRIPTING_CONSENT_APPROVED only on native UI test target when TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes; hosted native-document-scripting/native-document-app scopes opt in.",
+    "mechanism": "Thread-safe public AEDeterminePermissionToAutomateTarget executes on a dedicated OperationQueue, as Apple header requires off-main. Mutex transfers only OSStatus. Test main thread remains available for XCTest interruption monitor and normal startup Render interaction.",
+    "guard": "Monitor requires SnowfolioUITests-Runner sender and explicitly quoted Snowfolio target plus Allow button; other prompts returnfalse. No database edits, system-wide grants, private entitlement or production handler.",
+    "boundaryEvidence": "Build with explicit flag passes native31UI methods and all gates; binary marker present in UI test executable, absent from production app and debug dylib. Canonical default build restored/flag excluded. Actual prompt grant/event behavior pending.",
+    "scopeLimit": "Normal local builds never auto-approve prompts; this permission handling belongs only to the explicit temporary tests."
   }
 }

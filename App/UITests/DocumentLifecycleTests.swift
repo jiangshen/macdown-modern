@@ -1587,7 +1587,10 @@ final class DocumentLifecycleTests: XCTestCase {
     try bytes.write(to: file)
     let app = launch(arguments: ["-preferDocumentTabs", "YES"])
     defer { app.terminate() }
-    _ = openDocument(file, in: app)
+    let opened = openDocument(file, in: app)
+    let loaded = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in opened.value as? String == source }, object: nil)
+    XCTAssertEqual(XCTWaiter().wait(for: [loaded], timeout: 8), .completed)
     defer {
       let tree = XCTAttachment(string: app.debugDescription)
       tree.name = "native-new-tabs-tree"
@@ -1602,8 +1605,13 @@ final class DocumentLifecycleTests: XCTestCase {
     // The current SwiftUI host can start with only this saved document, so the
     // native tab bar is normally hidden. Show it before counting/creating tabs.
     if !tabBar.exists {
-      app.menuBars.menuBarItems["Window"].click()
-      let show = app.menuItems["Show Tab Bar"].firstMatch
+      #if NATIVE_DOCUMENT_HOST
+        let menu = app.menuBars.menuBarItems["Window"]
+      #else
+        let menu = app.menuBars.menuBarItems["View"]
+      #endif
+      menu.click()
+      let show = menu.menuItems["Show Tab Bar"].firstMatch
       XCTAssertTrue(show.waitForExistence(timeout: 5), app.debugDescription)
       XCTAssertTrue(show.isEnabled)
       show.click()
@@ -1739,7 +1747,7 @@ final class DocumentLifecycleTests: XCTestCase {
       XCTAssertEqual(outcome, .completed)
       XCTAssertEqual(editor.value as? String, local)
       XCTAssertEqual(try Data(contentsOf: file), externalBytes)
-      let revert = app.buttons["Revert"].firstMatch
+      let revert = app.sheets.firstMatch.buttons["Revert"].firstMatch
       XCTAssertTrue(revert.waitForExistence(timeout: 5), app.debugDescription)
       revert.click()
       let restored = XCTNSPredicateExpectation(
@@ -1750,6 +1758,16 @@ final class DocumentLifecycleTests: XCTestCase {
         }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [restored], timeout: 8), .completed)
       attachRecoveryState("native-periodic-conflict-reverted", app: app)
+      let localBytes =
+        Data([0xFF, 0xFE])
+        + (try XCTUnwrap(local.data(using: .utf16LittleEndian)))
+      let preservedLocal = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          (NSFileVersion.otherVersionsOfItem(at: file) ?? []).contains {
+            (try? Data(contentsOf: $0.url)) == localBytes
+          }
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [preservedLocal], timeout: 8), .completed)
       // The new read must also become the document's byte-preserving save baseline.
       editor.click()
       app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
@@ -1806,7 +1824,8 @@ final class DocumentLifecycleTests: XCTestCase {
       XCTAssertTrue(browse.waitForExistence(timeout: 5), app.debugDescription)
       XCTAssertTrue(browse.isEnabled)
       browse.click()
-      let restore = app.buttons["Restore"].firstMatch
+      let browser = app.windows["NSVersionBrowsingControls"]
+      let restore = browser.buttons["Restore"].firstMatch
       let browserReady = restore.waitForExistence(timeout: 12)
       attachRecoveryState(
         "native-versions-before-restore", app: app,
@@ -1815,6 +1834,19 @@ final class DocumentLifecycleTests: XCTestCase {
       )
       XCTAssertEqual(historyOutcome, .completed)
       XCTAssertTrue(browserReady, app.debugDescription)
+      let timeline = browser.sliders.firstMatch
+      XCTAssertTrue(timeline.exists, app.debugDescription)
+      // The initial browser selected the newest saved copy (Version two).
+      // Select the oldest entry through its actual native timeline first.
+      timeline.adjust(toNormalizedSliderPosition: 1)
+      let originalPreview = app.textViews.matching(identifier: "markdownSourceEditor").matching(
+        NSPredicate(format: "value == %@", original)
+      ).firstMatch
+      let selectedOriginal = originalPreview.waitForExistence(timeout: 8)
+      attachRecoveryState(
+        "native-versions-original-selected", app: app,
+        note: "originalPreview=\(selectedOriginal) timeline=\(String(describing: timeline.value))")
+      XCTAssertTrue(selectedOriginal, app.debugDescription)
       XCTAssertTrue(restore.isEnabled)
       restore.click()
       let confirm = app.sheets.buttons["Restore"].firstMatch

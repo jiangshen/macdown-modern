@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-09T03:43:49.388543+00:00",
-    "sourceCommit": "dfdad63native scripting source and testsender/defaulttabfixture cycle",
+    "dateUTC": "2026-11-09T04:16:43.230848+00:00",
+    "sourceCommit": "After990ec40; scoped recovery/menu corrections and authorized temporary scripting consent",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 856621056
+        "allocatedBytes": 861208576
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -61,17 +61,17 @@
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 34476032
+        "allocatedBytes": 37928960
       }
     },
-    "totalAllocatedBytes": 2333069312,
+    "totalAllocatedBytes": 2341109760,
     "obsoleteRawDownloadsRemoved": [
       "fb4actual native app25replaced byae2actual26",
       "466failed preview control raw after compact summary/activity/text/log capture",
       "03bf0a7 passing paint comparison:147738624allocated bytes; compact4images/geometry/tests retained"
     ],
     "runningDiagnosticPID": 85540,
-    "retention": "Single full actualnativeae2d60226/26raw retained. Scripting firstfailure, consent-prompt retry and default-tabpass retain compact summary/tests/timelines/buildlog and relevant PNGs only. Canonicaldefaultbuild and running85540diagnostic preserved.",
+    "retention": "One full actualnativeae2d60226/26raw retained. Current full defaulttabfailure/recovery2keep compact summaries/tests/activities/trees and3relevant recovery PNGs. Reused current caches; canonicaldefault restored; running85540diagnostic preserved.",
     "userDocumentsChanged": false,
     "trashEmptied": false,
     "currentDownloadsCompactedAndRemoved": [
@@ -102,6 +102,18 @@
         "allocatedBytesRemoved": 123625472,
         "kept": "Summary/tests/timelines/build log with signed sender entitlements; no useful screenshot attachments",
         "fullActual26RawPreserved": true
+      }
+    ],
+    "latestRecoveryDownloadsRemoved": [
+      {
+        "path": "/private/tmp/snowfolio-default-full-current-incoming",
+        "allocatedBytesRemoved": 182960128,
+        "kept": "/private/tmp/snowfolio-validation-history/default-full-dfdad63-tab"
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-recovery-incoming",
+        "allocatedBytesRemoved": 132628480,
+        "kept": "/private/tmp/snowfolio-validation-history/native-recovery-990ec40"
       }
     ]
   }
