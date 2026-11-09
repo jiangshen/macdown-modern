@@ -2,7 +2,7 @@
   "dateUTC": "2026-11-09T02:03:56.362145+00:00",
   "milestone": "M2/M3native preview painting investigation; full modernization remains active",
   "productionBaseCommit": "ae2d602ace84cf0f9c6c561772497e735bbcc88f",
-  "status": "Ten-method diagnostic builds; new comparison not yet executed. Production app code unchanged by this increment.",
+  "status": "Initial466ca0d hosted10executes9document passes and one comparison window-creation failure. Native control constraint ordering corrected and rebuilt; retry pending.",
   "problem": "Reading pane blank in inspected hosted diagnostic and actual-app window screenshots despite correct preview accessibility updates. Earlier IOSurface failures known but root cause unconfirmed. AXWebView coordinates differ from its native parent; geometry/paint/capture need separation.",
   "comparison": [
     "Plain WKWebView in direct AppKit stack: nonpersistent data store, document JavaScript disabled, self-contained styled HTML",
@@ -25,7 +25,8 @@
     "defaultApp": "Build-for-testing/resource/icon/type/license checks pass; canonical default host restored; existing AppIntents metadata extraction warning",
     "defaultLog": "/private/tmp/snowfolio-validation-history/webkit-paint-controls/snowfolio-default-after-webkit-paint-build.log",
     "sourceFormat": "Strict changed-Swift lint, shell syntax and diff check pass",
-    "core": "No production source change since370/79full suite/8arm64 inspection at ae2d602; no redundant package rerun"
+    "core": "No production source change since370/79full suite/8arm64 inspection at ae2d602; no redundant package rerun",
+    "correctedBuild": "Helper native-workspace build-for-testing passes after one-line layout correction; default app build restored and passes gates."
   },
   "remaining": [
     "Hosted ten-method run and screenshot/native geometry inspection",
@@ -34,9 +35,21 @@
     "Actual preview painting and complete native restoration/IME/VoiceOver/remaining modernization/performance/release gates"
   ],
   "sourceHashes": {
-    "Tools/DocumentHostProbe/Sources/NativeWebKitPaintControl.swift": "9e41bf417674996f3a02fb38b5d0c3b3da481ba3319eb50cc1bc1959bb7373b5",
+    "Tools/DocumentHostProbe/Sources/NativeWebKitPaintControl.swift": "06a86d295723c09779dc70779ce895dfc7816ce6dbe520ac8cfa8d71b65b6028",
     "Tools/DocumentHostProbe/Sources/NativeDocumentHost.swift": "7c3bb25a4d3bfab999bfe6df4912e24c849999275e99eede1dcec32350b5753a",
     "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "789c1f21a07d024e99271a8c3038877f4ffd81921de6525b262d5057b1cf2565",
     "Tools/probe-document-host.sh": "ba98d4fd448786cf476adea56f7bc4871869d9218839bfdf638db93637ba93b9"
-  }
+  },
+  "initialHosted": {
+    "commit": "466ca0d1b21058f593c19f6bd58f2fe9d7b76fd1",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42549025749",
+    "executed": 10,
+    "passed": 9,
+    "failed": 1,
+    "seconds": 284.893,
+    "failure": "Control window not found within8seconds at line355; no paint comparison reached.",
+    "productionRegression": "All nine document methods still pass.",
+    "compact": "/private/tmp/snowfolio-validation-history/webkit-paint-controls-466ca0d"
+  },
+  "layoutCorrection": "Source inspection found a parent/child constraint activated before column was added to columns; move addArrangedSubview before activation. No wait/assertion or production rendering change. Runtime retry must confirm window creation; first failure does not establish any WebKit paint cause."
 }

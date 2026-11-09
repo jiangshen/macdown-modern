@@ -1,0 +1,54 @@
+{
+  "dateUTC": "2026-11-09T02:21:41.058600+00:00",
+  "status": "Legacy source contract characterized; modern scripting implementation/actual event execution pending. No AppleScript was used for desktop automation.",
+  "sourceHashes": {
+    "MacDown/Resources/MacDown.sdef": "ab69d02e62f9d858faee5cc8cad72f1cc91e12279420416508d3368917717681",
+    "MacDown/Code/Document/MPDocument.m": "f43f793c319f27f090c5a45a09636ff908a418d215ab521881b64101f8bd9bd0",
+    "MacDown/Code/Document/MPRenderer.m": "d5b8c38fc7fac5163c7c0aed2bed6e31ac537313e56ec373f20846a970b9d901"
+  },
+  "legacyDictionary": {
+    "suiteCode": "mcdn",
+    "documentCode": "docu",
+    "text": {
+      "eventCode": "text",
+      "access": "read/write",
+      "cocoaKey": "markdown"
+    },
+    "html": {
+      "eventCode": "rndd",
+      "access": "read only",
+      "cocoaKey": "html"
+    },
+    "nativeMetadata": [
+      "name/displayName",
+      "modified/isDocumentEdited",
+      "file/fileURL"
+    ],
+    "standardCommands": [
+      "open",
+      "close with saving option/file",
+      "save in/as",
+      "quit with saving option",
+      "make new document with properties/data"
+    ],
+    "formatCodes": {
+      "Markdown": "md  /net.daringfireball.markdown",
+      "Text": "txt /public.text",
+      "Data": "data/public.data"
+    }
+  },
+  "legacySource": {
+    "markdown": "MPDocument.m264-271 reads/writes editor.string directly. Source does not establish safe native dirty/Undo/autosave for that setter.",
+    "html": "MPDocument.m274-276 returns renderer.currentHtml; getter does not trigger/wait for a render.",
+    "initialHTML": "MPRenderer.m344-350 initializes currentHtml to empty string.",
+    "renderCache": "MPRenderer.m606 assigns generated HTML; scripts read latest cached fragment, consistent with manual-render behavior."
+  },
+  "modernGap": "Current App/Project.swift has no scripting-definition/AppleScript-enabled registration, and NativeMarkdownDocument has no markdown/html Objective-C scripting proxies. Native backend choice remains gated on scripting/Versions and remaining requirements.",
+  "implementationRequirements": [
+    "Keep compatible property/standard command event codes while using Snowfolio branding/class names",
+    "Route script source changes through native document/model Undo ownership and byte-preserving saves; do not reproduce setter dirty-state bypass",
+    "Expose latest successful rendered HTML cache, initially empty, without blocking/spinning or silently changing cached getter to force-fresh behavior",
+    "Verify actual Cocoa script object specifiers, metadata, creation/open/close/save/format aliases, text read/write/Undo/autosave and cached HTML/manual rendering",
+    "Validate script events in an isolated owned-fixture app/test workflow; no unrelated app control or user data changes"
+  ]
+}

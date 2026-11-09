@@ -59,8 +59,8 @@
         column.spacing = 8
         view.widthAnchor.constraint(equalTo: column.widthAnchor).isActive = true
         view.heightAnchor.constraint(greaterThanOrEqualToConstant: 320).isActive = true
-        column.heightAnchor.constraint(equalTo: columns.heightAnchor).isActive = true
         columns.addArrangedSubview(column)
+        column.heightAnchor.constraint(equalTo: columns.heightAnchor).isActive = true
       }
       captureButton.target = self
       captureButton.action = #selector(capture)

@@ -875,7 +875,7 @@
   "nativeCleanReloadFollowup": {
     "dateUTC": "2026-11-09T01:42:26.660380+00:00",
     "baseCommit": "22b65b2",
-    "status": "Exact ae2d602 hosted nine-method diagnostic passes; actual native app26run remains live at42547088589. Full goal incomplete; default host unchanged.",
+    "status": "Exact ae2d602 native9/9and actual native app26/26pass. Native fallback/runtime slice accepted; full modern app remains incomplete and default host unchanged.",
     "evidenceDrivenChange": "A new local regression receives directory/presenter notifications after atomic replacement but records only one native read; model and outgoing bytes stay old. URL-cache invalidation does not fix it and was removed.",
     "implementation": [
       "After the native presenter notification, enqueue a MainActor clean-file check under native activity and asynchronous file-access serialization",
@@ -909,10 +909,10 @@
     },
     "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta\u2192ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
     "limits": [
-      "Nine diagnostic methods pass on exact ae2d602; actual native app26confirmation pending.",
+      "Exact ae2d602 nine diagnostic methods and all26actual native app methods pass; remaining feature/visual gates stay open.",
       "File byte comparison/native revert are synchronous within native file access; real app latency/large-file performance remains an open M6gate",
       "Preview painting remains blank in both diagnostic and actual app screenshots; AXsuccess is not paint acceptance",
-      "Native tab/group restoration, standard-periodic dirty conflicts/user-choice resolution/Versions, AppleScript gates, real IME/VoiceOver and remaining parity/release gates remain open"
+      "Native tab creation/separate-group/scroll restoration, standard-periodic dirty conflicts/user-choice resolution/Versions, AppleScript gates, real IME/VoiceOver and remaining parity/release gates remain open"
     ],
     "appleReferences": [
       "https://developer.apple.com/documentation/appkit/nsdocument/revert(tocontentsof:oftype:)",
@@ -953,5 +953,20 @@
       "compact": "/private/tmp/snowfolio-validation-history/full-workspace-ae2d602",
       "summarySHA256": "0105159a40e3a1fb62e8124be24370d6ddc90e3558e7f16e4e7b011ee8abcec3"
     }
+  },
+  "actualNativeApplicationHostedLatest": {
+    "commit": "ae2d602ace84cf0f9c6c561772497e735bbcc88f",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42547088589",
+    "executed": 26,
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1167.952,
+    "runtimeWarningCount": 43,
+    "scope": "All26existing actual-app UI methods, including uncoordinated/coordinated encoded reload, active autosave/saved-edit Undo, cancel close, single-document restoration, saved native tab group/selected file/caret and independent Undo.",
+    "visual": "Inspected before-quit Beta and restored Alpha tab screenshots: expected three native tabs including normal empty Untitled, correct authored source/outline/toolbar. Reading pane remains blank; painting and caret-style acceptance are not established by this pass.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-actual-app-ae2d602",
+    "summarySHA256": "f6b2d408a79121988e56d3dbaea619424889cd928c80cfa59d14b9ff2b4f5175",
+    "remaining": "Native plus/CommandT creation, multiple separate groups/scroll restoration, standard-periodic dirty conflict choices/Versions/AppleScript, physical paint/IME/VoiceOver, remaining parity/performance/release gates."
   }
 }

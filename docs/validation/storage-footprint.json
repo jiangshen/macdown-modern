@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-09T02:03:56.362145+00:00",
-    "sourceCommit": "Afterae2d602; isolated direct-WebKit painting controls",
+    "dateUTC": "2026-11-09T02:21:41.058600+00:00",
+    "sourceCommit": "After466ca0d; accepted native26and preview control layout correction",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 851148800
+        "allocatedBytes": 853307392
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -57,19 +57,20 @@
       },
       "currentRawResult": {
         "path": "/private/tmp/snowfolio-current-native-result",
-        "allocatedBytes": 168079360
+        "allocatedBytes": 176132096
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 24477696
+        "allocatedBytes": 27521024
       }
     },
-    "totalAllocatedBytes": 2308280320,
+    "totalAllocatedBytes": 2321534976,
     "obsoleteRawDownloadsRemoved": [
-      "ae2d602nine-method incoming after compact9/9summary/text/images/log capture"
+      "fb4actual native app25replaced byae2actual26",
+      "466failed preview control raw after compact summary/activity/text/log capture"
     ],
     "runningDiagnosticPID": 85540,
-    "retention": "One full actual-native-app fb4raw for unresolved full-app paint; compact new passing9diagnostic. Replace current raw after current ae2d26actual-app result is inspected. Reused app/core caches; default restored;85540cache preserved.",
+    "retention": "One full actual native app ae2d26/26raw; compact passing9and failed10control evidence. Reused current caches/default restored; running85540app/cache preserved.",
     "userDocumentsChanged": false,
     "trashEmptied": false
   }

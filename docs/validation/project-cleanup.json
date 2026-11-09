@@ -520,6 +520,28 @@
       "ownershipAndOpenFilesChecked": true,
       "trashEmptied": false,
       "userDocumentsChanged": false
+    },
+    {
+      "dateUTC": "2026-11-09T02:16:41.134363+00:00",
+      "removedRaw": "fb4actual native app25",
+      "allocatedBytesRemoved": 168079360,
+      "retainedRaw": "ae2d602actual native app26/26pass",
+      "currentRawPath": "/private/tmp/snowfolio-current-native-result",
+      "olderCompactEvidence": "/private/tmp/snowfolio-validation-history/native-actual-app-fb4de2b",
+      "newCompactEvidence": "/private/tmp/snowfolio-validation-history/native-actual-app-ae2d602",
+      "ownershipAndOpenFilesChecked": true,
+      "trashEmptied": false,
+      "userDocumentsChanged": false
+    },
+    {
+      "dateUTC": "2026-11-09T02:21:41.058600+00:00",
+      "removedGeneratedRaw": "/private/tmp/snowfolio-webkit-paint-466-incoming",
+      "allocatedBytesRemoved": 141598720,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/webkit-paint-controls-466ca0d",
+      "retainedRaw": "Only full actual native app ae2d60226/26passed",
+      "ownershipAndOpenFilesChecked": true,
+      "trashEmptied": false,
+      "userDocumentsChanged": false
     }
   ]
 }

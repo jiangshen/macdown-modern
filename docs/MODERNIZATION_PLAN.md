@@ -52,7 +52,8 @@ local source and marked composition remain protected. No extra writer or merge p
 is introduced. Native asynchronous file-access callbacks avoid an observed retained
 synchronous-block trap. Exact ae2d602 hosted9confirmation passes all methods with no failures/skips
 (294.067s). Both clean uncoordinated reloads are now accepted in that diagnostic.
-Actual native26confirmation remains pending. The latest inspected reading preview
+Exact ae2d602 actual native26confirmation also passes all methods with no failures/skips
+(1167.952s), including the corrected saved native tab restoration case. The latest inspected reading preview
 is still blank; passing accessibility checks do not accept painting.
 
 The test-only workspace diagnostic now compiles a10th method comparing plain
@@ -67,15 +68,23 @@ The26th saved-tabs method passes in the preceding SwiftUI host. Its initial AppK
 focused run fails before quit because the normal empty startup tab is also present;
 Beta→ControlTab selects Untitled. The corrected fixture selects authored Alpha by
 native tab title, tests ControlTab to adjacent Beta, then keeps selected-tab/caret
-restoration assertions. Both hosts compile it; actual native tab-group restoration
-is still unverified. See [native-tabs.json](validation/native-tabs.json).
+restoration assertions. Both hosts compile it; actual native saved-tab/group/selected-file/caret restoration
+now passes in the full26run. Native plus/CommandT creation, multiple separate groups,
+scroll positions and tab accessibility remain open. See [native-tabs.json](validation/native-tabs.json).
 
 The default SwiftUI full run at22b65b2 executes26 methods:23pass/three lifecycle
 failures (active autosave/Undo and both clean reloads); its core job succeeds.
 `SNOWFOLIO_DOCUMENT_HOST=native` remains explicit and `native-document-app` runs all26
 methods within a45-minute job envelope; behavioral waits/assertions are unchanged.
-No default-host switch, installation or release is accepted. M2, native tab/group
-restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
+The first preview-control run executes10methods:9document passes and one missing
+comparison window. Source inspection found a constraint activated before the views
+shared a parent; the corrected ordering builds, with runtime retry pending. No paint
+cause is established. Legacy scripting text/HTML/metadata/command event contracts are
+now characterized, including initially empty cached HTML that does not force render;
+actual modern scripting registration/execution remains pending in
+[applescript-characterization.json](validation/applescript-characterization.json).
+No default-host switch, installation or release is accepted. M2's remaining host gates,
+native tab creation/separate-group/scroll restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
 and release gates remain open. See
 [document-lifecycle.json](validation/document-lifecycle.json).
 
