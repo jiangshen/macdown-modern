@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-09T01:08:00.730606+00:00",
-    "sourceCommit": "After82e172e; optional native actual app and directory events",
+    "dateUTC": "2026-11-09T01:42:26.660380+00:00",
+    "sourceCommit": "After22b65b2; coordinated native clean reload and tab fixture correction",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 845430784
+        "allocatedBytes": 848257024
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -53,22 +53,26 @@
       },
       "coreCache": {
         "path": "/private/tmp/snowfolio-native-theme-validation/build",
-        "allocatedBytes": 774684672
+        "allocatedBytes": 776773632
       },
       "currentRawResult": {
         "path": "/private/tmp/snowfolio-current-native-result",
-        "allocatedBytes": 90808320
+        "allocatedBytes": 168079360
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 21544960
+        "allocatedBytes": 22937600
       }
     },
-    "totalAllocatedBytes": 2220269568,
-    "obsoleteRawDownloadRemoved": "82incoming rotated to current raw; obsolete748removed",
+    "totalAllocatedBytes": 2303848448,
+    "obsoleteRawDownloadsRemoved": [
+      "82workspace raw",
+      "fb4workspace incoming",
+      "22targeted tabs incoming"
+    ],
     "exportedSystemDiagnosticsRemoved": true,
     "runningDiagnosticPID": 85540,
-    "retention": "One82workspace raw; compact older findings. Reused app/core caches; default host restored; diagnostic cache preserved while85540runs.",
+    "retention": "One full actual-native-app fb4raw; compact older summaries/text/activity logs/screenshots. Reused current app/core caches; default restored; diagnostic85540/cache preserved.",
     "userDocumentsChanged": false,
     "trashEmptied": false
   }

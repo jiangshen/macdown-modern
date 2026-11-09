@@ -3,7 +3,7 @@ import Dispatch
 import Foundation
 
 /// Directory events include atomic replacement by editors that do not coordinate
-/// writes. They only wake the native file presenter; this object never reads or
+/// writes. They notify their native document; this object never reads or
 /// replaces document contents, writes files, or decides whether to discard edits.
 @MainActor
 final class NativeDocumentFileMonitor {

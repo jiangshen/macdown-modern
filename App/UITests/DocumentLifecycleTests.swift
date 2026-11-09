@@ -1529,9 +1529,18 @@ final class DocumentLifecycleTests: XCTestCase {
       expectOriginalBytes()
     }
 
-    // Switching must reveal the other source, and Undo must target only the
-    // selected document. Cycling also proves these are tabs, not two windows.
-    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: .control)
+    func selectTab(_ name: String, showing source: String) -> XCUIElement {
+      let tab = app.tabGroups.firstMatch.descendants(matching: .any).matching(
+        NSPredicate(format: "title == %@", name)
+      ).firstMatch
+      XCTAssertTrue(tab.waitForExistence(timeout: 5), app.debugDescription)
+      tab.click()
+      return activeEditor(showing: source)
+    }
+    // A normal empty startup tab may also exist. Select the authored alpha tab
+    // explicitly, then use Control-Tab to reach its adjacent beta document.
+    // Undo must target only the selected file, regardless of the startup tab.
+    _ = selectTab("tab-alpha.md", showing: alphaSource)
     appendAndUndo("Alpha edit", to: alphaSource)
     XCTAssertEqual(try Data(contentsOf: beta), betaBytes)
     app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: .control)
@@ -1554,8 +1563,7 @@ final class DocumentLifecycleTests: XCTestCase {
     app.typeKey("z", modifierFlags: .command)
     XCTAssertEqual(restored.value as? String, betaSource)
     expectOriginalBytes()
-    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: .control)
-    let restoredAlpha = activeEditor(showing: alphaSource)
+    let restoredAlpha = selectTab("tab-alpha.md", showing: alphaSource)
     app.typeText("Restored alpha")
     XCTAssertEqual(restoredAlpha.value as? String, alphaSource + "Restored alpha")
     app.typeKey("z", modifierFlags: .command)

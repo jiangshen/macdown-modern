@@ -693,7 +693,7 @@
   "nativeCommandIntegration": {
     "dateUTC": "2026-11-09T00:08:12.633637+00:00",
     "baseCommit": "74807c1",
-    "status": "82e172e hosted8:5pass/3fail. Final increment local compile/unit checks pass; hosted9and native actual app25pending.",
+    "status": "fb4de2b hosted9:7pass/2uncoordinated reload failures. Native menu/Settings/CopyHTML and dirty manual-Save conflict pass. New clean-reload fallback has local full acceptance; hosted confirmation pending.",
     "implementation": [
       "Native application menu controller uses public native document/responder actions for New/Open/Save/SaveAs/Duplicate/Versions/Undo/Find/spelling/tabs and window management",
       "Shared SwiftUI format/export/zoom/layout menu views serve both hosts via NSHostingMenu, without duplicating editing or export logic",
@@ -742,23 +742,47 @@
       "copyHTMLCorrection": "Old expected string omitted required data-sourcepos attributes. Actual clipboard not attached; no success claim. New fixture clears clipboard, attaches both observed types and requires exact source-position HTML in string and HTML types.",
       "visual": "Inspected1024x640 window: preview pane blank despite accessible content. Repeated WebContent IOSurface creation/open failures; no painting acceptance or confirmed environmental root cause.",
       "compact": "/private/tmp/snowfolio-validation-history/full-workspace-82e172e"
+    },
+    "hostedLatest": {
+      "commit": "fb4de2bdb8b224aacc2a5045a40803b29f3e53c4",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42543971625",
+      "executed": 9,
+      "passed": 7,
+      "failed": 2,
+      "skipped": 0,
+      "seconds": 306.114,
+      "passedScope": [
+        "Both coordinated reloads",
+        "Full UTF16LE/BOM/CRLF/Unicode staged active autosaves and both Undo/Redo steps",
+        "Shared menus: Bold/Undo, zoom/reset, Print enabled, exact CopyHTML in both clipboard types, Settings open/close/reopen",
+        "Unsaved local edit and external bytes remain intact; manual Save presents native changed-by-another-application sheet with SaveAs/Revert/SaveAnyway",
+        "Native toolbar/window/preview accessibility updates and Undo",
+        "Saved-edit Undo/deactivation persistence"
+      ],
+      "failures": [
+        "Both original uncoordinated clean external replacement cases"
+      ],
+      "conflictLimit": "Only this dirty fixture stages30second delay; standard-periodic dirty conflict, user-choice resolution and Versions acceptance remain open.",
+      "visual": "Conflict screenshot inspected: native changed-file sheet offers three version-preserving choices. Preview screenshot still blank; no painting acceptance.",
+      "compact": "/private/tmp/snowfolio-validation-history/full-workspace-fb4de2b"
     }
   },
   "latestDefaultFullNative": {
-    "commit": "82e172e5de10fb3be7e812aa4e9c0c2f1ed9156d",
-    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42538664521",
-    "executed": 25,
-    "passed": 22,
+    "commit": "22b65b2d7f7b67cb5727ddea6d949857b390bb0f",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42544635029",
+    "executed": 26,
+    "passed": 23,
     "failed": 3,
     "skipped": 0,
-    "seconds": 1156.556,
+    "seconds": 1112.417,
     "failures": [
-      "Active autosave/saved-edit Undo persistence",
-      "Clean uncoordinated external reload",
-      "Clean coordinated external reload"
+      "Active autosave/saved-edit Undo",
+      "Uncoordinated clean reload",
+      "Coordinated clean reload"
     ],
-    "log": "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-82e-full-app-failed.log",
-    "core": "Hosted core job success; no raw default result download this cycle."
+    "tabCase": "New tab restoration case passes with the preceding SwiftUI host; AppKit targeted case fails before quit on the normal extra empty startup tab.",
+    "core": "Core job success",
+    "log": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-default-22b-hosted-failed.log"
   },
   "precedingDefaultFullTimeout": {
     "commit": "74807c13649c4fa700c23ab9af23678565966337",
@@ -771,7 +795,7 @@
   "nativeApplicationAndFileEvents": {
     "dateUTC": "2026-11-09T01:08:00.730606+00:00",
     "baseCommit": "82e172e",
-    "status": "Final-source local focused tests and compile checks pass; hosted9diagnostic/25actual native app pending.",
+    "status": "Superseded by nativeCleanReloadFollowup: wake-up alone does not reread uncoordinated changes; explicit coordinated native clean reversion now locally verified.",
     "application": [
       "SNOWFOLIO_DOCUMENT_HOST=native selects conditional retained AppKit delegate and NSDocumentClass=SnowfolioNativeDocument for both Markdown/plain text",
       "Same bundle identity, icons, resources, UTIs and license checks; SwiftUI remains default",
@@ -819,6 +843,93 @@
       "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-native-file-events-probe-build-report.json": "cc354e0321a99db16fb98a56a87b1f512a374c2d6a09d35558ade3dcdf179cdd",
       "/private/tmp/snowfolio-validation-history/native-file-events/snowfolio-82e-full-app-failed.log": "de8cc25038a420b0999bfd151a7947628764a19f2380c888f603ce225fee5051",
       "/private/tmp/snowfolio-validation-history/full-workspace-82e172e/summary.json": "6993d338c31d77c56ba53b6424ca059cc4d8a2908a4bb14f60ad5260a4e9004a"
+    }
+  },
+  "actualNativeApplicationHosted": {
+    "commit": "fb4de2bdb8b224aacc2a5045a40803b29f3e53c4",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42543974067",
+    "executed": 25,
+    "passed": 24,
+    "failed": 1,
+    "skipped": 0,
+    "seconds": 823.307,
+    "failure": "Uncoordinated clean external reload after encoded autosave. Other24existing app methods pass, including active autosave/Undo, coordinated reload, cancel-close and graceful document/insertion restoration.",
+    "scope": "Existing25UI methods only; does not establish all modernization features, native tab groups, actual IME/VoiceOver or preview painting.",
+    "visual": "Inspected actual-app live-preview and restored-document screenshots: complete window/source/toolbar; reading pane is blank. This also occurs in the full app bundle, so diagnostic-only packaging is insufficient as a root-cause claim. No confirmed environment attribution.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-actual-app-fb4de2b"
+  },
+  "precedingDefaultFullFb4": {
+    "commit": "fb4de2bdb8b224aacc2a5045a40803b29f3e53c4",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42543950631",
+    "executed": 25,
+    "passed": 22,
+    "failed": 3,
+    "seconds": 1027.843,
+    "failures": [
+      "Active autosave/Undo",
+      "Both clean external reloads"
+    ],
+    "core": "Core job success",
+    "log": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-default-fb4-hosted-failed.log"
+  },
+  "nativeCleanReloadFollowup": {
+    "dateUTC": "2026-11-09T01:42:26.660380+00:00",
+    "baseCommit": "22b65b2",
+    "status": "Full local package and both app-host/probe compile gates pass; fresh hosted9and26pending. Default host is not switched.",
+    "evidenceDrivenChange": "A new local regression receives directory/presenter notifications after atomic replacement but records only one native read; model and outgoing bytes stay old. URL-cache invalidation does not fix it and was removed.",
+    "implementation": [
+      "After the native presenter notification, enqueue a MainActor clean-file check under native activity and asynchronous file-access serialization",
+      "Reject closed/moved/unregistered documents, native edited/unautosaved state and attached marked-text editors; recheck after coordination",
+      "NSFileCoordinator(filePresenter:self) grants read access without asking this same document to overwrite the external file",
+      "Compare disk bytes with the current encoded model so own saves/attribute changes do not clear Undo; only differing clean contents invoke documented native revert(toContentsOf:ofType:)",
+      "NSDocument retains decoding, modification date, dirty-count/Undo clearing, coordination and UI error ownership; no additional writer or merge policy",
+      "Complete native file access before presenting errors; every guard/success/error path completes both native callbacks"
+    ],
+    "synchronousAttempt": "Initial synchronous file-access block was retained by AppKit and triggered Swift dynamic noescape enforcement. Use documented escaping asynchronous-file-access callbacks; fresh final full suite passes without traps. No unsafe isolation suppression.",
+    "tests": [
+      "Atomic clean replacement now triggers another native read, loads UTF16LE/BOM/CRLF/combining text, remains clean and exports exact replacement bytes",
+      "Parameterized pending-input test protects both explicitly staged unsaved native state and clean marked composition, without replacing external disk bytes",
+      "Native SaveAs waits for destination watcher processing before proving Undo remains available",
+      "Existing file monitor rebinding/cancellation/sibling filtering, native ownership/Undo/SaveAs and source composition tests remain"
+    ],
+    "testLimits": "Pending-input unit fixture uses documented native change API because it bypasses real editor event/Undo transactions, and restores an isolated-process30-second delay. It does not prove standard-periodic conflicts or real IME; existing actual UI methods independently cover native typing/Undo.",
+    "local": {
+      "packageTests": 370,
+      "suites": 79,
+      "errors": 0,
+      "warnings": 0,
+      "fullReport": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-full-report.json",
+      "arm64Executables": 8,
+      "architectureReport": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-arm64.json",
+      "nativeApp": "Final arm64 app/26compiled UI methods, document class/resource/icon/license gates pass; existing AppIntents extraction warning",
+      "defaultApp": "Final arm64/26compiled methods and all gates pass; canonical cache restored to default host",
+      "probe": "Nine-method diagnostic arm64 build-for-testing;0errors/0warnings",
+      "probeReport": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-probe-build-report.json",
+      "format": "Strict changed Swift lint and diff checks pass"
+    },
+    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta\u2192ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
+    "limits": [
+      "Hosted nine-method and full26actual native app confirmation pending",
+      "File byte comparison/native revert are synchronous within native file access; real app latency/large-file performance remains an open M6gate",
+      "Preview painting remains blank in both diagnostic and actual app screenshots; AXsuccess is not paint acceptance",
+      "Native tab/group restoration, standard-periodic dirty conflicts/user-choice resolution/Versions, AppleScript gates, real IME/VoiceOver and remaining parity/release gates remain open"
+    ],
+    "appleReferences": [
+      "https://developer.apple.com/documentation/appkit/nsdocument/revert(tocontentsof:oftype:)",
+      "https://developer.apple.com/documentation/appkit/nsdocument/performasynchronousfileaccess(_:)",
+      "https://developer.apple.com/documentation/foundation/nsfilepresenter/presenteditemdidchange()"
+    ],
+    "sourceHashes": {
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownDocument.swift": "f82faf157ec2463ed530f495b5d92b0b6e200488948081f5177336dfc3ba8ecf",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownDocument.swift": "c56bdbf76218859a759f6d52981414e36744477a5c8305e2620bee78a520b168",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeDocumentWindowTests.swift": "f504125bb26e75471e218f0bc91d0e2b8f1fd0b73bcf66dc84503c16d421eafc",
+      "App/UITests/DocumentLifecycleTests.swift": "85c3d5443019e248a130ff4bb6c4715e63b332d9d6b806c82f5f47303468dc34"
+    },
+    "evidenceHashes": {
+      "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-full-report.json": "6440c4aa659594c60973d2cb6f6c8ae0ee41bdd802fcce99b4964d7eba10d53b",
+      "/private/tmp/snowfolio-validation-history/full-workspace-fb4de2b/summary.json": "6b43bc025db2155f9e750025672d15ec95ac2e6d486660a1a11bdcce0d0504bc",
+      "/private/tmp/snowfolio-validation-history/native-actual-app-fb4de2b/summary.json": "19691e3b0a4f2636c81ef98b45c71cb950e9adddd8fccfab701a217c72e5c568",
+      "/private/tmp/snowfolio-validation-history/native-tabs-22b65b2/summary.json": "3990309f8f896e95238569ba5fe7e6e4cf3f15a213cf499b36f89eb38e83379a"
     }
   }
 }

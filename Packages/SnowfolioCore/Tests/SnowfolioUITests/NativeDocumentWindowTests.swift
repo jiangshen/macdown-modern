@@ -1,6 +1,7 @@
 import AppKit
 import DocumentCore
 import SwiftUI
+import Synchronization
 import Testing
 import WebKit
 
@@ -163,10 +164,123 @@ struct NativeDocumentWindowTests {
     #expect(model.revision == revision)
     #expect(try Data(contentsOf: originalURL) == bytes)
     #expect(try Data(contentsOf: destination) == edited)
+    // Let the destination watcher process our own Save As. It must not
+    // mistake that write for an external replacement and clear native Undo.
+    try await Task.sleep(for: .milliseconds(200))
     #expect(undo.canUndo)
     undo.undo()
     #expect(model.text == text)
     #expect(try document.data(ofType: "public.plain-text") == bytes)
   }
 
+  @Test("A clean native document reloads an uncoordinated atomic replacement")
+  func atomicExternalReload() async throws {
+    _ = NSApplication.shared
+    let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+      "SnowfolioNativeAtomicReload-\(UUID().uuidString)", isDirectory: true)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let file = root.appendingPathComponent("document.md")
+    let original = Data("# Original 中文 👩‍💻\n".utf8)
+    try original.write(to: file)
+    let native = try AtomicReloadDocument(contentsOf: file, ofType: "public.plain-text")
+    NSDocumentController.shared.addDocument(native)
+    native.makeWindowControllers()
+    defer { native.close() }
+    let model = native.markdownDocument
+    #expect(model.text == "# Original 中文 👩‍💻\n")
+    #expect(!native.isDocumentEdited)
+    #expect(NSFileCoordinator.filePresenters.contains { ($0 as AnyObject) === native })
+    // Let the watcher arm, as it does before a real open-panel workflow returns.
+    try await Task.sleep(for: .milliseconds(200))
+    let notificationsBeforeReplacement = native.changeNotifications
+    let replacement = "# External e\u{301}\r\n\r\nReplaced without coordination.\r\n"
+    let bytes = Data([0xFF, 0xFE]) + (try #require(replacement.data(using: .utf16LittleEndian)))
+    try bytes.write(to: file, options: .atomic)
+    let deadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while model.text != replacement, ContinuousClock.now < deadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    #expect(native.changeNotifications > notificationsBeforeReplacement)
+    #expect(native.readCount >= 2)
+    #expect(model.text == replacement)
+    #expect(!native.isDocumentEdited)
+    #expect(try Data(contentsOf: file) == bytes)
+    #expect(try native.data(ofType: "public.plain-text") == bytes)
+  }
+
+  @Test(
+    "External atomic replacement preserves unsaved edits and marked text", arguments: [false, true])
+  func preservesPendingInput(composing: Bool) async throws {
+    _ = NSApplication.shared
+    let documentController = NSDocumentController.shared
+    let originalDelay = documentController.autosavingDelay
+    documentController.autosavingDelay = 30
+    defer { documentController.autosavingDelay = originalDelay }
+    let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+      "SnowfolioNativePendingInput-\(UUID().uuidString)", isDirectory: true)
+    try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: root) }
+    let file = root.appendingPathComponent("document.md")
+    let original = "# Keep local source\n"
+    try Data(original.utf8).write(to: file)
+    let native = try AtomicReloadDocument(contentsOf: file, ofType: "public.plain-text")
+    NSDocumentController.shared.addDocument(native)
+    native.makeWindowControllers()
+    defer { native.close() }
+    let model = native.markdownDocument
+    let composingEditor = NSTextView(usingTextLayoutManager: true)
+    if composing {
+      native.attachSourceEditor(composingEditor)
+      composingEditor.setMarkedText(
+        "入力", selectedRange: NSRange(location: 2, length: 0),
+        replacementRange: NSRange(location: 0, length: 0))
+      #expect(composingEditor.hasMarkedText())
+      #expect(!native.isDocumentEdited)
+    } else {
+      // This fixture bypasses a real event/Undo transaction, so use the
+      // documented NSDocument change API to stage unsaved native state.
+      // Actual editor/Undo ownership is exercised by the separate UI methods.
+      model.acceptNativeEdit(original + "X")
+      native.updateChangeCount(.changeDone)
+      #expect(native.isDocumentEdited)
+      #expect(try Data(contentsOf: file) == Data(original.utf8))
+    }
+    try await Task.sleep(for: .milliseconds(200))
+    let before = native.changeNotifications
+    let external = Data("# External replacement 中文 👩‍💻\n".utf8)
+    try external.write(to: file, options: .atomic)
+    let deadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while native.changeNotifications <= before, ContinuousClock.now < deadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    try await Task.sleep(for: .milliseconds(100))
+    #expect(native.changeNotifications > before)
+    #expect(native.readCount == 1)
+    #expect(model.text == (composing ? original : original + "X"))
+    #expect(try Data(contentsOf: file) == external)
+    if composing {
+      #expect(composingEditor.hasMarkedText())
+      composingEditor.unmarkText()
+      native.detachSourceEditor(composingEditor)
+    }
+  }
+
+}
+
+@MainActor
+private final class AtomicReloadDocument: NativeMarkdownDocument {
+  private nonisolated let counts = Mutex((changes: 0, reads: 0))
+  nonisolated var changeNotifications: Int { counts.withLock { $0.changes } }
+  nonisolated var readCount: Int { counts.withLock { $0.reads } }
+
+  nonisolated override func presentedItemDidChange() {
+    counts.withLock { $0.changes += 1 }
+    super.presentedItemDidChange()
+  }
+
+  nonisolated override func read(from data: Data, ofType typeName: String) throws {
+    counts.withLock { $0.reads += 1 }
+    try super.read(from: data, ofType: typeName)
+  }
 }

@@ -32,6 +32,7 @@ open class NativeMarkdownDocument: NSDocument {
               NSFileCoordinator.filePresenters.contains(where: { ($0 as AnyObject) === self })
             else { return }
             self.presentedItemDidChange()
+            Task { @MainActor [weak self] in self?.reloadCleanExternalChange(at: url) }
           }
         }
         self.fileMonitor.observe(self.fileURL)
@@ -45,6 +46,56 @@ open class NativeMarkdownDocument: NSDocument {
     isClosed = true
     fileMonitor.stop()
     super.close()
+  }
+
+  /// A directory wake-up can reach the presenter without causing NSDocument to
+  /// reread an uncoordinated replacement. Serialize with native saves and use its
+  /// public revert operation only for clean, noncomposing documents. Dirty files
+  /// retain the native conflict/Versions path; this method never writes a file.
+  private func reloadCleanExternalChange(at url: URL) {
+    performActivity(withSynchronousWaiting: false) { [weak self] activityComplete in
+      guard let self else {
+        activityComplete()
+        return
+      }
+      self.performAsynchronousFileAccess { [weak self] fileAccessComplete in
+        guard let self else {
+          fileAccessComplete()
+          activityComplete()
+          return
+        }
+        var failure: (any Error)?
+        defer {
+          fileAccessComplete()
+          // Error presentation may begin another native activity, so release
+          // file access before showing UI. The enclosing activity still owns it.
+          if let failure, !self.isClosed, self.fileURL == url { self.presentError(failure) }
+          activityComplete()
+        }
+        guard !self.isClosed, self.fileURL == url,
+          !self.isDocumentEdited, !self.hasUnautosavedChanges,
+          self.loadedModel?.sourceEditorsHaveMarkedText != true,
+          let type = self.fileType,
+          NSFileCoordinator.filePresenters.contains(where: { ($0 as AnyObject) === self })
+        else { return }
+        let coordinator = NSFileCoordinator(filePresenter: self)
+        var coordinationError: NSError?
+        coordinator.coordinate(readingItemAt: url, options: [], error: &coordinationError) {
+          coordinatedURL in
+          guard !self.isClosed, self.fileURL == url,
+            !self.isDocumentEdited, !self.hasUnautosavedChanges,
+            self.loadedModel?.sourceEditorsHaveMarkedText != true
+          else { return }
+          do {
+            let current = self.loadedModel?.fileContents ?? self.loadedContents.withLock { $0 }
+            // Own saves and attribute-only changes must not clear native Undo.
+            guard try Data(contentsOf: coordinatedURL) != current.encoded() else { return }
+            try self.revert(toContentsOf: coordinatedURL, ofType: type)
+          } catch { failure = error }
+        }
+        if failure == nil { failure = coordinationError }
+      }
+    }
   }
 
   public var markdownDocument: MarkdownDocument {

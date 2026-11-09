@@ -489,6 +489,27 @@
       "trashEmptied": false,
       "method": "Remove obsolete generated748raw after compact evidence/open-file/ownership checks; rotate82incoming to canonical latest.",
       "sourceOrUserDocumentsChanged": false
+    },
+    {
+      "dateUTC": "2026-11-09T01:39:12.496227+00:00",
+      "removedGeneratedRaw": {
+        "/private/tmp/snowfolio-current-native-result": 90808320,
+        "/private/tmp/snowfolio-native-file-events-incoming": 149315584,
+        "/private/tmp/snowfolio-native-tabs-incoming": 126500864
+      },
+      "removedAllocatedBytes": 366624768,
+      "retainedRaw": "Actual native app25methods/fb4de2b",
+      "currentRawPath": "/private/tmp/snowfolio-current-native-result",
+      "compactEvidence": [
+        "/private/tmp/snowfolio-validation-history/full-workspace-82e172e",
+        "/private/tmp/snowfolio-validation-history/full-workspace-fb4de2b",
+        "/private/tmp/snowfolio-validation-history/native-tabs-22b65b2",
+        "/private/tmp/snowfolio-validation-history/native-actual-app-fb4de2b"
+      ],
+      "ownershipAndOpenFilesChecked": true,
+      "runningAppPIDPreserved": 85540,
+      "trashEmptied": false,
+      "sourceOrUserDocumentsChanged": false
     }
   ]
 }

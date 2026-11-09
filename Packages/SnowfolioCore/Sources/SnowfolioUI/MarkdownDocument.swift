@@ -50,6 +50,8 @@ public final class MarkdownDocument: SwiftUI.Document {
   func attachSourceEditor(_ editor: NSTextView) { sourceEditors.add(editor) }
   func detachSourceEditor(_ editor: NSTextView) { sourceEditors.remove(editor) }
 
+  var sourceEditorsHaveMarkedText: Bool { sourceEditors.allObjects.contains { $0.hasMarkedText() } }
+
   /// AppKit requires a typing checkpoint when saving, so later coalesced edits
   /// register with the native document's dirty-state and Undo machinery again.
   func prepareSourceEditorsForSave() {

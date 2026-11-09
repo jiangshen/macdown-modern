@@ -64,7 +64,7 @@
   "nativeActualAppRestorationFollowup": {
     "dateUTC": "2026-11-09T01:15:37.572840+00:00",
     "productionBaseCommit": "fb4de2bdb8b224aacc2a5045a40803b29f3e53c4",
-    "status": "Final native/default app build-for-testing passes; new saved-tab UI method not yet executed. Existing9and25runs remain live on fb4de2b.",
+    "status": "Native22targetedcase fails beforequit on extra empty startup tab. Corrected fixture compiles; new full26native runtime pending. SwiftUI22full26executes new tab case successfully.",
     "boundary": "Earlier November6 direct native UI evidence used the preceding SwiftUI document host; it does not establish restoration for the newly introduced actual AppKit application host.",
     "newActualAppMethod": "DocumentLifecycleTests.testSavedTabsRestoreSelectedDocumentAndIndependentUndo",
     "checks": [
@@ -88,12 +88,23 @@
       "snowfolio-native-tabs-app-build.log": "e002cd8a71752a10e554c9b789a44d8856b48530672389a69fd062b8e6c682fb",
       "snowfolio-default-tabs-app-build.log": "3886a3a1008468b4097004b9dbdce41517b9f40bb6f216ac545229177b7dbadd"
     },
-    "runtime": "Pending hosted targeted tab check. Full native app25and workspace9still live at fb4de2b; do not restart them.",
+    "runtime": "Corrected final fixture compiles in native/default hosts. New full26native hosted acceptance pending; earlier SwiftUI26tab case passes.",
     "remaining": [
       "Selected tab/group/caret restoration runtime",
       "Multiple separate groups and scroll restoration",
       "IME/VoiceOver, file drop and Finder integration",
       "Document safety, visual paint, complete parity/performance/release gates"
-    ]
+    ],
+    "hostedInitial": {
+      "commit": "22b65b2d7f7b67cb5727ddea6d949857b390bb0f",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42544671553",
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "seconds": 91.953,
+      "finding": "Screenshot and AXtree show native Untitled/Alpha/Beta tabs; first Beta\u2192ControlTab selects Untitled. Quit/relaunch portion not reached.",
+      "compact": "/private/tmp/snowfolio-validation-history/native-tabs-22b65b2"
+    },
+    "fixtureCorrection": "Select authored Alpha through native TabGroup/title before Control-Tab to adjacent Beta; select restored Alpha by title after checking selected Beta/caret. Do not assume startup created exactly two tabs. All original content/Undo/byte/restore assertions and waits stay."
   }
 }
