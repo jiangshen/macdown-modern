@@ -201,7 +201,7 @@
     "seconds": 30.685,
     "acceptedMethod": "testScriptedTextUndoAutosaveAndManualHTMLCache",
     "accepted": "Real Open/text/name/fileURL, source setter, nativeUIUndoRedo, activeUTF16LEBOMCRLFautosave, manualHTMLcache and explicitRender refresh, Save/Close/Quit events.",
-    "remainingFailure": "Format case gets through Markdown then bare Text parses as AppleScript text type and fails-1700 Can’t make text into type constant. Data not reached.",
+    "remainingFailure": "Format case gets through Markdown then bare Text parses as AppleScript text type and fails-1700 Can\u2019t make text into type constant. Data not reached.",
     "correction": "Use preserved public saveable-format savf enum codes md  /txt /data directly in same nativeSave commands; names/codes/dictionary unchanged. Keep source/format/file-byte checks. Native33/default27compile; retry pending.",
     "artifact": "/private/tmp/snowfolio-validation-history/native-scripting-ee0fc53",
     "skipped": 0,
@@ -303,5 +303,23 @@
     "correction": "Returnexplicittext/nameoftheMake-createdobject; requireexactsource, selectitsnamednativewindowbeforeindex/windowassertions; useitsexplicitnameforcache/error/close. ExplicitRenderbeforeimmutableHTMLcomparison avoidsmanualinitialcacheassumption. Allbyte/count/reference/errorchecksretainstrictassertions.",
     "compact": "/private/tmp/snowfolio-validation-history/native-scripting-e3dfa92",
     "local": "Native34/default27compile0warnings/errorsincremental, allresource/type/icon/license/dictionarygates; defaultrestored. StrictchangedSwiftlint/diffpass. Noadditionalproductionchange."
+  },
+  "initialDataConversion": {
+    "dateUTC": "2026-11-09T07:14:34.649644+00:00",
+    "precedingCommit": "600fc51f29c40a548eab57b03e562ef49c6c61e5",
+    "precedingRun": "https://github.com/jiangshen/snowfolio/actions/runs/42576367994",
+    "precedingResult": {
+      "executed": 3,
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 38.302
+    },
+    "finding": "Make returns missing value; querying the actual result fails -1728. Empty startup window screenshot inspected. Initial-data creation remains unaccepted.",
+    "reference": "https://developer.apple.com/documentation/foundation/nscreatecommand",
+    "implementation": "Register only NSString-to-NativeMarkdownDocument coercion at native app launch. Native init(type:) and existing markdown setter initialize source. Cocoa retains insertion/window/specifier/save ownership. No custom create command, writer, extra rendering, wait or permission change.",
+    "local": "4 tests / 6 cases pass, 0.306s, zero warnings/errors. Native34 build/resource/type/dictionary/license gates pass.",
+    "runtime": "Pending exact three-method hosted retry.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-scripting-600fc51"
   }
 }

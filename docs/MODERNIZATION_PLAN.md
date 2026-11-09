@@ -3390,3 +3390,19 @@ toexcludeconcurrentwindow/layoutwork, withalldeadlines/event/byteassertionsintac
 Focusedmonitor2/2pass0.904s; native34/default27compile/defaultrestored. Fullcoreretry
 required, no productionmonitorchange. Protected85540sampleisnormalidleAppKiteventloop;
 physicalconnectioncauseisnotestablished.
+
+
+## Initial-data conversion follow-up — 2026-11-09
+
+Exact `600fc51` core passes all 373 tests, 652/652 CommonMark and eight arm64
+test executables. The scripting retry executes three methods: two pass; the
+initial-data method fails because Make returns missing value (-1728 when reading
+that exact result). The startup window remains empty. This is not acceptance.
+
+Apple's NSCreateCommand documentation identifies text-to-document coercion for
+ObjectData. The native host now registers only that conversion, using native
+init(type:) and the existing source setter. Cocoa still owns insertion, windows,
+specifiers and save options. Four focused tests / six cases pass in 0.306s with
+zero warnings/errors; native34 compiles. Exact real-event retry remains required.
+No default host switch, installation, release, local automation grant or legacy
+retirement. Full modernization remains active.

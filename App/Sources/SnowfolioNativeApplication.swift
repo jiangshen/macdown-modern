@@ -19,6 +19,7 @@
 
     func applicationWillFinishLaunching(_ notification: Notification) {
       guard menus == nil else { return }
+      NativeMarkdownDocument.registerScriptingCoercions()
       NSDocumentController.shared.autosavingDelay = 2
       let menus = NativeApplicationMenuController()
       self.menus = menus

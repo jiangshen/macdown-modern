@@ -7,6 +7,30 @@ import Testing
 @Suite("Native document scripting", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeDocumentScriptingTests {
+  @Test("Make-with-data text coercion creates exact native contents without inserting or opening")
+  func initialDataCoercion() throws {
+    _ = NSApplication.shared
+    NativeMarkdownDocument.registerScriptingCoercions()
+    let before = NSDocumentController.shared.documents.count
+    let source = "# Initial 中文 👩‍💻\r\ne\u{301}\r\n"
+    let document = try #require(
+      NSScriptCoercionHandler.shared().coerceValue(
+        source as NSString, to: NativeMarkdownDocument.self)
+        as? NativeMarkdownDocument)
+    defer { document.close() }
+    #expect(document.markdown == source)
+    #expect(document.fileType == "net.daringfireball.markdown")
+    #expect(document.fileURL == nil)
+    #expect(try document.data(ofType: "net.daringfireball.markdown") == Data(source.utf8))
+    #expect(document.windowControllers.isEmpty)
+    #expect(NSDocumentController.shared.documents.count == before)
+    let manager = try #require(document.undoManager)
+    manager.undo()
+    #expect(document.markdown.isEmpty)
+    manager.redo()
+    #expect(document.markdown == source)
+  }
+
   @Test(
     "KVC source replacement retains native dirty, Undo and exact encoded bytes",
     arguments: ["markdown", "scriptingContents"])
