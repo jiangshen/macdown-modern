@@ -813,5 +813,76 @@
     "allocatedBytesRemoved": 123514880,
     "reason": "Receipt, full failing window hierarchy, test summaries and scoped logs compacted; no screenshot exists in this failed method. Focus diagnosis concluded, latest useful complete native raw retained.",
     "ownershipAndOpenFilesChecked": true
+  },
+  "terminalSettingsClosedDiagnosticLogCleanup": {
+    "dateUTC": "2026-11-09T13:31:21.303343+00:00",
+    "items": [
+      {
+        "path": "/private/tmp/snowfolio-cli-8b1b28f-watch.log",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-2cadbd8-watch.log",
+        "allocatedBytes": 12288
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-36230c1-failed.log",
+        "allocatedBytes": 24576
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-8b1b28f-failed.log",
+        "allocatedBytes": 24576
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-2cadbd8-failed.log",
+        "allocatedBytes": 24576
+      },
+      {
+        "path": "/private/tmp/snowfolio-core-36230c1.log",
+        "allocatedBytes": 16384
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-entitlements-generate.log",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-entitlements-native-generate.log",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-focus-build.log",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/private/tmp/snowfolio-cli-settings-build.log",
+        "allocatedBytes": 4096
+      }
+    ],
+    "allocatedBytesRemoved": 122880,
+    "reason": "Concluded duplicate process-watch, wrapper and build logs; useful core/runtime findings and exact failure logs retained in compact history. No active result transfer or app cache removed.",
+    "ownershipAndOpenFilesChecked": true,
+    "protectedApps": [
+      42199,
+      85540
+    ]
+  },
+  "completedNativeTerminalSettingsDownloadCleanup": {
+    "source": "d7f410e",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "allocatedBytesRemoved": 2113536,
+    "reason": "Passing native1/1 result compacted; both screenshots inspected. Retain latest complete useful native36 raw and one core cache; no extra focused raw needed.",
+    "ownershipAndOpenFilesChecked": true
+  },
+  "completedRegularTerminalSettingsDownloadCleanup": {
+    "dateUTC": "2026-11-09T13:41:12.329152+00:00",
+    "source": "d7f410e",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "allocatedBytesRemoved": 2113536,
+    "reason": "Passing regular Settings1/1 summary, logs and both screenshots compacted and inspected. Latest complete useful native raw and current caches retained.",
+    "ownershipAndOpenFilesChecked": true,
+    "protectedApps": [
+      42199,
+      85540
+    ]
   }
 }

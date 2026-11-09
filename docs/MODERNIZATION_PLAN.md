@@ -2,8 +2,8 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **417 package tests / 87 suites, all 652 published
-CommonMark examples and eight arm64 test executables pass** at `36230c1`, with
+Current accepted core baseline: **427 package tests / 89 suites, all 652 published
+CommonMark examples and eight arm64 test executables pass** at `d7f410e`, with
 zero compiler errors/warnings.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -29,11 +29,12 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run is **26/29**, in 1402.916 seconds at
-`4791020`. The same three lifecycle failures remain: active autosave/Undo and both
-external reload cases. The counter and new document-link flows pass. The separate `3b68499` core gate
-passes all400 tests with zero compiler warnings/errors and all CommonMark examples. No new
-regular-host failure is established. See
+The latest complete regular SwiftUI-host run at `8b1b28f` has the old CLI
+background-window test failure plus the same three lifecycle failures: active
+autosave/Undo and both external reload cases. After runner restart, its other
+29 methods report 26 passes /3 failures in1492.530 seconds. It predates the CLI
+Window-menu and readiness-order corrections. The current `d7f410e` full regular
+run remains active; no newer complete native acceptance is claimed. See
 [default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
@@ -51,8 +52,10 @@ an in-memory acknowledged local connection, exclusive missing-file creation and
 bundled arm64 packaging.24 focused checks, standalone help/error processes,
 project generation and UI-test typechecking pass. The initial custom Apple-event
 attempt failed actual delivery and was retired to Trash; no Automation grant was
-made. Actual packaged warm/cold delivery of the replacement and its new full gate
-remain pending. The original CLI stays until its
+made. Actual packaged warm acknowledgement, pipe import and file reuse work;
+Save/cold acceptance remains pending after Window-menu/readiness test corrections.
+Terminal installation controls pass in both hosts with screenshots inspected;
+complete app followups continue. The original CLI stays until its
 replacement is accepted. See [command-line.json](validation/command-line.json) and
 the18-case original-parser characterization.
 
@@ -3648,25 +3651,37 @@ stronger lifecycle evidence and remaining gates before any default-host switch.
 No installation, release, handler change or coupled legacy retirement occurred.
 
 
-## Terminal installation controls — candidate, 2026-11-09
+## Terminal installation controls — 2026-11-09
 
-General settings now offers a searchable Terminal row with a native directory
-chooser, installed status, Copy Command and recorded-link Remove. Moving the app
-exposes Update. The Swift installer creates symlinks exclusively, preserves foreign
-files/links/directories, stages and rechecks removal, and keeps app/document bytes.
-Filesystem work stays off the UI actor; an exact link/target preference receipt
-allows relocation without guessing ownership. Shell configuration is not edited.
-No link was installed on the physical Mac.
+General settings now offers a searchable Terminal row with a native folder chooser,
+installed status, Copy Command and recorded-link Remove. Moving the app exposes
+Update. The Swift installer creates links exclusively and preserves foreign files,
+links and directories. Removal stages and rechecks the moved item before deletion;
+an unexpected item is restored or preserved at a reported recovery path. The exact
+link/target receipt supports relocation. Filesystem work stays off the UI actor;
+a completed mutation remains recorded if the Settings view disappears. Shell
+configuration is not edited, and no link was installed on the physical Mac.
 
-All13focused local checks pass withzero compilerwarnings/errors: filesystem
-ownership/collision/relocation and quoting, persisted model lifecycle, and existing
-Settings navigation/search/switch persistence. The native chooser/clipboard/remove/
-collision UI method independently typechecks. Actual app screenshots and full
-427/89core+652corpus+8arm64 acceptance are pending. New complete UI counts are
-31regular/40native; no current full-suite acceptance inferred from focused checks.
+At source `d7f410e`, all 427 core tests in 89 suites pass with zero compiler
+warnings/errors, all 652 CommonMark examples and eight arm64 executables. Thirteen
+focused local checks cover filesystem ownership/collisions/relocation/quoting,
+persisted model state and existing Settings search/navigation/switch persistence.
 
-The earlier full8b1b28f regular run is terminal: its CLI fails at the old background
-editor click, plus the same3lifecycle failures. After restart,29other methods have
-26pass/3fail in1492.530s. This revision predates the Window-menu/readiness corrections.
-Its total job took28m56s; the complete job now has35minutes with the new Settings
-method (nativefull45minutes), retaining every behavioral timeout/assertion.
+Both actual-app installation flows pass, without failures, skips or runtime warnings:
+native run42625898347 takes48.614s; regular run42626710156 takes57.125s. The native
+chooser, exact link, copied command, removal preserving helper/user bytes and occupied
+file refusal all pass. Four installed/collision screenshots were inspected: controls,
+wrapped paths and error text fit with native grouping, scrolling and search reveal.
+
+Full regular run42625848485 (31 methods) and native run42626855827 (40 methods)
+remain active. The latter includes the corrected CLI Window-menu/readiness flow.
+Focused Settings acceptance does not prove complete app or CLI Save/cold acceptance.
+Physical composition/VoiceOver, remaining renderer parity, plugin/updater work and
+performance/release readiness remain open. No host/install/handler switch or coupled
+original source retirement occurred.
+
+The earlier `8b1b28f` full regular run is terminal: the old background-editor CLI
+click fails, plus the same three lifecycle cases. After runner restart, its other
+29 methods report26 passes/3 failures in1492.530s. This predates the test corrections.
+Its job took28m56s; the new complete job has35 minutes (native full45 minutes) to
+include Terminal coverage, retaining every behavioral timeout and assertion.

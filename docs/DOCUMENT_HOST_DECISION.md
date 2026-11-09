@@ -17,6 +17,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 | Scripting | Not implemented for this host | Three real-event methods pass |
 | Native tabs, separate groups, carets and independent reading positions | Partial evidence; lifecycle acceptance remains open | Actual Quit/relaunch acceptance passes |
 | New counter and document links | Focused flows pass | Focused flows pass |
+| Terminal installation controls | Actual chooser/link/copy/remove/collision flow passes at `d7f410e` | Same complete focused flow passes at `d7f410e` |
 | Packaged command-line helper | Current full followup running | Warm acknowledged delivery passes; Save/cold acceptance pending |
 
 Exact source versions, run links and limitations are recorded in

@@ -45,5 +45,5 @@ Settings remembers the selected link and its target. If you move the app, **Upda
 repairs that recorded link. **Remove** removes only the recorded link, preserving
 the app and documents. An occupied location is reported so you can choose a different
 folder. No shell configuration or existing MacDown command is replaced automatically.
-The native installation controls are a new candidate; actual-app chooser and visual
-acceptance are tracked in the validation ledger.
+The installation controls are verified in both document hosts. Current development
+validation and remaining command-line gates are recorded in the validation ledger.

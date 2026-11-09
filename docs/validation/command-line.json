@@ -104,7 +104,7 @@
   },
   "terminalSettingsCandidate": {
     "dateUTC": "2026-11-09T13:28:52.924758+00:00",
-    "status": "Implemented and locally checked; actual packaged chooser/visual acceptance pending. No installation on the physical Mac was performed.",
+    "status": "Accepted full427/89core+652corpus and both actual Settings flows; complete app/CLI Save-cold gates remain pending.",
     "source": [
       "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInstallation.swift",
       "Packages/SnowfolioCore/Sources/SnowfolioUI/CommandLineToolSettings.swift",
@@ -116,6 +116,50 @@
     "fullGateExpected": "427core tests/89suites plus652corpus and8arm64 executables;31regular/40native UI methods. Runtime gate pending.",
     "localLog": "/private/tmp/snowfolio-cli-settings-tests.log",
     "actualUITest": "Native chooser, exact symlink destination, Copy Command clipboard, removal preserving helper/user bytes, occupied regular file refusal, searchable row reveal and screenshots. Uses only disposable test-machine temporary folder.",
-    "jobBudget": "Previous8b1b28f fullregular job28m56s; new Terminal coverage adds work. Complete job budget35m (nativefull45m), all method waits and assertions unchanged."
+    "jobBudget": "Previous8b1b28f fullregular job28m56s; new Terminal coverage adds work. Complete job budget35m (nativefull45m), all method waits and assertions unchanged.",
+    "acceptedCore": {
+      "source": "d7f410e0c2fdb053158a641acf740b34f79fca7b",
+      "run": 42625848485,
+      "job": 129189312601,
+      "tests": 427,
+      "suites": 89,
+      "commonMark": "652/652",
+      "arm64TestExecutables": 8,
+      "compilerWarnings": 0,
+      "compilerErrors": 0,
+      "compact": "/private/tmp/snowfolio-validation-history/core-d7f410e"
+    },
+    "acceptedNative": {
+      "source": "d7f410e0c2fdb053158a641acf740b34f79fca7b",
+      "run": 42625898347,
+      "job": 129189500190,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 48.614,
+      "runtimeWarnings": 0,
+      "visual": "Installed and collision states inspected. Both controls and full wrapped path fit; no Terminal-row overlap, clipping or unintended scrollbar. Native grouped Form/search reveal preserved.",
+      "compact": "/private/tmp/snowfolio-validation-history/terminal-settings-native-d7f410e",
+      "coverage": "Native chooser to disposable folder, exact symlink, copied command, Remove preserving helper/user bytes, occupied user-file refusal, searchable row reveal. No physical-machine installation."
+    },
+    "liveRuns": {
+      "fullRegular31": 42625848485,
+      "fullNative40": 42626855827
+    },
+    "acceptedRegular": {
+      "source": "d7f410e0c2fdb053158a641acf740b34f79fca7b",
+      "run": 42626710156,
+      "job": 129192256226,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 57.125,
+      "runtimeWarnings": 0,
+      "visual": "Installed and collision screenshots inspected: controls, complete wrapped path and message fit without overlap. Native scrolling/search reveal retained.",
+      "compact": "/private/tmp/snowfolio-validation-history/terminal-settings-default-d7f410e",
+      "physicalInstallation": false
+    }
   }
 }
