@@ -12,20 +12,25 @@ public struct RenderedMath: Sendable {
 public struct MathExpression: Hashable, Sendable {
   public let source: String
   public let display: Bool
+  /// A parser-rejected or unclosed source span must stay literal in every engine.
+  public let isComplete: Bool
 
-  public init(_ source: String, display: Bool) {
+  public init(_ source: String, display: Bool, isComplete: Bool = true) {
     self.source = source
     self.display = display
+    self.isComplete = isComplete
   }
 
   // TeX annotations preserve authored bytes, including canonically equivalent
   // Unicode spellings. String's normal equality would merge those cache keys.
   public static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.display == rhs.display && lhs.source.utf8.elementsEqual(rhs.source.utf8)
+    lhs.display == rhs.display && lhs.isComplete == rhs.isComplete
+      && lhs.source.utf8.elementsEqual(rhs.source.utf8)
   }
 
   public func hash(into hasher: inout Hasher) {
     hasher.combine(display)
+    hasher.combine(isComplete)
     var text = source
     text.withUTF8 { bytes in
       hasher.combine(bytes.count)
@@ -37,13 +42,16 @@ public struct MathExpression: Hashable, Sendable {
 /// Actor-confined, with no native, DOM, file or network bindings exposed to TeX.
 /// Only pinned bundled code runs; expressions are passed as JavaScript values.
 public final class MathRenderer {
-  private enum CacheScope: Hashable { case standalone, document, emptyDefinitions }
+  private enum CacheScope: Hashable {
+    case standalone, document, emptyDefinitions, compatibilityStandalone, compatibilityDocument
+  }
   private struct CacheKey: Hashable {
     let expressions: [MathExpression]
     let scope: CacheScope
   }
 
   private var context: JSContext?
+  private var compatibility: MathJaxRenderer?
   private var cache: [CacheKey: [RenderedMath]] = [:]
   private var cacheBytes = 0
   public init() {}
@@ -84,6 +92,58 @@ public final class MathRenderer {
     try Task.checkCancellation()
     guard !expressions.isEmpty else { return }
     let key = CacheKey(
+      expressions: expressions,
+      scope: documentDefinitions ? .compatibilityDocument : .compatibilityStandalone)
+    if let cached = cache[key] {
+      for (index, result) in cached.enumerated() {
+        try Task.checkCancellation()
+        try consume(index, result)
+      }
+      return
+    }
+    // Determine the engine before publishing any formula. A small ordinary batch
+    // is rendered once and replayed from the existing bounded cache. Larger
+    // uncached batches use a second streaming pass instead of unbounded buffering.
+    var unsupported = false
+    try renderKaTeX(expressions, documentDefinitions: documentDefinitions) { index, result in
+      if expressions[index].isComplete, case .unsupportedExpression? = result.issue {
+        unsupported = true
+      }
+    }
+    guard unsupported else {
+      try renderKaTeX(expressions, documentDefinitions: documentDefinitions, consume: consume)
+      return
+    }
+    let original = CacheKey(
+      expressions: expressions, scope: documentDefinitions ? .document : .standalone)
+    cache.removeValue(forKey: original)
+    cacheBytes = cache.reduce(0) { sum, entry in
+      sum + entry.key.expressions.reduce(0) { $0 + $1.source.utf8.count }
+        + entry.value.reduce(0) { $0 + $1.html.utf8.count }
+    }
+    let renderer = compatibility ?? MathJaxRenderer()
+    compatibility = renderer
+    var results: [RenderedMath]? = []
+    var retained = expressions.reduce(0) { $0 + $1.source.utf8.count }
+    if retained > 2_097_152 { results = nil }
+    try renderer.render(expressions) { index, result in
+      if results != nil {
+        retained += result.html.utf8.count
+        if retained > 2_097_152 { results = nil } else { results?.append(result) }
+      }
+      try consume(index, result)
+    }
+    try Task.checkCancellation()
+    if let results { store(results, for: key) }
+  }
+
+  private func renderKaTeX(
+    _ expressions: [MathExpression], documentDefinitions: Bool,
+    consume: (Int, RenderedMath) throws -> Void
+  ) throws {
+    try Task.checkCancellation()
+    guard !expressions.isEmpty else { return }
+    let key = CacheKey(
       expressions: expressions, scope: documentDefinitions ? .document : .standalone)
     if let cached = cache[key] {
       for (index, result) in cached.enumerated() {
@@ -116,7 +176,9 @@ public final class MathRenderer {
         continue
       }
       let result: RenderedMath
-      if expression.source.utf16.count > 16_384 {
+      if !expression.isComplete {
+        result = Self.fallback(expression.source, issue: .unsupportedExpression)
+      } else if expression.source.utf16.count > 16_384 {
         result = Self.fallback(expression.source, issue: .expressionTooLarge)
       } else {
         let context = try engine()
@@ -192,7 +254,7 @@ public final class MathRenderer {
     return context
   }
 
-  private static func fallback(_ source: String, issue: MathRenderIssue) -> RenderedMath {
+  static func fallback(_ source: String, issue: MathRenderIssue) -> RenderedMath {
     let escaped = source.replacingOccurrences(of: "&", with: "&amp;")
       .replacingOccurrences(of: "<", with: "&lt;")
       .replacingOccurrences(of: ">", with: "&gt;")
@@ -217,10 +279,15 @@ public enum MathStyle {
     guard let url = Bundle.module.url(forResource: "KaTeX", withExtension: "css"),
       let css = try? String(contentsOf: url, encoding: .utf8),
       let licenseURL = Bundle.module.url(forResource: "KaTeX-LICENSE", withExtension: "txt"),
-      let license = try? String(contentsOf: licenseURL, encoding: .utf8)
+      let license = try? String(contentsOf: licenseURL, encoding: .utf8),
+      let compatibilityURL = Bundle.module.url(
+        forResource: "MathJax4-LICENSE", withExtension: "txt"),
+      let compatibilityLicense = try? String(contentsOf: compatibilityURL, encoding: .utf8)
     else { return "" }
     // Exporting embedded fonts also carries their original distribution notice.
-    return "/*\n" + license.replacingOccurrences(of: "*/", with: "* /") + "\n*/\n" + css
-      + "\n.md-math{max-width:100%;}.md-math-display{display:block;overflow-x:auto;overflow-y:hidden;padding:.4em 0;}.math-error{white-space:pre-wrap;color:inherit;}.md-math:has(.katex-html:empty){display:none;}"
+    return "/*\n"
+      + (license + "\n" + compatibilityLicense).replacingOccurrences(of: "*/", with: "* /")
+      + "\n*/\n" + css
+      + "\n.md-math{max-width:100%;}.md-math-display{display:block;overflow-x:auto;overflow-y:hidden;padding:.4em 0;}.math-error{white-space:pre-wrap;color:inherit;}.md-math:has(.katex-html:empty){display:none;}.md-mathjax{display:inline-block;max-width:100%;}.md-mathjax-empty,.md-math:has(.md-mathjax-empty){display:none;}.md-mathjax-mathml{border:0;clip:rect(1px,1px,1px,1px);height:1px;width:1px;overflow:hidden;padding:0;position:absolute;}.md-mathjax-visual>svg{overflow:visible;min-height:1px;min-width:1px;max-width:none;}.md-math-display:has(.md-mathjax){text-align:center;}"
   }()
 }

@@ -1216,5 +1216,107 @@
     "retained": "One current core cache; existing running app/probe bundles preserved. No raw xcresult. Compact452logs/reports/hashes and four reviewedPNGs; finalMathJaxprototype bundle/source/notices/results retained solely for active compatibility integration.",
     "preserved": "User documents, source/uncommitted work, installed app and handlers untouched. Trash not emptied.",
     "note": "Scoped allocated size is not unique APFS physical disk usage."
+  },
+  "mathCompatibilityCycle": {
+    "dateUTC": "2026-11-09T22:05:15.774031+00:00",
+    "removed": [
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-929BE8C4-FE55-4B0C-A4A4-5FF1307B1599",
+        "allocatedBytesRemoved": 73728,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-99563230-08D7-4A2F-AC75-ED4E1E2AB026",
+        "allocatedBytesRemoved": 73728,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-EFB12FBE-B374-443D-AF86-56CA17575544",
+        "allocatedBytesRemoved": 53248,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-B628500D-4810-497E-B42F-A888DF0B406C",
+        "allocatedBytesRemoved": 53248,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-7353FB0B-935A-40F4-9AFC-400827DC94F2",
+        "allocatedBytesRemoved": 45056,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-81D461F1-F01A-446D-8668-053B98D77033",
+        "allocatedBytesRemoved": 53248,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-38E60B28-0027-49A0-A4CB-4E4474F9D2DC",
+        "allocatedBytesRemoved": 45056,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-0A2128D7-73FC-44EA-9BFA-B2116F879940",
+        "allocatedBytesRemoved": 1269760,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-84FC3613-3450-45B5-A79B-1E3BE6BBE7DE",
+        "allocatedBytesRemoved": 49152,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-D1751B1B-E6E9-4B36-8FA2-A853CF3C0E77",
+        "allocatedBytesRemoved": 49152,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-F3EA4C69-2BE9-482C-A591-5981B95F8042",
+        "allocatedBytesRemoved": 1273856,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-mathjax-build",
+        "allocatedBytesRemoved": 173666304,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-compat-performance",
+        "allocatedBytesRemoved": 598016,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-validation-history/mathjax-candidate/bundle.js",
+        "allocatedBytesRemoved": 1822720,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-validation-history/mathjax-candidate/metafile.json",
+        "allocatedBytesRemoved": 217088,
+        "ownershipAndOpenFilesChecked": true
+      }
+    ],
+    "scopedAllocatedBytes": {
+      "/private/tmp/snowfolio-native-theme-validation/build": 996831232,
+      "/Users/caden/Dev/snowfolio/Build/Snowfolio": 884891648,
+      "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe": 487702528,
+      "/private/tmp/snowfolio-validation-history": 183853056
+    },
+    "protectedRunningApps": "42199 Snowfolio\n85540 DocumentHostPro",
+    "retained": "One current core cache, protected app/probe builds, final460log/report/source hashes, focused negative findings, inspected light/dark/PDF PNGs and equations.pdf. Historical candidate source/lockfile/timings stay small; its duplicate bundle is retired. No raw xcresult or new app cache.",
+    "preserved": "All project source, uncommitted work, user documents and running app bundles preserved. No installed app/default handler change; Trash not emptied.",
+    "note": "Scoped allocated sizes are not unique physical APFS usage or a whole-disk audit.",
+    "layoutFollowupRemoved": [
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-64B24973-738E-4FE7-ABCD-917BD0B2275B",
+        "allocatedFileBytesRemoved": 45056,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-23F065B1-8A9A-4582-91A5-44C158B62F43",
+        "allocatedFileBytesRemoved": 1273856,
+        "ownershipAndOpenFilesChecked": true
+      }
+    ]
   }
 }

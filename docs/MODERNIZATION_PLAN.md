@@ -2,30 +2,24 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted hosted core baseline: **450 package tests / 93 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `d6e39ca`, with
-zero compiler errors/warnings. The corrected native reading flow passes1/1 with
-source glyph difference0.0; prior Settings and generic-file focused flows pass
-at33a229c. Native43at3cf9ded finishes42pass/1fail: the plug-in test’s
-screenshot-service request times out. It is not complete native acceptance.
-Native41 at `c0c6e6f` remains the complete accepted app baseline.
+Current accepted hosted core baseline: **452 package tests / 93 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `705cc00`, with zero
+compiler diagnostics. The current compatibility increment passes **460 local tests /
+94 suites** in 59.896 seconds, with nine arm64 executables and no compiler diagnostics.
 
-Wrapped single-dollar, double-dollar and existing doubled-backslash inline equations
-now preserve following source positions across soft line breaks. All **450 local
-package tests / 93 suites** pass in 57.733 seconds with zero compiler diagnostics and
-nine arm64 test executables. Light/dark native preview images were inspected. See
-[wrapped-math.json](validation/wrapped-math.json). The focused plug-in flow also passes
-1/1 at `215ce9a` (73.370 seconds); a fresh complete native run
-[42696388379](https://github.com/jiangshen/snowfolio/actions/runs/42696388379) is pending.
-Neither focused success nor local preview checks close complete app/physical IME gates.
+Pinned KaTeX remains the path for ordinary supported math. A document that needs broader
+support now uses pinned MathJax 4.1.3 offline in JavaScriptCore, with all orchestration
+in Swift. Ordered custom environments, forward/backward explicit references, portable
+SVG/MathML, scoped IDs, source completeness and resource/memory bounds are tested.
+The light/dark previews and one-page PDF were inspected. See
+[math-compatibility.json](validation/math-compatibility.json). Wider original MathJax
+extension compatibility and current-source hosted acceptance remain open.
 
-Standard inline `\(…\)` and display `\[…\]` delimiters now also support same-line
-and wrapped body text, retaining the original doubled-backslash forms and exact source
-coordinates. The math integration no longer removes a preceding native text suffix.
-All **452 local tests / 93 suites** pass with zero compiler diagnostics and nine arm64
-executables; all four native preview variants were inspected. See
-[bracket-math.json](validation/bracket-math.json). Whole MathJax compatibility remains
-open; no coupled legacy source is retired on this narrower acceptance.
+The latest complete native attempt at `215ce9a` finishes **42/43**: the initial warm CLI
+window wait fails, although the post-failure hierarchy contains the opened files and
+piped notebook. No root cause is attributed yet. Native **41/41 at `c0c6e6f`** remains
+the complete accepted app baseline; focused passes are not combined into full acceptance.
+The corrected reading flow and earlier Settings/generic-file flows remain recorded.
 
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -50,7 +44,7 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `215ce9a` executes 33 methods:
+The latest complete regular SwiftUI-host run at `705cc00` executes 33 methods:
 29 pass / 4 fail (all terminal method outcomes inspected). Three autosave/reload failures and invalid-encoding
 error presentation remain. Saved-tab restoration passes here; its prior intermittent
 failure is not globally resolved. This is not complete regular acceptance. Native41
@@ -369,7 +363,7 @@ with no DOM, file/network/native bindings, trusted TeX commands disabled, bounde
 expansion/size/input/output and a bounded cache. Standalone calls isolate definitions;
 ordered document batches share definitions only for that render, as recorded in
 [document-math-definitions.json](validation/document-math-definitions.json).
-Unsupported/malformed or oversized expressions render escaped source and
+Input unsupported by both engines, malformed or oversized expressions render escaped source and
 a preview notice, without dropping the source or failing the whole document.
 
 Supported syntax: `math` fenced blocks, double-dollar math and optional single-dollar
@@ -408,7 +402,9 @@ separate suites to interleave windows and produced scrolling timeouts. Tests sti
 condition-based waits and run without weakening assertions or increasing timeouts.
 
 **The math parity gate remains open.** Remaining work includes full MathJax-only extension
-compatibility, remaining environment commands, equation references and numbering.
+compatibility and remaining extension/require behavior beyond the characterized package matrix.
+Custom environment commands and explicit tagged forward/back references now pass the
+integrated checks; automatic numbering keeps the original disabled default.
 KaTeX's supported TeX set is not identical to MathJax. Preserve
 this distinction and add the required compatibility behavior before retiring the old
 MathJax target/resources. Mermaid/Graphviz, custom themes/templates and the other
@@ -416,13 +412,25 @@ modernization requirements also remain. Direct desktop/VoiceOver/real IME accept
 still pending the existing Mac unlock request. No production installation or default
 handler change is claimed. See `docs/validation/offline-math.json`.
 
-A separate MathJax 4.1.3 direct-module proof now runs offline inside JavaScriptCore:
-custom environments, reset between documents, and both forward/backward explicit
-references pass without rewriting TeX. KaTeX remains faster in the narrow uncached
-ordinary-formula comparison. This is a non-shipping evaluation; resource/bounds,
-streaming/cache, exports, accessibility/layout and broader package compatibility must
-be accepted before integration. See [mathjax-candidate.json](validation/mathjax-candidate.json).
-The disposable npm source/cache/build folder was removed after compact evidence capture.
+The MathJax 4.1.3 evaluation is now integrated as an automatic document compatibility
+path, while ordinary supported formulas stay on KaTeX. Swift owns source order,
+cancellation, engine selection, cache/publication, native second-pass reference handling,
+markup validation and limits. The bundled JavaScript entry only exports maintained
+library modules. No TeX grammar or source-replacement interpreter was added.
+
+KaTeX determines support before any equation is published. Small ordinary batches replay
+the existing bounded cache; an ordinary batch too large to retain uses another streaming
+pass. Compatibility batches share one fresh definition/label scope, release roots during
+publication, and retain at most 500,000 compiled AST nodes. Both engines keep the per-input
+and per-output limits; unsafe or oversized output remains escaped source plus the existing
+notice. Parser-rejected/unclosed spans cannot alter definitions in either engine.
+
+Seven new core methods cover environments, references, ordinary/advanced mixed documents,
+source bytes, hostile markup, error/isolation behavior and output beyond the cache budget.
+Native light/dark and PDF checks pass; ordinary edit timings stay below a millisecond in
+the narrow native probe. This is not M6 app performance or complete MathJax2 extension
+acceptance. Original loader/resources stay until wider compatibility and production host
+acceptance are proved. See [math-compatibility.json](validation/math-compatibility.json).
 
 ### M4 — Native workspace and design
 

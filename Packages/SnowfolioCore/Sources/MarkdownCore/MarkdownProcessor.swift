@@ -110,7 +110,7 @@ public actor MarkdownProcessor {
     let sourceText = source as NSString
     var codeBlocks: [UnsafeMutablePointer<cmark_node>] = []
     var diagramNodes: [(UnsafeMutablePointer<cmark_node>, DiagramKind, String)] = []
-    var mathNodes: [(UnsafeMutablePointer<cmark_node>, String, Bool, Bool)] = []
+    var mathNodes: [(UnsafeMutablePointer<cmark_node>, String, Bool, Bool, Bool)] = []
     var callouts: [(UnsafeMutablePointer<cmark_node>, CalloutMarker)] = []
     var transformedDestinations: [String: String] = [:]
     // Preorder traversal only needs the live ancestor path. Keeping every native
@@ -144,14 +144,15 @@ public actor MarkdownProcessor {
       }
       if let token = mathSyntax?.token(for: node) {
         kind = .math(display: token.display)
-        mathNodes.append((node, token.source, token.display, token.block))
+        mathNodes.append(
+          (node, token.source, token.display, token.block, !token.block || token.closed))
       } else if options.math, kind == .codeBlock,
         let info = cmark_node_get_fence_info(node),
         String(cString: info).trimmingCharacters(in: .whitespaces).lowercased() == "math",
         let literal = cmark_node_get_literal(node)
       {
         kind = .math(display: true)
-        mathNodes.append((node, String(cString: literal), true, true))
+        mathNodes.append((node, String(cString: literal), true, true, true))
       }
       if kind == .codeBlock, let info = cmark_node_get_fence_info(node),
         let diagram = DiagramKind.fence(String(cString: info)),
@@ -241,10 +242,12 @@ public actor MarkdownProcessor {
     if !mathNodes.isEmpty {
       let renderer = mathRenderer ?? MathRenderer()
       mathRenderer = renderer
-      try renderer.renderDocument(mathNodes.map { MathExpression($0.1, display: $0.2) }) {
+      try renderer.renderDocument(
+        mathNodes.map { MathExpression($0.1, display: $0.2, isComplete: $0.4) }
+      ) {
         index, rendered in
         try Task.checkCancellation()
-        let (node, _, display, block) = mathNodes[index]
+        let (node, _, display, block, _) = mathNodes[index]
         mathNotices = mathNotices || rendered.issue != nil
         guard
           let replacement = cmark_node_new(

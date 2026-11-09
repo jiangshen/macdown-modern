@@ -48,7 +48,9 @@
     "cacheEntries": 64,
     "cacheBytes": 2097152,
     "fallback": "Escaped original TeX plus a visible preview notice",
-    "exports": "Fresh source/options snapshots; fonts and original MIT notice included even without document styling"
+    "exports": "Fresh source/options snapshots; fonts and original MIT notice included even without document styling",
+    "compatibilityFallback": "Automatic whole-document MathJax when KaTeX does not support complete input; source order/definitions/references retained.",
+    "compatibilityRetainedASTNodes": 500000
   },
   "validation": {
     "tests": 156,
@@ -70,8 +72,8 @@
   ],
   "testIsolation": "Native suites share a nonblocking asynchronous exclusive scope for process-wide NSApplication window/focus/printing state; existing assertions/timeouts retained",
   "remainingCompatibility": [
-    "Full MathJax-specific TeX/extensions",
-    "Remaining MathJax definition/environment commands, equation references and numbering"
+    "Original MathJax2 extension/autoload/require compatibility audit beyond characterized maintained packages",
+    "Remaining uncovered commands/extension semantics; no full parity claim or original loader retirement"
   ],
   "remainingGoal": [
     "Mermaid and Graphviz",
@@ -96,5 +98,16 @@
   "bracketMath20261109": {
     "ledger": "bracket-math.json",
     "local": "452/93passes, zero diagnostics, ninearm64executables; four nativepreviewPNGsinspected. Hostedcurrent-sourcepending."
+  },
+  "compatibilityEngine": {
+    "name": "MathJax",
+    "version": "4.1.3",
+    "font": "OriginalTeX4.1.3",
+    "implementation": "Swift orchestration, pinned direct-module JavaScriptCore boundary, validated SVG+MathML, no runtime downloads",
+    "ledger": "math-compatibility.json"
+  },
+  "integratedCompatibility20261109": {
+    "ledger": "math-compatibility.json",
+    "local": "460/94passes/ninearm64zero compilerdiagnostics; light/darkWebKit and one-pagePDFinspected. Hostedcurrent-sourcepending."
   }
 }

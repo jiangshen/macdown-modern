@@ -1,0 +1,21 @@
+// Module boundary only. Application orchestration remains in Swift.
+export {mathjax} from '@mathjax/src/js/mathjax.js';
+export {TeX} from '@mathjax/src/js/input/tex.js';
+export {SVG} from '@mathjax/src/js/output/svg.js';
+export {liteAdaptor} from '@mathjax/src/js/adaptors/liteAdaptor.js';
+export {RegisterHTMLHandler} from '@mathjax/src/js/handlers/html.js';
+export {SerializedMmlVisitor} from '@mathjax/src/js/core/MmlTree/SerializedMmlVisitor.js';
+export {MathJaxTexFont} from '@mathjax/mathjax-tex-font/js/svg.js';
+import '@mathjax/src/js/input/tex/base/BaseConfiguration.js';
+import '@mathjax/src/js/input/tex/ams/AmsConfiguration.js';
+import '@mathjax/src/js/input/tex/newcommand/NewcommandConfiguration.js';
+import '@mathjax/src/js/input/tex/bbox/BboxConfiguration.js';
+import '@mathjax/src/js/input/tex/color/ColorConfiguration.js';
+import '@mathjax/src/js/input/tex/cancel/CancelConfiguration.js';
+import '@mathjax/src/js/input/tex/mathtools/MathtoolsConfiguration.js';
+import '@mathjax/src/js/input/tex/boldsymbol/BoldsymbolConfiguration.js';
+import '@mathjax/src/js/input/tex/braket/BraketConfiguration.js';
+import '@mathjax/src/js/input/tex/textmacros/TextMacrosConfiguration.js';
+import '@mathjax/src/js/input/tex/verb/VerbConfiguration.js';
+import '@mathjax/src/js/input/tex/unicode/UnicodeConfiguration.js';
+import '@mathjax/src/js/input/tex/extpfeil/ExtpfeilConfiguration.js';

@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T21:10:32.399260+00:00",
-  "status": "Non-shipping offline evaluation only; no new production dependency or fallback integration.",
+  "status": "Historical non-shipping evaluation, superseded by integrated compatibility implementation and460localtests; see math-compatibility.json. Original timing scope remains narrow.",
   "candidate": "MathJax4.1.3, original TeXfont4.1.3, esbuild0.28.2; exactresolvedversions/integrities in lockfile",
   "packages": {
     "node_modules/@mathjax/mathjax-tex-font": {
@@ -46,5 +46,6 @@
   },
   "direction": "Keep KaTeX for ordinary supported formulas. Evaluate document-wide MathJax fallback for unsupported compatibility syntax; fallback must preserve source order/definitions/forwardrefs and pass existing resource, bounds, export, layout and document isolation contracts before shipping. Do not hand-write a TeX interpreter to emulate missing environments.",
   "compact": "/private/tmp/snowfolio-validation-history/mathjax-candidate",
-  "cleanup": "Disposable npm source/cache/binary retired after compact source, lockfile, bundle/notices and results were captured; only the compact prototype remains for the active compatibility investigation."
+  "cleanup": "Disposable npm/cache/binary and duplicate candidate bundle/metafile retired after integrated verification. Small entry/probe/lockfile, raw timings and historical source/bundle hashes remain. Current integration is reproduced by Tools/MathJaxBuild and Tools/vendor-mathjax.py.",
+  "integratedLedger": "math-compatibility.json"
 }

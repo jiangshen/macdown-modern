@@ -1,0 +1,141 @@
+{
+  "dateUTC": "2026-11-09T22:01:15.423591+00:00",
+  "sourceParent": "705cc004c5a37a3f54a91699b8cfb13256834d6f",
+  "status": "Implemented; final full local460/94/ninearm64passes. Current-source hosted package/app acceptance pending. Full modernization and wider MathJax parity remain open.",
+  "sourceSHA256": {
+    "Packages/SnowfolioCore/Sources/MathCore/MathRenderer.swift": "08d52b656c5669454b0afffa45d5a24453883ebbb277205f6145212e41e54ba0",
+    "Packages/SnowfolioCore/Sources/MathCore/MathJaxRenderer.swift": "069d0f31392fc88d19fe17253f3bc463c54a14b8a6972835958c8f61e988cad2",
+    "Packages/SnowfolioCore/Sources/MathCore/MathMarkup.swift": "0454aa78e57b167e5f0ea5c993d4b2abfd6d8f8b9f36cfc9edc60d4a3add8cc6",
+    "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownProcessor.swift": "32fb2b28dca1057e1a382a9b564e25d84f6505deb84c996c9750a62332b6d3a6",
+    "Packages/SnowfolioCore/Tests/MarkdownCoreTests/MarkdownMathCompatibilityTests.swift": "86aed5edd950f991b2091020383dbfe466556b865d937a7eef090d2031b978a2",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeMathTests.swift": "5a5eba0a43d99b4b78384d0bc0105bbf88ec30a537b736512ac8fce55a3ef6c3",
+    "Tools/vendor-mathjax.py": "59efacb79220b29de0d7f946af8c1d4b3b42239eb0aa5413b9a34853b8ed3658",
+    "Tools/verify-math-engines.py": "f72cdcfb14d3c841d328166ba31911d68ae86a94667c4efa85c3caeba6e6c041",
+    "Tools/build-snowfolio.sh": "7043cc34030c5a322feee07d48589660f3b8b1e3f55ac3db1cec99107af1852e",
+    "Tools/validate-modernization.sh": "22299e2419886dcd921c9a6400e2e8cd4b5c773da6792941142855b19f51a00b"
+  },
+  "engines": {
+    "ordinary": "Existing pinned KaTeX0.19.1. Ordinary supported batches remain KaTeX; no MathJax initialization is needed.",
+    "compatibility": "Pinned MathJax4.1.3 and original TeXfont4.1.3 execute in actor-confined JavaScriptCore. Bundled module export boundary only; all application orchestration is Swift.",
+    "packages": [
+      "base",
+      "ams",
+      "newcommand",
+      "bbox",
+      "color",
+      "cancel",
+      "mathtools",
+      "boldsymbol",
+      "braket",
+      "textmacros",
+      "verb",
+      "unicode",
+      "extpfeil"
+    ],
+    "provenance": "Packages/SnowfolioCore/Sources/MathCore/Resources/MathJax4-Provenance.json",
+    "bundleBytes": 1848789,
+    "licenses": "Original Apache2.0 notice in app and resource bundle; carried with the KaTeX MIT notice in portable math styles. Original inline module notices retained by bundling.",
+    "runtime": "No Node, native DOM/file/network bindings, document scripts, loader/autoload/require or arbitrary HTML TeX package. Original TeX SVG outlines need no runtime font downloads."
+  },
+  "behavior": {
+    "routing": "Public KaTeX rendering determines compatibility before any consumer publication. Small ordinary batches replay the existing bounded batch cache. Ordinary batches too large to cache use a second streaming pass; this adds computation while keeping memory bounded. Unsupported batches use one ordered MathJax document, without a TeX source rewrite.",
+    "definitions": "Custom newenvironment/renewenvironment with arguments, existing def/newcommand/renewcommand/let semantics and per-document isolation. Native MathJax recompile metadata resolves forward and backward explicit tag/label/eqref references. Automatic numbering stays off, matching the characterized original default.",
+    "source": "MathExpression exactUTF8 keys include parser completeness. Incomplete/unclosed math is kept literal and cannot define macros in either engine. Source coordinates remain on the single cmark tree.",
+    "output": "Validated inert SVG plus semantic MathML and exact original-TeX annotations. IDs are uniquely scoped per document batch; internal references map across equations, with hidden MathML duplicate IDs removed. Definition-only spans add no space.",
+    "errors": "Malformed/unsupported, oversized or unsafe output stays escaped source with the existing preview notice, preserving other equations.",
+    "cache": "Shared64entry/2MiB nominal UTF8 source+HTML budget, including whole compatibility batches. Compiled roots are released as streamed outputs are consumed or on cancellation/error."
+  },
+  "limits": {
+    "inputUTF16PerExpression": 16384,
+    "macroSubstitutionsPerExpression": 1000,
+    "renderedBytesPerExpression": 1048576,
+    "retainedMathJaxASTNodesPerDocument": 500000,
+    "markupNodesPerExpression": 20000,
+    "markupDepth": 128,
+    "maxSVGViewBoxExtent": 100000,
+    "maxAbsoluteGeometryNumber": 10000000,
+    "resources": "No active elements, external links/resources, arbitrary CSS functions, external entities or DTDs. All math href targets are local scoped IDs."
+  },
+  "local": {
+    "tests": 460,
+    "suites": 94,
+    "seconds": 59.896,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "architectures": [
+      {
+        "target": "EditorCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "DiagramCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "MarkdownCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PluginCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "ExportCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "RenderingCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "DocumentCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PreferencesCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "SnowfolioUITests",
+        "architecture": "arm64"
+      }
+    ],
+    "newCore": "Seven new methods: custom environments/ordered redefinition and reset, full-batch cache, forward/back references and unique targets, mixed standard math/fonts/matrices/cancellation/text, errors/recursion/geometry and consumer interruption, byte-exact annotations and invalid-source isolation, output beyond2MiBcache budget, hostile markup rejection.",
+    "native": "Light/dark offline WebKit checks pass with actual equation geometry, internal reference targets, exact annotations, absent page MathJax and disabled page scripts. Definition-only outer math block is exactly zero height in both appearances. One-page PDF preserves heading/end text. All three final PNGs inspected.",
+    "review": "Strict changed Swift formatting, build-script syntax, pinned-resource/reproduction-input/license verification and final source hashes checked."
+  },
+  "diagnostics": {
+    "unclosedBlocks": "Initial existing-contract failure exposed MathJax accepting delimiter text inside an unclosed source span. Explicit parser completeness now retains escaped source and prevents state changes.",
+    "references": "Strict markup boundary initially rejected the library reference class and pointer-events hitbox; only those inert attributes added after pinned-source inspection.",
+    "mixedMath": "Additional package coverage and mathsize attribute preserve standard supported formulas when a document requires compatibility rendering.",
+    "nativeTestCompile": "Nested require macros corrected to separate typed values; no production workaround or assertion relaxation.",
+    "definitionLayout": "A stronger whole-block check fails twice before correction: inner definition span was hidden but its display-math parent retained padding. Hide the outer block too; both appearance cases now report zero height, with unchanged assertions elsewhere."
+  },
+  "performance": {
+    "scope": "Two final alternating native Debug probe pairs,32single-formula edits per engine over24ordinaryformulas. Baseline uses705cc00MathRenderer; current uses final source. Initial pilot timings retained separately. Same bundled KaTeX resources. No whole-app or Release performance acceptance.",
+    "measurements": {
+      "baseline": {
+        "samples": 32,
+        "medianSeconds": 0.00032448768615722656,
+        "maxSeconds": 0.0003889799118041992
+      },
+      "current": {
+        "samples": 32,
+        "medianSeconds": 0.00037801265716552734,
+        "maxSeconds": 0.0004839897155761719
+      }
+    },
+    "finding": "Ordinary formulas still produce KaTeX. Small observed routing overhead is measured in hundredths of a millisecond; no speedup or broad performance claim. Large uncached ordinary batches require an extra rendering pass, still within existing full-suite streaming contracts.",
+    "furtherSourceChange": "The final change after timing only hides an empty definition-block CSS parent. Routing/cache code is unchanged; the exact measured sources remain in compact/performance."
+  },
+  "compact": "/private/tmp/snowfolio-validation-history/math-compatibility",
+  "remaining": [
+    "Current-source hosted core/corpus and complete actual-app acceptance",
+    "Audit remaining original MathJax2 extension/require behavior and uncovered TeX commands; no full parity or old loader retirement yet",
+    "Native physical preview/foreground selection, real IME and VoiceOver",
+    "Full app performance/M5/M6 release and safe progressive legacy retirement; plugin signing approval remains pending/unapplied"
+  ],
+  "productionInstalled": false,
+  "defaultHandlerChanged": false,
+  "fullGoal": "Active and incomplete."
+}

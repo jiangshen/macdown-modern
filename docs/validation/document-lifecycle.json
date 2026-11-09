@@ -1403,5 +1403,67 @@
     "finding": "Same three regular SwiftUI-host autosave/external-reload and invalid-encoding error presentation failures persist. This is not complete regular-host acceptance and does not establish a parser/math regression.",
     "compact": "/private/tmp/snowfolio-validation-history/regular-215ce9a",
     "transfer": "679442of189568729artifactbytes retrieved; compactlog and all33methodresults retained. No extra raw result download."
+  },
+  "native_full_215ce9a": {
+    "source": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+    "run": 42696388379,
+    "job": 129429253240,
+    "artifact": 13712127003,
+    "executed": 43,
+    "passed": 42,
+    "failed": 1,
+    "failedMethods": [
+      "SnowfolioUITests.CommandLineTests/testBundledCommandLineOpensFilesAndDelayedPipesAcrossLaunches"
+    ],
+    "scope": "All terminal method outcomes inspected from complete text log. No rawxcresultdownload. Not full app acceptance.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-215ce9a",
+    "transferBytes": 683937,
+    "archiveBytes": 198242974,
+    "finding": "Full43:42pass/1fail at initial warmCLIwindow wait8s (CommandLineTests.swift:156). Post-failureAXhierarchy already contains new.md, --help, existing document and piped notebook; no root cause attributed. Earlier41/41atc0c6e6f remains complete accepted baseline. Do not combine this with another focused CLI pass."
+  },
+  "regular_d6e39ca": {
+    "source": "d6e39ca0a3eff0673de9f788faeeed8a4737cc6f",
+    "run": 42697853030,
+    "job": 129434379197,
+    "artifact": 13712605288,
+    "executed": 33,
+    "passed": 28,
+    "failed": 5,
+    "failedMethods": [
+      "SnowfolioUITests.CommandLineTests/testBundledCommandLineOpensFilesAndDelayedPipesAcrossLaunches",
+      "SnowfolioUITests.DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "SnowfolioUITests.DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "SnowfolioUITests.DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave",
+      "SnowfolioUITests.DocumentTypeTests/testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "scope": "All terminal method outcomes inspected from complete text log. No rawxcresultdownload. Not full app acceptance.",
+    "compact": "/private/tmp/snowfolio-validation-history/regular-d6e39ca",
+    "transferBytes": 698382,
+    "archiveBytes": 189851540,
+    "finding": "Regular SwiftUI host retains three autosave/reload and invalid-encoding error presentation failures. d6also has intermittent initial warmCLIwindow failure;705CLIpasses. No default-host switch."
+  },
+  "regular_705cc00": {
+    "source": "705cc004c5a37a3f54a91699b8cfb13256834d6f",
+    "run": 42700658160,
+    "job": 129444174264,
+    "artifact": 13713387409,
+    "executed": 33,
+    "passed": 29,
+    "failed": 4,
+    "failedMethods": [
+      "SnowfolioUITests.DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "SnowfolioUITests.DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "SnowfolioUITests.DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave",
+      "SnowfolioUITests.DocumentTypeTests/testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "scope": "All terminal method outcomes inspected from complete text log. No rawxcresultdownload. Not full app acceptance.",
+    "compact": "/private/tmp/snowfolio-validation-history/regular-705cc00",
+    "transferBytes": 688487,
+    "archiveBytes": 190967824,
+    "finding": "Regular SwiftUI host retains three autosave/reload and invalid-encoding error presentation failures. d6also has intermittent initial warmCLIwindow failure;705CLIpasses. No default-host switch."
+  },
+  "mathCompatibilityIncrement": {
+    "ledger": "math-compatibility.json",
+    "local": "460/94ninearm64zero diagnostics, nativepreview/PDFinspected; currenthostedpending."
   }
 }

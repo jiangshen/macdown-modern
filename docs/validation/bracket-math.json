@@ -74,5 +74,18 @@
     "Physical native preview/foreground selection, real IME and VoiceOver",
     "M5/M6 and progressive legacy retirement"
   ],
-  "fullGoal": "Active and incomplete. No host default, installed app, file handler or release change."
+  "fullGoal": "Active and incomplete. No host default, installed app, file handler or release change.",
+  "hostedCore705cc00": {
+    "source": "705cc004c5a37a3f54a91699b8cfb13256834d6f",
+    "run": 42700658160,
+    "job": 129444173831,
+    "artifact": 13712315233,
+    "tests": 452,
+    "suites": 93,
+    "commonMark": "652/652",
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-705cc00"
+  }
 }
