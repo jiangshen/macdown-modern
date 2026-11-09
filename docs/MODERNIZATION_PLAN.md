@@ -2,83 +2,89 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current verification baseline: **373 package tests /80 suites, 652 published
-CommonMark examples and eight arm64 test executables pass**. Retain the patched
-cmark-gfm engine and measured Swift parent-tracking optimization; the completed
-comparison is in [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
-Both app hosts compile and pass the existing icon/resource/type/dictionary/license
-gates. Native34 UI methods and default27 UI methods currently compile; that is not
-an assertion that all current UI methods have passed together. The existing
-AppIntents metadata-extraction warning remains.
+Current accepted core baseline: **375 package tests / 80 suites, 652 published
+CommonMark examples and eight arm64 test executables pass** at `28243a6`.
+The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
+the production choice; the completed comparison is in
+[markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
+Both app hosts compile and pass icon/resource/type/dictionary/license checks.
+The native host compiles35 UI methods; the default host compiles27. Existing
+AppIntents metadata-extraction warnings remain. Compilation alone is not runtime
+acceptance.
 
-The optional native NSDocument host passed **33/33 actual-app methods, zero skips**,
-1318.325s at `54237aa` ([run42564902278](https://github.com/jiangshen/snowfolio/actions/runs/42564902278)).
-That complete baseline covers31document/editor/settings/export methods and2real
-scriptingmethods; it predates the34thinitial-data method andnewcontentscandidate.
-The preceding `ae2d602` nine-method workspace suite also passes. Native active encoded autosave/Undo, coordinated
-and uncoordinated clean reloads, menus/Settings, exact CopyHTML, cancel-close and
-saved-tab/selected-file/caret restoration pass. Keyboard/plus tab creation and
-independent Undo passed a later focused2/2 at `cefdbc0`. Separate tab groups, viewport
-restoration and full current native-suite acceptance remain open. The production
-host is still SwiftUI; no installation, release or default-handler switch is accepted.
-See [document-lifecycle.json](validation/document-lifecycle.json) and
-[native-tabs.json](validation/native-tabs.json).
+The optional NSDocument host's complete accepted baseline is **33/33 actual-app
+methods, zero skips**, 1318.325s at `54237aa`
+([run42564902278](https://github.com/jiangshen/snowfolio/actions/runs/42564902278)).
+It covers document/editor/settings/export behavior plus the first two real scripting
+methods. Native encoded autosave/Undo, both clean reload paths, all three dirty
+conflict choices, Versions, menus/Settings, exact Copy HTML, close cancellation and
+saved-tab/selected-file/caret restoration pass. The complete34-method run at
+`292c17f` is still executing; it includes the initial-data scripting method.
+See [document-lifecycle.json](validation/document-lifecycle.json).
 
-Native periodic dirty-conflict Revert and older-version Restore passed **2/2 with
-zero skips** at `f644d0c` ([run42563302231](https://github.com/jiangshen/snowfolio/actions/runs/42563302231)).
-Normal2-second autosave preserves both sides before the user's choice; Revert retains
-the unsaved local bytes in history and restores the external encoding/save baseline.
-The native Versions browser selects the exact older source, restores its complete
-UTF16LE/BOM/CRLF/Unicode bytes and retains the newer revision. All5screenshots were
-inspected. Expanded SaveAnyway/SaveAs passes with Revert/Versions **4/4, zero skips** at `ee0fc53`
-([run42564047176](https://github.com/jiangshen/snowfolio/actions/runs/42564047176)),154.728s.
-All9screenshots inspected; exactbytes/oppositeversionrecoverability and subsequent
-save URL/encoding baseline pass.
-No injected versions, extra file writer or changed autosave policy. See
-[native-recovery.json](validation/native-recovery.json).
+Two separate native tab groups now pass an actual quit/relaunch test **1/1**, zero
+skips,175.705s at `05ed81e`
+([run42579544002](https://github.com/jiangshen/snowfolio/actions/runs/42579544002)).
+The standard Window > Move Tab to New Window command creates the second group;
+four files retain exact group membership, selected tabs, carets, editing/Undo and
+disk contents. Screenshot and complete AX tree inspected. A separate local full
+native-workspace integration test also restores independent source/preview reading
+positions through secure NSDocument callbacks without changing selection, revision,
+UTF16LE/BOM/CRLF/Unicode bytes, clean state or Undo. The six-method native-window
+suite passes. Actual app quit/relaunch viewport behavior remains unaccepted.
+See [native-tabs.json](validation/native-tabs.json).
 
-The user explicitly authorized Allow for the exact SnowfolioUITests-Runner → Snowfolio
-prompt on disposable test machines. At `f644d0c`, the public system-owner UI route
-successfully grants that request; both permission results are0/completed. Temporary
-handling is excluded from normal app/test builds. Real scripting reaches Make/Save,
-Open/text/name; the two methods then stop on a stale untitled-name reference after
-Save and property-specifier path coercion. Tests now resolve the saved filename and
-compare the returned public file URL directly. The complete source setter/cache/Undo/
-autosave/Save/Close/Quit method passes at `ee0fc53`. The direct public format-code
-correction passes both methods **2/2, zero skips**,31.861s at `54237aa`
-([run42564547579](https://github.com/jiangshen/snowfolio/actions/runs/42564547579)).
-Makewithproperties and Markdown/Text/Data saves preserve exactfilebytes. Remaining
-command/options/error/composition parity still requires runtime acceptance. See
-[native-scripting.json](validation/native-scripting.json) and the original contract in
-[applescript-characterization.json](validation/applescript-characterization.json).
+Normal two-second autosave conflict Revert, Save Anyway and Save As, plus native
+Versions read-only history/Restore pass **4/4**, zero skips,185.652s at `df05cdb`
+([run42565202255](https://github.com/jiangshen/snowfolio/actions/runs/42565202255)).
+Exact historical Copy establishes focus; ordinary typing cannot mutate history,
+current source, disk bytes or versions. Restore retains exact older bytes and newer
+recoverability. No injected history, alternate writer or autosave policy.
+See [native-recovery.json](validation/native-recovery.json).
 
-The latest collected full default-host run, `eb46674`, passes **24/27**. The corrected
-host-specific tab-menu setup passes both focused and full execution. The same3SwiftUI
-lifecycle failures remain: active autosave/Undo and both external reload cases. Keep
-those failures visible until the replacement host is fully accepted. See
+Real native scripting passes **3/3**, zero skips,50.763s at `292c17f`
+([run42578096362](https://github.com/jiangshen/snowfolio/actions/runs/42578096362)).
+This covers Open/text/name/file, source replacement/Undo/encoded autosave, manual
+HTML cache/explicit Render, Make with properties and initial Unicode/CRLF data,
+document/window references, public format-code saves, read-only/missing-object
+errors, Close saving in and Quit. Cocoa's text-to-document coercion initializes
+Make's ObjectData through the existing source setter; native ownership stays in
+place. Further command/options/composition parity remains required. The user
+approved only the exact SnowfolioUITests-Runner → Snowfolio automation prompt on
+disposable test machines; temporary handling stays excluded from normal builds.
+See [native-scripting.json](validation/native-scripting.json).
+
+The latest complete default-host suite at `600fc51` passes **24/27**,1186.471s.
+The same three SwiftUI lifecycle failures remain: active autosave/Undo and both
+external reload cases. The latest `05ed81e` core run also has373/374 tests passing:
+reload/text/bytes/read-count pass, but one test ends its wait before the directory
+callback arrives. The test now waits for both observations within the same existing
+three-second deadline; all assertions and production code stay intact. Fresh core375
+verification at `28243a6` now passes with zero compiler warnings/errors and all652
+CommonMark examples. The complete35-method native run42581073714 is running on
+that revision, including actual separate groups; the duplicate default suite was
+canceled after its successful core evidence was saved. See
 [default-host-followup.json](validation/default-host-followup.json).
 
 Preview painting remains unaccepted: direct-root, direct-AppKit-stack and production
-WebKit snapshots show correct content, while hosted window/screen captures have blank
-web regions. This rules out a SwiftUI-only container cause; it does not prove an
-environmental cause or physical correctness. The latest physical native app selection
-timed out. No private WebKit/security changes. See
-[preview-paint-controls.json](validation/preview-paint-controls.json).
+WebKit snapshots contain correct glyphs, while hosted window/screen captures have
+blank web regions. A SwiftUI-only container cause is ruled out; an environmental
+cause or physical correctness is not proven. The Mac remains locked at the latest
+physical inspection, with the existing unlock request pending. No private WebKit,
+security, local automation-permission, default-host, installation, release or
+file-handler change. See [preview-paint-controls.json](validation/preview-paint-controls.json).
 
-Reuse one current core cache and one current app cache; preserve the running diagnostic
-and latest useful full native26 raw result. Concluded focused downloads/recordings are
-removed after exact summaries, useful screenshots and diagnostics are retained. See
-[project-cleanup.json](validation/project-cleanup.json) and
-[storage-footprint.json](validation/storage-footprint.json).
+Retain one core cache, one canonical app cache, the protected running probe and the
+latest useful fullnative33 raw result. Concluded focused downloads/recordings and
+obsolete successful diagnostics are removed after compact findings and relevant
+screenshots are saved. See [project-cleanup.json](validation/project-cleanup.json)
+and [storage-footprint.json](validation/storage-footprint.json).
 
-The light/default-font source-selection screenshot at the preceding accepted checkpoint
-has a continuous highlight without a marker seam. User-desktop dark selection remains
-unverified while the Mac is locked. Actual modern caret paint/native-reference
-equivalence and hosted preview glyph painting remain open; API metrics alone are not
-paint evidence. The new log retains33 runtime priority warnings without proven
-attribution. Real IME/VoiceOver, complete lifecycle, remaining typing/statistics/renderer
-parity, M5 and measured M6/release readiness remain required. No coupled original target
-is retired. See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md) for behavior.
+Light/default-font source selection is continuous and its list markers align.
+Physical dark selection, caret/native-reference painting, preview glyphs, real
+IME/VoiceOver, remaining typing/statistics/renderer parity, M5 and measured M6/release
+readiness remain required. Internal QoS inversion warnings remain unattributed.
+No coupled original target is retired. See [EDITOR_LAYOUT.md](EDITOR_LAYOUT.md).
 
 The preceding asset-folder implementation `d3f5da2` passed exact hosted acceptance:
 334 package tests, 652 CommonMark examples and all 17 native UI methods, including
@@ -311,7 +317,7 @@ selected third-party revisions with Package.resolved when their integration begi
 
 ## Roadmap and measurable acceptance criteria
 
-### M1 — Audit and verified Swift foundations (current)
+### M1 — Audit and verified Swift foundations (complete)
 
 1. Save this plan, complete first-party ownership inventory and baseline diagnostics.
 2. Add a dependency-free Swift 6.4/macOS 27 package in Swift 6 language mode.
@@ -3459,3 +3465,10 @@ before the monitor callback arrives. It now waits for both original observations
 within the same3second deadline; no assertions removed or production changes.
 Fullcore retry required. Fullnative34 at292c17f continues. Mac remains locked;
 existing unlock request pending, no local automation grant or host/install change.
+
+
+Fresh28243a6 core accepted:375tests/80suites, zero compilerwarnings/errors,
+652/652CommonMark and8arm64executables. Native viewport callback test and combined
+reload-observation wait pass in the complete package run. Fullnative35run42581073714
+now validates everyactualnative method together; earlier34run42578704447continues.
+No default switch/install/release or physical painting/IME/VoiceOver acceptance.

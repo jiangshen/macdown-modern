@@ -401,11 +401,11 @@
     "ownershipAndOpenFilesChecked": true
   },
   "currentMeasuredRoots": {
-    "dateUTC": "2026-11-09T07:22:59.791727+00:00",
+    "dateUTC": "2026-11-09T07:43:51.995267+00:00",
     "roots": [
       {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 842387456
+        "allocatedBytes": 842702848
       },
       {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -413,19 +413,19 @@
       },
       {
         "path": "/private/tmp/snowfolio-native-theme-validation",
-        "allocatedBytes": 777314304
+        "allocatedBytes": 778231808
       },
       {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 65314816
+        "allocatedBytes": 67096576
       },
       {
         "path": "/private/tmp/snowfolio-current-native-result",
         "allocatedBytes": 188977152
       }
     ],
-    "totalAllocatedBytes": 2361696256,
-    "reason": "One canonical default app cache, one core cache, protected running probe cache, compact evidence and latest useful full native33 raw result."
+    "totalAllocatedBytes": 2364710912,
+    "reason": "One canonical default app cache, one core cache, protected running probe cache, compact findings and latest useful fullnative33 raw. Concluded focused group download and generated diagnostics removed."
   },
   "latestGroupsBuildCleanup": {
     "dateUTC": "2026-11-09T07:30:00.869788+00:00",
@@ -442,5 +442,42 @@
     "kept": "/private/tmp/snowfolio-validation-history/native-groups-local",
     "ownershipAndOpenFilesChecked": true,
     "runningProbeAndCurrentFullNative33RawPreserved": true
+  },
+  "acceptedGroupsAndViewportCleanup": {
+    "dateUTC": "2026-11-09T07:38:59.053542+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-groups-current-incoming",
+        "allocatedBytesRemoved": 128987136
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-1B614673-292B-4555-AD99-BE09FF20218E",
+        "allocatedBytesRemoved": 45056
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-2E85DAE8-C459-4787-ADF6-A0545642B044",
+        "allocatedBytesRemoved": 40960
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-3DC642F4-E78A-489C-9D24-E35A2317CB47",
+        "allocatedBytesRemoved": 36864
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-80EEAD96-5826-4DC8-92F2-F0B78277D08C",
+        "allocatedBytesRemoved": 36864
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-284A396E-E100-4716-A55A-C606AB8FE8E4",
+        "allocatedBytesRemoved": 45056
+      }
+    ],
+    "kept": [
+      "/private/tmp/snowfolio-validation-history/native-groups-05ed81e",
+      "/private/tmp/snowfolio-validation-history/native-viewport-local",
+      "/private/tmp/snowfolio-validation-history/core-05ed81e"
+    ],
+    "ownershipAndOpenFilesChecked": true,
+    "sourceRunningProbeAndCurrentNative33FullRawPreserved": true,
+    "trashEmptied": false
   }
 }

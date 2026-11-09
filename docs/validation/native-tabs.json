@@ -173,7 +173,7 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-groups-local"
   },
   "nativeViewportCallbacks": {
-    "status": "Local focused integration accepted; full core retry required. Actual app quit/relaunch scroll positions still unaccepted.",
+    "status": "Full core accepted at28243a6:375/80, zero compiler warnings/errors,652CommonMark. Actual app quit/relaunch viewport remains unaccepted.",
     "method": "NativeDocumentWindowTests.nativeViewportRestoration",
     "checks": "Actual complete native workspace source and WKWebView placed at different reading positions. Native secure state callbacks encode/decode into new document/window. Exact source logical line/fraction, preview scrollY within3px, selection, UTF16LE/BOM/CRLF/combining text/emoji bytes, revision, dirty and empty Undo remain unchanged.",
     "focused": "1/1 passes1.095s; full native window suite6/6 passes3.316s; zero compilerwarnings/errors.",
@@ -190,5 +190,25 @@
     "focused": "Full native window suite6/6 passes3.316s after correction.",
     "commonMark": "Skipped due preceding test failure; not reaccepted on this revision.",
     "compact": "/private/tmp/snowfolio-validation-history/core-05ed81e"
+  },
+  "freshCore28243a6": {
+    "commit": "28243a6c12b46672249da69e7a0e0d084324e8bd",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42580512199",
+    "job": 129037818538,
+    "tests": 375,
+    "suites": 80,
+    "failed": 0,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "commonMarkPassed": 652,
+    "commonMarkTotal": 652,
+    "arm64TestExecutables": 8,
+    "compact": "/private/tmp/snowfolio-validation-history/core-28243a6"
+  },
+  "fullNative35Pending": {
+    "commit": "28243a6c12b46672249da69e7a0e0d084324e8bd",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42581073714",
+    "scope": "All35methods includingactualseparategroups and3realscriptingmethods",
+    "status": "in progress; no full acceptance claim"
   }
 }
