@@ -1,0 +1,31 @@
+{
+  "dateUTC": "2026-11-09T07:54:23.620563+00:00",
+  "status": "Source characterization only; modern statistics remains unimplemented/unaccepted.",
+  "sources": [
+    "MacDown/Code/Extension/DOMNode+Text.m",
+    "MacDown/Code/Document/MPDocument.m:needsHtml",
+    "MacDown/Code/Document/MPDocument.m:updateWordCount"
+  ],
+  "legacyContract": {
+    "input": "The committed preview DOM, not Markdown source. Manual-render mode retains last published counts until Render; show-counter enables background rendering even when preview pane is hidden in automatic mode.",
+    "modes": [
+      "Words",
+      "Characters excluding newline characters",
+      "Characters excluding whitespace and newline characters"
+    ],
+    "words": "Foundation NSStringEnumerationByWords per DOM text/CDATA node. SCRIPT,STYLE,HEAD subtrees excluded. PRE>CODE blocks excluded from words only; inline CODE is one word only if its children contain at least one Foundation word. Other child nodes accumulate independently.",
+    "characters": "UTF16 NSString lengths after removing Foundation newline characters; code blocks remain included. No grapheme count substitution without an explicit compatibility decision.",
+    "charactersWithoutSpaces": "UTF16 NSString lengths after removing Foundation whitespaceAndNewline characters; code blocks remain included.",
+    "ui": "Optional per-document popup; mode is editorWordCountType. Visibility is editorShowWordCount. Counter enabled only once preview is ready.",
+    "sourceSafety": "Statistics must never mutate source, native selection, Undo or file bytes."
+  },
+  "modernImplementationGates": [
+    "Migrate original visibility/mode preferences without changing unrelated live settings.",
+    "Characterize visible rendered text including styled-node boundaries, inline/block code, Unicode/emoji/combining marks, newline/space classes, raw HTML, math/diagrams and footnotes.",
+    "Keep counts aligned with the published rendering revision, including manual-render stale cache semantics and source-only mode.",
+    "Count outside typing/layout critical paths; no repeated whole-document/main-thread recount per keystroke, unbounded DOM polling or remote service.",
+    "Native accessible optional counter with all three modes, focus-based document ownership, keyboard operation and unchanged source/Undo.",
+    "Actual UI/manual-render/edit/Undo/persistence acceptance before retiring old counter code."
+  ],
+  "notAccepted": "No current modern counter or feature-parity completion claim."
+}

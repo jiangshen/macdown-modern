@@ -8,20 +8,20 @@ The patched cmark-gfm engine and measured Swift parent-tracking optimization rem
 the production choice; the completed comparison is in
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 Both app hosts compile and pass icon/resource/type/dictionary/license checks.
-The native host compiles35 UI methods; the default host compiles27. Existing
+The native host compiles36 UI methods; the default host compiles27. Existing
 AppIntents metadata-extraction warnings remain. Compilation alone is not runtime
 acceptance.
 
-The optional NSDocument host's complete accepted baseline is **34/34 actual-app
-methods, zero failures/skips**,1253.000s at `292c17f`
-([run42578704447](https://github.com/jiangshen/snowfolio/actions/runs/42578704447)).
-Every preceding33 method remains included, with the initial-data/reference/error/
-Close-saving-in scripting case added. Native encoded autosave/Undo, both clean
-reload paths, all dirty-conflict choices, read-only Versions/Restore, menus/Settings,
-exports, cancel-close and saved-tab/selected-file/caret restoration pass together.
-Six major screenshots inspected; continuous light mixed-list selection and aligned
-markers remain correct. The complete35-method run at `28243a6` is executing to add
-separate tab-group acceptance to that full suite. See
+The optional NSDocument host's complete accepted baseline is **35/35 actual-app
+methods, zero failures/skips**,1264.810s at `28243a6`
+([run42581073714](https://github.com/jiangshen/snowfolio/actions/runs/42581073714)).
+Every preceding34 method remains included, plus normal quit/relaunch of separate
+native tab groups. Encoded autosave/Undo, clean reloads, all dirty-conflict choices,
+read-only Versions/Restore, three real scripting methods, menus/Settings, exports,
+close cancellation, saved tabs/carets and separate groups pass together. Six major
+screenshots inspected; light mixed-list selection is continuous and markers align.
+The native host now compiles36 UI methods, but its new independent reading-position
+relaunch probe remains unaccepted. See
 [document-lifecycle.json](validation/document-lifecycle.json).
 
 Two separate native tab groups now pass an actual quit/relaunch test **1/1**, zero
@@ -63,7 +63,7 @@ reload/text/bytes/read-count pass, but one test ends its wait before the directo
 callback arrives. The test now waits for both observations within the same existing
 three-second deadline; all assertions and production code stay intact. Fresh core375
 verification at `28243a6` now passes with zero compiler warnings/errors and all652
-CommonMark examples. The complete35-method native run42581073714 is running on
+CommonMark examples. The complete35-method native run42581073714 passes on
 that revision, including actual separate groups; the duplicate default suite was
 canceled after its successful core evidence was saved. See
 [default-host-followup.json](validation/default-host-followup.json).
@@ -77,7 +77,7 @@ security, local automation-permission, default-host, installation, release or
 file-handler change. See [preview-paint-controls.json](validation/preview-paint-controls.json).
 
 Retain one core cache, one canonical app cache, the protected running probe and the
-latest useful fullnative34 raw result. Concluded focused downloads/recordings and
+latest useful fullnative35 raw result. Concluded focused downloads/recordings and
 obsolete successful diagnostics are removed after compact findings and relevant
 screenshots are saved. See [project-cleanup.json](validation/project-cleanup.json)
 and [storage-footprint.json](validation/storage-footprint.json).
@@ -3513,3 +3513,25 @@ source paragraph without moving its offscreen caret; keeps preview ratio0.002,
 source-not-at-top, exactbytes, no-click restored insertion/Undo and the same8s
 condition deadline. Diagnostics precede the fatal assertion. Native36/default27
 compile/defaultrestored; corrected real-event retry remains required.
+
+
+## Complete native35 accepted; reading-probe environment follow-up — 2026-11-09
+
+Exact28243a6 fullnative35/35passes, zero failures/skips,1264.810s; every previous34
+method plus separate native groups remains included. Sixmajorimages inspected.
+51internal QoSinversions(18Default/33Utility) stayunattributed. One latest35raw
+replaces old34raw aftercoverage/ownership/openfilechecks; physicalpreview/dark
+selection/caret/IME/VoiceOver and all remaining full-goal gates stay open.
+
+The50b17ca visible-anchor test failsbeforeQuit/relaunch because Vision cannot
+compile its recognition model in the guest(e5rt code11); this isnot an app
+restoration result. Test now selects a supportedCPU for each Visioncompute stage
+using current publicAPI. Native36/default27compile/defaultrestored; localCPU
+recognition readsParagraph35 in both savedframes. Exactfocusedguest retryrequired.
+No skip, extra appwriter, scrollbehavior change or relaxed correctness deadline.
+
+Original writing-counter behavior is characterized in
+[writing-statistics-characterization.json](validation/writing-statistics-characterization.json):
+committed preview text, Foundation word boundaries, special inline/block-code
+semantics and newline/whitespace-filtered UTF16 counts. Modern counter remains
+unimplemented; preserve the original code until a verified replacement exists.

@@ -1638,6 +1638,16 @@ final class DocumentLifecycleTests: XCTestCase {
         request.recognitionLanguages = ["en-US"]
         request.usesLanguageCorrection = false
         request.regionOfInterest = CGRect(x: 0, y: 0.85, width: 0.9, height: 0.15)
+        // Hosted macOS guests may advertise acceleration that cannot compile
+        // the recognition model. Use a supported CPU for each test-only stage.
+        for (stage, devices) in try request.supportedComputeStageDevices {
+          let cpu = try XCTUnwrap(
+            devices.first {
+              if case .cpu = $0 { return true }
+              return false
+            })
+          request.setComputeDevice(cpu, for: stage)
+        }
         try VNImageRequestHandler(cgImage: image, options: [:]).perform([request])
         let pattern = try NSRegularExpression(pattern: "Paragraph\\s*(\\d+)")
         for observation in (request.results ?? []).sorted(by: {

@@ -242,7 +242,7 @@
     "scope": "Actual native app opens UTF16LE/BOM/CRLF/Unicode fixture. User scroll events place source and preview separately with linking off. NormalQuit/relaunch must restore numeric native scrollbar positions within0.002, sourcecaret0, editing/Undo and exactfilebytes.",
     "testIsolation": "Scrollbars Always and restoration/linking preferences supplied only through disposable app launch arguments. No global preference or production behavior changes.",
     "local": "Corrected native36/default27 compile; normaldefault restored; strict changedSwiftlint/diffpass; recorded-frame recognition verifies paragraph35 before/after.",
-    "runtime": "Corrected focused runtime pending; no new app defect/fix or reading-relaunch acceptance yet.",
+    "runtime": "CPU-configured focused retry pending. Fullnative35 baseline accepted; 36th readingmethod remains unaccepted.",
     "compact": "/private/tmp/snowfolio-validation-history/native-reading-local",
     "firstHosted": {
       "commit": "a909bfeedb0b9ae09d510b57b4ef4fcfeaedc960",
@@ -257,6 +257,44 @@
       "recordedFrameRecognition": "Native Vision recognizer independently reads Paragraph35 in both before and restored recorded frames. Exact local probe output retained.",
       "compact": "/private/tmp/snowfolio-validation-history/native-reading-a909bfe"
     },
-    "correction": "Measure actual source-visible paragraph via read-only screenshot recognition, leaving the offscreen caret untouched. Keep preview numeric position within0.002, source-not-at-top, independent panes, exactUnicodebytes, no-click restored insertion and Undo checks. Capture values/tree/restored screenshot before failing assertion; same8second condition deadline. No production behavior change."
+    "correction": "Measure actual source-visible paragraph via read-only screenshot recognition, leaving the offscreen caret untouched. Keep preview numeric position within0.002, source-not-at-top, independent panes, exactUnicodebytes, no-click restored insertion and Undo checks. Capture values/tree/restored screenshot before failing assertion; same8second condition deadline. No production behavior change.",
+    "visibleAnchorHosted": {
+      "commit": "50b17ca9908a8860883dee93db59fc61f57cf14d",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42583451855",
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 50.861,
+      "failure": "Vision recognizer model compilation fails e5rt_e5_compiler_compile code11 before first source anchor capture and before Quit/relaunch. No app restoration conclusion.",
+      "visual": "Finalsource PNG inspected: source atparagraph34, previewstilltop. This is prequit firstOCR stage.",
+      "compact": "/private/tmp/snowfolio-validation-history/native-reading-50b17ca"
+    },
+    "cpuRecognitionFollowup": "Select supported .cpu device for every Vision compute stage using current public API; avoid unavailable guest acceleration. Native36/default27 compile, defaultrestored, strictlint/diffpass. CPU-configured local probe stillreadsParagraph35inbothrecordedbefore/afterframes. Exactdisposablemachine retryrequired; no skip or production scrollchange."
+  },
+  "fullNative35Accepted": {
+    "dateUTC": "2026-11-09T08:14:02.511219+00:00",
+    "commit": "28243a6c12b46672249da69e7a0e0d084324e8bd",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42581073714",
+    "executed": 35,
+    "passed": 35,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1264.81,
+    "coverage": "Everypreceding34method plusactual separate-tab-groups quit/relaunch. All3scripting andallconflict/Versions cases pass together.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-28243a6",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_07-43-50-+0000.xcresult",
+    "visual": "Six majorPNGinspected: continuouslightmixed-listselection, restoredseparategroups, Settings, readonlyhistoricalsource, restoredsavedtabs, initialscriptedsource. Hostedpreviewblank persists; physicalpaint/darkselection/IME/VoiceOverunaccepted.",
+    "runtimeWarnings": {
+      "count": 51,
+      "byQoS": {
+        "Default": 18,
+        "Utility": 33
+      },
+      "attribution": "Internal inversions not attributed to app production code. NoM6acceptance."
+    },
+    "supersededFull34AllocatedBytesRemoved": 190341120,
+    "latestFull35AllocatedBytes": 193961984,
+    "ownershipAndOpenFilesChecked": true
   }
 }

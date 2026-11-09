@@ -391,5 +391,30 @@
     "replacedSupersededFull33RawAllocatedBytes": 188977152,
     "currentRetainedAllocatedBytes": 190341120,
     "ownershipAndOpenFilesChecked": true
+  },
+  "fullNative35Accepted": {
+    "dateUTC": "2026-11-09T08:14:02.511219+00:00",
+    "commit": "28243a6c12b46672249da69e7a0e0d084324e8bd",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42581073714",
+    "executed": 35,
+    "passed": 35,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1264.81,
+    "coverage": "Everypreceding34method plusactual separate-tab-groups quit/relaunch. All3scripting andallconflict/Versions cases pass together.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-28243a6",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_07-43-50-+0000.xcresult",
+    "visual": "Six majorPNGinspected: continuouslightmixed-listselection, restoredseparategroups, Settings, readonlyhistoricalsource, restoredsavedtabs, initialscriptedsource. Hostedpreviewblank persists; physicalpaint/darkselection/IME/VoiceOverunaccepted.",
+    "runtimeWarnings": {
+      "count": 51,
+      "byQoS": {
+        "Default": 18,
+        "Utility": 33
+      },
+      "attribution": "Internal inversions not attributed to app production code. NoM6acceptance."
+    },
+    "supersededFull34AllocatedBytesRemoved": 190341120,
+    "latestFull35AllocatedBytes": 193961984,
+    "ownershipAndOpenFilesChecked": true
   }
 }

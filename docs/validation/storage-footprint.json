@@ -504,5 +504,74 @@
     "replacedSupersededFull33RawAllocatedBytes": 188977152,
     "currentRetainedAllocatedBytes": 190341120,
     "ownershipAndOpenFilesChecked": true
+  },
+  "latestReadingBuildCleanup": {
+    "dateUTC": "2026-11-09T07:55:05.383228+00:00",
+    "removed": [
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-F7D190E0-5D10-4D88-A444-9FD5EFEF4C45",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-1B4EF479-CD41-4418-AE01-483B4A73E791",
+        "allocatedBytesRemoved": 180224
+      }
+    ],
+    "kept": "/private/tmp/snowfolio-validation-history/native-reading-local",
+    "ownershipAndOpenFilesChecked": true,
+    "protectedProbeAndFullNative34RawPreserved": true
+  },
+  "readingVisibleAnchorCleanup": {
+    "dateUTC": "2026-11-09T08:06:30.724277+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-reading-current-incoming",
+        "allocatedBytesRemoved": 126922752
+      },
+      {
+        "path": "/private/tmp/snowfolio-reading-video-current",
+        "allocatedBytesRemoved": 2138112
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-16571304-0022-43EA-AE4B-45520D513809",
+        "allocatedBytesRemoved": 184320
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-748A7F1D-5B9F-4826-A245-AC4C606B1793",
+        "allocatedBytesRemoved": 180224
+      }
+    ],
+    "kept": [
+      "/private/tmp/snowfolio-validation-history/native-reading-local",
+      "/private/tmp/snowfolio-validation-history/native-reading-a909bfe"
+    ],
+    "reason": "Failed source-scrollbar comparison diagnosed; compact result, actual before/after frames and native recognition output retained. Corrected retry active; old focusedraw/video no longer needed.",
+    "ownershipAndOpenFilesChecked": true,
+    "protectedProbeAndCurrentFullNative34RawPreserved": true
+  },
+  "latestFullNative35Replacement": {
+    "dateUTC": "2026-11-09T08:14:02.511219+00:00",
+    "commit": "28243a6c12b46672249da69e7a0e0d084324e8bd",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42581073714",
+    "executed": 35,
+    "passed": 35,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1264.81,
+    "coverage": "Everypreceding34method plusactual separate-tab-groups quit/relaunch. All3scripting andallconflict/Versions cases pass together.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-28243a6",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_07-43-50-+0000.xcresult",
+    "visual": "Six majorPNGinspected: continuouslightmixed-listselection, restoredseparategroups, Settings, readonlyhistoricalsource, restoredsavedtabs, initialscriptedsource. Hostedpreviewblank persists; physicalpaint/darkselection/IME/VoiceOverunaccepted.",
+    "runtimeWarnings": {
+      "count": 51,
+      "byQoS": {
+        "Default": 18,
+        "Utility": 33
+      },
+      "attribution": "Internal inversions not attributed to app production code. NoM6acceptance."
+    },
+    "supersededFull34AllocatedBytesRemoved": 190341120,
+    "latestFull35AllocatedBytes": 193961984,
+    "ownershipAndOpenFilesChecked": true
   }
 }

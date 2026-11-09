@@ -907,7 +907,7 @@
       "probeReport": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-probe-build-report.json",
       "format": "Strict changed Swift lint and diff checks pass"
     },
-    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta→ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
+    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta\u2192ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
     "limits": [
       "Exact ae2d602 nine diagnostic methods and all26actual native app methods pass; remaining feature/visual gates stay open.",
       "File byte comparison/native revert are synchronous within native file access; real app latency/large-file performance remains an open M6gate",
@@ -1053,5 +1053,30 @@
     "correction": "Monitorcallbackdeadlines shareMainActorwithglobalnativewindow/layoutfixtures. JoinexistingNativeUIExclusive testlease; all3secondwaits andevent/byte/quieting/rebind/stopassertionsunchanged. No productionfilemonitorchange.",
     "localFocused": "Bothmonitor2/2pass0.904s; command8.271s,0warnings/errors. Freshfullcoreconfirmationrequired.",
     "protectedProbe": "Read-onlysample85540showsidleNSApplicationrunloop; no mutation/termination. PhysicalUIconnectionstillunaccepted."
+  },
+  "fullNative35Accepted": {
+    "dateUTC": "2026-11-09T08:14:02.511219+00:00",
+    "commit": "28243a6c12b46672249da69e7a0e0d084324e8bd",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42581073714",
+    "executed": 35,
+    "passed": 35,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1264.81,
+    "coverage": "Everypreceding34method plusactual separate-tab-groups quit/relaunch. All3scripting andallconflict/Versions cases pass together.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-28243a6",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_07-43-50-+0000.xcresult",
+    "visual": "Six majorPNGinspected: continuouslightmixed-listselection, restoredseparategroups, Settings, readonlyhistoricalsource, restoredsavedtabs, initialscriptedsource. Hostedpreviewblank persists; physicalpaint/darkselection/IME/VoiceOverunaccepted.",
+    "runtimeWarnings": {
+      "count": 51,
+      "byQoS": {
+        "Default": 18,
+        "Utility": 33
+      },
+      "attribution": "Internal inversions not attributed to app production code. NoM6acceptance."
+    },
+    "supersededFull34AllocatedBytesRemoved": 190341120,
+    "latestFull35AllocatedBytes": 193961984,
+    "ownershipAndOpenFilesChecked": true
   }
 }
