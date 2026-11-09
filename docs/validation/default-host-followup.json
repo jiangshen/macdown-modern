@@ -107,5 +107,21 @@
     "keptEarlierDefaultRun": 42576275391,
     "keptFullActualNative34": 42578704447,
     "reason": "New production launch call is native-host conditional; default build passes locally. Earlier full default run is still executing. Fresh complete core374/80 and652CommonMark already captured. Avoid repeating the same known default lifecycle failures in parallel."
+  },
+  "latestCompletedFullDefault": {
+    "commit": "600fc51f29c40a548eab57b03e562ef49c6c61e5",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42576275391",
+    "executed": 27,
+    "passed": 24,
+    "failed": 3,
+    "skipped": 0,
+    "seconds": 1186.471,
+    "failures": [
+      "testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "testCoordinatedExternalReloadAfterAutosave"
+    ],
+    "finding": "Same three established SwiftUI host lifecycle failures; no new default-host failure. Existing native33 passes these cases; exact native34 still running.",
+    "compact": "/private/tmp/snowfolio-validation-history/default-600fc51"
   }
 }
