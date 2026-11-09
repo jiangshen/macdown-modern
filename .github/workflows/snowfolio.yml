@@ -180,7 +180,7 @@ jobs:
             --predicate 'eventMessage BEGINSWITH "SnowfolioDocument"' \
             > Build/Snowfolio/document-links.log 2>&1 || true
           /usr/bin/log show --last 5m --style compact --info --debug \
-            --predicate '(subsystem == "com.apple.TCC" OR subsystem CONTAINS[c] "appleevent") AND eventMessage CONTAINS[c] "snowfolio"' \
+            --predicate '((subsystem == "com.apple.TCC" OR subsystem CONTAINS[c] "appleevent") AND eventMessage CONTAINS[c] "snowfolio") OR (eventMessage CONTAINS[c] "deny" AND eventMessage CONTAINS "local.snowfolio.cli.")' \
             > Build/Snowfolio/launch-permission-metadata.log 2>&1 || true
       - name: Preserve native UI test results
         if: always()

@@ -3592,3 +3592,16 @@ See `validation/writing-statistics.json` for exact evidence, and
 `validation/launch-integrations-characterization.json` for the next CLI/URL/plugin
 replacement contracts. No default host, installation, release or file-handler switch
 has been made.
+
+
+## Packaged CLI connection and test environment — 2026-11-09
+
+At36230c1 the native packaged test fails before delivery: warm helper returns1
+after the8second lookup budget; help/version/unknown checks pass. The app installs
+its handler without a server-start failure. Built XCTest runner entitlements
+show App Sandbox, inherited by its CLI child, without a Snowfolio Mach lookup rule.
+The test target now permits only the anchored PID-scoped Snowfolio endpoint
+namespace, retaining Xcode UI input/signal and existing native scripting rules.
+Both generated test entitlement dictionaries are checked; the shipped app/helper
+permissions are unchanged. Focused actual-app retry remains required. No delivery,
+Save/cold launch, physical composition or full-goal acceptance is claimed.

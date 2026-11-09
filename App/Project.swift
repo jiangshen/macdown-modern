@@ -5,6 +5,23 @@ let temporaryScriptingConsentApproved =
   nativeDocumentHost
   && Environment.snowfolioApproveTestAutomation.getString(default: "no") == "yes"
 
+// XCTest's runner sandbox is inherited by CLI subprocesses. Allow only the
+// app's PID-scoped command-line endpoints; the shipped app/helper gain no rights.
+// Keep Xcode's default UI input/signal rules when supplying this array.
+var uiTestEntitlements: [String: Plist.Value] = [
+  "com.apple.security.temporary-exception.sbpl": .array([
+    .string("(allow hid-control)"), .string("(allow signal)"),
+    .string(
+      #"(allow mach-lookup (global-name-regex #"^local[.]snowfolio[.]cli[.][0-9]+[.][0-9]+$"))"#),
+  ])
+]
+if nativeDocumentHost {
+  uiTestEntitlements["com.apple.security.automation.apple-events"] = .boolean(true)
+  uiTestEntitlements["com.apple.security.temporary-exception.apple-events"] = .array([
+    .string("local.macdown.modern")
+  ])
+}
+
 var markdownDocumentType: [String: Plist.Value] = [
   "CFBundleTypeName": "Markdown", "CFBundleTypeRole": "Editor",
   "CFBundleTypeIconFile": "MarkdownDocument", "LSHandlerRank": "Alternate",
@@ -126,14 +143,14 @@ let project = Project(
         "NSAppleEventsUsageDescription": "Verify Snowfolio's own document scripting interface."
       ]),
       sources: ["UITests/**"],
+      entitlements: .dictionary(uiTestEntitlements),
       dependencies: [.target(name: "Snowfolio")],
       settings: .settings(
         base: nativeDocumentHost
           ? [
-            "CODE_SIGN_ENTITLEMENTS": "$(SRCROOT)/UITests/SnowfolioUITests.entitlements",
             "SWIFT_ACTIVE_COMPILATION_CONDITIONS": .string(
               temporaryScriptingConsentApproved
-                ? "$(inherited) TEMPORARY_SCRIPTING_CONSENT_APPROVED" : "$(inherited)"),
+                ? "$(inherited) TEMPORARY_SCRIPTING_CONSENT_APPROVED" : "$(inherited)")
           ] : [:])
     ),
   ]

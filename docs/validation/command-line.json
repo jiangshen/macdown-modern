@@ -62,5 +62,14 @@
     "SDK": "Public CFMessagePort.h in the installed macOS27.2 SDK, including dispatch-queue callback and CFData lifetime contract.",
     "failedAttempt": "96bb78a explicit Apple-event destination still fails; scoped logs show SNFL/Clio routed through kTCCServiceAppleEvents and no app receiver call. No permission was granted or protection changed.",
     "retirement": "The failed first-party CommandLineLaunchEvent.swift helper was moved with /usr/bin/trash after ownership/open-file checks. Its handler/address-only assertions were removed; JSON validation and byte tests remain. Original macdown-cmd sources remain intact."
+  },
+  "packagedConnection36230c1": {
+    "run": 42619575881,
+    "job": 129167953515,
+    "result": "1 executed /0 passed /1 failed in19.847s. Help/version/unknown pass; warm helper returns1 after8s endpoint lookup, before any document checks. App handler installation appears twice with no server-start failure; correct GUI PID27369 returned. No delivery/Save/cold acceptance.",
+    "evidence": "Built XCTest runner entitlements include app-sandbox; its CLI subprocess inherits that profile and no Snowfolio Mach lookup is allowed. Apple documents lookup requires an exception for sandboxed callers.",
+    "compact": "/private/tmp/snowfolio-validation-history/command-line-native-36230c1",
+    "followup": "Only UI-test target gains anchored lookup rule for local.snowfolio.cli.<uid>.<pid>. Existing UI HID/signal and native scripting rules preserved; app/helper entitlement settings unchanged. Both Tuist configurations generate and generated dictionaries validated; regular configuration restored. Runtime followup pending.",
+    "reference": "https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/AppSandboxTemporaryExceptionEntitlements.html"
   }
 }

@@ -1210,5 +1210,11 @@
     "sampleArchiveBytes": 114092208,
     "sampleBytesTransferred": 556738,
     "result": "Three useful logs obtained without downloading another raw bundle. Latest useful full native raw remains retained."
+  },
+  "retiredTestEntitlementFile": {
+    "path": "App/UITests/SnowfolioUITests.entitlements",
+    "action": "Moved to Trash after ownership/open-file check; replaced by one host-aware Project.swift dictionary. Both generated variants verified.",
+    "trashEmptied": false,
+    "spaceClaim": "No disk-space reduction claimed for Trash move."
   }
 }
