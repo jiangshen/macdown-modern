@@ -2,11 +2,11 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **441 package tests / 93 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `33a229c`, with
-zero compiler errors/warnings. The stronger native Settings flow passes1/1 and
-generic-file opening passes1/1 on fresh machines. Reading restoration still fails
-its source-glyph comparison after PNG decoding succeeds; preview position restores.
+Current accepted core baseline: **442 package tests / 93 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `3cf9ded`, with
+zero compiler errors/warnings. The corrected native reading flow passes1/1 with
+source glyph difference0.0; prior Settings and generic-file focused flows pass
+at33a229c. A complete native43run42684835718is active; it is not acceptance.
 Native41 at `c0c6e6f` remains the complete accepted app baseline.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -31,12 +31,12 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `704aad4` executes33methods:
-28pass/5fail, none skipped. Three autosave/reload failures, saved-tab restoration
-and invalid-encoding error presentation remain. Packaged CLI passes68.371seconds
-and updater controls/persistence passes28.508seconds. These focused successes do
-not establish complete regular acceptance. Native41 at `c0c6e6f` remains the complete
-accepted native baseline. See [default-host-followup.json](validation/default-host-followup.json).
+The latest complete regular SwiftUI-host run at `33a229c` executes33methods:
+29pass/4fail, none skipped. Three autosave/reload failures and invalid-encoding
+error presentation remain. Saved-tab restoration passes here; its prior intermittent
+failure is not globally resolved. This is not complete regular acceptance. Native41
+at `c0c6e6f` remains the complete accepted native baseline. See
+[default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
 [launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
@@ -4122,3 +4122,22 @@ load, light/dark drawing and shortened documents. Strict format/diff and compile
 checks are clean. Actual-app quit/relaunch and complete new-source acceptance are
 next; all existing pixel/source/Undo/encoded-byte protections remain unchanged.
 See [source-reading-displacement.json](validation/source-reading-displacement.json).
+
+
+At3cf9ded the complete core442/93,652CommonMark examples and nine arm64 executables
+pass with zero compiler diagnostics. Actual native reading restoration passes1/1
+in72.221s: source glyph difference0.0, negative control0.8923611, preview scrollbar
+0.3529282→0.3528179. Both source crops and both whole-window images were inspected.
+The no-click restored caret, native typing/Undo and exact encoded bytes also pass.
+Two warnings remain: internal QoS inversion and XCTest final tree UTF8attachment
+encoding. Hosted blank preview capture is not physical rendering acceptance. Six
+additional column/zoom checks pass3.442s; a preexisting AppKitnil-content-manager
+note is recorded without a zero-runtime-warning claim.
+
+Complete native43run42684835718/job129388718974at that exact source is now active.
+Native41atc0c6e6f remains the complete baseline until a newer full suite passes.
+The latest regular33run finishes29pass/4fail: three autosave/reload cases and generic
+invalid-encoding error presentation. No source-default/install/handler/signing-exception
+change occurred. The latest useful focused reading partial raw occupies31.2MB; old
+failed raw was retired after preserving all failure evidence. The scoped core/cache,
+protected builds, staged app and compact evidence occupy about2.56GB allocated.

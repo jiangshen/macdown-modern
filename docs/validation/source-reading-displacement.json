@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T19:26:39.505273+00:00",
-  "status": "Exact12pt source drift reproduced and corrected locally; real app and complete new-source acceptance pending.",
+  "status": "Correction accepted through core442/93+652CommonMark+9arm64 and actual native reading1/1 with zero source-glyph difference at3cf9ded. Complete native43 and physical/whole-goal gates remain open.",
   "baselineFailure": {
     "source": "33a229c",
     "run": 42680308706,
@@ -23,7 +23,59 @@
     "selection": "Explicit2,3range preserved; native source/revision/Undo invariants retained.",
     "format": "Strict format and diff checks pass; no compiler diagnostics."
   },
-  "realApp": "Not yet verified; original pixel0.05/two-pixel alignment/negative control and exact source/Undo/encoded-byte checks remain unchanged.",
+  "realApp": {
+    "source": "3cf9ded93c4df7e364d70285f4a93afc4f8bdc23",
+    "run": 42683452313,
+    "job": 129383859402,
+    "artifact": 13703856857,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 72.221,
+    "runtimeWarnings": 2,
+    "warningBreakdown": {
+      "internalQoSPriorityInversion": 1,
+      "XCTestStringAttachmentUTF8Encoding": 1
+    },
+    "sourceGlyphDifference": 0.0,
+    "negativeControlDifference": 0.8923611111111112,
+    "sourceScrollbarBefore": 0.22278803309993633,
+    "sourceScrollbarAfter": 0.25347402410194314,
+    "previewBefore": 0.35292819142341614,
+    "previewAfter": 0.35281792283058167,
+    "visual": "Both actual source crops and both whole-window images inspected: same source glyphs at the same visible coordinates. Scrollbar ratio differs with TextKit estimated extent; glyph comparison remains authoritative. Hosted preview blank persists and does not establish physical painting.",
+    "coverage": "Independent source/preview reading positions through normal Quit/relaunch, no-click restored caret, actual typing and native Undo, exact UTF16LE/BOM/CRLF/Unicode file bytes. All original pixel/source/Undo/byte thresholds unchanged.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-reading-3cf9ded",
+    "raw": "/private/tmp/snowfolio-focused-current-incoming",
+    "rawIsPartial": true,
+    "rawOmitted": "Two redundant large diagnostics, complete original archive remains on GitHub during retention."
+  },
   "compact": "/private/tmp/snowfolio-validation-history/source-reading-displacement",
-  "storage": "Current core cache reused; only small logs/new screenshots at existing fixed paths. No new app build or installed/default-handler change."
+  "storage": "Current core cache reused; only small logs/new screenshots at existing fixed paths. No new app build or installed/default-handler change.",
+  "fullCore": {
+    "source": "3cf9ded93c4df7e364d70285f4a93afc4f8bdc23",
+    "run": 42683393621,
+    "job": 129383652162,
+    "tests": 442,
+    "suites": 93,
+    "commonMark": 652,
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-3cf9ded"
+  },
+  "completeNativeRun": {
+    "source": "3cf9ded93c4df7e364d70285f4a93afc4f8bdc23",
+    "run": 42684835718,
+    "job": 129388718974,
+    "expectedMethods": 43,
+    "status": "Authoritatively confirmed in_progress; not acceptance.",
+    "acceptedBaseline": "Native41/41atc0c6e6f retained until a complete newer suite passes."
+  },
+  "layoutAndZoom": {
+    "passed": 6,
+    "suites": 2,
+    "seconds": 3.442,
+    "note": "One AppKitnil-content-manager symbolic-breakpoint note also appears in pre-change704aad4and33a229ccore logs. No compiler diagnostics/assertion failure; no zero-runtime-warning claim."
+  }
 }

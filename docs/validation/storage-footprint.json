@@ -1057,5 +1057,38 @@
     "retainedRaw": "/private/tmp/snowfolio-focused-current-incoming",
     "retention": "Latest useful unresolved native-reading raw only. Accepted native41summary, all41method results, tenPNG and complete log remain. Native42failed PNG/spindump/diagnostic excerpts remain. Both corrected Settings screenshots, hierarchy and summary remain. Original archives remain on GitHub during retention.",
     "protected": "Both running apps42199/85540, unsaved physical input, staged app, current core cache and user source/documents unchanged; no Trash emptied."
+  },
+  "sourceReadingDisplacementCycle": {
+    "dateUTC": "2026-11-09T19:36:57.512932+00:00",
+    "currentAllocatedBytes": {
+      "/private/tmp/snowfolio-native-theme-validation": 967503872,
+      "/private/tmp/snowfolio-focused-current-incoming": 31195136,
+      "/private/tmp/snowfolio-validation-history": 165154816,
+      "/private/tmp/snowfolio-native-physical-check": 24682496,
+      "/Users/caden/Dev/snowfolio/Build/Snowfolio": 884891648,
+      "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe": 487702528
+    },
+    "totalScopedAllocatedBytes": 2561130496,
+    "source": "3cf9ded",
+    "smallTemporaryCopiesRemoved": [
+      "snowfolio-source-reading-characterization.log",
+      "snowfolio-source-reading-negative.log",
+      "snowfolio-source-reading-after.log",
+      "snowfolio-source-reading-related.log",
+      "snowfolio-source-reading-reflow.log",
+      "snowfolio-source-reading-fixed.swift"
+    ],
+    "retiredPriorRaw": {
+      "dateUTC": "2026-11-09T19:32:04.786917+00:00",
+      "retiredRaw": "/private/tmp/snowfolio-focused-current-incoming",
+      "source": "33a229c",
+      "allocatedBytesRemoved": 40370176,
+      "ownershipAndOpenFilesChecked": true,
+      "retained": "Exact failed reading summary, method result, four actual PNGs, raw measurements/hierarchy and complete text log.",
+      "replacement": "Successful3cf9dedreadingrun42683452313will reuse the same incoming location; preserve new raw until complete native acceptance."
+    },
+    "retention": "One current core build cache and one latest useful reading partial raw. Compact negative/after/related/reflow logs, source version, five actual reading screenshots/measurements and full core/corpus report retained. No new app build/cache was created.",
+    "protected": "Both running42199/85540apps and unsaved physical input preserved. No user project source/document moved or removed; Trash not emptied.",
+    "note": "Allocated size is not necessarily unique physical APFS storage; scoped paths are not a whole-disk audit."
   }
 }
