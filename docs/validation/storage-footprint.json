@@ -930,5 +930,14 @@
     "cleanup": "Old199290880-byte raw36 removed only after new41accepted and old36method subset verified; new partial124583936-byte raw retained. Current physical app staged in~24MB;486313984bytes of temporary build intermediates removed usingxcodebuild clean and owned residual cleanup. No extra current build cache remains; running old apps/source preserved.",
     "rawLimit": "Large diagnostics deliberately omitted; full test summaries and useful small attachments retained.",
     "trashEmptied": false
+  },
+  "pluginSessionVerificationReview": {
+    "dateUTC": "2026-11-09T17:30:40.915954+00:00",
+    "coreCacheKiB": 933616,
+    "protectedBuildsKiB": 1340476,
+    "currentPartialNativeResultKiB": 121664,
+    "compactHistoryKiBBeforeThisLog": 136752,
+    "stagedPhysicalAppKiB": 24104,
+    "decision": "Existing core scratch cache reused; no separate app/build/result directory created. Retain small focused log. No obsolete bulky task artifact introduced; protected apps and unsaved physical-check source untouched."
   }
 }

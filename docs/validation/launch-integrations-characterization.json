@@ -405,5 +405,28 @@
       "compact": "/private/tmp/snowfolio-validation-history/core-c0c6e6f"
     }
   },
-  "acceptedNativeCLI": "See command-line.json acceptedNativeC0c6e6f: whole actual warm/encoded Save/normal Quit/cold native-tab flow1/1passes94.290s. Original code remains until host switch/retirement gate."
+  "acceptedNativeCLI": "See command-line.json acceptedNativeC0c6e6f: whole actual warm/encoded Save/normal Quit/cold native-tab flow1/1passes94.290s. Original code remains until host switch/retirement gate.",
+  "pluginSessionFoundation": {
+    "dateUTC": "2026-11-09T17:30:40.915954+00:00",
+    "status": "Implemented and focused checks accepted; app menu/runtime and release-signing integration remain open.",
+    "sources": [
+      "Packages/SnowfolioCore/Sources/PluginCore/PluginSession.swift",
+      "Packages/SnowfolioCore/Tests/PluginCoreTests/PluginSessionTests.swift"
+    ],
+    "behavior": "MainActor session retains one explicitly loaded LegacyPlugin per canonical filesystem path. Nonexecuting lookup; symlink aliases reuse initialization/run state. Retains loaded instance after on-disk removal, does not unload. Failed loads may retry; independent URLs/sessions do not share instances.",
+    "edgeCase": "Focused check found Foundation file URL directory slash changes after bundle deletion. Canonical path key fixes identity without unloading or reinitializing.",
+    "validation": {
+      "tests": 9,
+      "suites": 3,
+      "newTests": 2,
+      "compilerWarnings": 0,
+      "compilerErrors": 0,
+      "buildSeconds": 1.07,
+      "strictFormat": "pass",
+      "diffCheck": "pass",
+      "scope": "All PluginCore tests; no new full-core or actual-app acceptance inferred."
+    },
+    "compact": "/private/tmp/snowfolio-validation-history/plugin-session",
+    "limits": "No user bundle executed, menu wired, app entitlement changed, installation/default-handler change or original-loader retirement. Host physical input/preview/VoiceOver gates remain pending; Mac locked at latest check."
+  }
 }

@@ -3928,3 +3928,24 @@ compact findings and current physical app total about2.44GiB; Trash is not empti
 The complete modernization goal remains active: physical host acceptance plus remaining
 plugin runtime/UI/signing, renderer/math/export/style parity, productivity, performance,
 release and progressive original-code retirement still require work.
+
+
+## Explicit plug-in session foundation — 2026-11-09
+
+PluginSession now retains one explicitly loaded native instance per canonical
+filesystem path. Metadata/menu-name lookup executes no code. Symlink aliases reuse
+the initialized instance and run state; separate URLs and sessions stay independent.
+Failed loads may retry. Loaded bundles are never unloaded/replaced in-process and
+updates require restart. A focused deletion check exposed Foundation directory-slash
+identity changes; canonical path keys preserve live instances after bundle removal.
+
+All9PluginCore tests/3suites pass, including2new session tests; build1.07s with zero
+compiler diagnostics, strict formatting/diff checks pass. This is focused foundation
+acceptance only; the previous complete core434/native41 baseline remains atc0c6e6f.
+App menu/runtime/signing and physical native host checks remain open. Latest CUA
+inspection reports the Mac locked, so the user's typed ni is not observed and no
+marked-composition acceptance is claimed. Existing apps/unsaved input are preserved.
+
+The existing core cache was reused (~934MB); no new build/result directory or bulky
+artifact was created. Only a compact log/source record is retained for this increment.
+No installation, default-handler, app-security or original-loader change occurred.
