@@ -155,10 +155,19 @@ final class CommandLineTests: XCTestCase {
           NSPredicate(format: "identifier == 'markdownSourceEditor' AND value == %@", pipedText)
         ).firstMatch.exists
       })
+    let pipedTitle = pipedWindow.title
+    XCTAssertFalse(pipedTitle.isEmpty, app.debugDescription)
     let windowMenu = app.menuBars.menuBarItems["Window"]
     windowMenu.click()
-    let pipedItem = windowMenu.menuItems[pipedWindow.label].firstMatch
-    XCTAssertTrue(pipedItem.waitForExistence(timeout: 5), app.debugDescription)
+    let pipedItem = windowMenu.menuItems[pipedTitle].firstMatch
+    let itemAppeared = pipedItem.waitForExistence(timeout: 5)
+    if !itemAppeared {
+      let image = XCTAttachment(screenshot: app.screenshot())
+      image.name = "command-line-window-menu-failure"
+      image.lifetime = .keepAlways
+      add(image)
+    }
+    XCTAssertTrue(itemAppeared, app.debugDescription)
     pipedItem.click()
     XCTAssertEqual(
       app.windows.firstMatch.textViews["markdownSourceEditor"].firstMatch.value as? String,

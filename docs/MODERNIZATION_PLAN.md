@@ -3,7 +3,7 @@
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
 Current accepted core baseline: **427 package tests / 89 suites, all 652 published
-CommonMark examples and eight arm64 test executables pass** at `d7f410e`, with
+CommonMark examples and eight arm64 test executables pass** at `ebcad08`, with
 zero compiler errors/warnings.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -3711,3 +3711,19 @@ locally authored code unloaded; explicit load obtains its principal class. Swift
 NSObject.Type construction compiles normally. Neither user plug-in directory
 exists; no third-party plug-in was loaded or installed. Invocation/host/release
 compatibility remains open. Current CLI regression takes priority.
+
+
+## New CLI files open; native menu title correction — 2026-11-09
+
+The `ebcad08` native followup opens every requested file, including extensionless
+`--help`, and passes the warm pipe/source/reuse and exact original/new-file byte
+checks. The type-inference production defect is resolved in that actual flow.
+It then stops at the test's Window-menu lookup: the window’s accessibility label
+is empty, while its separate public title is `Untitled 2`. The test now reads the
+nonempty title before opening the menu. No app/menu behavior, deadlines or Save/
+cold assertions change; runtime completion remains pending.
+
+The same source passes all427core tests/89suites, zero compilerwarnings/errors,
+652CommonMark examples and eightarm64 test executables. Its automatic regular
+full run42632090081 is still executing. No fresh full native acceptance or physical
+composition/VoiceOver claim is made.

@@ -884,5 +884,26 @@
       42199,
       85540
     ]
+  },
+  "completedD7f410eFailureAndPluginProbeCleanup": {
+    "dateUTC": "2026-11-09T14:14:50.419740+00:00",
+    "items": [
+      {
+        "path": "/private/tmp/snowfolio-cli-current-incoming",
+        "allocatedBytesRemoved": 102207488
+      },
+      {
+        "path": "/private/tmp/snowfolio-plugin-probe",
+        "allocatedBytesRemoved": 188416
+      }
+    ],
+    "allocatedBytesRemoved": 102395904,
+    "reason": "Full result summaries, exact method lists, CLI archived snapshot/full error and plug-in probe source/findings retained. Concluded partial raw extraction and first-party compiled probe removed. No user/plugin installation or active app/cache removed.",
+    "ownershipAndOpenFilesChecked": true,
+    "keptUsefulFullRaw": "/private/tmp/snowfolio-current-native-result",
+    "protectedApps": [
+      42199,
+      85540
+    ]
   }
 }

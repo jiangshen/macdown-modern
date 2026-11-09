@@ -173,6 +173,33 @@
     "local": "SnowfolioUI builds with zero diagnostics in the shared cache. Actual UI test typechecks and strict changed lint/diff pass. Runtime correction pending.",
     "testEvidence": "Fatal failure can skip deferred captures; missing-window snapshot is now attached before the assertion. All original waits, file/source/encoding/Save/cold assertions retained.",
     "compact": "/private/tmp/snowfolio-validation-history/default-d7f410e",
-    "limits": "No explicit CLI PNG was retained at d7f410e because the fatal assertion skipped the defer. Full UI Snapshot bplist and extracted complete error retained."
+    "limits": "No explicit CLI PNG was retained at d7f410e because the fatal assertion skipped the defer. Full UI Snapshot bplist and extracted complete error retained.",
+    "nativeFocusedFollowup": {
+      "source": "ebcad08a09698c22e46232aaeb35088bfbd8cd3b",
+      "run": 42632299370,
+      "job": 129211407514,
+      "result": "Warm receipt, pipe and existing sources, exact original bytes, both created-file windows and both empty-file bytes pass. All3files report opened. Then test stops at Window-menu item lookup in29.582s. No remaining data-format rejection.",
+      "harnessFinding": "XCUI window.title is Untitled2; window.label is empty. Test incorrectly used label. Installed public XCUIElementAttributes.h exposes title separately. Test now captures title before opening the native menu, requires nonempty title, uses it for the menu item and captures failure before asserting.",
+      "compact": "/private/tmp/snowfolio-validation-history/command-line-native-ebcad08",
+      "limits": "Save/cold remains unaccepted; no app/menu behavior change for this test-only correction."
+    }
+  },
+  "resultExtractionImprovement": {
+    "archiveBytes": 178138874,
+    "bufferedResumedTransferBytes": 87842293,
+    "skippedDiagnosticBlobBytes": 93225906,
+    "method": "Range-only ZIP directory; buffered1MiB blocks, eight-block memory cache, individual result objects capped8MiB. Completed initial small records reused. Full summaries read successfully without large blobs; only CLI snapshot retained. Earlier unbuffered partial transfer also occurred, so resumed bytes are not claimed as total network traffic.",
+    "rawCleanup": 102395904
+  },
+  "acceptedCoreEbcad08": {
+    "run": 42632090081,
+    "job": 129210671780,
+    "tests": 427,
+    "suites": 89,
+    "commonMark": "652/652",
+    "arm64TestExecutables": 8,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-ebcad08"
   }
 }
