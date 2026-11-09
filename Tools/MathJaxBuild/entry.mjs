@@ -19,3 +19,5 @@ import '@mathjax/src/js/input/tex/textmacros/TextMacrosConfiguration.js';
 import '@mathjax/src/js/input/tex/verb/VerbConfiguration.js';
 import '@mathjax/src/js/input/tex/unicode/UnicodeConfiguration.js';
 import '@mathjax/src/js/input/tex/extpfeil/ExtpfeilConfiguration.js';
+export {Loader} from '@mathjax/src/js/components/loader.js';
+import '@mathjax/src/js/input/tex/require/RequireConfiguration.js';

@@ -1333,5 +1333,19 @@
     "kept": "Small inspected CLI screenshot, routing/hierarchy/activity metadata and review in native-full-215ce9a; compact original19commandextension map/source hash in math-compatibility; core1d6bd22 logs only28KBcompressed. No rawxcresultretained.",
     "protection": "Ownership/symlink and open-file checks completed. RunningSnowfolio42199,DocumentHostProbe85540 and protected app/cache/documents untouched. No new local app build or test rerun.",
     "storage": "Current single core cache951MiB, protected app844MiB and probe465MiB; earlier transient buildcleanup retained. No Trash emptied."
+  },
+  "offlineMathRequireCycle": {
+    "dateUTC": "2026-11-09T22:38:01.700568+00:00",
+    "removedAllocatedBytes": 211394560,
+    "removed": [
+      "/private/tmp/snowfolio-mathjax-build",
+      "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-E02C1E43-5CF2-4277-9E05-7D212112033C",
+      "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-E07F30C6-3A67-4CF2-BEDC-DBF3395B03B7",
+      "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-0DD6A85A-D9FE-4D1B-89EC-219B5FDFB14D",
+      "/private/tmp/snowfolio-add-offline-require.py",
+      "/private/tmp/snowfolio-finish-offline-require.py"
+    ],
+    "kept": "/private/tmp/snowfolio-validation-history/math-offline-require contains small logs/reports,3inspectedPNGs and1PDF. No rawxcresult or dependency/module-cache/prototype build remains.",
+    "protected": "One reused core cache; running Snowfolio42199 andDocumentHostProbe85540/bundles and user-assisted document untouched. No local app build/install/default change. Ownership and active open-file checks completed; no Trash emptied."
   }
 }

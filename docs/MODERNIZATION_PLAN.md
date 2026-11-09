@@ -16,6 +16,14 @@ The light/dark previews and one-page PDF were inspected. See
 [math-compatibility.json](validation/math-compatibility.json). Wider original MathJax
 extension compatibility and current-source full app acceptance remain open.
 
+The next offline compatibility increment passes **461 local tests / 94 suites**.
+Original `\require{cancel}`-style declarations now use upstream MathJax parsing
+and a registry of bundled packages/legacy aliases. Swift disables loader bootstrap,
+rejects unlisted packages and removes the runtime loading entry point. AMS aligned
+equations retain their bounded indentation attribute. Light/dark and PDF output
+were inspected. Exact-source hosted acceptance remains pending; see
+[math-offline-require.json](validation/math-offline-require.json).
+
 The latest complete native attempt at `215ce9a` finishes **42/43**: the initial warm CLI
 window wait fails, although the post-failure hierarchy contains the opened files and
 piped notebook. No root cause is attributed yet. Native **41/41 at `c0c6e6f`** remains

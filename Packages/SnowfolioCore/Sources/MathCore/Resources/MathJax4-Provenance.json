@@ -18,11 +18,15 @@
       "source": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.2.tgz"
     }
   },
-  "scope": "Direct TeX/AMS/newcommand/bbox/color/cancel/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. No loader/startup, document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.",
+  "offlineRegistry": {
+    "rootURL": "snowfolio-math:",
+    "runtimeLoading": false
+  },
+  "scope": "Direct TeX/AMS/newcommand/bbox/color/cancel/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. Upstream require parser and package registry imported with page-loader bootstrap disabled in Swift; only bundled packages/legacy aliases are preloaded, defaultAllow=false and Loader.load removed. No document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.",
   "buildInputs": {
     "package.json": "04a31e116dd1b323186c97601b34599aae7c8dd9ddeeef17fe0ee65b25cd8516",
     "package-lock.json": "6df165ae0caafd08ed3777d2d0ded78e2508fb900a79e9b071613af542a8b824",
-    "entry.mjs": "44e27d494e1c6603b9438313c3d9a3436aded1cbc018ada0e387e5cb405da94c",
+    "entry.mjs": "8c47f210e106444da239bbc32ba62899eb38aa2486e4367f316d8935e07705b0",
     "font-default.mjs": "edaccc8e2e36fc675eff5ea0a5c1cd3d9d7329d7c1502a37c81e63ed4de68f53"
   },
   "bundledModules": [
@@ -59,6 +63,11 @@
     "node_modules/@mathjax/src/mjs/adaptors/lite/Text.js",
     "node_modules/@mathjax/src/mjs/adaptors/lite/Window.js",
     "node_modules/@mathjax/src/mjs/adaptors/liteAdaptor.js",
+    "node_modules/@mathjax/src/mjs/components/global.js",
+    "node_modules/@mathjax/src/mjs/components/loader.js",
+    "node_modules/@mathjax/src/mjs/components/mjs/root.js",
+    "node_modules/@mathjax/src/mjs/components/package.js",
+    "node_modules/@mathjax/src/mjs/components/startup.js",
     "node_modules/@mathjax/src/mjs/components/version.js",
     "node_modules/@mathjax/src/mjs/core/DOMAdaptor.js",
     "node_modules/@mathjax/src/mjs/core/FindMath.js",
@@ -173,6 +182,7 @@
     "node_modules/@mathjax/src/mjs/input/tex/newcommand/NewcommandMappings.js",
     "node_modules/@mathjax/src/mjs/input/tex/newcommand/NewcommandMethods.js",
     "node_modules/@mathjax/src/mjs/input/tex/newcommand/NewcommandUtil.js",
+    "node_modules/@mathjax/src/mjs/input/tex/require/RequireConfiguration.js",
     "node_modules/@mathjax/src/mjs/input/tex/textmacros/TextMacrosConfiguration.js",
     "node_modules/@mathjax/src/mjs/input/tex/textmacros/TextMacrosMappings.js",
     "node_modules/@mathjax/src/mjs/input/tex/textmacros/TextMacrosMethods.js",
@@ -270,7 +280,7 @@
     "node_modules/@mathjax/src/mjs/util/string.js"
   ],
   "files": {
-    "MathJax4.js": "f3eb01828451f5d690013f934d25242225c36caa806aaf21c1e88d363ddb725b",
+    "MathJax4.js": "b295bfc1dfde1d01d03274587a49479f97d2d64d721ae787d2828313b1b66e49",
     "MathJax4-LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
   }
 }

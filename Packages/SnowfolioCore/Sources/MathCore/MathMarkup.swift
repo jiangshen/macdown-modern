@@ -85,7 +85,8 @@ enum MathMarkup {
       "form",
       "lspace", "rspace", "accent", "accentunder", "minsize", "maxsize", "separator",
       "movablelimits", "symmetric", "subscriptshift", "superscriptshift", "notation", "voffset",
-      "depth", "align", "side", "minlabelspacing", "display", "mode", "actiontype", "selection",
+      "depth", "align", "indentshift", "side", "minlabelspacing", "display", "mode", "actiontype",
+      "selection",
     ]
     var queue: [(XMLNode, Int)] = [(root, 0)]
     var cursor = 0
@@ -131,7 +132,7 @@ enum MathMarkup {
             try validateValue(value)
           } else if [
             "d", "transform", "width", "height", "x", "y", "x1", "y1", "x2", "y2", "dx", "dy",
-            "viewbox", "stroke-width",
+            "viewbox", "stroke-width", "indentshift",
           ].contains(key) {
             try validateNumbers(value)
           }

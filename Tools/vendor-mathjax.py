@@ -22,6 +22,7 @@ def build(work):
     subprocess.run(['node', str(work / 'node_modules/esbuild/bin/esbuild'), str(work / 'entry.mjs'),
                     '--bundle', '--minify', '--format=iife', '--global-name=SnowfolioMathJax',
                     '--platform=browser', '--target=es2022', '--charset=utf8', '--legal-comments=inline',
+                    '--define:import.meta.url="snowfolio-math:"',
                     '--alias:#default-font/svg/default.js=' + str(work / 'font-default.mjs'),
                     '--outfile=' + str(work / 'MathJax4.js'),
                     '--metafile=' + str(work / 'meta.json')], check=True, cwd=work)
@@ -31,9 +32,12 @@ def build(work):
                                 'node_modules/@mathjax/mathjax-tex-font/mjs/')))
            for name in modules):
         raise ValueError('Unexpected MathJax dependency')
-    if any('/autoload/' in name or '/require/' in name or '/html/' in name and '/input/tex/' in name
-           for name in modules):
-        raise ValueError('Unexpected dynamic loader or arbitrary HTML TeX package')
+    require_module = 'node_modules/@mathjax/src/mjs/input/tex/require/RequireConfiguration.js'
+    if require_module not in modules or any(
+            '/autoload/' in name or
+            ('/require/' in name and name != require_module) or
+            ('/html/' in name and '/input/tex/' in name) for name in modules):
+        raise ValueError('Unexpected TeX loading or arbitrary HTML module')
     DEST.mkdir(exist_ok=True)
     shutil.copyfile(work / 'MathJax4.js', DEST / 'MathJax4.js')
     notice = work / 'node_modules/@mathjax/src/LICENSE'
@@ -46,7 +50,8 @@ def build(work):
                 if name in ('node_modules/@mathjax/src', 'node_modules/@mathjax/mathjax-tex-font',
                             'node_modules/esbuild')}
     record = {'version': '4.1.3', 'fontVersion': '4.1.3', 'packages': packages,
-              'scope': 'Direct TeX/AMS/newcommand/bbox/color/cancel/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. No loader/startup, document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.',
+              'offlineRegistry': {'rootURL': 'snowfolio-math:', 'runtimeLoading': False},
+              'scope': 'Direct TeX/AMS/newcommand/bbox/color/cancel/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. Upstream require parser and package registry imported with page-loader bootstrap disabled in Swift; only bundled packages/legacy aliases are preloaded, defaultAllow=false and Loader.load removed. No document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.',
               'buildInputs': {name: hashlib.sha256((BUILD / name).read_bytes()).hexdigest()
                               for name in INPUTS}, 'bundledModules': modules,
               'files': {name: hashlib.sha256((DEST / name).read_bytes()).hexdigest()

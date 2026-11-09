@@ -109,5 +109,9 @@
   "integratedCompatibility20261109": {
     "ledger": "math-compatibility.json",
     "local": "460/94passes/ninearm64zero compilerdiagnostics; light/darkWebKit and one-pagePDFinspected. Hostedcurrent-sourcepending."
+  },
+  "offlineRequirementsFollowup": {
+    "ledger": "math-offline-require.json",
+    "status": "Final local461/94passes, exact-source hosted pending. Whitelisted preloaded declarations accepted with runtime loading disabled; broader optional packages and HTML extensions remain unaccepted."
   }
 }

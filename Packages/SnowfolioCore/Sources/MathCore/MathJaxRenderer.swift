@@ -4,6 +4,14 @@ import JavaScriptCore
 /// Actor-confined compatibility path. Only pinned library modules run in the
 /// context; all document ordering, cancellation, limits and publication are Swift.
 final class MathJaxRenderer {
+  private static let packages = [
+    "base", "ams", "newcommand", "bbox", "color", "cancel", "mathtools", "boldsymbol",
+    "braket", "textmacros", "verb", "unicode", "extpfeil", "require",
+  ]
+  // MathJax2's names refer to capabilities already present in base/ams.
+  private static let declarations =
+    packages.filter { !["base", "require"].contains($0) }
+    + ["AMSmath", "AMSsymbols", "mathchoice"]
   private var context: JSContext?
   private var adaptor: JSValue?
 
@@ -18,9 +26,10 @@ final class MathJaxRenderer {
     let tex = try checked(context) {
       modules.forProperty("TeX")?.construct(withArguments: [
         [
-          "packages": [
-            "base", "ams", "newcommand", "bbox", "color", "cancel", "mathtools", "boldsymbol",
-            "braket", "textmacros", "verb", "unicode", "extpfeil",
+          "packages": Self.packages,
+          "require": [
+            "defaultAllow": false,
+            "allow": Dictionary(uniqueKeysWithValues: Self.declarations.map { ($0, true) }),
           ],
           "tags": "none", "maxBuffer": 16_384, "maxMacros": 1000,
         ]
@@ -184,11 +193,30 @@ final class MathJaxRenderer {
     guard let url = Bundle.module.url(forResource: "MathJax4", withExtension: "js"),
       let context = JSContext()
     else { throw MathEngineError.missingResources }
+    // Supply the upstream component object explicitly so importing the registry
+    // cannot bootstrap a page loader or try to discover a script URL. These are
+    // plain JavaScript values; the context has no DOM/file/network bridge.
+    context.setObject(
+      [
+        "version": "4.1.3", "_": [:], "loader": [:],
+        "config": ["loader": ["paths": [:], "dependencies": [:], "provides": [:]]],
+      ], forKeyedSubscript: "MathJax" as NSString)
     context.evaluateScript(try String(contentsOf: url, encoding: .utf8))
     guard context.exception == nil,
       context.objectForKeyedSubscript("SnowfolioMathJax")?.isObject == true
     else { throw MathEngineError.engineFailed }
     guard let modules = context.objectForKeyedSubscript("SnowfolioMathJax") else {
+      throw MathEngineError.engineFailed
+    }
+    guard let loader = modules.forProperty("Loader"), loader.isObject else {
+      throw MathEngineError.engineFailed
+    }
+    _ = try checked(context) {
+      loader.invokeMethod("preLoaded", withArguments: Self.declarations.map { "[tex]/" + $0 })
+    }
+    // The upstream require parser can acknowledge only the preloaded allowlist.
+    // Remove its runtime loading entry point as a second independent boundary.
+    guard loader.deleteProperty("load"), loader.forProperty("load")?.isUndefined == true else {
       throw MathEngineError.engineFailed
     }
     let adaptor = try checked(context) {

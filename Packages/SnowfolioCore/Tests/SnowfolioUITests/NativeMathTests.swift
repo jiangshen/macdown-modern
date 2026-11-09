@@ -180,8 +180,10 @@ struct NativeMathTests {
     options.inlineDollarMath = true
     let source =
       "# Compatible equations\n\n" + #"See $\eqref{answer}$."#
-      + "\n\n" + #"$$\newenvironment{snowcase}[1]{\left\{#1}{\right.}$$"#
+      + "\n\n" + #"$$\require{newcommand}\newenvironment{snowcase}[1]{\left\{#1}{\right.}$$"#
       + "\n\n```math\n" + #"\begin{snowcase}{x}y\end{snowcase}\tag{A}\label{answer}"#
+      + "\n```\n\n```math\n"
+      + #"\require{AMSmath}\begin{align}x&=y\\a&=b\end{align}"#
       + "\n```\n\nEnd checkpoint."
     let export = try await MarkdownExport.build(
       source: source, options: options, title: "Compatible equations", directory: nil)
@@ -195,7 +197,7 @@ struct NativeMathTests {
     #expect(
       try await evaluate(
         "return String(document.querySelectorAll('.md-mathjax-visual>svg').length);",
-        in: surface.view) == "2")
+        in: surface.view) == "3")
     #expect(
       try await evaluate(
         "return String([...document.querySelectorAll('.md-mathjax-visual>svg')].every(e=>e.getBoundingClientRect().width>10 && e.getBoundingClientRect().height>10));",
@@ -214,7 +216,7 @@ struct NativeMathTests {
     #expect(
       try await evaluate(
         "return String(document.querySelectorAll('math annotation[encoding=\"application/x-tex\"]').length);",
-        in: surface.view) == "3")
+        in: surface.view) == "4")
     let image = try await surface.view.takeSnapshot(configuration: nil)
     let imageTIFF = try #require(image.tiffRepresentation)
     let bitmap = try #require(NSBitmapImageRep(data: imageTIFF))

@@ -1,7 +1,7 @@
 {
   "dateUTC": "2026-11-09T22:01:15.423591+00:00",
   "sourceParent": "705cc004c5a37a3f54a91699b8cfb13256834d6f",
-  "status": "Implemented and accepted hosted460/94+652CommonMark/ninearm64 at1d6bd22, zero compiler diagnostics. Complete current actual-app acceptance and wider MathJax parity remain open.",
+  "status": "Initial integration accepted hosted460/94+652CommonMark at1d6bd22; offline require/AMS alignment followup passes final local461/94. Exact followup hosted/app acceptance and wider parity remain open.",
   "sourceSHA256": {
     "Packages/SnowfolioCore/Sources/MathCore/MathRenderer.swift": "08d52b656c5669454b0afffa45d5a24453883ebbb277205f6145212e41e54ba0",
     "Packages/SnowfolioCore/Sources/MathCore/MathJaxRenderer.swift": "069d0f31392fc88d19fe17253f3bc463c54a14b8a6972835958c8f61e988cad2",
@@ -262,5 +262,19 @@
     "native": 42710891156,
     "source": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
     "status": "in progress; no full app acceptance claimed"
+  },
+  "initialIntegrationSourceCommit": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
+  "offlineRequirementsFollowup": {
+    "ledger": "math-offline-require.json",
+    "local": {
+      "tests": 461,
+      "suites": 94,
+      "seconds": 57.534,
+      "executables": 9,
+      "architecture": "arm64",
+      "compilerWarnings": 0,
+      "compilerErrors": 0
+    },
+    "scope": "Preloaded upstream package declarations and AMSalignment; no runtime loading. Wider extensions/full app acceptance still open."
   }
 }

@@ -1,0 +1,66 @@
+{
+  "dateUTC": "2026-11-09T22:38:01.700568+00:00",
+  "sourceParent": "59b0bfd",
+  "status": "Implemented and final full local461/94passes. Exact-source hosted/core/corpus/app acceptance pending; full modernization remains open.",
+  "sourceSHA256": {
+    "Packages/SnowfolioCore/Sources/MathCore/MathJaxRenderer.swift": "cee9f8ca6b5b625ac44d2e2a37ede35d0d442f6e363d6604669f297b74e6bfed",
+    "Packages/SnowfolioCore/Sources/MathCore/MathMarkup.swift": "1c3a8b9865dfa6be014a5f1b0281b9c01270a392224a928b2086c18df84abd4d",
+    "Packages/SnowfolioCore/Sources/MathCore/Resources/MathJax4.js": "b295bfc1dfde1d01d03274587a49479f97d2d64d721ae787d2828313b1b66e49",
+    "Packages/SnowfolioCore/Sources/MathCore/Resources/MathJax4-Provenance.json": "7c9ceec04240b2e7361d254f7c4a3682a4f6aba6a72a52436f6973d2b6d32981",
+    "Packages/SnowfolioCore/Tests/MarkdownCoreTests/MarkdownMathCompatibilityTests.swift": "94d8a0c52f498ecbe78bfaac20f97b0a838b8cc3e8ffde0f079f22680c4b4eff",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeMathTests.swift": "c6483b493ea5981260859c4db79fd63df45d4baf860ebc5b7b5dbb182b7df432",
+    "Tools/MathJaxBuild/entry.mjs": "8c47f210e106444da239bbc32ba62899eb38aa2486e4367f316d8935e07705b0",
+    "Tools/vendor-mathjax.py": "222abb1c8cb2b504ee8ac86108cc28934678efeccd8b763a04e89ed92d09a6b2",
+    "Tools/verify-math-engines.py": "4dd077f1c203fe84b3e6addc1e87ab72f112027f163b380c7d9a146740c5b97c"
+  },
+  "problem": "Original MacDown selects MathJax2.7.3 TeX-AMS-MML_HTMLorMML, which accepts require declarations. The initial offline integration rejected declarations even when their capabilities were already bundled.",
+  "implementation": {
+    "parser": "Pinned upstream RequireConfiguration only, called by normal MathJax compilation. No TeX source replacement, custom require parser or Node runtime.",
+    "registry": "Swift supplies the explicit pinned component object before module evaluation, preventing page-loader bootstrap/root discovery. Registers only already bundled packages and known MathJax2 aliases. defaultAllow=false for each new TeX instance; exported Loader.load deleted and checked before use. No DOM/file/network binding is installed.",
+    "allowed": [
+      "ams",
+      "newcommand",
+      "bbox",
+      "color",
+      "cancel",
+      "mathtools",
+      "boldsymbol",
+      "braket",
+      "textmacros",
+      "verb",
+      "unicode",
+      "extpfeil",
+      "AMSmath",
+      "AMSsymbols",
+      "mathchoice"
+    ],
+    "aliases": "AMSmath/AMSsymbols use the already enabled ams capability; mathchoice is already in v4 base. No source rewriting or new dynamic package registration.",
+    "resource": "Module boundary remains library imports/exports only. Bundle1862825bytes, increase14036bytes; build declares inert import.meta.url=snowfolio-math:. Original licenses preserved.",
+    "alignment": "The upstream AMSalign output uses MathML indentshift. Preserve it and apply existing finite/absolute geometry limits; ordinary aligned equations no longer fall back merely because of that inert attribute."
+  },
+  "verification": {
+    "local": {
+      "tests": 461,
+      "suites": 94,
+      "seconds": 57.534,
+      "executables": 9,
+      "architecture": "arm64",
+      "compilerWarnings": 0,
+      "compilerErrors": 0
+    },
+    "focused": "8compatibilitymethods pass after diagnostic correction; existing seven retained.",
+    "coverage": "13package/legacy-declaration examples, exact authored TeX annotations, definition-only empty span, same-document definitions, whole-batch cache, standalone reset,13blocked declarations including HTML/autoload/paths/URLs and continued valid rendering. Existing hostile-markup case also rejects nonfinite indentshift.",
+    "native": "Existing native method expanded with preloaded newcommand and AMSmath declarations plus two aligned equation rows. Both appearances pass3SVGgeometry,4exactTeXannotations, local reference targets, no page-global engine, disabled pageJS and zero-height definition parent. One-page PDF retains heading/end checkpoint. All3finalPNGs inspected.",
+    "checks": "Strict changed Swift formatting, Python AST syntax, pinned resources/reproduction inputs/notices, nine actualarm64executables and diff check pass. No full suite rerun after success.",
+    "diagnostics": "First new test finds AMSalign rejected due to indentshift, plus a string-based msup assertion failed because upstream attaches attributes. Preserve the inert upstream attribute under bounds and query the semantic msup element; final full suite passes unchanged safety/behavior gates."
+  },
+  "remaining": [
+    "Exact-source hosted acceptance; prior1d6bd22core460/94+652CommonMark is historical accepted baseline only.",
+    "Original optional MathJax2 extensions outside the current bundled allowlist and arbitrary HTML/style/link behavior require further compatibility review; no original-loader retirement.",
+    "Current complete native/regular app outcomes, physical Pinyin/VoiceOver/preview, measured app performance/productivity/signing/release and safe progressive legacy retirement."
+  ],
+  "compact": "/private/tmp/snowfolio-validation-history/math-offline-require",
+  "productionInstalled": false,
+  "defaultHandlerChanged": false,
+  "fullGoal": "Active and incomplete."
+}

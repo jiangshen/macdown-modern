@@ -81,6 +81,49 @@ struct MarkdownMathCompatibilityTests {
   }
 
   @Test(
+    "Original package declarations use only preloaded offline modules and preserve exact source")
+  func offlineRequirements() throws {
+    let renderer = MathRenderer()
+    let sources = [
+      #"\require{AMSmath}\begin{align}x&=y\end{align}"#,
+      #"\require{AMSsymbols}\mathbb{R}"#,
+      #"\require{mathchoice}\mathchoice{a}{b}{c}{d}"#,
+      #"\require{cancel}\cancel{x}"#, #"\require{bbox}\bbox[red,2px]{y}"#,
+      #"\require{color}\color{red}{x}"#, #"\require{boldsymbol}\boldsymbol{x}"#,
+      #"\require{braket}\Braket{a|b}"#, #"\require{verb}\verb|a_b|"#,
+      #"\require{unicode}\unicode{x41}"#, #"\require{extpfeil}a\xtwoheadrightarrow{n}b"#,
+      #"\require{mathtools}\coloneqq"#, #"\require{textmacros}\textbf{bold}"#,
+    ]
+    let results = try renderer.renderDocument(sources.map { MathExpression($0, display: true) })
+    for (source, result) in zip(sources, results) {
+      #expect(result.issue == nil, "\(source): \(result.html)")
+      let document = try XMLDocument(xmlString: result.html)
+      let annotation = try document.nodes(forXPath: "//*[local-name()='annotation']").first
+      #expect(annotation?.stringValue?.utf8.elementsEqual(source.utf8) == true)
+    }
+    let definitions = [
+      MathExpression(#"\require{newcommand}\newcommand{\snowrequired}{x^2}"#, display: true),
+      MathExpression(#"\snowrequired"#, display: true),
+    ]
+    let values = try renderer.renderDocument(definitions)
+    #expect(values.allSatisfy { $0.issue == nil })
+    #expect(values[0].html.contains("md-mathjax-empty"))
+    let expanded = try XMLDocument(xmlString: values[1].html)
+    #expect(try expanded.nodes(forXPath: "//*[local-name()='msup']").count == 1)
+    #expect(try renderer.renderDocument(definitions).map(\.html) == values.map(\.html))
+    #expect(try renderer.render(#"\snowrequired"#, display: true).issue != nil)
+    for name in [
+      "HTML", "html", "autoload", "require", "base", "configmacros", "tagformat", "setoptions",
+      "texhtml", "unknown", "../cancel", "https://example.com/extension", "file:///tmp/x",
+    ] {
+      let rejected = try renderer.render("\\require{" + name + "}x", display: true)
+      #expect(rejected.issue != nil && !rejected.html.contains("<svg"))
+    }
+    // A rejected declaration does not change the next document's package policy.
+    #expect(try renderer.render(sources[3], display: true).issue == nil)
+  }
+
+  @Test(
     "Compatibility errors, recursive macros and oversized geometry leave other equations intact")
   func constraints() throws {
     let sources = [
@@ -169,6 +212,13 @@ struct MarkdownMathCompatibilityTests {
       }
     }
     let svg = #"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path d="M0 0"/></svg>"#
+    #expect(throws: (any Error).self) {
+      try MathMarkup.html(
+        svg: svg,
+        mathml:
+          #"<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle indentshift="1e999em"><mi>x</mi></mstyle></math>"#,
+        source: "x", display: false, namespace: "test")
+    }
     #expect(throws: (any Error).self) {
       try MathMarkup.html(
         svg: svg, mathml: #"<!DOCTYPE math [<!ENTITY x SYSTEM "file:///etc/passwd">]>"# + math,
