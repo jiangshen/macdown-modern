@@ -968,5 +968,17 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-actual-app-ae2d602",
     "summarySHA256": "f6b2d408a79121988e56d3dbaea619424889cd928c80cfa59d14b9ff2b4f5175",
     "remaining": "Native plus/CommandT creation, multiple separate groups/scroll restoration, standard-periodic dirty conflict choices/Versions/AppleScript, physical paint/IME/VoiceOver, remaining parity/performance/release gates."
+  },
+  "latestScriptingAndTabsIncrement": {
+    "dateUTC": "2026-11-09T03:43:49.388543+00:00",
+    "implementation": "Native scripting and successful-current-preview HTML cache implemented; full local373/80and8arm64pass, both app hosts build. Native29UI/default27methods compile.",
+    "tabs": "Native keyboard/plus/separateUndo and saved-tab/caret restoration accepted cefdbc02/2. Default current-host new-tab creation now accepted dfdad631/1 after explicit ShowTabBar setup.",
+    "scripting": "Initial -600sender capability corrected with signed Snowfolio-only native-test sender entitlements; subsequent2/2blocked by inspected macOS consent prompt. User approval pending before test may approve temporary OS dialog. No functional real-event acceptance claimed.",
+    "reports": [
+      "native-scripting.json",
+      "native-tabs.json",
+      "default-host-followup.json"
+    ],
+    "remaining": "Native separate groups/scroll restoration, standard-periodic dirty conflict choices/Versions, actual scripting events/options, physical preview/IME/VoiceOver, complete remaining M3-M6parity/performance/release. No host switch/install/release."
   }
 }

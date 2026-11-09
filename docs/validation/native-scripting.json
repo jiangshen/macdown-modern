@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T03:18:26.290812+00:00",
+  "dateUTC": "2026-11-09T03:43:49.388543+00:00",
   "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
-  "status": "Implementation373/80passes; actual event initial5de9f1b2/2fails on first event with -600. Sender missing scoped Apple-event capability identified in signed sandboxed test-runner build log. Narrow test-only entitlement correction builds; runtime retry pending. No scripting feature acceptance claimed.",
+  "status": "Native source/cache implementation373/80passes. Corrected sender run dfdad632/2times out because the macOS automation-consent prompt remains unanswered, proven by both screenshots and live target metadata. Real Apple-event functional acceptance pending explicit authorization; no production scripting correctness inferred from these failures.",
   "interface": {
     "dictionary": "App/Resources/Snowfolio.sdef",
     "nativeClass": "SnowfolioNativeDocument",
@@ -36,9 +36,32 @@
       "compact": "/private/tmp/snowfolio-validation-history/native-scripting-local"
     },
     "defaultBuild": "arm64 build-for-testing and resource/icon/type/license/disabled-scripting checks pass; canonical build restored to default SwiftUI host. Existing AppIntents metadata warning only.",
-    "format": "Strict changed-Swift lint, shell syntax and diff check pass. Manual AppKit review: main-actor scripting, native Undo ownership, no extra file writer or synchronous renderer, weak/native ownership retained; cached fragment shares String storage with preview."
+    "format": "Strict changed-Swift lint, shell syntax and diff check pass. Manual AppKit review: main-actor scripting, native Undo ownership, no extra file writer or synchronous renderer, weak/native ownership retained; cached fragment shares String storage with preview.",
+    "hostedCore": {
+      "commit": "5de9f1b507fde7df52c095079742579a04771671",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42555759244",
+      "job": "swift-foundations",
+      "tests": 373,
+      "suites": 80,
+      "errors": 0,
+      "warnings": 0,
+      "arm64Executables": 8,
+      "commonmark": {
+        "spec": "CommonMark 0.31.2",
+        "source": "https://spec.commonmark.org/0.31.2/spec.json",
+        "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+        "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+        "total": 652,
+        "passed": 652,
+        "failed": 0,
+        "failures": []
+      },
+      "compact": "/private/tmp/snowfolio-validation-history/core-5de9f1b",
+      "scope": "Core job succeeds; full default-host UI job was last observed live and is independent of focused native scripting consent blocker."
+    }
   },
   "remaining": [
+    "User authorization for temporary own-app automation consent, then actual real-event tests; no automatic approval before reply.",
     "Actual Apple-event execution and permissions in hosted native-scripting scope",
     "Make with data semantics, script object indexing/window references and complete standard command/options parity",
     "Error paths/read-only/current composition behavior via real Apple events",
@@ -62,7 +85,7 @@
     "failed": 2,
     "testExecutionSeconds": 23.343,
     "compact": "/private/tmp/snowfolio-validation-history/native-scripting-5de9f1b",
-    "failure": "Both initial make/open events report -600 Application is not running. Tests launched native app and terminated it in defer. No remaining source/cache/save assertions reached.",
+    "failure": "Both initial scripting sequences report -600 Application is not running; exact command range/timelines retained. No source/cache/save acceptance reached.",
     "senderEvidence": "Original test runner entitlements show app-sandbox true, no scripting-targets or apple-events exception and no automation.apple-events. A sandboxed sender needs an explicit allowed target.",
     "causeLimit": "Missing required sender capability is established; retry must establish whether it accounts for the observed -600. No production scripting dispatch/correctness inferred from first failure."
   },
@@ -77,5 +100,23 @@
     "reference": "https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/AppSandboxTemporaryExceptionEntitlements.html",
     "diagnostics": "On command error attach actual target PID/bundle/launch/termination flags, synthetic script source/error and own app image if alive. Original event/body assertions retained.",
     "builds": "Native29and default27UI methods compile; all existing host/resource/icon/type/license/dictionary gates pass; canonical default restored. AppIntents warning remains."
+  },
+  "scopedSenderHosted": {
+    "commit": "dfdad634d87555c4d25a586a5aee0e680391ac73",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42556728252",
+    "executed": 2,
+    "passed": 0,
+    "failed": 2,
+    "skipped": 0,
+    "testExecutionSeconds": 251.961,
+    "compact": "/private/tmp/snowfolio-validation-history/native-scripting-dfdad63",
+    "failure": "-1712AppleEvent timed out after waiting for normal macOS automation consent. Both target PIDs finishedLaunching=true/terminated=false. Both inspected images show SnowfolioUITests-Runner wants access to control Snowfolio with Allow/DontAllow. Open fixture reaches actual native source window in the second method, then the text query waits at consent.",
+    "permissionScope": "Disposable hosted test machine; test sender entitlement limited to local.macdown.modern. Request explicit user authorization before any test approves the visible OS prompt. No TCC database edits, reset/grant command, sandbox removal or broad-target exception.",
+    "approval": "Async user choice requested for this exact temporary-machine/own-app prompt; pending. Do not execute dependent grant/retry before reply.",
+    "screenshots": [
+      "/private/tmp/snowfolio-validation-history/native-scripting-dfdad63/images/089FE52A-CF91-46EC-8BA6-9B2C3B6A4A38.png",
+      "/private/tmp/snowfolio-validation-history/native-scripting-dfdad63/images/5878CBE3-DF93-4AE7-AA7B-AE942B58ADD8.png"
+    ],
+    "functionalLimit": "Source setter/HTML/save/make/close/quit event assertions are still unaccepted. Initial error to timeout transition establishes corrected sender reaches permission flow; not full command behavior."
   }
 }

@@ -107,10 +107,15 @@ are accepted; preview remains blank. Latest cefdbc0core job also passes370/79,
 The preceding default SwiftUI full runs finish26/23pass3fail and27/23pass4fail.
 Three known autosave/reload failures persist; the new method also stops before
 creation waiting for an initially hidden single-document tab bar. Explicit native
-ShowTabBar setup now compiles; its focused retry is pending. Initial native
+ShowTabBar setup passes exact dfdad63focused1/1(81.394s), with its screenshot
+inspected. Initial native
 scripting2/2fails on first Apple event with-600; a missing required scoped sender
 entitlement is identified and corrected only for native UI tests, with sandbox
-retained. Both hosts build; actual event retry remains pending. See
+retained. The corrected retry times out2/2behind an inspected macOS prompt
+asking whether the test runner may control Snowfolio; both app processes are
+alive. Explicit user authorization for that disposable-machine consent is pending.
+No real scripting functional acceptance or privacy grant is claimed. Both hosts
+build and the full373/80local regression passes. See
 [default-host-followup.json](validation/default-host-followup.json) and
 [native-scripting.json](validation/native-scripting.json).
 No default-host switch, installation or release is accepted. M2's remaining host gates,

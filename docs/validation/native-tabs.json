@@ -143,6 +143,6 @@
       "visual": "Inspected all3screenshots and tab AXtree: five-tab group includes anchor and3new empty docs plus normal startup Untitled. Anchor selected/source/outline correct. Restored Alpha/Beta/tab selection correct. Reading pane remains blank.",
       "image": "/private/tmp/snowfolio-validation-history/native-tabs-cefdbc0/images/C5F8553A-2C48-4424-ADC3-7F101B4EB3E7.png"
     },
-    "defaultHostFixtureFollowup": "See default-host-followup.json: preceding default27run failed before CommandTbecause initial single-document tab bar hidden. Explicit Window/ShowTabBar setup compiles for both hosts; all creation assertions retained, focused default retry pending."
+    "defaultHostFixtureFollowup": "Exact dfdad63run42556738514focused1/1passes81.394s after native Window/ShowTabBar setup. Screenshot inspected: anchor+3created tabs, source/outline/selection correct. Original native2/2acceptance retained. Full default3lifecycle failures remain open."
   }
 }

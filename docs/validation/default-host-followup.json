@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T03:29:23.015232+00:00",
+  "dateUTC": "2026-11-09T03:43:49.388543+00:00",
   "status": "Both preceding default SwiftUI full runs fail; native host remains opt-in while its remaining acceptance gates are open.",
   "runs": [
     {
@@ -24,8 +24,20 @@
     "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
     "testCoordinatedExternalReloadAfterAutosave"
   ],
-  "newFixtureFailure": "cefdbc0new-tab method stops at line1602 waiting for an initial native tab bar, before CommandT/plus. The default SwiftUI host may begin with one saved document, unlike native startup Untitled+anchor. New fixture explicitly uses Window/ShowTabBar when hidden; count/creation/source/Undo/byte assertions unchanged. Focused document-tab-creation scope added; build passes, retry pending.",
+  "newFixtureFailure": "Earlier cefdbc0failure occurred before creation while waiting for hidden single-document tab bar. Explicit Window/ShowTabBar setup is now accepted by exact dfdad63focused1/1retry; count/creation/source/Undo/byte assertions unchanged.",
   "nativeEvidence": "The same original new-tab and saved-tab methods passed2/2on actual native app at cefdbc0. This default fixture failure does not establish native feature regression.",
   "compact": "/private/tmp/snowfolio-validation-history/default-host-c42-cef",
-  "limit": "Collected completed job failure output with exact counts/failed methods; no raw default result downloaded. Source identifies failure before creation; focused retry must verify the explicit tab-bar setup."
+  "limit": "Collected completed job failure output with exact counts/failed methods; no raw default result downloaded. Source identifies failure before creation; focused retry must verify the explicit tab-bar setup.",
+  "focusedAccepted": {
+    "commit": "dfdad634d87555c4d25a586a5aee0e680391ac73",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42556738514",
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 81.394,
+    "compact": "/private/tmp/snowfolio-validation-history/default-tabs-dfdad63",
+    "visual": "Inspected screenshot: saved anchor plus3created tabs, correct selected anchor source and outline. Preview capture blank remains independent open issue.",
+    "image": "/private/tmp/snowfolio-validation-history/default-tabs-dfdad63/images/613D4EBA-A981-441D-B31B-B5AEA86A2945.png"
+  }
 }

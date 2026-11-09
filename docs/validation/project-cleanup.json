@@ -572,5 +572,25 @@
     "currentFullNative26RawPreserved": true,
     "sourceAndRunningAppPreserved": true,
     "trashEmptied": false
+  },
+  "latestScriptingResultCleanup": {
+    "dateUTC": "2026-11-09T03:43:49.388543+00:00",
+    "removedGeneratedResults": [
+      {
+        "path": "/private/tmp/snowfolio-default-tabs-current-incoming",
+        "allocatedBytesRemoved": 126955520,
+        "kept": "/private/tmp/snowfolio-validation-history/default-tabs-dfdad63"
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-scripting-current-incoming",
+        "allocatedBytesRemoved": 131059712,
+        "kept": "/private/tmp/snowfolio-validation-history/native-scripting-dfdad63"
+      }
+    ],
+    "initialFailedScriptingGeneratedBytesRemoved": 123625472,
+    "ownershipAndOpenFilesChecked": true,
+    "currentFullNative26RawPreserved": true,
+    "sourceAndRunningAppPreserved": true,
+    "trashEmptied": false
   }
 }
