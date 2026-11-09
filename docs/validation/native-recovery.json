@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T04:56:51.979428+00:00",
+  "dateUTC": "2026-11-09T05:04:19.731495+00:00",
   "milestone": "M2 actual native document conflicts and Versions; full modernization active",
-  "status": "Actual native Revert and native older-version Restore pass2/2at f644d0c, zero skipped; all5screenshots inspected. New SaveAnyway/SaveAs compile, runtime pending.",
+  "status": "ee0fc53 actual native conflict/Versions4/4pass, zero failures/skips154.728s. All9screenshots inspected; source/byte/history/URL-baseline checks accepted. Full M2 remains open.",
   "methods": [
     "DocumentLifecycleTests.testPeriodicDirtyConflictRevertKeepsExternalSource",
     "DocumentLifecycleTests.testNativeVersionsBrowseAndRestoreExactPreviousBytes"
@@ -21,11 +21,10 @@
   "workflow": "native-document-recovery runs only these two methods on actual native app. All previous scopes retained. No Apple-event consent required or approved.",
   "local": "Both apphosts build-for-testing with resource/icon/type/license/dictionary gates. Native31/default27UI methods compile; canonical default restored. Existing AppIntents warning only. Changed-Swift strict lint/diff checks pass. No production code change since373/80baseline, so no redundant core rerun.",
   "remaining": [
-    "Hosted actual recovery2run and image/tree/file-byte inspection",
-    "SaveAnyway/SaveAs and full standard-periodic conflict recoverability",
-    "Complete Versions read-only/selection/accessibility and restoration parity",
-    "Separate AppleScript OSconsent explicitly authorized for temporary own-app tests; actual event retry remains required",
-    "Physical preview/selection/IME/VoiceOver and full remaining M3-M6gates"
+    "CompleteVersionsread-only/selection/accessibility and fullrestoration parity",
+    "Separate nativegroups/source-previewviewportrestore and fullcurrentnative33suite",
+    "Remainingactualscriptingoptions/errors",
+    "Physicalpreview/selection/IME/VoiceOver and remainingM3-M6gates"
   ],
   "sourceHashes": {
     "App/UITests/DocumentLifecycleTests.swift": "3b906546cc105493dab52dcf1e7db85ec073b90e7f3878ac0aa2a009d0a94555"
@@ -66,12 +65,25 @@
     ],
     "mechanism": "Share the accepted standard2-second native unsaved/external atomic conflict fixture. Revert retains all source/bytes/history/baseline assertions. SaveAnyway requires exactlocalUTF16bytes plus externalUTF8bytes in native history. SaveAs uses normal native savepanel and requires localUTF16newfile plus untouchedexternaloriginal before/after nexteditSave.",
     "isolation": "Each test terminates app before removing its owned history/files, preserves clipboard, no injected versions or writer/policy changes.",
-    "validation": "Native33UI/default27UI build-for-testing, strict changedSwift lint/diff pass. Runtime pending.",
+    "validation": "All4actual native methods pass, zero skipped,154.728s; native33/default27compile, strictSwiftlint/diff pass.",
     "hosted": {
       "commit": "ee0fc53452135cb654f3292a0afb26f71d5d4a42",
       "run": "https://github.com/jiangshen/snowfolio/actions/runs/42564047176",
       "workflow": "success",
-      "scope": "All4native recovery methods. Exact summaries/images pending existing43544download."
+      "scope": "Normalperiodic conflict choices and native Versions; all9PNGinspected. SaveAs shows recovered-local.md source; SaveAnyway shows localsource; Revert external; older versionselected/restored. Finalbytes, oppositeversionhistory and nextsavebaseline allpass.",
+      "executed": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 154.728,
+      "methodSeconds": {
+        "VersionsRestore": 50.95,
+        "Revert": 31.578,
+        "SaveAnyway": 30.217,
+        "SaveAs": 41.982
+      },
+      "compact": "/private/tmp/snowfolio-validation-history/native-recovery-ee0fc53",
+      "visualLimit": "Hostedreadingpreviewblank persists separately."
     }
   },
   "versionsArrowHosted": {
@@ -89,5 +101,12 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-recovery-f644d0c",
     "visual": "All5screenshots inspected: old version visibly selected then restored in editor; normal conflict and externalRevert correct. Readingpreview blank remains separate open issue.",
     "runtimeWarnings": "Internal XCTest QoS inversions; no new app compiler error/warning beyond existing AppIntents extraction."
+  },
+  "versionsReadOnlyFollowup": {
+    "sourceFinding": "Customeditor initializes isEditable=true and does not consume NSDocument.isInViewingMode. Nativebrowsermayinterceptediting; runtimeassertion required beforeproductionbugclaim.",
+    "reference": "PublicNSDocument.h documents inViewingMode for browsingoldversions.",
+    "test": "Clickexacthistoricalsource; SelectAll/Copy exactoriginalestablishesfocus; unmodifiedxkeystrokemustnotmutateoldorcurrenttext/bytes/history; thenoriginalnativeRestorechecksremain. Clipboardalltypespreserved.",
+    "local": "Native33/default27compile; strictchangedSwiftlint/diffpass; normalcanonicaldefaultrestored.",
+    "status": "Runtimepending, no productionpolicychange."
   }
 }

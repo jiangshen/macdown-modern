@@ -1670,7 +1670,7 @@ final class DocumentLifecycleTests: XCTestCase {
 
   #if NATIVE_DOCUMENT_HOST
     @MainActor
-    private func pasteRecoveryText(_ text: String, in app: XCUIApplication) {
+    private func preservingRecoveryClipboard(_ action: () -> Void) {
       let board = NSPasteboard.general
       let saved = (board.pasteboardItems ?? []).map { item in
         item.types.compactMap { type in item.data(forType: type).map { (type, $0) } }
@@ -1684,9 +1684,16 @@ final class DocumentLifecycleTests: XCTestCase {
         }
         board.writeObjects(items)
       }
-      board.clearContents()
-      board.setString(text, forType: .string)
-      app.typeKey("v", modifierFlags: .command)
+      action()
+    }
+
+    @MainActor
+    private func pasteRecoveryText(_ text: String, in app: XCUIApplication) {
+      preservingRecoveryClipboard {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        app.typeKey("v", modifierFlags: .command)
+      }
     }
 
     @MainActor
@@ -1905,6 +1912,24 @@ final class DocumentLifecycleTests: XCTestCase {
         "native-versions-original-selected", app: app,
         note: "originalPreview=\(selectedOriginal) timeline=\(String(describing: timeline.value))")
       XCTAssertTrue(selectedOriginal, app.debugDescription)
+      preservingRecoveryClipboard {
+        NSPasteboard.general.clearContents()
+        originalPreview.click()
+        app.typeKey("a", modifierFlags: .command)
+        app.typeKey("c", modifierFlags: .command)
+        // Exact Copy establishes focus on the historical source, rather than
+        // merely sending a rejected key to the surrounding Versions browser.
+        XCTAssertEqual(NSPasteboard.general.string(forType: .string), original)
+        app.typeKey("x", modifierFlags: [])
+        attachRecoveryState("native-versions-read-only-source", app: app)
+        XCTAssertTrue(originalPreview.exists, "Typing must not alter the historical source")
+        let currentPreview = app.textViews.matching(identifier: "markdownSourceEditor").matching(
+          NSPredicate(format: "value == %@", replacement)
+        ).firstMatch
+        XCTAssertTrue(currentPreview.exists, "Historical browsing must not edit the current source")
+        XCTAssertEqual(try? Data(contentsOf: file), replacementBytes)
+        XCTAssertTrue(historyContains(originalBytes))
+      }
       XCTAssertTrue(restore.isEnabled)
       restore.click()
       let confirm = app.sheets.buttons["Restore"].firstMatch

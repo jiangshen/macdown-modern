@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T04:56:51.979428+00:00",
+  "dateUTC": "2026-11-09T05:04:19.731495+00:00",
   "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
-  "status": "ee0fc53 real source/Undo/encodedautosave/manualHTML/save/close/quit test passes. Format case reaches Text lexical ambiguity after Markdown succeeds; explicit public enum codes compile, retry pending.",
+  "status": "Actual native scripting2/2pass0skip31.861s at54237aa. Exact temporaryown-appgrant andsource/metadata/Undo/encodedautosave/manualHTML/Makewithproperties/MarkdownTextDataSave/Close/Quit events accepted. Remaining scriptingoptions/errors and fullnative acceptance open.",
   "interface": {
     "dictionary": "App/Resources/Snowfolio.sdef",
     "nativeClass": "SnowfolioNativeDocument",
@@ -61,12 +61,11 @@
     }
   },
   "remaining": [
-    "Execute focused temporary exact system-owned consent route; inspect granted status and actual source/cache/bytes/format results. Explicit user authorization persists; do not ask again.",
-    "Actual Apple-event execution and permissions in hosted native-scripting scope",
-    "Make with data semantics, script object indexing/window references and complete standard command/options parity",
-    "Error paths/read-only/current composition behavior via real Apple events",
-    "Default-host removal and legacy retirement only after full native host acceptance",
-    "Physical preview/IME/VoiceOver, native conflict choices/Versions/group/scroll restoration, full M3-M6 gates"
+    "Makewithdata semantics, objectindexing/windowreferences and remaining standardcommand/options parity",
+    "Real-event read-only/error/activecomposition paths",
+    "Versionsread-only/selection/accessibility, native separate groups/source-previewscrollrestore",
+    "Fullcurrentnative33suite and physicalpreview/selection/caret/IME/VoiceOver",
+    "Default-hostremoval/legacyretirement onlyafterfullnativeacceptance; remainingM3-M6parity/performance/release"
   ],
   "sourceHashes": {
     "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeDocumentScripting.swift": "e843adf84701b72d7cfb294370e42f2300bceb14a7c941da3a044a1d159e0015",
@@ -163,6 +162,27 @@
     "accepted": "Real Open/text/name/fileURL, source setter, nativeUIUndoRedo, activeUTF16LEBOMCRLFautosave, manualHTMLcache and explicitRender refresh, Save/Close/Quit events.",
     "remainingFailure": "Format case gets through Markdown then bare Text parses as AppleScript text type and fails-1700 Can’t make text into type constant. Data not reached.",
     "correction": "Use preserved public saveable-format savf enum codes md  /txt /data directly in same nativeSave commands; names/codes/dictionary unchanged. Keep source/format/file-byte checks. Native33/default27compile; retry pending.",
-    "artifact": "Already-active download18950, do not duplicate; collect before final detailed acceptance."
+    "artifact": "/private/tmp/snowfolio-validation-history/native-scripting-ee0fc53",
+    "skipped": 0,
+    "sourceMethodSeconds": 16.078,
+    "visual": "All3PNGinspected: exactprompt, Text-sourceuntitledatambiguoussave, scriptedchangedsource/manualpreview. Nativepreviewpaintingstillunaccepted."
+  },
+  "formatCodeRetry": {
+    "commit": "54237aa7e0b1ee9ccd063f44fb9226b2d7bb61f4",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42564547579",
+    "scope": "Same2methods, exactpublicformatenumcodes",
+    "status": "passed",
+    "executed": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 31.861,
+    "methodSeconds": {
+      "creationAndFormats": 16.15,
+      "sourceUndoAutosaveHTML": 15.71
+    },
+    "compact": "/private/tmp/snowfolio-validation-history/native-scripting-54237aa",
+    "visual": "BothPNGinspected, exacttemporaryprompt and correctscriptedsource. Previewpaintingstillblank/unaccepted.",
+    "boundary": "Exactenumcodes savfmd  /savftxt /savfdata exercise samepublicdictionaryevents; Textkeywordcollisionretained/documented, no publicnameorcode change."
   }
 }

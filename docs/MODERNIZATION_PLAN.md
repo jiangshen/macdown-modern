@@ -27,7 +27,10 @@ Normal2-second autosave preserves both sides before the user's choice; Revert re
 the unsaved local bytes in history and restores the external encoding/save baseline.
 The native Versions browser selects the exact older source, restores its complete
 UTF16LE/BOM/CRLF/Unicode bytes and retains the newer revision. All5screenshots were
-inspected. Expanded SaveAnyway/SaveAs workflow succeeds at `ee0fc53`; exact result/screenshots are being collected.
+inspected. Expanded SaveAnyway/SaveAs passes with Revert/Versions **4/4, zero skips** at `ee0fc53`
+([run42564047176](https://github.com/jiangshen/snowfolio/actions/runs/42564047176)),154.728s.
+All9screenshots inspected; exactbytes/oppositeversionrecoverability and subsequent
+save URL/encoding baseline pass.
 No injected versions, extra file writer or changed autosave policy. See
 [native-recovery.json](validation/native-recovery.json).
 
@@ -38,9 +41,11 @@ handling is excluded from normal app/test builds. Real scripting reaches Make/Sa
 Open/text/name; the two methods then stop on a stale untitled-name reference after
 Save and property-specifier path coercion. Tests now resolve the saved filename and
 compare the returned public file URL directly. The complete source setter/cache/Undo/
-autosave/Save/Close/Quit method passes at `ee0fc53`. The format method then fails on
-AppleScript’s Text keyword ambiguity; its direct public enum-code correction compiles.
-Complete formats and remaining command/options parity still require runtime acceptance. See
+autosave/Save/Close/Quit method passes at `ee0fc53`. The direct public format-code
+correction passes both methods **2/2, zero skips**,31.861s at `54237aa`
+([run42564547579](https://github.com/jiangshen/snowfolio/actions/runs/42564547579)).
+Makewithproperties and Markdown/Text/Data saves preserve exactfilebytes. Remaining
+command/options/error/composition parity still requires runtime acceptance. See
 [native-scripting.json](validation/native-scripting.json) and the original contract in
 [applescript-characterization.json](validation/applescript-characterization.json).
 
@@ -3309,3 +3314,17 @@ its focused run. The same3SwiftUI lifecycle methods remain failures; core/corpus
 passes. Full native acceptance and M3-M6 remain open, with no host/install/handler switch.
 
 Confirmed `f644d0c` recovery2/2, zero failures/skips,121.319s: Versions70.030s and Revert51.289s. All5images inspected; exact older source is selected/restored and newer bytes remain recoverable. Preview pixel acceptance remains open.
+
+
+## Full native suite and historical-source interaction — 2026-11-09
+
+`54237aa` focused scripting2/2passes,31.861s, zero failures/skips; both images
+inspected. Full actual native33run42564902278 is now running on that exact revision.
+Nativeconflict/Versions4/4at ee0fc53 remains accepted; all9images inspected.
+
+A stronger Versions interaction assertion now compiles: SelectAll/Copy must yield the
+exact historical source, then a normal x key must leave historical/current source,
+currentdiskbytes and originalhistory intact before nativeRestore. Clipboard types/data
+are restored. Customeditor initializes editable and does not explicitly consume native
+viewingmode; the nativebrowser may intercept input, so no production bug/fix is claimed
+before runtime. Native33/default27compile; normaldefaultrestored and strictlint/diffpass.

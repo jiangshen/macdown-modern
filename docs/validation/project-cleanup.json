@@ -656,5 +656,36 @@
     "ownershipAndOpenFilesChecked": true,
     "currentFullNative26RawAndRunningProbePreserved": true,
     "trashEmptied": false
+  },
+  "latestRecoveryChoicesCleanup": {
+    "dateUTC": "2026-11-09T04:59:19.131434+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-scripting-current-incoming",
+        "allocatedBytesRemoved": 123613184,
+        "kept": "/private/tmp/snowfolio-validation-history/native-scripting-ee0fc53"
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-recovery-current-incoming",
+        "allocatedBytesRemoved": 78159872,
+        "kept": "/private/tmp/snowfolio-validation-history/native-recovery-ee0fc53"
+      }
+    ],
+    "allTwelveScreenshotsInspected": true,
+    "recordingsRemovedAfterCompactCapture": true,
+    "ownershipAndOpenFilesChecked": true,
+    "sourceAndRunningProbeAndCurrentFullNative26RawPreserved": true,
+    "trashEmptied": false
+  },
+  "latestPassingScriptingCleanup": {
+    "dateUTC": "2026-11-09T05:04:19.731495+00:00",
+    "path": "/private/tmp/snowfolio-native-scripting-current-incoming",
+    "allocatedBytesRemoved": 125239296,
+    "kept": "/private/tmp/snowfolio-validation-history/native-scripting-54237aa",
+    "bothScreenshotsInspected": true,
+    "recordingsRemovedAfterCapture": true,
+    "ownershipAndOpenFilesChecked": true,
+    "currentFullNative26RawAndRunningProbePreserved": true,
+    "trashEmptied": false
   }
 }
