@@ -115,5 +115,22 @@
       "visual": "Inspected Beta beforeQuit and Alpha afterrestore. Native three-tab group includes normal empty Untitled. Source/outline and selected tab correct; previewblank remains open.",
       "compact": "/private/tmp/snowfolio-validation-history/native-actual-app-ae2d602/testSavedTabsRestoreSelectedDocumentAndIndependentUndo"
     }
+  },
+  "newTabCreationFollowup": {
+    "dateUTC": "2026-11-09T02:55:10.255286+00:00",
+    "status": "Actual native app compilation passes; runtime pending. No feature acceptance claimed from compilation.",
+    "method": "DocumentLifecycleTests.testNewTabsUseKeyboardAndNativePlusWithoutReusingEmptyDocuments",
+    "checks": [
+      "Open a Unicode saved anchor under preferred tab policy",
+      "Command-T twice while selected new tab is empty; require two additional distinct native tabs",
+      "Type/Undo/Redo in keyboard-created tab",
+      "Click AppKit tab-bar new tab button identified in observed native accessibility tree; require another tab",
+      "Type/Undo in plus-created tab, switch backward, verify keyboard tab source and independent Undo/Redo",
+      "Return to named saved anchor and require unchanged source/exact disk bytes; retain native tree and screenshot"
+    ],
+    "isolation": "UUID-owned fixture directory, argument-domain preferences, terminate owned test app before removing files. No production hooks or persistent preference writes.",
+    "workflow": "native-document-tabs includes both saved-tab restoration and new-tab creation methods; full suites now compile27methods.",
+    "remaining": "Runtime keyboard/plus behavior, separate groups/scroll restoration, physical paint/IME/VoiceOver and remaining host/parity/performance/release gates.",
+    "local": "Both actual host variants build-for-testing and resource/icon/type/license gates pass;27UI methods compile, strict Swift lint/diff checks pass. Canonical cache restored to default SwiftUI. Existing AppIntents extraction warning."
   }
 }

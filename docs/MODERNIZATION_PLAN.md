@@ -88,6 +88,10 @@ cause is established. Legacy scripting text/HTML/metadata/command event contract
 now characterized, including initially empty cached HTML that does not force render;
 actual modern scripting registration/execution remains pending in
 [applescript-characterization.json](validation/applescript-characterization.json).
+An additional actual-app method now compiles repeated Command-T on empty tabs,
+native tab-bar plus creation and separate Undo/Redo, with an unchanged Unicode
+saved anchor. The focused native-tabs scope includes both this new method and
+saved-tab restoration (27UI methods compile). Runtime remains pending.
 No default-host switch, installation or release is accepted. M2's remaining host gates,
 native tab creation/separate-group/scroll restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
 and release gates remain open. See

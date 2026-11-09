@@ -101,7 +101,8 @@ jobs:
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-tabs ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
-              --only-testing SnowfolioUITests/DocumentLifecycleTests/testSavedTabsRestoreSelectedDocumentAndIndependentUndo
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testSavedTabsRestoreSelectedDocumentAndIndependentUndo \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testNewTabsUseKeyboardAndNativePlusWithoutReusingEmptyDocuments
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe-appkit ]; then
             SNOWFOLIO_DOCUMENT_HOST_PROBE_KIND=appkit bash Tools/probe-document-host.sh
           elif [ "$SNOWFOLIO_TEST_SCOPE" = document-host-probe-workspace ]; then

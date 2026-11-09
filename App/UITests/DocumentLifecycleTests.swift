@@ -1576,6 +1576,82 @@ final class DocumentLifecycleTests: XCTestCase {
   }
 
   @MainActor
+  func testNewTabsUseKeyboardAndNativePlusWithoutReusingEmptyDocuments() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
+      "SnowfolioNewTabs-\(UUID().uuidString)", isDirectory: true)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let file = directory.appendingPathComponent("tab-anchor.md")
+    let source = "# Saved anchor 中文 👩‍💻\n\nSeparate document checkpoint.\n"
+    let bytes = Data(source.utf8)
+    try bytes.write(to: file)
+    let app = launch(arguments: ["-preferDocumentTabs", "YES"])
+    defer { app.terminate() }
+    _ = openDocument(file, in: app)
+    defer {
+      let tree = XCTAttachment(string: app.debugDescription)
+      tree.name = "native-new-tabs-tree"
+      tree.lifetime = .keepAlways
+      add(tree)
+      let image = XCTAttachment(screenshot: app.screenshot())
+      image.name = "native-new-tabs-screen"
+      image.lifetime = .keepAlways
+      add(image)
+    }
+    let tabBar = app.tabGroups.firstMatch
+    XCTAssertTrue(tabBar.waitForExistence(timeout: 5), app.debugDescription)
+    let tabs = tabBar.children(matching: .tab)
+    let initialCount = tabs.count
+    XCTAssertGreaterThan(initialCount, 0)
+    func expectTabs(_ count: Int, source: String) -> XCUIElement {
+      let editor = app.textViews["markdownSourceEditor"].firstMatch
+      let ready = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          tabs.count == count && editor.exists && editor.value as? String == source
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [ready], timeout: 8), .completed)
+      XCTAssertEqual(try? Data(contentsOf: file), bytes)
+      return editor
+    }
+    // Repeating the command while the selected document is empty must create
+    // another native document rather than reusing that empty tab.
+    app.typeKey("t", modifierFlags: .command)
+    _ = expectTabs(initialCount + 1, source: "")
+    app.typeKey("t", modifierFlags: .command)
+    let keyboardEditor = expectTabs(initialCount + 2, source: "")
+    keyboardEditor.click()
+    keyboardEditor.typeText("Keyboard tab checkpoint")
+    XCTAssertEqual(keyboardEditor.value as? String, "Keyboard tab checkpoint")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(keyboardEditor.value as? String, "")
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(keyboardEditor.value as? String, "Keyboard tab checkpoint")
+
+    // This is AppKit's actual tab-bar plus button, identified in the native AX tree.
+    let plus = tabBar.buttons["new tab"]
+    XCTAssertTrue(plus.waitForExistence(timeout: 5), app.debugDescription)
+    plus.click()
+    let plusEditor = expectTabs(initialCount + 3, source: "")
+    plusEditor.click()
+    plusEditor.typeText("Plus tab checkpoint")
+    XCTAssertEqual(plusEditor.value as? String, "Plus tab checkpoint")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(plusEditor.value as? String, "")
+    app.typeKey(XCUIKeyboardKey.tab.rawValue, modifierFlags: [.control, .shift])
+    let previous = expectTabs(initialCount + 3, source: "Keyboard tab checkpoint")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(previous.value as? String, "")
+    app.typeKey("z", modifierFlags: [.command, .shift])
+    XCTAssertEqual(previous.value as? String, "Keyboard tab checkpoint")
+    let anchor = tabs.matching(NSPredicate(format: "title == %@", file.lastPathComponent))
+      .firstMatch
+    XCTAssertTrue(anchor.exists)
+    anchor.click()
+    _ = expectTabs(initialCount + 3, source: source)
+    XCTAssertEqual(try Data(contentsOf: file), bytes)
+  }
+
+  @MainActor
   func testMultipleDocumentWindows() {
     let app = launch()
     defer { app.terminate() }
