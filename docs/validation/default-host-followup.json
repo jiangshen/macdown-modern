@@ -419,5 +419,50 @@
   "mathCompatibilityIncrement": {
     "ledger": "math-compatibility.json",
     "local": "460/94ninearm64zero diagnostics, nativepreview/PDFinspected; currenthostedpending."
+  },
+  "mathCompatibilityHostedCore": {
+    "source": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
+    "run": 42710852576,
+    "job": 129479674595,
+    "artifact": 13714944749,
+    "tests": 460,
+    "suites": 94,
+    "executableRuns": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "commonMark": {
+      "spec": "CommonMark 0.31.2",
+      "source": "https://spec.commonmark.org/0.31.2/spec.json",
+      "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+      "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+      "total": 652,
+      "passed": 652,
+      "failed": 0,
+      "failures": []
+    },
+    "architectures": [
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/DiagramCoreTests.xctest/Contents/MacOS/DiagramCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/DocumentCoreTests.xctest/Contents/MacOS/DocumentCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/EditorCoreTests.xctest/Contents/MacOS/EditorCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/ExportCoreTests.xctest/Contents/MacOS/ExportCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/MarkdownCoreTests.xctest/Contents/MacOS/MarkdownCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/PluginCoreTests.xctest/Contents/MacOS/PluginCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/PreferencesCoreTests.xctest/Contents/MacOS/PreferencesCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/RenderingCoreTests.xctest/Contents/MacOS/RenderingCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/SnowfolioUITests.xctest/Contents/MacOS/SnowfolioUITests: Mach-O 64-bit bundle arm64"
+    ],
+    "scope": "Completed core job; regular and native actual-app jobs remain in progress. No whole-run/native acceptance."
+  },
+  "native215ce9aCLIFailureReview": {
+    "dateUTC": "2026-11-09T22:26:52.070113+00:00",
+    "source": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+    "run": 42696388379,
+    "artifact": 13712127003,
+    "transferredBytes": 109114015,
+    "archiveBytes": 198242974,
+    "screenshot": "cli-warm-window-failure.png",
+    "visual": "Inspected: Snowfolio is foreground with --help as the front empty document, normal caret, no visible prompt or modal. Other documents are occluded. Existing AX failure hierarchy includes new.md and the other opened documents.",
+    "routing": "Helper status0, receipt0.508197708s, correct GUI PID16613, delivery acknowledged. Receipt indicates queued delivery, not completed document opens.",
+    "conclusion": "Possible occluded-window AX query/readiness problem, not established. No production fix, test assertion weakening, deadline increase or combined full-suite acceptance. Current complete native run remains pending."
   }
 }

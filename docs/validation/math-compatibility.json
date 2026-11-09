@@ -1,7 +1,7 @@
 {
   "dateUTC": "2026-11-09T22:01:15.423591+00:00",
   "sourceParent": "705cc004c5a37a3f54a91699b8cfb13256834d6f",
-  "status": "Implemented; final full local460/94/ninearm64passes. Current-source hosted package/app acceptance pending. Full modernization and wider MathJax parity remain open.",
+  "status": "Implemented and accepted hosted460/94+652CommonMark/ninearm64 at1d6bd22, zero compiler diagnostics. Complete current actual-app acceptance and wider MathJax parity remain open.",
   "sourceSHA256": {
     "Packages/SnowfolioCore/Sources/MathCore/MathRenderer.swift": "08d52b656c5669454b0afffa45d5a24453883ebbb277205f6145212e41e54ba0",
     "Packages/SnowfolioCore/Sources/MathCore/MathJaxRenderer.swift": "069d0f31392fc88d19fe17253f3bc463c54a14b8a6972835958c8f61e988cad2",
@@ -130,12 +130,137 @@
   },
   "compact": "/private/tmp/snowfolio-validation-history/math-compatibility",
   "remaining": [
-    "Current-source hosted core/corpus and complete actual-app acceptance",
+    "Complete current actual-app acceptance; regular and native1d6bd22 jobs are running.",
     "Audit remaining original MathJax2 extension/require behavior and uncovered TeX commands; no full parity or old loader retirement yet",
     "Native physical preview/foreground selection, real IME and VoiceOver",
     "Full app performance/M5/M6 release and safe progressive legacy retirement; plugin signing approval remains pending/unapplied"
   ],
   "productionInstalled": false,
   "defaultHandlerChanged": false,
-  "fullGoal": "Active and incomplete."
+  "fullGoal": "Active and incomplete.",
+  "hostedCore": {
+    "source": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
+    "run": 42710852576,
+    "job": 129479674595,
+    "artifact": 13714944749,
+    "tests": 460,
+    "suites": 94,
+    "executableRuns": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "commonMark": {
+      "spec": "CommonMark 0.31.2",
+      "source": "https://spec.commonmark.org/0.31.2/spec.json",
+      "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+      "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+      "total": 652,
+      "passed": 652,
+      "failed": 0,
+      "failures": []
+    },
+    "architectures": [
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/DiagramCoreTests.xctest/Contents/MacOS/DiagramCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/DocumentCoreTests.xctest/Contents/MacOS/DocumentCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/EditorCoreTests.xctest/Contents/MacOS/EditorCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/ExportCoreTests.xctest/Contents/MacOS/ExportCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/MarkdownCoreTests.xctest/Contents/MacOS/MarkdownCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/PluginCoreTests.xctest/Contents/MacOS/PluginCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/PreferencesCoreTests.xctest/Contents/MacOS/PreferencesCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/RenderingCoreTests.xctest/Contents/MacOS/RenderingCoreTests: Mach-O 64-bit bundle arm64",
+      "/Users/runner/work/_temp/snowfolio-validation/build/out/Products/Debug/SnowfolioUITests.xctest/Contents/MacOS/SnowfolioUITests: Mach-O 64-bit bundle arm64"
+    ],
+    "scope": "Completed core job; regular and native actual-app jobs remain in progress. No whole-run/native acceptance."
+  },
+  "originalDefaultsAudit": {
+    "upstreamSource": "https://github.com/mathjax/MathJax/blob/2.7.3/config/TeX-AMS-MML_HTMLorMML.js",
+    "sourceSHA256": "682e294a477dc6dce432f86a52eec9bf7ef08a1bff0c4272566d84e4114b2034",
+    "originalAppSelection": "MacDown/Code/Document/MPRenderer.m:26 selects CDN MathJax2.7.3 TeX-AMS-MML_HTMLorMML; MacDown/Resources/MathJax/init.js only changes messages and completion callback.",
+    "extensionCommandsInExactConfiguration": [
+      {
+        "command": "mathchoice",
+        "extension": "mathchoice"
+      },
+      {
+        "command": "newcommand",
+        "extension": "newcommand"
+      },
+      {
+        "command": "renewcommand",
+        "extension": "newcommand"
+      },
+      {
+        "command": "newenvironment",
+        "extension": "newcommand"
+      },
+      {
+        "command": "renewenvironment",
+        "extension": "newcommand"
+      },
+      {
+        "command": "def",
+        "extension": "newcommand"
+      },
+      {
+        "command": "let",
+        "extension": "newcommand"
+      },
+      {
+        "command": "verb",
+        "extension": "verb"
+      },
+      {
+        "command": "boldsymbol",
+        "extension": "boldsymbol"
+      },
+      {
+        "command": "tag",
+        "extension": "AMSmath"
+      },
+      {
+        "command": "notag",
+        "extension": "AMSmath"
+      },
+      {
+        "command": "label",
+        "extension": "AMSmath"
+      },
+      {
+        "command": "ref",
+        "extension": "AMSmath"
+      },
+      {
+        "command": "eqref",
+        "extension": "AMSmath"
+      },
+      {
+        "command": "unicode",
+        "extension": "unicode"
+      },
+      {
+        "command": "href",
+        "extension": "HTML"
+      },
+      {
+        "command": "style",
+        "extension": "HTML"
+      },
+      {
+        "command": "cssId",
+        "extension": "HTML"
+      },
+      {
+        "command": "bbox",
+        "extension": "bbox"
+      }
+    ],
+    "require": "Original configuration also declares require:Require; current integration intentionally has no dynamic require/loader. Safe preloaded-package compatibility remains to be evaluated with upstream modules, without TeX source rewrites or arbitrary loads.",
+    "errorPresentation": "Original combined configuration includes noErrors and noUndefined. Current integration preserves escaped source plus a preview notice on rejected expressions.",
+    "scope": "Source characterization only, not behavioral or full-parity acceptance. KaTeX already implements some commands from this legacy extension map; required batch compatibility matrix remains pending."
+  },
+  "currentActualAppRuns": {
+    "regular": 42710852576,
+    "native": 42710891156,
+    "source": "1d6bd226559ccd34236a7a46276358b4a635ac9e",
+    "status": "in progress; no full app acceptance claimed"
+  }
 }

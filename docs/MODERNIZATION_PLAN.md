@@ -2,10 +2,11 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted hosted core baseline: **452 package tests / 93 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `705cc00`, with zero
-compiler diagnostics. The current compatibility increment passes **460 local tests /
-94 suites** in 59.896 seconds, with nine arm64 executables and no compiler diagnostics.
+Current accepted hosted core baseline: **460 package tests / 94 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `1d6bd22`, with zero
+compiler diagnostics. The exact compatibility increment also passes locally in
+59.896 seconds. The current regular and complete native app checks are still running;
+core acceptance does not establish full app acceptance.
 
 Pinned KaTeX remains the path for ordinary supported math. A document that needs broader
 support now uses pinned MathJax 4.1.3 offline in JavaScriptCore, with all orchestration
@@ -13,7 +14,7 @@ in Swift. Ordered custom environments, forward/backward explicit references, por
 SVG/MathML, scoped IDs, source completeness and resource/memory bounds are tested.
 The light/dark previews and one-page PDF were inspected. See
 [math-compatibility.json](validation/math-compatibility.json). Wider original MathJax
-extension compatibility and current-source hosted acceptance remain open.
+extension compatibility and current-source full app acceptance remain open.
 
 The latest complete native attempt at `215ce9a` finishes **42/43**: the initial warm CLI
 window wait fails, although the post-failure hierarchy contains the opened files and

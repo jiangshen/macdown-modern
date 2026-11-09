@@ -1832,5 +1832,20 @@
         "ownershipAndOpenFilesChecked": true
       }
     ]
+  },
+  "mathHostedAndCLIFailureReview": {
+    "dateUTC": "2026-11-09T22:26:52.070113+00:00",
+    "scope": "Concluded original CLI failure screenshot investigation and MathJax2 source characterization.",
+    "removedAllocatedBytes": 121282560,
+    "removed": [
+      "/private/tmp/snowfolio-cli-diagnostic-current",
+      "/private/tmp/snowfolio-cli-failure-current",
+      "/private/tmp/snowfolio-cli-diagnostic-extraction.log",
+      "/private/tmp/snowfolio-cli-activities-current.json",
+      "/private/tmp/snowfolio-math-original-config.js"
+    ],
+    "kept": "Small inspected CLI screenshot, routing/hierarchy/activity metadata and review in native-full-215ce9a; compact original19commandextension map/source hash in math-compatibility; core1d6bd22 logs only28KBcompressed. No rawxcresultretained.",
+    "protection": "Ownership/symlink and open-file checks completed. RunningSnowfolio42199,DocumentHostProbe85540 and protected app/cache/documents untouched. No new local app build or test rerun.",
+    "storage": "Current single core cache951MiB, protected app844MiB and probe465MiB; earlier transient buildcleanup retained. No Trash emptied."
   }
 }
