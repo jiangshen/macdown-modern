@@ -173,7 +173,7 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-groups-local"
   },
   "nativeViewportCallbacks": {
-    "status": "Full core accepted at28243a6:375/80, zero compiler warnings/errors,652CommonMark. Actual app quit/relaunch viewport remains unaccepted.",
+    "status": "Callbackintegration accepted in core375/80 at28243a6; subsequent realappQuit/relaunch accepted focused1/1at2bc01b2, see actualReadingPositionsAccepted.",
     "method": "NativeDocumentWindowTests.nativeViewportRestoration",
     "checks": "Actual complete native workspace source and WKWebView placed at different reading positions. Native secure state callbacks encode/decode into new document/window. Exact source logical line/fraction, preview scrollY within3px, selection, UTF16LE/BOM/CRLF/combining text/emoji bytes, revision, dirty and empty Undo remain unchanged.",
     "focused": "1/1 passes1.095s; full native window suite6/6 passes3.316s; zero compilerwarnings/errors.",
@@ -242,7 +242,7 @@
     "scope": "Actual native app opens UTF16LE/BOM/CRLF/Unicode fixture. User scroll events place source and preview separately with linking off. NormalQuit/relaunch must restore numeric native scrollbar positions within0.002, sourcecaret0, editing/Undo and exactfilebytes.",
     "testIsolation": "Scrollbars Always and restoration/linking preferences supplied only through disposable app launch arguments. No global preference or production behavior changes.",
     "local": "Corrected native36/default27 compile; normaldefault restored; strict changedSwiftlint/diffpass; recorded-frame recognition verifies paragraph35 before/after.",
-    "runtime": "Portable glyph-comparison focused run pending. Fullnative35 remains accepted; native36 reading case remains unaccepted.",
+    "runtime": "Accepted focused1/1at2bc01b2; see actualReadingPositionsAccepted. Full36run42588674603inprogress.",
     "compact": "/private/tmp/snowfolio-validation-history/native-reading-local",
     "firstHosted": {
       "commit": "a909bfeedb0b9ae09d510b57b4ef4fcfeaedc960",
@@ -315,5 +315,31 @@
     "supersededFull34AllocatedBytesRemoved": 190341120,
     "latestFull35AllocatedBytes": 193961984,
     "ownershipAndOpenFilesChecked": true
+  },
+  "actualReadingPositionsAccepted": {
+    "dateUTC": "2026-11-09T08:50:20.767122+00:00",
+    "commit": "2bc01b22a9b6e57140f705ea3e10d9f015ed9f16",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42587553466",
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 84.181,
+    "sourceGlyphDifference": 0.0,
+    "wrongPositionControlDifference": 0.9392712550607287,
+    "sourceScrollbarBefore": 0.22278803309993633,
+    "sourceScrollbarAfter": 0.2517282521434052,
+    "previewScrollbarBefore": 0.35292819142341614,
+    "previewScrollbarAfter": 0.35281792283058167,
+    "checks": "NormalQuit/relaunch retains independent reading positions. Lossless sourcecropidentical atparagraph41 despitechangedestimatedscrollbarextent. Previewratiochange0.0001103 within0.002. Offscreen sourcecaret0 remains; no-click restoredtyping/Undo andexactUTF16LE/BOM/CRLF/Unicodefilebytes pass.",
+    "visual": "ThreePNGinspected: sourcebefore/restoredcropandrestoredwindow; actualglyphs/topparagraph41 identical. Hostedpreviewglyphpaintingstillblank/unaccepted.",
+    "runtimeWarnings": 3,
+    "compact": "/private/tmp/snowfolio-validation-history/native-reading-2bc01b2",
+    "boundary": "Focused acceptance only; full36runtime stillpending. No production scrollchange."
+  },
+  "fullNative36Pending": {
+    "commit": "2bc01b22a9b6e57140f705ea3e10d9f015ed9f16",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42588674603",
+    "status": "in progress; no complete36methodacceptanceyet"
   }
 }

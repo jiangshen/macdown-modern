@@ -1036,5 +1036,45 @@
     "ownershipAndOpenFilesChecked": true,
     "protectedProbeAndLatestFullNative35RawPreserved": true,
     "reason": "Recognition model-compile failure fully captured; retain compact findings/final screenshot, clear concluded raw/builddiagnostics."
+  },
+  "portableReadingProbeCleanup": {
+    "dateUTC": "2026-11-09T08:41:28.282371+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-reading-current-incoming",
+        "allocatedBytesRemoved": 125292544
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-9A7C5B85-1882-40C5-8999-A189929DE359",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-DE4C815E-A216-4F64-B5B6-7792B2056338",
+        "allocatedBytesRemoved": 180224
+      }
+    ],
+    "kept": [
+      "/private/tmp/snowfolio-validation-history/native-reading-local",
+      "/private/tmp/snowfolio-validation-history/native-reading-613b8d8"
+    ],
+    "ownershipAndOpenFilesChecked": true,
+    "latestFullNative35RawAndProtectedProbePreserved": true,
+    "reason": "Recognition engine failure compacted and inspected; portableglyphcomparisonnowactive. Remove finished raw/builddiagnostics."
+  },
+  "acceptedActualReadingCleanup": {
+    "dateUTC": "2026-11-09T08:51:36.988664+00:00",
+    "removedFocusedRaw": "/private/tmp/snowfolio-native-reading-current-incoming",
+    "rawAllocatedBytesRemoved": 126103552,
+    "kept": "/private/tmp/snowfolio-validation-history/native-reading-2bc01b2",
+    "temporaryDiagnosticSourcesMovedToTrash": [
+      "/private/tmp/snowfolio-reading-ocr.swift",
+      "/private/tmp/snowfolio-reading-pixels-main.swift",
+      "/private/tmp/snowfolio-reading-pixels.swift",
+      "/private/tmp/snowfolio-reading-pixel-coordinates.swift",
+      "/private/tmp/snowfolio-reading-font-arguments.swift"
+    ],
+    "sourceTrashPolicy": "Recoverable move; not counted as freed space. Trash not emptied.",
+    "ownershipAndOpenFilesChecked": true,
+    "latestFullNative35RawAndProtectedProbePreserved": true
   }
 }

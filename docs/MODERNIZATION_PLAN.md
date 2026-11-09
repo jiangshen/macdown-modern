@@ -20,8 +20,8 @@ native tab groups. Encoded autosave/Undo, clean reloads, all dirty-conflict choi
 read-only Versions/Restore, three real scripting methods, menus/Settings, exports,
 close cancellation, saved tabs/carets and separate groups pass together. Six major
 screenshots inspected; light mixed-list selection is continuous and markers align.
-The native host now compiles36 UI methods, but its new independent reading-position
-relaunch probe remains unaccepted. See
+The native host now compiles36 UI methods. Its new independent reading-position
+relaunch case passes focused1/1; full36 execution is in progress. See
 [document-lifecycle.json](validation/document-lifecycle.json).
 
 Two separate native tab groups now pass an actual quit/relaunch test **1/1**, zero
@@ -33,7 +33,10 @@ disk contents. Screenshot and complete AX tree inspected. A separate local full
 native-workspace integration test also restores independent source/preview reading
 positions through secure NSDocument callbacks without changing selection, revision,
 UTF16LE/BOM/CRLF/Unicode bytes, clean state or Undo. The six-method native-window
-suite passes. Actual app quit/relaunch viewport behavior remains unaccepted.
+suite passes. Actual app quit/relaunch viewport behavior now passes focused1/1 at `2bc01b2`:
+source glyphs match exactly despite changed scrollbar extent; independent preview
+position, offscreen caret, edit/Undo and exactUTF16bytes survive. Full36 remains
+in progress.
 See [native-tabs.json](validation/native-tabs.json).
 
 Normal two-second autosave conflict Revert, Save Anyway and Save As, plus native
@@ -232,7 +235,7 @@ verification. No essential feature is authorized for silent removal.
 
 | Category | Legacy capability / acceptance gate | Status |
 | --- | --- | --- |
-| Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Native host and byte-preserving I/O implemented; final autosave/Versions/conflict desktop gates pending |
+| Essential | Open/new/save/save-as, UTF-8 contents, dirty state, native autosave/Versions, multiple windows | Native35 actual-app suite verifies encoded autosave/Undo, both clean reloads, all dirty-conflict choices and read-only Versions/Restore; physical/whole-product acceptance stays open |
 | Essential | Undo/redo, selection, Unicode, Chinese/Japanese marked text, spellchecking, native find | Native paths and simulated composition covered; real IME/VoiceOver/desktop acceptance pending |
 | Essential | Source, preview and split modes; resize, swap sides, linked scrolling and zoom | Native modes/resize, linked scrolling, pane order and per-document zoom implemented; final desktop acceptance pending |
 | Essential | Formatting, headings 1–6/paragraph, lists, indent/unindent, links/images, paired delimiters | Common source commands/input integrated; remaining legacy dialect and advanced editing gates pending |
@@ -240,9 +243,9 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography all eight Prism code themes, code-block line numbers and language/custom labels implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; custom CSS/folder import, immutable local assets and reload implemented; Swift Default template/context and unavailable-name recovery implemented; hosted export-panel/recovery acceptance passed; direct desktop theme/export acceptance, user asset license sidecars and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
-| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Pending |
+| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Word/character counter remains unimplemented; [original contract](validation/writing-statistics-characterization.json) recorded. Tested native menus/tabs/restoration pass35/35 plus focused actual independent viewport relaunch; full-screen/physical parity remains open |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | Pending |
-| Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Pending |
+| Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Three actual native scripting methods pass together in full35. Further options/composition parity and App Intents evaluation remain open |
 | Modernize | Plugin discovery/run compatibility, updater stable/prerelease choices and preferences migration | Pending |
 | Add | Standards-verified CommonMark/GFM, AST outline, workspace/search/Quick Open/command palette | Planned after parity |
 | Add | Optional focus/typewriter modes, line numbers, TOC generation, alert syntax, table assistance | Planned after parity |
@@ -3547,3 +3550,19 @@ paragraph18.023percent; bound is5percent withatmost2logicalpixels rasterrounding
 Preview0.002, source-not-at-top, original8second deadline, no-click restoredcaret,
 Undo andUTF16bytes remainstrict. Native36/default27compile/defaultrestored;
 focusedrealrelaunch remainsrequired. No production scrollfix or featureacceptance.
+
+
+## Actual independent reading positions accepted — 2026-11-09
+
+Exact2bc01b2 focusedrelaunch1/1passes, zero failures/skips,84.181s. Bothnormal
+Quit/relaunch reading positions survive. Sourcecropbefore/afterhas0.0glyphdifference
+atparagraph41; wrong-positioncontrol0.93927isrejected. Source scrollbar changes
+0.222788→0.251728 while actualtextstaysidentical, validatingtheglyphanchor metric.
+Preview0.352928→0.352818 stayswithin0.002. No-click typing provesoffscreen source
+caret0 retained; nativeUndoand exactUTF16LE/BOM/CRLF/Unicodefilebytes pass. Three
+majorPNGinspected. No production scrollchange wasnecessary. Hostedpreviewglyph
+painting/physicaldarkselection/caret/IME/VoiceOver stayunaccepted.
+
+Fullnative36run42588674603nowexecutesallmethodstogetherat2bc01b2. Currentcomplete
+baseline35/35andcore375/80+652CommonMark remainaccepted; no host/default/install/
+release/handler change or coupledlegacyretirement.
