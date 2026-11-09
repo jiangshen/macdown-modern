@@ -278,5 +278,25 @@
     "comparison": "Exact same source passes native41/41; regular retains three established lifecycle failures, invalid-read handling and this new-file readiness failure.",
     "compact": "/private/tmp/snowfolio-validation-history/default-c0c6e6f",
     "rawDownloaded": false
+  },
+  "regular704aad4": {
+    "dateUTC": "2026-11-09T19:10:44.114630+00:00",
+    "source": "704aad418ac9db784ffe1759524176625b9465a5",
+    "run": 42675594414,
+    "job": 129355965326,
+    "executed": 33,
+    "passed": 28,
+    "failed": 5,
+    "skipped": 0,
+    "finding": "Three autosave/reload failures, saved-tab restoration and invalid-encoding error presentation fail. Packaged CLI passes68.371s; update controls/persistence passes28.508s. This is not complete regular-host acceptance. Source default remains unchanged pending native physical gates.",
+    "compact": "/private/tmp/snowfolio-validation-history/regular-704aad4",
+    "failedMethods": [
+      "DocumentLifecycleTests testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "DocumentLifecycleTests testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "DocumentLifecycleTests testCoordinatedExternalReloadAfterAutosave",
+      "DocumentLifecycleTests testSavedTabsRestoreSelectedDocumentAndIndependentUndo",
+      "DocumentTypeTests testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "allMethodResults": "/private/tmp/snowfolio-validation-history/regular-704aad4/method-results.json"
   }
 }

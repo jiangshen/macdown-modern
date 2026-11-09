@@ -1207,7 +1207,9 @@
       "rawResult": "Latest accepted full-suite summaries/individual small result objects retained. Partial xcresult intentionally omits two large diagnostic blobs (46881777 and46344129bytes); complete original archive remains on GitHub during retention.",
       "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
       "run": 42653830905
-    }
+    },
+    "rawRetired": "2026-11-09T19:19:33.508814+00:00",
+    "rawRetirementReason": "Superseded by latest unresolved focused reading raw. Complete41method outcomes, summaries, tenPNG and log preserved in compact evidence."
   },
   "fullNative42Followup": {
     "dateUTC": "2026-11-09T19:06:59.468569+00:00",
@@ -1240,5 +1242,51 @@
     "compilerWarnings": 0,
     "compilerErrors": 0,
     "compact": "/private/tmp/snowfolio-validation-history/core-704aad4"
+  },
+  "core441SettingsFixBaseline": {
+    "source": "33a229cf17b59a95b4b43e7660f0ec5aa0f7e2b7",
+    "run": 42680240182,
+    "job": 129372494379,
+    "tests": 441,
+    "suites": 93,
+    "commonMark": 652,
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-33a229c"
+  },
+  "focusedReading33a229c": {
+    "source": "33a229cf17b59a95b4b43e7660f0ec5aa0f7e2b7",
+    "run": 42680308706,
+    "job": 129372736580,
+    "artifact": 13702197906,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "seconds": 90.002,
+    "runtimeWarnings": 1,
+    "stage": "Restoration comparison atDocumentLifecycleTests.swift:1756; all PNG decoding succeeded.",
+    "sourceGlyphDifference": 0.9464285714285714,
+    "negativeControlDifference": 0.9459459459459459,
+    "sourceScrollbarBefore": 0.22278803309993633,
+    "sourceScrollbarAfter": 0.24836601307189543,
+    "previewBefore": 0.35292819142341614,
+    "previewAfter": 0.35281792283058167,
+    "visual": "Both actual source crops inspected. Same paragraphs reopen visibly lower in source viewport; preview restores within original0.002tolerance. Current source restoration remains an acceptance failure. No assertion/timeout/pixel tolerance change or speculative production fix.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-reading-33a229c",
+    "raw": "/private/tmp/snowfolio-focused-current-incoming",
+    "next": "Characterize the source-viewport drift across wrapped Unicode/CRLF and deferred TextKit layout. Preserve exact pixel/Undo/bytes checks; do not rerun full suite unchanged."
+  },
+  "focusedGeneric33a229c": {
+    "source": "33a229cf17b59a95b4b43e7660f0ec5aa0f7e2b7",
+    "run": 42680314605,
+    "job": 129372756435,
+    "artifact": 13702811298,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 104.779,
+    "finding": "Entire unchanged generic-file/extensionless/encoded-text/binary-refusal flow passes on fresh VM. Prior WindowServer wait did not recur here; this is not proof of its global elimination.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-generic-33a229c"
   }
 }

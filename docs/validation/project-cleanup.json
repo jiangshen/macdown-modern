@@ -1521,5 +1521,55 @@
       }
     ],
     "preserved": "Both running apps42199/85540,unsaved physical input,staged native app,current core cache and accepted full-native41raw. No Trash emptied. Public current dependency artifact cache remains useful."
+  },
+  "completedNativeFailureDiagnosticExports": {
+    "dateUTC": "2026-11-09T19:08:09.471599+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-imageio-proof/cache",
+        "allocatedBytesRemoved": 136536064,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-imageio-proof/Proof",
+        "allocatedBytesRemoved": 188416,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-updater-current-incoming",
+        "allocatedBytesRemoved": 25104384,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-failure-diagnostics",
+        "allocatedBytesRemoved": 107880448,
+        "ownershipAndOpenFilesChecked": true
+      }
+    ],
+    "retained": "Complete relevant spindump, diagnostic index/excerpts, ImageIO proof source/result, update summaries/logs/two screenshots. Current core cache, latest accepted native41partial raw, unresolved native42partial raw and both running apps preserved.",
+    "note": "Direct swiftc proof module cache and exported diagnostics/results have no build-tool cleanup command. No user source/documents moved; Trash not emptied."
+  },
+  "latestUsefulNativeReadingRawOnly": {
+    "dateUTC": "2026-11-09T19:19:33.508814+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-current-native-result",
+        "allocatedBytesRemoved": 120262656,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-full-incoming",
+        "allocatedBytesRemoved": 126476288,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-focused-settings-incoming",
+        "allocatedBytesRemoved": 32092160,
+        "ownershipAndOpenFilesChecked": true
+      }
+    ],
+    "retainedRaw": "/private/tmp/snowfolio-focused-current-incoming",
+    "retention": "Latest useful unresolved native-reading raw only. Accepted native41summary, all41method results, tenPNG and complete log remain. Native42failed PNG/spindump/diagnostic excerpts remain. Both corrected Settings screenshots, hierarchy and summary remain. Original archives remain on GitHub during retention.",
+    "protected": "Both running apps42199/85540, unsaved physical input, staged app, current core cache and user source/documents unchanged; no Trash emptied."
   }
 }

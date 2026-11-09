@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T18:29:33.211336+00:00",
-  "status": "Core440/93+652corpus+9arm64 and actual native controls1/1 accepted at704aad4. Visual followup found bottom clipping; local correction passes. Fresh focused app validation and signed delivery remain open.",
+  "status": "Core441/93+652corpus+9arm64 and strengthened native update controls1/1 accepted at33a229c. Both corrected Settings screenshots visually accepted; signed delivery and complete current native acceptance remain open.",
   "version": "2.10.1",
   "scope": "Actual Sparkle adapter in app target only; first-party orchestration Swift6/MainActor. Both app hosts, native/SwiftUI commands and searchable General Settings. No app-security exception or installed/default-handler change.",
   "originalContract": {
@@ -43,8 +43,7 @@
   "resolver": "Owned resolver sampled waiting in KeychainAuthorizationProvider/SecItemCopyMatching, not downloading. Explicitly stopped that PID63141; documented -packageAuthorizationProvider netrc resolves public artifact normally without changing Keychain or skipping validation. Source package lock restored to its core-only pins after Xcode resolution.",
   "actualAppMethod": "UpdateSettingsTests/testDevelopmentUpdateControlsAndPrereleaseChoicePersistAcrossLaunches",
   "pending": [
-    "Fresh actual-app visual acceptance of corrected Settings height",
-    "Fresh native reading and generic-document checks then complete current native acceptance",
+    "Complete current native acceptance; separate source-reading restoration failure remains open",
     "Real own feed/public key/signed appcast and Developer ID/notarization/update installation",
     "Original updater retirement after accepted replacement"
   ],
@@ -80,6 +79,30 @@
     "cause": "Redundant SwiftUI minimum height below unified toolbar overflows full-size NSWindow by26pt. NSWindow now solely owns minimum height.",
     "negativeControl": "Same full-size-content bounds assertion fails2issues/0.229s with original height constraints. Toolbar-overlap area intentionally belongs to full-size native scroll wrapper.",
     "local": "12related tests/4suites pass0.378s; strict format/diff pass; compiler diagnostics0.",
-    "actualApp": "Stronger entire-status-frame visibility assertion added; fresh focused runtime/screenshot acceptance pending."
+    "actualApp": {
+      "source": "33a229cf17b59a95b4b43e7660f0ec5aa0f7e2b7",
+      "run": 42680301004,
+      "job": 129372716436,
+      "artifact": 13701788375,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 51.268,
+      "coverage": "Entire status explanation, beta/check frames, disabled development checks, beta change and Quit/relaunch persistence. Screenshots being extracted for final visual review.",
+      "runtimeWarnings": 1,
+      "visual": "Both screenshots inspected: complete status, beta/check controls and scroll-region bottom fit. Window bottom630; detail bottom630; status bottom618. Before correction detail bottom656/status bottom633. Search/relaunch appearance retained."
+    }
+  },
+  "core441": {
+    "source": "33a229cf17b59a95b4b43e7660f0ec5aa0f7e2b7",
+    "run": 42680240182,
+    "job": 129372494379,
+    "tests": 441,
+    "suites": 93,
+    "commonMark": 652,
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-33a229c"
   }
 }

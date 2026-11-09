@@ -2,11 +2,12 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **440 package tests / 93 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `704aad4`, with
-zero compiler errors/warnings. The complete native42 check at earlier `0f015bd`
-finished40/42; its two failures are investigated below. Native41 at `c0c6e6f`
-remains the complete accepted app baseline; focused passes do not replace it.
+Current accepted core baseline: **441 package tests / 93 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `33a229c`, with
+zero compiler errors/warnings. The stronger native Settings flow passes1/1 and
+generic-file opening passes1/1 on fresh machines. Reading restoration still fails
+its source-glyph comparison after PNG decoding succeeds; preview position restores.
+Native41 at `c0c6e6f` remains the complete accepted app baseline.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
@@ -30,12 +31,12 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at the same `c0c6e6f` source executes
-32methods:27pass/5fail, none skipped. The same three autosave/reload failures and
-invalid-read error presentation remain, with CLI new-file window readiness failing
-before source selection. Earlier2e54294 complete regular CLI passed86.785seconds;
-that does not establish a current complete regular acceptance. Native41passes at
-this exact source. See [default-host-followup.json](validation/default-host-followup.json).
+The latest complete regular SwiftUI-host run at `704aad4` executes33methods:
+28pass/5fail, none skipped. Three autosave/reload failures, saved-tab restoration
+and invalid-encoding error presentation remain. Packaged CLI passes68.371seconds
+and updater controls/persistence passes28.508seconds. These focused successes do
+not establish complete regular acceptance. Native41 at `c0c6e6f` remains the complete
+accepted native baseline. See [default-host-followup.json](validation/default-host-followup.json).
 
 The original command-line, URL and plugin behavior is recorded in
 [launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
@@ -79,9 +80,9 @@ gates are not accepted. No default-host, installation, release or file-handler
 switch has been made, and coupled original source remains until feature parity.
 
 Storage retains one core cache, one canonical app cache, the protected running probe
-and only the latest useful partial native41 raw result. Finished comparison downloads
+and only the latest useful partial reading-restoration raw result. Finished comparison downloads
 and obsolete build wrappers are removed after compact findings and relevant
-screenshots are retained. The current roots total approximately 2.4 GB; see
+screenshots are retained. The latest scoped cache/build/evidence measurement is recorded in
 [project-cleanup.json](validation/project-cleanup.json) and
 [storage-footprint.json](validation/storage-footprint.json).
 
@@ -4079,3 +4080,26 @@ new full-suite acceptance, physical input/VoiceOver/preview and release gates st
 The concluded isolated updater build and three packaged test products were cleaned
 after ownership/open-file checks, with an explicit-path xcodebuild clean. Compact
 findings remain; both running apps and unsaved physical input are preserved.
+
+
+At33a229c fresh core441/93+652CommonMark+9arm64 pass with no compiler diagnostics.
+The stronger native Settings updater method passes1/1 in51.268s, including the entire
+status explanation frame. Generic-file opening passes1/1 in104.779s; the earlier
+WindowServer stall did not recur in that focused flow. This does not eliminate it
+globally. Reading restoration fails1/1 in90.002s after all PNG decoding succeeds:
+source glyph difference0.9464286 versus0.05maximum, while preview scrollbar
+0.3529282→0.3528179 fits the original0.002tolerance. Both source crops were inspected:
+the same paragraphs reopen lower in the source viewport. The ImageIO change gives
+usable evidence but does not close reading restoration. No thresholds, assertions,
+behavioral deadlines or exact-byte/Undo requirements were weakened. The full native41
+baseline remains; no new full suite is dispatched while this focused failure is open.
+
+
+Both corrected Settings images are visually accepted: detail scroll bottom630 now
+matches window bottom630, and full status text ends618. This replaces the former
+overflow656/status633. One internal runtime QoS warning remains. The concluded
+Settings raw and older native41/native42 raw copies were removed after preserving
+all41accepted method results, screenshots, exact failure measurements and WindowServer
+spindump. Only the latest unresolved reading partial raw remains. This cycle also
+removed standalone proof cache and duplicate diagnostic exports after ownership/open-
+file checks. Compact evidence and protected running apps remain; Trash was not emptied.
