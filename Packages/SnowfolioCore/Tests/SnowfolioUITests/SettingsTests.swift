@@ -51,7 +51,8 @@ struct SettingsTests {
     #expect(result.location == .init(pane: .editor, itemID: "synchronizedScrolling"))
     let entries = SettingsCatalog.sections.flatMap(\.entries)
     #expect(Set(entries.map(\.id)).count == entries.count)
-    #expect(entries.count == 58)
+    #expect(SettingsCatalog.search("shell install").map(\.id) == ["commandLineTool"])
+    #expect(entries.count == 59)
   }
 
   @Test("Settings switches persist through the existing preference model")

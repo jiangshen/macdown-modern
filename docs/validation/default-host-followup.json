@@ -174,5 +174,14 @@
     "core": "417/87+652corpus+8arm64 pass.",
     "evidence": "/private/tmp/snowfolio-default-36230c1-failed.log",
     "nextFull": 42621125150
+  },
+  "full8b1b28f": {
+    "run": 42621125150,
+    "job": 129173216289,
+    "status": "completed/failure",
+    "result": "CLI fails on the old background-source click (hit point unavailable), plus the same3lifecycle failures. After runner restart,29other methods execute26pass/3fail in1492.530s. Entire job28m56s.",
+    "CLIRevision": "Predates2cadbd8 Window-menu and6d0d679 readiness-order corrections. No failure attributed to those later corrections.",
+    "core": "success; source core unchanged from417/87+652accepted36230c1.",
+    "evidence": "/private/tmp/snowfolio-default-8b1b28f-failed.log"
   }
 }

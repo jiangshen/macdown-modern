@@ -36,6 +36,14 @@ connection returns a nonzero status. Success means the selected app acknowledged
 the request; document-reading errors are shown in the app. Saving remains a
 normal document action in Snowfolio.
 
-A symbolic link to the bundled helper is supported. Keep the app in its final
-location before creating one. Shell installation controls are still pending;
-no system command or existing MacDown link is replaced automatically.
+Open **Snowfolio → Settings → General → Terminal** to install a symbolic link
+using the native folder chooser. Choose an existing folder in your shell’s `PATH`
+to run `snowfolio` by name. **Copy Command** supplies a fully quoted absolute command
+that also works when the selected folder is outside `PATH`.
+
+Settings remembers the selected link and its target. If you move the app, **Update**
+repairs that recorded link. **Remove** removes only the recorded link, preserving
+the app and documents. An occupied location is reported so you can choose a different
+folder. No shell configuration or existing MacDown command is replaced automatically.
+The native installation controls are a new candidate; actual-app chooser and visual
+acceptance are tracked in the validation ledger.

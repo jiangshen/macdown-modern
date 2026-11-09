@@ -74,7 +74,9 @@ struct SettingsEntry: Identifiable {
     case editorMetric(ReferenceWritableKeyPath<AppPreferences, Double>, ClosedRange<Double>, Double)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy,
       codeBlockAccessory, writingStatisticsMode
-    case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate, assetFolder
+    case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate,
+      assetFolder,
+      commandLineTool
   }
   let id: String
   let title: String
@@ -112,6 +114,15 @@ enum SettingsCatalog {
           detail:
             "Turn off to follow your Mac’s window setting. You can move tabs into separate windows.",
           keywords: "multiple files windows", control: .toggle(\.preferDocumentTabs)),
+      ]),
+    .init(
+      pane: .general, title: "Terminal",
+      entries: [
+        .init(
+          id: "commandLineTool", title: "Command-line tool",
+          detail: "Open Markdown files and piped text from Terminal.",
+          keywords: "shell snowfolio install uninstall command line pipe CLI",
+          control: .commandLineTool)
       ]),
     .init(
       pane: .appearance, title: "Reading",

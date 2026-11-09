@@ -38,6 +38,8 @@ on:
           - document-links
           - command-line
           - native-command-line
+          - terminal-settings
+          - native-terminal-settings
           - native-document-scripting
           - native-document-recovery
           - document-tab-creation
@@ -75,10 +77,9 @@ jobs:
   native-app:
     runs-on: xcode-27
     # Full native-host parity includes all existing UI methods and artifact upload.
-    # The preceding full default run reached the30-minute envelope; keep all
-    # behavioral waits/assertions unchanged and allow the explicit host comparison
-    # to finish rather than dropping methods to fit that envelope.
-    timeout-minutes: ${{ inputs.native_test_scope == 'native-document-app' && 45 || 30 }}
+    # The8b1b28f regular run took28m56s before adding Terminal settings coverage.
+    # Keep every method and behavioral deadline; budget the complete job separately.
+    timeout-minutes: ${{ inputs.native_test_scope == 'native-document-app' && 45 || 35 }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Install verified project generator
@@ -133,6 +134,12 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = command-line ]; then
             bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/CommandLineTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-terminal-settings ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/TerminalSettingsTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = terminal-settings ]; then
+            bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/TerminalSettingsTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-writing-statistics ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testWritingStatisticsFollowManualRenderAndPreserveUndo

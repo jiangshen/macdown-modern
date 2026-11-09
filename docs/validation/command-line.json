@@ -101,5 +101,21 @@
     "correction": "Existing8second window-readiness checks moved before all file-byte reads, rather than after. Window-menu correction and strict byte/cold assertions remain. UI test independently typechecks and lints; runtime correction is unaccepted. No further focused rerun in this verification cycle.",
     "compact": "/private/tmp/snowfolio-validation-history/command-line-native-2cadbd8",
     "raw": "No new raw download; logs obtained by byte ranges."
+  },
+  "terminalSettingsCandidate": {
+    "dateUTC": "2026-11-09T13:28:52.924758+00:00",
+    "status": "Implemented and locally checked; actual packaged chooser/visual acceptance pending. No installation on the physical Mac was performed.",
+    "source": [
+      "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInstallation.swift",
+      "Packages/SnowfolioCore/Sources/SnowfolioUI/CommandLineToolSettings.swift",
+      "App/UITests/TerminalSettingsTests.swift"
+    ],
+    "behavior": "Searchable General > Terminal controls. Native directory chooser; exclusive symlink creation; one managed link; copied POSIX-quoted absolute command; saved link/target receipt; relocation Update; Remove requires exact recorded target. Read/validation/mutation off UI actor, persisted mutation result survives disappearing Settings view. User files, directories and foreign/dangling links are preserved. No PATH editing or elevated installer.",
+    "removal": "Exclusively stage in the same folder and recheck the moved link before deletion; if it changed, restore or preserve it at a reported recovery path. Update creates links exclusively and attempts exclusive rollback.",
+    "tests": "13 tests in3 suites pass locally:7 filesystem methods with4collision cases,3model persistence/relocation/ownership methods and3existing search/navigation/persistence methods. Zero compiler warnings/errors. UI test independently typechecks; changed formatting and diff checks pass.",
+    "fullGateExpected": "427core tests/89suites plus652corpus and8arm64 executables;31regular/40native UI methods. Runtime gate pending.",
+    "localLog": "/private/tmp/snowfolio-cli-settings-tests.log",
+    "actualUITest": "Native chooser, exact symlink destination, Copy Command clipboard, removal preserving helper/user bytes, occupied regular file refusal, searchable row reveal and screenshots. Uses only disposable test-machine temporary folder.",
+    "jobBudget": "Previous8b1b28f fullregular job28m56s; new Terminal coverage adds work. Complete job budget35m (nativefull45m), all method waits and assertions unchanged."
   }
 }

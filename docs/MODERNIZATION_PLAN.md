@@ -3646,3 +3646,27 @@ earlier CLI failure. The full `8b1b28f` run42621125150 continues. All417core tes
 [Document host decision](DOCUMENT_HOST_DECISION.md) records the native candidate's
 stronger lifecycle evidence and remaining gates before any default-host switch.
 No installation, release, handler change or coupled legacy retirement occurred.
+
+
+## Terminal installation controls — candidate, 2026-11-09
+
+General settings now offers a searchable Terminal row with a native directory
+chooser, installed status, Copy Command and recorded-link Remove. Moving the app
+exposes Update. The Swift installer creates symlinks exclusively, preserves foreign
+files/links/directories, stages and rechecks removal, and keeps app/document bytes.
+Filesystem work stays off the UI actor; an exact link/target preference receipt
+allows relocation without guessing ownership. Shell configuration is not edited.
+No link was installed on the physical Mac.
+
+All13focused local checks pass withzero compilerwarnings/errors: filesystem
+ownership/collision/relocation and quoting, persisted model lifecycle, and existing
+Settings navigation/search/switch persistence. The native chooser/clipboard/remove/
+collision UI method independently typechecks. Actual app screenshots and full
+427/89core+652corpus+8arm64 acceptance are pending. New complete UI counts are
+31regular/40native; no current full-suite acceptance inferred from focused checks.
+
+The earlier full8b1b28f regular run is terminal: its CLI fails at the old background
+editor click, plus the same3lifecycle failures. After restart,29other methods have
+26pass/3fail in1492.530s. This revision predates the Window-menu/readiness corrections.
+Its total job took28m56s; the complete job now has35minutes with the new Settings
+method (nativefull45minutes), retaining every behavioral timeout/assertion.

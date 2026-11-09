@@ -13,6 +13,7 @@ public final class AppPreferences {
   public let editorThemes: EditorThemeLibrary
   public let readingStyles: ReadingStyleLibrary
   public let assetFolder: DocumentAssetFolder
+  let commandLineTool: CommandLineToolSettings
   public var editorLayout: EditorLayoutPreferences {
     didSet {
       defaults.set(editorLayout.horizontalInset, forKey: "editorHorizontalInset")
@@ -106,6 +107,7 @@ public final class AppPreferences {
     readingStyleRepository: ReadingStyleRepository = .standard
   ) {
     self.defaults = defaults
+    commandLineTool = CommandLineToolSettings(defaults: defaults)
     // App-scoped fallback only; explicit app, system and launch-argument choices win.
     defaults.register(defaults: ["NSQuitAlwaysKeepsWindows": true])
     let domain = domainName ?? Bundle.main.bundleIdentifier ?? "local.macdown.modern"
