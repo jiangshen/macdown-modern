@@ -1,6 +1,6 @@
 {
-  "dateUTC": "2026-11-09T11:44:36.098069+00:00",
-  "status": "Candidate implemented;19 focused core/ownership tests pass, standalone help/error processes pass with stdin open, project generation and actual UI test typecheck pass. No packaged actual-app or new full-core acceptance yet.",
+  "dateUTC": "2026-11-09T11:57:37.010974+00:00",
+  "status": "Candidate compiles and packaged help/version/error checks pass. Both initial actual-app flows fail because piped source never appears after CLI launch returns0; transport is unaccepted. Metadata-only routing diagnostics added before changing transport.",
   "sources": [
     "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInvocation.swift",
     "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineLaunchEvent.swift",
@@ -14,7 +14,7 @@
     "files": "Relative to invoking directory, ordered standardized dedup. Missing leaf files use O_CREAT|O_EXCL and normal document opening; existing files are never truncated and parent failures are reported. No implicit directory creation.",
     "options": "Preserve h/v, help precedence, boolean values, independent no-help/no-version keys and options ending at first filename. Deliberate fixes: conventional -- delimiter, and unknown leading options exit64 instead of discarding input with success.",
     "packaging": "Native arm64 helper at Snowfolio.app/Contents/Helpers/snowfolio, built by Xcode target and SwiftPM. Resolves its own containing app, including symlink invocation. No PATH links, installation or handler/default-host changes.",
-    "completion": "Like the original CLI, exit0 means launch/event delivery accepted, not that every document has finished opening. Document errors are presented by the app; launch/input failures exit nonzero."
+    "completion": "Current NSWorkspace completion only proves launch acceptance. Initial runtime shows exit0 without document delivery, so this is a failing acceptance gate, not usable end-to-end CLI behavior."
   },
   "local": {
     "tests": "12 CLI tests plus7 ownership tests; no compiler errors/warnings. Includes malformed messages, literal paths, nil/empty/UTF8 BOM input, async decode and a multi-megabyte envelope.",
@@ -27,5 +27,13 @@
     "No additional macOS automation permission prompt, or redesign transport if required.",
     "Full412/86 core+652 corpus and packaging gates.",
     "Terminal settings exposure/installation and safe original CLI retirement after acceptance."
-  ]
+  ],
+  "initialActualApp15d767f": {
+    "nativeRun": 42611670287,
+    "regularRun": 42611693936,
+    "result": "Both compile/package and pass help/version/unknown checks, then warm CLI exits0 but waitForSource(pipedText) fails. Native screenshot shows empty Untitled; no permission alert visible. Both launch metadata exports contain only headers. No event delivery or cold acceptance claimed.",
+    "nativeCompact": "/private/tmp/snowfolio-validation-history/command-line-native-15d767f",
+    "regularCompact": "/private/tmp/snowfolio-validation-history/command-line-default-15d767f",
+    "diagnostic": "Opt-in helper ownPID/mainBundle and returnedPID/bundle/self flag; app handler installation/entry; attached as test metadata without text or paths. Establish cause before changing target addressing or identity."
+  }
 }

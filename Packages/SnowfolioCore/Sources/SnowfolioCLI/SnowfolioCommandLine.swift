@@ -42,13 +42,32 @@ struct SnowfolioCommandLine {
         configuration.createsNewApplicationInstance = false
         configuration.allowsRunningApplicationSubstitution = false
         configuration.appleEvent = try CommandLineLaunchEvent.encode(request)
-        _ = try await NSWorkspace.shared.openApplication(at: app, configuration: configuration)
+        #if DEBUG
+          trace(
+            "before launch ownPID=\(ProcessInfo.processInfo.processIdentifier) mainBundle=\(Bundle.main.bundleIdentifier ?? "none")"
+          )
+        #endif
+        let launched = try await NSWorkspace.shared.openApplication(
+          at: app, configuration: configuration)
+        #if DEBUG
+          trace(
+            "launch returned pid=\(launched.processIdentifier) bundle=\(launched.bundleIdentifier ?? "none") self=\(launched.processIdentifier == ProcessInfo.processInfo.processIdentifier)"
+          )
+        #endif
       }
     } catch {
       FileHandle.standardError.write(Data("snowfolio: \(error.localizedDescription)\n".utf8))
       exit(error is CommandLineInvocationError ? EX_USAGE : EXIT_FAILURE)
     }
   }
+
+  #if DEBUG
+    private static func trace(_ message: @autoclosure () -> String) {
+      if ProcessInfo.processInfo.environment["SNOWFOLIO_TRACE_CLI"] == "1" {
+        FileHandle.standardError.write(Data("SnowfolioCLI \(message())\n".utf8))
+      }
+    }
+  #endif
 
   private static func applicationURL() throws -> URL {
     var size: UInt32 = 0

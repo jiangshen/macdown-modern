@@ -20,6 +20,7 @@ final class CommandLineTests: XCTestCase {
     process.environment = ProcessInfo.processInfo.environment.filter {
       ["PATH", "HOME", "TMPDIR", "LANG", "LC_ALL"].contains($0.key)
     }
+    process.environment?["SNOWFOLIO_TRACE_CLI"] = "1"
     let output = Pipe()
     let error = Pipe()
     let stdin = Pipe()
@@ -110,6 +111,11 @@ final class CommandLineTests: XCTestCase {
     let warm = try await Self.runTool(
       tool, arguments: [file.lastPathComponent, "./" + file.lastPathComponent, "new.md", "--help"],
       directory: directory, input: pipedBytes, delayedInput: true)
+    let launchTrace = XCTAttachment(
+      string: "status=\(warm.status) seconds=\(warm.seconds)\n\(warm.error)")
+    launchTrace.name = "command-line-routing-metadata"
+    launchTrace.lifetime = .keepAlways
+    add(launchTrace)
     XCTAssertEqual(warm.status, 0, warm.error)
     XCTAssertGreaterThanOrEqual(warm.seconds, 0.2)
     await waitForSource(pipedText)

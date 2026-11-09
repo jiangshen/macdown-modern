@@ -21,6 +21,9 @@ public final class DocumentURLController: NSObject {
     NSAppleEventManager.shared().setEventHandler(
       self, andSelector: #selector(receiveCommandLine(_:withReplyEvent:)),
       forEventClass: CommandLineLaunchEvent.eventClass, andEventID: CommandLineLaunchEvent.eventID)
+    #if DEBUG
+      DocumentLifecycleTrace.note("launch handlers installed")
+    #endif
   }
 
   @objc private func receive(
@@ -47,6 +50,9 @@ public final class DocumentURLController: NSObject {
     withReplyEvent reply: NSAppleEventDescriptor
   ) {
     do {
+      #if DEBUG
+        DocumentLifecycleTrace.note("command line event received")
+      #endif
       pending.append(.commandLine(try CommandLineLaunchEvent.payload(from: event)))
       drain()
     } catch {
