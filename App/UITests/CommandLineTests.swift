@@ -132,13 +132,13 @@ final class CommandLineTests: XCTestCase {
     await waitForSource(original)
     XCTAssertEqual(
       app.windows.matching(NSPredicate(format: "title == %@", file.lastPathComponent)).count, 1)
+    for name in ["new.md", "--help"] {
+      XCTAssertTrue(app.windows[name].firstMatch.waitForExistence(timeout: 8), app.debugDescription)
+    }
     XCTAssertEqual(try Data(contentsOf: file), originalBytes)
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("new.md")), Data())
     // After the first filename --help is a literal filename, as in the original CLI.
     XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("--help")), Data())
-    for name in ["new.md", "--help"] {
-      XCTAssertTrue(app.windows[name].firstMatch.waitForExistence(timeout: 8), app.debugDescription)
-    }
     // These independent windows overlap exactly. Clicking the background editor's
     // coordinates reaches the front document; select its native Window menu item.
     let pipedWindow = try XCTUnwrap(

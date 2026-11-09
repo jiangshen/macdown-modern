@@ -1223,5 +1223,13 @@
     "allocatedBytesRemoved": 122155008,
     "reason": "Retired Apple-event diagnostic fully compacted and screenshot inspected. Current connection failure diagnosed from range-only metadata, no new raw required. Latest complete useful native raw and running apps preserved.",
     "ownershipAndOpenFilesChecked": true
+  },
+  "completedCLIWindowFocusDownloadCleanup": {
+    "dateUTC": "2026-11-09T13:08:23.129655+00:00",
+    "path": "/private/tmp/snowfolio-cli-current-incoming",
+    "source": "8b1b28f",
+    "allocatedBytesRemoved": 123514880,
+    "reason": "Receipt, full failing window hierarchy, test summaries and scoped logs compacted; no screenshot exists in this failed method. Focus diagnosis concluded, latest useful complete native raw retained.",
+    "ownershipAndOpenFilesChecked": true
   }
 }

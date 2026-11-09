@@ -159,5 +159,20 @@
     ],
     "finding": "Same three established regular-host lifecycle failures; new link flow passes in the complete run. No new latest full-native acceptance inferred.",
     "compact": "/private/tmp/snowfolio-validation-history/default-4791020"
+  },
+  "full36230c1": {
+    "run": 42619318264,
+    "job": 129167073866,
+    "source": "36230c15fd58e73cb452c86249a29988c2f6f2d8",
+    "result": "CLI connection lookup fails under the then-unconfigured runner sandbox. After runner restart,29other methods execute:26pass/3established lifecycle failures,1489.743s. Do not report29methods as the entire30-method invocation.",
+    "failures": [
+      "testBundledCommandLineOpensFilesAndDelayedPipesAcrossLaunches",
+      "testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "testCoordinatedExternalReloadAfterAutosave"
+    ],
+    "core": "417/87+652corpus+8arm64 pass.",
+    "evidence": "/private/tmp/snowfolio-default-36230c1-failed.log",
+    "nextFull": 42621125150
   }
 }

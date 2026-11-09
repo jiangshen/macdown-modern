@@ -3624,3 +3624,25 @@ requires both new file windows. Final screenshot/hierarchy are always captured;
 opt-in file-index/domain/code metadata distinguishes ordinary open errors.
 Original deadlines and byte/launch assertions remain. Save and cold acceptance
 stay pending; no production document behavior is changed by this followup.
+
+
+## CLI readiness ordering and verification boundary — 2026-11-09
+
+The `2cadbd8` native test stops before the new Window-menu action: a byte read of
+the final file runs before the asynchronous ordered opener reaches it. File-index
+traces show the previous files opening and the final open overlapping the failed
+test's directory cleanup. This does not prove an unsupported-type app defect.
+The existing eight-second new-window checks now precede byte reads. Typecheck and
+strict lint pass; Save/cold runtime acceptance remains open. Focused retries pause
+for this verification cycle, with receipts, full earlier hierarchy and current
+scoped traces retained; no extra raw download was made.
+
+The complete `36230c1` regular-host invocation contains the CLI lookup failure
+plus the same three lifecycle failures. After the test-runner restart, its29
+other methods report26pass/3fail in1489.743s; that29-method summary excludes the
+earlier CLI failure. The full `8b1b28f` run42621125150 continues. All417core tests,
+87suites,652CommonMark examples and eightarm64 executables pass at36230c1.
+
+[Document host decision](DOCUMENT_HOST_DECISION.md) records the native candidate's
+stronger lifecycle evidence and remaining gates before any default-host switch.
+No installation, release, handler change or coupled legacy retirement occurred.
