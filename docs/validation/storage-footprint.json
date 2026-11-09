@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T06:11:48.556436+00:00",
+  "dateUTC": "2026-11-09T06:57:42.514870+00:00",
   "scope": "Snowfolio checkout and this task-owned Snowfolio/MacDown temporary files; shared Codex history and unrelated projects excluded.",
   "projectTemporaryAllocatedBytesBefore": 16591192064,
   "projectTemporaryAllocatedBytesAfter": 8001990656,
@@ -317,6 +317,43 @@
     "fullLocalInterruptionRecorded": true,
     "ownershipAndOpenFilesChecked": true,
     "currentFullNative33RawAndRunningProbeAndSourcePreserved": true,
+    "trashEmptied": false
+  },
+  "latestContentsReferenceCleanup": {
+    "dateUTC": "2026-11-09T06:57:42.514870+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-scripting-current-incoming",
+        "allocatedBytesRemoved": 72634368
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-99F8E416-42BC-4B33-BC51-0B9952EBDCCD",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-91A117AF-7C73-4864-82D5-F5B3DB090703",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-4F45F116-7E98-40A0-B904-515A979946FF",
+        "allocatedBytesRemoved": 40960
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-493E300A-B6C0-4B82-A060-2710FE2027E0",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-72D6C66D-DA9C-4407-B786-0C6BA5D01294",
+        "allocatedBytesRemoved": 180224
+      }
+    ],
+    "kept": [
+      "/private/tmp/snowfolio-validation-history/native-contents-reference-local",
+      "/private/tmp/snowfolio-validation-history/core-e3dfa92",
+      "/private/tmp/snowfolio-validation-history/native-scripting-e3dfa92"
+    ],
+    "ownershipAndOpenFilesChecked": true,
+    "sourceAndRunningProbeAndLatestFullNative33RawPreserved": true,
     "trashEmptied": false
   }
 }

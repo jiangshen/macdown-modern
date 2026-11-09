@@ -3,7 +3,9 @@ import Testing
 
 @testable import SnowfolioUI
 
-@Suite("Native document directory events", .serialized)
+// Callback deadlines share the main actor with window/layout fixtures. Keep
+// those workloads separate without extending waits or changing event assertions.
+@Suite("Native document directory events", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeDocumentFileMonitorTests {
   enum Failure: Error { case timeout }

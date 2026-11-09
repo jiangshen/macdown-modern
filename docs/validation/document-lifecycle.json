@@ -1036,5 +1036,22 @@
       "UtilityQoS": 32,
       "attribution": "Internalpriorityinversions; no productionperformanceattributionorM6acceptance."
     }
+  },
+  "latestContentsHostedCore": {
+    "dateUTC": "2026-11-09T06:57:42.514870+00:00",
+    "commit": "e3dfa924e365d11077e90172e685445803dc9d93",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42571621615",
+    "job": 129010056525,
+    "tests": 373,
+    "passed": 372,
+    "failed": 1,
+    "suites": 80,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "failure": "NativeDocumentFileMonitorTests.atomicReplacement .timeout3.588s; allotherdeclaredtests includingbothscriptentrypointparametercasespass. CommonMark/architecturejobstepsnotreachedaftertestexit1.",
+    "compact": "/private/tmp/snowfolio-validation-history/core-e3dfa92",
+    "correction": "Monitorcallbackdeadlines shareMainActorwithglobalnativewindow/layoutfixtures. JoinexistingNativeUIExclusive testlease; all3secondwaits andevent/byte/quieting/rebind/stopassertionsunchanged. No productionfilemonitorchange.",
+    "localFocused": "Bothmonitor2/2pass0.904s; command8.271s,0warnings/errors. Freshfullcoreconfirmationrequired.",
+    "protectedProbe": "Read-onlysample85540showsidleNSApplicationrunloop; no mutation/termination. PhysicalUIconnectionstillunaccepted."
   }
 }

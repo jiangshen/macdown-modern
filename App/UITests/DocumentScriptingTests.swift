@@ -262,28 +262,49 @@
       XCTAssertEqual(initialDocuments.descriptorType, typeAEList)
       let initialCount = initialDocuments.numberOfItems
       let made = try execute(
-        "make new document with data \(literal(source))\nreturn text of document 1")
-      XCTAssertEqual(made.stringValue, source)
-      _ = waitForSource(source, in: app)
+        """
+        set d to make new document with data \(literal(source))
+        return {(get text of d), (get name of d)}
+        """)
+      XCTAssertEqual(made.descriptorType, typeAEList)
+      XCTAssertEqual(made.atIndex(1)?.stringValue, source)
+      let createdName = try XCTUnwrap(made.atIndex(2)?.stringValue)
+      let createdDocument = "document \(literal(createdName))"
+      // Make returns a specific document; initial window ordering can still
+      // include the startup Untitled. Select its actual window before indexing.
+      let window = app.windows[createdName].firstMatch
+      XCTAssertTrue(window.waitForExistence(timeout: 8), app.debugDescription)
+      window.click()
+      let editor = window.textViews["markdownSourceEditor"].firstMatch
+      let loaded = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in editor.exists && editor.value as? String == source },
+        object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [loaded], timeout: 8), .completed)
       XCTAssertEqual(try execute("return documents").numberOfItems, initialCount + 1)
       XCTAssertEqual(try execute("return text of item 1 of documents").stringValue, source)
       XCTAssertEqual(try execute("return text of document of window 1").stringValue, source)
       XCTAssertGreaterThan(try execute("return id of window 1").int32Value, 0)
+      // Compare a published fragment; manual mode permits an empty cache
+      // immediately after scripted creation.
+      let render = window.buttons["Render"].firstMatch
+      XCTAssertTrue(render.waitForExistence(timeout: 8))
+      render.click()
       let initialHTML = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in
-          (try? self.execute("return html of document 1").stringValue)?.contains("Initial data")
+          (try? self.execute("return html of \(createdDocument)").stringValue)?.contains(
+            "Initial data")
             == true
         }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [initialHTML], timeout: 8), .completed)
-      let beforeHTML = try XCTUnwrap(execute("return html of document 1").stringValue)
+      let beforeHTML = try XCTUnwrap(execute("return html of \(createdDocument)").stringValue)
       do {
-        _ = try execute("set html of document 1 to \(literal("Must remain read only"))")
+        _ = try execute("set html of \(createdDocument) to \(literal("Must remain read only"))")
         XCTFail("The public read-only HTML property must reject assignment")
       } catch let error as NSError {
         XCTAssertEqual(error.code, -10006)
       }
-      XCTAssertEqual(try execute("return html of document 1").stringValue, beforeHTML)
-      XCTAssertEqual(try execute("return text of document 1").stringValue, source)
+      XCTAssertEqual(try execute("return html of \(createdDocument)").stringValue, beforeHTML)
+      XCTAssertEqual(try execute("return text of \(createdDocument)").stringValue, source)
       do {
         _ = try execute("return text of document \(literal(UUID().uuidString))")
         XCTFail("A nonexistent document must report an object-resolution error")
@@ -291,7 +312,7 @@
         XCTAssertEqual(error.code, -1728)
       }
       _ = try execute(
-        "close document 1 saving yes saving in (POSIX file \(literal(file.path)))")
+        "close \(createdDocument) saving yes saving in (POSIX file \(literal(file.path)))")
       let saved = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == Data(source.utf8) },
         object: nil)

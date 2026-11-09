@@ -3376,3 +3376,17 @@ Newparameterizedsource/contents ownership/composition checks pass3tests/5cases,
 64blockedNSAnimationworkers andmainthreadwaitingnativeDocserialization; ownedrun
 interrupted130 afterpreservingevidence. No productionautosavepolicyorcachecleaning
 workaround. Freshhostedfullcore remainsrequired. Fullmodernizationactive/incomplete.
+
+
+The e3dfa92candidate now executesMakewithdata withouttheprevioushandlererror,
+buttestqueriesdocument1 ratherthanthecreatedobject andgetsemptytext(3exec2pass1fail
+50.229s). Keepinitialcontentsunaccepted. Testnowreturnsdata/namefromtheexactMake
+object, selectsitsnamedwindowbeforeorderingchecks, andusesitsnameforsubsequent
+commands. ExplicitRender establishesthemanualHTMLsnapshot; allstrictchecksremain.
+
+Freshcoree3executes373tests/80suites:372pass,1directory-eventtimeout3.588s; no
+compilerwarnings/errors. Monitor's3s callbacktestnowjoinstheexistingnativeUIlease
+toexcludeconcurrentwindow/layoutwork, withalldeadlines/event/byteassertionsintact.
+Focusedmonitor2/2pass0.904s; native34/default27compile/defaultrestored. Fullcoreretry
+required, no productionmonitorchange. Protected85540sampleisnormalidleAppKiteventloop;
+physicalconnectioncauseisnotestablished.
