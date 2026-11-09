@@ -1126,5 +1126,12 @@
     "reason": "Counter1/1 and fullcore384/83 accepted; counter screenshot inspected and compact evidence retained. Keep latest full36 raw and canonical app/core caches only. Both concluded build-wrapper logs compacted.",
     "ownershipAndOpenFilesChecked": true,
     "protectedProbe85540Preserved": true
+  },
+  "retiredWritingEditHelpers": {
+    "dateUTC": "2026-11-09T09:48:24.255419+00:00",
+    "count": 7,
+    "action": "Moved concluded editing scripts in /private/tmp to Trash after owner/open-file checks. Removed duplicate finished watcher/sample logs after compacting.",
+    "trashEmptied": false,
+    "spaceClaim": "Recoverable source moves are not counted as freed disk space."
   }
 }

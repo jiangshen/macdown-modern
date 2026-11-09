@@ -243,7 +243,7 @@ verification. No essential feature is authorized for silent removal.
 | Essential | Custom editor `.style` themes, CSS, templates, syntax themes, typography and layout preferences | Native source `.style` catalog/import, 15 bundled source themes, notebook typography all eight Prism code themes, code-block line numbers and language/custom labels implemented; eight reading presentations (Notebook, None and six original sheets) implemented for preview/export; custom CSS/folder import, immutable local assets and reload implemented; Swift Default template/context and unavailable-name recovery implemented; hosted export-panel/recovery acceptance passed; direct desktop theme/export acceptance, user asset license sidecars and remaining layout preferences pending |
 | Essential | MathJax-compatible math, Mermaid, Graphviz, task lists, front matter and TOC | Task lists, YAML properties, heading links/TOC, offline equations and diagrams implemented; remaining MathJax compatibility pending |
 | Essential | Existing Markdown extension toggles: tables/fences/autolinks/strike/underline/superscript/highlight/footnotes/quote/smart punctuation/intraword emphasis | GFM/footnotes/smart punctuation, underline/highlight/superscript/quoted-text, fenced-code and independent intraword-emphasis preferences implemented |
-| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Word/character replacement implemented and focused-tested; [acceptance ledger](validation/writing-statistics.json) retains actual-app/full-core gates. Native menus/tabs/restoration pass36/36, including independent viewport relaunch; full-screen/physical parity remains open |
+| Essential | Word/character statistics, shortcut/menu behavior, full screen, window restoration | Word/character replacement accepted through 384 core tests and its real native-app flow; [acceptance ledger](validation/writing-statistics.json) records exact scope. Native menus/tabs/restoration pass36/36, including independent viewport relaunch; full-screen/physical parity remains open |
 | Modernize | CLI paths/stdin, Open Recent, Finder document associations and URL scheme | CLI/URL/plugin [source contract](validation/launch-integrations-characterization.json) recorded; modern delivery/navigation remains pending |
 | Modernize | AppleScript document text/HTML interface; evaluate native App Intents alongside it | Three actual native scripting methods pass together in full35. Further options/composition parity and App Intents evaluation remain open |
 | Modernize | Plugin discovery/run compatibility, updater stable/prerelease choices and preferences migration | Pending |
@@ -3554,46 +3554,56 @@ focusedrealrelaunch remainsrequired. No production scrollfix or featureacceptanc
 
 ## Actual independent reading positions accepted — 2026-11-09
 
-Exact2bc01b2 focusedrelaunch1/1passes, zero failures/skips,84.181s. Bothnormal
-Quit/relaunch reading positions survive. Sourcecropbefore/afterhas0.0glyphdifference
-atparagraph41; wrong-positioncontrol0.93927isrejected. Source scrollbar changes
-0.222788→0.251728 while actualtextstaysidentical, validatingtheglyphanchor metric.
-Preview0.352928→0.352818 stayswithin0.002. No-click typing provesoffscreen source
-caret0 retained; nativeUndoand exactUTF16LE/BOM/CRLF/Unicodefilebytes pass. Three
-majorPNGinspected. No production scrollchange wasnecessary. Hostedpreviewglyph
-painting/physicaldarkselection/caret/IME/VoiceOver stayunaccepted.
+At commit `2bc01b2`, the focused relaunch test passes with no failures or skips in
+84.181 seconds. Normal Quit/relaunch preserves both reading positions. The source
+crop is identical before and after; the wrong-position control differs by 93.927%.
+The preview position changes from 0.352928 to 0.352818, within the 0.002 bound.
+Typing without clicking proves the offscreen source caret remains at offset zero;
+native Undo and exact UTF16LE/BOM/CRLF/Unicode bytes also pass. No production scroll
+change was necessary.
 
-Full native36 at exact2bc01b2 is accepted:36 passed, zero failed/skipped,
-1810.693 seconds. All35 baseline methods remain included. Six key screenshots
-inspected; source reading glyph difference0.0 and wrong-position control0.89878.
-Preview0.352928→0.352818, caret/Undo/encoded bytes pass. Hosted preview capture
-remains blank. Keep the latest full36 raw only; full35 raw was removed after
-ownership/open-file checks.53 internal runtime warnings remain unattributed.
-Core375/80+652CommonMark baseline remains accepted; no host/install/release switch.
+The complete native run at the same commit passes all 36 methods, including every
+previous 35-method baseline case, in 1810.693 seconds. Six key screenshots were
+inspected. The source reading crop is again identical, and its wrong-position
+control differs by 89.878%. Hosted preview captures remain blank. The 53 internal
+runtime warnings remain unattributed; they do not establish measured app performance.
+Only this latest complete raw result is retained, with compact older findings.
 
 ## Writing statistics replacement — 2026-11-09
 
-The optional native counter and searchable Settings now preserve the original
-visibility/mode keys and all three counting policies. A read-only committed-DOM
-snapshot is decoded and counted off the UI actor, once per HTML patch. Capture IDs
-and navigation generations reject stale work; hidden-preview counting and manual
-publication reuse the existing render policy.12 focused checks pass, including
-Unicode UTF16 units, styled-node boundaries, code, shadow diagram labels,
-manual-source-only behavior, selection, native Undo and exact UTF16LE/BOM/CRLF bytes.
-The final native app and37 UI methods compile with zero Swift warnings/errors.
+The optional native counter and searchable Settings preserve the original visibility
+and mode keys and all three counting policies. A read-only snapshot of the committed
+preview DOM is decoded and counted off the UI actor, once per HTML patch. Capture IDs
+and navigation generations reject stale work. Hidden-preview counting and manual
+publication reuse the existing render policy. The focused 12 checks cover UTF16 units,
+styled-node boundaries, inline and block code, diagram labels, manual source-only
+mode, selection, Undo and exact encoded bytes.
 
-The full local package attempt stalled in an existing Mermaid test: a short sample
-found64 AppKit animation workers blocked. Only the owned stalled test processes were
-stopped. Exact ece6558 hosted full-core384tests/83suites now passes, with8arm64 binaries,
-zero compiler warnings/errors, and652/652CommonMark. All diagram checks pass there.
-The actual native app counter test also passes1/1,62.463s: source-only manual Render,
-native mode picker, keyboard Undo and exact encoded Save are accepted. Screenshot
-inspected. Keep the53-warning full36 baseline distinct from this focused1-warning
-result; neither establishes measured app performance. Current physical preview/dark
-checks remain pending. The physical Mac locked again; one unlock request is pending. The empty owned
-current-app check was stopped without touching user documents. The canonical
-regular SwiftUI host is restored and28UI methods compile; both original app/probe
-caches are preserved. The older protected probe visibly painted after its offscreen window was zoomed,
-and its temporary mixed-list test was undone and closed; that binary is not current
-app acceptance. Preserve original counter code until replacement acceptance.
-See validation/writing-statistics.json for exact scope and remaining gates.
+At source commit `ece6558`, all 384 core tests in 83 suites pass on the disposable
+machine, including all diagram checks. The eight test executables are arm64, compiler
+warnings/errors are zero, and all 652 CommonMark examples pass. An earlier local
+attempt stalled in an existing Mermaid check; its short process sample shows 64
+workers blocked in AppKit animation work. Only those owned stalled test processes
+were stopped, and the compact diagnostic is retained.
+
+The real native-app counter test passes in 62.463 seconds. It verifies source-only
+manual Render, native mode selection, keyboard Undo and a Save matching the original
+UTF16LE/BOM/CRLF bytes. Its screenshot was inspected. One internal runtime warning
+remains unattributed. The native host compiles all 37 UI methods; the canonical regular
+SwiftUI host is restored and compiles all 28 default-host UI methods. The automatic
+full default-host run is still finishing; its three established lifecycle failures
+remain the comparison baseline.
+
+The physical Mac locked again, and one unlock request remains pending. The owned
+empty current-app check was stopped without changing user documents. The protected
+older probe visibly painted after its offscreen window was zoomed; its temporary
+mixed-list paste was undone and its owned tab closed. That older binary does not
+establish current-app physical preview, dark selection, IME or VoiceOver acceptance.
+The original counter remains coupled to the legacy target; retire it with that target
+after the remaining feature parity is verified. The full modernization goal remains
+active, including integrations and measured performance/release gates.
+
+See `validation/writing-statistics.json` for exact evidence, and
+`validation/launch-integrations-characterization.json` for the next CLI/URL/plugin
+replacement contracts. No default host, installation, release or file-handler switch
+has been made.
