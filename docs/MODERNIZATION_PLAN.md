@@ -2,8 +2,10 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **384 package tests / 83 suites, all 652 published
-CommonMark examples and eight arm64 test executables pass** at `ece6558`.
+Current accepted core baseline: **398 package tests / 85 suites, all 652 published
+CommonMark examples and eight arm64 test executables pass** at `4791020`.
+Its two registry-test weak-mutability warnings are corrected in the current focused
+followup; full warning-free acceptance of that followup remains pending.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
@@ -38,10 +40,15 @@ regular-host failure is established. See
 The original command-line, URL and plugin behavior is recorded in
 [launch-integrations-characterization.json](validation/launch-integrations-characterization.json).
 Branded document links and source navigation are now implemented in Swift. Both
-hosts compile, with 38 native / 29 regular UI methods. Focused parser/location/
-ownership checks pass; actual URL delivery in each host and a fresh full core gate
-remain pending. See [document-links.json](validation/document-links.json).
-The CLI stdin/files replacement and its packaging remain to be implemented.
+hosts compile, with 38 native / 29 regular UI methods. Both actual-app warm/cold
+link flows pass at `4791020`, including exact no-click Unicode locations, old alias,
+reuse, Undo and encoded bytes. The earlier regular-host caret failure has not been
+conclusively attributed. A separate initial-snapshot ordering gap now has a failing-
+then-passing regression and an event-driven readiness fix: 16 focused checks pass;
+its latest actual-app/full-core gates remain pending. See
+[document-links.json](validation/document-links.json). The CLI stdin/files replacement
+and packaging remain to be implemented;18 isolated original-parser probes now
+characterize option/dash/unknown-option behavior.
 
 Real native scripting passes three methods covering Open/text/name/file, source
 replacement/Undo/encoded autosave, manual HTML cache/Render, Make with properties and

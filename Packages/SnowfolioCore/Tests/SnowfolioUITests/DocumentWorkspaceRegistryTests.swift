@@ -39,6 +39,64 @@ struct DocumentWorkspaceRegistryTests {
     registry.unregister(window, matching: model)
   }
 
+  @Test(
+    "A file link waits for its initial snapshot, including a genuinely empty file",
+    arguments: ["", "A\r\n🧊e\u{301} target\r\n"])
+  func initialFileLoad(source: String) async throws {
+    _ = NSApplication.shared
+    let registry = DocumentWorkspaceRegistry()
+    let owner = NSDocument()
+    owner.fileURL = URL(fileURLWithPath: "/tmp/link-initial-load-\(UUID().uuidString).md")
+    let controller = NSDocumentController.shared
+    let window = makeWindow()
+    owner.addWindowController(NSWindowController(window: window))
+    controller.addDocument(owner)
+    defer { owner.close() }
+    let model = MarkdownDocument()
+    registry.register(model, in: window)
+    var completed = false
+    let pending = Task {
+      let result = try await registry.model(for: owner, controller: controller)
+      completed = true
+      return result
+    }
+    defer { pending.cancel() }
+    try await waitFor { completed || registry.waitingCount == 1 }
+    #expect(!completed, "A window exists before the reference host applies its first file snapshot")
+    model.acceptNativeLoad(TextFileContents(text: source))
+    // Loading itself must wake the request; a duplicate window registration is
+    // neither guaranteed by the host nor needed for event-driven readiness.
+    #expect(try await pending.value === model)
+    #expect(model.text == source && model.loadRevision == 1)
+    #expect(registry.waitingCount == 0)
+  }
+
+  @Test("Cancellation during the initial read ignores its later completion and releases the model")
+  func cancelInitialFileLoad() async throws {
+    _ = NSApplication.shared
+    let registry = DocumentWorkspaceRegistry()
+    let owner = NSDocument()
+    owner.fileURL = URL(fileURLWithPath: "/tmp/link-cancelled-read-\(UUID().uuidString).md")
+    let controller = NSDocumentController.shared
+    let window = makeWindow()
+    owner.addWindowController(NSWindowController(window: window))
+    controller.addDocument(owner)
+    defer { owner.close() }
+    var model: MarkdownDocument? = MarkdownDocument()
+    weak let observed = model
+    registry.register(try #require(model), in: window)
+    let pending = Task { try await registry.model(for: owner, controller: controller) }
+    defer { pending.cancel() }
+    try await waitFor { registry.waitingCount == 1 }
+    pending.cancel()
+    await #expect(throws: CancellationError.self) { try await pending.value }
+    model?.acceptNativeLoad(TextFileContents(text: "late source"))
+    await Task.yield()
+    #expect(registry.waitingCount == 0)
+    model = nil
+    #expect(observed == nil)
+  }
+
   @Test("A released workspace in another window never hides the live model")
   func multipleWindows() async throws {
     _ = NSApplication.shared
@@ -54,7 +112,7 @@ struct DocumentWorkspaceRegistryTests {
     for (live, released) in [(first, second), (second, first)] {
       let model = MarkdownDocument(contents: .init(text: "live source"))
       var obsolete: MarkdownDocument? = MarkdownDocument()
-      weak var observed = obsolete
+      weak let observed = obsolete
       if let obsolete { registry.register(obsolete, in: released) }
       obsolete = nil
       #expect(observed == nil)
@@ -86,7 +144,7 @@ struct DocumentWorkspaceRegistryTests {
     let window = makeWindow()
     defer { window.close() }
     var model: MarkdownDocument? = MarkdownDocument()
-    weak var observed = model
+    weak let observed = model
     if let model { registry.register(model, in: window) }
     model = nil
     #expect(observed == nil)

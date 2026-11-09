@@ -1,6 +1,6 @@
 {
-  "dateUTC": "2026-11-09T11:07:02.620975+00:00",
-  "status": "Implemented; initial actual-app runs expose an undeclared legacy alias and a timing-dependent regular-host caret failure. Alias declaration corrected; metadata diagnostics and stronger preview-fixture readiness await verification.",
+  "dateUTC": "2026-11-09T11:21:57.468113+00:00",
+  "status": "Both actual-app hosts pass warm/cold links at4791020; full398/85 core and652 corpus pass. Initial-load readiness regression reproduced and fixed locally; its source-version actual-app/full gates remain pending. Original intermittent caret failure not conclusively attributed.",
   "sources": [
     "Packages/SnowfolioCore/Sources/DocumentCore/DocumentOpenRequest.swift",
     "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentURLController.swift",
@@ -18,7 +18,7 @@
     "validation": "Known target/line/column query items must be unique. Local absolute file URLs only; remote hosts, credentials, ports, fragments, file queries and decoded null bytes are rejected. Optional location defaults column to1 when a line exists; a column requires a line. Unknown optional query items remain ignored like the original.",
     "navigation": "Foundation line boundaries and UTF16 columns clamp at content ends and composed-character boundaries, including CRLF, non-BMP emoji and combining marks. Computation runs off the UI actor. A newer source revision prevents stale positioning.",
     "opening": "Normal NSDocumentController open with display, reusing existing documents. No alternate reader/writer/autosave/Undo policy, no file creation for URL links and no evaluation of input as a command.",
-    "ownership": "Native documents expose their shared model directly. The regular host resolves its model via a weak, event-driven window registration and public NSDocument ownership. Cancellation releases waiters/deadlines; a failed8-second lookup reports an error without changing source.",
+    "ownership": "Native documents expose their shared model directly. Regular-host lookup uses weak public NSDocument/window ownership, waiting for the initial snapshot through one-shot Observation rather than polling or extra window updates. A genuinely empty loaded file is distinguished by loadRevision. Cancellation releases continuations/deadlines and ignores late notifications; existing8-second limit retained.",
     "view": "Location requests reveal the source from preview-only mode. Hidden source views defer selection until visible and existing marked-text protection remains.",
     "lifecycle": "Get-URL handler installed during will/did-finish launch for both hosts; ordered queue retains requests across asynchronous opening."
   },
@@ -31,11 +31,11 @@
   },
   "actualAppTest": "DocumentLinksTests/testDocumentLinksOpenNavigateAndReuseAcrossLaunches",
   "pending": [
-    "Actual Get-URL delivery on native and regular host, including cold launch.",
-    "No-click insertion proves exact location, existing-file reuse, Undo and exact encoded bytes.",
-    "Latest full-core398 tests/85suites and652CommonMark; prior accepted baseline384/83 at ece6558 remains distinct.",
-    "CLI stdin/files protocol and packaging remain unimplemented; preserve original CLI source.",
-    "Full goal M3-M6 including physical preview/dark/IME/VoiceOver, practical plugin compatibility and measured releases remains active."
+    "Actual-app warm/cold link followup at the new initial-load readiness source revision.",
+    "Full400 tests/85 suites with warning fix and652CommonMark at the new readiness revision.",
+    "Resolve any recurrence of original regular-host caret failure with exact failing trace.",
+    "CLI stdin/files transport and packaging; original CLI source preserved.",
+    "Remaining full modernization M3-M6, physical marked composition/VoiceOver, plugin compatibility and measured releases."
   ],
   "primaryReferences": [
     "https://developer.apple.com/documentation/foundation/nsappleeventmanager/seteventhandler(_:andselector:foreventclass:andeventid:)",
@@ -57,5 +57,44 @@
       "result": "Regular flow gets through first canonical insertion to alias rejection, confirming timing-dependent first failure. Core fails nativeViewportRestoration initial scroll expectations: top position and scrollY0."
     },
     "previewFixture": "Prior readiness observed rendered model HTML and scrollY0; both can hold before WebKit patches its empty skeleton. Now require current scroll context plus actual final heading and sufficient DOM extent before one scroll gesture; await its non-top report. Existing five-second deadlines and original position/source/bytes/restoration assertions retained."
+  },
+  "acceptedActualApp4791020": {
+    "native": {
+      "run": 42606594660,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 100.75,
+      "runtimeWarnings": 1,
+      "compact": "/private/tmp/snowfolio-validation-history/document-links-native-4791020",
+      "visual": "Both warm/cold PNGs inspected: encoded Unicode filename, unchanged source and restored caret. Hosted preview regions remain blank; physical rendering evidence recorded separately."
+    },
+    "default": {
+      "run": 42606633632,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 132.646,
+      "runtimeWarnings": 1,
+      "compact": "/private/tmp/snowfolio-validation-history/document-links-default-4791020",
+      "visual": "Both warm/cold PNGs inspected: encoded Unicode filename, unchanged source and restored caret. Hosted preview regions remain blank; physical rendering evidence recorded separately."
+    }
+  },
+  "acceptedCore4791020": {
+    "dateUTC": "2026-11-09T11:21:57.468113+00:00",
+    "source": "47910201ad919957f6ac1708dfb29d5407407129",
+    "run": 42606567869,
+    "job": 129123964659,
+    "tests": 398,
+    "suites": 85,
+    "arm64Executables": 8,
+    "commonMark": "652/652",
+    "compilerWarnings": "Two weak-mutability warnings in registry tests; weak let adjustment compiles without warnings in current focused run.",
+    "previewRestoration": "Passes with real DOM and scroll-context readiness, same original five-second deadlines and restoration assertions."
+  },
+  "initialLoadFollowup": {
+    "local": "16 tests/2 suites pass, including7 ownership tests and9 parser/location tests; zero compiler errors/warnings. New initial-file load test fails twice before the production fix (empty and Unicode sources), then passes; late-load cancellation/release also passes.",
+    "compact": "/private/tmp/snowfolio-validation-history/document-links-load-readiness",
+    "limits": "The older actual-app caret failure remains unattributed. The passing4791020 trace shows initial load1 and expected offsets12/20. This new deterministic regression proves an independent readiness precondition, not the original failure cause."
   }
 }

@@ -723,5 +723,46 @@
     "kept": "/private/tmp/snowfolio-validation-history/default-ece6558",
     "ownershipAndOpenFilesChecked": true,
     "reason": "Default28 exact counts and three unchanged failures compacted; new counter screenshot inspected. Preserve latest full native36 raw only."
+  },
+  "documentLinksVerificationCleanup": {
+    "dateUTC": "2026-11-09T11:20:49.540702+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-links-default-current-incoming",
+        "allocatedBytesRemoved": 124428288
+      },
+      {
+        "path": "/private/tmp/snowfolio-links-default-4791020-incoming",
+        "allocatedBytesRemoved": 121319424
+      },
+      {
+        "path": "/private/tmp/snowfolio-links-native-4791020-incoming",
+        "allocatedBytesRemoved": 71118848
+      },
+      {
+        "path": "/private/tmp/snowfolio-links-core-current-incoming",
+        "allocatedBytesRemoved": 167936
+      },
+      {
+        "path": "/private/tmp/snowfolio-legacy-cli-probe",
+        "allocatedBytesRemoved": 311296
+      },
+      {
+        "path": "/private/tmp/snowfolio-link-original-failure.mp4",
+        "allocatedBytesRemoved": 4096
+      },
+      {
+        "path": "/private/tmp/snowfolio-legacy-cli-parser.m",
+        "allocatedBytesRemoved": 16384
+      }
+    ],
+    "reason": "Both4791020 focused link flows and full398/85 core+652 corpus pass; four PNGs inspected. Initial failure AX/activity logs retained; its screen recording is unavailable (pending-attachment placeholder). Retain compact metadata and original-parser18-case probe findings; remove concluded diagnostic downloads. Original intermittent failure attribution remains open.",
+    "ownershipAndOpenFilesChecked": true,
+    "protectedRunningApps": [
+      42199,
+      85540
+    ],
+    "keptRaw": "/private/tmp/snowfolio-current-native-result",
+    "trashEmptied": false
   }
 }

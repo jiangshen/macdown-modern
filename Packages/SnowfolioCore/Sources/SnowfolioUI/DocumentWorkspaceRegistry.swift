@@ -1,4 +1,5 @@
 import AppKit
+import Observation
 
 /// Public window/document ownership connects both hosts to their shared model.
 /// Weak entries never keep closed windows or documents alive.
@@ -19,12 +20,7 @@ final class DocumentWorkspaceRegistry {
   func register(_ document: MarkdownDocument, in window: NSWindow) {
     guard models.object(forKey: window) !== document else { return }
     models.setObject(document, forKey: window)
-    for id in Array(waiters.keys) {
-      guard let waiter = waiters[id], let owner = waiter.document,
-        let model = currentModel(for: owner, controller: waiter.controller)
-      else { continue }
-      finish(id, with: .success(model))
-    }
+    for id in Array(waiters.keys) { resolve(id) }
   }
 
   func unregister(_ window: NSWindow, matching document: MarkdownDocument?) {
@@ -40,6 +36,9 @@ final class DocumentWorkspaceRegistry {
       if controller.document(for: window) === document,
         let model = models.object(forKey: window)
       {
+        // The reference host can attach its window before applying the initial
+        // snapshot. Empty loaded files are distinguished by the load revision.
+        guard document.fileURL == nil || model.loadRevision > 0 else { continue }
         return model
       }
     }
@@ -65,10 +64,27 @@ final class DocumentWorkspaceRegistry {
         waiters[id] = Waiter(
           document: document, controller: controller,
           continuation: continuation, deadline: deadline)
+        resolve(id)
       }
     } onCancel: {
       Task { @MainActor [weak self] in self?.finish(id, with: .failure(CancellationError())) }
     }
+  }
+
+  private func resolve(_ id: UUID) {
+    guard let waiter = waiters[id] else { return }
+    guard let owner = waiter.document else {
+      finish(id, with: .failure(DocumentLinkError.locationUnavailable))
+      return
+    }
+    let model = withObservationTracking {
+      currentModel(for: owner, controller: waiter.controller)
+    } onChange: { [weak self] in
+      // Observation fires before the new value is stored. Recheck on the next
+      // actor turn, and ignore notifications after cancellation or completion.
+      Task { @MainActor [weak self] in self?.resolve(id) }
+    }
+    if let model { finish(id, with: .success(model)) }
   }
 
   private func finish(_ id: UUID, with result: Result<MarkdownDocument, any Error>) {

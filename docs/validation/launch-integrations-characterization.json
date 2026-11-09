@@ -1,6 +1,6 @@
 {
-  "dateUTC": "2026-11-09T09:34:42.275609+00:00",
-  "status": "Source characterization only. No modern CLI, URL handler or plugin replacement acceptance. Keep originals until verified replacements exist.",
+  "dateUTC": "2026-11-09T11:21:57.468113+00:00",
+  "status": "Original command-line parser characterized with18 isolated executable probes; modern CLI remains unimplemented. Document-link delivery accepted in both hosts at4791020; readiness followup pending. Plugin replacement remains unaccepted.",
   "sources": [
     "macdown-cmd/MPArgumentProcessor.m",
     "macdown-cmd/main.m",
@@ -10,7 +10,7 @@
     "MacDown/Code/Preferences/MPTerminalPreferencesViewController.m"
   ],
   "cli": {
-    "arguments": "-h/--help and -v/--version exit successfully; help wins when both flags are set. Remaining arguments are filenames, resolved against the CLI current directory and ordered-deduplicated. GBCli unknown-option behavior needs executable characterization rather than invented status codes.",
+    "arguments": "-h/--help and-v/--version succeed; help wins when both flags are set. Options stop at first positional filename. Remaining args are resolved against CLI current directory and ordered-deduplicated. See18-case original executable probe, including unknown/dash paths and boolean switches.",
     "delivery": "Original writes pending absolute file paths and one piped temporary path into the old app suite; app consumes on activation. This is transient state, already excluded from preference migration.",
     "stdin": "Original uses zero-timeout select then reads available stdin to EOF, writes a unique pipedText.txt and imports it as an Untitled UTF8 document before file arguments. A slow producer can be missed and the temporary file is not deleted by the observed consumer. Preserve piping, replace those bugs.",
     "missingPaths": "Existing paths open through native document controller; missing paths create empty documents for the requested URL. Exact relative-path, Unicode, duplicate, leading-dash and exit-error semantics need tests.",
@@ -35,5 +35,251 @@
       "Use explicit user-driven loading and native error states; avoid initialization/menu rescanning work on typing/preview paths."
     ]
   },
-  "next": "Finish counter acceptance, then implement deterministic CLI request parsing/delivery and source-navigation URL handling with isolated byte/Undo/error tests. Characterize actual plugin consumers before loading anything."
+  "next": "Implement the native Swift CLI with tested options/files/stdin transport and packaging. NSWorkspace.OpenConfiguration.appleEvent is a public warm/cold launch delivery candidate; verify on disposable machines before adopting, without shared-defaults queues or retained stdin files. Plugin characterization follows.",
+  "originalParserProbe": {
+    "source": "https://github.com/tomaz/GBCli/tree/c147610b6ed6a9c7c033be185b04aa0b5978226d",
+    "pinnedVersion": "GBCli1.1, matching Podfile.lock",
+    "method": "Compiled original four Foundation-only parser/settings/helper/print implementations with the same h/v registrations and effective help-before-version decisions. Probe exposes parser BOOL; original MacDown ignores it and returns0. No app launch or old installation.",
+    "compact": "/private/tmp/snowfolio-validation-history/legacy-cli-characterization",
+    "results": [
+      {
+        "argv": [],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "-h"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "help",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--help"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "help",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "-v"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "version",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--version"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "version",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "-v",
+          "-h"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "help",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--wat",
+          "a.md"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [
+            "a.md"
+          ],
+          "parserValid": false
+        },
+        "stderr": "Unknown command line option --wat, try --help!\n"
+      },
+      {
+        "argv": [
+          "a.md",
+          "--help"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [
+            "a.md",
+            "--help"
+          ],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--",
+          "-leading.md"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [],
+          "parserValid": false
+        },
+        "stderr": "Unknown command line option --, try --help!\nUnknown command line option -leading.md, try --help!\n"
+      },
+      {
+        "argv": [
+          "./-leading.md"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [
+            "./-leading.md"
+          ],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "-hv"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [],
+          "parserValid": false
+        },
+        "stderr": "Unknown command line option -hv, try --help!\n"
+      },
+      {
+        "argv": [
+          "--no-help",
+          "--version"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "version",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--help=false",
+          "a.md"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [
+            "a.md"
+          ],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--help=1",
+          "--no-help"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "help",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--help=Y"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "help",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--help=2"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "help",
+          "arguments": [],
+          "parserValid": true
+        },
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "--help=x=1"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "open",
+          "arguments": [],
+          "parserValid": false
+        },
+        "stderr": "Unknown command line option --help=x=1, try --help!\n"
+      },
+      {
+        "argv": [
+          "--wat",
+          "--help"
+        ],
+        "exit": 0,
+        "result": {
+          "mode": "help",
+          "arguments": [],
+          "parserValid": false
+        },
+        "stderr": "Unknown command line option --wat, try --help!\n"
+      }
+    ],
+    "findings": [
+      "Options stop at the first positional filename; later --help is a filename.",
+      "Unknown leading options warn and are discarded, but original main still succeeds; -hv is not a combined switch.",
+      "Original -- is not an end-of-options marker; ./-leading.md works.",
+      "Help wins when both positive help/version switches are present; no-help/no-version are separate setting keys and do not reset earlier positives.",
+      "Boolean = values are accepted; splitting occurs at the last equals sign. These obscure behaviors must be explicitly preserved or documented as bug fixes in the modern CLI."
+    ]
+  }
 }
