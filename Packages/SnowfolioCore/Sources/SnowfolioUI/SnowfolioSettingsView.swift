@@ -46,11 +46,11 @@ struct SnowfolioSettingsView: View {
         }
     }
     .navigationSplitViewStyle(.balanced)
+    // NSWindow owns the minimum height. Repeating it below the unified toolbar
+    // adds the title-bar inset again and extends the native Form past the window.
     .frame(
       minWidth: SettingsWindowLayout.minimumContentSize.width,
-      idealWidth: SettingsWindowLayout.minimumContentSize.width,
-      minHeight: SettingsWindowLayout.minimumContentSize.height,
-      idealHeight: SettingsWindowLayout.minimumContentSize.height)
+      idealWidth: SettingsWindowLayout.minimumContentSize.width)
   }
 
   private var sidebar: some View {

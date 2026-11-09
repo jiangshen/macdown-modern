@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T18:29:33.211336+00:00",
-  "status": "Implemented; local foundation/compile and arm64 preparation accepted. Actual-app control persistence, full-source suites and signed delivery remain pending.",
+  "status": "Core440/93+652corpus+9arm64 and actual native controls1/1 accepted at704aad4. Visual followup found bottom clipping; local correction passes. Fresh focused app validation and signed delivery remain open.",
   "version": "2.10.1",
   "scope": "Actual Sparkle adapter in app target only; first-party orchestration Swift6/MainActor. Both app hosts, native/SwiftUI commands and searchable General Settings. No app-security exception or installed/default-handler change.",
   "originalContract": {
@@ -43,11 +43,43 @@
   "resolver": "Owned resolver sampled waiting in KeychainAuthorizationProvider/SecItemCopyMatching, not downloading. Explicitly stopped that PID63141; documented -packageAuthorizationProvider netrc resolves public artifact normally without changing Keychain or skipping validation. Source package lock restored to its core-only pins after Xcode resolution.",
   "actualAppMethod": "UpdateSettingsTests/testDevelopmentUpdateControlsAndPrereleaseChoicePersistAcrossLaunches",
   "pending": [
-    "Actual-app menu/Settings controls and beta persistence",
-    "Complete package/corpus/new-source native parity",
+    "Fresh actual-app visual acceptance of corrected Settings height",
+    "Fresh native reading and generic-document checks then complete current native acceptance",
     "Real own feed/public key/signed appcast and Developer ID/notarization/update installation",
     "Original updater retirement after accepted replacement"
   ],
   "compact": "/private/tmp/snowfolio-validation-history/modern-updater",
-  "pluginExceptionStillUnapplied": true
+  "pluginExceptionStillUnapplied": true,
+  "core440": {
+    "source": "704aad418ac9db784ffe1759524176625b9465a5",
+    "run": 42675594414,
+    "job": 129355964752,
+    "tests": 440,
+    "suites": 93,
+    "commonMark": 652,
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-704aad4"
+  },
+  "actualApp": {
+    "source": "704aad4",
+    "run": 42675664577,
+    "job": 129356227092,
+    "artifact": 13700431792,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 48.855,
+    "runtimeWarnings": 1,
+    "behavior": "Disabled DEBUG menu/check controls, beta selection and normal Quit/relaunch persistence pass; original choice restored.",
+    "visual": "Both screenshots inspected; updater status frame extends3pt below window and detail scroll extends26pt. Behavior pass alone is not visual acceptance."
+  },
+  "settingsHeightCorrection": {
+    "dateUTC": "2026-11-09T19:06:59.468569+00:00",
+    "cause": "Redundant SwiftUI minimum height below unified toolbar overflows full-size NSWindow by26pt. NSWindow now solely owns minimum height.",
+    "negativeControl": "Same full-size-content bounds assertion fails2issues/0.229s with original height constraints. Toolbar-overlap area intentionally belongs to full-size native scroll wrapper.",
+    "local": "12related tests/4suites pass0.378s; strict format/diff pass; compiler diagnostics0.",
+    "actualApp": "Stronger entire-status-frame visibility assertion added; fresh focused runtime/screenshot acceptance pending."
+  }
 }

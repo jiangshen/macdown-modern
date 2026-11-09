@@ -1480,5 +1480,46 @@
       }
     ],
     "preserved": "Running Snowfolio42199/DocumentHostProbe85540, current staged app, source, unsaved physical input, one core cache and current raw result preserved. Retain only compact logs/proof; no Trash emptied."
+  },
+  "completedModernUpdaterLocalBuilds": {
+    "dateUTC": "2026-11-09T18:42:23.139585+00:00",
+    "standardClean": "Explicit xcodebuild clean restricted to /private/tmp/snowfolio-update-app-current/DerivedData passed; owned residual Release/source-package/preparation outputs removed afterward.",
+    "beforeStandardCleanKiB": {
+      "isolatedBuild": 1095848,
+      "packagedTestProducts": [
+        99572,
+        183960,
+        182764
+      ],
+      "manualDiagnosticModuleCache": 132872
+    },
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-update-app-current",
+        "allocatedBytesRemovedAfterStandardClean": 773459968,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-theme-validation/build/ModuleCache",
+        "allocatedBytesRemovedAfterStandardClean": 136060928,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/Users/caden/Library/Developer/MobileBuildMCP/workspaces/Nice-Projects-1ea838b4d9c5/test-products/build_macos_2026-11-09T18-17-38-751Z_pid37392_85d487c8.xctestproducts",
+        "allocatedBytesRemovedAfterStandardClean": 101961728,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/Users/caden/Library/Developer/MobileBuildMCP/workspaces/Nice-Projects-1ea838b4d9c5/test-products/build_macos_2026-11-09T18-24-01-648Z_pid37392_3313bf46.xctestproducts",
+        "allocatedBytesRemovedAfterStandardClean": 188375040,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/Users/caden/Library/Developer/MobileBuildMCP/workspaces/Nice-Projects-1ea838b4d9c5/test-products/build_macos_2026-11-09T18-33-45-814Z_pid37392_49bb4684.xctestproducts",
+        "allocatedBytesRemovedAfterStandardClean": 187150336,
+        "ownershipAndOpenFilesChecked": true
+      }
+    ],
+    "preserved": "Both running apps42199/85540,unsaved physical input,staged native app,current core cache and accepted full-native41raw. No Trash emptied. Public current dependency artifact cache remains useful."
   }
 }

@@ -907,7 +907,7 @@
       "probeReport": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-probe-build-report.json",
       "format": "Strict changed Swift lint and diff checks pass"
     },
-    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta→ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
+    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta\u2192ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
     "limits": [
       "Exact ae2d602 nine diagnostic methods and all26actual native app methods pass; remaining feature/visual gates stay open.",
       "File byte comparison/native revert are synchronous within native file access; real app latency/large-file performance remains an open M6gate",
@@ -1208,5 +1208,37 @@
       "source": "c0c6e6facc704a43376f9ff6780266ac2037db75",
       "run": 42653830905
     }
+  },
+  "fullNative42Followup": {
+    "dateUTC": "2026-11-09T19:06:59.468569+00:00",
+    "source": "0f015bd550cffb9bb885d28bd7c1e34349b901c1",
+    "run": 42669672338,
+    "job": 129342556181,
+    "artifact": 13700445535,
+    "executed": 42,
+    "passed": 40,
+    "failed": 2,
+    "skipped": 0,
+    "seconds": 1933.166,
+    "runtimeWarnings": 58,
+    "failures": {
+      "reading": "NSBitmapImageRep failed to decode screenshot PNG before restoration comparison. Direct complete PNG ImageIO decoder plus raw-byte diagnostics added; focused runtime validation pending. No pixel/source/Undo/byte protection changed.",
+      "genericDocuments": "AX main-loop snapshot timeout opening first extensionless README. Spindump: 0.008CPU seconds/498samples, main thread last ran93seconds earlier; WebKit mouseExited/window hit-test waits in SLSCopyWindowRoutingRecordsForScreenLocation for WindowServer. Fresh focused reproduction required; no private API, production workaround or weakened assertion."
+    },
+    "spindump": "/private/tmp/snowfolio-validation-history/native-full-0f015bd/generic-attachments/7E3CEF21-7BCC-4B88-8A50-3851802B50AD.txt",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-0f015bd",
+    "acceptedBaseline": "Complete41/41atc0c6e6f retained; do not aggregate revisions or substitute focused checks."
+  },
+  "core440UpdaterBaseline": {
+    "source": "704aad418ac9db784ffe1759524176625b9465a5",
+    "run": 42675594414,
+    "job": 129355964752,
+    "tests": 440,
+    "suites": 93,
+    "commonMark": 652,
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-704aad4"
   }
 }

@@ -1640,9 +1640,25 @@ final class DocumentLifecycleTests: XCTestCase {
         let bounds = CGRect(origin: .zero, size: screen.frame.size)
         XCTAssertTrue(
           bounds.contains(frame), "The reading fixture must be visible on the main screen")
-        let bitmap = try XCTUnwrap(
-          NSBitmapImageRep(data: XCUIScreen.main.screenshot().pngRepresentation))
-        let fullImage = try XCTUnwrap(bitmap.cgImage)
+        let png = XCUIScreen.main.screenshot().pngRepresentation
+        let fullImage: CGImage
+        do {
+          fullImage = try SourceReadingSnapshot.decodeScreenshotPNG(png)
+        } catch {
+          // An unavailable frame must fail, not become a blank passing sample.
+          // Preserve its actual bytes/header to distinguish capture from decode.
+          let data = XCTAttachment(data: png, uniformTypeIdentifier: "public.data")
+          data.name = "reading-screen-capture-failure.bin"
+          data.lifetime = .keepAlways
+          add(data)
+          let header = png.prefix(16).map { String(format: "%02x", $0) }.joined()
+          let diagnostic = XCTAttachment(
+            string: "Screenshot PNG bytes=\(png.count), header=\(header), frame=\(frame)")
+          diagnostic.name = "reading-screen-capture-failure-metadata"
+          diagnostic.lifetime = .keepAlways
+          add(diagnostic)
+          throw error
+        }
         let screenScale = CGFloat(fullImage.width) / bounds.width
         let crop = CGRect(
           x: frame.minX * screenScale, y: frame.minY * screenScale,

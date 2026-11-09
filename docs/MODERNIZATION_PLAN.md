@@ -2,10 +2,11 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **437 package tests / 92 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `0f015bd`, with
-zero compiler errors/warnings. The complete native 42-method check at that source
-is still running; newer updater work has focused validation only.
+Current accepted core baseline: **440 package tests / 93 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `704aad4`, with
+zero compiler errors/warnings. The complete native42 check at earlier `0f015bd`
+finished40/42; its two failures are investigated below. Native41 at `c0c6e6f`
+remains the complete accepted app baseline; focused passes do not replace it.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
@@ -4047,3 +4048,34 @@ controls/persistence and complete new-source suites are next. See
 [automatic updates](AUTOMATIC_UPDATES.md) and
 [the validation ledger](validation/automatic-updates.json). The original updater is
 retained until those gates pass; the separate plug-in signing approval remains pending.
+
+
+## Settings clipping and native42 failure followup — 2026-11-09
+
+At704aad4 the complete core440/93, CommonMark652 and nine arm64 executables pass
+with zero compiler diagnostics. The native update control flow passes1/1 in48.855s,
+including normal Quit/relaunch persistence and restored beta preference. Both images
+were inspected; the status text is clipped at the bottom. A duplicated SwiftUI
+minimum height below the unified toolbar extends content26pt past the window.
+NSWindow now owns the height. A full-size-content bounds regression fails twice
+in0.229s with the original constraints, then passes with the fix; all12related
+checks pass in0.378s. The actual-app check now requires the entire explanation
+frame to fit. Fresh actual-app visual acceptance remains required.
+
+The earlier full native42 suite at0f015bd finishes40pass/2fail/0skip in1933.166s.
+Reading restoration fails at NSBitmapImageRep screenshot decoding; the helper now
+decodes complete PNG data directly with ImageIO and preserves failed bytes/metadata.
+Actual failed-run PNGs decode and invalid input fails in a standalone proof; UI
+sources typecheck. Runtime resolution is not yet established. All pixel thresholds,
+negative controls, source/Undo and exact-file protections remain unchanged.
+
+Generic-file opening fails while AX waits for the app main loop. Its five-second
+spindump records0.008CPU seconds and498samples waiting in WebKit mouse-exit/window
+hit-testing for WindowServer. This is not evidence of a first-party CPU loop; no
+private WindowServer workaround or speculative production scroll fix was added.
+A fresh focused check is justified. The complete41/41baseline remains accepted;
+new full-suite acceptance, physical input/VoiceOver/preview and release gates stay open.
+
+The concluded isolated updater build and three packaged test products were cleaned
+after ownership/open-file checks, with an explicit-path xcodebuild clean. Compact
+findings remain; both running apps and unsaved physical input are preserved.

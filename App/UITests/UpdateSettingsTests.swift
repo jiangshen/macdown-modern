@@ -61,6 +61,8 @@ final class UpdateSettingsTests: XCTestCase {
     XCTAssertEqual(
       status.value as? String ?? status.label,
       "Automatic updates are off in development builds.")
+    XCTAssertTrue(
+      settings.frame.contains(status.frame), "The complete update explanation must be visible")
     XCTAssertTrue(settings.frame.contains(beta.frame))
     XCTAssertTrue(settings.frame.contains(check.frame))
     let initial = try state(beta)

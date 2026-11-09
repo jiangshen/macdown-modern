@@ -1,6 +1,7 @@
 #if NATIVE_DOCUMENT_HOST
   import CoreGraphics
   import Foundation
+  import ImageIO
 
   /// A test-only sample of actual rendered source glyphs. It neither asks the
   /// editor to reveal its caret nor depends on machine-learning model availability.
@@ -9,6 +10,18 @@
     let height: Int
     let ink: [Bool]
     let maximumShift: Int
+
+    /// Decode the public screenshot data directly. The sampling code needs a
+    /// CGImage, not AppKit's display-dependent NSBitmapImageRep representation.
+    static func decodeScreenshotPNG(_ data: Data) throws -> CGImage {
+      guard data.starts(with: [137, 80, 78, 71, 13, 10, 26, 10]),
+        let source = CGImageSourceCreateWithData(data as CFData, nil),
+        CGImageSourceGetStatus(source) == .statusComplete,
+        let image = CGImageSourceCreateImageAtIndex(
+          source, 0, [kCGImageSourceShouldCacheImmediately: true] as CFDictionary)
+      else { throw failure("Cannot decode complete screenshot PNG (\(data.count) bytes)") }
+      return image
+    }
 
     init(image: CGImage, readingRect: CGRect, backgroundPoint: CGPoint, maximumShift: Int) throws {
       let fullWidth = image.width
