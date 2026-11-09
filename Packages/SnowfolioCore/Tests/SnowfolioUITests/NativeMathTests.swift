@@ -93,6 +93,72 @@ struct NativeMathTests {
     try png.write(to: URL(filePath: "/private/tmp/snowfolio-math-\(dark ? "dark" : "light").png"))
   }
 
+  @Test("Document definitions appear in offline preview and fresh HTML/PDF export")
+  func documentDefinitions() async throws {
+    _ = NSApplication.shared
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    options.inlineDollarMath = true
+    let source =
+      "# Shared equations\n\n"
+      + #"$$\newcommand{\snowfield}{\mathbb{R}}\newcommand{\squared}[1]{#1^2}$$"#
+      + "\n\n" + #"For every $x\in\snowfield$, read the equation below."#
+      + "\n\n```math\n\\squared{x}+1\n```\n\nLast checkpoint."
+    let export = try await MarkdownExport.build(
+      source: source, options: options, title: "Shared equations", directory: nil)
+    #expect(!export.document.contains("class=\"math-error\""))
+    let surface = NativeWebOutput()
+    defer { surface.close() }
+    try await surface.prepare(html: export.document)
+    #expect(
+      try await evaluate(
+        "return String([...document.querySelectorAll('math mi')].some(e=>e.getAttribute('mathvariant')==='double-struck' && e.textContent==='R'));",
+        in: surface.view) == "true")
+    #expect(
+      try await evaluate(
+        "return String(document.querySelectorAll('math msup').length);", in: surface.view) == "1")
+    #expect(
+      try await evaluate(
+        "return String([...document.querySelectorAll('.katex-html')].some(e=>e.getBoundingClientRect().height>15));",
+        in: surface.view) == "true")
+    #expect(!surface.view.configuration.defaultWebpagePreferences.allowsContentJavaScript)
+    #expect(
+      try await evaluate(
+        "return String(document.querySelector('.md-math')?.getBoundingClientRect().height);",
+        in: surface.view) == "0")
+    let snapshot = try await surface.view.takeSnapshot(configuration: nil)
+    let tiff = try #require(snapshot.tiffRepresentation)
+    let bitmap = try #require(NSBitmapImageRep(data: tiff))
+    try #require(bitmap.representation(using: .png, properties: [:])).write(
+      to: URL(filePath: "/private/tmp/snowfolio-math-document-definitions.png"))
+    let path = FileManager.default.temporaryDirectory.appendingPathComponent(
+      UUID().uuidString + ".pdf")
+    defer { try? FileManager.default.removeItem(at: path) }
+    let info = NativeWebOutput.printInfo(allPages: true)
+    info.paperSize = NSSize(width: 612, height: 792)
+    info.jobDisposition = .save
+    info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = path
+    let window = NSWindow(
+      contentRect: surface.view.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
+    window.isReleasedWhenClosed = false
+    defer { window.close() }
+    #expect(await surface.printDocument(info: info, for: window, showPanel: false))
+    let pdf = try #require(PDFDocument(url: path))
+    #expect(pdf.pageCount == 1)
+    let text = try #require(pdf.string)
+    #expect(text.contains("Shared equations") && text.contains("Last checkpoint."))
+    #expect(text.contains("x") && text.contains("1"))
+    let page = try #require(pdf.page(at: 0))
+    let thumbnail = page.thumbnail(of: NSSize(width: 612, height: 792), for: .mediaBox)
+    let pdfTIFF = try #require(thumbnail.tiffRepresentation)
+    let pdfBitmap = try #require(NSBitmapImageRep(data: pdfTIFF))
+    try #require(pdfBitmap.representation(using: .png, properties: [:])).write(
+      to: URL(filePath: "/private/tmp/snowfolio-math-document-definitions-pdf.png"))
+    try Data(contentsOf: path).write(
+      to: URL(filePath: "/private/tmp/snowfolio-math-document-definitions.pdf"))
+  }
+
   @Test("Native print/PDF waits for local math fonts and retains the surrounding document")
   func pdf() async throws {
     _ = NSApplication.shared

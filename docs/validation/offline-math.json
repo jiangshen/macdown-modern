@@ -70,7 +70,7 @@
   "testIsolation": "Native suites share a nonblocking asynchronous exclusive scope for process-wide NSApplication window/focus/printing state; existing assertions/timeouts retained",
   "remainingCompatibility": [
     "Full MathJax-specific TeX/extensions",
-    "Document-wide macro definitions, equation references and numbering",
+    "Remaining MathJax definition/environment commands, equation references and numbering",
     "Single-backslash inline parentheses",
     "Multiline inline expressions",
     "Display delimiters sharing body text across multiple lines"
@@ -84,5 +84,11 @@
   "legacyRemoval": "Not yet: remaining MathJax compatibility and original target consumers still need the old loader/listener/resources",
   "productionInstalled": false,
   "defaultHandlerChanged": false,
-  "fullGoal": "active"
+  "fullGoal": "active",
+  "documentDefinitions20261109": {
+    "status": "Implemented; full local448/93andninearm64executables accepted with zero compiler diagnostics. Hosted current-source core/app acceptance remains pending. Whole MathJax parity remains open.",
+    "ledger": "document-math-definitions.json",
+    "supported": "Testeddef/newcommand/renewcommand/let across source-ordered inline/display/fenced equations; per-render/per-document scope, byte-exactcache and nativeHTML/PDF.",
+    "remaining": "Newenvironment/renewenvironment and widerMathJax-only extensions/references/numbering remain unaccepted."
+  }
 }

@@ -1333,8 +1333,13 @@
     "source": "3cf9ded93c4df7e364d70285f4a93afc4f8bdc23",
     "run": 42684835718,
     "job": 129388718974,
-    "expectedMethods": 43,
-    "status": "Authoritatively confirmed in_progress; not acceptance.",
-    "acceptedBaseline": "Native41/41atc0c6e6f retained until a complete newer suite passes."
+    "artifact": 13706017390,
+    "executed": 43,
+    "passed": 42,
+    "failed": 1,
+    "skipped": 0,
+    "failure": "PluginTests/testExplicitPluginRunRetainsStateAndPreservesNativeUndoAndEncodedSave fails122.286s: XCUIScreen.main.screenshot times out atPluginTests.swift:67. No production plug-in failure established; test does not complete.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-3cf9ded",
+    "baseline": "Complete41/41atc0c6e6f remains accepted; no aggregation of42passes with earlier focused plug-in success."
   }
 }

@@ -63,6 +63,7 @@ struct NativeScrollTests {
       sourceWindow = NSWindow(
         contentRect: NSRect(x: 0, y: 0, width: 600, height: 400),
         styleMask: .titled, backing: .buffered, defer: false)
+      sourceWindow.animationBehavior = .none
       sourceWindow.isReleasedWhenClosed = false
       sourceWindow.contentView = scroll
       preview = WKWebView(
@@ -71,6 +72,7 @@ struct NativeScrollTests {
           handler: previewCoordinator.resources, scrollHandler: previewCoordinator))
       previewWindow = NSWindow(
         contentRect: preview.frame, styleMask: .titled, backing: .buffered, defer: false)
+      previewWindow.animationBehavior = .none
       previewWindow.isReleasedWhenClosed = false
       previewWindow.contentView = preview
       editorCoordinator.undoManager = undo

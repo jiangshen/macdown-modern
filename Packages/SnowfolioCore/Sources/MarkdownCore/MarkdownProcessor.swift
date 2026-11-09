@@ -238,26 +238,31 @@ public actor MarkdownProcessor {
       for node in tocNodes { try MarkdownNavigation.decorateTOC(node, html: toc) }
     }
     var mathNotices = false
-    for (node, source, display, block) in mathNodes {
-      try Task.checkCancellation()
-      if mathRenderer == nil { mathRenderer = MathRenderer() }
-      guard let rendered = try mathRenderer?.render(source, display: display) else { continue }
-      mathNotices = mathNotices || rendered.issue != nil
-      guard
-        let replacement = cmark_node_new(block ? CMARK_NODE_CUSTOM_BLOCK : CMARK_NODE_CUSTOM_INLINE)
-      else { throw MarkdownRenderingError.allocationFailure }
-      let position =
-        "\(cmark_node_get_start_line(node)):\(cmark_node_get_start_column(node))-\(cmark_node_get_end_line(node)):\(cmark_node_get_end_column(node))"
-      let html =
-        "<span data-sourcepos=\"\(position)\" class=\"md-math\(display ? " md-math-display" : "")\">"
-        + rendered.html + "</span>"
-      guard cmark_node_set_on_enter(replacement, html) == 1,
-        cmark_node_replace(node, replacement) == 1
-      else {
-        cmark_node_free(replacement)
-        throw MarkdownRenderingError.invalidTreeTransformation
+    if !mathNodes.isEmpty {
+      let renderer = mathRenderer ?? MathRenderer()
+      mathRenderer = renderer
+      try renderer.renderDocument(mathNodes.map { MathExpression($0.1, display: $0.2) }) {
+        index, rendered in
+        try Task.checkCancellation()
+        let (node, _, display, block) = mathNodes[index]
+        mathNotices = mathNotices || rendered.issue != nil
+        guard
+          let replacement = cmark_node_new(
+            block ? CMARK_NODE_CUSTOM_BLOCK : CMARK_NODE_CUSTOM_INLINE)
+        else { throw MarkdownRenderingError.allocationFailure }
+        let position =
+          "\(cmark_node_get_start_line(node)):\(cmark_node_get_start_column(node))-\(cmark_node_get_end_line(node)):\(cmark_node_get_end_column(node))"
+        let html =
+          "<span data-sourcepos=\"\(position)\" class=\"md-math\(display ? " md-math-display" : "")\">"
+          + rendered.html + "</span>"
+        guard cmark_node_set_on_enter(replacement, html) == 1,
+          cmark_node_replace(node, replacement) == 1
+        else {
+          cmark_node_free(replacement)
+          throw MarkdownRenderingError.invalidTreeTransformation
+        }
+        cmark_node_free(node)
       }
-      cmark_node_free(node)
     }
     var diagramNotices = false
     var renderedDiagrams = 0

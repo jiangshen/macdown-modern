@@ -1,0 +1,128 @@
+{
+  "dateUTC": "2026-11-09T20:35:21.354262+00:00",
+  "status": "Implemented; full local448/93andninearm64executables accepted with zero compiler diagnostics. Hosted current-source core/app acceptance remains pending. Whole MathJax parity remains open.",
+  "sourceParent": "6f97ba370957e1c67066597c8c611dafe6376c4e",
+  "sourceSHA256": {
+    "Packages/SnowfolioCore/Sources/MathCore/MathRenderer.swift": "be839ef8e6baff63d31a620efbbe04f97bd427401f5b796716d5657e85e15ab0",
+    "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownProcessor.swift": "1bd84a415b9d4fb8b3787b3864b0fb529a33ea453f04981bace41cb9538df92f",
+    "Packages/SnowfolioCore/Tests/MarkdownCoreTests/MarkdownMathTests.swift": "c83483bc3dd741bc563ddaf513aebd7bad131095093adedc3257981e7fd01590",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeMathTests.swift": "a179cf1666ab1449d371c4389d1f29b3f16f0d9bde2f9a7e1fc0aaa9b0cb743f",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeScrollTests.swift": "d85c4aa12798ef27711ee098fcb2504400ce3713131d57fa7658028d953ff9b2"
+  },
+  "originalContract": {
+    "renderer": "MacDown/Code/Document/MPRenderer.m:26 andmathjaxScripts useMathJax2.7.3/TeX-AMS-MML_HTMLorMML; init.js leavesTeXdefaultscope unchanged.",
+    "documentation": "https://docs.mathjax.org/en/v2.7/tex.html#defining-tex-macros",
+    "scope": "MathJax2supportsdefs/newcommand/let across later expressions in a page; oldfirstpartyloader retained until fullparity/hostacceptance."
+  },
+  "engine": "Existing exact-pinnedKaTeX0.19.1. No new dependency, license change, runtime download or document JavaScript.",
+  "upstreamAPI": [
+    "https://katex.org/docs/api#persistent-macros",
+    "https://katex.org/docs/options"
+  ],
+  "implementation": {
+    "scope": "Fresh macro object per ordered document batch, globalGroup true for top-level definitions; standalone expression API retains isolation.",
+    "cache": "Complete ordered batch artifacts share the existing64entry/2MiBUTF8key+HTML budget. Ordinary formulas are independently cached only after observed empty definition state; definitions always execute. No JS macro objects are cached.",
+    "largeDocuments": "Production streams each formula into the cmark tree. Cache-candidate retention ends at2MiB;200formulas exceeding that budget still all render. Consumer error/cancellation discards the batch state.",
+    "byteFidelity": "MathExpression equality/hashing uses exactUTF8 bytes; canonical String equivalence cannot return another spelling\u2019s originalTeX annotation.",
+    "presentation": "Definition-only empty KaTeX visual spans do not add space; actual equations/MathML, error fallback and source coordinates remain.",
+    "limits": "Existing16,384UTF16input/1MiBsuccessfuloutput/maxExpand1000/maxSize20/trustfalse retained."
+  },
+  "negativeControls": {
+    "documentDefinitions": "Original expression-isolated renderer fails2tests/7issues in0.029s: later definitions are unsupported; source-order redefinition fails.",
+    "annotationBytes": "Canonical keys fail exactUTF8annotation checks twice (standalone and document APIs).",
+    "testFixtureAnimations": "Same16wrapped-source-window cycles followed byunchanged dotengine contract fails with timedOut before fixture correction, passes after. Full interrupted process sample shows manyNSAnimation._runBlocking workers while main thread remains inRunLoop. No diagram-production workaround or deadline change."
+  },
+  "local": {
+    "dateUTC": "2026-11-09T20:31:56.711602+00:00",
+    "sourceParent": "6f97ba370957e1c67066597c8c611dafe6376c4e",
+    "sourceSHA256": {
+      "Packages/SnowfolioCore/Sources/MathCore/MathRenderer.swift": "be839ef8e6baff63d31a620efbbe04f97bd427401f5b796716d5657e85e15ab0",
+      "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownProcessor.swift": "1bd84a415b9d4fb8b3787b3864b0fb529a33ea453f04981bace41cb9538df92f",
+      "Packages/SnowfolioCore/Tests/MarkdownCoreTests/MarkdownMathTests.swift": "c83483bc3dd741bc563ddaf513aebd7bad131095093adedc3257981e7fd01590",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeMathTests.swift": "a179cf1666ab1449d371c4389d1f29b3f16f0d9bde2f9a7e1fc0aaa9b0cb743f",
+      "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeScrollTests.swift": "d85c4aa12798ef27711ee098fcb2504400ce3713131d57fa7658028d953ff9b2"
+    },
+    "tests": 448,
+    "suites": 93,
+    "architectures": [
+      {
+        "target": "DiagramCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "DocumentCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "EditorCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "ExportCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "MarkdownCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PluginCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PreferencesCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "RenderingCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "SnowfolioUITests",
+        "architecture": "arm64"
+      }
+    ],
+    "compilerDiagnostics": 0,
+    "nativeRuntimeNotes": 1,
+    "fullCoreSeconds": 66.092,
+    "wrapperRuns": {
+      "interrupted-core": "run-6C848922-0053-4A5A-AF48-C92AF14B6915",
+      "navigation-probe": "run-6F0EBFED-ED4E-4395-9E48-98E101EFC8A1",
+      "animation-negative": "run-ABE10110-19A9-4AD5-9D67-2D14DA60C0AD",
+      "animation-after": "run-A3AA1ACB-AE64-478C-B01F-C461BB01CB10",
+      "annotation-negative": "run-B88B9013-D144-4F50-9112-29D4B607F367",
+      "full-core": "run-D512D09C-E633-4F78-B253-A507C0275E7A",
+      "cache-profile": "run-2A9751A9-D1F1-40BF-AAA3-8A3262E73D5A"
+    },
+    "compact": "/private/tmp/snowfolio-validation-history/document-math-definitions",
+    "goal": "Active; full current hosted core/app/desktop/remainingMathJaxcompatibility/M5M6andlegacyretirement not accepted."
+  },
+  "focused": "Final math11+1annotation=12core and3native checks included in448fullsuite. NativeHTML/PDF screenshots inspected; equations showRfieldandx\u00b2+1, no definition gap, one-pagePDF keepsheading/endtext.",
+  "performance": {
+    "mode": "Local Debug, warmed engine,24ordinaryformulas/16single-equationedits; focused diagnostic removed and source hash restored.",
+    "initialWholeBatchPrototypeMedianSeconds": 0.0027550458908081055,
+    "finalMedianSeconds": 0.00024306774139404297,
+    "finalTotalSeconds": 0.003970980644226074,
+    "limit": "Narrow math-rendering comparison, not whole-app/release performance acceptance."
+  },
+  "priorNative43": {
+    "source": "3cf9ded93c4df7e364d70285f4a93afc4f8bdc23",
+    "run": 42684835718,
+    "job": 129388718974,
+    "artifact": 13706017390,
+    "executed": 43,
+    "passed": 42,
+    "failed": 1,
+    "skipped": 0,
+    "failure": "PluginTests/testExplicitPluginRunRetainsStateAndPreservesNativeUndoAndEncodedSave fails122.286s: XCUIScreen.main.screenshot times out atPluginTests.swift:67. No production plug-in failure established; test does not complete.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-3cf9ded",
+    "baseline": "Complete41/41atc0c6e6f remains accepted; no aggregation of42passes with earlier focused plug-in success."
+  },
+  "remaining": [
+    "Hosted current-source fullcore/corpus and realapp validation",
+    "FullMathJaxextensions/newenvironment/renewenvironment, equationreferences/numbering and remaining delimiter cases",
+    "Physicalnativepreview/foregroundselection/realIME/VoiceOver",
+    "M5/M6release/performance and safe coupled legacy retirement; plug-insecurityapproval stillpending/unapplied"
+  ],
+  "storage": "Existing core cache reused. Compact reports/logs/source digests and preview/PDF retained. No new app build/cache or installed/default-handler change."
+}

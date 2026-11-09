@@ -1604,5 +1604,54 @@
     "retention": "One current core build cache and one latest useful reading partial raw. Compact negative/after/related/reflow logs, source version, five actual reading screenshots/measurements and full core/corpus report retained. No new app build/cache was created.",
     "protected": "Both running42199/85540apps and unsaved physical input preserved. No user project source/document moved or removed; Trash not emptied.",
     "note": "Allocated size is not necessarily unique physical APFS storage; scoped paths are not a whole-disk audit."
+  },
+  "documentMathDefinitionsCycle": {
+    "dateUTC": "2026-11-09T20:37:15.215347+00:00",
+    "removed": [
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-6C848922-0053-4A5A-AF48-C92AF14B6915",
+        "allocatedBytesRemoved": 90112,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-6F0EBFED-ED4E-4395-9E48-98E101EFC8A1",
+        "allocatedBytesRemoved": 36864,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-ABE10110-19A9-4AD5-9D67-2D14DA60C0AD",
+        "allocatedBytesRemoved": 40960,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-A3AA1ACB-AE64-478C-B01F-C461BB01CB10",
+        "allocatedBytesRemoved": 36864,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-B88B9013-D144-4F50-9112-29D4B607F367",
+        "allocatedBytesRemoved": 45056,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-D512D09C-E633-4F78-B253-A507C0275E7A",
+        "allocatedBytesRemoved": 1249280,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-2A9751A9-D1F1-40BF-AAA3-8A3262E73D5A",
+        "allocatedBytesRemoved": 36864,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/tmp/snowfolio-focused-current-incoming",
+        "allocatedBytesRemoved": 30294016,
+        "ownershipAndOpenFilesChecked": true
+      }
+    ],
+    "retention": "Compact full448log/report, all negative/after reports/logs, animation sample, exactsource hashes and preview/PDF retained. Prior successful reading summary, fivePNG and measurements remain. No rawxcresult copy retained merely as history.",
+    "preserved": "Existing current core cache, both running user apps, staged native app, user documents and uncommitted source. Trash was not emptied.",
+    "newAppBuildOrCache": false,
+    "native43Artifact": "Only688776of197850540bytes retrieved for complete text log and all43method outcomes; no raw bundle download."
   }
 }

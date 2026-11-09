@@ -319,5 +319,23 @@
     "compact": "/private/tmp/snowfolio-validation-history/regular-33a229c",
     "allMethodResults": "/private/tmp/snowfolio-validation-history/regular-33a229c/method-results.json",
     "storage": "Only673416of185809197artifactbytes retrieved for text log; no extra raw result downloaded."
+  },
+  "regular3cf9ded": {
+    "source": "3cf9ded93c4df7e364d70285f4a93afc4f8bdc23",
+    "run": 42683393621,
+    "job": 129383651863,
+    "artifact": 13706135614,
+    "executed": 33,
+    "passed": 29,
+    "failed": 4,
+    "skipped": 0,
+    "failedMethods": [
+      "DocumentLifecycleTests testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "DocumentLifecycleTests testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "DocumentLifecycleTests testCoordinatedExternalReloadAfterAutosave",
+      "DocumentTypeTests testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "finding": "Three autosave/reload and invalid-encoding error presentation failures persist; no complete regular acceptance.",
+    "compact": "/private/tmp/snowfolio-validation-history/regular-3cf9ded"
   }
 }

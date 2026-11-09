@@ -6,7 +6,8 @@ Current accepted core baseline: **442 package tests / 93 suites, all 652 publish
 CommonMark examples and nine arm64 test executables pass** at `3cf9ded`, with
 zero compiler errors/warnings. The corrected native reading flow passes1/1 with
 source glyph difference0.0; prior Settings and generic-file focused flows pass
-at33a229c. A complete native43run42684835718is active; it is not acceptance.
+at33a229c. Native43at3cf9ded finishes42pass/1fail: the plug-in test’s
+screenshot-service request times out. It is not complete native acceptance.
 Native41 at `c0c6e6f` remains the complete accepted app baseline.
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
@@ -31,7 +32,7 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `33a229c` executes33methods:
+The latest complete regular SwiftUI-host run at `3cf9ded` executes33methods:
 29pass/4fail, none skipped. Three autosave/reload failures and invalid-encoding
 error presentation remain. Saved-tab restoration passes here; its prior intermittent
 failure is not globally resolved. This is not complete regular acceptance. Native41
@@ -4141,3 +4142,51 @@ invalid-encoding error presentation. No source-default/install/handler/signing-e
 change occurred. The latest useful focused reading partial raw occupies31.2MB; old
 failed raw was retired after preserving all failure evidence. The scoped core/cache,
 protected builds, staged app and compact evidence occupy about2.56GB allocated.
+
+
+## Document-wide equations and exact cached source — 2026-11-09
+
+The original MathJax 2 integration lets top-level TeX definitions apply to later
+expressions on the same page. The modern renderer now preserves this behavior for
+supported definitions, with a fresh macro object for every document render. Tests
+cover definition, redefinition, aliases, ordered inline/display/fenced expressions,
+and isolation between documents. Remaining MathJax environments, extensions,
+references and numbering keep the complete compatibility gate open.
+
+The renderer caches complete ordered batches to preserve definition dependencies.
+Ordinary formulas can also be reused independently after the engine has observed an
+empty definition table. The shared cache retains at most 64 entries and 2 MiB of
+UTF-8 key/HTML cost. Large documents stream formulas into the native tree, and cache
+candidates stop accumulating at the same limit. Exact UTF-8 identity keeps composed
+and decomposed authored TeX annotations distinct; its regression fails twice with
+canonical String keys. Cached equations also retain current source positions when
+surrounding prose moves.
+
+Offline preview and a fresh one-page PDF visibly show the defined real-number field
+and squared expression. Both images were inspected. Definition-only formulas add
+no blank block. The pinned engine, resources, restrictions and licenses are preserved.
+The complete local suite passes 448 checks in 93 suites in 66.092 seconds; all nine
+test executables are arm64 and compiler diagnostics are clean. One preexisting
+AppKit nil-content-manager note remains.
+
+An earlier local broad run was interrupted after repeated diagram timeouts. Its
+process sample shows many workers waiting in NSAnimation while the desktop is
+locked. The same 16 window cycles followed by the unchanged diagram contract fail
+before and pass after disabling transitions on owned test fixtures. Production
+diagram behavior, test deadlines and assertions are preserved. The successful full
+448 run includes this fixture correction.
+
+A warmed Debug diagnostic with 24 ordinary formulas and 16 single-formula edits
+measures a final median of 0.2431 ms, versus 2.7550 ms for the initial batch-only
+prototype. This does not establish whole-app or release performance. The temporary
+diagnostic was removed and the accepted test source hash restored. See
+[document-math-definitions.json](validation/document-math-definitions.json).
+
+At the preceding 3cf9ded source, the complete native run finishes 42/43: the plug-in
+method stops on a screenshot-service timeout at PluginTests.swift:67. The latest
+regular host run finishes 29/33, retaining three autosave/reload failures and its
+invalid-encoding error presentation failure. Native 41/41 at c0c6e6f remains the
+complete accepted baseline. Hosted verification of the new source, physical input,
+VoiceOver, remaining compatibility and release/performance/retirement gates remain
+open. Compact evidence is retained; concluded wrapper outputs and the superseded
+reading result were removed after ownership and open-file checks.

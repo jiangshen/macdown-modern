@@ -44,6 +44,136 @@ struct MarkdownMathTests {
     #expect(try renderer.render("x^2", display: false).issue == nil)
   }
 
+  @Test("TeX definitions apply to later equations and reset on each document render")
+  func documentMacros() async throws {
+    let processor = MarkdownProcessor()
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    let definitions = #"\def\field{\mathbb{R}}\newcommand{\squareit}[1]{#1^2}\let\savedField\field"#
+    let source = "$$" + definitions + "$$\n\n$$\\savedField + \\squareit{x}$$"
+    let result = try await processor.render(source, options: options)
+    #expect(result.mathExpressions == 2)
+    #expect(result.notices.isEmpty)
+    #expect(result.html.contains("mathvariant=\"double-struck\">R"))
+    #expect(result.html.contains("<msup>"))
+    let moved = try await processor.render("# Before 😀\r\n\r\n" + source, options: options)
+    let mathLines = moved.nodes.compactMap { node -> Int? in
+      if case .math = node.kind { return node.range?.start.line }
+      return nil
+    }
+    #expect(mathLines == [3, 5])
+    #expect(moved.notices.isEmpty && moved.html.contains("data-sourcepos=\"5:1-"))
+    let other = try await processor.render(#"$$\field$$"#, options: options)
+    #expect(other.notices.contains(.unsupportedMath))
+    // A cached document result must replay the same complete definition scope.
+    let again = try await processor.render(source, options: options)
+    #expect(again.html == result.html && again.notices == result.notices)
+    let changed = source.replacingOccurrences(of: #"\mathbb{R}"#, with: #"\mathbb{Z}"#)
+    let updated = try await processor.render(changed, options: options)
+    #expect(updated.notices.isEmpty)
+    #expect(updated.html.contains("mathvariant=\"double-struck\">Z"))
+    #expect(!updated.html.contains("mathvariant=\"double-struck\">R"))
+    // Removing definitions cannot retain values from a previous render.
+    let removed = try await processor.render(#"$$\savedField + \squareit{x}$$"#, options: options)
+    #expect(removed.notices.contains(.unsupportedMath))
+  }
+
+  @Test("Redefinitions follow source order across inline math and math fences")
+  func macroOrder() async throws {
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    options.inlineDollarMath = true
+    let source =
+      #"$\newcommand{\value}{A}$ then $\value$."#
+      + "\n\n```math\n\\renewcommand{\\value}{B}\n```\n\n"
+      + #"$\value$."#
+    let result = try await MarkdownProcessor().render(source, options: options)
+    #expect(result.mathExpressions == 4)
+    #expect(result.notices.isEmpty)
+    let before = try #require(result.html.range(of: "<mi>A</mi>"))
+    let after = try #require(result.html.range(of: "<mi>B</mi>"))
+    #expect(before.lowerBound < after.lowerBound)
+  }
+
+  @Test("Cached ordinary formulas do not skip definitions or bypass equation limits")
+  func documentMacroConstraints() throws {
+    let renderer = MathRenderer()
+    let ordinary = MathExpression("x^2", display: false)
+    let missing = try renderer.renderDocument([MathExpression(#"\checkpoint"#, display: false)])
+    #expect(missing.first?.issue != nil)
+    for letter in ["A", "B", "A"] {
+      let values = try renderer.renderDocument([
+        ordinary, MathExpression("\\newcommand{\\checkpoint}{\(letter)}", display: false),
+        MathExpression(#"\checkpoint"#, display: false),
+      ])
+      #expect(values.count == 3 && values.allSatisfy { $0.issue == nil })
+      #expect(values[2].html.contains("<mi>\(letter)</mi>"))
+    }
+    #expect(try renderer.render(#"\checkpoint"#, display: false).issue != nil)
+    let constrained = try renderer.renderDocument([
+      MathExpression(#"\newcommand{\badlink}{\href{javascript:alert(1)}{click}}"#, display: false),
+      MathExpression(#"\badlink"#, display: false),
+      MathExpression(#"\newcommand{\loop}{\loop}\loop"#, display: false),
+      MathExpression(String(repeating: "x", count: 16_385), display: false), ordinary,
+    ])
+    #expect(constrained.count == 5)
+    #expect(!constrained[1].html.contains("href="))
+    #expect(constrained[2].issue != nil && constrained[3].issue != nil)
+    #expect(constrained[4].issue == nil)
+    let fresh = try renderer.renderDocument([MathExpression(#"\checkpoint"#, display: false)])
+    #expect(fresh.first?.issue != nil)
+  }
+
+  @Test("Streaming equations survive cache limits and stop cleanly on a consumer error")
+  func streamingEquations() throws {
+    let renderer = MathRenderer()
+    let expression = MathExpression(
+      "\\text{" + String(repeating: "x", count: 10_000) + "}", display: false)
+    let expressions = Array(repeating: expression, count: 200)
+    var indices: [Int] = []
+    try renderer.renderDocument(expressions) { index, result in
+      indices.append(index)
+      #expect(result.issue == nil && result.html.contains("class=\"katex\""))
+    }
+    #expect(indices == Array(0..<200))
+    struct Stop: Error {}
+    var consumed = 0
+    #expect(throws: Stop.self) {
+      try renderer.renderDocument([
+        MathExpression(#"\newcommand{\privateField}{A}"#, display: false),
+        MathExpression(#"\privateField"#, display: false),
+      ]) { _, _ in
+        consumed += 1
+        throw Stop()
+      }
+    }
+    #expect(consumed == 1)
+    let next = try renderer.renderDocument([MathExpression(#"\privateField"#, display: false)])
+    #expect(next.first?.issue != nil)
+  }
+
+  @Test("Cached TeX annotations retain exact composed and decomposed UTF8 source")
+  func annotationBytes() throws {
+    let renderer = MathRenderer()
+    let composed = #"\text{é}"#
+    let decomposed = "\\text{e\u{301}}"
+    for document in [false, true] {
+      func render(_ source: String) throws -> RenderedMath {
+        if document {
+          let values = try renderer.renderDocument([MathExpression(source, display: false)])
+          return try #require(values.first)
+        }
+        return try renderer.render(source, display: false)
+      }
+      for source in [composed, decomposed] {
+        let result = try render(source)
+        #expect(result.issue == nil)
+        let annotation = "<annotation encoding=\"application/x-tex\">" + source + "</annotation>"
+        #expect(Data(result.html.utf8).range(of: Data(annotation.utf8)) != nil)
+      }
+    }
+  }
+
   @Test("Math is optional and its AST ranges retain Unicode and newline coordinates")
   func parser() async throws {
     let source =
