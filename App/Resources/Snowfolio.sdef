@@ -74,13 +74,13 @@
 			<element type="window" access="r">
 				<cocoa key="orderedWindows"/>
 			</element>
-			<responds-to name="open">
+			<responds-to command="open">
 				<cocoa method="handleOpenScriptCommand:"/>
 			</responds-to>
-			<responds-to name="print">
+			<responds-to command="print">
 				<cocoa method="handlePrintScriptCommand:"/>
 			</responds-to>
-			<responds-to name="quit">
+			<responds-to command="quit">
 				<cocoa method="handleQuitScriptCommand:"/>
 			</responds-to>
 		</class>
@@ -123,10 +123,10 @@
 
 			<property name="document" code="docu" type="document" access="r" description="The document whose contents are displayed in the window."/>
 
-			<responds-to name="close">
+			<responds-to command="close">
 				<cocoa method="handleCloseScriptCommand:"/>
 			</responds-to>
-			<responds-to name="save">
+			<responds-to command="save">
 				<cocoa method="handleSaveScriptCommand:"/>
 			</responds-to>
 		</class>
@@ -177,6 +177,9 @@
 
 		<class name="document" code="docu" description="A Snowfolio document.">
 			<cocoa class="SnowfolioNativeDocument"/>
+			<contents name="contents" code="pcnt" type="text" access="rw" in-properties="no" description="Markdown source used when creating a document with data.">
+				<cocoa key="scriptingContents"/>
+			</contents>
 			<property name="name" code="pnam" type="text" access="r" description="Its name.">
 				<cocoa key="displayName"/>
 			</property>
@@ -192,10 +195,10 @@
 			<property name="html" code="rndd" type="text" access="r" description="Rendered HTML of the document.">
 				<cocoa key="html"/>
 			</property>
-			<responds-to name="close">
+			<responds-to command="close">
 				<cocoa method="handleCloseScriptCommand:"/>
 			</responds-to>
-			<responds-to name="save">
+			<responds-to command="save">
 				<cocoa method="handleSaveScriptCommand:"/>
 			</responds-to>
 		</class>

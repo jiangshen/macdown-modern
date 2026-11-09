@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T05:04:19.731495+00:00",
+  "dateUTC": "2026-11-09T06:11:48.556436+00:00",
   "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
-  "status": "Actual native scripting2/2pass0skip31.861s at54237aa. Exact temporaryown-appgrant andsource/metadata/Undo/encodedautosave/manualHTML/Makewithproperties/MarkdownTextDataSave/Close/Quit events accepted. Remaining scriptingoptions/errors and fullnative acceptance open.",
+  "status": "Baselinefullnative33/33accepted54237aa. New34thmethodnowpassesGetdocumentlist, butMakewithdatafails-10000ataeb1545. Candidatecontentsmapping/ownedsourceproxycompiled, fiveguardcasespass; actual3method/hostedfullcore retry pending.",
   "interface": {
     "dictionary": "App/Resources/Snowfolio.sdef",
     "nativeClass": "SnowfolioNativeDocument",
@@ -91,13 +91,14 @@
     "Default-hostremoval/legacyretirement onlyafterfullnativeacceptance; remainingM3-M6parity/performance/release"
   ],
   "sourceHashes": {
-    "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeDocumentScripting.swift": "e843adf84701b72d7cfb294370e42f2300bceb14a7c941da3a044a1d159e0015",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeDocumentScripting.swift": "3cc3fd1dde85007ef26668f8e367103d89fae98a57bae7ecd368f184eac18490",
     "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownDocument.swift": "891c78bb3589a22ed6e588676206c4611714a1eb60fadaa1891517cf99021f57",
     "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspace.swift": "665b24ec7470a60d34f04c7fb6272d1a7de38de7f6a0187c42ef83ee3581f8dc",
-    "App/Resources/Snowfolio.sdef": "aeb4003af0f3beace7d522340765912b3ddd0524c925952a9e7166fa11b753c8",
+    "App/Resources/Snowfolio.sdef": "3fe766ca5970557c9109bc59e523b395c3ad0ebb48daf2adc906c884752de23c",
     "App/Project.swift": "049b368e4f9b3042cde9f8996ae2dd786b8592d9381cad464542938fa0ef3ba9",
-    "App/UITests/DocumentScriptingTests.swift": "5735b5c09d6d71302dad699b76d5a6e38c538c4953028db740f121d8cb5fc564",
-    "App/UITests/SnowfolioUITests.entitlements": "cd1bd74fd4fe576fee9717916562ce1da5363cfb8b05202159d035f4fecad733"
+    "App/UITests/DocumentScriptingTests.swift": "e49aca3c39555bd5b1894d5d1e9795d14b342040c726982067bd2e0b5f79d427",
+    "App/UITests/SnowfolioUITests.entitlements": "cd1bd74fd4fe576fee9717916562ce1da5363cfb8b05202159d035f4fecad733",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeDocumentScriptingTests.swift": "2f99cfbe2cdabc543842351ec90c6a5fb9822a895ecae99cdda28a77da6f0e1f"
   },
   "initialHosted": {
     "commit": "5de9f1b507fde7df52c095079742579a04771671",
@@ -230,6 +231,46 @@
       "compact": "/private/tmp/snowfolio-validation-history/native-scripting-6d01d83",
       "visual": "InspectedinitialemptyUntitledscreenshot, confirmingprecreationstage."
     },
-    "correction": "Use supportedGetdocuments; requiretypeAEList andcountreturneddescriptor.numberOfItems locally. Preserveallcreation/index/window/read-only/missingobject/close-savinginchecks. No Countcommand or productioncodeadded."
+    "correction": "Use supportedGetdocuments; requiretypeAEList andcountreturneddescriptor.numberOfItems locally. Preserveallcreation/index/window/read-only/missingobject/close-savinginchecks. No Countcommand or productioncodeadded.",
+    "countFixtureHosted": {
+      "commit": "aeb1545671dc461e72d28865a33c52145827227c",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42567458983",
+      "executed": 3,
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 34.5,
+      "failure": "ExactcapturedMake newdocumentwithdata UnicodeCRLFstring fails-10000AppleEventhandler, range121/157; initialGetdocumentsAEList/countpasses. Targetalive, emptyUntitledfailureimageinspected. Existing2methodsrepass.",
+      "compact": "/private/tmp/snowfolio-validation-history/native-scripting-aeb1545"
+    }
+  },
+  "fullNativeBaseline": {
+    "commit": "54237aa7e0b1ee9ccd063f44fb9226b2d7bb61f4",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42564902278",
+    "executed": 33,
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1318.325,
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-54237aa",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_05-02-08-+0000.xcresult",
+    "scope": "31document/editor/settings/export methods plus2actualscriptingmethods; baseline BEFOREnewinitial-data34thmethod/contentscandidate.",
+    "visual": "SixmajorPNGinspected: source terminalcaret/listselectioncontinuous/markersaligned, Settings, createdtabs/restoredtabs, scriptedsource. Hostedpreviewblank persists; physicaldarkselection/preview/IME/VoiceOverunaccepted.",
+    "runtimeWarnings": {
+      "DefaultQoS": 18,
+      "UtilityQoS": 32,
+      "attribution": "Internalpriorityinversions; no productionperformanceattributionorM6acceptance."
+    }
+  },
+  "contentsCandidate": {
+    "declaration": "Newpcntcontents:text/rw mappedtoscriptingContents; in-properties=no avoidsduplicatingsourceinlegacypropertyrecords.",
+    "implementation": "7-linecomputedObjCproxyforwardstoexistingmarkdown getter/setter; retainsnativeUndo/dirty/encoding/compositionguards; no additionalwriter/render/wait.",
+    "schema": "Responds-to uses currentcommandattribute, callbacksunchanged; xmllint--validpasses; all48legacyexternalterm signatures preserved.",
+    "reference": "https://developer.apple.com/documentation/objectivec/nsobject-swift.class/newscriptingobject(of:forvalueforkey:withcontentsvalue:properties:)",
+    "local": "Native34/default27builds/resource/type/dictionary/icon/licensegatespass. Defaultrestored, temporaryhandler markerexcluded app/debugdylib/testbinary. StrictchangedSwiftlint/diffpass.",
+    "focused": "3tests/1suite with5cases pass0.207s (command3.619s), 0warnings/errors: bothsourceentrypointsexactUTF16LEBOMCRLF/UndoRedo/noop/dirtyownershipandmarkedcomposition, cachedHTMLregression.",
+    "fullLocal": "Interrupted130afterconfirmed64blockedNSAnimationworkers/mainnativeDocserializationwait, beforefullpackagecompletion; notaccepted. Freshhostedfullcoregate required.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-contents-local",
+    "runtime": "ActualMakewithdata/index/window/readOnly/error/close-savingin3methodretrypending."
   }
 }

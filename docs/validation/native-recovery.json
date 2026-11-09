@@ -119,5 +119,23 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-recovery-df05cdb",
     "finding": "Nativebrowserenlargeshistoricalsource; exactCopyprovesfocus, normalxdoesnotalterhistorical/currenttext/currentfile/history. NativeRestorethenpassesexactoldbytes/newerrecoverability. No newproductioneditingpolicy justified.",
     "visual": "Inspected5majorstateimages: selectedoldsourcehighlight/copy, restoredsource, Revert, SaveAnyway, SaveAs. Previewpaintingstillblank."
+  },
+  "fullNativeBaseline": {
+    "commit": "54237aa7e0b1ee9ccd063f44fb9226b2d7bb61f4",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42564902278",
+    "executed": 33,
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1318.325,
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-54237aa",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_05-02-08-+0000.xcresult",
+    "scope": "31document/editor/settings/export methods plus2actualscriptingmethods; baseline BEFOREnewinitial-data34thmethod/contentscandidate.",
+    "visual": "SixmajorPNGinspected: source terminalcaret/listselectioncontinuous/markersaligned, Settings, createdtabs/restoredtabs, scriptedsource. Hostedpreviewblank persists; physicaldarkselection/preview/IME/VoiceOverunaccepted.",
+    "runtimeWarnings": {
+      "DefaultQoS": 18,
+      "UtilityQoS": 32,
+      "attribution": "Internalpriorityinversions; no productionperformanceattributionorM6acceptance."
+    }
   }
 }

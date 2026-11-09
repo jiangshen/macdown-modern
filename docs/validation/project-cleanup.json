@@ -742,5 +742,47 @@
     "ownershipAndOpenFilesChecked": true,
     "sourceAndRunningProbeAndCurrentFullNative26RawPreserved": true,
     "trashEmptied": false
+  },
+  "latestFullNative33Replacement": {
+    "dateUTC": "2026-11-09T05:39:09.492466+00:00",
+    "removedSupersededFullNative26RawAllocatedBytes": 176132096,
+    "keptLatestFullNative33Raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_05-02-08-+0000.xcresult",
+    "latestRetainedAllocatedBytes": 188977152,
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-54237aa",
+    "validation": "33passed0failed0skipped1318.325s; sixmajorPNGsinspected, listselectioncontinuous/markersaligned/settings/tabs/sourcecorrect, previewcapturestillblank.",
+    "exportPolicy": "OnlyPNGandTXTexported; videosremainsolelyinsideoneretainedfullresult, noexportduplicates.",
+    "ownershipAndOpenFilesChecked": true,
+    "runningProbeAndSourcePreserved": true,
+    "trashEmptied": false
+  },
+  "latestContentsCandidateCleanup": {
+    "dateUTC": "2026-11-09T06:11:48.556436+00:00",
+    "removed": [
+      {
+        "path": "/private/tmp/snowfolio-native-scripting-current-incoming",
+        "allocatedBytesRemoved": 72318976,
+        "kept": "/private/tmp/snowfolio-validation-history/native-scripting-aeb1545"
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-CC16DEAF-12FA-4C1C-BB5E-0DCEFD813977",
+        "allocatedBytesRemoved": 45056,
+        "kept": "/private/tmp/snowfolio-validation-history/native-contents-local"
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-EDC9F8EB-2C3D-41A5-BF59-4B79E9C14FA9",
+        "allocatedBytesRemoved": 176128,
+        "kept": "/private/tmp/snowfolio-validation-history/native-contents-local"
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-5CCAE716-3B11-4B4E-A4DA-0BD2D2B4A117",
+        "allocatedBytesRemoved": 180224,
+        "kept": "/private/tmp/snowfolio-validation-history/native-contents-local"
+      }
+    ],
+    "findingsAndNativeCompilerLogsAndFocusedGuardLogRetained": "/private/tmp/snowfolio-validation-history/native-contents-local",
+    "fullLocalInterruptionRecorded": true,
+    "ownershipAndOpenFilesChecked": true,
+    "currentFullNative33RawAndRunningProbeAndSourcePreserved": true,
+    "trashEmptied": false
   }
 }

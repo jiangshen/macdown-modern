@@ -1,6 +1,13 @@
 import AppKit
 
 extension NativeMarkdownDocument {
+  /// Cocoa's Make-with-data command initializes the class's declared contents.
+  /// Reuse source ownership so creation retains the same Undo and input guards.
+  @objc public dynamic var scriptingContents: String {
+    get { markdown }
+    set { markdown = newValue }
+  }
+
   /// Cocoa scripting keeps the historical text property and native document
   /// Undo ownership. Never replace an in-progress input-method composition.
   @objc public dynamic var markdown: String {

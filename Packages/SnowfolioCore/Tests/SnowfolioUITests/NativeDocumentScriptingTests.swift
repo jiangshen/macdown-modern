@@ -7,8 +7,10 @@ import Testing
 @Suite("Native document scripting", .serialized, NativeUIExclusive())
 @MainActor
 struct NativeDocumentScriptingTests {
-  @Test("KVC source replacement retains native dirty, Undo and exact encoded bytes")
-  func sourceOwnership() async throws {
+  @Test(
+    "KVC source replacement retains native dirty, Undo and exact encoded bytes",
+    arguments: ["markdown", "scriptingContents"])
+  func sourceOwnership(key: String) async throws {
     _ = NSApplication.shared
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
       "SnowfolioScriptOwnership-\(UUID().uuidString)", isDirectory: true)
@@ -35,15 +37,15 @@ struct NativeDocumentScriptingTests {
     let manager = try #require(document.undoManager)
     manager.groupsByEvent = false
     #expect(!document.isDocumentEdited)
-    #expect(document.value(forKey: "markdown") as? String == original)
-    document.setValue(replacement, forKey: "markdown")
+    #expect(document.value(forKey: key) as? String == original)
+    document.setValue(replacement, forKey: key)
     #expect(document.markdownDocument.text == replacement)
     try await expectEdited(true)
     #expect(
       try document.data(ofType: "net.daringfireball.markdown")
         == bom + #require(replacement.data(using: .utf16LittleEndian)))
     // An identical assignment must not add a second undo transaction.
-    document.setValue(replacement, forKey: "markdown")
+    document.setValue(replacement, forKey: key)
     manager.undo()
     #expect(document.markdown == original)
     try await expectEdited(false)
@@ -70,8 +72,10 @@ struct NativeDocumentScriptingTests {
     #expect(document.html == "<p>Second</p>")
   }
 
-  @Test("Script source changes preserve active marked text")
-  func markedText() throws {
+  @Test(
+    "Script source changes preserve active marked text",
+    arguments: ["markdown", "scriptingContents"])
+  func markedText(key: String) throws {
     let document = NativeMarkdownDocument()
     defer { document.close() }
     let original = "# Keep original\n"
@@ -86,7 +90,7 @@ struct NativeDocumentScriptingTests {
     #expect(editor.hasMarkedText())
     let markedSource = editor.string
     let markedRange = editor.markedRange()
-    document.markdown = "Must not overwrite composition"
+    document.setValue("Must not overwrite composition", forKey: key)
     #expect(document.markdown == original)
     #expect(editor.string == markedSource)
     #expect(editor.markedRange() == markedRange)

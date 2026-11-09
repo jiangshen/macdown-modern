@@ -11,8 +11,11 @@ gates. Native34 UI methods and default27 UI methods currently compile; that is n
 an assertion that all current UI methods have passed together. The existing
 AppIntents metadata-extraction warning remains.
 
-The optional native NSDocument host at `ae2d602` passed its full26-method actual-app
-suite and9-method workspace suite. Native active encoded autosave/Undo, coordinated
+The optional native NSDocument host passed **33/33 actual-app methods, zero skips**,
+1318.325s at `54237aa` ([run42564902278](https://github.com/jiangshen/snowfolio/actions/runs/42564902278)).
+That complete baseline covers31document/editor/settings/export methods and2real
+scriptingmethods; it predates the34thinitial-data method andnewcontentscandidate.
+The preceding `ae2d602` nine-method workspace suite also passes. Native active encoded autosave/Undo, coordinated
 and uncoordinated clean reloads, menus/Settings, exact CopyHTML, cancel-close and
 saved-tab/selected-file/caret restoration pass. Keyboard/plus tab creation and
 independent Undo passed a later focused2/2 at `cefdbc0`. Separate tab groups, viewport
@@ -3350,3 +3353,26 @@ repass;3executed/2pass/1fail38.887s. Correctfixture nowGetsdocuments, requiresAE
 andcounts theactualdescriptor locally. AllMakewithdata/index/window/readonly/error/
 close-savingchecks remain. Native34/default27compile; normaldefaultrestored. No
 productionCountcommand or speculativeinitial-contentimplementationadded.
+
+
+## Full native baseline accepted; initial-content creation candidate — 2026-11-09
+
+Exact54237aaactualnative33/33passes, zero failures/skips,1318.325s. Sixmajorimages
+inspected; listselectioncontinuous/markersaligned/settings/tabs/sourcecorrect. All
+3conflictchoices/Versions and2scriptingmethods pass together. Fiftyinternal QoS
+inversions remainunattributed; physicalpreview/darkselection/IME/VoiceOver/M6stayopen.
+The new33raw result replacesobsolete26raw aftercompact/ownership/openfilechecks.
+
+The34thmethod's aeb1545retry gets/countsAEList successfully and now establishes an
+actualMakewithdata handlerfailure-10000(range121/157). Existing2methodsrepass. Candidate
+declaresstandardpcntcontents mappedtoa7-lineproxy toexistingmarkdownsetter. It adds
+no writer/render/wait andexcludesduplicatecontentsfromlegacypropertyrecords. Current
+responds-to XMLcommandattribute passesDTDvalidation; all48legacyterm signaturesremain.
+Native34/default27compile andresource/type/icon/license/dictionary gatespass; normal
+defaultrestored andtemporaryconsentmarkerexcluded. Actualeventretry stillrequired.
+
+Newparameterizedsource/contents ownership/composition checks pass3tests/5cases,
+0.207s, no warnings/errors. Full localpackage run isnotaccepted: samplecaptures
+64blockedNSAnimationworkers andmainthreadwaitingnativeDocserialization; ownedrun
+interrupted130 afterpreservingevidence. No productionautosavepolicyorcachecleaning
+workaround. Freshhostedfullcore remainsrequired. Fullmodernizationactive/incomplete.

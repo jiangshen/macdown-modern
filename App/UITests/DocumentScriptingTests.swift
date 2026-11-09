@@ -269,7 +269,13 @@
       XCTAssertEqual(try execute("return text of item 1 of documents").stringValue, source)
       XCTAssertEqual(try execute("return text of document of window 1").stringValue, source)
       XCTAssertGreaterThan(try execute("return id of window 1").int32Value, 0)
-      let beforeHTML = try execute("return html of document 1").stringValue
+      let initialHTML = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          (try? self.execute("return html of document 1").stringValue)?.contains("Initial data")
+            == true
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [initialHTML], timeout: 8), .completed)
+      let beforeHTML = try XCTUnwrap(execute("return html of document 1").stringValue)
       do {
         _ = try execute("set html of document 1 to \(literal("Must remain read only"))")
         XCTFail("The public read-only HTML property must reject assignment")
