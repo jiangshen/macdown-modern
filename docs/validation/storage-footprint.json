@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T05:04:19.731495+00:00",
+  "dateUTC": "2026-11-09T05:19:51.190821+00:00",
   "scope": "Snowfolio checkout and this task-owned Snowfolio/MacDown temporary files; shared Codex history and unrelated projects excluded.",
   "projectTemporaryAllocatedBytesBefore": 16591192064,
   "projectTemporaryAllocatedBytesAfter": 8001990656,
@@ -191,6 +191,79 @@
     "recordingsRemovedAfterCapture": true,
     "ownershipAndOpenFilesChecked": true,
     "currentFullNative26RawAndRunningProbePreserved": true,
+    "trashEmptied": false
+  },
+  "latestDuplicateProbeProductsCleanup": {
+    "dateUTC": "2026-11-09T05:07:54.823530+00:00",
+    "removedGeneratedDuplicates": [
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbe.app",
+        "allocatedBytesRemoved": 19832832
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbe.swiftmodule",
+        "allocatedBytesRemoved": 114688
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbeUITests-Runner.app",
+        "allocatedBytesRemoved": 438272
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbeUITests.swiftmodule",
+        "allocatedBytesRemoved": 77824
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/DocumentHostProbe_macosx27.2-arm64.xctestrun",
+        "allocatedBytesRemoved": 8192
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Intermediates.noindex/DocumentHostProbe.build",
+        "allocatedBytesRemoved": 2703360
+      }
+    ],
+    "reason": "Supersededprobeproducts/intermediatesinmainappcache, absentcurrentbuildgraph. Runningprobe85540initsseparatecachepreserved.",
+    "ownershipAndOpenFilesChecked": true,
+    "sourceAndCurrentAppAndFullNative26RawPreserved": true,
+    "trashEmptied": false
+  },
+  "latestMeasuredRetainedRoots": {
+    "dateUTC": "2026-11-09T05:08:58.243565+00:00",
+    "roots": [
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
+        "allocatedBytes": 840994816
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
+        "allocatedBytes": 487800832
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-theme-validation",
+        "allocatedBytes": 778248192
+      },
+      {
+        "path": "/private/tmp/snowfolio-validation-history",
+        "allocatedBytes": 49688576
+      },
+      {
+        "path": "/private/tmp/snowfolio-current-native-result",
+        "allocatedBytes": 176132096
+      }
+    ],
+    "allocatedBytes": 2332864512,
+    "scope": "Reusedapp/corecaches, protectedrunningprobe, compacthistory, oneusefulfullnative26result. Excludesactiveincomingdownloadwhilecurrenttestcompletes.",
+    "normalBuildAfterDuplicateRemoval": "passesallhost/resource/icon/dictionary/licensechecks",
+    "note": "AllocatedbytesarenotnecessarilyuniqueAPFSphysicalstorage; Trashnotemptied."
+  },
+  "latestHistoricalInteractionCleanup": {
+    "dateUTC": "2026-11-09T05:19:51.190821+00:00",
+    "removedGeneratedDownload": "/private/tmp/snowfolio-native-recovery-current-incoming",
+    "allocatedBytesRemoved": 133783552,
+    "kept": "/private/tmp/snowfolio-validation-history/native-recovery-df05cdb",
+    "fiveMajorStateScreenshotsInspected": true,
+    "videosRemovedAfterCompactCapture": true,
+    "ownershipAndOpenFilesChecked": true,
+    "runningProbeAndSourceAndCurrentFullNative26RawPreserved": true,
     "trashEmptied": false
   }
 }

@@ -58,6 +58,29 @@
       },
       "compact": "/private/tmp/snowfolio-validation-history/core-5de9f1b",
       "scope": "Core job succeeds; full default-host UI job was last observed live and is independent of focused native scripting consent blocker."
+    },
+    "latestHostedCore": {
+      "commit": "df05cdb14d82b97b583ebf176b42b8f25d5d5791",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42565180234",
+      "job": 128990044232,
+      "jobConclusion": "success",
+      "tests": 373,
+      "suites": 80,
+      "errors": 0,
+      "warnings": 0,
+      "arm64Executables": 8,
+      "commonmark": {
+        "spec": "CommonMark 0.31.2",
+        "source": "https://spec.commonmark.org/0.31.2/spec.json",
+        "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+        "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+        "total": 652,
+        "passed": 652,
+        "failed": 0,
+        "failures": []
+      },
+      "compact": "/private/tmp/snowfolio-validation-history/core-df05cdb",
+      "scope": "Completedcorejob; overalldefaultUIjobstillrunning. Sum8per-targettestfooters; architectureinspectedfor8binaries."
     }
   },
   "remaining": [
@@ -184,5 +207,16 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-scripting-54237aa",
     "visual": "BothPNGinspected, exacttemporaryprompt and correctscriptedsource. Previewpaintingstillblank/unaccepted.",
     "boundary": "Exactenumcodes savfmd  /savftxt /savfdata exercise samepublicdictionaryevents; Textkeywordcollisionretained/documented, no publicnameorcode change."
+  },
+  "additionalCommandTests": {
+    "method": "testScriptedInitialDataObjectReferencesAndReadOnlyErrors",
+    "checks": [
+      "Makewithdata exactUnicodeCRLFsource",
+      "Documentcount/indexandwindowdocumentreferences/windowid",
+      "Read-onlyHTMLsetter-10006andmissingdocument-1728withoutsource/cachemutation",
+      "Close savingyes savingin exactUTF8file; countreturnsbaseline; Quit"
+    ],
+    "local": "Native34/default27compile; currentdefaultrestored; strictchangedSwiftlint/diffpass",
+    "status": "Pendingruntime; no productioncommandchange."
   }
 }

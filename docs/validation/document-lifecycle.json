@@ -983,10 +983,10 @@
   },
   "latestFollowup20261109": {
     "dateUTC": "2026-11-09T04:53:06.351780+00:00",
-    "nativeRecovery": "ee0fc53actual4/4pass0skip154.728s: Revert/SaveAnyway/SaveAsplusolderVersionsRestore, exactbytes/oppositerecoverability/nextsaveURLandencoding. All9imagesinspected.",
+    "nativeRecovery": "df05cdb4/4pass0skip185.652s; Copyexactoldsourceandxrejection/current-historypreservationbeforeRestoreaccepted; allconflictchoicesreaccepted.",
     "scripting": "54237aaactual2/2pass0skip31.861s: source/Undo/encodedautosave/manualHTML +Makeproperties/MarkdownTextDataSave/Close/Quit. Fullnative33run42564902278live; remainingcommands/options/errorsstillopen.",
     "defaultHost": "eb46674full27exec24pass3fail; tabcasefixed/accepted focusedandfull. Same3SwiftUI lifecyclefailures.",
-    "currentBuild": "Native33/default27UI methodscompile; defaultcanonicalrestored, no productiondocumentchange.",
+    "currentBuild": "Native34/default27compile; standardinitial-data/index/window/error/close-savingtestpending; normaldefaultrestored.",
     "remaining": [
       "Completeactualscriptingcommands/options/errorpaths",
       "Separate native groups/source-previewviewportrestoration",
@@ -994,6 +994,29 @@
       "Physicalpreview/caret/selection/IME/VoiceOver",
       "FullM3-M6parity/performance/release"
     ],
-    "hostSwitch": false
+    "hostSwitch": false,
+    "latestHostedCore": {
+      "commit": "df05cdb14d82b97b583ebf176b42b8f25d5d5791",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42565180234",
+      "job": 128990044232,
+      "jobConclusion": "success",
+      "tests": 373,
+      "suites": 80,
+      "errors": 0,
+      "warnings": 0,
+      "arm64Executables": 8,
+      "commonmark": {
+        "spec": "CommonMark 0.31.2",
+        "source": "https://spec.commonmark.org/0.31.2/spec.json",
+        "sha256": "d431b29d97b6f73e69d547109cf5081578fac931e72afe95639ebe766c1b2a20",
+        "scope": "Core native parser CLI; raw HTML enabled for official spec; no app decorations or GFM options",
+        "total": 652,
+        "passed": 652,
+        "failed": 0,
+        "failures": []
+      },
+      "compact": "/private/tmp/snowfolio-validation-history/core-df05cdb",
+      "scope": "Completedcorejob; overalldefaultUIjobstillrunning. Sum8per-targettestfooters; architectureinspectedfor8binaries."
+    }
   }
 }

@@ -687,5 +687,49 @@
     "ownershipAndOpenFilesChecked": true,
     "currentFullNative26RawAndRunningProbePreserved": true,
     "trashEmptied": false
+  },
+  "latestDuplicateProbeProductsCleanup": {
+    "dateUTC": "2026-11-09T05:07:54.823530+00:00",
+    "removedGeneratedDuplicates": [
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbe.app",
+        "allocatedBytesRemoved": 19832832
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbe.swiftmodule",
+        "allocatedBytesRemoved": 114688
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbeUITests-Runner.app",
+        "allocatedBytesRemoved": 438272
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/Debug/DocumentHostProbeUITests.swiftmodule",
+        "allocatedBytesRemoved": 77824
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Products/DocumentHostProbe_macosx27.2-arm64.xctestrun",
+        "allocatedBytesRemoved": 8192
+      },
+      {
+        "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio/DerivedData/Build/Intermediates.noindex/DocumentHostProbe.build",
+        "allocatedBytesRemoved": 2703360
+      }
+    ],
+    "reason": "Supersededprobeproducts/intermediatesinmainappcache, absentcurrentbuildgraph. Runningprobe85540initsseparatecachepreserved.",
+    "ownershipAndOpenFilesChecked": true,
+    "sourceAndCurrentAppAndFullNative26RawPreserved": true,
+    "trashEmptied": false
+  },
+  "latestHistoricalInteractionCleanup": {
+    "dateUTC": "2026-11-09T05:19:51.190821+00:00",
+    "removedGeneratedDownload": "/private/tmp/snowfolio-native-recovery-current-incoming",
+    "allocatedBytesRemoved": 133783552,
+    "kept": "/private/tmp/snowfolio-validation-history/native-recovery-df05cdb",
+    "fiveMajorStateScreenshotsInspected": true,
+    "videosRemovedAfterCompactCapture": true,
+    "ownershipAndOpenFilesChecked": true,
+    "runningProbeAndSourceAndCurrentFullNative26RawPreserved": true,
+    "trashEmptied": false
   }
 }

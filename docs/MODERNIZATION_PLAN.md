@@ -7,7 +7,7 @@ CommonMark examples and eight arm64 test executables pass**. Retain the patched
 cmark-gfm engine and measured Swift parent-tracking optimization; the completed
 comparison is in [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
 Both app hosts compile and pass the existing icon/resource/type/dictionary/license
-gates. Native33 UI methods and default27 UI methods currently compile; that is not
+gates. Native34 UI methods and default27 UI methods currently compile; that is not
 an assertion that all current UI methods have passed together. The existing
 AppIntents metadata-extraction warning remains.
 
@@ -3328,3 +3328,17 @@ currentdiskbytes and originalhistory intact before nativeRestore. Clipboard type
 are restored. Customeditor initializes editable and does not explicitly consume native
 viewingmode; the nativebrowser may intercept input, so no production bug/fix is claimed
 before runtime. Native33/default27compile; normaldefaultrestored and strictlint/diffpass.
+
+
+## Historical source interaction accepted; standard command coverage — 2026-11-09
+
+Exact `df05cdb` recovery4/4passes, zero skips,185.652s. Versions66.503s proves
+SelectAll/Copy returns exactoldercontent, unmodifiedx isrejected withoutchangingold/
+current source/file/history, andRestore retains exactoldbytes/newerrecoverability.
+All3normalconflictchoicespass again. Five majorstateimages inspected; nativebrowser
+enlargesoldsource and suppliesreadonlyinteraction. No productionviewingmodechange.
+
+Currentdfcorejob passes373tests/80suites with0warnings/errors,652/652CommonMark and
+8arm64executables; full default job stillrunning. Fullnative33on54237aa also continues.
+A34thUI method compilesMakewithdata, document/windowreferences, readonly/missing-object
+errors andclose-savingin. Runtimepending; no productionstandardcommandchange.

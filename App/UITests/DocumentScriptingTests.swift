@@ -249,6 +249,51 @@
     }
 
     @MainActor
+    func testScriptedInitialDataObjectReferencesAndReadOnlyErrors() throws {
+      let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
+        "SnowfolioScriptContracts-\(UUID().uuidString)", isDirectory: true)
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      defer { try? FileManager.default.removeItem(at: directory) }
+      let file = directory.appendingPathComponent("initial-data.md")
+      let source = "# Initial data 中文 👩‍💻\r\ne\u{301}\r\n"
+      let app = launch()
+      defer { app.terminate() }
+      let initialCount = try execute("return count of documents").int32Value
+      let made = try execute(
+        "make new document with data \(literal(source))\nreturn text of document 1")
+      XCTAssertEqual(made.stringValue, source)
+      _ = waitForSource(source, in: app)
+      XCTAssertEqual(try execute("return count of documents").int32Value, initialCount + 1)
+      XCTAssertEqual(try execute("return text of item 1 of documents").stringValue, source)
+      XCTAssertEqual(try execute("return text of document of window 1").stringValue, source)
+      XCTAssertGreaterThan(try execute("return id of window 1").int32Value, 0)
+      let beforeHTML = try execute("return html of document 1").stringValue
+      do {
+        _ = try execute("set html of document 1 to \(literal("Must remain read only"))")
+        XCTFail("The public read-only HTML property must reject assignment")
+      } catch let error as NSError {
+        XCTAssertEqual(error.code, -10006)
+      }
+      XCTAssertEqual(try execute("return html of document 1").stringValue, beforeHTML)
+      XCTAssertEqual(try execute("return text of document 1").stringValue, source)
+      do {
+        _ = try execute("return text of document \(literal(UUID().uuidString))")
+        XCTFail("A nonexistent document must report an object-resolution error")
+      } catch let error as NSError {
+        XCTAssertEqual(error.code, -1728)
+      }
+      _ = try execute(
+        "close document 1 saving yes saving in (POSIX file \(literal(file.path)))")
+      let saved = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == Data(source.utf8) },
+        object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [saved], timeout: 8), .completed)
+      XCTAssertEqual(try execute("return count of documents").int32Value, initialCount)
+      _ = try execute("quit saving no")
+      XCTAssertTrue(app.wait(for: .notRunning, timeout: 10))
+    }
+
+    @MainActor
     func testScriptedCreationSaveFormatsAndClose() throws {
       let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
         "SnowfolioScriptFormats-\(UUID().uuidString)", isDirectory: true)
