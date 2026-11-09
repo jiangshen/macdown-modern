@@ -114,6 +114,7 @@
   final class ProbeNativeApplication: NSObject, NSApplicationDelegate {
     #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
       private var menus: NativeApplicationMenuController?
+      private var paintControl: NativeWebKitPaintControl?
     #endif
     static func main() {
       let app = NSApplication.shared
@@ -171,6 +172,19 @@
         NSApp.mainMenu = main
       #endif
     }
+
+    #if FULL_WORKSPACE_DOCUMENT_HOST_PROBE
+      func applicationDidFinishLaunching(_ notification: Notification) {
+        guard let path = ProcessInfo.processInfo.environment["SNOWFOLIO_PROBE_PAINT_OUTPUT"] else {
+          return
+        }
+        let control = NativeWebKitPaintControl(
+          output: URL(fileURLWithPath: path, isDirectory: true))
+        paintControl = control
+        control.showWindow(nil)
+        control.window?.makeKeyAndOrderFront(nil)
+      }
+    #endif
 
     func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool { false }
   }

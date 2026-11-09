@@ -1,0 +1,42 @@
+{
+  "dateUTC": "2026-11-09T02:03:56.362145+00:00",
+  "milestone": "M2/M3native preview painting investigation; full modernization remains active",
+  "productionBaseCommit": "ae2d602ace84cf0f9c6c561772497e735bbcc88f",
+  "status": "Ten-method diagnostic builds; new comparison not yet executed. Production app code unchanged by this increment.",
+  "problem": "Reading pane blank in inspected hosted diagnostic and actual-app window screenshots despite correct preview accessibility updates. Earlier IOSurface failures known but root cause unconfirmed. AXWebView coordinates differ from its native parent; geometry/paint/capture need separation.",
+  "comparison": [
+    "Plain WKWebView in direct AppKit stack: nonpersistent data store, document JavaScript disabled, self-contained styled HTML",
+    "Exact Snowfolio NativeMarkdownPreview.configuration, Coordinator and MarkdownPreviewWebView in same AppKit stack, with production resource handler, isolated-world scroll script, native reading preferences/style and synthetic HTML",
+    "Use @testable import in test-only Debug app; no production API added and no private WebKit/GPU/security setting changed"
+  ],
+  "evidence": [
+    "Initial native frame/bounds/visibleRect/screen position/layer/occlusion/loading/error JSON written before snapshots",
+    "Separate native WKWebView snapshots for plain and shared pipeline",
+    "XCUITest window screenshot and XCUIScreen full-display screenshot to distinguish capture paths",
+    "Accessibility tree and content-ready outcomes; artifacts attach before assertions where possible"
+  ],
+  "scope": "Only FULL_WORKSPACE_DOCUMENT_HOST_PROBE includes new controller/method. Environment flag/output path opens it in isolated diagnostic app; ordinary document fixtures and production app unchanged. Outputs live in one UUID-owned test temp directory, then removed.",
+  "newTest": "DocumentHostProbeTests.testNativeWebKitPaintingControls",
+  "assertionLimit": "DOM readiness, geometry and successful snapshot files do not establish visible painting. Inspect window/full-screen/native images; retain unresolved scope until evidence supports a cause.",
+  "tooling": "SNOWFOLIO_DOCUMENT_PROBE_BUILD_DIR lets manual builds reuse canonical Build/Snowfolio while preserving running85540 Build/DocumentHostProbe app/cache; hosted default paths remain unchanged.",
+  "local": {
+    "probe": "Final helper build-for-testing passes for native-workspace with10compiled methods; prior direct axbuild reports0errors/0warnings",
+    "helperLog": "/private/tmp/snowfolio-validation-history/webkit-paint-controls/snowfolio-webkit-paint-helper-build.log",
+    "defaultApp": "Build-for-testing/resource/icon/type/license checks pass; canonical default host restored; existing AppIntents metadata extraction warning",
+    "defaultLog": "/private/tmp/snowfolio-validation-history/webkit-paint-controls/snowfolio-default-after-webkit-paint-build.log",
+    "sourceFormat": "Strict changed-Swift lint, shell syntax and diff check pass",
+    "core": "No production source change since370/79full suite/8arm64 inspection at ae2d602; no redundant package rerun"
+  },
+  "remaining": [
+    "Hosted ten-method run and screenshot/native geometry inspection",
+    "Observe live actual native26run without restarting",
+    "Physical desktop preview check after pending unlock request; last observed lock is not current proof of lock",
+    "Actual preview painting and complete native restoration/IME/VoiceOver/remaining modernization/performance/release gates"
+  ],
+  "sourceHashes": {
+    "Tools/DocumentHostProbe/Sources/NativeWebKitPaintControl.swift": "9e41bf417674996f3a02fb38b5d0c3b3da481ba3319eb50cc1bc1959bb7373b5",
+    "Tools/DocumentHostProbe/Sources/NativeDocumentHost.swift": "7c3bb25a4d3bfab999bfe6df4912e24c849999275e99eede1dcec32350b5753a",
+    "Tools/DocumentHostProbe/UITests/DocumentHostProbeTests.swift": "789c1f21a07d024e99271a8c3038877f4ffd81921de6525b262d5057b1cf2565",
+    "Tools/probe-document-host.sh": "ba98d4fd448786cf476adea56f7bc4871869d9218839bfdf638db93637ba93b9"
+  }
+}

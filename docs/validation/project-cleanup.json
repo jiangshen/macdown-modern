@@ -510,6 +510,16 @@
       "runningAppPIDPreserved": 85540,
       "trashEmptied": false,
       "sourceOrUserDocumentsChanged": false
+    },
+    {
+      "dateUTC": "2026-11-09T02:01:52.060139+00:00",
+      "removedGeneratedRaw": "/private/tmp/snowfolio-native-clean-reload-incoming",
+      "allocatedBytesRemoved": 145403904,
+      "compactEvidence": "/private/tmp/snowfolio-validation-history/full-workspace-ae2d602",
+      "retainedRaw": "Actual native app fb4for unresolved full-app preview painting; replace when ae2d26result is inspected",
+      "ownershipAndOpenFilesChecked": true,
+      "trashEmptied": false,
+      "userDocumentsChanged": false
     }
   ]
 }

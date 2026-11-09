@@ -50,7 +50,18 @@ access, rejects native edited/unautosaved or composing state, coordinates a read
 uses native reversion only for differing clean bytes. Own saves retain Undo; unsaved
 local source and marked composition remain protected. No extra writer or merge policy
 is introduced. Native asynchronous file-access callbacks avoid an observed retained
-synchronous-block trap. Fresh hosted9/full26native confirmation remains pending.
+synchronous-block trap. Exact ae2d602 hosted9confirmation passes all methods with no failures/skips
+(294.067s). Both clean uncoordinated reloads are now accepted in that diagnostic.
+Actual native26confirmation remains pending. The latest inspected reading preview
+is still blank; passing accessibility checks do not accept painting.
+
+The test-only workspace diagnostic now compiles a10th method comparing plain
+WebKit and the exact shared preview coordinator/configuration in a direct AppKit
+container. It collects native view/layer/occlusion/loading/error geometry, WebKit
+snapshots, a window image and a full-screen image. Runtime and image inspection are
+pending; no embedding/environment/capture root cause is established. Production app
+code is unchanged. The build helper can reuse the canonical cache while preserving
+a running diagnostic. See [preview-paint-controls.json](validation/preview-paint-controls.json).
 
 The26th saved-tabs method passes in the preceding SwiftUI host. Its initial AppKit
 focused run fails before quit because the normal empty startup tab is also present;

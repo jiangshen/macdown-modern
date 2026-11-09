@@ -344,6 +344,70 @@ final class DocumentHostProbeTests: XCTestCase {
     }
 
     @MainActor
+    func testNativeWebKitPaintingControls() throws {
+      let output = FileManager.default.temporaryDirectory.appendingPathComponent(
+        "SnowfolioPaint-\(UUID().uuidString)", isDirectory: true)
+      try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+      defer { try? FileManager.default.removeItem(at: output) }
+      let app = launch(environment: ["SNOWFOLIO_PROBE_PAINT_OUTPUT": output.path])
+      defer { app.terminate() }
+      let window = app.windows["nativeWebKitPaintControl"]
+      XCTAssertTrue(window.waitForExistence(timeout: 8), app.debugDescription)
+      let plain = app.descendants(matching: .any)["plainPaintWebView"].firstMatch
+      let pipeline = app.descendants(matching: .any)["pipelinePaintWebView"].firstMatch
+      let plainReady = plain.staticTexts["Plain WebKit checkpoint"].firstMatch.waitForExistence(
+        timeout: 8)
+      let pipelineReady = pipeline.staticTexts["Snowfolio pipeline checkpoint"].firstMatch
+        .waitForExistence(timeout: 8)
+      window.buttons["capturePaintSnapshots"].click()
+      let report = output.appendingPathComponent("paint-diagnostics.json")
+      let completed = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in FileManager.default.fileExists(atPath: report.path) },
+        object: nil)
+      let result = XCTWaiter().wait(for: [completed], timeout: 8)
+      let tree = XCTAttachment(string: app.debugDescription)
+      tree.name = "native-webkit-paint-controls-tree"
+      tree.lifetime = .keepAlways
+      add(tree)
+      let screenshot = XCTAttachment(screenshot: window.screenshot())
+      screenshot.name = "native-webkit-paint-controls-screen"
+      screenshot.lifetime = .keepAlways
+      add(screenshot)
+      let screen = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+      screen.name = "native-webkit-paint-controls-full-screen"
+      screen.lifetime = .keepAlways
+      add(screen)
+      for name in ["paint-geometry", "paint-diagnostics"] {
+        let file = output.appendingPathComponent(name + ".json")
+        if FileManager.default.fileExists(atPath: file.path) {
+          let attachment = XCTAttachment(contentsOfFile: file)
+          attachment.name = "native-webkit-" + name
+          attachment.lifetime = .keepAlways
+          add(attachment)
+        }
+      }
+      for name in ["plain", "pipeline"] {
+        if FileManager.default.fileExists(atPath: output.appendingPathComponent(name + ".png").path)
+        {
+          let image = XCTAttachment(contentsOfFile: output.appendingPathComponent(name + ".png"))
+          image.name = "native-webkit-" + name + "-snapshot"
+          image.lifetime = .keepAlways
+          add(image)
+        }
+      }
+      XCTAssertTrue(plainReady)
+      XCTAssertTrue(pipelineReady)
+      XCTAssertEqual(result, .completed)
+      let records = try XCTUnwrap(
+        JSONSerialization.jsonObject(with: Data(contentsOf: report)) as? [[String: Any]])
+      XCTAssertEqual(records.count, 2)
+      XCTAssertTrue(records.allSatisfy { $0["snapshotSaved"] as? Bool == true }, "\(records)")
+      XCTAssertGreaterThan(plain.frame.width, 300)
+      XCTAssertGreaterThan(pipeline.frame.width, 300)
+      XCTAssertLessThan(plain.frame.minX, pipeline.frame.minX)
+    }
+
+    @MainActor
     func testNativeWorkspacePreviewAndUndo() throws {
       let file = try fixture()
       defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }

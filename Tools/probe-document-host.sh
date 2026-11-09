@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
-artifact_root="$repo_root/Build/DocumentHostProbe"
+artifact_root="${SNOWFOLIO_DOCUMENT_PROBE_BUILD_DIR:-$repo_root/Build/DocumentHostProbe}"
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 mkdir -p "$artifact_root"
 probe_fixture_parent="$HOME/Snowfolio Document Host Fixtures"

@@ -693,7 +693,7 @@
   "nativeCommandIntegration": {
     "dateUTC": "2026-11-09T00:08:12.633637+00:00",
     "baseCommit": "74807c1",
-    "status": "fb4de2b hosted9:7pass/2uncoordinated reload failures. Native menu/Settings/CopyHTML and dirty manual-Save conflict pass. New clean-reload fallback has local full acceptance; hosted confirmation pending.",
+    "status": "Exact ae2d602 nine-method diagnostic passes, including native menus/Settings/CopyHTML. Full26actual native app and visible paint acceptance remain pending.",
     "implementation": [
       "Native application menu controller uses public native document/responder actions for New/Open/Save/SaveAs/Duplicate/Versions/Undo/Find/spelling/tabs and window management",
       "Shared SwiftUI format/export/zoom/layout menu views serve both hosts via NSHostingMenu, without duplicating editing or export logic",
@@ -875,7 +875,7 @@
   "nativeCleanReloadFollowup": {
     "dateUTC": "2026-11-09T01:42:26.660380+00:00",
     "baseCommit": "22b65b2",
-    "status": "Full local package and both app-host/probe compile gates pass; fresh hosted9and26pending. Default host is not switched.",
+    "status": "Exact ae2d602 hosted nine-method diagnostic passes; actual native app26run remains live at42547088589. Full goal incomplete; default host unchanged.",
     "evidenceDrivenChange": "A new local regression receives directory/presenter notifications after atomic replacement but records only one native read; model and outgoing bytes stay old. URL-cache invalidation does not fix it and was removed.",
     "implementation": [
       "After the native presenter notification, enqueue a MainActor clean-file check under native activity and asynchronous file-access serialization",
@@ -909,7 +909,7 @@
     },
     "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta\u2192ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
     "limits": [
-      "Hosted nine-method and full26actual native app confirmation pending",
+      "Nine diagnostic methods pass on exact ae2d602; actual native app26confirmation pending.",
       "File byte comparison/native revert are synchronous within native file access; real app latency/large-file performance remains an open M6gate",
       "Preview painting remains blank in both diagnostic and actual app screenshots; AXsuccess is not paint acceptance",
       "Native tab/group restoration, standard-periodic dirty conflicts/user-choice resolution/Versions, AppleScript gates, real IME/VoiceOver and remaining parity/release gates remain open"
@@ -930,6 +930,28 @@
       "/private/tmp/snowfolio-validation-history/full-workspace-fb4de2b/summary.json": "6b43bc025db2155f9e750025672d15ec95ac2e6d486660a1a11bdcce0d0504bc",
       "/private/tmp/snowfolio-validation-history/native-actual-app-fb4de2b/summary.json": "19691e3b0a4f2636c81ef98b45c71cb950e9adddd8fccfab701a217c72e5c568",
       "/private/tmp/snowfolio-validation-history/native-tabs-22b65b2/summary.json": "3990309f8f896e95238569ba5fe7e6e4cf3f15a213cf499b36f89eb38e83379a"
+    },
+    "hosted": {
+      "commit": "ae2d602ace84cf0f9c6c561772497e735bbcc88f",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42547086506",
+      "executed": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 294.067,
+      "runtimeWarningCount": 9,
+      "warningScope": "Runtime priority-inversion warnings retained without app-owned attribution; not a zero-runtime-warning claim.",
+      "acceptedScope": [
+        "Both uncoordinated clean reload cases and both coordinated canonical temporary/user-folder reload cases",
+        "Full staged encoded active autosaves/Undo/Redo",
+        "Native menus/Settings and exact CopyHTML in both types",
+        "Dirty manual-Save native conflict surface and byte preservation under fixture30-second staging",
+        "Window/toolbar/preview accessibility update and source Undo"
+      ],
+      "visual": "Inspected latest preview and dirty-conflict images. Proper native changed-file sheet retains alternatives. Reading pane remains blank; no painting acceptance.",
+      "limits": "Standard-periodic dirty conflicts, user-choice resolution, Versions, native tab-group restoration and actual native26/full parity remain unaccepted.",
+      "compact": "/private/tmp/snowfolio-validation-history/full-workspace-ae2d602",
+      "summarySHA256": "0105159a40e3a1fb62e8124be24370d6ddc90e3558e7f16e4e7b011ee8abcec3"
     }
   }
 }

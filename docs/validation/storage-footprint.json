@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-09T01:42:26.660380+00:00",
-    "sourceCommit": "After22b65b2; coordinated native clean reload and tab fixture correction",
+    "dateUTC": "2026-11-09T02:03:56.362145+00:00",
+    "sourceCommit": "Afterae2d602; isolated direct-WebKit painting controls",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 848257024
+        "allocatedBytes": 851148800
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -61,18 +61,15 @@
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 22937600
+        "allocatedBytes": 24477696
       }
     },
-    "totalAllocatedBytes": 2303848448,
+    "totalAllocatedBytes": 2308280320,
     "obsoleteRawDownloadsRemoved": [
-      "82workspace raw",
-      "fb4workspace incoming",
-      "22targeted tabs incoming"
+      "ae2d602nine-method incoming after compact9/9summary/text/images/log capture"
     ],
-    "exportedSystemDiagnosticsRemoved": true,
     "runningDiagnosticPID": 85540,
-    "retention": "One full actual-native-app fb4raw; compact older summaries/text/activity logs/screenshots. Reused current app/core caches; default restored; diagnostic85540/cache preserved.",
+    "retention": "One full actual-native-app fb4raw for unresolved full-app paint; compact new passing9diagnostic. Replace current raw after current ae2d26actual-app result is inspected. Reused app/core caches; default restored;85540cache preserved.",
     "userDocumentsChanged": false,
     "trashEmptied": false
   }
