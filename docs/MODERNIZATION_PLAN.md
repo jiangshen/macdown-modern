@@ -47,10 +47,12 @@ initial-snapshot readiness followup passes at `3b68499` (24.870 seconds), with a
 remains open. See [document-links.json](validation/document-links.json).
 
 The native Swift CLI candidate now implements deterministic options/files/stdin,
-an in-memory launch envelope, exclusive missing-file creation and bundled arm64
-packaging.19 focused checks, standalone help/error processes, project generation
-and UI-test typechecking pass. Actual packaged warm/cold delivery, permission
-behavior and the new full gate remain pending. The original CLI stays until its
+an in-memory acknowledged local connection, exclusive missing-file creation and
+bundled arm64 packaging.24 focused checks, standalone help/error processes,
+project generation and UI-test typechecking pass. The initial custom Apple-event
+attempt failed actual delivery and was retired to Trash; no Automation grant was
+made. Actual packaged warm/cold delivery of the replacement and its new full gate
+remain pending. The original CLI stays until its
 replacement is accepted. See [command-line.json](validation/command-line.json) and
 the18-case original-parser characterization.
 

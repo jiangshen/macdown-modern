@@ -12,15 +12,31 @@ public final class DocumentURLController: NSObject {
   }
   private var pending: [Request] = []
   private var task: Task<Void, Never>?
+  private var commandLineServer: CommandLineMessageServer?
 
   public func install() {
     NSAppleEventManager.shared().setEventHandler(
       self,
       andSelector: #selector(receive(_:withReplyEvent:)),
       forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
-    NSAppleEventManager.shared().setEventHandler(
-      self, andSelector: #selector(receiveCommandLine(_:withReplyEvent:)),
-      forEventClass: CommandLineLaunchEvent.eventClass, andEventID: CommandLineLaunchEvent.eventID)
+    if commandLineServer == nil {
+      let server = CommandLineMessageServer { [weak self] payload in
+        guard let self else { return }
+        #if DEBUG
+          DocumentLifecycleTrace.note("command line payload queued")
+        #endif
+        self.pending.append(.commandLine(payload))
+        self.drain()
+      }
+      do {
+        try server.start()
+        commandLineServer = server
+      } catch {
+        #if DEBUG
+          DocumentLifecycleTrace.note("command line connection unavailable")
+        #endif
+      }
+    }
     #if DEBUG
       DocumentLifecycleTrace.note("launch handlers installed")
     #endif
@@ -45,25 +61,6 @@ public final class DocumentURLController: NSObject {
     }
   }
 
-  @objc private func receiveCommandLine(
-    _ event: NSAppleEventDescriptor,
-    withReplyEvent reply: NSAppleEventDescriptor
-  ) {
-    do {
-      #if DEBUG
-        DocumentLifecycleTrace.note("command line event received")
-      #endif
-      pending.append(.commandLine(try CommandLineLaunchEvent.payload(from: event)))
-      drain()
-    } catch {
-      reply.setParam(NSAppleEventDescriptor(int32: -1703), forKeyword: AEKeyword(keyErrorNumber))
-      reply.setParam(
-        NSAppleEventDescriptor(string: error.localizedDescription),
-        forKeyword: AEKeyword(keyErrorString))
-      _ = NSApp.presentError(error)
-    }
-  }
-
   private func drain() {
     guard task == nil else { return }
     task = Task { @MainActor [weak self] in
@@ -75,7 +72,7 @@ public final class DocumentURLController: NSObject {
           switch request {
           case .link(let link): try await self.open(link)
           case .commandLine(let payload):
-            let launch = try await CommandLineLaunchEvent.decodePayload(payload)
+            let launch = try await CommandLineLaunchRequest.decodePayload(payload)
             #if DEBUG
               DocumentLifecycleTrace.note(
                 "command line files=\(launch.files.count) pipeBytes=\(launch.pipedData?.count ?? 0)"

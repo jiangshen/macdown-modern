@@ -96,6 +96,13 @@ public struct CommandLineLaunchRequest: Codable, Equatable, Sendable {
     self.pipedData = pipedData
   }
 
+  @concurrent public static func decodePayload(_ data: Data) async throws -> Self {
+    try Task.checkCancellation()
+    let request = try JSONDecoder().decode(Self.self, from: data)
+    try Task.checkCancellation()
+    return request
+  }
+
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.files == rhs.files && lhs.pipedData == rhs.pipedData
   }

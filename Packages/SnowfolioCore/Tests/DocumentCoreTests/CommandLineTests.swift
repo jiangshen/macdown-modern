@@ -1,4 +1,3 @@
-import Carbon
 import Foundation
 import Testing
 
@@ -7,7 +6,6 @@ import Testing
 @Suite("Command-line requests")
 struct CommandLineTests {
   private let directory = URL(fileURLWithPath: "/tmp/cli folder", isDirectory: true)
-  private let application = URL(fileURLWithPath: "/Applications/Snowfolio.app", isDirectory: true)
 
   @Test(
     "Help and version preserve the original precedence",
@@ -76,20 +74,9 @@ struct CommandLineTests {
     for input in [nil, Data(), bytes] {
       let request = try CommandLineLaunchRequest(
         files: [directory.appendingPathComponent("% #.md")], pipedData: input)
-      let event = try CommandLineLaunchEvent.encode(request, applicationURL: application)
-      #expect(event.eventClass == CommandLineLaunchEvent.eventClass)
-      #expect(event.eventID == CommandLineLaunchEvent.eventID)
-      let address = try #require(event.attributeDescriptor(forKeyword: AEKeyword(keyAddressAttr)))
-      #expect(address.descriptorType == typeApplicationURL)
-      #expect(address.data == NSAppleEventDescriptor(applicationURL: application).data)
-      #expect(try CommandLineLaunchEvent.decode(event) == request)
-      #expect(
-        try await CommandLineLaunchEvent.decodePayload(CommandLineLaunchEvent.payload(from: event))
-          == request)
+      let encoded = try JSONEncoder().encode(request)
+      #expect(try await CommandLineLaunchRequest.decodePayload(encoded) == request)
       #expect(try request.pipedContents?.encoded() == input)
-      #expect(
-        try JSONDecoder().decode(CommandLineLaunchRequest.self, from: JSONEncoder().encode(request))
-          == request)
     }
   }
 
@@ -105,8 +92,8 @@ struct CommandLineTests {
         try JSONDecoder().decode(CommandLineLaunchRequest.self, from: Data(json.utf8))
       }
     }
-    #expect(throws: CommandLineInvocationError.unsupportedMessage) {
-      try CommandLineLaunchEvent.decode(NSAppleEventDescriptor(string: "not a launch"))
+    #expect(throws: (any Error).self) {
+      try JSONDecoder().decode(CommandLineLaunchRequest.self, from: Data("not a launch".utf8))
     }
   }
 
@@ -128,13 +115,12 @@ struct CommandLineTests {
     #expect(try CommandLineLaunchRequest(files: [a, b, a]).files == [a, b])
   }
 
-  @Test("Large piped text stays intact in the event envelope")
-  func largeInput() throws {
+  @Test("Large piped text stays intact during message decoding")
+  func largeInput() async throws {
     let bytes = Data(String(repeating: "中文 🧊 e\u{301}\r\n", count: 150_000).utf8)
     let request = try CommandLineLaunchRequest(files: [], pipedData: bytes)
     #expect(
-      try CommandLineLaunchEvent.decode(
-        CommandLineLaunchEvent.encode(request, applicationURL: application)
-      ).pipedData == bytes)
+      try await CommandLineLaunchRequest.decodePayload(JSONEncoder().encode(request)).pipedData
+        == bytes)
   }
 }

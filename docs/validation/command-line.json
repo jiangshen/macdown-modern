@@ -1,32 +1,32 @@
 {
-  "dateUTC": "2026-11-09T12:06:58.295854+00:00",
-  "status": "Candidate compiles and packaged help/version/error checks pass. Both initial actual-app flows fail because piped source never appears after CLI launch returns0; transport is unaccepted. Metadata-only routing diagnostics added before changing transport.",
+  "dateUTC": "2026-11-09T12:42:02.230725+00:00",
+  "status": "Acknowledged local-message candidate implemented;24 focused tests pass, including actual loopback RPC and multi-megabyte lifetime. Custom Apple-event transport failed actual runtime and was retired to Trash. Packaged CLI warm/cold followup pending.",
   "sources": [
     "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineInvocation.swift",
-    "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineLaunchEvent.swift",
+    "Packages/SnowfolioCore/Sources/DocumentCore/CommandLineConnection.swift",
     "Packages/SnowfolioCore/Sources/SnowfolioCLI/SnowfolioCommandLine.swift",
     "Packages/SnowfolioCore/Sources/SnowfolioUI/CommandLineDocumentOpener.swift",
     "App/UITests/CommandLineTests.swift"
   ],
   "protocol": {
-    "transport": "NSWorkspace.OpenConfiguration.appleEvent with version1 JSON data in a custom SNFL/Clio event. Ordered with URL requests, no executable input, no source in URLs/defaults/temporary files. Actual warm/cold delivery and permission behavior are pending disposable-machine verification.",
+    "transport": "Launch the selected containing GUI app with NSWorkspace, then send versioned JSON over a public CFMessagePort named with user ID and that GUI process ID. Receiver acknowledges after queueing. Markdown remains in memory; no shared defaults, URL payloads or temporary stdin files.",
     "source": "UTF8 input only, exact BOM/CRLF/composed Unicode preserved. CLI waits for EOF for non-terminal stdin, including delayed producers. App decodes/validates off UI actor and retains an immutable initial snapshot. A fresh Untitled source is imported before ordered file requests; user edits/composition and cancellation are preserved.",
     "files": "Relative to invoking directory, ordered standardized dedup. Missing leaf files use O_CREAT|O_EXCL and normal document opening; existing files are never truncated and parent failures are reported. No implicit directory creation.",
     "options": "Preserve h/v, help precedence, boolean values, independent no-help/no-version keys and options ending at first filename. Deliberate fixes: conventional -- delimiter, and unknown leading options exit64 instead of discarding input with success.",
     "packaging": "Native arm64 helper at Snowfolio.app/Contents/Helpers/snowfolio, built by Xcode target and SwiftPM. Resolves its own containing app, including symlink invocation. No PATH links, installation or handler/default-host changes.",
-    "completion": "Current NSWorkspace completion only proves launch acceptance. Initial runtime shows exit0 without document delivery, so this is a failing acceptance gate, not usable end-to-end CLI behavior."
+    "completion": "CLI exits0 only after receiving a versioned acknowledgement from the selected GUI PID. Endpoint lookup, send and receipt are bounded by8seconds in total; cancellation and failure are nonzero. App parses/opens asynchronously and presents document errors through normal UI."
   },
   "local": {
-    "tests": "12 CLI tests plus7 ownership tests; no compiler errors/warnings. Includes malformed messages, literal paths, nil/empty/UTF8 BOM input, async decode and a multi-megabyte envelope.",
+    "tests": "24 focused tests:12 CLI options/codec tests,5 real connection/lifetime/rejection/cancellation tests and7 document ownership tests. Zero compiler errors/warnings. Multi-megabyte messages remain valid after the C callback returns.",
     "process": "--help returns0 while stdin stays open; unknown option returns64 before app lookup/launch.",
     "project": "Tuist regular-host project generation passes. Standalone actual UI test source typechecks with Xcode Swift XCTest overlay. Active app bundles untouched.",
     "compact": "/private/tmp/snowfolio-validation-history/command-line-local"
   },
   "pending": [
-    "Actual packaged CLI warm/cold files+piping in both hosts.",
-    "No additional macOS automation permission prompt, or redesign transport if required.",
-    "Full412/86 core+652 corpus and packaging gates.",
-    "Terminal settings exposure/installation and safe original CLI retirement after acceptance."
+    "Actual packaged CLI warm/cold files and delayed piping in both hosts with the acknowledged connection.",
+    "Full417tests/87suites+652corpus and actual arm64 packaging gates.",
+    "Confirm receipt trace and no custom Apple-event dependency under normal temporary-machine permissions.",
+    "Terminal settings exposure/installation, safe original CLI retirement and all remaining full-goal gates."
   ],
   "initialActualApp15d767f": {
     "nativeRun": 42611670287,
@@ -55,5 +55,12 @@
     "compilerWarnings": 0,
     "compilerErrors": 0,
     "compact": "/private/tmp/snowfolio-validation-history/core-15d767f"
+  },
+  "localConnectionFollowup": {
+    "source": "Current worktree; runtime source-version gate pending.",
+    "ownership": "CF callback uses a retained context with a weak Swift owner. Explicit CFData copy survives callback scope; receipt ownership is released on all paths. Callback executor is guaranteed by dispatch-queue registration; payload decode stays off UI actor.",
+    "SDK": "Public CFMessagePort.h in the installed macOS27.2 SDK, including dispatch-queue callback and CFData lifetime contract.",
+    "failedAttempt": "96bb78a explicit Apple-event destination still fails; scoped logs show SNFL/Clio routed through kTCCServiceAppleEvents and no app receiver call. No permission was granted or protection changed.",
+    "retirement": "The failed first-party CommandLineLaunchEvent.swift helper was moved with /usr/bin/trash after ownership/open-file checks. Its handler/address-only assertions were removed; JSON validation and byte tests remain. Original macdown-cmd sources remain intact."
   }
 }
