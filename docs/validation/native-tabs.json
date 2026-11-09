@@ -157,8 +157,38 @@
       "Restored edits/Undo preserve exact original bytes"
     ],
     "local": "Native35/default27 compile; default app cache restored; strict changed Swift formatting/diff pass.",
-    "runtime": "Pending focused hosted run; existing native34 baseline remains running at292c17f.",
+    "runtime": {
+      "commit": "05ed81e664d2af4da59af5150bb02a5cd1a3dd4f",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42579544002",
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 175.705,
+      "visual": "Screenshot and complete AX tree inspected. Restored first group contains Untitled/alpha/delta; separate second group contains beta/gamma. Both selected tabs and editor positions/source/byte assertions pass. Hosted reading pane remains blank.",
+      "compact": "/private/tmp/snowfolio-validation-history/native-groups-05ed81e",
+      "runtimeWarnings": 1
+    },
     "remaining": "Exact source/preview viewport quit/relaunch, physical preview/dark selection/IME/VoiceOver and other parity/release gates remain open.",
     "compact": "/private/tmp/snowfolio-validation-history/native-groups-local"
+  },
+  "nativeViewportCallbacks": {
+    "status": "Local focused integration accepted; full core retry required. Actual app quit/relaunch scroll positions still unaccepted.",
+    "method": "NativeDocumentWindowTests.nativeViewportRestoration",
+    "checks": "Actual complete native workspace source and WKWebView placed at different reading positions. Native secure state callbacks encode/decode into new document/window. Exact source logical line/fraction, preview scrollY within3px, selection, UTF16LE/BOM/CRLF/combining text/emoji bytes, revision, dirty and empty Undo remain unchanged.",
+    "focused": "1/1 passes1.095s; full native window suite6/6 passes3.316s; zero compilerwarnings/errors.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-viewport-local",
+    "physical": "Mac remains locked; existing unlock request pending. No physical preview/dark selection/IME/VoiceOver acceptance."
+  },
+  "freshCore05ed81e": {
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42579544061",
+    "tests": 374,
+    "passed": 373,
+    "failed": 1,
+    "failure": "NativeDocumentWindowTests.atomicExternalReload only callback-count assertion fails after0.763s. Reload/text/read-count/bytes assertions pass.",
+    "correction": "Wait for both native loaded text and increased callback count within same3second deadline. All existing assertions and production monitor/reload retained.",
+    "focused": "Full native window suite6/6 passes3.316s after correction.",
+    "commonMark": "Skipped due preceding test failure; not reaccepted on this revision.",
+    "compact": "/private/tmp/snowfolio-validation-history/core-05ed81e"
   }
 }

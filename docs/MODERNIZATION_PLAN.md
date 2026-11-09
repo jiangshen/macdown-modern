@@ -3436,3 +3436,26 @@ restored insertion positions and unchanged disk bytes. Native35/default27 compil
 and the normal default cache is restored; strict changed formatting/diff pass.
 Focused runtime remains pending. Exact fullnative34 still runs on292c17f; no
 acceptance or host switch based on compilation. No custom tab persistence added.
+
+
+## Separate groups accepted; native viewport callback integration — 2026-11-09
+
+Exact05ed81e focused group test1/1passes, zero skips,175.705s. Native detach
+creates independent alpha/delta and beta/gamma groups; normal Quit/relaunch
+retains both groups, selected tabs, carets, separate editing/Undo and exact four
+file contents. Screenshot/full AX tree inspected; normal empty startup Untitled
+remains in the first group. Hosted preview capture remains blank.
+
+A new full-workspace integration test places NSTextView/WKWebView independently,
+uses native secure encode/restore callbacks and opens a new native window. Exact
+source line/fraction, preview scrollY within3px, selection, UTF16LE/BOM/CRLF/Unicode
+bytes, revision, clean state and empty Undo survive. Focused1/1passes1.095s; full
+native window6/6passes3.316s withzero compilerwarnings/errors. This is callback
+integration evidence, not actual app quit/relaunch scroll or physical acceptance.
+
+Fresh05ed81e core374tests has373pass/1callback-count failure after0.763s: native
+reload/text/read-count/bytes already pass, but the test stops waiting on text
+before the monitor callback arrives. It now waits for both original observations
+within the same3second deadline; no assertions removed or production changes.
+Fullcore retry required. Fullnative34 at292c17f continues. Mac remains locked;
+existing unlock request pending, no local automation grant or host/install change.

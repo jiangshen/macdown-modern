@@ -865,5 +865,21 @@
     "kept": "/private/tmp/snowfolio-validation-history/native-scripting-292c17f",
     "reason": "Accepted 3/3 scripting results, expected error records and relevant screenshots compacted and inspected. Full native33 raw retained until native34 replacement.",
     "ownershipAndOpenFilesChecked": true
+  },
+  "latestGroupsBuildCleanup": {
+    "dateUTC": "2026-11-09T07:30:00.869788+00:00",
+    "removed": [
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-8F7C38D0-6864-443A-BF60-ED04919CBEAB",
+        "allocatedBytesRemoved": 180224
+      },
+      {
+        "path": "/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-3B462E61-5140-4F36-A320-57D15D7F26CE",
+        "allocatedBytesRemoved": 180224
+      }
+    ],
+    "kept": "/private/tmp/snowfolio-validation-history/native-groups-local",
+    "ownershipAndOpenFilesChecked": true,
+    "runningProbeAndCurrentFullNative33RawPreserved": true
   }
 }

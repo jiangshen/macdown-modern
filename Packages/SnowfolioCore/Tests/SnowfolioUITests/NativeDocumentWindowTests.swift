@@ -1,5 +1,6 @@
 import AppKit
 import DocumentCore
+import EditorCore
 import SwiftUI
 import Synchronization
 import Testing
@@ -137,6 +138,113 @@ struct NativeDocumentWindowTests {
     #expect(try restored.data(ofType: "public.plain-text") == bytes)
   }
 
+  @Test("Native restoration reopens independent real source and preview reading positions")
+  func nativeViewportRestoration() async throws {
+    _ = NSApplication.shared
+    let domain = "NativeViewportRestoration.\(UUID().uuidString)"
+    let defaults = try #require(UserDefaults(suiteName: domain))
+    defer { defaults.removePersistentDomain(forName: domain) }
+    let preferences = AppPreferences(defaults: defaults, domainName: domain, legacyValues: [:])
+    preferences.synchronizedScrolling = false
+    let text = (1...160).map { "## Section \($0) 中文 👩‍💻\r\n\r\nParagraph e\u{301}.\r\n\r\n" }.joined()
+    let bytes = Data([0xFF, 0xFE]) + (try #require(text.data(using: .utf16LittleEndian)))
+    func find<T: NSView>(_ type: T.Type, in view: NSView) -> T? {
+      if let result = view as? T { return result }
+      return view.subviews.lazy.compactMap { find(type, in: $0) }.first
+    }
+    func ready(_ condition: () async throws -> Bool) async throws {
+      let deadline = ContinuousClock.now.advanced(by: .seconds(5))
+      while try await !condition(), ContinuousClock.now < deadline {
+        try await Task.sleep(for: .milliseconds(25))
+      }
+      try #require(await condition())
+    }
+    func open(_ document: NativeMarkdownDocument) throws -> NativeDocumentWindowController {
+      let controller = NativeDocumentWindowController(
+        document: document, preferences: preferences, state: document.workspaceState)
+      document.addWindowController(controller)
+      let window = try #require(controller.window)
+      window.animationBehavior = .none
+      window.orderFront(nil)
+      return controller
+    }
+    func previewY(_ web: WKWebView) async throws -> Double {
+      try await web.callAsyncJavaScript(
+        "return window.scrollY;", arguments: [:], in: nil, contentWorld: .defaultClient)
+        as? Double ?? -1
+    }
+    let original = NativeMarkdownDocument()
+    try original.read(from: bytes, ofType: "public.plain-text")
+    defer { original.close() }
+    let controller = try open(original)
+    try await ready { controller.commands.editor?.coordinator?.scrolling != nil }
+    let content = try #require(controller.window?.contentView)
+    let editor = try #require(find(MarkdownTextView.self, in: content))
+    let web = try #require(find(WKWebView.self, in: content))
+    let scrolling = try #require(controller.commands.editor?.coordinator?.scrolling)
+    let scroll = try #require(editor.enclosingScrollView)
+    try await ready {
+      guard original.html.contains("Section 160") else { return false }
+      return (try? await previewY(web)) == 0
+    }
+    controller.window?.makeFirstResponder(editor)
+    let selection = NSRange(location: 3, length: 5)
+    editor.setSelectedRange(selection)
+    NotificationCenter.default.post(
+      name: NSScrollView.willStartLiveScrollNotification, object: scroll)
+    scroll.contentView.scroll(to: NSPoint(x: 0, y: 1400))
+    scroll.reflectScrolledClipView(scroll.contentView)
+    NotificationCenter.default.post(name: NSScrollView.didEndLiveScrollNotification, object: scroll)
+    let sourcePosition = try #require(scrolling.captureSource())
+    #expect(!sourcePosition.atTop && sourcePosition.offset > 0)
+    _ = try await web.callAsyncJavaScript(
+      "window.dispatchEvent(new Event('wheel')); window.scrollTo(0, 2800); window.dispatchEvent(new Event('scroll')); return true;",
+      arguments: [:], in: nil, contentWorld: .defaultClient)
+    try await ready { original.workspaceState.previewViewport != nil }
+    scrolling.flush()
+    let sourceData = try #require(original.workspaceState.sourceViewport)
+    let previewData = try #require(original.workspaceState.previewViewport)
+    let previewPosition = try JSONDecoder().decode(MarkdownScrollPosition.self, from: previewData)
+    #expect(previewPosition.line > 0 && !previewPosition.atTop)
+    let originalPreviewY = try await previewY(web)
+    #expect(originalPreviewY > 1000)
+    #expect(scrolling.captureSource()?.offset == sourcePosition.offset)
+    #expect(editor.selectedRange() == selection)
+    let coder = NSKeyedArchiver(requiringSecureCoding: true)
+    original.encodeRestorableState(with: coder)
+    coder.finishEncoding()
+    original.close()
+
+    let restored = NativeMarkdownDocument()
+    try restored.read(from: bytes, ofType: "public.plain-text")
+    defer { restored.close() }
+    let loadedRevision = restored.markdownDocument.revision
+    let decoder = try NSKeyedUnarchiver(forReadingFrom: coder.encodedData)
+    decoder.requiresSecureCoding = true
+    restored.restoreState(with: decoder)
+    decoder.finishDecoding()
+    #expect(restored.workspaceState.sourceViewport == sourceData)
+    #expect(restored.workspaceState.previewViewport == previewData)
+    let reopened = try open(restored)
+    try await ready { reopened.commands.editor?.coordinator?.scrolling != nil }
+    let restoredContent = try #require(reopened.window?.contentView)
+    let restoredEditor = try #require(find(MarkdownTextView.self, in: restoredContent))
+    let restoredPreview = try #require(find(WKWebView.self, in: restoredContent))
+    let restoredScrolling = try #require(reopened.commands.editor?.coordinator?.scrolling)
+    try await ready {
+      guard let position = restoredScrolling.captureSource() else { return false }
+      return position.offset == sourcePosition.offset
+        && abs(position.fraction - sourcePosition.fraction) < 0.1
+    }
+    try await ready { abs((try await previewY(restoredPreview)) - originalPreviewY) < 3 }
+    #expect(restoredEditor.selectedRange() == selection)
+    #expect(restoredEditor.string == text)
+    #expect(restored.markdownDocument.revision == loadedRevision)
+    #expect(restored.undoManager?.canUndo == false)
+    #expect(!restored.isDocumentEdited)
+    #expect(try restored.data(ofType: "public.plain-text") == bytes)
+  }
+
   @Test("Native Save As preserves encoding, the original file and the live document location")
   func nativeSaveAs() async throws {
     _ = NSApplication.shared
@@ -208,7 +316,11 @@ struct NativeDocumentWindowTests {
     let bytes = Data([0xFF, 0xFE]) + (try #require(replacement.data(using: .utf16LittleEndian)))
     try bytes.write(to: file, options: .atomic)
     let deadline = ContinuousClock.now.advanced(by: .seconds(3))
-    while model.text != replacement, ContinuousClock.now < deadline {
+    // AppKit may finish the reload before the directory-monitor callback is
+    // delivered. Require both observations within the same existing deadline.
+    while model.text != replacement || native.changeNotifications <= notificationsBeforeReplacement,
+      ContinuousClock.now < deadline
+    {
       try await Task.sleep(for: .milliseconds(25))
     }
     #expect(native.changeNotifications > notificationsBeforeReplacement)
