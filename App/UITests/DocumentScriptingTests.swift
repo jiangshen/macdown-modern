@@ -256,13 +256,15 @@
       defer { try? FileManager.default.removeItem(at: directory) }
       let app = launch()
       defer { app.terminate() }
-      for format in ["Markdown", "Text", "Data"] {
+      // Text is also an AppleScript type keyword. Send the dictionary's exact
+      // public enumeration codes so lexical ambiguity cannot alter this event.
+      for (format, eventCode) in [("Markdown", "md  "), ("Text", "txt "), ("Data", "data")] {
         let file = directory.appendingPathComponent("script-\(format).md")
         let source = "# \(format) 中文 👩‍💻\r\ne\u{301}\r\n"
         let result = try execute(
           """
           set d to make new document with properties {text:\(literal(source))}
-          save d in (POSIX file \(literal(file.path))) as \(format)
+          save d in (POSIX file \(literal(file.path))) as «constant savf\(eventCode)»
           -- Cocoa returned a name specifier for the untitled document. Save
           -- changes that name, so resolve its new public document name.
           set savedDocument to document \(literal(file.lastPathComponent))

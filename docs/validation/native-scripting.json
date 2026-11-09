@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T04:49:37.336209+00:00",
+  "dateUTC": "2026-11-09T04:56:51.979428+00:00",
   "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
-  "status": "Temporary exact system-owned consent succeeds with OSStatus0 for both methods. Real scripting reaches commands, but two test reference/coercion failures stop further acceptance; corrected fixtures compile, retry pending.",
+  "status": "ee0fc53 real source/Undo/encodedautosave/manualHTML/save/close/quit test passes. Format case reaches Text lexical ambiguity after Markdown succeeds; explicit public enum codes compile, retry pending.",
   "interface": {
     "dictionary": "App/Resources/Snowfolio.sdef",
     "nativeClass": "SnowfolioNativeDocument",
@@ -151,5 +151,18 @@
     "correction": "Read file property directly and compare public NSAppleEventDescriptor.fileURLValue. After Save, resolve document by its new filename before text/close. All byte/cache/autosave/Undo/format assertions remain. No production scripting change.",
     "compact": "/private/tmp/snowfolio-validation-history/native-scripting-f644d0c",
     "limit": "Not full scripting acceptance; setter/cache/Undo/autosave/allformats/close/quit still require new runtime."
+  },
+  "actualEventHosted": {
+    "commit": "ee0fc53452135cb654f3292a0afb26f71d5d4a42",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42564044905",
+    "executed": 2,
+    "passed": 1,
+    "failed": 1,
+    "seconds": 30.685,
+    "acceptedMethod": "testScriptedTextUndoAutosaveAndManualHTMLCache",
+    "accepted": "Real Open/text/name/fileURL, source setter, nativeUIUndoRedo, activeUTF16LEBOMCRLFautosave, manualHTMLcache and explicitRender refresh, Save/Close/Quit events.",
+    "remainingFailure": "Format case gets through Markdown then bare Text parses as AppleScript text type and fails-1700 Can’t make text into type constant. Data not reached.",
+    "correction": "Use preserved public saveable-format savf enum codes md  /txt /data directly in same nativeSave commands; names/codes/dictionary unchanged. Keep source/format/file-byte checks. Native33/default27compile; retry pending.",
+    "artifact": "Already-active download18950, do not duplicate; collect before final detailed acceptance."
   }
 }

@@ -1,5 +1,5 @@
 {
-  "dateUTC": "2026-11-09T04:51:02.041895+00:00",
+  "dateUTC": "2026-11-09T04:56:51.979428+00:00",
   "milestone": "M2 actual native document conflicts and Versions; full modernization active",
   "status": "Actual native Revert and native older-version Restore pass2/2at f644d0c, zero skipped; all5screenshots inspected. New SaveAnyway/SaveAs compile, runtime pending.",
   "methods": [
@@ -66,7 +66,13 @@
     ],
     "mechanism": "Share the accepted standard2-second native unsaved/external atomic conflict fixture. Revert retains all source/bytes/history/baseline assertions. SaveAnyway requires exactlocalUTF16bytes plus externalUTF8bytes in native history. SaveAs uses normal native savepanel and requires localUTF16newfile plus untouchedexternaloriginal before/after nexteditSave.",
     "isolation": "Each test terminates app before removing its owned history/files, preserves clipboard, no injected versions or writer/policy changes.",
-    "validation": "Native33UI/default27UI build-for-testing, strict changedSwift lint/diff pass. Runtime pending."
+    "validation": "Native33UI/default27UI build-for-testing, strict changedSwift lint/diff pass. Runtime pending.",
+    "hosted": {
+      "commit": "ee0fc53452135cb654f3292a0afb26f71d5d4a42",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42564047176",
+      "workflow": "success",
+      "scope": "All4native recovery methods. Exact summaries/images pending existing43544download."
+    }
   },
   "versionsArrowHosted": {
     "commit": "f644d0cfa4c2b1b9358f3b9c2b39356e9fe8f6a2",

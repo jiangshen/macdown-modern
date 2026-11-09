@@ -907,7 +907,7 @@
       "probeReport": "/private/tmp/snowfolio-validation-history/native-clean-reload/snowfolio-native-clean-reload-probe-build-report.json",
       "format": "Strict changed Swift lint and diff checks pass"
     },
-    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta\u2192ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
+    "tabFixture": "Native targeted22b65b2 fails before quit: initial empty Untitled is a third tab, so Beta→ControlTab selects Untitled. Screenshot/tree prove Alpha/Beta both exist. Explicitly select Alpha by native tab title, then ControlTab to adjacent Beta; restore assertions/timeouts remain unchanged. No native restoration failure established by that run.",
     "limits": [
       "Exact ae2d602 nine diagnostic methods and all26actual native app methods pass; remaining feature/visual gates stay open.",
       "File byte comparison/native revert are synchronous within native file access; real app latency/large-file performance remains an open M6gate",
@@ -980,5 +980,21 @@
       "default-host-followup.json"
     ],
     "remaining": "Native separate groups/scroll restoration, standard-periodic dirty conflict choices/Versions, actual scripting events/options, physical preview/IME/VoiceOver, complete remaining M3-M6parity/performance/release. No host switch/install/release."
+  },
+  "latestFollowup20261109": {
+    "dateUTC": "2026-11-09T04:53:06.351780+00:00",
+    "nativeRecovery": "f644d0c2/2pass121.319s, zero skips. Standard-periodic Revert and exactolderVersionsRestore/newerrecoverability accepted; all5imagesinspected. ExpandedSaveAnyway/SaveAsruntimepending.",
+    "scripting": "Authorizedtemporaryown-appgrant0/completedbothmethods. Real events reached; stale-name and propertyspecifier test corrections compile, full commands pending.",
+    "defaultHost": "eb46674full27exec24pass3fail; tabcasefixed/accepted focusedandfull. Same3SwiftUI lifecyclefailures.",
+    "currentBuild": "Native33/default27UI methodscompile; defaultcanonicalrestored, no productiondocumentchange.",
+    "remaining": [
+      "SaveAnyway/SaveAsactualchoices",
+      "Completeactualscriptingcommands/options/errorpaths",
+      "Separate native groups/source-previewviewportrestoration",
+      "FullcurrentnativeUI suite",
+      "Physicalpreview/caret/selection/IME/VoiceOver",
+      "FullM3-M6parity/performance/release"
+    ],
+    "hostSwitch": false
   }
 }
