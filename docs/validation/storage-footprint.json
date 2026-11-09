@@ -40,12 +40,12 @@
     "note": "Earlier preserved-all-evidence policy superseded by user request: keep latest useful raw result only, compact older evidence, and remove obsolete generated output. Main app consolidated to canonical build location."
   },
   "latestVerificationCycle": {
-    "dateUTC": "2026-11-09T02:52:11.223345+00:00",
-    "sourceCommit": "After03bf0a7; direct-root diagnostic phase",
+    "dateUTC": "2026-11-09T03:07:14.544507+00:00",
+    "sourceCommit": "cefdbc0; accepted direct-root10/10and native-tab2/2",
     "locations": {
       "appBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/Snowfolio",
-        "allocatedBytes": 854544384
+        "allocatedBytes": 854638592
       },
       "runningDiagnosticBuild": {
         "path": "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe",
@@ -61,18 +61,30 @@
       },
       "compactValidationHistory": {
         "path": "/private/tmp/snowfolio-validation-history",
-        "allocatedBytes": 27762688
+        "allocatedBytes": 30695424
       }
     },
-    "totalAllocatedBytes": 2323120128,
+    "totalAllocatedBytes": 2326147072,
     "obsoleteRawDownloadsRemoved": [
       "fb4actual native app25replaced byae2actual26",
       "466failed preview control raw after compact summary/activity/text/log capture",
       "03bf0a7 passing paint comparison:147738624allocated bytes; compact4images/geometry/tests retained"
     ],
     "runningDiagnosticPID": 85540,
-    "retention": "One full actual native app ae2d60226/26raw; compact paint evidence. Canonical build restored to default SwiftUI. Running diagnostic85540preserved.",
+    "retention": "Single full actual native app ae2d60226/26raw retained. Direct-root10/10and native-tab2/2compact summaries/geometry/text/relevant PNGs only. Canonical default SwiftUI app and running85540diagnostic preserved.",
     "userDocumentsChanged": false,
-    "trashEmptied": false
+    "trashEmptied": false,
+    "currentDownloadsCompactedAndRemoved": [
+      {
+        "path": "/private/tmp/snowfolio-webkit-direct-incoming",
+        "allocatedBytes": 142286848,
+        "compact": "/private/tmp/snowfolio-validation-history/webkit-direct-c42b603"
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-tabs-current-incoming",
+        "allocatedBytes": 77496320,
+        "compact": "/private/tmp/snowfolio-validation-history/native-tabs-cefdbc0"
+      }
+    ]
   }
 }

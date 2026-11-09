@@ -64,7 +64,9 @@ show correct content, while both window/full-screen web regions are blank. A
 SwiftUI-only cause is ruled out, but no definitive composition/capture/environment
 cause or physical paint acceptance is established. A third phase replaces the
 already-visible window content with bare WebKit and loads after attachment; local
-compilation passes and hosted evidence is pending. Production app
+compilation and exact c42b603hosted10/10pass. All three native snapshots have
+correct content; even the direct-root window/full-screen images remain blank.
+No physical paint acceptance or definitive environment cause is claimed. Production app
 code is unchanged. The build helper can reuse the canonical cache while preserving
 a running diagnostic. See [preview-paint-controls.json](validation/preview-paint-controls.json).
 
@@ -73,12 +75,13 @@ focused run fails before quit because the normal empty startup tab is also prese
 Beta→ControlTab selects Untitled. The corrected fixture selects authored Alpha by
 native tab title, tests ControlTab to adjacent Beta, then keeps selected-tab/caret
 restoration assertions. Both hosts compile it; actual native saved-tab/group/selected-file/caret restoration
-now passes in the full26run. Native plus/CommandT creation, multiple separate groups,
-scroll positions and tab accessibility remain open. See [native-tabs.json](validation/native-tabs.json).
+now passes in the full26run. The following cefdbc0focused2/2run also accepts
+native plus/CommandT creation, as recorded below. Multiple separate groups,
+scroll positions and full tab accessibility remain open. See [native-tabs.json](validation/native-tabs.json).
 
 The default SwiftUI full run at22b65b2 executes26 methods:23pass/three lifecycle
 failures (active autosave/Undo and both clean reloads); its core job succeeds.
-`SNOWFOLIO_DOCUMENT_HOST=native` remains explicit and `native-document-app` runs all26
+`SNOWFOLIO_DOCUMENT_HOST=native` remains explicit and `native-document-app` now runs all27
 methods within a45-minute job envelope; behavioral waits/assertions are unchanged.
 The first preview-control run executes10methods:9document passes and one missing
 comparison window. Source inspection found a constraint activated before the views
@@ -91,9 +94,13 @@ actual modern scripting registration/execution remains pending in
 An additional actual-app method now compiles repeated Command-T on empty tabs,
 native tab-bar plus creation and separate Undo/Redo, with an unchanged Unicode
 saved anchor. The focused native-tabs scope includes both this new method and
-saved-tab restoration (27UI methods compile). Runtime remains pending.
+saved-tab restoration (27UI methods compile). Exact cefdbc0run42553592701
+passes2/2with zero failures/skips (218.883s). All3screenshots and native tab tree
+are inspected: keyboard/plus creation, separate Undo and saved-tab/caret restore
+are accepted; preview remains blank. Latest cefdbc0core job also passes370/79,
+652CommonMark examples and all8arm64executables, with zero warnings/errors.
 No default-host switch, installation or release is accepted. M2's remaining host gates,
-native tab creation/separate-group/scroll restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
+native separate-group/scroll restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
 and release gates remain open. See
 [document-lifecycle.json](validation/document-lifecycle.json).
 

@@ -88,9 +88,8 @@
       "snowfolio-native-tabs-app-build.log": "e002cd8a71752a10e554c9b789a44d8856b48530672389a69fd062b8e6c682fb",
       "snowfolio-default-tabs-app-build.log": "3886a3a1008468b4097004b9dbdce41517b9f40bb6f216ac545229177b7dbadd"
     },
-    "runtime": "Corrected saved-tab restoration accepted at ae2d602. Explicit native plus/CommandT creation, multiple separate groups, scroll positions and complete native tab accessibility remain open.",
+    "runtime": "Saved-tab restoration reaccepted at cefdbc0with new actual native keyboard/plus creation method in focused2/2run. Multiple separate groups, scroll positions and complete native tab accessibility remain open.",
     "remaining": [
-      "Actual native plus/CommandT new-tab creation",
       "Multiple separate groups and scroll restoration",
       "Drag reordering, Finder routing/multiple file drop integration",
       "IME/VoiceOver, preview paint, complete remaining parity/performance/release"
@@ -117,8 +116,8 @@
     }
   },
   "newTabCreationFollowup": {
-    "dateUTC": "2026-11-09T02:55:10.255286+00:00",
-    "status": "Actual native app compilation passes; runtime pending. No feature acceptance claimed from compilation.",
+    "dateUTC": "2026-11-09T03:07:14.544507+00:00",
+    "status": "Accepted on actual native app at cefdbc0: focused2/2passes, zero failures/skips. RepeatedCommandTwhile empty/native plus/separateUndoRedo/unchanged saved anchor and saved-tab restoration pass.",
     "method": "DocumentLifecycleTests.testNewTabsUseKeyboardAndNativePlusWithoutReusingEmptyDocuments",
     "checks": [
       "Open a Unicode saved anchor under preferred tab policy",
@@ -130,7 +129,19 @@
     ],
     "isolation": "UUID-owned fixture directory, argument-domain preferences, terminate owned test app before removing files. No production hooks or persistent preference writes.",
     "workflow": "native-document-tabs includes both saved-tab restoration and new-tab creation methods; full suites now compile27methods.",
-    "remaining": "Runtime keyboard/plus behavior, separate groups/scroll restoration, physical paint/IME/VoiceOver and remaining host/parity/performance/release gates.",
-    "local": "Both actual host variants build-for-testing and resource/icon/type/license gates pass;27UI methods compile, strict Swift lint/diff checks pass. Canonical cache restored to default SwiftUI. Existing AppIntents extraction warning."
+    "remaining": "Separate groups/scroll restoration, physical paint/IME/VoiceOver and remaining native host/parity/performance/release gates.",
+    "local": "Both actual host variants build-for-testing and resource/icon/type/license gates pass;27UI methods compile, strict Swift lint/diff checks pass. Canonical cache restored to default SwiftUI. Existing AppIntents extraction warning.",
+    "hosted": {
+      "commit": "cefdbc0e02c51c6fc73709ec9ed5e9b037607acd",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42553592701",
+      "executed": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 218.883,
+      "compact": "/private/tmp/snowfolio-validation-history/native-tabs-cefdbc0",
+      "visual": "Inspected all3screenshots and tab AXtree: five-tab group includes anchor and3new empty docs plus normal startup Untitled. Anchor selected/source/outline correct. Restored Alpha/Beta/tab selection correct. Reading pane remains blank.",
+      "image": "/private/tmp/snowfolio-validation-history/native-tabs-cefdbc0/images/C5F8553A-2C48-4424-ADC3-7F101B4EB3E7.png"
+    }
   }
 }

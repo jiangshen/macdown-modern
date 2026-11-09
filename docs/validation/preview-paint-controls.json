@@ -1,8 +1,8 @@
 {
-  "dateUTC": "2026-11-09T02:51:03.209929+00:00",
+  "dateUTC": "2026-11-09T03:07:14.544507+00:00",
   "milestone": "M2/M3native preview painting investigation; full modernization remains active",
   "productionBaseCommit": "ae2d602ace84cf0f9c6c561772497e735bbcc88f",
-  "status": "Corrected03bf0a7 hosted10/10 passes; both native WebKit snapshots have correct content but window/full-screen captures are blank. New direct-root third phase builds; hosted visual evidence pending.",
+  "status": "Direct-root c42b603 hosted10/10passes. All three WebKit-native snapshots visibly correct; all window/full-screen web areas blank. A SwiftUI-only or stack-only cause is ruled out; definitive native composition/capture/environment cause and physical acceptance remain open.",
   "problem": "Reading pane blank in inspected hosted diagnostic and actual-app window screenshots despite correct preview accessibility updates. Earlier IOSurface failures known but root cause unconfirmed. AXWebView coordinates differ from its native parent; geometry/paint/capture need separation.",
   "comparison": [
     "Plain WKWebView in direct AppKit stack: nonpersistent data store, document JavaScript disabled, self-contained styled HTML",
@@ -37,9 +37,9 @@
     }
   },
   "remaining": [
-    "Hosted third-phase direct-root run and inspect all native/window/full-screen images",
-    "Physical preview after pending unlock; fresh CUA reports Mac locked",
-    "Complete native restoration/IME/VoiceOver, conflicts/Versions/scripting/parity/performance/release gates"
+    "Physical preview observation after pending unlock; latest CUA reports Mac locked",
+    "Investigate shared native WebKit composition/capture using the physical observation; do not repeat identical hosted controls without new evidence",
+    "Complete native separate-group/scroll restoration, IME/VoiceOver, conflicts/Versions/scripting/parity/performance/release"
   ],
   "sourceHashes": {
     "Tools/DocumentHostProbe/Sources/NativeWebKitPaintControl.swift": "de862ea52cfc23cb0ee6f92e8fa3c9ee85f0f2a93ba83fcd3a630389cf7034fe",
@@ -70,5 +70,21 @@
     "geometry": "Both436x445, visible window, not hidden, layer not hidden, loading false/progress1, sensible native screen positions.",
     "conclusion": "DOM/rendering work without SwiftUI embedding; SwiftUI-only cause ruled out. Native composition/capture/runner behavior remains under investigation; no definitive environmental root cause or physical acceptance."
   },
-  "storage": "Removed obsolete03bf0a7 raw diagnostic download after compact summaries/native geometry/relevant images and ownership/open-file checks; retained full actual native26 raw."
+  "storage": "Removed obsolete03bf0a7 raw diagnostic download after compact summaries/native geometry/relevant images and ownership/open-file checks; retained full actual native26 raw.",
+  "directRootHosted": {
+    "commit": "c42b6035f40f50b0e0ea442026df736ef50bc031",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42553297978",
+    "executed": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 473.192,
+    "compact": "/private/tmp/snowfolio-validation-history/webkit-direct-c42b603",
+    "inspection": "All7images inspected: direct/plain/pipeline native snapshots contain proper headings/text/blue markers; both stack and direct-root window/full-screen web areas blank. Native labels/buttons and window chrome paint.",
+    "directGeometry": "920x540bounds/frame/layer; visible window; hiddenfalse/layerHiddenfalse; loadingfalse/progress1; screenFrame52,139,920,540; occlusion8194. No intermediate native or SwiftUI container.",
+    "nativeSnapshot": "/private/tmp/snowfolio-validation-history/webkit-direct-c42b603/images/E37435C6-9215-4AA6-A042-16B8D54A15B2.png",
+    "windowCapture": "/private/tmp/snowfolio-validation-history/webkit-direct-c42b603/images/0AFFDCF9-6893-424E-B46B-C03AEB9E7456.png",
+    "fullScreenCapture": "/private/tmp/snowfolio-validation-history/webkit-direct-c42b603/images/E44E2155-93CB-4880-A84A-26AFBC340F6E.png",
+    "conclusion": "Shared native composition/capture/runner conditions remain suspect; not a definitive environmental root-cause claim. Do not change production renderer based on this evidence alone."
+  }
 }

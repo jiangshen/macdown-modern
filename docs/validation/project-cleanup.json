@@ -553,5 +553,24 @@
     "currentNative26RawPreserved": true,
     "runningAppPreserved": true,
     "trashEmptied": false
+  },
+  "latestDirectAndTabResultCleanup": {
+    "dateUTC": "2026-11-09T03:07:14.544507+00:00",
+    "removedGeneratedResults": [
+      {
+        "path": "/private/tmp/snowfolio-webkit-direct-incoming",
+        "allocatedBytes": 142286848,
+        "compact": "/private/tmp/snowfolio-validation-history/webkit-direct-c42b603"
+      },
+      {
+        "path": "/private/tmp/snowfolio-native-tabs-current-incoming",
+        "allocatedBytes": 77496320,
+        "compact": "/private/tmp/snowfolio-validation-history/native-tabs-cefdbc0"
+      }
+    ],
+    "ownershipAndOpenFilesChecked": true,
+    "currentFullNative26RawPreserved": true,
+    "sourceAndRunningAppPreserved": true,
+    "trashEmptied": false
   }
 }
