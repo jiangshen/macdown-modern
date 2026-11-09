@@ -104,6 +104,15 @@ passes2/2with zero failures/skips (218.883s). All3screenshots and native tab tre
 are inspected: keyboard/plus creation, separate Undo and saved-tab/caret restore
 are accepted; preview remains blank. Latest cefdbc0core job also passes370/79,
 652CommonMark examples and all8arm64executables, with zero warnings/errors.
+The preceding default SwiftUI full runs finish26/23pass3fail and27/23pass4fail.
+Three known autosave/reload failures persist; the new method also stops before
+creation waiting for an initially hidden single-document tab bar. Explicit native
+ShowTabBar setup now compiles; its focused retry is pending. Initial native
+scripting2/2fails on first Apple event with-600; a missing required scoped sender
+entitlement is identified and corrected only for native UI tests, with sandbox
+retained. Both hosts build; actual event retry remains pending. See
+[default-host-followup.json](validation/default-host-followup.json) and
+[native-scripting.json](validation/native-scripting.json).
 No default-host switch, installation or release is accepted. M2's remaining host gates,
 native separate-group/scroll restoration, actual IME/VoiceOver, preview painting, full parity, measured performance
 and release gates remain open. See

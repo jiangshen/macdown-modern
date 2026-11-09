@@ -32,9 +32,10 @@
 
     @MainActor
     private func execute(_ body: String) throws -> NSAppleEventDescriptor {
-      let target = try XCTUnwrap(
+      let running = try XCTUnwrap(
         NSRunningApplication.runningApplications(withBundleIdentifier: "local.macdown.modern")
-          .first?.bundleURL)
+          .first)
+      let target = try XCTUnwrap(running.bundleURL)
       // Use the running test bundle's dictionary, not an older installed copy.
       let script = try XCTUnwrap(
         NSAppleScript(
@@ -46,6 +47,23 @@
       var error: NSDictionary?
       let result = script.executeAndReturnError(&error)
       if let error {
+        let observation = XCTAttachment(
+          string: """
+            targetPID=\(running.processIdentifier) bundle=\(running.bundleIdentifier ?? "nil")
+            finishedLaunching=\(running.isFinishedLaunching) terminated=\(running.isTerminated)
+            target=\(target.path)
+            script=\(script.source ?? "nil")
+            error=\(error)
+            """)
+        observation.name = "native-script-event-failure"
+        observation.lifetime = .keepAlways
+        add(observation)
+        if !running.isTerminated {
+          let image = XCTAttachment(screenshot: XCUIApplication().screenshot())
+          image.name = "native-script-target-on-failure"
+          image.lifetime = .keepAlways
+          add(image)
+        }
         throw NSError(
           domain: "SnowfolioDocumentScripting",
           code: (error["NSAppleScriptErrorNumber"] as? Int) ?? -1,

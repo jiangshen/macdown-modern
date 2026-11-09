@@ -91,7 +91,12 @@ let project = Project(
         "NSAppleEventsUsageDescription": "Verify Snowfolio's own document scripting interface."
       ]),
       sources: ["UITests/**"],
-      dependencies: [.target(name: "Snowfolio")]
+      dependencies: [.target(name: "Snowfolio")],
+      settings: .settings(
+        base: nativeDocumentHost
+          ? [
+            "CODE_SIGN_ENTITLEMENTS": "$(SRCROOT)/UITests/SnowfolioUITests.entitlements"
+          ] : [:])
     ),
   ]
 )

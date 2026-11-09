@@ -1599,6 +1599,15 @@ final class DocumentLifecycleTests: XCTestCase {
       add(image)
     }
     let tabBar = app.tabGroups.firstMatch
+    // The current SwiftUI host can start with only this saved document, so the
+    // native tab bar is normally hidden. Show it before counting/creating tabs.
+    if !tabBar.exists {
+      app.menuBars.menuBarItems["Window"].click()
+      let show = app.menuItems["Show Tab Bar"].firstMatch
+      XCTAssertTrue(show.waitForExistence(timeout: 5), app.debugDescription)
+      XCTAssertTrue(show.isEnabled)
+      show.click()
+    }
     XCTAssertTrue(tabBar.waitForExistence(timeout: 5), app.debugDescription)
     let tabs = tabBar.children(matching: .tab)
     let initialCount = tabs.count

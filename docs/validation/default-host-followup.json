@@ -1,0 +1,31 @@
+{
+  "dateUTC": "2026-11-09T03:29:23.015232+00:00",
+  "status": "Both preceding default SwiftUI full runs fail; native host remains opt-in while its remaining acceptance gates are open.",
+  "runs": [
+    {
+      "commit": "c42b6035f40f50b0e0ea442026df736ef50bc031",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42553283425",
+      "executed": 26,
+      "passed": 23,
+      "failed": 3,
+      "seconds": 1456.198
+    },
+    {
+      "commit": "cefdbc0e02c51c6fc73709ec9ed5e9b037607acd",
+      "run": "https://github.com/jiangshen/snowfolio/actions/runs/42553577540",
+      "executed": 27,
+      "passed": 23,
+      "failed": 4,
+      "seconds": 1297.718
+    }
+  ],
+  "existingFailures": [
+    "testActiveAutosaveAndSavedEditUndoPreserveBytes",
+    "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+    "testCoordinatedExternalReloadAfterAutosave"
+  ],
+  "newFixtureFailure": "cefdbc0new-tab method stops at line1602 waiting for an initial native tab bar, before CommandT/plus. The default SwiftUI host may begin with one saved document, unlike native startup Untitled+anchor. New fixture explicitly uses Window/ShowTabBar when hidden; count/creation/source/Undo/byte assertions unchanged. Focused document-tab-creation scope added; build passes, retry pending.",
+  "nativeEvidence": "The same original new-tab and saved-tab methods passed2/2on actual native app at cefdbc0. This default fixture failure does not establish native feature regression.",
+  "compact": "/private/tmp/snowfolio-validation-history/default-host-c42-cef",
+  "limit": "Collected completed job failure output with exact counts/failed methods; no raw default result downloaded. Source identifies failure before creation; focused retry must verify the explicit tab-bar setup."
+}

@@ -1,7 +1,7 @@
 {
   "dateUTC": "2026-11-09T03:18:26.290812+00:00",
   "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
-  "status": "373tests/80suites and all8arm64 executables pass; both hosts build, native29UI methods/default27compile and gates pass. Native scripting event execution pending; no full scripting/host acceptance.",
+  "status": "Implementation373/80passes; actual event initial5de9f1b2/2fails on first event with -600. Sender missing scoped Apple-event capability identified in signed sandboxed test-runner build log. Narrow test-only entitlement correction builds; runtime retry pending. No scripting feature acceptance claimed.",
   "interface": {
     "dictionary": "App/Resources/Snowfolio.sdef",
     "nativeClass": "SnowfolioNativeDocument",
@@ -50,7 +50,32 @@
     "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownDocument.swift": "891c78bb3589a22ed6e588676206c4611714a1eb60fadaa1891517cf99021f57",
     "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspace.swift": "665b24ec7470a60d34f04c7fb6272d1a7de38de7f6a0187c42ef83ee3581f8dc",
     "App/Resources/Snowfolio.sdef": "aeb4003af0f3beace7d522340765912b3ddd0524c925952a9e7166fa11b753c8",
-    "App/Project.swift": "80ac2424d4639989ef498d7ffa7f4c3f60f295bb485031d3d563773c0d60a2f4",
-    "App/UITests/DocumentScriptingTests.swift": "7b053b1ed9b6214b3e57bac63e9e93d27322eeca332e7984d7403d0037a38dbc"
+    "App/Project.swift": "82be0c189c0c9060866d5b821b605c88c4984d48837169b8077ea497077aedf4",
+    "App/UITests/DocumentScriptingTests.swift": "39ada1c9142a6f3efdd3f01c25502e3590dd5f0bcb6bf914c16886fbfea036f5",
+    "App/UITests/SnowfolioUITests.entitlements": "cd1bd74fd4fe576fee9717916562ce1da5363cfb8b05202159d035f4fecad733"
+  },
+  "initialHosted": {
+    "commit": "5de9f1b507fde7df52c095079742579a04771671",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42555786689",
+    "executed": 2,
+    "passed": 0,
+    "failed": 2,
+    "testExecutionSeconds": 23.343,
+    "compact": "/private/tmp/snowfolio-validation-history/native-scripting-5de9f1b",
+    "failure": "Both initial make/open events report -600 Application is not running. Tests launched native app and terminated it in defer. No remaining source/cache/save assertions reached.",
+    "senderEvidence": "Original test runner entitlements show app-sandbox true, no scripting-targets or apple-events exception and no automation.apple-events. A sandboxed sender needs an explicit allowed target.",
+    "causeLimit": "Missing required sender capability is established; retry must establish whether it accounts for the observed -600. No production scripting dispatch/correctness inferred from first failure."
+  },
+  "senderCorrection": {
+    "scope": "App/UITests/SnowfolioUITests.entitlements, applied only to native-host UI tests",
+    "allowedTarget": "local.macdown.modern",
+    "entitlements": [
+      "com.apple.security.automation.apple-events=true",
+      "com.apple.security.temporary-exception.apple-events=[local.macdown.modern]"
+    ],
+    "signedVerification": "Native signed test runner retains app-sandbox true and exact Snowfolio target. Default signed test runner and default app have neither added Apple-event entitlement. No system privacy database, TCC grant, sandbox disablement or production sending capability.",
+    "reference": "https://developer.apple.com/library/archive/documentation/Miscellaneous/Reference/EntitlementKeyReference/Chapters/AppSandboxTemporaryExceptionEntitlements.html",
+    "diagnostics": "On command error attach actual target PID/bundle/launch/termination flags, synthetic script source/error and own app image if alive. Original event/body assertions retained.",
+    "builds": "Native29and default27UI methods compile; all existing host/resource/icon/type/license/dictionary gates pass; canonical default restored. AppIntents warning remains."
   }
 }

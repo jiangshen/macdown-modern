@@ -32,6 +32,7 @@ on:
           - native-document-app
           - native-document-tabs
           - native-document-scripting
+          - document-tab-creation
 
 permissions:
   contents: read
@@ -100,6 +101,9 @@ jobs:
         run: |
           if [ "$SNOWFOLIO_TEST_SCOPE" = native-document-app ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = document-tab-creation ]; then
+            bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testNewTabsUseKeyboardAndNativePlusWithoutReusingEmptyDocuments
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentScriptingTests
