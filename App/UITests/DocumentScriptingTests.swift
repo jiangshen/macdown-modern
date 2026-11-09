@@ -206,7 +206,8 @@
       let editor = waitForSource(original, in: app)
       XCTAssertEqual(try execute("return name of \(document)").stringValue, file.lastPathComponent)
       XCTAssertEqual(
-        try execute("return POSIX path of (file of \(document))").stringValue, file.path)
+        try execute("return file of \(document)").fileURLValue?.standardizedFileURL,
+        file.standardizedFileURL)
       let firstRender = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in
           (try? self.execute("return html of \(document)").stringValue)?.contains("Script original")
@@ -262,8 +263,11 @@
           """
           set d to make new document with properties {text:\(literal(source))}
           save d in (POSIX file \(literal(file.path))) as \(format)
-          set savedText to text of d
-          close d saving no
+          -- Cocoa returned a name specifier for the untitled document. Save
+          -- changes that name, so resolve its new public document name.
+          set savedDocument to document \(literal(file.lastPathComponent))
+          set savedText to text of savedDocument
+          close savedDocument saving no
           return savedText
           """)
         XCTAssertEqual(result.stringValue, source)

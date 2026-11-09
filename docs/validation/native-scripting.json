@@ -1,7 +1,7 @@
 {
-  "dateUTC": "2026-11-09T04:42:02.105670+00:00",
+  "dateUTC": "2026-11-09T04:49:37.336209+00:00",
   "milestone": "M2 native scripting compatibility; full modernization active/incomplete",
-  "status": "Authorized interruption-monitor route timed out before actual events. Exact system-owned prompt route compiles; actual grant and scripting events remain pending.",
+  "status": "Temporary exact system-owned consent succeeds with OSStatus0 for both methods. Real scripting reaches commands, but two test reference/coercion failures stop further acceptance; corrected fixtures compile, retry pending.",
   "interface": {
     "dictionary": "App/Resources/Snowfolio.sdef",
     "nativeClass": "SnowfolioNativeDocument",
@@ -74,7 +74,7 @@
     "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspace.swift": "665b24ec7470a60d34f04c7fb6272d1a7de38de7f6a0187c42ef83ee3581f8dc",
     "App/Resources/Snowfolio.sdef": "aeb4003af0f3beace7d522340765912b3ddd0524c925952a9e7166fa11b753c8",
     "App/Project.swift": "049b368e4f9b3042cde9f8996ae2dd786b8592d9381cad464542938fa0ef3ba9",
-    "App/UITests/DocumentScriptingTests.swift": "502b6d6427014a85d2608f77a0b2cd6f191c87073c8c8804feaf0b7d9cf5f817",
+    "App/UITests/DocumentScriptingTests.swift": "5735b5c09d6d71302dad699b76d5a6e38c538c4953028db740f121d8cb5fc564",
     "App/UITests/SnowfolioUITests.entitlements": "cd1bd74fd4fe576fee9717916562ce1da5363cfb8b05202159d035f4fecad733"
   },
   "initialHosted": {
@@ -124,7 +124,7 @@
     "buildFlag": "TEMPORARY_SCRIPTING_CONSENT_APPROVED only on native UI test target when TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes; hosted native-document-scripting/native-document-app scopes opt in.",
     "mechanism": "Thread-safe public AEDeterminePermissionToAutomateTarget executes on a dedicated OperationQueue, as Apple header requires off-main. Mutex transfers only OSStatus. Test main thread remains available for XCTest interruption monitor and normal startup Render interaction.",
     "guard": "Require exact SnowfolioUITests-Runner sender, quoted Snowfolio target, wants access to control text and Allow button for direct system-owner route. Only query already-running verified com.apple.coreservices.uiagent / com.apple.UserNotificationCenter using public XCTest windows/dialogs/alerts; capture exact prompt. Ordinary guarded interruption path retained.",
-    "boundaryEvidence": "Native31UI build-for-testing succeeds. Default27UI build restored and passes all host/dictionary/resource/type/icon/license gates; new temporary-prompt marker absent in default UI test/app/debug dylib. Strict changedSwift lint/diff pass. No local prompt clicked.",
+    "boundaryEvidence": "Exact system-owner route granted requested own-app control on hosted temporary VM; both statuses0. Native33/default27 compile and resource/dictionary/host/license gates pass after added recovery methods; normal canonical app restored. ExistingAppIntents extraction warning only. No local consent action.",
     "scopeLimit": "Normal local builds never auto-approve prompts; this permission handling belongs only to the explicit temporary tests."
   },
   "authorizedMonitorHosted": {
@@ -136,5 +136,20 @@
     "seconds": 80.963,
     "finding": "Permission remains nil/outcome2; no monitor callback or Allow activity. App interactions alone do not deliver this system-owned prompt to monitor.",
     "compact": "/private/tmp/snowfolio-validation-history/native-scripting-eb46674"
+  },
+  "systemOwnerHosted": {
+    "commit": "f644d0cfa4c2b1b9358f3b9c2b39356e9fe8f6a2",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42563298831",
+    "executed": 2,
+    "passed": 0,
+    "failed": 2,
+    "skipped": 0,
+    "seconds": 20.726,
+    "permission": "Both temporaryOwnAppPermission=Optional(0), outcome=1; inspected exact prompt screenshot and actual target screenshots. Exact own-app Allow clicked only on disposable hosted VM.",
+    "makeFailure": "Make with properties and Save reaches actual script-Markdown.md source window; next text query still references name-specifier Untitled2 and fails-1728 after Save renamed it.",
+    "metadataFailure": "Open/text/name assertions pass; POSIXpath of unevaluated file-of-document specifier fails-1700.",
+    "correction": "Read file property directly and compare public NSAppleEventDescriptor.fileURLValue. After Save, resolve document by its new filename before text/close. All byte/cache/autosave/Undo/format assertions remain. No production scripting change.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-scripting-f644d0c",
+    "limit": "Not full scripting acceptance; setter/cache/Undo/autosave/allformats/close/quit still require new runtime."
   }
 }

@@ -1701,14 +1701,37 @@ final class DocumentLifecycleTests: XCTestCase {
       add(screenshot)
     }
 
+    private enum RecoveryChoice: String {
+      case revert = "Revert"
+      case saveAnyway = "Save Anyway"
+      case saveAs = "Save As…"
+    }
+
     @MainActor
     func testPeriodicDirtyConflictRevertKeepsExternalSource() throws {
+      try checkPeriodicDirtyConflict(choice: .revert)
+    }
+
+    @MainActor
+    func testPeriodicDirtyConflictSaveAnywayKeepsExternalVersion() throws {
+      try checkPeriodicDirtyConflict(choice: .saveAnyway)
+    }
+
+    @MainActor
+    func testPeriodicDirtyConflictSaveAsKeepsBothFiles() throws {
+      try checkPeriodicDirtyConflict(choice: .saveAs)
+    }
+
+    @MainActor
+    private func checkPeriodicDirtyConflict(choice: RecoveryChoice) throws {
       let directory = FileManager.default.temporaryDirectory.appendingPathComponent(
         "SnowfolioPeriodicConflict-\(UUID().uuidString)", isDirectory: true)
       try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
       let file = directory.appendingPathComponent("periodic-conflict.md")
+      let recoveredFile = directory.appendingPathComponent("recovered-local.md")
       defer {
         try? NSFileVersion.removeOtherVersionsOfItem(at: file)
+        try? NSFileVersion.removeOtherVersionsOfItem(at: recoveredFile)
         try? FileManager.default.removeItem(at: directory)
       }
       let original = "# Original 中文 👩‍💻\r\n"
@@ -1747,36 +1770,63 @@ final class DocumentLifecycleTests: XCTestCase {
       XCTAssertEqual(outcome, .completed)
       XCTAssertEqual(editor.value as? String, local)
       XCTAssertEqual(try Data(contentsOf: file), externalBytes)
-      let revert = app.sheets.firstMatch.buttons["Revert"].firstMatch
-      XCTAssertTrue(revert.waitForExistence(timeout: 5), app.debugDescription)
-      revert.click()
+      let action = app.sheets.firstMatch.buttons[choice.rawValue].firstMatch
+      XCTAssertTrue(action.waitForExistence(timeout: 5), app.debugDescription)
+      action.click()
+      if choice == .saveAs {
+        let save = app.buttons["OKButton"].firstMatch
+        XCTAssertTrue(save.waitForExistence(timeout: 5), app.debugDescription)
+        choosePanelDirectory(directory, in: app)
+        let name = app.textFields.firstMatch
+        name.click()
+        app.typeKey("a", modifierFlags: .command)
+        name.typeText(recoveredFile.lastPathComponent)
+        save.click()
+      }
+      let localBytes =
+        Data([0xFF, 0xFE])
+        + (try XCTUnwrap(local.data(using: .utf16LittleEndian)))
+      let selectedFile = choice == .saveAs ? recoveredFile : file
+      let selectedSource = choice == .revert ? external : local
+      let selectedBytes = choice == .revert ? externalBytes : localBytes
       let restored = XCTNSPredicateExpectation(
         predicate: NSPredicate { _, _ in
-          editor.value as? String == external && (try? Data(contentsOf: file)) == externalBytes
+          editor.value as? String == selectedSource
+            && (try? Data(contentsOf: selectedFile)) == selectedBytes
             && !app.sheets.firstMatch.exists && !app.dialogs.firstMatch.exists
             && !app.alerts.firstMatch.exists
         }, object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [restored], timeout: 8), .completed)
-      attachRecoveryState("native-periodic-conflict-reverted", app: app)
-      let localBytes =
-        Data([0xFF, 0xFE])
-        + (try XCTUnwrap(local.data(using: .utf16LittleEndian)))
-      let preservedLocal = XCTNSPredicateExpectation(
-        predicate: NSPredicate { _, _ in
-          (NSFileVersion.otherVersionsOfItem(at: file) ?? []).contains {
-            (try? Data(contentsOf: $0.url)) == localBytes
-          }
-        }, object: nil)
-      XCTAssertEqual(XCTWaiter().wait(for: [preservedLocal], timeout: 8), .completed)
-      // The new read must also become the document's byte-preserving save baseline.
+      attachRecoveryState("native-periodic-conflict-\(choice)", app: app)
+      if choice == .saveAs {
+        XCTAssertEqual(try Data(contentsOf: file), externalBytes)
+      } else {
+        let preservedBytes = choice == .revert ? localBytes : externalBytes
+        let preservedOther = XCTNSPredicateExpectation(
+          predicate: NSPredicate { _, _ in
+            (NSFileVersion.otherVersionsOfItem(at: file) ?? []).contains {
+              (try? Data(contentsOf: $0.url)) == preservedBytes
+            }
+          }, object: nil)
+        XCTAssertEqual(XCTWaiter().wait(for: [preservedOther], timeout: 8), .completed)
+      }
+      // Each native choice must establish the corresponding URL/encoding baseline.
       editor.click()
       app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
-      editor.typeText("After revert")
+      let addition = "After recovery"
+      editor.typeText(addition)
       app.typeKey("s", modifierFlags: .command)
-      let expected = externalBytes + Data("After revert".utf8)
+      let additionBytes =
+        choice == .revert
+        ? Data(addition.utf8) : try XCTUnwrap(addition.data(using: .utf16LittleEndian))
+      let expected = selectedBytes + additionBytes
       let saved = XCTNSPredicateExpectation(
-        predicate: NSPredicate { _, _ in (try? Data(contentsOf: file)) == expected }, object: nil)
+        predicate: NSPredicate { _, _ in (try? Data(contentsOf: selectedFile)) == expected },
+        object: nil)
       XCTAssertEqual(XCTWaiter().wait(for: [saved], timeout: 8), .completed)
+      if choice == .saveAs {
+        XCTAssertEqual(try Data(contentsOf: file), externalBytes)
+      }
     }
 
     @MainActor

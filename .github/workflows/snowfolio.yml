@@ -108,6 +108,8 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-recovery ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testPeriodicDirtyConflictRevertKeepsExternalSource \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testPeriodicDirtyConflictSaveAnywayKeepsExternalVersion \
+              --only-testing SnowfolioUITests/DocumentLifecycleTests/testPeriodicDirtyConflictSaveAsKeepsBothFiles \
               --only-testing SnowfolioUITests/DocumentLifecycleTests/testNativeVersionsBrowseAndRestoreExactPreviousBytes
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
             TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \

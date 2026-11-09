@@ -3366,3 +3366,26 @@ showing the saved anchor plus3newtabs. The preceding990full27still has3known Swi
 lifecycle failures and its old tab setup failure. Full current-run reliability and
 preview painting remain unaccepted. No document host, installation or default file
 handler changes. Full modernization remains active and incomplete.
+
+
+## Real scripting permission and remaining conflict choices — 2026-11-09
+
+At `f644d0c`, the exact authorized system-owned prompt is accepted on the disposable
+hosted VM; both permission results are0/completed. Scripting tests reach real Make,
+Save, Open, text and name events. They stop on a stale Untitled2 name reference after
+Save and on POSIX-path coercion of a property specifier. Tests now resolve the saved
+filename and compare the actual returned public file URL. No production scripting
+implementation change; full setter/cache/Undo/autosave/format parity stays open.
+
+The focused Revert+Versions workflow succeeds; download/screenshots are being collected.
+Additional real SaveAnyway and SaveAs tests share the accepted periodic-conflict setup
+and assert both contents remain recoverable, exact bytes and the subsequent save URL
+and encoding baseline. Native33/default27 compile; runtime of new choices is pending.
+The normal canonical build is restored. Physical UI selection timed out; no new
+physical preview/IME/VoiceOver claim.
+
+Completed `eb46674` full default suite now passes24/27: the tab case passes along with
+its focused run. The same3SwiftUI lifecycle methods remain failures; core/corpus job
+passes. Full native acceptance and M3-M6 remain open, with no host/install/handler switch.
+
+Confirmed `f644d0c` recovery2/2, zero failures/skips,121.319s: Versions70.030s and Revert51.289s. All5images inspected; exact older source is selected/restored and newer bytes remain recoverable. Preview pixel acceptance remains open.

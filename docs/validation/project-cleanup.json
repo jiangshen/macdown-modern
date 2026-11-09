@@ -635,5 +635,26 @@
     "currentFullNative26RawPreserved": true,
     "sourceAndRunningAppPreserved": true,
     "trashEmptied": false
+  },
+  "latestGrantedScriptingCleanup": {
+    "dateUTC": "2026-11-09T04:50:06.160095+00:00",
+    "path": "/private/tmp/snowfolio-native-scripting-current-incoming",
+    "allocatedBytesRemoved": 123699200,
+    "kept": "/private/tmp/snowfolio-validation-history/native-scripting-f644d0c",
+    "recordingsRemovedAfterScreenshotsAndExactStatusCaptured": true,
+    "ownershipAndOpenFilesChecked": true,
+    "runningProbeAndCurrentFullNative26RawPreserved": true,
+    "trashEmptied": false
+  },
+  "latestVersionsSuccessCleanup": {
+    "dateUTC": "2026-11-09T04:51:02.041895+00:00",
+    "path": "/private/tmp/snowfolio-native-recovery-current-incoming",
+    "allocatedBytesRemoved": 74833920,
+    "kept": "/private/tmp/snowfolio-validation-history/native-recovery-f644d0c",
+    "allFiveScreenshotsInspected": true,
+    "recordingsRemovedAfterExactResultsAndScreenshotsCaptured": true,
+    "ownershipAndOpenFilesChecked": true,
+    "currentFullNative26RawAndRunningProbePreserved": true,
+    "trashEmptied": false
   }
 }
