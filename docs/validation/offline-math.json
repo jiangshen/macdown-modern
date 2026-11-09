@@ -21,11 +21,11 @@
   ],
   "supportedSyntax": [
     "math fences",
-    "same-line double-dollar math",
+    "double-dollar math across soft line breaks, including body on delimiter lines",
     "stand-alone multiline double-dollar delimiters",
     "stand-alone display bracket delimiters, single and doubled backslashes",
-    "legacy doubled-backslash inline parentheses",
-    "optional same-line single dollars"
+    "legacy doubled-backslash inline parentheses across soft line breaks",
+    "optional single dollars across soft line breaks"
   ],
   "preferences": {
     "enable": "htmlMathJax",
@@ -72,8 +72,7 @@
     "Full MathJax-specific TeX/extensions",
     "Remaining MathJax definition/environment commands, equation references and numbering",
     "Single-backslash inline parentheses",
-    "Multiline inline expressions",
-    "Display delimiters sharing body text across multiple lines"
+    "Display bracket delimiters sharing body text across multiple lines"
   ],
   "remainingGoal": [
     "Mermaid and Graphviz",
@@ -86,9 +85,13 @@
   "defaultHandlerChanged": false,
   "fullGoal": "active",
   "documentDefinitions20261109": {
-    "status": "Implemented; full local448/93andninearm64executables accepted with zero compiler diagnostics. Hosted current-source core/app acceptance remains pending. Whole MathJax parity remains open.",
+    "status": "Accepted local448/93 and hosted448/93+652CommonMark/ninearm64executables at215ce9a. Whole MathJax parity remains open.",
     "ledger": "document-math-definitions.json",
     "supported": "Testeddef/newcommand/renewcommand/let across source-ordered inline/display/fenced equations; per-render/per-document scope, byte-exactcache and nativeHTML/PDF.",
     "remaining": "Newenvironment/renewenvironment and widerMathJax-only extensions/references/numbering remain unaccepted."
+  },
+  "wrappedMath20261109": {
+    "ledger": "wrapped-math.json",
+    "local": "450/93passes; both native preview PNGs inspected. Hosted current source pending."
   }
 }

@@ -2,13 +2,23 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted core baseline: **442 package tests / 93 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `3cf9ded`, with
+Current accepted hosted core baseline: **448 package tests / 93 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `215ce9a`, with
 zero compiler errors/warnings. The corrected native reading flow passes1/1 with
 source glyph difference0.0; prior Settings and generic-file focused flows pass
 at33a229c. Native43at3cf9ded finishes42pass/1fail: the plug-in test’s
 screenshot-service request times out. It is not complete native acceptance.
 Native41 at `c0c6e6f` remains the complete accepted app baseline.
+
+Wrapped single-dollar, double-dollar and existing doubled-backslash inline equations
+now preserve following source positions across soft line breaks. All **450 local
+package tests / 93 suites** pass in 57.733 seconds with zero compiler diagnostics and
+nine arm64 test executables. Light/dark native preview images were inspected. See
+[wrapped-math.json](validation/wrapped-math.json). The focused plug-in flow also passes
+1/1 at `215ce9a` (73.370 seconds); a fresh complete native run
+[42696388379](https://github.com/jiangshen/snowfolio/actions/runs/42696388379) is pending.
+Neither focused success nor local preview checks close complete app/physical IME gates.
+
 The patched cmark-gfm engine and measured Swift parent-tracking optimization remain
 the production choice; see
 [markdown-engine-comparison.json](validation/markdown-engine-comparison.json).
@@ -81,7 +91,7 @@ gates are not accepted. No default-host, installation, release or file-handler
 switch has been made, and coupled original source remains until feature parity.
 
 Storage retains one core cache, one canonical app cache, the protected running probe
-and only the latest useful partial reading-restoration raw result. Finished comparison downloads
+and no obsolete raw result bundles. Finished comparison downloads
 and obsolete build wrappers are removed after compact findings and relevant
 screenshots are retained. The latest scoped cache/build/evidence measurement is recorded in
 [project-cleanup.json](validation/project-cleanup.json) and

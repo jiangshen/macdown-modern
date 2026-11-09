@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T20:35:21.354262+00:00",
-  "status": "Implemented; full local448/93andninearm64executables accepted with zero compiler diagnostics. Hosted current-source core/app acceptance remains pending. Whole MathJax parity remains open.",
+  "status": "Document macro increment accepted in local448/93 and hosted448/93+652CommonMark/ninearm64executables at215ce9a. Full current native suite and whole MathJax compatibility remain open.",
   "sourceParent": "6f97ba370957e1c67066597c8c611dafe6376c4e",
   "sourceSHA256": {
     "Packages/SnowfolioCore/Sources/MathCore/MathRenderer.swift": "be839ef8e6baff63d31a620efbbe04f97bd427401f5b796716d5657e85e15ab0",
@@ -119,10 +119,39 @@
     "baseline": "Complete41/41atc0c6e6f remains accepted; no aggregation of42passes with earlier focused plug-in success."
   },
   "remaining": [
-    "Hosted current-source fullcore/corpus and realapp validation",
+    "Complete current-source actual-app acceptance; focused plug-in1/1passes but is not full43acceptance.",
     "FullMathJaxextensions/newenvironment/renewenvironment, equationreferences/numbering and remaining delimiter cases",
     "Physicalnativepreview/foregroundselection/realIME/VoiceOver",
     "M5/M6release/performance and safe coupled legacy retirement; plug-insecurityapproval stillpending/unapplied"
   ],
-  "storage": "Existing core cache reused. Compact reports/logs/source digests and preview/PDF retained. No new app build/cache or installed/default-handler change."
+  "storage": "Existing core cache reused. Compact reports/logs/source digests and preview/PDF retained. No new app build/cache or installed/default-handler change.",
+  "hostedCore215ce9a": {
+    "source": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+    "run": 42695103454,
+    "job": 129424744884,
+    "artifact": 13708847809,
+    "tests": 448,
+    "suites": 93,
+    "commonMark": "652/652",
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-215ce9a"
+  },
+  "focusedPlugins215ce9a": {
+    "source": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+    "run": 42695206826,
+    "job": 129425117305,
+    "artifact": 13708897438,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 73.37,
+    "runtimeWarnings": 1,
+    "warning": "Internal QoS priority inversion; not zero-warning/performance acceptance.",
+    "visual": "All four PNGs inspected: native menu inventory, first-run confirmation, retained two-run state/Undo/encoded Save and failure presentation. Hosted preview blank persists.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-plugins-215ce9a",
+    "scope": "Focused actual-app success; does not combine with prior42/43 to establish full app acceptance. Pending library-validation security approval remains unapplied."
+  }
 }

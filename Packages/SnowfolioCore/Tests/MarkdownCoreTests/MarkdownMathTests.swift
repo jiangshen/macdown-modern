@@ -276,6 +276,79 @@ struct MarkdownMathTests {
     #expect(scoped.notices.contains(.unsupportedMath))
   }
 
+  @Test(
+    "Wrapped equations keep native positions for following math and Markdown",
+    arguments: ["\n", "\r\n", "\r"])
+  func wrappedEquations(_ newline: String) async throws {
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    options.inlineDollarMath = true
+    for (opening, closing, display) in [
+      ("$", "$", false), ("$$", "$$", true), (#"\\("#, #"\\)"#, false),
+    ] {
+      for (prefix, continuation) in [("", ""), ("> ", "> "), ("- ", "  ")] {
+        let before = prefix + "😀 Before "
+        let end = continuation + "+c" + closing
+        let after = end + " **after** "
+        let source =
+          before + opening + "a_b" + newline + after + opening + "d" + closing
+          + newline + newline + "# Heading 😀"
+        let parsed = try await MarkdownProcessor().render(
+          source, options: options, includeSyntax: true)
+        let equations = parsed.nodes.filter {
+          if case .math = $0.kind { return true }
+          return false
+        }
+        #expect(equations.count == 2, "\(source.debugDescription)")
+        let first = try #require(equations.first)
+        #expect(first.kind == .math(display: display))
+        #expect(first.literal == "a_b\n+c")
+        #expect(
+          first.range
+            == .init(
+              start: .init(line: 1, column: before.utf8.count + 1),
+              end: .init(line: 2, column: end.utf8.count)))
+        #expect(
+          equations.last?.range
+            == .init(
+              start: .init(line: 2, column: after.utf8.count + 1),
+              end: .init(
+                line: 2, column: after.utf8.count + opening.utf8.count + 1 + closing.utf8.count)))
+        #expect(
+          parsed.nodes.first { $0.kind == .strong }?.range
+            == .init(
+              start: .init(line: 2, column: end.utf8.count + 2),
+              end: .init(line: 2, column: end.utf8.count + 10)))
+        #expect(parsed.notices.isEmpty)
+        #expect(parsed.headings.first?.sourceLine == 4)
+        #expect(
+          parsed.headings.first?.utf16Offset == (source as NSString).range(of: "# Heading").location
+        )
+        let syntax = try #require(parsed.syntax)
+        let word = (source as NSString).range(of: "after")
+        #expect(
+          syntax.runs.first { NSLocationInRange(word.location, $0.range) }?.style.bold == true)
+        let body = (source as NSString).range(of: "a_b")
+        #expect(
+          syntax.runs.first { NSLocationInRange(body.location, $0.range) }?.style.role == .code)
+      }
+    }
+  }
+
+  @Test("Wrapped math does not cross paragraph, list, quote or fenced-code boundaries")
+  func wrappedBoundaries() async throws {
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    options.inlineDollarMath = true
+    for source in [
+      "$a\n\nb$", "- $a\n- b$", "> $a\n\nb$", "$a\n```text\nb$\n```",
+      "`$a\nb$`", "![$a\nb$](image.png)", "[link](https://example.com/$a$)",
+    ] {
+      let parsed = try await MarkdownProcessor().render(source, options: options)
+      #expect(parsed.mathExpressions == 0, "\(source.debugDescription)")
+    }
+  }
+
   @Test("Long unmatched delimiters preserve text and following source positions")
   func unmatched() async throws {
     var options = MarkdownRenderingOptions()

@@ -59,6 +59,7 @@ struct NativeEditorScrollPastEndTests {
           contentRect: NSRect(x: 0, y: 0, width: 600, height: 400),
           styleMask: [.titled, .resizable],
           backing: .buffered, defer: false)
+        window.animationBehavior = .none
         window.isReleasedWhenClosed = false
         window.contentView = scroll
         window.orderFront(nil)
@@ -180,6 +181,7 @@ struct NativeEditorScrollPastEndTests {
     let window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 600, height: 400), styleMask: .titled,
       backing: .buffered, defer: false)
+    window.animationBehavior = .none
     window.isReleasedWhenClosed = false
     window.contentView = scroll
     window.orderFront(nil)

@@ -34,7 +34,7 @@ struct NativeMathTests {
     options.math = true
     options.inlineDollarMath = true
     let source =
-      "# Equation notebook\n\nInline $E=mc^2$ stays with the sentence.\n\n$$\n\\int_0^1 x^2\\,dx=\\frac{1}{3}\n$$\n\nOffline fonts and accessible MathML."
+      "# Equation notebook\n\nInline $E=\nmc^2$ stays with the sentence.\n\n$$\\int_0^1 x^2\\,dx=\n\\frac{1}{3}$$\n\nOffline fonts and accessible MathML."
     let result = try await MarkdownProcessor().render(source, options: options)
     let coordinator = NativeMarkdownPreview.Coordinator()
     let web = WKWebView(

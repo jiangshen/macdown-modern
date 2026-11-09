@@ -28,7 +28,6 @@ final class MarkdownMath {
   private var runs: [Int: Int] = [:]
   private var inlineClosers: [Int] = []
   private var displayClosers: [Int] = []
-  private var lineEnds: [Int] = []
   private var legacyOpeners: Set<Int> = []
   private var legacyClosers: [Int] = []
 
@@ -61,7 +60,10 @@ final class MarkdownMath {
       return Unmanaged<MarkdownMath>.fromOpaque(state).takeUnretainedValue()
         .continueBlock(parser, node: node, input: input, length: Int(length))
     }
-    cmark_syntax_extension_set_match_inline_func(native) { ext, _, parent, character, parser in
+    // The native pre-token bridge adjusts both node and parser coordinates
+    // after a multiline match; changing only the byte offset loses later lines.
+    cmark_syntax_extension_set_match_inline_before_func(native) {
+      ext, _, parent, character, parser in
       guard character == 36 || character == 40, let ext, let parser, let parent,
         let state = cmark_syntax_extension_get_private(ext)
       else { return nil }
@@ -195,14 +197,12 @@ final class MarkdownMath {
     runs.removeAll(keepingCapacity: true)
     inlineClosers.removeAll(keepingCapacity: true)
     displayClosers.removeAll(keepingCapacity: true)
-    lineEnds.removeAll(keepingCapacity: true)
     legacyOpeners.removeAll(keepingCapacity: true)
     legacyClosers.removeAll(keepingCapacity: true)
     var cursor = 0
     while cursor < count {
       let byte = bytes[cursor]
       if byte == 10 || byte == 13 {
-        lineEnds.append(cursor)
         cursor += 1
         continue
       }
@@ -230,7 +230,6 @@ final class MarkdownMath {
         inlineClosers.append(start)
       }
     }
-    lineEnds.append(count)
   }
 
   private static func first(after offset: Int, in values: [Int]) -> Int? {
@@ -258,8 +257,7 @@ final class MarkdownMath {
     let start = Int(cmark_inline_parser_get_offset(parser))
     if character == 40 {
       guard legacyOpeners.contains(start),
-        let close = Self.first(after: start + 3, in: legacyClosers),
-        let lineEnd = Self.first(after: start, in: lineEnds), close < lineEnd
+        let close = Self.first(after: start + 3, in: legacyClosers)
       else { return nil }
       let raw = Array(UnsafeBufferPointer(start: bytes + start + 1, count: close - start - 3))
       let source = Self.decodeLegacy(raw)
@@ -275,8 +273,7 @@ final class MarkdownMath {
     guard let width = runs[start], width <= 2, width == 2 || inlineDollars else { return nil }
     let body = start + width
     guard body < count, width == 2 || !Self.space(bytes[body]),
-      let end = Self.first(after: body, in: width == 2 ? displayClosers : inlineClosers),
-      let lineEnd = Self.first(after: start, in: lineEnds), end < lineEnd
+      let end = Self.first(after: body, in: width == 2 ? displayClosers : inlineClosers)
     else { return nil }
     let source = String(
       decoding: UnsafeBufferPointer(start: bytes + body, count: end - body), as: UTF8.self)

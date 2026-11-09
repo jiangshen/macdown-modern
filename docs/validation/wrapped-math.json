@@ -1,0 +1,86 @@
+{
+  "dateUTC": "2026-11-09T20:55:57.334492+00:00",
+  "sourceParent": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+  "feature": "Wrapped inline and shared-line double-dollar equations",
+  "implementation": "Existing native cmark pre-token bridge advances parser and node source coordinates across multiline matches. Swift indexes delimiter runs once per native inline container. No new dependency, C parser patch, document-wide replacement, or rendering engine change.",
+  "supported": [
+    "Optional single-dollar math across soft line breaks",
+    "Double-dollar display math with body on opening/closing lines",
+    "Existing doubled-backslash parentheses across soft line breaks"
+  ],
+  "sourceSHA256": {
+    "Packages/SnowfolioCore/Sources/MarkdownCore/MarkdownMath.swift": "9671c42254df5e12bf5075ae6ef127ea592dce7dc4b5950b4eee83b8bf345580",
+    "Packages/SnowfolioCore/Tests/MarkdownCoreTests/MarkdownMathTests.swift": "64cfd98dc205307f266a3183439da67d39fac4e5f30385bf9be8f02aeae11dd4",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeMathTests.swift": "b8f5995c9025f4ec85737701456d1731b9df2fb63beb2c7d7f25454814859dff",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/NativeEditorScrollPastEndTests.swift": "8a2e1c10f673263f89d8f4e68f46479d1afb05ef6a5d74f44197f16a77552cf0"
+  },
+  "negativeControl": {
+    "tests": 1,
+    "cases": 3,
+    "issues": 135,
+    "seconds": 0.093,
+    "finding": "Original same-line parser misses wrapped equations and their source styles/ranges."
+  },
+  "local": {
+    "tests": 450,
+    "suites": 93,
+    "seconds": 57.733,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "architectures": [
+      {
+        "target": "EditorCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "DiagramCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "MarkdownCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PluginCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "ExportCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "RenderingCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "DocumentCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "PreferencesCoreTests",
+        "architecture": "arm64"
+      },
+      {
+        "target": "SnowfolioUITests",
+        "architecture": "arm64"
+      }
+    ],
+    "focused": "All14mathcoremethods pass; wrapped positions exercised across3newline forms x3delimiter forms x3paragraph/list/quote contexts. Following equations, strong spans, headings/UTF16 offsets and syntax styles remain exact.",
+    "boundaries": "Native paragraphs, list items, quotes, fences, code spans, image alt and destinations retain ownership.",
+    "native": "Existing native preview checks now exercise wrapped inline/display expressions in both appearances; embedded fonts, MathML, inert document scripts and DOM identity assertions pass. Both PNGs visually inspected."
+  },
+  "interruptedLocal": {
+    "accepted": false,
+    "finding": "Mermaid timeout; sample shows many dispatch workers blocked in NSAnimation._runBlocking. Two disposable scroll-past-end windows still lacked animationBehavior.none. Only those fixture windows changed; complete suite subsequently passes unchanged assertions/deadlines. No diagram production change.",
+    "sample": "interrupted-full-sample.txt"
+  },
+  "compact": "/private/tmp/snowfolio-validation-history/wrapped-math",
+  "remaining": [
+    "Single-backslash inline parentheses and shared-line display brackets",
+    "Wider MathJax environment/extension/reference/numbering compatibility",
+    "Current-source full hosted core and complete actual-app acceptance",
+    "Physical native preview/foreground selection, real IME and VoiceOver",
+    "M5/M6 and safe progressive legacy retirement"
+  ],
+  "fullGoal": "Active and incomplete; no default-host switch, installation or file-handler change."
+}

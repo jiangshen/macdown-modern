@@ -1341,5 +1341,34 @@
     "failure": "PluginTests/testExplicitPluginRunRetainsStateAndPreservesNativeUndoAndEncodedSave fails122.286s: XCUIScreen.main.screenshot times out atPluginTests.swift:67. No production plug-in failure established; test does not complete.",
     "compact": "/private/tmp/snowfolio-validation-history/native-full-3cf9ded",
     "baseline": "Complete41/41atc0c6e6f remains accepted; no aggregation of42passes with earlier focused plug-in success."
+  },
+  "hostedCore215ce9a": {
+    "source": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+    "run": 42695103454,
+    "job": 129424744884,
+    "artifact": 13708847809,
+    "tests": 448,
+    "suites": 93,
+    "commonMark": "652/652",
+    "arm64Executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "compact": "/private/tmp/snowfolio-validation-history/core-215ce9a"
+  },
+  "focusedPlugins215ce9a": {
+    "source": "215ce9aad84398f49a928ab65641effdaabe2e6d",
+    "run": 42695206826,
+    "job": 129425117305,
+    "artifact": 13708897438,
+    "executed": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 73.37,
+    "runtimeWarnings": 1,
+    "warning": "Internal QoS priority inversion; not zero-warning/performance acceptance.",
+    "visual": "All four PNGs inspected: native menu inventory, first-run confirmation, retained two-run state/Undo/encoded Save and failure presentation. Hosted preview blank persists.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-plugins-215ce9a",
+    "scope": "Focused actual-app success; does not combine with prior42/43 to establish full app acceptance. Pending library-validation security approval remains unapplied."
   }
 }

@@ -1653,5 +1653,46 @@
     "preserved": "Existing current core cache, both running user apps, staged native app, user documents and uncommitted source. Trash was not emptied.",
     "newAppBuildOrCache": false,
     "native43Artifact": "Only688776of197850540bytes retrieved for complete text log and all43method outcomes; no raw bundle download."
+  },
+  "wrappedMathCycle": {
+    "dateUTC": "2026-11-09T20:56:33.841289+00:00",
+    "removed": [
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-CC9D35B6-859C-4F94-8F6E-870CFD76A589",
+        "allocatedFileBytesRemoved": 692224,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-BA8E2DD5-D841-44E2-A53F-F203C4D15513",
+        "allocatedFileBytesRemoved": 69632,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-86D7606B-7730-407B-A7B4-242FBFAB0368",
+        "allocatedFileBytesRemoved": 81920,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "path": "/private/var/folders/4q/yx03kvy93pj7w2hkzv5z2f5h0000gn/T/axbuild/run-3D409A00-690D-4A8A-834C-EABB845C228B",
+        "allocatedFileBytesRemoved": 1253376,
+        "ownershipAndOpenFilesChecked": true
+      },
+      {
+        "rawRemoved": "/private/tmp/snowfolio-current-native-result",
+        "allocatedFileBytesRemoved": 34701312,
+        "retained": "Exact summary, log, all four inspected plug-in screenshots and hierarchy/text attachments; no raw xcresult needed."
+      }
+    ],
+    "scopedAllocatedBytes": {
+      "/private/tmp/snowfolio-native-theme-validation/build": 978759680,
+      "/Users/caden/Dev/snowfolio/Build/Snowfolio": 884891648,
+      "/Users/caden/Dev/snowfolio/Build/DocumentHostProbe": 487702528,
+      "/private/tmp/snowfolio-native-physical-check": 24682496,
+      "/private/tmp/snowfolio-validation-history": 174968832
+    },
+    "protectedRunningApps": "42199 Snowfolio; 85540 DocumentHostProbe (both process IDs rechecked)",
+    "retention": "One current core cache, current app cache and protected probe/staged app. No raw xcresult retained. Compact logs/reports/source hashes and inspected math/plug-in screenshots retained; no new app build cache.",
+    "preserved": "User documents, both running app bundles, source and uncommitted work preserved. Trash not emptied.",
+    "note": "Allocated scoped sizes are not unique physical APFS usage or a whole-disk audit."
   }
 }
