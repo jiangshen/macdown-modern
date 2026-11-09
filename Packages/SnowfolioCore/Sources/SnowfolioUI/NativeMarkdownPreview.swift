@@ -13,6 +13,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
   public let revision: UInt64?
   public var zoomScale: Double
   public let callouts: CalloutEditorController?
+  public let statistics: DocumentWritingStatistics?
   public var scrolling: DocumentScrollCoordinator?
   public var openDroppedFiles: (@MainActor ([URL]) -> Bool)?
   public var onError: @MainActor (String?) -> Void
@@ -23,6 +24,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     callouts: CalloutEditorController? = nil,
     openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil,
     scrolling: DocumentScrollCoordinator? = nil, zoomScale: Double = 1,
+    statistics: DocumentWritingStatistics? = nil,
     onError: @escaping @MainActor (String?) -> Void = { _ in }
   ) {
     self.html = html
@@ -32,6 +34,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     self.style = style
     self.revision = revision
     self.callouts = callouts
+    self.statistics = statistics
     self.onError = onError
     self.openDroppedFiles = openDroppedFiles
     self.scrolling = scrolling
@@ -76,7 +79,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     coordinator.callouts = callouts
     coordinator.update(
       view, html: html, directory: directory, remoteImages: remoteImages, style: style,
-      revision: revision, zoomScale: zoomScale, assetAccess: assetAccess)
+      revision: revision, zoomScale: zoomScale, assetAccess: assetAccess, statistics: statistics)
     return view
   }
 
@@ -91,12 +94,14 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     context.coordinator.callouts = callouts
     context.coordinator.update(
       view, html: html, directory: directory, remoteImages: remoteImages, style: style,
-      revision: revision, zoomScale: zoomScale, assetAccess: assetAccess)
+      revision: revision, zoomScale: zoomScale, assetAccess: assetAccess, statistics: statistics)
   }
 
   public static func dismantleNSView(_ view: WKWebView, coordinator: Coordinator) {
     coordinator.scrolling?.detachPreview(coordinator)
     coordinator.scrolling = nil
+    coordinator.invalidateStatistics(clear: true)
+    coordinator.statistics = nil
     (view as? MarkdownPreviewWebView)?.viewportLayoutChanged = nil
     (view as? MarkdownPreviewWebView)?.fileDrop.openFiles = nil
     view.stopLoading()
@@ -121,6 +126,10 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     private var activatingScrollContext = false
     private var failedScrollRevision: UInt64?
     weak var callouts: CalloutEditorController?
+    fileprivate weak var statistics: DocumentWritingStatistics?
+    private var statisticsReady = false
+    private var statisticsCaptureID: UUID?
+    private var statisticsTask: Task<Void, Never>?
     private var pendingRevision: UInt64?
     private var appliedRevision: UInt64?
     private var contentValid = false
@@ -144,8 +153,13 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     func update(
       _ view: WKWebView, html: String, directory: URL?, remoteImages: Bool,
       style: DocumentStyle = .init(), revision: UInt64? = nil, zoomScale: Double = 1,
-      assetAccess: DocumentAssetAccess? = nil
+      assetAccess: DocumentAssetAccess? = nil, statistics: DocumentWritingStatistics? = nil
     ) {
+      if self.statistics !== statistics {
+        invalidateStatistics(clear: true)
+        self.statistics = statistics
+        statistics?.clear()
+      }
       scrollView = view
       pendingHTML = html
       pendingRevision = revision
@@ -157,6 +171,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       if loadedRemoteImages != remoteImages || loadedDirectory != directory
         || loadedAssetAccessID != assetAccess?.id
       {
+        invalidateStatistics(clear: true)
         scrolling?.previewWillReload()
         ready = false
         scrollContextRevision = nil
@@ -208,6 +223,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       guard !sameHTML else {
         if contentValid {
           appliedRevision = pendingRevision
+          captureStatistics(in: view)
           if abs(view.pageZoom - pendingZoom) > 0.0001, failedZoom != pendingZoom {
             applyZoom(to: view)
           } else {
@@ -216,6 +232,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
         }
         return
       }
+      invalidateStatistics(clear: false)
       let sent = pendingHTML
       let revision = pendingRevision
       let generation = generation
@@ -242,7 +259,55 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
           self.onError(
             String(localized: "The preview could not update. Reopen the document to try again."))
         }
+        if !self.contentValid { self.invalidateStatistics(clear: true) }
         self.applyLatest(to: view)
+      }
+    }
+
+    fileprivate func invalidateStatistics(clear: Bool) {
+      statisticsTask?.cancel()
+      statisticsTask = nil
+      statisticsCaptureID = nil
+      statisticsReady = false
+      if clear { statistics?.clear() }
+    }
+
+    private func captureStatistics(in view: WKWebView) {
+      guard let statistics, appliedHTML != nil, contentValid, appliedRevision != nil else {
+        return
+      }
+      if statisticsCaptureID != nil {
+        // Identical HTML can represent a newer source revision. Do not rescan it.
+        if statisticsReady, statistics.revision != appliedRevision {
+          statistics.revision = appliedRevision
+        }
+        return
+      }
+      invalidateStatistics(clear: false)
+      let id = UUID()
+      let generation = generation
+      statisticsCaptureID = id
+      statisticsTask = Task { @MainActor [weak self, weak view, weak statistics] in
+        do {
+          guard let view else { return }
+          let value = try await view.callAsyncJavaScript(
+            PreviewWritingStatistics.capture, arguments: [:], in: nil, contentWorld: .defaultClient)
+          try Task.checkCancellation()
+          guard let json = value as? String else { throw CocoaError(.coderReadCorrupt) }
+          let result = try await WritingStatistics.countSnapshot(json)
+          try Task.checkCancellation()
+          guard let self, let statistics, self.statisticsCaptureID == id,
+            self.generation == generation, self.statistics === statistics, self.contentValid
+          else { return }
+          self.statisticsReady = true
+          statistics.value = result
+          statistics.revision = self.appliedRevision
+          self.statisticsTask = nil
+        } catch {
+          guard !Task.isCancelled, let self, self.statisticsCaptureID == id else { return }
+          statistics?.clear()
+          self.statisticsTask = nil
+        }
       }
     }
 
@@ -434,6 +499,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
       guard navigation === self.navigation else { return }
       expectsInitialNavigation = false
       ready = false
+      invalidateStatistics(clear: true)
       onError(String(localized: "The preview could not load. Reopen the document to try again."))
     }
 
@@ -447,6 +513,7 @@ public struct NativeMarkdownPreview: NSViewRepresentable {
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
       expectsInitialNavigation = false
       ready = false
+      invalidateStatistics(clear: true)
       onError(String(localized: "The preview stopped. Reopen the document to try again."))
     }
 

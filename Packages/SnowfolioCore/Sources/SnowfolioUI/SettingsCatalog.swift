@@ -73,7 +73,7 @@ struct SettingsEntry: Identifiable {
     case toggle(ReferenceWritableKeyPath<AppPreferences, Bool>)
     case editorMetric(ReferenceWritableKeyPath<AppPreferences, Double>, ClosedRange<Double>, Double)
     case documentFont, documentSize, codeTheme, editorFont, editorSize, listMarker, emphasisPolicy,
-      codeBlockAccessory
+      codeBlockAccessory, writingStatisticsMode
     case editorTheme, importEditorTheme, readingStyle, importReadingStyle, htmlTemplate, assetFolder
   }
   let id: String
@@ -178,6 +178,18 @@ enum SettingsCatalog {
         .init(
           id: "importEditorTheme", title: "Custom themes", detail: "Import a .style file.",
           keywords: "style import theme", control: .importEditorTheme),
+      ]),
+    .init(
+      pane: .editor, title: "Writing Statistics",
+      entries: [
+        .init(
+          id: "showWritingStatistics", title: "Show writing statistics",
+          detail: "Count the rendered document’s words or characters.",
+          keywords: "word count counter characters spaces",
+          control: .toggle(\.showWritingStatistics)),
+        .init(
+          id: "writingStatisticsMode", title: "Count",
+          keywords: "word count counter characters whitespace", control: .writingStatisticsMode),
       ]),
     .init(
       pane: .editor, title: "Layout",

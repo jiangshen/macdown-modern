@@ -206,6 +206,7 @@ private struct SettingsPreferenceRow: View {
         .accessibilityLabel(entry.title)
         .accessibilityHint(entry.detail)
         .disabled(entry.id == "markdownInlineMath" && !preferences.math)
+        .disabled(entry.id == "writingStatisticsMode" && !preferences.showWritingStatistics)
         .disabled(entry.id == "editorMaximumWidth" && !preferences.editorLayout.widthLimited)
         .disabled(
           ["documentFont", "documentTextSize", "documentFullWidth"].contains(entry.id)
@@ -243,6 +244,15 @@ private struct SettingsPreferenceRow: View {
         )
       ) { caption }
       .toggleStyle(.switch)
+    case .writingStatisticsMode:
+      Picker(selection: $preferences.writingStatisticsMode) {
+        ForEach(WritingStatisticsMode.allCases) { mode in
+          Text(mode.title).tag(mode)
+        }
+      } label: {
+        caption
+      }
+      .pickerStyle(.menu)
     case .emphasisPolicy:
       Picker(selection: $preferences.emphasisPolicy) {
         Text("Standard Markdown").tag(MarkdownEmphasisPolicy.standard)

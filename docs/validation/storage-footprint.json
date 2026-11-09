@@ -637,5 +637,15 @@
     "sourceTrashPolicy": "Recoverable move; not counted as freed space. Trash not emptied.",
     "ownershipAndOpenFilesChecked": true,
     "latestFullNative35RawAndProtectedProbePreserved": true
+  },
+  "acceptedFullNative36Cleanup": {
+    "dateUTC": "2026-11-09T09:28:41.580735+00:00",
+    "removedObsoleteRaw": "/private/tmp/snowfolio-current-native-result (full35 before replacement)",
+    "allocatedBytesRemoved": 193961984,
+    "latestRaw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_08-49-53-+0000.xcresult",
+    "retainedCompact": "/private/tmp/snowfolio-validation-history/native-full-2bc01b2",
+    "ownershipAndOpenFilesChecked": true,
+    "sourceAndProtectedRunningProbePreserved": true,
+    "reason": "Full36 passed all35 earlier methods plus reading relaunch; six key screenshots inspected; replace obsolete full35 raw."
   }
 }

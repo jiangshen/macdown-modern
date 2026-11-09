@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-09T07:54:23.620563+00:00",
-  "status": "Source characterization only; modern statistics remains unimplemented/unaccepted.",
+  "status": "Source characterization retained; replacement implemented and focused-tested. Actual app and full-core acceptance remain pending; see writing-statistics.json.",
   "sources": [
     "MacDown/Code/Extension/DOMNode+Text.m",
     "MacDown/Code/Document/MPDocument.m:needsHtml",
@@ -27,5 +27,5 @@
     "Native accessible optional counter with all three modes, focus-based document ownership, keyboard operation and unchanged source/Undo.",
     "Actual UI/manual-render/edit/Undo/persistence acceptance before retiring old counter code."
   ],
-  "notAccepted": "No current modern counter or feature-parity completion claim."
+  "notAccepted": "No full counter parity or legacy retirement claim before actual-app and full-core verification."
 }

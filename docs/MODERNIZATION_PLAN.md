@@ -3563,6 +3563,31 @@ caret0 retained; nativeUndoand exactUTF16LE/BOM/CRLF/Unicodefilebytes pass. Thre
 majorPNGinspected. No production scrollchange wasnecessary. Hostedpreviewglyph
 painting/physicaldarkselection/caret/IME/VoiceOver stayunaccepted.
 
-Fullnative36run42588674603nowexecutesallmethodstogetherat2bc01b2. Currentcomplete
-baseline35/35andcore375/80+652CommonMark remainaccepted; no host/default/install/
-release/handler change or coupledlegacyretirement.
+Full native36 at exact2bc01b2 is accepted:36 passed, zero failed/skipped,
+1810.693 seconds. All35 baseline methods remain included. Six key screenshots
+inspected; source reading glyph difference0.0 and wrong-position control0.89878.
+Preview0.352928→0.352818, caret/Undo/encoded bytes pass. Hosted preview capture
+remains blank. Keep the latest full36 raw only; full35 raw was removed after
+ownership/open-file checks.53 internal runtime warnings remain unattributed.
+Core375/80+652CommonMark baseline remains accepted; no host/install/release switch.
+
+## Writing statistics replacement — 2026-11-09
+
+The optional native counter and searchable Settings now preserve the original
+visibility/mode keys and all three counting policies. A read-only committed-DOM
+snapshot is decoded and counted off the UI actor, once per HTML patch. Capture IDs
+and navigation generations reject stale work; hidden-preview counting and manual
+publication reuse the existing render policy.12 focused checks pass, including
+Unicode UTF16 units, styled-node boundaries, code, shadow diagram labels,
+manual-source-only behavior, selection, native Undo and exact UTF16LE/BOM/CRLF bytes.
+The final native app and37 UI methods compile with zero warnings/errors.
+
+The full local package attempt stalled in an existing Mermaid test: a short sample
+found64 AppKit animation workers blocked. Keep its compact diagnostic, stop only
+the owned stalled test process, and verify fresh full-core results on the disposable
+machine. Actual-app manual Render and current physical preview/dark/counter checks
+remain pending. The physical Mac locked again; one unlock request is pending.
+The older protected probe visibly painted after its offscreen window was zoomed,
+and its temporary mixed-list test was undone and closed; that binary is not current
+app acceptance. Preserve original counter code until replacement acceptance.
+See validation/writing-statistics.json for exact scope and remaining gates.

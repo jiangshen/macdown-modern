@@ -2230,6 +2230,71 @@ final class DocumentLifecycleTests: XCTestCase {
   #endif
 
   @MainActor
+  func testWritingStatisticsFollowManualRenderAndPreserveUndo() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let file = directory.appendingPathComponent("writing-statistics.md")
+    let source = "first word\r\n"
+    let bytes = Data([0xff, 0xfe]) + (try XCTUnwrap(source.data(using: .utf16LittleEndian)))
+    try bytes.write(to: file)
+    let app = launch(arguments: [
+      "-editorShowWordCount", "YES", "-editorWordCountType", "0",
+      "-markdownManualRender", "YES", "-editorSyntaxHighlighting", "NO",
+    ])
+    defer { app.terminate() }
+    let editor = openDocument(file, in: app)
+    let counter = app.popUpButtons["writingStatistics"].firstMatch
+    XCTAssertTrue(counter.waitForExistence(timeout: 8))
+    func waitForCount(_ expected: String) {
+      let changed = XCTNSPredicateExpectation(
+        predicate: NSPredicate { _, _ in
+          counter.exists && counter.isEnabled && counter.value as? String == expected
+        }, object: nil)
+      XCTAssertEqual(XCTWaiter().wait(for: [changed], timeout: 8), .completed)
+    }
+    waitForCount("2 words")
+    let editorMode = app.radioButtons["square.leadingthird.inset.filled"].firstMatch
+    XCTAssertTrue(editorMode.exists)
+    editorMode.click()
+    editor.click()
+    app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
+    editor.typeText("added")
+    XCTAssertEqual(editor.value as? String, source + "added")
+    let prematureCount = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        counter.exists && counter.value as? String != "2 words"
+      }, object: nil)
+    prematureCount.isInverted = true
+    XCTAssertEqual(XCTWaiter().wait(for: [prematureCount], timeout: 0.7), .completed)
+    let render = app.buttons["Render"].firstMatch
+    XCTAssertTrue(render.exists)
+    render.click()
+    waitForCount("3 words")
+    counter.click()
+    let mode = app.menuItems["14 characters without spaces"].firstMatch
+    XCTAssertTrue(mode.waitForExistence(timeout: 3))
+    mode.click()
+    waitForCount("14 characters without spaces")
+    XCTAssertEqual(editor.value as? String, source + "added")
+    app.typeKey("z", modifierFlags: .command)
+    XCTAssertEqual(editor.value as? String, source)
+    XCTAssertEqual(counter.value as? String, "14 characters without spaces")
+    render.click()
+    waitForCount("9 characters without spaces")
+    app.typeKey("s", modifierFlags: .command)
+    let saved = XCTNSPredicateExpectation(
+      predicate: NSPredicate { _, _ in
+        (try? Data(contentsOf: file)) == bytes
+      }, object: nil)
+    XCTAssertEqual(XCTWaiter().wait(for: [saved], timeout: 8), .completed)
+    let screenshot = XCTAttachment(screenshot: app.windows.firstMatch.screenshot())
+    screenshot.name = "writing-statistics-manual-source-only"
+    screenshot.lifetime = .keepAlways
+    add(screenshot)
+  }
+
+  @MainActor
   func testMultipleDocumentWindows() {
     let app = launch()
     defer { app.terminate() }

@@ -21,6 +21,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
   var hostUndoManager: UndoManager? = nil
   var scrolling: DocumentScrollCoordinator? = nil
   var zoomScale: Double = 1
+  var statistics: DocumentWritingStatistics? = nil
   var sourceViewportStorage: Binding<Data?> = .constant(nil)
   var previewViewportStorage: Binding<Data?> = .constant(nil)
   @Environment(\.undoManager) private var undoManager
@@ -64,7 +65,7 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
         workspace: zoomScale,
         baseFontSize: preferences.editorFontSize,
         followsEditor: preferences.previewFollowsEditorFont),
-      error: $previewError
+      statistics: statistics, error: $previewError
     )
   }
 
@@ -199,13 +200,14 @@ struct NativeDocumentSplit: NSViewControllerRepresentable {
     var openDroppedFiles: (@MainActor ([URL]) -> Bool)? = nil
     var scrolling: DocumentScrollCoordinator? = nil
     var zoomScale: Double = 1
+    var statistics: DocumentWritingStatistics? = nil
     @Binding var error: String?
     var body: some View {
       NativeMarkdownPreview(
         html: html, directory: directory, remoteImages: remoteImages, style: style,
         assetAccess: assetAccess,
         revision: revision, callouts: callouts, openDroppedFiles: openDroppedFiles,
-        scrolling: scrolling, zoomScale: zoomScale
+        scrolling: scrolling, zoomScale: zoomScale, statistics: statistics
       ) {
         error = $0
       }

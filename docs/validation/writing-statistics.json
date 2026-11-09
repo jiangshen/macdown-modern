@@ -1,0 +1,28 @@
+{
+  "dateUTC": "2026-11-09T09:30:09.437930+00:00",
+  "status": "Implemented;12 focused local checks pass, final native build passes. Actual app manual-Render test, fresh hosted full-core gate and current physical screenshot remain pending. Preserve original counter.",
+  "implementation": {
+    "renderSource": "Read-only committed preview DOM snapshot in isolated WebKit client world; document scripts remain disabled. No polling, DOM mutation, layout query or raw-source parser.",
+    "counting": "Foundation NSString byWords independently per text node. HEAD/STYLE/SCRIPT ignored. PRE>CODE excluded from words only. Inline CODE collapses to one word if any of its children has a Foundation word. Characters use filtered Unicode scalars measured in UTF16 units.",
+    "worker": "JSON decoding and Foundation counting use @concurrent; cancellation checks bound stale work. One snapshot per committed HTML patch, no new HTML equality scans on ordinary UI updates.",
+    "revisionSafety": "Coordinator-owned capture ID and navigation generation reject stale snapshots. Identical HTML updates only accepted revision. Disable, failed navigation, content process termination and dismantle cancel work and clear counts.",
+    "manualAndSourceOnly": "Existing render publication policy is unchanged. Counts remain at committed preview until Render in manual mode. Hidden native preview remains alive in source-only mode.",
+    "ui": "Optional native accessible NSPopUpButton in document footer with words/characters/characters without spaces. Settings offers visibility and mode. Mode choice preserves editor selection.",
+    "preferences": "Original editorShowWordCount/editorWordCountType keys migrate and persist. Explicit false preserved; unknown mode falls back without overwriting unknown saved value.",
+    "modernDOMPolicy": "Preserve original DOM counting, including both accessible and visual math text nodes. Include modern isolated diagram shadow-root labels while excluding embedded styles. No invented visible-text-only or grapheme-count rule."
+  },
+  "local": {
+    "focused": "12 tests in4 suites pass: nativeDOM/coalescing/shadow content/manualsource-only, preferences, Settings search/history/persistence, Foundation/UTF16/whitespace/cancellation.",
+    "build": "Final native arm64 app and all37 native UI methods compile; MobileBuildMCP build-for-testing5.8s, zero warnings/errors.",
+    "lint": "Strict swift-format and git diff checks pass.",
+    "fullCoreAttempt": "Interrupted after existing NativeDiagramTests.engines(.mermaid) timedOut. Owned process sample reports64 worker threads blocked in AppKit NSAnimation _runBlocking; main run loop idle. No counter/diagram production failure attribution. Only identified own test parent/helper stopped; running probe85540 preserved. Fresh hosted full-core gate required.",
+    "sample": "/private/tmp/snowfolio-validation-history/writing-statistics-local/core-animation-stall.txt"
+  },
+  "actualAppMethod": "testWritingStatisticsFollowManualRenderAndPreserveUndo",
+  "pending": [
+    "Actual-app source-only counter/manual Render/three modes/Undo/exact UTF16 bytes.",
+    "Complete fresh core suite on disposable test machine.",
+    "Current app physical preview/dark selection/counter; Mac currently locked, one unlock request pending.",
+    "Full modernization, accessibility/IME/integrations/measured release gates; original code retirement after verified replacement."
+  ]
+}

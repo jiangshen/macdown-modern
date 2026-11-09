@@ -72,6 +72,12 @@ public final class AppPreferences {
   public var rawHTML: Bool { didSet { save(rawHTML, "previewRenderRawHTML") } }
   public var remoteImages: Bool { didSet { save(remoteImages, "previewLoadRemoteImages") } }
   public var manualRendering: Bool { didSet { save(manualRendering, "markdownManualRender") } }
+  public var showWritingStatistics: Bool {
+    didSet { save(showWritingStatistics, "editorShowWordCount") }
+  }
+  public var writingStatisticsMode: WritingStatisticsMode {
+    didSet { defaults.set(writingStatisticsMode.rawValue, forKey: "editorWordCountType") }
+  }
   public var smartHome: Bool { didSet { save(smartHome, "editorSmartHome") } }
   public var convertTabs: Bool { didSet { save(convertTabs, "editorConvertTabs") } }
   public var continueBlocks: Bool { didSet { save(continueBlocks, "editorInsertPrefixInBlock") } }
@@ -171,6 +177,9 @@ public final class AppPreferences {
     rawHTML = boolean("previewRenderRawHTML", fallback: false)
     remoteImages = boolean("previewLoadRemoteImages", fallback: false)
     manualRendering = boolean("markdownManualRender", fallback: false)
+    showWritingStatistics = boolean("editorShowWordCount", fallback: false)
+    writingStatisticsMode =
+      WritingStatisticsMode(rawValue: defaults.integer(forKey: "editorWordCountType")) ?? .words
     smartHome = boolean("editorSmartHome", fallback: false)
     convertTabs = boolean("editorConvertTabs", fallback: false)
     continueBlocks = boolean("editorInsertPrefixInBlock", fallback: true)

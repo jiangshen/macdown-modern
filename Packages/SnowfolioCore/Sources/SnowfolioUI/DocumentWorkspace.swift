@@ -55,6 +55,7 @@ private struct DocumentWorkspaceContent: View {
   let nativeCommands: NativeWorkspaceCommandContext?
   @Environment(\.openDocument) private var openDocument
   @Environment(\.scenePhase) private var scenePhase
+  @State private var statistics = DocumentWritingStatistics()
   @State private var scrolling = DocumentScrollCoordinator()
   @State private var zoom: DocumentZoomController
   @State private var droppedDocuments = DroppedDocumentOpener()
@@ -149,7 +150,16 @@ private struct DocumentWorkspaceContent: View {
           previewError: $previewError, openDroppedFiles: openDroppedFiles,
           editorSelection: $editorSelection, hostUndoManager: hostUndoManager,
           scrolling: scrolling, zoomScale: zoom.scale,
+          statistics: preferences.showWritingStatistics ? statistics : nil,
           sourceViewportStorage: $sourceViewport, previewViewportStorage: $previewViewport)
+        if preferences.showWritingStatistics {
+          HStack {
+            Spacer(minLength: 0)
+            WritingStatisticsControl(statistics: statistics.value, preferences: preferences)
+              .fixedSize()
+          }
+          .padding(.horizontal, 12).padding(.vertical, 4)
+        }
         if let message = error ?? previewError {
           Text(message).foregroundStyle(.secondary).padding(8).accessibilityIdentifier(
             "previewError")

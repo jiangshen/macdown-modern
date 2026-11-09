@@ -1,5 +1,5 @@
 {
-  "checkpoint": "Native menus locally integrated;748 full workspace coordinated reload and final autosave pass, staged Undo and uncoordinated reloads remain open; preview painting not accepted",
+  "checkpoint": "Full native36 accepted at2bc01b2. Replacement writing statistics implemented; exact actual-app and full-core verification pending.",
   "base": "4ee7721bbf10b2243f25de985a4993949da0b057",
   "goal": "active; incomplete",
   "fixture": "testAutosavePreservesEncodingAndReloadsCleanExternalChange",
@@ -1065,7 +1065,7 @@
     "seconds": 1264.81,
     "coverage": "Everypreceding34method plusactual separate-tab-groups quit/relaunch. All3scripting andallconflict/Versions cases pass together.",
     "compact": "/private/tmp/snowfolio-validation-history/native-full-28243a6",
-    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_07-43-50-+0000.xcresult",
+    "raw": "Superseded after full36 acceptance; compact evidence retained.",
     "visual": "Six majorPNGinspected: continuouslightmixed-listselection, restoredseparategroups, Settings, readonlyhistoricalsource, restoredsavedtabs, initialscriptedsource. Hostedpreviewblank persists; physicalpaint/darkselection/IME/VoiceOverunaccepted.",
     "runtimeWarnings": {
       "count": 51,
@@ -1078,5 +1078,34 @@
     "supersededFull34AllocatedBytesRemoved": 190341120,
     "latestFull35AllocatedBytes": 193961984,
     "ownershipAndOpenFilesChecked": true
+  },
+  "fullNative36Accepted": {
+    "dateUTC": "2026-11-09T09:30:09.437930+00:00",
+    "commit": "2bc01b22a9b6e57140f705ea3e10d9f015ed9f16",
+    "run": "https://github.com/jiangshen/snowfolio/actions/runs/42588674603",
+    "executed": 36,
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 1810.693,
+    "baselineMethodsRetained": 35,
+    "newMethod": "testIndependentReadingPositionsSurviveQuitAndRelaunch",
+    "compact": "/private/tmp/snowfolio-validation-history/native-full-2bc01b2",
+    "raw": "/private/tmp/snowfolio-current-native-result/Snowfolio/DerivedData/Logs/Test/Test-Snowfolio-2026.11.09_08-49-53-+0000.xcresult",
+    "visual": "Six major screenshots inspected: continuous light mixed-list selection, Settings, separate groups, restored reading window and before/after source crops. Hosted preview capture remains blank; no current physical dark/preview/IME/VoiceOver acceptance.",
+    "reading": {
+      "sourceGlyphDifference": 0.0,
+      "wrongPositionControlDifference": 0.8987783595113438,
+      "previewBefore": 0.35292819142341614,
+      "previewAfter": 0.35281792283058167,
+      "sourceScrollbarBefore": 0.22278803309993633,
+      "sourceScrollbarAfter": 0.26478649637634727,
+      "finding": "Rendered source position is identical despite TextKit estimated scrollbar extent change; strict preview bound, offscreen caret, Undo and exact encoded bytes pass."
+    },
+    "runtimeWarnings": {
+      "count": 53,
+      "attribution": "Internal runtime priority inversions remain unattributed; no M6 acceptance."
+    },
+    "fullGoal": "Active and incomplete; no default host, install, release, handler switch or coupled legacy retirement."
   }
 }
