@@ -1872,5 +1872,23 @@
       "/private/tmp/snowfolio-file-drop-tests.swift"
     ],
     "protection": "Running app/probe bundles and user document untouched; no user-Mac Finder action, installation, default-handler or security-setting change."
+  },
+  "finderFirstGestureDiagnostic": {
+    "dateUTC": "2026-11-09T22:58:40.679218+00:00",
+    "scope": "Concluded first Finder input diagnostic export; only compact decision evidence retained.",
+    "removedAllocatedBytes": 35262464,
+    "removed": [
+      "/private/tmp/snowfolio-finder-diagnostic-current",
+      "/private/tmp/snowfolio-finder-attachments-current",
+      "/private/tmp/snowfolio-finder-extraction.log"
+    ],
+    "sdkCacheCleanup": {
+      "dateUTC": "2026-11-09T22:54:29.320382+00:00",
+      "removed": "/private/tmp/snowfolio-native-theme-validation/build/ModuleCache",
+      "allocatedBytes": 203780096,
+      "reason": "Concluded standalone SDK type-check cache. Reuse existing build/ui-test-module-cache for later SDK checks. Existing out/ModuleCache.noindex and running apps untouched."
+    },
+    "kept": "/private/tmp/snowfolio-validation-history/finder-drop-9928b95 contains small text log,1inspectedPNG,twohierarchies and event-path summary. No rawxcresult,recording or large archive retained.",
+    "protection": "Owner/open-file checks pass; existing core and ui-test module caches, running app42199/probe85540 and user documents untouched."
   }
 }

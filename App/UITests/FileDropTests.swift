@@ -65,21 +65,15 @@
       XCTAssertTrue(originalEditor.waitForExistence(timeout: 5))
       originalEditor.click()
       originalEditor.typeText("Anchor stays in its own tab.")
-      // Leave the sidebar visible alongside Finder on the disposable desktop.
-      let edge = window.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 0.5))
-        .withOffset(CGVector(dx: -1, dy: 0))
-      edge.press(forDuration: 0.3, thenDragTo: edge.withOffset(CGVector(dx: -400, dy: 0)))
       XCTAssertTrue(NSWorkspace.shared.open(directory))
       finder.activate()
-      XCTAssertTrue(finder.windows.firstMatch.waitForExistence(timeout: 5))
+      let finderWindow = finder.windows.matching(
+        NSPredicate(format: "title == %@", directory.lastPathComponent)
+      ).firstMatch
+      let folderAppeared = finderWindow.waitForExistence(timeout: 5)
+      if !folderAppeared { capture("finder-drop-folder-window-failure") }
+      XCTAssertTrue(folderAppeared, finder.debugDescription)
       finder.typeKey("1", modifierFlags: .command)
-      let finderWindow = finder.windows.firstMatch
-      let titleBar = finderWindow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0))
-        .withOffset(CGVector(dx: 0, dy: 8))
-      let screen = XCUIScreen.main.screenshot().image.size
-      let destination = titleBar.withOffset(
-        CGVector(dx: screen.width - 180 - finderWindow.frame.midX, dy: 25))
-      titleBar.press(forDuration: 0.3, thenDragTo: destination)
       let icon = finder.descendants(matching: .any).matching(
         NSPredicate(
           format: "title == %@ OR label == %@", first.lastPathComponent, first.lastPathComponent)
@@ -93,7 +87,11 @@
         finder.typeKey("a", modifierFlags: .command)
         let target = app.buttons["openMarkdownFiles"].firstMatch
         XCTAssertTrue(target.exists, app.debugDescription)
-        icon.press(forDuration: 1, thenDragTo: target)
+        let point = CGPoint(x: target.frame.midX, y: target.frame.midY)
+        // A real mouse drag can reach the exposed sidebar below the Finder window.
+        // The cross-platform press API emits touch events rather than mouse input.
+        XCTAssertFalse(finderWindow.frame.contains(point), "Finder covers the drop destination")
+        icon.click(forDuration: 1, thenDragTo: target)
       }
       dragBatch()
       capture("finder-drop-initial-gesture")

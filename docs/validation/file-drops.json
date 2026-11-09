@@ -28,18 +28,75 @@
   ],
   "finderGestureAcceptance": {
     "dateUTC": "2026-11-09T22:46:17.151457+00:00",
-    "status": "SDK type-check passed; focused hosted run42714851477 queued. No gesture acceptance claim or local user-Mac interaction.",
+    "status": "First actual-Finder attempt fails because touch-style test gestures do not perform mouse drags; corrected public mouse API compiles, focused rerun pending. No gesture acceptance claim.",
     "method": "FileDropTests/testFinderMultiFileDropOpensTabsAndReusesDocumentsWithoutChangingBytes",
     "scope": "Native host only, disposable fixture folder and desktop. Real Finder multi-selection drag to sidebar Open Files destination, two Unicode/encoded documents plus dirty anchor in same native tab group, repeated batch reuses existing documents, independent source/Undo/Save and exact original bytes.",
     "local": "Swift6/arm64/macOS27 type-check with XCTest Swift overlay passed; strict formatting/YAML parse/diff checks pass. No running bundle overwritten, new local app build or duplicate core run.",
     "diagnostics": "Capture public screen and both app/Finder hierarchies after initial gesture, final independent Undo and on icon/menu/source readiness failures. No AppleScript or added system permissions.",
     "limits": "Does not yet establish hosted gesture success, preview/source destinations, release sandbox access, physical user-Mac accessibility or complete app acceptance.",
-    "sourceSHA256": {
+    "sourceCommit": "9928b95",
+    "run": 42714851477,
+    "job": 129493599706,
+    "initialGestureSourceSHA256": {
       "App/UITests/FileDropTests.swift": "786418892b4a1bc67fb9b0aa944e6e738043175cd4cc38613667127349a1e0dc",
       ".github/workflows/snowfolio.yml": "cd14ee32f822c5aa9267b5c9c78fdee4c77aac33d386c75ed96a274b39d9a68d"
     },
-    "sourceCommit": "9928b95",
-    "run": 42714851477,
-    "job": 129493599706
+    "sourceSHA256": {
+      "App/UITests/FileDropTests.swift": "0352c4299d52e6cc92d92356b740d3be14fea799cdd1d109cd169d59eef08bc8",
+      ".github/workflows/snowfolio.yml": "cd14ee32f822c5aa9267b5c9c78fdee4c77aac33d386c75ed96a274b39d9a68d"
+    },
+    "firstAttempt": {
+      "dateUTC": "2026-11-09T22:58:40.679218+00:00",
+      "source": "9928b957aba38d7539d6ce78408007dbd046b4ff",
+      "run": 42714851477,
+      "job": 129493599706,
+      "artifact": 13718545392,
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "seconds": 49.845,
+      "failure": "Window menu has no First\ud83e\uddca.md after first gesture. Test fails atline50; no drop success claim.",
+      "visual": "Inspected after-gesture image: Finder remains at52,92/920x436, both files visibly selected. App behind it remains Untitled; sidebar OpenFiles button is exposed below Finder at11,641/188x26. Window movement attempts also had no effect.",
+      "inputRecord": {
+        "name": "press, hold, drag, and hold",
+        "pathType": 4,
+        "events": [
+          {
+            "eventType": 1,
+            "coordinate.x": 295.0,
+            "coordinate.y": 190.0,
+            "offset": 0.0,
+            "buttonType": 0
+          },
+          {
+            "eventType": 2,
+            "coordinate.x": 295.0,
+            "coordinate.y": 190.0,
+            "offset": 1.0,
+            "buttonType": 0
+          },
+          {
+            "eventType": 2,
+            "coordinate.x": 105.0,
+            "coordinate.y": 654.0,
+            "offset": 2.0027881132123575,
+            "buttonType": 0
+          },
+          {
+            "eventType": 3,
+            "coordinate.x": 105.0,
+            "coordinate.y": 654.0,
+            "offset": 2.0027881132123575,
+            "buttonType": 0
+          }
+        ]
+      },
+      "causeAndCorrection": "Test used press(forDuration:thenDragTo:), which sends touch-style events; SDK declares a separate macOS click(forDuration:thenDragTo:) mouse API. Change the real file drag to click, remove unnecessary window moves, wait for exact fixture folder and assert its frame does not cover destination. No app production change, deadline increase or assertion weakening.",
+      "rerunCycle": 1,
+      "verification": "Corrected method type-checks Swift6/arm64/macOS27 using existing ui-test-module-cache; strict formatting/diff checks pass. Hosted rerun pending.",
+      "archiveBytes": 118368226,
+      "transferredBytes": 28069829,
+      "compact": "/private/tmp/snowfolio-validation-history/finder-drop-9928b95"
+    }
   }
 }
