@@ -5,7 +5,7 @@ Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 pars
 Current accepted hosted core baseline: **464 package tests / 94 suites, all 652 published
 CommonMark examples and nine arm64 test executables pass** at `7a8a99a`, with zero
 compiler diagnostics. The offline-math compatibility increment also passes locally in
-57.534 seconds. Regular-host checks continue; complete current44 native acceptance is pending.
+57.534 seconds. Regular-host checks continue; complete current45 native acceptance is pending.
 core acceptance does not establish full app acceptance.
 
 Pinned KaTeX remains the path for ordinary supported math. A document that needs broader
@@ -4310,3 +4310,20 @@ inspected; hosted WebKit remains blank. This is not complete current 44 acceptan
 Current user apps/documents, source default, install/default handlers and security
 entitlements remain unchanged. The current comparison reuses the single core cache;
 raw profiling and obsolete binaries/helpers are retired after compact evidence capture.
+
+
+## Native VoiceOver driver acceptance — 2026-11-10 (in progress)
+
+The installed macOS27SDK exposes XCUIDevice.voiceOverService with actual speech output
+and forward/backward navigation. Its API and the new native UI method type-check in
+Swift6/arm64 using the existing UI SDK cache. The focused workflow runs only on a
+disposable test Mac; it enables VoiceOver if necessary and restores the original
+state, preserving user-Mac settings. No entitlement or production code changes.
+
+The required method checks the editor's spoken label/role, forward/backward navigation,
+the Render button's spoken label/role, then real native typing/Undo/Save with exact
+UTF16LE BOM/CRLF/Unicode bytes. Speech, state and a screenshot are retained for review.
+Runtime acceptance is pending; AX labels or compile success alone are insufficient.
+The native method set is now45; native43at1d6bd22 remains the complete accepted baseline,
+and the unrelated known Finder gesture failure stays open. See
+[native-voiceover.json](validation/native-voiceover.json).

@@ -1,0 +1,15 @@
+{
+  "dateUTC": "2026-11-10T08:49:47.148558+00:00",
+  "status": "Implemented/type-checked; actual VoiceOver runtime acceptance pending.",
+  "method": "VoiceOverTests/testNativeSourceAndToolbarSpeechNavigationPreserveEncodedUndo",
+  "sourceSHA256": {
+    "App/UITests/VoiceOverTests.swift": "8378f03c8bc17fabfffbd0a0d770830cbffcdb50640bb82677cac5d2a6127ed9",
+    ".github/workflows/snowfolio.yml": "911037218cd45edb66a7a89cd1c2b7beb1b5d035c874f1a6411879b72670ecbc"
+  },
+  "API": "Installed macOS27XCUIAutomation headers plus Swift6arm64SDKtypecheck verify voiceOverService.enable/disable/isEnabled/currentSpeech/moveForward/moveBackward andOutput.utterance.",
+  "scope": "Disposable native-app UItest: spoken source label/text role, forward/backward focus, spoken Render/button role, native typing/Undo and exactUTF16LE BOM/CRLF/Unicode Save.",
+  "restoration": "Preserve initial VoiceOver state; when test enables it, disable in defer. App/fixture are test-owned. No local user-Mac settings, entitlement, app-security or source-default change.",
+  "limits": "Not accepted until speech/output and screenshots inspected. Physical user-Mac usability/reading-preview/Settings and full accessibility remain open. Existing Finder diagnostic exhausted; no rerun of that test. Complete native set45unaccepted, accepted full baseline43at1d6bd22.",
+  "diagnostics": "Retain actual speech transcript, app/service state and screenshot on success or failure. No source/private data from user documents.",
+  "local": "New method type-checks with Swift6/macOS27/arm64 and existing ui-test-module-cache; no local app build."
+}

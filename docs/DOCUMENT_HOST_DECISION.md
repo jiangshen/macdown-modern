@@ -10,7 +10,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 
 | Evidence | SwiftUI DocumentGroup host | Swift NSDocument host |
 | --- | --- | --- |
-| Complete accepted comparison | Latest full33 at `7d0923b`:29pass/4fail (same3lifecycle cases and invalid-read handling; CLI passes) | 43/43 at `1d6bd22`, no failures or skips; complete current44 pending |
+| Complete accepted comparison | Latest full33 at `7d0923b`:29pass/4fail (same3lifecycle cases and invalid-read handling; CLI passes) | 43/43 at `1d6bd22`, no failures or skips; complete current45 pending |
 | Autosave and saved edit Undo | Acceptance fails | Passes, including exact encoded bytes |
 | Clean external changes after autosave | Two cases fail | Both pass |
 | Dirty conflicts and Versions | Full acceptance remains open | All conflict choices and native Versions/Restore pass |

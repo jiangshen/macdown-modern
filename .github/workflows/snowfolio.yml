@@ -46,6 +46,7 @@ on:
           - native-update-settings
           - native-plugins
           - native-document-scripting
+          - native-voiceover
           - native-document-recovery
           - document-tab-creation
 
@@ -130,6 +131,9 @@ jobs:
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-plugins ]; then
             SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/PluginTests
+          elif [ "$SNOWFOLIO_TEST_SCOPE" = native-voiceover ]; then
+            SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
+              --only-testing SnowfolioUITests/VoiceOverTests
           elif [ "$SNOWFOLIO_TEST_SCOPE" = native-document-scripting ]; then
             TUIST_SNOWFOLIO_APPROVE_TEST_AUTOMATION=yes SNOWFOLIO_DOCUMENT_HOST=native bash Tools/build-snowfolio.sh --test \
               --only-testing SnowfolioUITests/DocumentScriptingTests
