@@ -1,0 +1,318 @@
+{
+  "dateUTC": "2026-11-10T08:27:59.158596+00:00",
+  "status": "Final local core464/94 and native component comparison accepted. Exact-source hosted app verification pending; full goal/M6 incomplete.",
+  "baselineSource": "dd29a783aa0ee641313830e9bc190e7f1e38018a",
+  "sourceSHA256": {
+    "Packages/SnowfolioCore/Sources/RenderingCore/UTF8Text.swift": "47c74fe2a12934e4d4738f75db0c62a70896a91f9a78cea99e213970b555a59d",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/MarkdownDocument.swift": "33098a514db0d2d58ef1985cdf163572782e1bbec20403d9bbcc3b4f8eefed6b",
+    "Packages/SnowfolioCore/Sources/SnowfolioUI/NativeMarkdownEditor.swift": "012dc2820a8cefe57d6ee88bcdb4949f4dc3b6f891ec8a743e9c4774ec88be82",
+    "Packages/SnowfolioCore/Tests/RenderingCoreTests/UTF8TextTests.swift": "51be4e69eeb8cbec32c058725d0a12b6d90f53e3466b686f3dcd7cfc841d01ee",
+    "Packages/SnowfolioCore/Tests/SnowfolioUITests/MarkdownDocumentTests.swift": "345fbde8aebb26bf76d6714c4115531e8c2ba816e7fe22aab674836d80440c85",
+    "Tools/PerformanceAudit/Package.swift": "22abf3d700bd7f5213b36b57c06bdc278ff5b45124c46687213da13712cebc8b",
+    "Tools/PerformanceAudit/Sources/NativeEditorAudit/NativeEditorAudit.swift": "a55fb9b1b84b54e386318b42311558d4be1ba72f5676dbb0ffafadb275a4e771"
+  },
+  "implementation": [
+    "Reuse exact UTF8Text identity at native-edit, programmatic edit, conflict and source-reflection boundaries. Native contiguous byte comparison retains the existing borrowed-pointer path.",
+    "Foreign snapshots reject unequal UTF16 lengths, then use Foundation bulk UTF8 conversion with explicit byte count, embedded-NUL preservation and owner lifetime. A scoped autorelease pool immediately releases temporary encoded buffers. Ill-formed foreign UTF16 keeps the original Swift UTF8 repair fallback.",
+    "Publish text changes through explicit Observation access/mutation of private sourceText storage. Existing exact-byte edit guards remain authoritative; avoid synthesized canonical String equality and notify text-only observers of byte-distinct canonical-equivalent edits."
+  ],
+  "regression": {
+    "before": "Text-only Observation test fails native/programmatic/load cases:0 notifications instead of1,0.005seconds. Source bytes themselves were updated.",
+    "after": "All3cases pass. Focused22tests/3suites pass including native composition/save/Undo/Redo and exact foreign-string/NUL/normalization/malformed-surrogate checks.",
+    "diagnostics": "Zero Swift compiler warnings/errors in final local464/94, focused22/3 and native audit Release builds."
+  },
+  "methodology": {
+    "tool": "Tools/PerformanceAudit NativeEditorAudit, development-only, not linked into Snowfolio.app.",
+    "system": "Version 27.2 (Build 26B123)",
+    "architecture": "Both baseline and final audit binaries verified arm64.",
+    "build": "Release, Swift6.4, same synthetic source generator and800x600 hidden viewport; syntax highlighting disabled.",
+    "workload": "Repeated headings, Unicode/ZWJ/combining text, links, ordered lists, tables and Swift fences. Byte-exact100KB/1MB/10MB. This is not the complete required image/nesting/full-app fixture matrix.",
+    "measurement": "Synchronous native insertText through real NSTextView delegate/model/Undo pipeline; start/middle/end positions. Five discarded warmups then30/50/20samples per position for100KB/1MB/10MB. Three independent1MBtrials; alternating version order for later trials. Native Undo restores the exact original; one Redo restores one character; final Undo retains exact bytes.",
+    "orderingLimit": "A preliminary memory diagnostic interrupted the first comparison driver; retained baseline trials0/1 precede the corrected final buffer-lifetime build. Trial2 is a fresh baseline/final pair. No profiler attached during reported timings.",
+    "baselineAuditSHA256": "8122afc40ad7ff40fbc7dbf26146542b6b43ef64bd3cbfd7288682993dbb1f72",
+    "finalAuditSHA256": "ad50db254378642c7393107a86453df24198b1dbe307fe6aa6a6b518d88c7c23",
+    "scope": "Component command latency only, not keyboard-to-pixel typing p95. Excludes visible painting/layout, full workspace/background parsing/preview, app launch/open/file IO, syntax-enabled/theme flows, CPU/energy and memory-retention acceptance."
+  },
+  "measurements": [
+    {
+      "fixtureBytes": 100000,
+      "position": "start",
+      "baseline": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.945084,
+        "p95MillisecondsPerProcess": [
+          1.217917
+        ],
+        "peakResidentMiBPerProcess": [
+          132.171875
+        ]
+      },
+      "final": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.553042,
+        "p95MillisecondsPerProcess": [
+          0.813833
+        ],
+        "peakResidentMiBPerProcess": [
+          147.78125
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 100000,
+      "position": "middle",
+      "baseline": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 4.995208,
+        "p95MillisecondsPerProcess": [
+          5.289708
+        ],
+        "peakResidentMiBPerProcess": [
+          132.171875
+        ]
+      },
+      "final": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.700125,
+        "p95MillisecondsPerProcess": [
+          0.780958
+        ],
+        "peakResidentMiBPerProcess": [
+          147.78125
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 100000,
+      "position": "end",
+      "baseline": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 8.367084,
+        "p95MillisecondsPerProcess": [
+          8.636625
+        ],
+        "peakResidentMiBPerProcess": [
+          132.171875
+        ]
+      },
+      "final": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.565208,
+        "p95MillisecondsPerProcess": [
+          0.592625
+        ],
+        "peakResidentMiBPerProcess": [
+          147.78125
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 1000000,
+      "position": "start",
+      "baseline": {
+        "processes": 3,
+        "medianOfCommandMediansMilliseconds": 0.985375,
+        "p95MillisecondsPerProcess": [
+          1.541875,
+          1.710792,
+          0.872917
+        ],
+        "peakResidentMiBPerProcess": [
+          197.390625,
+          209.109375,
+          200.59375
+        ]
+      },
+      "final": {
+        "processes": 3,
+        "medianOfCommandMediansMilliseconds": 0.589292,
+        "p95MillisecondsPerProcess": [
+          0.876875,
+          0.850791,
+          1.737625
+        ],
+        "peakResidentMiBPerProcess": [
+          217.546875,
+          217.6875,
+          209.1875
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 1000000,
+      "position": "middle",
+      "baseline": {
+        "processes": 3,
+        "medianOfCommandMediansMilliseconds": 38.548542,
+        "p95MillisecondsPerProcess": [
+          39.697416,
+          40.367834,
+          38.201875
+        ],
+        "peakResidentMiBPerProcess": [
+          197.390625,
+          209.109375,
+          200.59375
+        ]
+      },
+      "final": {
+        "processes": 3,
+        "medianOfCommandMediansMilliseconds": 0.535417,
+        "p95MillisecondsPerProcess": [
+          0.828041,
+          0.791333,
+          0.782
+        ],
+        "peakResidentMiBPerProcess": [
+          217.546875,
+          217.6875,
+          209.1875
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 1000000,
+      "position": "end",
+      "baseline": {
+        "processes": 3,
+        "medianOfCommandMediansMilliseconds": 75.87575,
+        "p95MillisecondsPerProcess": [
+          81.258833,
+          78.572709,
+          76.030833
+        ],
+        "peakResidentMiBPerProcess": [
+          197.390625,
+          209.109375,
+          200.59375
+        ]
+      },
+      "final": {
+        "processes": 3,
+        "medianOfCommandMediansMilliseconds": 0.46775,
+        "p95MillisecondsPerProcess": [
+          0.507625,
+          0.61325,
+          0.506834
+        ],
+        "peakResidentMiBPerProcess": [
+          217.546875,
+          217.6875,
+          209.1875
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 10000000,
+      "position": "start",
+      "baseline": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.93725,
+        "p95MillisecondsPerProcess": [
+          1.181917
+        ],
+        "peakResidentMiBPerProcess": [
+          773.21875
+        ]
+      },
+      "final": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.739792,
+        "p95MillisecondsPerProcess": [
+          1.025583
+        ],
+        "peakResidentMiBPerProcess": [
+          870.921875
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 10000000,
+      "position": "middle",
+      "baseline": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 375.505875,
+        "p95MillisecondsPerProcess": [
+          378.537333
+        ],
+        "peakResidentMiBPerProcess": [
+          773.21875
+        ]
+      },
+      "final": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.849041,
+        "p95MillisecondsPerProcess": [
+          1.060709
+        ],
+        "peakResidentMiBPerProcess": [
+          870.921875
+        ]
+      }
+    },
+    {
+      "fixtureBytes": 10000000,
+      "position": "end",
+      "baseline": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 750.776084,
+        "p95MillisecondsPerProcess": [
+          780.131292
+        ],
+        "peakResidentMiBPerProcess": [
+          773.21875
+        ]
+      },
+      "final": {
+        "processes": 1,
+        "medianOfCommandMediansMilliseconds": 0.464917,
+        "p95MillisecondsPerProcess": [
+          0.492834
+        ],
+        "peakResidentMiBPerProcess": [
+          870.921875
+        ]
+      }
+    }
+  ],
+  "profile": {
+    "baseline": "After2seconds,49,919native process samples. Inclusive CPU-cycle shares: source reflection50.884%, native edit acceptance43.452%, generic element comparison71.242%. Shares overlap, not wall-clock percentages.",
+    "firstImprovement": "After2seconds,30,592samples. Canonical String observer comparison19.821%; the first Swift withUTF8 foreign conversion still dominated reflection72.468%. Final code uses bulk Foundation conversion and explicit source observation.",
+    "raw": "Two bounded10/15second CPU Profiler recordings. xctrace exit54 is target termination at profile limit; separate unprofiled measurements complete exactUndoRedo. Compact per-function reports retained; raw traces/XML retired after review.",
+    "memoryDiagnostic": "Initial unscoped conversion caused1MBcomponent peak513MiB versus197MiB baseline. Scoped buffers reduce final1MBpeaks to209-218MiB. Accepted final10MBpeak871MiB versus773MiB baseline; this is a measured tradeoff, not a memory improvement or leak verdict. Full app allocation/retention investigation remains required.",
+    "compactReports": [
+      "snowfolio-native-editor-profile-summary.json",
+      "snowfolio-native-editor-profile-after-comparison-summary.json",
+      "snowfolio-native-editor-autorelease-diagnostic.json"
+    ]
+  },
+  "validation": {
+    "fullCore": {
+      "tests": 464,
+      "suites": 94,
+      "compilerDiagnostics": 0,
+      "terminal": "passed",
+      "suiteSeconds": [
+        48.056,
+        0.085,
+        0.003,
+        0.005,
+        2.842,
+        4.872,
+        0.068,
+        0.333,
+        0.004
+      ],
+      "scope": "Complete final local core after scoped-buffer correction; not full app acceptance."
+    },
+    "hostedApp": "Pending exact-source native scripting/encoded Save/Undo/preview flow. Do not claim newer complete44native acceptance.",
+    "format": "Changed Swift strict lint and diff checks pass.",
+    "review": "Reviewed scoped Foundation pointer lifetime, UTF8/NUL/repair semantics, explicit Observation publication, main-actor ownership, undo/encoding invariants and tool isolation."
+  },
+  "remaining": [
+    "Full physical native marked Pinyin/active selection/Snowfolio style/VoiceOver and Finder gesture issue.",
+    "Actual whole-app keyboard/layout/preview latency, launch/open, syntax/themes, large-file modes, memory retention/energy and complete fixture matrix.",
+    "Current44native full acceptance, remainingM3-M6compatibility/productivity/release and progressive legacy retirement."
+  ],
+  "compact": "/private/tmp/snowfolio-validation-history/native-editor-source-performance"
+}

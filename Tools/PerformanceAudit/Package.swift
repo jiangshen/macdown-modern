@@ -10,6 +10,12 @@ let package = Package(
   ],
   targets: [
     .executableTarget(
+      name: "NativeEditorAudit",
+      dependencies: [
+        .product(name: "SnowfolioUI", package: "SnowfolioCore"),
+        .product(name: "DocumentCore", package: "SnowfolioCore"),
+      ]),
+    .executableTarget(
       name: "EngineComparisonAudit",
       dependencies: [
         .product(name: "MarkdownCore", package: "SnowfolioCore"),

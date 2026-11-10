@@ -1428,5 +1428,49 @@
       "compactValidationHistory": 194308
     },
     "protection": "Process/owner/open-file checks completed before retirement. Running42199/85540/89863 and their app bundles/documents protected; no user source retired and Trash not emptied."
+  },
+  "nativeSourcePerformanceCycle": {
+    "dateUTC": "2026-11-10T08:29:33.038302+00:00",
+    "scope": "Concluded native source comparison/profiling and local correctness cycle.",
+    "removedAllocatedBytes": 69738496,
+    "removed": [
+      "/private/tmp/snowfolio-native-editor-profile-current.trace",
+      "/private/tmp/snowfolio-native-editor-profile-current.xml",
+      "/private/tmp/snowfolio-native-editor-profile-current-toc.xml",
+      "/private/tmp/snowfolio-native-editor-profile-after-comparison.trace",
+      "/private/tmp/snowfolio-native-editor-profile-after-comparison.xml",
+      "/private/tmp/snowfolio-native-editor-audit-baseline",
+      "/private/tmp/snowfolio-native-editor-measurements-current",
+      "/private/tmp/snowfolio-native-editor-audit.swift",
+      "/private/tmp/snowfolio-native-editor-pairs.py",
+      "/private/tmp/snowfolio-record-editor-performance.py",
+      "/private/tmp/snowfolio-native-editor-audit-million-final.json",
+      "/private/tmp/snowfolio-native-editor-audit-million.json",
+      "/private/tmp/snowfolio-native-editor-audit-smoke.json",
+      "/private/tmp/snowfolio-native-editor-audit-final-build.log",
+      "/private/tmp/snowfolio-native-editor-audit-build.log",
+      "/private/tmp/snowfolio-native-editor-audit-million-final.log",
+      "/private/tmp/snowfolio-native-editor-audit-million.log",
+      "/private/tmp/snowfolio-native-editor-audit-smoke.log",
+      "/private/tmp/snowfolio-native-editor-profile-after-comparison.log",
+      "/private/tmp/snowfolio-native-editor-profile-current.log",
+      "/private/tmp/snowfolio-native-editor-profile-after-comparison-summary.json",
+      "/private/tmp/snowfolio-native-editor-profile-summary.json",
+      "/private/tmp/snowfolio-native-editor-observation-before.log",
+      "/private/tmp/snowfolio-native-editor-focused.log",
+      "/private/tmp/snowfolio-native-editor-full-core.log",
+      "/private/tmp/snowfolio-finish-editor-performance.py",
+      "/private/tmp/snowfolio-native-editor-autorelease-diagnostic.json"
+    ],
+    "deferredOpenArtifacts": [],
+    "allocatedKiB": {
+      "coreCache": 1072056,
+      "protectedApp": 864116,
+      "protectedProbe": 476272,
+      "runningQA": 27088,
+      "compactHistory": 194800
+    },
+    "kept": "Single current core cache now includes the latest useful Release NativeEditorAudit plus Debug tests. No separate build cache created; current audit supports remainingM6work. Compact profiles, all10acceptedrawsampleJSON, source/binary hashes, failing-before observation report and final logs retained.",
+    "protection": "Explicit path/owner/symlink/open-file checks before removal. Running42199/85540/89863, app bundles, current source and documents untouched. No Trash emptied. Raw profile exports, obsolete baseline executable and temporary helper/source copies retired; no source-default/install/handler/security change."
   }
 }

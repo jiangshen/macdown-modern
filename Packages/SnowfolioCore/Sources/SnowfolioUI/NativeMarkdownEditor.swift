@@ -1,6 +1,7 @@
 import AppKit
 import EditorCore
 import MarkdownCore
+import RenderingCore
 import SwiftUI
 
 /// Native editing surface. It never requests the legacy layoutManager, which would
@@ -199,7 +200,7 @@ public struct NativeMarkdownEditor: NSViewRepresentable {
       !editor.hasMarkedText(), !editor.isReceivingMarkedText
     else { return }
     defer { editor.markSourceSynchronized(with: document) }
-    guard !editor.string.utf8.elementsEqual(document.text.utf8) else { return }
+    guard !UTF8Text.equal(editor.string, document.text) else { return }
     let previousSelection = editor.selectedRange()
     coordinator.isSynchronizing = true
     editor.string = document.text

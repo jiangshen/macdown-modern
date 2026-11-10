@@ -477,3 +477,42 @@ reported usage height changed96...500 points across viewport visits in typograph
 fixtures. Restoration matches a standard native clip using current geometry; original
 reported height is not a fixed reference. Exact hosted/UI/desktop and full M6 acceptance
 remain open. See validation/editor-scroll-past-end.json.
+
+
+## Native source observation and comparison — 2026-11-10
+
+The new development-only `NativeEditorAudit` mounts the actual native editor with
+a controlled hidden viewport. It inserts through NSTextView's delegate/model/Undo
+pipeline at the start, middle and end, then verifies byte-exact Undo/Redo. It measures
+the synchronous command portion, not keyboard-to-pixel latency or full M6 acceptance.
+
+Profiling attributed the growing prefix cost to foreign NSString UTF-8 iteration
+and synthesized canonical equality in the observable source setter. Exact byte guards
+now use the existing contiguous comparison plus a bulk Foundation foreign-string path
+with scoped temporary buffers. The model explicitly publishes text changes after its
+exact-source guard. A regression previously failed all three edit/load paths because
+canonical-equivalent Unicode source changes notified no text-only observers; it passes
+after the change. NULs, combining order and malformed foreign surrogate repair remain
+covered. See [the ledger](validation/native-editor-source-performance.json).
+
+Three independent 1 MB trials measure end-position command p95 at 76.0–81.3 ms before
+and 0.51–0.62 ms after. The single 10 MB pair measures 780.1 ms versus 0.49 ms; all positions
+retain exact source/Undo/Redo. Hidden viewport/syntax-disabled measurements do not
+prove the app's 16 ms typing goal. The largest process peak remains high: 871 MiB after
+versus 773 MiB before at 10 MB. This measured tradeoff and full app retention/energy work
+remain open. An initial unscoped buffer diagnostic was corrected before accepting
+these samples.
+
+Reproduce with the existing shared current cache, not a new per-feature build folder:
+
+```sh
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swift build \
+  --package-path Tools/PerformanceAudit --scratch-path CURRENT_CORE_CACHE \
+  --configuration release --arch arm64 --product NativeEditorAudit
+CURRENT_CORE_CACHE/out/Products/Release/NativeEditorAudit mixed 1000000 50
+```
+
+Use `prose`, `mixed` or `long-line`, 1,000–10,000,000 bytes and 20–500 samples per position.
+Record fresh processes and tool/source hashes, run versions sequentially, and profile
+separately. Real input, visible layout, syntax/themes and the complete image/nesting
+fixture matrix still need app-level measurements.

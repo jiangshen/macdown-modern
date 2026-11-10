@@ -4283,3 +4283,27 @@ running ~26 MiB QA app and compact findings; no raw result/recording was downloa
 One core cache and the two protected running app/probe caches remain. No source-default,
 installation/default-handler, release or security-exception change occurred. The full
 modernization goal remains active and incomplete.
+
+
+## Native source performance and exact observation — 2026-11-10
+
+A native editor component audit identified whole-prefix work in both source reflection
+and native edit acceptance. The new dev-only tool mounts the actual TextKit 2 editor,
+measures start/middle/end insertText commands and checks exact native Undo/Redo.
+Foreign source comparisons now use bounded Foundation UTF8 buffers with scoped
+temporary cleanup. The document explicitly publishes exact-source mutations rather
+than relying on Observation's canonical String comparison. A regression fails all
+three native/programmatic/load observer cases before that correction and passes after.
+
+Three 1 MB trials reduce end-command p95 from 76.0–81.3 ms to 0.51–0.62 ms; the single 10 MB pair
+measures 780.1→0.49 ms. These exclude full workspace, syntax, visible drawing, keyboard
+delivery and preview; they do not close the 16 ms whole-app goal. Peak memory is a recorded
+tradeoff: final 10 MB 871 MiB versus 773 MiB baseline. Full M6 retention/energy, launch/preview
+and complete image/nesting workloads remain open. Focused 22/3 and final local 464/94 core
+pass with zero compiler diagnostics.
+Hosted app acceptance remains pending. See
+[native-editor-source-performance.json](validation/native-editor-source-performance.json).
+
+Current user apps/documents, source default, install/default handlers and security
+entitlements remain unchanged. The current comparison reuses the single core cache;
+raw profiling and obsolete binaries/helpers are retired after compact evidence capture.

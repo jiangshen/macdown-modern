@@ -1,5 +1,7 @@
 import AppKit
 import DocumentCore
+import Observation
+import Synchronization
 import Testing
 import UniformTypeIdentifiers
 
@@ -23,6 +25,30 @@ struct MarkdownDocumentTests {
     try await document.apply(snapshot: TextFileContents(text: "External"), previous: nil)
     #expect(document.revision == 2)
     #expect(document.loadRevision == 1)
+  }
+
+  @Test(
+    "Exact Unicode source edits notify text observers even when canonically equivalent",
+    arguments: ["native", "programmatic", "load"])
+  func exactSourceObservation(operation: String) async throws {
+    let original = "caf\u{e9}\r\n"
+    let replacement = "cafe\u{301}\r\n"
+    let document = MarkdownDocument(contents: TextFileContents(text: original))
+    let changes = Mutex(0)
+    _ = withObservationTracking {
+      document.text
+    } onChange: {
+      changes.withLock { $0 += 1 }
+    }
+    switch operation {
+    case "native": document.acceptNativeEdit(replacement)
+    case "programmatic": document.replaceText(with: replacement, undoManager: nil)
+    default: document.acceptNativeLoad(TextFileContents(text: replacement))
+    }
+    #expect(changes.withLock { $0 } == 1)
+    #expect(document.text.utf8.elementsEqual(replacement.utf8))
+    #expect(
+      try await document.snapshot(contentType: .plainText).encoded() == Data(replacement.utf8))
   }
 
   @Test("Saving an unchanged loaded document retains BOM and line endings")

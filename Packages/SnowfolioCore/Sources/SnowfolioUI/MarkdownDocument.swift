@@ -2,6 +2,7 @@ import AppKit
 import DocumentCore
 import Foundation
 import Observation
+import RenderingCore
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -24,7 +25,19 @@ public final class MarkdownDocument: SwiftUI.Document {
   ]
   nonisolated public static let writableContentTypes = [markdownType, UTType.plainText]
 
-  public private(set) var text: String
+  // Mutation entry points already compare exact source bytes. Observation’s
+  // synthesized String setter adds a canonical comparison over foreign storage,
+  // both delaying native typing and suppressing byte-distinct Unicode changes.
+  @ObservationIgnored private var sourceText: String
+  public private(set) var text: String {
+    get {
+      access(keyPath: \.text)
+      return sourceText
+    }
+    set {
+      withMutation(keyPath: \.text) { sourceText = newValue }
+    }
+  }
   public private(set) var revision: UInt64 = 0
   public private(set) var loadRevision: UInt64 = 0
   public private(set) var selectionRequest: EditorSelectionRequest?
@@ -87,7 +100,7 @@ public final class MarkdownDocument: SwiftUI.Document {
   ) {
     self.configuration = configuration
     baseline = contents
-    text = contents.text
+    sourceText = contents.text
   }
 
   nonisolated public func reader(configuration: sending ReadConfiguration)
@@ -146,8 +159,8 @@ public final class MarkdownDocument: SwiftUI.Document {
       }
     #endif
     if let previous,
-      !text.utf8.elementsEqual(previous.text.utf8),
-      !text.utf8.elementsEqual(snapshot.text.utf8)
+      !UTF8Text.equal(text, previous.text),
+      !UTF8Text.equal(text, snapshot.text)
     {
       // A native host can present a conflict rather than silently losing local edits.
       // Three-way text merging is intentionally not attempted by this adapter.
@@ -168,7 +181,7 @@ public final class MarkdownDocument: SwiftUI.Document {
   /// Programmatic changes must register with the host's undo manager for dirty-state
   /// detection and autosave. Native NSTextView typing registers its own inverse edits.
   public func replaceText(with replacement: String, undoManager: UndoManager?) {
-    guard !replacement.utf8.elementsEqual(text.utf8) else { return }
+    guard !UTF8Text.equal(replacement, text) else { return }
     let previous = text
     undoManager?.registerUndo(withTarget: self) { [weak undoManager] document in
       document.replaceText(with: previous, undoManager: undoManager)
@@ -179,7 +192,7 @@ public final class MarkdownDocument: SwiftUI.Document {
 
   /// Called only by the native editor after an edit registered with the same undo manager.
   public func acceptNativeEdit(_ replacement: String) {
-    guard !replacement.utf8.elementsEqual(text.utf8) else { return }
+    guard !UTF8Text.equal(replacement, text) else { return }
     text = replacement
     revision &+= 1
     #if DEBUG
