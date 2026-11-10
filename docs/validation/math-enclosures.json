@@ -1,0 +1,62 @@
+{
+  "dateUTC": "2026-11-10T09:56:13.183858+00:00",
+  "source": "a4e428e8a3d2a04860a21c811438622b447b475e",
+  "feature": "Pinned offline MathJax enclosure compatibility; KaTeX remains the ordinary-expression path.",
+  "implementation": [
+    "Enable bundled upstream enclose configuration in each document TeX instance and offline require allowlist; explicit module import and reproduction provenance.",
+    "Permit upstream ellipse/rounded-rect geometry, stroke caps/joins and stroke-width CSS with finite bounded geometry checks. Existing source/output/node/macro bounds, external-resource and script rejection remain.",
+    "MathJax4.js stays byte-identical: enclose was already a transitive dependency of the existing bundle; no extra runtime package, loader, bridge or dependency download."
+  ],
+  "reference": "https://docs.mathjax.org/en/latest/input/tex/extensions/enclose.html",
+  "local": {
+    "tests": 469,
+    "suites": 95,
+    "executables": 9,
+    "compilerWarnings": 0,
+    "compilerErrors": 0,
+    "enclosures": "4 methods / 22 argument cases: 19 notation shapes; nested colors/exact Unicode annotations/cache; resource and excessive-geometry fallback; ellipse/stroke boundary rejection.",
+    "nativeMath": "5 methods / 10 argument cases pass. New enclosure method has light/dark HTML, real WebKit shape count/size, disabled page scripts and fresh single-page PDF. Local native suite 3.065seconds.",
+    "before": "Initial pre-implementation enclosure fixture run failed with unsupported expressions; first enabled-module pass exposed valid ellipse/rounded-box/curved-shape rejection. Output filter corrected from inspected upstream geometry. MathML default longdiv notation is correctly omitted and interpreted as longdiv.",
+    "visual": "Inspected all3 enclosure light/dark/PDF PNGs: circle, rounded box, long division, phasor, combined and nested shapes visible with surrounding labels and no clipping.",
+    "checks": [
+      "Pinned math engine resources/notices and reproduction input hashes pass",
+      "Strict Swift formatting passes",
+      "git diff --check passes"
+    ],
+    "architectures": "All9test executables inspected with lipo: arm64 only.",
+    "assertionFollowup": "After the accepted implementation commit, require an actual menclose node before applying the MathML longdiv default. All4focused enclosure methods/22cases pass again; no production change.",
+    "assertionFileSHA256": "1bd2c357dfc5760fd54e302e83e306d8ecb7ccb3caaca811398b81b570f2990c"
+  },
+  "compact": "/private/tmp/snowfolio-validation-history/math-enclosures-a4e428e",
+  "hosted": {
+    "source": "a4e428e8a3d2a04860a21c811438622b447b475e",
+    "run": 42794670988,
+    "job": 129756652580,
+    "artifact": 13751989795,
+    "status": "Success",
+    "tests": 469,
+    "suites": 95,
+    "CommonMark": {
+      "passed": 652,
+      "total": 652,
+      "mismatches": 0
+    },
+    "arm64TestExecutables": 9,
+    "compilerDiagnostics": 0,
+    "artifactBytes": 30095,
+    "compact": "/private/tmp/snowfolio-validation-history/math-enclosures-a4e428e/hosted-core",
+    "limits": "Core/package and parser corpus acceptance only; not complete app acceptance."
+  },
+  "remaining": [
+    "Wider optional legacy extension compatibility",
+    "Complete current native46 acceptance; Finder delivery and physical input/style gates remain",
+    "M5/M6 and coupled original-code retirement"
+  ],
+  "mathJaxBytes": 1862825,
+  "mathJaxSHA256": "b295bfc1dfde1d01d03274587a49479f97d2d64d721ae787d2828313b1b66e49",
+  "regularHost": {
+    "run": 42794670988,
+    "job": 129756652194,
+    "status": "Confirmed in progress; result not inferred."
+  }
+}

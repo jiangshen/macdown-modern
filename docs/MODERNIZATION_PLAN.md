@@ -2,11 +2,26 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted hosted core baseline: **464 package tests / 94 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `7a8a99a`, with zero
-compiler diagnostics. The offline-math compatibility increment also passes locally in
-57.534 seconds. Regular-host checks continue; complete current45 native acceptance is pending.
-core acceptance does not establish full app acceptance.
+Current accepted hosted core baseline: **469 package tests / 95 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `a4e428e`, with zero
+compiler diagnostics. The regular-host app run continues; complete current 46 native
+acceptance is pending. Core acceptance does not establish full app acceptance.
+
+The offline enclosure increment now passes **469 local package tests / 95 suites**
+at `a4e428e`, with all nine test executables verified arm64 and zero compiler
+warnings/errors. Original `\enclose` shapes, nested/colored options and offline
+`\require{enclose}` retain portable SVG/MathML and exact source. Light/dark HTML
+and one-page PDF were inspected. Hosted exact-source core/corpus acceptance also
+passes; full app acceptance remains open. See
+[math-enclosures.json](validation/math-enclosures.json).
+
+Real Pinyin automation remains a diagnostic, not acceptance: direct read-only AX
+access was denied and the first XCTest candidate observation produced Latin `ni`
+without a candidate. The final bounded correction also failed to produce a candidate
+on the disposable Mac; no more speculative reruns.
+No extra permission or production test hook is used. The added method makes the
+complete native set **46**, still pending; baseline 43 acceptance is unchanged.
+See [native-input-method.json](validation/native-input-method.json).
 
 Pinned KaTeX remains the path for ordinary supported math. A document that needs broader
 support now uses pinned MathJax 4.1.3 offline in JavaScriptCore, with all orchestration
@@ -4362,3 +4377,30 @@ Duplicate full push jobs for test-only changes were cancelled after verifying un
 production/core sources; the original full run and every focused result are retained.
 One current core/SDK cache and the three protected running apps/documents remain.
 No source-default, installation, handler, release or security-policy change occurred.
+
+## Offline enclosures and real-input diagnostics — 2026-11-10
+
+Pinned upstream MathJax enclosure parsing is now enabled in each compatibility
+batch and its preloaded require allowlist. Enclose was already bundled transitively;
+the regenerated JS is byte-identical, and the build input/provenance now names the
+module explicitly. KaTeX remains the ordinary-expression path. The SVG boundary
+now admits required ellipses, rounded rectangles and stroke attributes, retaining
+finite bounded geometry, source/node/output limits and resource/script rejection.
+Four new parser/boundary methods cover 19 notations, nested/color options, exact
+Unicode annotations/cache, invalid resource CSS and excessive geometry. The native
+math method checks both appearances, real WebKit dimensions, absent page engines
+and a fresh one-page PDF. All three new PNGs were inspected. Full local package 469/95
+passes, as does exact-source hosted core/corpus 469/95 and 652 examples. Regular-host
+app run `42794670988` / job `129756652194` remains live; no full app acceptance is inferred.
+
+Real Pinyin coverage uses public TIS/XCTest and restores the disposable desktop.
+The initial AX permission denial and first Latin-only candidate attempt are kept
+as compact diagnostics. Final cycle 2 waited for asynchronous candidate startup and
+recorded SCIM.ITABC after keys, but the SCIM service remained absent and the
+source contained plain Latin ni. The candidate assertion failed; no further
+speculative rerun is planned. Hosted event delivery versus editor cause remains
+undetermined; a distinct baseline/physical observation is required. No new broad permission is
+authorized,
+no user-Mac input setting is touched and no composition success is inferred.
+Existing physical review, Finder delivery, broader accessibility, optional feature
+parity, M5/M6 and coupled original-source retirement remain open.

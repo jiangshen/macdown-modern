@@ -1,0 +1,54 @@
+{
+  "dateUTC": "2026-11-10T09:58:32.037860+00:00",
+  "status": "Not accepted. Final cycle2 fails at the required real system candidate UI; no further speculative rerun.",
+  "test": "App/UITests/InputMethodTests.swift",
+  "policy": "Public HIToolbox TIS input sources and XCTest UI only. Teardown restores original source and enabled states, terminates test app and removes the disposable encoded fixture. No production hook, accessibility grant, permission bypass, user-Mac input change or security entitlement.",
+  "initial": {
+    "source": "514480143a178da471af253c1da8a9b4e4edcff8",
+    "run": 42792699081,
+    "job": 129749891765,
+    "artifact": 13752731861,
+    "tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "seconds": 50.047,
+    "evidence": "TIS selected SCIM.ITABC from original US; direct public AX read denied with -25211 and AXIsProcessTrusted=false before input. No extra permission requested or granted. Teardown has no restoration assertion failure.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-pinyin-5144801"
+  },
+  "firstCorrection": {
+    "source": "90cff44f2772cceebb657f7e914cd19d5e4446e2",
+    "run": 42793637158,
+    "job": 129753099172,
+    "artifact": 13751982898,
+    "tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "seconds": 44.008,
+    "evidence": "System selection succeeds, XCTest keys insert ni, source snapshot retains exact surrounding Unicode/CRLF. SCIM XCUIApplication reports notRunning and no candidate. Inspected preedit PNG shows plain Latin ni, not underlined marked composition. This is not evidence of real IME correctness.",
+    "fix": "Final cycle2 reestablishes the native text client and waits on the combined candidate-service/candidate condition; prior code short-circuited the wait while the service was notRunning. Candidate, Escape, commit, Undo/Redo and encoded-byte assertions retained. Adds source-after-keys/input-process diagnostics.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-pinyin-90cff44"
+  },
+  "finalAttempt": {
+    "source": "96c860b8044af46b6b41de87bdc21b34631bddc6",
+    "run": 42794567326,
+    "job": 129756298050,
+    "status": "Failed",
+    "artifact": 13751959113,
+    "tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "seconds": 60.523,
+    "cycle": 2,
+    "evidence": "Reestablishing text client and8secondconditionwait still produce plain Latin ni; TIS reports SCIM.ITABC afterkeys, but SCIM app remains notRunning. NSWorkspace reports only TextInputMenuAgent, CursorUIViewService, TextInputSwitcher and EmojiFunctionRowItem as input-related apps. Candidate/preedit PNG inspected; no Chinese candidate or marked composition observed.",
+    "limits": "Does not determine production editor versus hosted input-service/event delivery cause. Commit/Undo/Redo/byte assertions not reached; no claimed input-method acceptance. No extra restoration assertion failure in teardown.",
+    "compact": "/private/tmp/snowfolio-validation-history/native-pinyin-96c860b",
+    "archiveBytes": 120145290,
+    "rangeDownloadBytes": 29526805
+  },
+  "scope": "Disposable macOS VM only. Physical user-Mac candidate observation remains open. No default-host, installation, handler or release change. Current complete native method set46 is not accepted.",
+  "remaining": [
+    "A distinct physical native Pinyin candidate/marked-phase observation or a separately justified input-service baseline comparison; no repeat of the exhausted failing test.",
+    "Complete native46 remains unaccepted; previous complete43baseline is unchanged."
+  ]
+}

@@ -17,11 +17,10 @@ struct MarkdownMathEnclosureTests {
     let result = try MathRenderer().render(source, display: true)
     #expect(result.issue == nil, "\(notation): \(result.html)")
     let document = try XMLDocument(xmlString: result.html)
-    let enclosure =
-      try document.nodes(forXPath: "//*[local-name()='menclose']").first
-      as? XMLElement
+    let nodes = try document.nodes(forXPath: "//*[local-name()='menclose']")
+    let enclosure = try #require(nodes.first as? XMLElement)
     #expect(
-      (enclosure?.attribute(forName: "notation")?.stringValue ?? "longdiv")
+      (enclosure.attribute(forName: "notation")?.stringValue ?? "longdiv")
         == notation.replacingOccurrences(of: ",", with: " "))
     #expect(try document.nodes(forXPath: "//*[local-name()='svg']").count == 1)
     let shape: String
