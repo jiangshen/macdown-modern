@@ -90,7 +90,11 @@
       // Mouse/keyboard focus and the VoiceOver cursor are independent. Move the
       // cursor explicitly rather than accepting the startup greeting as speech.
       app.typeKey(.F4, modifierFlags: [.control, .option, .shift, .function])
-      let sourceSpeech = try speech("source", { try service.currentSpeech() })
+      _ = try speech("source-value", { try service.currentSpeech() })
+      // Focusing an active text area reads its current line. Ask VoiceOver to
+      // describe the focused item to verify its spoken label and role as well.
+      app.typeKey(.F3, modifierFlags: [.control, .option, .function])
+      let sourceSpeech = try speech("source-description", { try service.currentSpeech() })
       XCTAssertTrue(sourceSpeech.localizedCaseInsensitiveContains("Markdown source"), sourceSpeech)
       XCTAssertTrue(
         sourceSpeech.localizedCaseInsensitiveContains("text")

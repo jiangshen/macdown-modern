@@ -1,9 +1,9 @@
 {
   "dateUTC": "2026-11-10T08:49:47.148558+00:00",
-  "status": "First run fails on stale startup greeting. Fix/rerun cycle1 prepared; no actual source/toolbar speech acceptance.",
+  "status": "Explicit cursor focus now produces actual Chinese/combining source speech. The label assertion needs item description rather than current-line reading. Final allowed cycle2 prepared; no full VoiceOver acceptance.",
   "method": "VoiceOverTests/testNativeSourceAndToolbarSpeechNavigationPreserveEncodedUndo",
   "sourceSHA256": {
-    "App/UITests/VoiceOverTests.swift": "14f12b43ddda412f82c9f59777f7fb75984ca55638cb5e980b1d3c53b304b01d",
+    "App/UITests/VoiceOverTests.swift": "25289df41c7f135b8339c383b0d82433a0979b55b382d7683b980960923c4858",
     ".github/workflows/snowfolio.yml": "911037218cd45edb66a7a89cd1c2b7beb1b5d035c874f1a6411879b72670ecbc"
   },
   "API": "Installed macOS27XCUIAutomation headers plus Swift6arm64SDKtypecheck verify voiceOverService.enable/disable/isEnabled/currentSpeech/moveForward/moveBackward andOutput.utterance.",
@@ -34,5 +34,27 @@
     "logsTransferBytes": 562382,
     "compact": "/private/tmp/snowfolio-validation-history/native-voiceover-54de5a6"
   },
-  "navigationReview": "Inspect speech returned by entering a toolbar too, so a Render button encountered as its first child is not skipped. No runtime rerun occurred before this review correction."
+  "navigationReview": "Inspect speech returned by entering a toolbar too, so a Render button encountered as its first child is not skipped. No runtime rerun occurred before this review correction.",
+  "secondAttempt": {
+    "dateUTC": "2026-11-10T09:13:27.873697+00:00",
+    "source": "3229e750bffbb9a9707a0b8a5701d17c1889342e",
+    "run": 42787516653,
+    "job": 129732370914,
+    "artifact": 13749139872,
+    "tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "seconds": 75.021,
+    "failure": "Line94expects Markdown source in currentSpeech; actual utterance is authored Chinese/emoji/combining line. This is real content speech after explicit cursor focus, not startup greeting.",
+    "visual": "Inspected PNG: VoiceOver cursor outlines native source editor and caption shows Chinese/emoji/accent; source/caret remain intact. Hosted preview remains blank.",
+    "cleanup": "XCTest teardown blocks captured actual speech/state/image, restored initial disabled VoiceOver state without an added failure, and terminated test app.",
+    "fix": "Final cycle2 uses documented VO-Fn-F3 item-description command to request label/role after recording current-line content. All existing spoken-label/role/navigation/button and nativeUndo/byte assertions/deadlines retained. No production-code change.",
+    "reference": "https://support.apple.com/en-mk/guide/voiceover/cpvokys03/mac",
+    "cycle": 2,
+    "scope": "Actual source content speech observed; full label/navigation/editing acceptance remains open. Stop speculative CI reruns after this final cycle.",
+    "archiveBytes": 119040164,
+    "logsTransferBytes": 527032,
+    "smallResultTransferBytes": 29413705,
+    "compact": "/private/tmp/snowfolio-validation-history/native-voiceover-3229e75"
+  }
 }
