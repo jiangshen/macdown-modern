@@ -416,5 +416,50 @@
     "supersededFull34AllocatedBytesRemoved": 190341120,
     "latestFull35AllocatedBytes": 193961984,
     "ownershipAndOpenFilesChecked": true
+  },
+  "sourceObservation7a8a99a": {
+    "dateUTC": "2026-11-10T08:41:14.590604+00:00",
+    "source": "7a8a99ad90c6b8f30bbe7e3b05b360251362fec2",
+    "run": 42783324407,
+    "job": 129718364553,
+    "artifact": 13746364362,
+    "scope": "Focused actual native app scripting; existing3methods unchanged. Not complete current44native acceptance.",
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "methodSeconds": [
+      22.87,
+      16.112,
+      19.184
+    ],
+    "methods": [
+      "SnowfolioUITests.DocumentScriptingTests/testScriptedCreationSaveFormatsAndClose",
+      "SnowfolioUITests.DocumentScriptingTests/testScriptedInitialDataObjectReferencesAndReadOnlyErrors",
+      "SnowfolioUITests.DocumentScriptingTests/testScriptedTextUndoAutosaveAndManualHTMLCache"
+    ],
+    "resultElapsedSeconds": 198.2920000553131,
+    "runtimeQoSWarnings": 1,
+    "AppIntentsMetadataWarnings": 3,
+    "compilerDiagnostics": 0,
+    "behavior": "Actual AppleEvents Open/Make/text/name/file/html, exact encoded autosave/Save, keyboard Undo/Redo, manual Render/cache, initial data and object references, read-only/missing-object errors, format-code saves, Close and Quit.",
+    "visual": "All4PNGs inspected: authorized temporary-runner consent; two expected read-only/missing-object diagnostic captures with initial Chinese/combining source intact; final scripted changed source/outline/caret. Hosted WebKit area still blank, so no new physical painting/IME/VoiceOver or style acceptance.",
+    "diagnosticErrors": "Captured -10006read-onlyHTML and -1728missingdocument are expected assertions in passing tests, not new test failures.",
+    "authorization": "Existing user approval applies only to SnowfolioUITests-Runner controlling Snowfolio on disposable test machines. No local user-Mac permission or production security change.",
+    "archiveBytes": 121751601,
+    "logsTransferBytes": 557135,
+    "smallResultTransferBytes": 30525490,
+    "compact": "/private/tmp/snowfolio-validation-history/native-editor-source-performance/native-scripting-7a8a99a",
+    "inspectedAttachments": [
+      "native-script-consent-result_0_AEC486EC-67DC-464D-A8A9-9AC2362D2B8E.txt",
+      "authorized-own-app-consent-prompt_0_9E59592F-1E5A-47C5-9054-AEAE55685F42.png",
+      "native-script-target-on-failure_0_64528195-906D-46DB-8072-755F6752ABDC.png",
+      "native-script-event-failure_0_3AA394D4-24DB-4365-90BF-E31664428C09.txt",
+      "native-script-target-on-failure_0_F4E7AC8E-CE72-494E-BC46-1D855A27F7B9.png",
+      "native-script-event-failure_0_9E9DAC2E-0C55-43BC-BD69-0D9D180DCF08.txt",
+      "native-script-consent-result_0_1B86BA4A-FED5-4194-AD6F-ABC95FC927C5.txt",
+      "native-scripted-document_0_8813CC47-8941-4F74-AF0E-851658ED075F.png",
+      "native-script-consent-result_0_CFF649C1-049A-44D0-BB80-B3FAC3E052BC.txt"
+    ]
   }
 }

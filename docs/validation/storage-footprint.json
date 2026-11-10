@@ -1472,5 +1472,21 @@
     },
     "kept": "Single current core cache now includes the latest useful Release NativeEditorAudit plus Debug tests. No separate build cache created; current audit supports remainingM6work. Compact profiles, all10acceptedrawsampleJSON, source/binary hashes, failing-before observation report and final logs retained.",
     "protection": "Explicit path/owner/symlink/open-file checks before removal. Running42199/85540/89863, app bundles, current source and documents untouched. No Trash emptied. Raw profile exports, obsolete baseline executable and temporary helper/source copies retired; no source-default/install/handler/security change."
+  },
+  "nativeSourceHostedAcceptanceCycle": {
+    "dateUTC": "2026-11-10T08:41:14.590604+00:00",
+    "removedAllocatedBytes": 36982784,
+    "removed": [
+      "/private/tmp/snowfolio-native-editor-current-result",
+      "/private/tmp/snowfolio-native-editor-current-attachments",
+      "/private/tmp/snowfolio-native-editor-current-extraction.log",
+      "/private/tmp/snowfolio-native-editor-current-summary.json",
+      "/private/tmp/snowfolio-native-editor-current-export.log",
+      "/private/tmp/snowfolio-native-editor-scripting-watch.log",
+      "/private/tmp/snowfolio-record-editor-hosted.py"
+    ],
+    "deferredOpenArtifacts": [],
+    "kept": "Compact all3method outcomes/summary/log,4inspectedPNGs, expected-error/consent metadata and28KBcompressedcorelogs. No rawxcresult,recording or archive remains. Existing singlecorecache and protected running apps/documents untouched.",
+    "scope": "Exact7a8a99a focused-native result review; no new local build or rerun. Owner/symlink/open-file checks pass; Trash not emptied."
   }
 }

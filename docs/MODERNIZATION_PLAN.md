@@ -2,8 +2,8 @@
 
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
-Current accepted hosted core baseline: **461 package tests / 94 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `7d0923b`, with zero
+Current accepted hosted core baseline: **464 package tests / 94 suites, all 652 published
+CommonMark examples and nine arm64 test executables pass** at `7a8a99a`, with zero
 compiler diagnostics. The offline-math compatibility increment also passes locally in
 57.534 seconds. Regular-host checks continue; complete current44 native acceptance is pending.
 core acceptance does not establish full app acceptance.
@@ -4301,7 +4301,10 @@ delivery and preview; they do not close the 16 ms whole-app goal. Peak memory is
 tradeoff: final 10 MB 871 MiB versus 773 MiB baseline. Full M6 retention/energy, launch/preview
 and complete image/nesting workloads remain open. Focused 22/3 and final local 464/94 core
 pass with zero compiler diagnostics.
-Hosted app acceptance remains pending. See
+Exact-source hosted core 464/94, 652 CommonMark and nine arm64 executables also pass.
+Focused native scripting passes 3/3, retaining encoded autosave/Save, keyboard Undo/Redo,
+manual HTML cache/Render, object references and expected errors. All four PNGs were
+inspected; hosted WebKit remains blank. This is not complete current 44 acceptance. See
 [native-editor-source-performance.json](validation/native-editor-source-performance.json).
 
 Current user apps/documents, source default, install/default handlers and security
