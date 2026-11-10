@@ -3,7 +3,7 @@
   "status": "First run fails on stale startup greeting. Fix/rerun cycle1 prepared; no actual source/toolbar speech acceptance.",
   "method": "VoiceOverTests/testNativeSourceAndToolbarSpeechNavigationPreserveEncodedUndo",
   "sourceSHA256": {
-    "App/UITests/VoiceOverTests.swift": "a579a712896e02561b316883e1fc2285e486a0e7b59f831a98f64ba5c491e9d7",
+    "App/UITests/VoiceOverTests.swift": "14f12b43ddda412f82c9f59777f7fb75984ca55638cb5e980b1d3c53b304b01d",
     ".github/workflows/snowfolio.yml": "911037218cd45edb66a7a89cd1c2b7beb1b5d035c874f1a6411879b72670ecbc"
   },
   "API": "Installed macOS27XCUIAutomation headers plus Swift6arm64SDKtypecheck verify voiceOverService.enable/disable/isEnabled/currentSpeech/moveForward/moveBackward andOutput.utterance.",
@@ -33,5 +33,6 @@
     "smallResultTransferBytes": 29813319,
     "logsTransferBytes": 562382,
     "compact": "/private/tmp/snowfolio-validation-history/native-voiceover-54de5a6"
-  }
+  },
+  "navigationReview": "Inspect speech returned by entering a toolbar too, so a Render button encountered as its first child is not skipped. No runtime rerun occurred before this review correction."
 }

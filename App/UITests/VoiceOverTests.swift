@@ -103,9 +103,9 @@
       _ = try speech("window-top", { try service.currentSpeech() })
       var foundRender = false
       for step in 0..<32 {
-        let value = try speech("toolbar-\(step)", { try service.moveForward() })
+        var value = try speech("toolbar-\(step)", { try service.moveForward() })
         if value.localizedCaseInsensitiveContains("toolbar") {
-          _ = try speech("enter-toolbar", { try service.moveIn() })
+          value = try speech("enter-toolbar", { try service.moveIn() })
         }
         if value.localizedCaseInsensitiveContains("Render")
           || value.localizedCaseInsensitiveContains("Update the Markdown preview"),
