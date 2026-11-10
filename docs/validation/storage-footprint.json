@@ -1402,5 +1402,31 @@
     ],
     "kept": "/private/tmp/snowfolio-validation-history/finder-drop-39d967b has smalllog,1inspectedPNG,twohierarchies,event summary and6/1focusedreport. No raw result/recording/new local app build.",
     "protection": "Owner/open-file checks pass. Reused corecache and existing ui-test modulecache retained; running app/probe/documents untouched."
+  },
+  "nativeDesktopCurrentCycle": {
+    "dateUTC": "2026-11-10T07:59:01.577919+00:00",
+    "scope": "Current native QA preparation and physical input/save check; terminal core/regular/Finder result collection.",
+    "standardBuildCleanup": "Earlier explicit-path xcodebuild clean passed; temporary build and obsolete staged c0 app removed after ownership/open-file checks.",
+    "retiredBuildAllocatedBytes": 492093440,
+    "retiredBuilds": [
+      "/private/tmp/snowfolio-native-check-current/DerivedData",
+      "/private/tmp/snowfolio-native-physical-check"
+    ],
+    "retiredHelpers": [
+      "/private/tmp/snowfolio-build-current-native-check.py",
+      "/private/tmp/snowfolio-stage-current-native-check.py",
+      "/private/tmp/snowfolio-clean-native-check-build.py",
+      "/private/tmp/snowfolio-record-native-desktop-current.py"
+    ],
+    "retiredHelperAllocatedBytes": 32768,
+    "retained": "Running currentQAapp/owned fixture and compact build/source/signature/physical records. One corecache; two older running app/probe caches protected. Coreartifact28900bytes plus only680284/190186347 regular and542586/116375409 Finder artifact bytes read; no new raw result or recording.",
+    "allocatedKiB": {
+      "currentQAAppAndFixture": 27088,
+      "coreCache": 974152,
+      "runningCanonicalAppCache": 864116,
+      "runningProbeCache": 476272,
+      "compactValidationHistory": 194308
+    },
+    "protection": "Process/owner/open-file checks completed before retirement. Running42199/85540/89863 and their app bundles/documents protected; no user source retired and Trash not emptied."
   }
 }

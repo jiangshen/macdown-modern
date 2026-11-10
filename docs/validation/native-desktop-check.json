@@ -1,0 +1,73 @@
+{
+  "dateUTC": "2026-11-10T07:59:01.577919+00:00",
+  "source": "7d0923bf71e0836dbf1676b08ac4389adab9c29d",
+  "host": "NativeNSDocument, isolated QA identity",
+  "app": "/private/tmp/snowfolio-native-check-current/Snowfolio Native Check.app",
+  "bundleIdentifier": "local.snowfolio.native-physical-check",
+  "preparation": {
+    "dateUTC": "2026-11-09T23:28:41.855165+00:00",
+    "source": "7d0923bf71e0836dbf1676b08ac4389adab9c29d",
+    "qaApp": "/private/tmp/snowfolio-native-check-current/Snowfolio Native Check.app",
+    "bundleIdentifier": "local.snowfolio.native-physical-check",
+    "host": "NativeNSDocument",
+    "identityIsolation": "Separate UserDefaults/restoration identity; no protocol declarations or imported/exported UTI registration. LSHandlerRankNone on document types. No registration/launch/default change performed.",
+    "metadataRemoved": [
+      "CFBundleURLTypes",
+      "UTImportedTypeDeclarations"
+    ],
+    "code": "Same compiled native Debug code/resources as verified product; only QA identity/handler metadata and existing Sparkle architecture slices adjusted, then ad-hoc signed. Product CLI identity check deliberately remains strict; QA profile is for editor/preview/input/accessibility, not CLI acceptance.",
+    "signing": {
+      "originalFlags": "0x2",
+      "qaFlags": "0x2",
+      "libraryValidationException": false,
+      "deepStrictVerification": "passed"
+    },
+    "updater": {
+      "thinned": [
+        "Contents/Frameworks/Sparkle.framework/Versions/B/Autoupdate",
+        "Contents/Frameworks/Sparkle.framework/Versions/B/Sparkle",
+        "Contents/Frameworks/Sparkle.framework/Versions/B/Updater.app/Contents/MacOS/Updater",
+        "Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Downloader.xpc/Contents/MacOS/Downloader",
+        "Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices/Installer.xpc/Contents/MacOS/Installer"
+      ],
+      "bytesBefore": 2385664,
+      "bytesAfter": 1140480,
+      "arm64Only": "verified",
+      "version": "2.10.1"
+    },
+    "sourceDefault": "Regular generated project and initial core lock restored; running apps42199/85540 and bundles untouched.",
+    "status": "Prepared only. Physical preview/selection/realIME/VoiceOver still open. Not installed, launched, notarized or released.",
+    "handlerPolicySource": "https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html",
+    "cleanup": {
+      "dateUTC": "2026-11-09T23:31:01.065939+00:00",
+      "standardClean": "xcodebuildcleanpassed",
+      "retiredAllocatedBytes": 492093440,
+      "retired": [
+        "/private/tmp/snowfolio-native-check-current/DerivedData",
+        "/private/tmp/snowfolio-native-physical-check"
+      ],
+      "kept": "One current26MBQAapp outsideDerivedData and compact source/build/verification records. Old stagedc0app retired; running app42199/probe85540 untouched.",
+      "defaultProject": "Regular SwiftUI generated project and core lock restored."
+    }
+  },
+  "fixture": {
+    "path": "/private/tmp/snowfolio-native-check-current/Native Desktop Check.md",
+    "bytes": 163,
+    "sha256": "fb24926b55757b69f48fbc70b07dd5baedb5be229c3ac4bb926890138ac5aea0",
+    "encoding": "UTF8, LF, no BOM; combining e+U0301 and ZWJ emoji preserved"
+  },
+  "observed": {
+    "preview": "Physical native app visibly paints headings, ordered/unordered lists, callout text, Chinese/emoji/combining glyphs. This closes the basic native physical painting check, not every style/export/contrast gate.",
+    "selection": "Mixed ordered/unordered source selection is continuous in gray/inactive appearance, with aligned markers and no earlier rectangular seams. Active blue selection not captured.",
+    "input": "User supplied Pinyin input; committed Chinese character U+4F60 appeared in source and preview. Single native Undo removed it, Redo restored it in both source and preview. Native Save produced exactly the expected163bytes.",
+    "style": "QA Appearance reports selected imported GitHub2 style; white preview is consistent with that choice. Attempted Snowfolio selection was not observed to take effect. No claim that preferred style/default migration is verified."
+  },
+  "remaining": [
+    "Real marked Pinyin/candidate phase not captured; cannot infer correctness from committed Chinese. Improve observation before another identical user handoff.",
+    "Active blue source selection/caret and preferred Snowfolio dark reading style.",
+    "VoiceOver navigation and announcements.",
+    "Direct physical Finder drag and remaining feature/performance/release gates."
+  ],
+  "interruption": "CUA later timed out during style-menu navigation, then reconnection also timed out. No inference that the Mac locked; no speculative source change.",
+  "preservation": "Original app42199, DocumentHostProbe85540 and nativeQA89863/bundles remain running/protected. Original unsaved Snowfolio Physical Check document untouched. No install/default-handler/source-default/security change."
+}

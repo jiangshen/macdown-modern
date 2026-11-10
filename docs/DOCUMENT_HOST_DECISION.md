@@ -10,7 +10,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 
 | Evidence | SwiftUI DocumentGroup host | Swift NSDocument host |
 | --- | --- | --- |
-| Complete accepted comparison | Latest full33 at `1d6bd22`:28pass/5fail (same3lifecycle cases, invalid-read handling and CLI new-file readiness) | 43/43 at `1d6bd22`, no failures or skips; complete current44 pending |
+| Complete accepted comparison | Latest full33 at `7d0923b`:29pass/4fail (same3lifecycle cases and invalid-read handling; CLI passes) | 43/43 at `1d6bd22`, no failures or skips; complete current44 pending |
 | Autosave and saved edit Undo | Acceptance fails | Passes, including exact encoded bytes |
 | Clean external changes after autosave | Two cases fail | Both pass |
 | Dirty conflicts and Versions | Full acceptance remains open | All conflict choices and native Versions/Restore pass |
@@ -33,8 +33,10 @@ file-watcher stack is not justified to keep DocumentGroup.
 Before selecting the native host as the source default:
 
 1. **Passed:** complete43/43 at1d6bd22, retaining all prior methods and adding plug-in/update acceptance. Current44, including the new real Finder method, remains pending.
-2. Verify the current native build physically: preview painting, active/inactive
-   selection, caret, marked Pinyin composition and Undo/Redo, and VoiceOver.
+2. Physical native basic painting, inactive mixed-list selection and committed Chinese
+   Undo/Redo/exact Save are observed at `7d0923b`. Active blue selection/caret, preferred
+   Snowfolio style, marked Pinyin candidate phase and VoiceOver still require acceptance.
+   See [native-desktop-check.json](validation/native-desktop-check.json).
 3. Recheck launch/restoration, preferences, all encoding and export contracts, and
    the arm64 packaged app/helper.
 4. Record the decision and remove the comparison-only DocumentGroup host after
@@ -88,3 +90,11 @@ It has not launched or installed. Codesign/arm64/resource/native-class checks pa
 temporary486MB build intermediates were cleaned and the regular generated project
 restored. The Mac remains locked, so physical marked Pinyin, VoiceOver and native
 preview/selection gates still precede the source-default/installation decision.
+
+
+Current isolated physical-check app is now running at
+/private/tmp/snowfolio-native-check-current/Snowfolio Native Check.app (exact `7d0923b`).
+The former c0 staging path above is historical and retired. New physical evidence and
+remaining limitations are recorded in native-desktop-check.json. The final focused
+Finder run fails before any observed drop callback; current44 remains unaccepted.
+Do not infer a source-default/install/release decision from basic desktop painting.

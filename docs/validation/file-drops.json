@@ -28,7 +28,7 @@
   ],
   "finderGestureAcceptance": {
     "dateUTC": "2026-11-09T22:46:17.151457+00:00",
-    "status": "Mouse API corrected but first delivery still fails at39d967b. Final diagnostic gesture rerun pending; no gesture acceptance or app root-cause claim.",
+    "status": "Known unresolved gesture-delivery failure after final allowed diagnostic cycle. No further speculative CI rerun; distinct physical observation is needed.",
     "method": "FileDropTests/testFinderMultiFileDropOpensTabsAndReusesDocumentsWithoutChangingBytes",
     "scope": "Native host only, disposable fixture folder and desktop. Real Finder multi-selection drag to sidebar Open Files destination, two Unicode/encoded documents plus dirty anchor in same native tab group, repeated batch reuses existing documents, independent source/Undo/Save and exact original bytes.",
     "local": "Swift6/arm64/macOS27 type-check with XCTest Swift overlay passed; strict formatting/YAML parse/diff checks pass. No running bundle overwritten, new local app build or duplicate core run.",
@@ -173,7 +173,22 @@
         ".github/workflows/snowfolio.yml": "e3bf2772c3f2d996d8ef99eff80878bc7110d6feb3e50caf9068c4a10e23cc9b",
         "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentFileDrops.swift": "f61dfe410a0a6b495819088d2f4ef8719c56a13fb9aaf230b01f07579590c55f",
         "Packages/SnowfolioCore/Sources/SnowfolioUI/DocumentWorkspace.swift": "f518f798f6b3533c96d5b79e6456d726801a6128cd76aa96ff64fc35192c943e"
-      }
+      },
+      "source": "7d0923bf71e0836dbf1676b08ac4389adab9c29d",
+      "run": 42719417360,
+      "job": 129509271465,
+      "artifact": 13719553019,
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "seconds": 37.975,
+      "failure": "First document absent after Finder gesture; line51. Logging is live but no drop validate/perform/workspace/batch callbacks are delivered.",
+      "finding": "Failure is before observed drop-handler delivery. Hosted input delivery versus native view registration remains undetermined; no attributed production root cause.",
+      "compact": "/private/tmp/snowfolio-validation-history/finder-drop-7d0923b",
+      "transferBytes": 542586,
+      "archiveBytes": 116375409,
+      "visual": "No new screenshots downloaded for final diagnostic; live metadata and terminal method outcome inspected.",
+      "next": "Bounded two fix/rerun cycles exhausted. Keep known issue open and use a distinct physical gesture observation before changing production behavior."
     }
   }
 }

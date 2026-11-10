@@ -533,5 +533,53 @@
     "compact": "/private/tmp/snowfolio-validation-history/native-cli-289a815",
     "scope": "Focused1/1only. Not combined with complete43at1d6bd22 to claim44/currentfullacceptance.",
     "retiredAllocatedBytes": 37646336
+  },
+  "core7d0923b": {
+    "dateUTC": "2026-11-10T07:59:01.577919+00:00",
+    "source": "7d0923bf71e0836dbf1676b08ac4389adab9c29d",
+    "run": 42719337228,
+    "job": 129508988475,
+    "artifact": 13720540350,
+    "tests": 461,
+    "suites": 94,
+    "CommonMark": "652/652; zero mismatches",
+    "arm64Executables": 9,
+    "compilerDiagnostics": 0,
+    "scope": "Complete core acceptance at this source; not full app/performance/release acceptance.",
+    "compact": "/private/tmp/snowfolio-validation-history/core-7d0923b"
+  },
+  "regular7d0923b": {
+    "dateUTC": "2026-11-10T07:59:01.577919+00:00",
+    "source": "7d0923bf71e0836dbf1676b08ac4389adab9c29d",
+    "host": "SwiftUI DocumentGroup (workflow job named native-app)",
+    "run": 42719337228,
+    "job": 129508988760,
+    "artifact": 13720418249,
+    "executed": 33,
+    "passed": 29,
+    "failed": 4,
+    "skipped": 0,
+    "failedMethods": [
+      "SnowfolioUITests.DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "SnowfolioUITests.DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "SnowfolioUITests.DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave",
+      "SnowfolioUITests.DocumentTypeTests/testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "internalQoSWarnings": 46,
+    "compilerDiagnostics": 0,
+    "transferBytes": 680284,
+    "archiveBytes": 190186347,
+    "compact": "/private/tmp/snowfolio-validation-history/regular-full-7d0923b",
+    "finding": "Three known autosave/external-reload failures and invalid-encoding error presentation remain. CLI and saved-tab restoration pass here; this does not establish global resolution of earlier intermittent failures.",
+    "visual": "Terminal method outcomes/logs inspected; no new screenshot acceptance.",
+    "scope": "No complete regular acceptance. Native43 at1d6bd22 remains the complete accepted native baseline; focusedCLI at289a815 is separate. Current native44 remains unaccepted.",
+    "methodRecord": "/private/tmp/snowfolio-validation-history/regular-full-7d0923b/report.json"
+  },
+  "physicalNative7d0923b": {
+    "dateUTC": "2026-11-10T07:59:01.577919+00:00",
+    "source": "7d0923bf71e0836dbf1676b08ac4389adab9c29d",
+    "ledger": "native-desktop-check.json",
+    "accepted": "Physical native glyph painting, inactive continuous source selection, user-supplied committed Chinese with native Undo/Redo and exact163byteSave.",
+    "open": "Real marked composition/candidate list, active blue selection, preferred Snowfolio style and VoiceOver; current44 full native acceptance. No source-default/install/handler switch."
   }
 }

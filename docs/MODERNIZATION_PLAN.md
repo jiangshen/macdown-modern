@@ -3,8 +3,8 @@
 Status: **Active and incomplete. M1 is complete; M2 document acceptance, M3 parser/preview parity and M4 native experience continue. M5 productivity/integrations and M6 app performance/release acceptance remain incomplete.**
 
 Current accepted hosted core baseline: **461 package tests / 94 suites, all 652 published
-CommonMark examples and nine arm64 test executables pass** at `dc9eed3`, with zero
-compiler diagnostics. The exact compatibility increment also passes locally in
+CommonMark examples and nine arm64 test executables pass** at `7d0923b`, with zero
+compiler diagnostics. The offline-math compatibility increment also passes locally in
 57.534 seconds. Regular-host checks continue; complete current44 native acceptance is pending.
 core acceptance does not establish full app acceptance.
 
@@ -49,7 +49,8 @@ exports, warm/cold CLI, plug-in session/encoded Undo/Save and update choices pas
 together. There are 59 internal QoS warnings, one XCTest attachment encoding warning
 (three conversion log messages), and three skipped App Intents metadata extractions;
 Swift compiler diagnostics are zero. This is not performance/release acceptance.
-Physical Pinyin/VoiceOver/native preview and selection remain open; source default
+Physical native basic painting and committed Chinese Undo/Redo now pass; marked
+Pinyin/VoiceOver and active selection remain open. Source default
 and installed app remain unchanged. See document-lifecycle.json and
 [the host decision](DOCUMENT_HOST_DECISION.md).
 
@@ -60,10 +61,10 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `1d6bd22` executes 33 methods:
-28 pass / 5 fail (all terminal method outcomes inspected). The warm CLI window wait,
-three autosave/reload failures and invalid-encoding error presentation remain. Saved-tab restoration passes here; its prior intermittent
-failure is not globally resolved. This is not complete regular acceptance. Native43
+The latest complete regular SwiftUI-host run at `7d0923b` executes 33 methods:
+29 pass / 4 fail (all terminal method outcomes inspected). Three autosave/reload
+failures and invalid-encoding error presentation remain. CLI and saved-tab restoration
+pass here; earlier intermittent failures are not globally resolved. This is not complete regular acceptance. Native43
 at `1d6bd22` is the complete accepted native baseline. See
 [default-host-followup.json](validation/default-host-followup.json).
 
@@ -4247,3 +4248,38 @@ complete accepted baseline. Hosted verification of the new source, physical inpu
 VoiceOver, remaining compatibility and release/performance/retirement gates remain
 open. Compact evidence is retained; concluded wrapper outputs and the superseded
 reading result were removed after ownership and open-file checks.
+
+
+## Current native desktop input and terminal verification — 2026-11-10
+
+The isolated native QA app uses exact `7d0923b` code with a separate settings/restoration
+identity and no default-handler claim. Physical native preview paints headings, lists,
+callout text, Chinese, ZWJ emoji and combining glyphs. Inactive mixed-list selection is
+continuous with aligned markers. User-supplied Chinese input appears in source/preview;
+one native Undo removes it and Redo restores it. Normal Save matches the exact 163-byte
+UTF8/LF fixture, including combining source. This accepts basic physical native paint
+and committed-input Undo/Redo, not real marked Pinyin composition or VoiceOver.
+The candidate panel was not captured. QA Settings reports imported GitHub2; the preferred
+Snowfolio style change was not observed to apply before CUA timed out. Active blue
+selection, preferred-style inspection and VoiceOver remain open. Both original running
+apps/user-assisted documents and the current QA app/fixture remain protected. See
+[native-desktop-check.json](validation/native-desktop-check.json).
+
+At `7d0923b`, hosted core 461/94, 652 CommonMark examples and nine arm64 executables pass without compiler diagnostics.
+The regular host finishes 29/33: three known autosave/reload cases and invalid-encoding
+error presentation fail; CLI and saved-tab restoration pass. All 33 terminal outcomes
+were inspected. Native 43 at `1d6bd22` remains the complete native accepted baseline;
+focused CLI at `289a815` is separate and complete current 44 is not accepted.
+
+The final Finder diagnostic fails 1/1 in 37.975 seconds. Live DEBUG metadata confirms
+launch/revision/save logging, but zero drop validation/perform/workspace/batch callbacks.
+The failure precedes observed handler delivery; hosted gesture input versus native
+registration is undetermined. Two fix/rerun cycles are exhausted; do not repeat a
+speculative CI run. Distinct physical gesture evidence is the next step.
+
+Standard clean and ownership/open-file checks retired 492,093,440 bytes of concluded
+QA intermediates/obsolete staged app, plus completed build helper scripts. Retain the
+running ~26 MiB QA app and compact findings; no raw result/recording was downloaded.
+One core cache and the two protected running app/probe caches remain. No source-default,
+installation/default-handler, release or security-exception change occurred. The full
+modernization goal remains active and incomplete.
