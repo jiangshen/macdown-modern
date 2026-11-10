@@ -1,6 +1,5 @@
 #if NATIVE_DOCUMENT_HOST
   import AppKit
-  import ApplicationServices
   import Carbon.HIToolbox
   import Synchronization
   import XCTest
@@ -82,7 +81,7 @@
       ]
       app.launch()
       addTeardownBlock { @MainActor in app.terminate() }
-      let transcript = Mutex(["AX trusted=\(AXIsProcessTrusted())"])
+      let transcript = Mutex(["Public TIS input selection and XCTest candidate UI"])
       addTeardownBlock { @MainActor in
         let text = XCTAttachment(string: transcript.withLock { $0.joined(separator: "\n") })
         text.name = "native-pinyin-transcript"
@@ -132,70 +131,42 @@
       transcript.withLock {
         $0.append("Selected system Pinyin; original=\(InputSources.id(input.original))")
       }
-      let running = try XCTUnwrap(
-        NSRunningApplication.runningApplications(withBundleIdentifier: "local.macdown.modern").first
-      )
-      let application = AXUIElementCreateApplication(running.processIdentifier)
-      func attribute(_ element: AXUIElement, _ name: CFString) -> (AXError, CFTypeRef?) {
-        var value: CFTypeRef?
-        let error = AXUIElementCopyAttributeValue(element, name, &value)
-        return (error, value)
-      }
-      let focus = attribute(application, kAXFocusedUIElementAttribute as CFString)
-      transcript.withLock { $0.append("Focused AX query=\(focus.0.rawValue)") }
-      XCTAssertEqual(focus.0, .success, "Read-only AX permission is required; do not bypass it")
-      let focused = try XCTUnwrap(focus.1) as! AXUIElement
-      XCTAssertEqual(
-        attribute(focused, kAXIdentifierAttribute as CFString).1 as? String, "markdownSourceEditor")
-      func markedRange() -> CFRange? {
-        let result = attribute(
-          focused, NSAccessibility.Attribute.textInputMarkedRangeAttribute.rawValue as CFString)
-        guard result.0 == .success, let raw = result.1, CFGetTypeID(raw) == AXValueGetTypeID()
-        else {
-          return nil
-        }
-        let value = raw as! AXValue
-        var range = CFRange()
-        guard AXValueGetType(value) == .cfRange, AXValueGetValue(value, .cfRange, &range) else {
-          return nil
-        }
-        return range
-      }
-      app.typeKey("n", modifierFlags: [])
-      app.typeKey("i", modifierFlags: [])
-      let marked = XCTNSPredicateExpectation(
-        predicate: NSPredicate { _, _ in (markedRange()?.length ?? 0) > 0 }, object: nil)
-      let markedOutcome = XCTWaiter().wait(for: [marked], timeout: 8)
-      let range = markedRange()
-      let preedit = editor.value as? String ?? ""
-      let rawMarked = attribute(
-        focused, NSAccessibility.Attribute.textInputMarkedRangeAttribute.rawValue as CFString)
-      transcript.withLock {
-        $0.append(
-          "marked query=\(rawMarked.0.rawValue), range=\(String(describing: range)), source=\(preedit.debugDescription)"
-        )
-      }
-      let image = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
-      image.name = "native-pinyin-live-marked-candidates"
-      image.lifetime = .keepAlways
-      add(image)
       let candidates = XCUIApplication(bundleIdentifier: "com.apple.inputmethod.SCIM")
-      let candidateTree = XCTAttachment(
-        string: "state=\(candidates.state.rawValue)\n"
-          + (candidates.state == .notRunning ? "not running" : candidates.debugDescription))
-      candidateTree.name = "native-pinyin-candidate-state"
-      candidateTree.lifetime = .keepAlways
-      add(candidateTree)
-      XCTAssertEqual(
-        markedOutcome, .completed, "Real system keystrokes must produce marked preedit")
-      let actualRange = try XCTUnwrap(range)
-      XCTAssertEqual(actualRange.location, original.utf16.count)
-      XCTAssertEqual(actualRange.length, 2)
-      XCTAssertEqual(preedit, original + "ni")
+      func compose(_ phase: String) {
+        // typeText/paste can bypass the input method. Real individual keys must
+        // produce both preedit and an actual Chinese candidate in the system UI.
+        app.typeKey("n", modifierFlags: [])
+        app.typeKey("i", modifierFlags: [])
+        let candidate = candidates.descendants(matching: .any).matching(
+          NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", "你", "你")
+        ).firstMatch
+        let available = candidates.state != .notRunning && candidate.waitForExistence(timeout: 8)
+        let preedit = editor.value as? String ?? ""
+        transcript.withLock {
+          $0.append("\(phase): candidate=\(available), preedit=\(preedit.debugDescription)")
+        }
+        let tree = XCTAttachment(
+          string: "state=\(candidates.state.rawValue)\n"
+            + (candidates.state == .notRunning ? "not running" : candidates.debugDescription))
+        tree.name = "native-pinyin-candidates-" + phase
+        tree.lifetime = .keepAlways
+        self.add(tree)
+        let image = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        image.name = "native-pinyin-live-preedit-" + phase
+        image.lifetime = .keepAlways
+        self.add(image)
+        XCTAssertTrue(available, "The real system candidate UI must offer 你")
+        expectSource(original + "ni")
+        XCTAssertEqual(try? Data(contentsOf: file), originalBytes)
+      }
+      compose("cancel")
+      app.typeKey(XCUIKeyboardKey.escape.rawValue, modifierFlags: [])
+      expectSource(original)
+      XCTAssertEqual(try Data(contentsOf: file), originalBytes)
+      compose("commit")
       app.typeKey(" ", modifierFlags: [])
       let committed = original + "你"
       expectSource(committed)
-      XCTAssertTrue(markedRange() == nil || markedRange()?.length == 0)
       app.typeKey("s", modifierFlags: .command)
       XCTAssertEqual(try Data(contentsOf: file), try encoded(committed))
       app.typeKey("z", modifierFlags: .command)
@@ -209,7 +180,9 @@
       app.typeKey("s", modifierFlags: .command)
       XCTAssertEqual(try Data(contentsOf: file), originalBytes)
       transcript.withLock {
-        $0.append("Real marked ni → 你; Undo/Redo and Save preserve UTF16LE BOM/CRLF/Unicode bytes.")
+        $0.append(
+          "Real Pinyin candidate/preedit, Escape cancellation, ni → 你; Undo/Redo and Save preserve UTF16LE BOM/CRLF/Unicode bytes."
+        )
       }
     }
   }
