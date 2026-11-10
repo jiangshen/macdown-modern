@@ -128,6 +128,9 @@
       // Teardown blocks run even if XCTest interrupts this method at an assertion.
       addTeardownBlock { @MainActor in input.restore() }
       input.selectPinyin()
+      // Reestablish the text client after the asynchronous system source change.
+      editor.click()
+      app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: .command)
       transcript.withLock {
         $0.append("Selected system Pinyin; original=\(InputSources.id(input.original))")
       }
@@ -140,10 +143,22 @@
         let candidate = candidates.descendants(matching: .any).matching(
           NSPredicate(format: "label CONTAINS %@ OR value CONTAINS %@", "你", "你")
         ).firstMatch
-        let available = candidates.state != .notRunning && candidate.waitForExistence(timeout: 8)
+        let ready = XCTNSPredicateExpectation(
+          predicate: NSPredicate { _, _ in
+            candidates.state != .notRunning && candidate.exists
+          }, object: nil)
+        let available = XCTWaiter().wait(for: [ready], timeout: 8) == .completed
         let preedit = editor.value as? String ?? ""
         transcript.withLock {
           $0.append("\(phase): candidate=\(available), preedit=\(preedit.debugDescription)")
+          $0.append(
+            "sourceAfterKeys=\(InputSources.id(TISCopyCurrentKeyboardInputSource().takeRetainedValue()))"
+          )
+          $0.append(
+            "inputProcesses="
+              + NSWorkspace.shared.runningApplications.compactMap(\.bundleIdentifier).filter {
+                $0.localizedCaseInsensitiveContains("input")
+              }.joined(separator: ","))
         }
         let tree = XCTAttachment(
           string: "state=\(candidates.state.rawValue)\n"
