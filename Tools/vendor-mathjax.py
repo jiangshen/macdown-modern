@@ -51,7 +51,7 @@ def build(work):
                             'node_modules/esbuild')}
     record = {'version': '4.1.3', 'fontVersion': '4.1.3', 'packages': packages,
               'offlineRegistry': {'rootURL': 'snowfolio-math:', 'runtimeLoading': False},
-              'scope': 'Direct TeX/AMS/newcommand/bbox/color/cancel/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. Upstream require parser and package registry imported with page-loader bootstrap disabled in Swift; only bundled packages/legacy aliases are preloaded, defaultAllow=false and Loader.load removed. No document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.',
+              'scope': 'Direct TeX/AMS/newcommand/bbox/color/cancel/enclose/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. Upstream require parser and package registry imported with page-loader bootstrap disabled in Swift; only bundled packages/legacy aliases are preloaded, defaultAllow=false and Loader.load removed. No document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.',
               'buildInputs': {name: hashlib.sha256((BUILD / name).read_bytes()).hexdigest()
                               for name in INPUTS}, 'bundledModules': modules,
               'files': {name: hashlib.sha256((DEST / name).read_bytes()).hexdigest()

@@ -22,11 +22,11 @@
     "rootURL": "snowfolio-math:",
     "runtimeLoading": false
   },
-  "scope": "Direct TeX/AMS/newcommand/bbox/color/cancel/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. Upstream require parser and package registry imported with page-loader bootstrap disabled in Swift; only bundled packages/legacy aliases are preloaded, defaultAllow=false and Loader.load removed. No document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.",
+  "scope": "Direct TeX/AMS/newcommand/bbox/color/cancel/enclose/mathtools/boldsymbol/braket/textmacros/verb/unicode/extpfeil modules, SVG original TeX outlines, LiteDOM and MathML serializer. Upstream require parser and package registry imported with page-loader bootstrap disabled in Swift; only bundled packages/legacy aliases are preloaded, defaultAllow=false and Loader.load removed. No document scripts, native DOM, Node/file/network bridge or TeX HTML package. Swift owns orchestration.",
   "buildInputs": {
     "package.json": "04a31e116dd1b323186c97601b34599aae7c8dd9ddeeef17fe0ee65b25cd8516",
     "package-lock.json": "6df165ae0caafd08ed3777d2d0ded78e2508fb900a79e9b071613af542a8b824",
-    "entry.mjs": "8c47f210e106444da239bbc32ba62899eb38aa2486e4367f316d8935e07705b0",
+    "entry.mjs": "b56e45a9ae4e4b4913a02f50c185fe076e825b7acd240e8c7775df22fc40a036",
     "font-default.mjs": "edaccc8e2e36fc675eff5ea0a5c1cd3d9d7329d7c1502a37c81e63ed4de68f53"
   },
   "bundledModules": [

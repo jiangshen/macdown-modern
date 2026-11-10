@@ -12,6 +12,7 @@ import '@mathjax/src/js/input/tex/newcommand/NewcommandConfiguration.js';
 import '@mathjax/src/js/input/tex/bbox/BboxConfiguration.js';
 import '@mathjax/src/js/input/tex/color/ColorConfiguration.js';
 import '@mathjax/src/js/input/tex/cancel/CancelConfiguration.js';
+import '@mathjax/src/js/input/tex/enclose/EncloseConfiguration.js';
 import '@mathjax/src/js/input/tex/mathtools/MathtoolsConfiguration.js';
 import '@mathjax/src/js/input/tex/boldsymbol/BoldsymbolConfiguration.js';
 import '@mathjax/src/js/input/tex/braket/BraketConfiguration.js';

@@ -5,7 +5,7 @@ import JavaScriptCore
 /// context; all document ordering, cancellation, limits and publication are Swift.
 final class MathJaxRenderer {
   private static let packages = [
-    "base", "ams", "newcommand", "bbox", "color", "cancel", "mathtools", "boldsymbol",
+    "base", "ams", "newcommand", "bbox", "color", "cancel", "enclose", "mathtools", "boldsymbol",
     "braket", "textmacros", "verb", "unicode", "extpfeil", "require",
   ]
   // MathJax2's names refer to capabilities already present in base/ams.

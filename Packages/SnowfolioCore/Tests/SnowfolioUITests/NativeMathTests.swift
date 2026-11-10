@@ -285,4 +285,78 @@ struct NativeMathTests {
     #expect(text.contains("6"))
     try Data(contentsOf: path).write(to: URL(filePath: "/private/tmp/snowfolio-math-export.pdf"))
   }
+
+  @Test(
+    "Enclosure shapes survive light/dark offline HTML and one-page PDF", arguments: [false, true])
+  func enclosures(dark: Bool) async throws {
+    _ = NSApplication.shared
+    var options = MarkdownRenderingOptions()
+    options.math = true
+    let expressions = [
+      ("Circle", #"\require{enclose}\enclose{circle}{x^2+y^2}"#),
+      ("Rounded box", #"\enclose{roundedbox}[mathcolor=teal,mathbackground=lightcyan]{a+b}"#),
+      ("Long division", #"\enclose{longdiv}{1234}"#),
+      ("Phasor", #"\enclose{phasorangle}{A}"#),
+      ("Combined", #"\enclose{circle,box}{x}"#),
+      ("Nested", #"\enclose{circle}{\enclose{roundedbox}{y}}"#),
+    ]
+    let source =
+      "# Enclosed equations\n\n"
+      + expressions.map { $0.0 + "\n\n```math\n" + $0.1 + "\n```" }.joined(separator: "\n\n")
+      + "\n\nEnd enclosure checkpoint."
+    let export = try await MarkdownExport.build(
+      source: source, options: options, title: "Enclosed equations", directory: nil)
+    #expect(!export.document.contains("class=\"math-error\""))
+    let surface = NativeWebOutput()
+    defer { surface.close() }
+    surface.view.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)
+    try await surface.prepare(html: export.document)
+    #expect(!surface.view.configuration.defaultWebpagePreferences.allowsContentJavaScript)
+    #expect(
+      try await evaluate("return typeof globalThis.SnowfolioMathJax;", in: surface.view)
+        == "undefined")
+    #expect(
+      try await evaluate(
+        "return String(document.querySelectorAll('menclose').length);", in: surface.view) == "7")
+    #expect(
+      try await evaluate(
+        "return String(document.querySelectorAll('.md-mathjax-visual>svg').length);",
+        in: surface.view) == "6")
+    #expect(
+      try await evaluate(
+        "return String([...document.querySelectorAll('.md-mathjax-visual>svg')].every(e=>e.getBoundingClientRect().width>10 && e.getBoundingClientRect().height>10));",
+        in: surface.view) == "true")
+    #expect(
+      try await evaluate(
+        "return String(document.querySelectorAll('svg ellipse').length);", in: surface.view) == "3")
+    let image = try await surface.view.takeSnapshot(configuration: nil)
+    let imageData = try #require(image.tiffRepresentation)
+    let bitmap = try #require(NSBitmapImageRep(data: imageData))
+    try #require(bitmap.representation(using: .png, properties: [:])).write(
+      to: URL(filePath: "/private/tmp/snowfolio-math-enclosures-\(dark ? "dark" : "light").png"))
+    if dark { return }
+    let path = FileManager.default.temporaryDirectory.appendingPathComponent(
+      UUID().uuidString + ".pdf")
+    defer { try? FileManager.default.removeItem(at: path) }
+    let info = NativeWebOutput.printInfo(allPages: true)
+    info.paperSize = NSSize(width: 612, height: 792)
+    info.jobDisposition = .save
+    info.dictionary()[NSPrintInfo.AttributeKey.jobSavingURL] = path
+    let window = NSWindow(
+      contentRect: surface.view.frame, styleMask: .titled, backing: .buffered, defer: false)
+    window.animationBehavior = .none
+    window.isReleasedWhenClosed = false
+    defer { window.close() }
+    #expect(await surface.printDocument(info: info, for: window, showPanel: false))
+    let pdf = try #require(PDFDocument(url: path))
+    #expect(pdf.pageCount == 1)
+    let text = try #require(pdf.string)
+    #expect(text.contains("Enclosed equations") && text.contains("End enclosure checkpoint."))
+    let page = try #require(pdf.page(at: 0))
+    let thumbnail = page.thumbnail(of: NSSize(width: 612, height: 792), for: .mediaBox)
+    let thumbnailData = try #require(thumbnail.tiffRepresentation)
+    let pdfBitmap = try #require(NSBitmapImageRep(data: thumbnailData))
+    try #require(pdfBitmap.representation(using: .png, properties: [:])).write(
+      to: URL(filePath: "/private/tmp/snowfolio-math-enclosures-pdf.png"))
+  }
 }

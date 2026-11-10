@@ -66,7 +66,10 @@ enum MathMarkup {
     else { throw Failure.unsafe }
     let allowed: Set<String> =
       svg
-      ? ["svg", "g", "defs", "path", "rect", "line", "text", "tspan", "a", "title", "desc", "use"]
+      ? [
+        "svg", "g", "defs", "path", "rect", "ellipse", "line", "text", "tspan", "a", "title",
+        "desc", "use",
+      ]
       : [
         "math", "mrow", "mi", "mn", "mo", "mtext", "mfrac", "msup", "msub", "msubsup", "msqrt",
         "mroot", "mspace", "mtable", "mtr", "mlabeledtr", "mtd", "mover", "munder", "munderover",
@@ -75,8 +78,9 @@ enum MathMarkup {
       ]
     let attributes: Set<String> = [
       "id", "href", "class", "pointer-events", "style", "fill", "stroke", "stroke-width",
-      "stroke-dasharray", "transform", "d",
-      "viewbox", "width", "height", "x", "y", "x1", "y1", "x2", "y2", "dx", "dy", "role",
+      "stroke-dasharray", "stroke-linecap", "stroke-linejoin", "transform", "d",
+      "viewbox", "width", "height", "x", "y", "x1", "y1", "x2", "y2", "dx", "dy", "rx", "ry", "cx",
+      "cy", "role",
       "focusable", "aria-hidden",
       "font-size", "font-family", "font-style", "font-weight", "text-anchor", "preserveaspectratio",
       "rowspan", "columnspan", "rowalign", "columnalign", "equalrows", "equalcolumns",
@@ -132,7 +136,7 @@ enum MathMarkup {
             try validateValue(value)
           } else if [
             "d", "transform", "width", "height", "x", "y", "x1", "y1", "x2", "y2", "dx", "dy",
-            "viewbox", "stroke-width", "indentshift",
+            "viewbox", "stroke-width", "rx", "ry", "cx", "cy", "indentshift",
           ].contains(key) {
             try validateNumbers(value)
           }
@@ -161,7 +165,7 @@ enum MathMarkup {
       "vertical-align", "font-size", "width", "min-width", "height", "margin", "margin-left",
       "margin-right", "margin-top", "margin-bottom", "color", "background-color", "border",
       "border-top", "border-bottom", "border-left", "border-right", "font-family", "font-weight",
-      "font-style",
+      "font-style", "stroke-width",
     ]
     for declaration in value.split(separator: ";") {
       let parts = declaration.split(separator: ":", maxSplits: 1)
@@ -169,6 +173,9 @@ enum MathMarkup {
         allowed.contains(parts[0].trimmingCharacters(in: .whitespacesAndNewlines).lowercased())
       else { throw Failure.unsafe }
       try validateValue(String(parts[1]))
+      if parts[0].trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "stroke-width" {
+        try validateNumbers(String(parts[1]))
+      }
     }
   }
 
