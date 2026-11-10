@@ -2036,5 +2036,20 @@
     "kept": "Actual speech/state/inspectedPNG and compact failed method/log. One shared SDK/core cache; no rawxcresult,recording/archive or duplicate app build.",
     "scope": "Concluded first correction diagnostics; finalcycle2next. Owner/symlink/open-file checks pass, running apps/documents protected and Trash not emptied.",
     "additionalFinding": "Standalone Release exact Unicode/NUL bytecount probe over NSTextStorage snapshots finds Swift utf8.count and Foundation lengthOfBytes nearly equal (~1msat1MB/~6-8msat10MB). No speculative bytecount production change made; compact measurements retained, prototype removed."
+  },
+  "nativeVoiceOverAcceptedCycle": {
+    "dateUTC": "2026-11-10T09:28:47.788349+00:00",
+    "removedAllocatedBytes": 37662720,
+    "removed": [
+      "/private/tmp/snowfolio-voiceover-current-result",
+      "/private/tmp/snowfolio-voiceover-current-attachments",
+      "/private/tmp/snowfolio-voiceover-extraction.log",
+      "/private/tmp/snowfolio-voiceover-export.log",
+      "/private/tmp/snowfolio-voiceover-summary.json",
+      "/private/tmp/snowfolio-voiceover-watch.log",
+      "/private/tmp/snowfolio-record-voiceover-accepted.py"
+    ],
+    "kept": "Compact passedVoiceOver1/1summary/speech/state/inspectedPNG/log; prior2failed diagnostics retain compact explanations/images only. No rawxcresult, recording/archive, extra appbuild or separate modulecache.",
+    "scope": "Completed nativeVoiceOver2fixcycles. Ownership/symlink/open-file checks pass; protected running apps/documents and current core/SDKcache unchanged. Trash not emptied."
   }
 }

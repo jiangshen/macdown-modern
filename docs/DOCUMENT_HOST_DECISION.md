@@ -10,7 +10,7 @@ of documents, file coordination, native Undo, Versions and window restoration.
 
 | Evidence | SwiftUI DocumentGroup host | Swift NSDocument host |
 | --- | --- | --- |
-| Complete accepted comparison | Latest full33 at `7d0923b`:29pass/4fail (same3lifecycle cases and invalid-read handling; CLI passes) | 43/43 at `1d6bd22`, no failures or skips; complete current45 pending |
+| Complete accepted comparison | Latest full33 at `7a8a99a`:29pass/4fail (same3lifecycle cases and invalid-read handling; CLI passes) | 43/43 at `1d6bd22`, no failures or skips; complete current45 pending |
 | Autosave and saved edit Undo | Acceptance fails | Passes, including exact encoded bytes |
 | Clean external changes after autosave | Two cases fail | Both pass |
 | Dirty conflicts and Versions | Full acceptance remains open | All conflict choices and native Versions/Restore pass |
@@ -29,6 +29,10 @@ The recurring SwiftUI-host failures concern the framework's document lifecycle.
 The native candidate already preserves those behaviors using normal
 `NSDocumentController`/`NSDocument` ownership. A second custom autosave or external
 file-watcher stack is not justified to keep DocumentGroup.
+
+Basic native VoiceOver source/toolbar speech, navigation and exact encoded editing
+now pass on a disposable Mac at `c6c4e70` (1/1). Broader accessibility and physical
+user-Mac review remain separate; see [the VoiceOver ledger](validation/native-voiceover.json).
 
 Before selecting the native host as the source default:
 

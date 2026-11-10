@@ -50,7 +50,9 @@ together. There are 59 internal QoS warnings, one XCTest attachment encoding war
 (three conversion log messages), and three skipped App Intents metadata extractions;
 Swift compiler diagnostics are zero. This is not performance/release acceptance.
 Physical native basic painting and committed Chinese Undo/Redo now pass; marked
-Pinyin/VoiceOver and active selection remain open. Source default
+Pinyin and active selection remain open. Basic native VoiceOver speech/navigation
+and exact encoded editing now pass on a disposable Mac; broader accessibility and
+physical comfort review remain open. Source default
 and installed app remain unchanged. See document-lifecycle.json and
 [the host decision](DOCUMENT_HOST_DECISION.md).
 
@@ -61,7 +63,7 @@ were inspected. Its 12 focused checks and full core baseline cover DOM word rule
 UTF16 characters, whitespace classes, code and diagram text, cancellation, visibility,
 preferences and source safety. See [writing-statistics.json](validation/writing-statistics.json).
 
-The latest complete regular SwiftUI-host run at `7d0923b` executes 33 methods:
+The latest complete regular SwiftUI-host run at `7a8a99a` executes 33 methods:
 29 pass / 4 fail (all terminal method outcomes inspected). Three autosave/reload
 failures and invalid-encoding error presentation remain. CLI and saved-tab restoration
 pass here; earlier intermittent failures are not globally resolved. This is not complete regular acceptance. Native43
@@ -4327,3 +4329,36 @@ Runtime acceptance is pending; AX labels or compile success alone are insufficie
 The native method set is now45; native43at1d6bd22 remains the complete accepted baseline,
 and the unrelated known Finder gesture failure stays open. See
 [native-voiceover.json](validation/native-voiceover.json).
+
+
+## Native VoiceOver source/toolbar acceptance — 2026-11-10
+
+The final bounded method passes 1/1 at `c6c4e70` in 130.822 seconds, no failures or
+skips. The actual speech transcript names Markdown source/edit text, moves forward
+to the splitter and back to the source, and traverses the window/toolbar to Render
+button. VO-Space is issued at that control without changing source. Native typing,
+Undo and Save with VoiceOver enabled preserve exact UTF16LE BOM/CRLF/Unicode bytes.
+XCTest teardown restores the initial disabled VoiceOver state without error. Speech,
+state and final PNG were inspected. One internal QoS warning and three App Intents
+metadata skips remain; Swift compiler diagnostics are zero.
+
+The first failure read a startup greeting; explicit keyboard-focus synchronization
+then produced actual Chinese/combining source speech. The final correction asks
+VoiceOver to describe the item separately from its current text line. All original
+semantic/role/navigation/Undo/byte assertions and deadlines remain. No production
+accessibility implementation was changed to satisfy this test. See
+[native-voiceover.json](validation/native-voiceover.json).
+
+This accepts the focused real native VoiceOver flow on a disposable Mac, not complete
+accessibility or the user-Mac physical review. Settings/outline/preview/math speech,
+dark/contrast, preferred-style/active selection and real marked input remain open.
+The complete native baseline remains 43 at `1d6bd22`; current 45 still includes the
+known unresolved Finder gesture case and is not accepted. The original regular-host
+run at `7a8a99a` finishes 29/33 with the same three lifecycle and invalid-read failures.
+Source/core files remain identical across later test-only commits.
+
+Only compact speech/state/PNG/method records remain after the result export is retired.
+Duplicate full push jobs for test-only changes were cancelled after verifying unchanged
+production/core sources; the original full run and every focused result are retained.
+One current core/SDK cache and the three protected running apps/documents remain.
+No source-default, installation, handler, release or security-policy change occurred.

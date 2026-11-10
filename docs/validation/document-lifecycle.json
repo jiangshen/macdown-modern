@@ -1627,5 +1627,40 @@
     "ledger": "native-desktop-check.json",
     "accepted": "Physical native glyph painting, inactive continuous source selection, user-supplied committed Chinese with native Undo/Redo and exact163byteSave.",
     "open": "Real marked composition/candidate list, active blue selection, preferred Snowfolio style and VoiceOver; current44 full native acceptance. No source-default/install/handler switch."
+  },
+  "regular7a8a99a": {
+    "dateUTC": "2026-11-10T09:18:36.346858+00:00",
+    "source": "7a8a99ad90c6b8f30bbe7e3b05b360251362fec2",
+    "run": 42783257011,
+    "job": 129718134978,
+    "artifact": 13749418457,
+    "host": "SwiftUI DocumentGroup (workflow job name native-app)",
+    "executed": 33,
+    "passed": 29,
+    "failed": 4,
+    "failedMethods": [
+      "SnowfolioUITests.DocumentLifecycleTests/testActiveAutosaveAndSavedEditUndoPreserveBytes",
+      "SnowfolioUITests.DocumentLifecycleTests/testAutosavePreservesEncodingAndReloadsCleanExternalChange",
+      "SnowfolioUITests.DocumentLifecycleTests/testCoordinatedExternalReloadAfterAutosave",
+      "SnowfolioUITests.DocumentTypeTests/testExtensionlessAndUnfamiliarTextOpenWithoutChangingBytesAndBinaryIsRejected"
+    ],
+    "runtimeQoSWarnings": 45,
+    "compilerDiagnostics": 0,
+    "transferBytes": 683833,
+    "archiveBytes": 189515423,
+    "compact": "/private/tmp/snowfolio-validation-history/native-editor-source-performance/regular-7a8a99a",
+    "finding": "Same three autosave/external-reload failures and invalid-encoding error presentation as7d0923b. CLI, source editing/presentation, restored tabs and other29methods pass. No complete regular acceptance or first-party failure attribution. Native full43at1d6bd22 remains accepted; current45unaccepted.",
+    "visual": "All33terminalmethodoutcomes/logerrorsinspected; no new rawresult or screenshot download.",
+    "sourceState": "Later test-only commits leave production/core files identical to this accepted core/native-focused source."
+  },
+  "focusedVoiceOverC6c4e70": {
+    "source": "c6c4e70ce531dae7e8d6ce058c559e906cb0c4a3",
+    "run": 42788900026,
+    "job": 129737003174,
+    "passed": 1,
+    "failed": 0,
+    "seconds": 130.822,
+    "ledger": "native-voiceover.json",
+    "scope": "Real source/toolbar speech and native encoded typing/Undo/Save on disposableMac; not full45or complete accessibility."
   }
 }

@@ -1,6 +1,6 @@
 {
   "dateUTC": "2026-11-10T08:49:47.148558+00:00",
-  "status": "Explicit cursor focus now produces actual Chinese/combining source speech. The label assertion needs item description rather than current-line reading. Final allowed cycle2 prepared; no full VoiceOver acceptance.",
+  "status": "Focused real native VoiceOver acceptance1/1atc6c4e70,130.822seconds, no skips/failures. Actual speech/state andPNGinspected. Complete45/fullaccessibility remain open.",
   "method": "VoiceOverTests/testNativeSourceAndToolbarSpeechNavigationPreserveEncodedUndo",
   "sourceSHA256": {
     "App/UITests/VoiceOverTests.swift": "25289df41c7f135b8339c383b0d82433a0979b55b382d7683b980960923c4858",
@@ -56,5 +56,46 @@
     "logsTransferBytes": 527032,
     "smallResultTransferBytes": 29413705,
     "compact": "/private/tmp/snowfolio-validation-history/native-voiceover-3229e75"
-  }
+  },
+  "acceptedRun": {
+    "dateUTC": "2026-11-10T09:28:47.788349+00:00",
+    "source": "c6c4e70ce531dae7e8d6ce058c559e906cb0c4a3",
+    "run": 42788900026,
+    "job": 129737003174,
+    "artifact": 13751411602,
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "methodSeconds": 130.822,
+    "resultElapsedSeconds": 206.7189998626709,
+    "runtimeQoSWarnings": 1,
+    "AppIntentsMetadataWarnings": 3,
+    "compilerDiagnostics": 0,
+    "accepted": [
+      "Real VoiceOver source item description speaks Markdown source/edit text. Native content speech was also captured in the preceding corrected run.",
+      "Forward to vertical splitter and backward to Markdown source/edit text.",
+      "Navigate window top through close/minimize/full-screen/title/toolbar, enter5itemtoolbar, View radio group and Render/button speech. Standard VO-Space activation command preserves source.",
+      "With VoiceOver enabled: native typing, Undo and Save retain exactUTF16LE BOM/CRLF/Chinese/ZWJ/combining bytes.",
+      "XCTest teardown captures speech/state/image, then restores originally disabled VoiceOver without failure, terminates test app and removes owned fixture."
+    ],
+    "speechTranscript": "VoiceOver initially enabled=false\nsource-value: Snowfolio voiceover-native.md window Markdown source edit text L\nsource-description: Markdown source edit text is in the VoiceOver cursor Line 4 Inse\nforward: vertical splitter\nbackward: Markdown source edit text Line 4 Insertion at end of text. # Voi\nwindow-top: close button\ntoolbar-0: minimize button\ntoolbar-1: full screen button\ntoolbar-2: voiceover-native.md\ntoolbar-3: toolbar\nenter-toolbar: In toolbar 5 items Hide Sidebar button\ntoolbar-4: View radio group\ntoolbar-5: Render button\nNative typing/Undo/Save retains exact UTF16LE BOM/CRLF/Unicode bytes.",
+    "visual": "Inspected final PNG: original source/caret and glacial notebook heading visible, VoiceOver focus ring atRender and captionSave. Hosted reading area remains blank; no new physical reading-paint/style acceptance.",
+    "limits": "Focused native VoiceOver method only, on disposable macOS27VM. Not complete current45native or full accessibility. Settings/outline/preview/math reading, dark/contrast, physical user-Mac usability and real marked composition remain separate. Existing Finder gesture diagnostic remains unresolved/exhausted.",
+    "sourcePolicy": "No production/core changes since accepted7a8a99a, no app entitlement/security/default-host/install/handler change, no user-Mac VoiceOver setting touched.",
+    "archiveBytes": 123779065,
+    "logsTransferBytes": 562378,
+    "smallResultTransferBytes": 34650106,
+    "compact": "/private/tmp/snowfolio-validation-history/native-voiceover-c6c4e70",
+    "inspectedAttachments": [
+      "native-voiceover-source-and-toolbar_0_A6BC4721-A2D8-4A4E-9EB6-69533B2DA906.png",
+      "native-voiceover-state_0_2058777C-3CA6-4A37-807B-1B57C2E78042.txt",
+      "native-voiceover-speech_0_8CF0F3DC-0386-49E1-A743-14BC72F89374.txt"
+    ]
+  },
+  "remaining": [
+    "Settings, outline, preview/math speech, dark/contrast and complete accessibility review.",
+    "Physical user-Mac comfort and current preferred style, active selection/caret and real Pinyin composition.",
+    "Known Finder gesture delivery issue; no further speculative rerun after its2cycles. Complete native45not accepted; baseline43at1d6bd22unchanged."
+  ]
 }
