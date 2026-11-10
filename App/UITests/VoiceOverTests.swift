@@ -1,5 +1,6 @@
 #if NATIVE_DOCUMENT_HOST
   import AppKit
+  import Synchronization
   import XCTest
 
   final class VoiceOverTests: XCTestCase {
@@ -11,7 +12,7 @@
       let directory = manager.temporaryDirectory.resolvingSymlinksInPath()
         .appendingPathComponent("Snowfolio-VoiceOver-" + UUID().uuidString)
       try manager.createDirectory(at: directory, withIntermediateDirectories: true)
-      defer { try? manager.removeItem(at: directory) }
+      addTeardownBlock { try? manager.removeItem(at: directory) }
       let file = directory.appendingPathComponent("voiceover-native.md")
       let original = "# VoiceOver notebook\r\n\r\nA native paragraph. 中文 👩‍💻 e\u{301}\r\n"
       let bytes = Data([0xff, 0xfe]) + (try XCTUnwrap(original.data(using: .utf16LittleEndian)))
@@ -24,7 +25,7 @@
         "-readingStyleSelection", "snowfolio", "-markdownManualRender", "NO",
       ]
       app.launch()
-      defer { app.terminate() }
+      addTeardownBlock { @MainActor in app.terminate() }
       app.typeKey("o", modifierFlags: .command)
       let panel = app.descendants(matching: .any)["open-panel"].firstMatch
       XCTAssertTrue(panel.waitForExistence(timeout: 5))
@@ -53,29 +54,32 @@
       expectSource(original)
       let service = XCUIDevice.shared.voiceOverService
       let initiallyEnabled = service.isEnabled
-      var transcript = ["VoiceOver initially enabled=\(initiallyEnabled)"]
-      defer {
-        if !initiallyEnabled && service.isEnabled { XCTAssertNoThrow(try service.disable()) }
+      let transcript = Mutex(["VoiceOver initially enabled=\(initiallyEnabled)"])
+      addTeardownBlock { @MainActor in
+        if !initiallyEnabled && service.isEnabled { try service.disable() }
+        XCTAssertEqual(service.isEnabled, initiallyEnabled, "Restore the original VoiceOver state")
       }
-      defer {
-        let record = XCTAttachment(string: transcript.joined(separator: "\n"))
+      // XCTest's stop-on-failure interruption can bypass Swift defer. Registered
+      // teardown blocks preserve evidence and restore the disposable desktop.
+      addTeardownBlock { @MainActor in
+        let record = XCTAttachment(string: transcript.withLock { $0.joined(separator: "\n") })
         record.name = "native-voiceover-speech"
         record.lifetime = .keepAlways
-        add(record)
+        self.add(record)
         let tree = XCTAttachment(string: app.debugDescription + "\n" + service.debugDescription)
         tree.name = "native-voiceover-state"
         tree.lifetime = .keepAlways
-        add(tree)
+        self.add(tree)
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = "native-voiceover-source-and-toolbar"
         shot.lifetime = .keepAlways
-        add(shot)
+        self.add(shot)
       }
       func speech(_ phase: String, _ action: () throws -> XCUIVoiceOverService.Output) throws
         -> String
       {
         let value = try action().utterance
-        transcript.append(phase + ": " + value)
+        transcript.withLock { $0.append(phase + ": " + value) }
         XCTAssertFalse(value.isEmpty, "VoiceOver must produce actual speech")
         return value
       }
@@ -83,6 +87,9 @@
       XCTAssertTrue(service.isEnabled)
       app.activate()
       editor.click()
+      // Mouse/keyboard focus and the VoiceOver cursor are independent. Move the
+      // cursor explicitly rather than accepting the startup greeting as speech.
+      app.typeKey(.F4, modifierFlags: [.control, .option, .shift, .function])
       let sourceSpeech = try speech("source", { try service.currentSpeech() })
       XCTAssertTrue(sourceSpeech.localizedCaseInsensitiveContains("Markdown source"), sourceSpeech)
       XCTAssertTrue(
@@ -91,15 +98,25 @@
       _ = try speech("forward", { try service.moveForward() })
       let backward = try speech("backward", { try service.moveBackward() })
       XCTAssertTrue(backward.localizedCaseInsensitiveContains("Markdown source"), backward)
-      let render = app.buttons["Render"].firstMatch
-      XCTAssertTrue(render.exists)
-      render.click()
-      let toolbarSpeech = try speech("render", { try service.currentSpeech() })
-      XCTAssertTrue(
-        toolbarSpeech.localizedCaseInsensitiveContains("Render")
-          || toolbarSpeech.localizedCaseInsensitiveContains("Update the Markdown preview"),
-        toolbarSpeech)
-      XCTAssertTrue(toolbarSpeech.localizedCaseInsensitiveContains("button"), toolbarSpeech)
+      // Navigate through VoiceOver to the toolbar and activate its real control.
+      app.typeKey(.home, modifierFlags: [.control, .option, .command])
+      _ = try speech("window-top", { try service.currentSpeech() })
+      var foundRender = false
+      for step in 0..<32 {
+        let value = try speech("toolbar-\(step)", { try service.moveForward() })
+        if value.localizedCaseInsensitiveContains("toolbar") {
+          _ = try speech("enter-toolbar", { try service.moveIn() })
+        }
+        if value.localizedCaseInsensitiveContains("Render")
+          || value.localizedCaseInsensitiveContains("Update the Markdown preview"),
+          value.localizedCaseInsensitiveContains("button")
+        {
+          foundRender = true
+          break
+        }
+      }
+      XCTAssertTrue(foundRender, transcript.withLock { $0.joined(separator: "\n") })
+      app.typeKey(" ", modifierFlags: [.control, .option])
       expectSource(original)
       XCTAssertEqual(try Data(contentsOf: file), bytes)
       editor.click()
@@ -110,7 +127,9 @@
       expectSource(original)
       app.typeKey("s", modifierFlags: .command)
       XCTAssertEqual(try Data(contentsOf: file), bytes)
-      transcript.append("Native typing/Undo/Save retains exact UTF16LE BOM/CRLF/Unicode bytes.")
+      transcript.withLock {
+        $0.append("Native typing/Undo/Save retains exact UTF16LE BOM/CRLF/Unicode bytes.")
+      }
     }
   }
 #endif

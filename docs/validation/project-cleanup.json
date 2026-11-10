@@ -2002,5 +2002,22 @@
     "deferredOpenArtifacts": [],
     "kept": "Compact all3method outcomes/summary/log,4inspectedPNGs, expected-error/consent metadata and28KBcompressedcorelogs. No rawxcresult,recording or archive remains. Existing singlecorecache and protected running apps/documents untouched.",
     "scope": "Exact7a8a99a focused-native result review; no new local build or rerun. Owner/symlink/open-file checks pass; Trash not emptied."
+  },
+  "nativeVoiceOverFirstDiagnostic": {
+    "dateUTC": "2026-11-10T09:01:38.270912+00:00",
+    "removedAllocatedBytes": 34983936,
+    "removed": [
+      "/private/tmp/snowfolio-voiceover-current-result",
+      "/private/tmp/snowfolio-voiceover-current-attachments",
+      "/private/tmp/snowfolio-voiceover-extraction.log",
+      "/private/tmp/snowfolio-voiceover-export.log",
+      "/private/tmp/snowfolio-voiceover-failure.png",
+      "/private/tmp/snowfolio-voiceover-api-check.swift",
+      "/private/tmp/snowfolio-voiceover-tests.swift",
+      "/private/tmp/snowfolio-voiceover-focus-api.swift",
+      "/private/tmp/snowfolio-voiceover-watch.log"
+    ],
+    "kept": "Compact first failure log/report, inspected final video frame and after-source-clickAXsnapshot. No rawxcresult,recording/archive or duplicate local app build remains. Existing SDKcache reused; protected running apps/documents untouched.",
+    "scope": "VoiceOver first diagnostic review; owner/symlink/open-file checks pass. Trash not emptied."
   }
 }

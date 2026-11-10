@@ -1,15 +1,37 @@
 {
   "dateUTC": "2026-11-10T08:49:47.148558+00:00",
-  "status": "Implemented/type-checked; actual VoiceOver runtime acceptance pending.",
+  "status": "First run fails on stale startup greeting. Fix/rerun cycle1 prepared; no actual source/toolbar speech acceptance.",
   "method": "VoiceOverTests/testNativeSourceAndToolbarSpeechNavigationPreserveEncodedUndo",
   "sourceSHA256": {
-    "App/UITests/VoiceOverTests.swift": "8378f03c8bc17fabfffbd0a0d770830cbffcdb50640bb82677cac5d2a6127ed9",
+    "App/UITests/VoiceOverTests.swift": "a579a712896e02561b316883e1fc2285e486a0e7b59f831a98f64ba5c491e9d7",
     ".github/workflows/snowfolio.yml": "911037218cd45edb66a7a89cd1c2b7beb1b5d035c874f1a6411879b72670ecbc"
   },
   "API": "Installed macOS27XCUIAutomation headers plus Swift6arm64SDKtypecheck verify voiceOverService.enable/disable/isEnabled/currentSpeech/moveForward/moveBackward andOutput.utterance.",
   "scope": "Disposable native-app UItest: spoken source label/text role, forward/backward focus, spoken Render/button role, native typing/Undo and exactUTF16LE BOM/CRLF/Unicode Save.",
-  "restoration": "Preserve initial VoiceOver state; when test enables it, disable in defer. App/fixture are test-owned. No local user-Mac settings, entitlement, app-security or source-default change.",
+  "restoration": "XCTest teardown blocks restore initial VoiceOver state and assert it, capture speech/state/image even after failure, terminate test app and remove owned fixture. User-Mac settings and production security unchanged.",
   "limits": "Not accepted until speech/output and screenshots inspected. Physical user-Mac usability/reading-preview/Settings and full accessibility remain open. Existing Finder diagnostic exhausted; no rerun of that test. Complete native set45unaccepted, accepted full baseline43at1d6bd22.",
   "diagnostics": "Retain actual speech transcript, app/service state and screenshot on success or failure. No source/private data from user documents.",
-  "local": "New method type-checks with Swift6/macOS27/arm64 and existing ui-test-module-cache; no local app build."
+  "local": "Corrected method and public focus key/teardown APIs type-check Swift6/macOS27/arm64 with existing SDK cache; strictformat/diffchecks pass. No local app build.",
+  "firstAttempt": {
+    "dateUTC": "2026-11-10T09:01:38.270912+00:00",
+    "source": "54de5a63a48be03c99aa366e787314775e1a4b72",
+    "run": 42785770310,
+    "job": 129726456276,
+    "artifact": 13748028675,
+    "tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "seconds": 67.25,
+    "failure": "Line87source speech assertion receives Welcome to macOS. VoiceOver is on. File opening/source readiness already passed.",
+    "visual": "Inspected final recording frame: source text/caret visible in Snowfolio; VoiceOver caption panel present, no tutorial dialog over the app. This does not prove the VoiceOver cursor reached the source.",
+    "evidence": "Swift defer attachments did not execute on XCTest stop-on-failure; automatic recording and AX/event attachments remain.",
+    "fix": "Use documented VO-Shift-Fn-F4 to move cursor to actual keyboard focus; navigate from window top to toolbar via VoiceOver and activate Render with VO-Space. Preserve source/button/Undo/bytes assertions and existing deadlines. Register evidence/restoration/app/fixture cleanup through XCTest teardown blocks so test failure does not bypass them.",
+    "reference": "https://support.apple.com/guide/voiceover/navigation-commands-cpvokys04/10/mac/27",
+    "cycle": 1,
+    "limits": "No attributed production accessibility defect or speech/navigation acceptance. Stop speculative fixes after2cycles.",
+    "archiveBytes": 119239971,
+    "smallResultTransferBytes": 29813319,
+    "logsTransferBytes": 562382,
+    "compact": "/private/tmp/snowfolio-validation-history/native-voiceover-54de5a6"
+  }
 }
